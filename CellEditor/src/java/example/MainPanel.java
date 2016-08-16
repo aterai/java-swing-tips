@@ -18,6 +18,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
+    private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
 
     public MainPanel() {
         super(new BorderLayout());
@@ -35,16 +36,13 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(50);
         col.setResizable(false);
 
-        final ActionListener al = new ActionListener() {
-            private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
-            @Override public void actionPerformed(ActionEvent e) {
-                table.clearSelection();
-                if (table.isEditing()) {
-                    table.getCellEditor().stopCellEditing();
-                }
-                table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
-                table.setEnabled(!editableCheck.isSelected());
+        ActionListener al = e -> {
+            table.clearSelection();
+            if (table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
             }
+            table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
+            table.setEnabled(!editableCheck.isSelected());
         };
         JPanel p = new JPanel(new GridLayout(3, 1));
         for (JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {

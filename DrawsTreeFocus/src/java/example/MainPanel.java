@@ -22,12 +22,10 @@ public class MainPanel extends JPanel {
         dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
         ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
 
-//         ActionListener al = new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 Object o = e.getSource();
-//                 if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
-//                     updateCheckBox();
-//                 }
+//         ActionListener al = e -> {
+//             Object o = e.getSource();
+//             if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
+//                 updateCheckBox();
 //             }
 //         };
 //
@@ -41,19 +39,15 @@ public class MainPanel extends JPanel {
 // //           .filter(mi -> mi instanceof JRadioButtonMenuItem)
 // //           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
-        dfbaiCheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean b = ((JCheckBox) e.getSource()).isSelected();
-                UIManager.put(DRAWS_FOCUS_BORDER_AROUND_ICON, b);
-                SwingUtilities.updateComponentTreeUI(tree);
-            }
+        dfbaiCheck.addActionListener(e -> {
+            boolean b = ((JCheckBox) e.getSource()).isSelected();
+            UIManager.put(DRAWS_FOCUS_BORDER_AROUND_ICON, b);
+            SwingUtilities.updateComponentTreeUI(tree);
         });
-        ddfiCheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean b = ((JCheckBox) e.getSource()).isSelected();
-                UIManager.put(DRAW_DASHED_FOCUS_INDICATOR, b);
-                SwingUtilities.updateComponentTreeUI(tree);
-            }
+        ddfiCheck.addActionListener(e -> {
+            boolean b = ((JCheckBox) e.getSource()).isSelected();
+            UIManager.put(DRAW_DASHED_FOCUS_INDICATOR, b);
+            SwingUtilities.updateComponentTreeUI(tree);
         });
 
         JPanel np = new JPanel(new GridLayout(2, 1));
@@ -138,15 +132,13 @@ final class LookAndFeelUtil {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
         lafItem.setSelected(lafClassName.equals(lookAndFeel));
         lafItem.setHideActionText(true);
-        lafItem.setAction(new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try {
-                    setLookAndFeel(m.getActionCommand());
-                } catch (ClassNotFoundException | InstantiationException
-                       | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
-                }
+        lafItem.addActionListener(e -> {
+            ButtonModel m = lookAndFeelRadioGroup.getSelection();
+            try {
+                setLookAndFeel(m.getActionCommand());
+            } catch (ClassNotFoundException | InstantiationException
+                   | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
             }
         });
         lafItem.setText(lafName);
