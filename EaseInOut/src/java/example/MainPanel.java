@@ -114,30 +114,7 @@ class ImageCaptionLabel extends JLabel {
 }
 
 class LabelHandler extends MouseAdapter implements HierarchyListener {
-    private static final int DELAY = 4;
-    private final Timer animator = new Timer(DELAY, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            double height = (double) textArea.getPreferredSize().height;
-            double a = AnimationUtil.easeInOut(count / height);
-            count += direction;
-            txah = (int) (.5 + a * height);
-            textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-            if (direction > 0) { //show
-                if (txah >= textArea.getPreferredSize().height) {
-                    txah = textArea.getPreferredSize().height;
-                    animator.stop();
-                }
-            } else { //hide
-                if (txah <= 0) {
-                    txah = 0;
-                    animator.stop();
-                }
-            }
-            JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
-            p.revalidate();
-            p.repaint();
-        }
-    });
+    private final Timer animator = new Timer(5, e -> updateTextAreaLocation());
     private final JComponent textArea;
     private int txah;
     private int count;
@@ -146,6 +123,27 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     protected LabelHandler(JComponent textArea) {
         super();
         this.textArea = textArea;
+    }
+    private void updateTextAreaLocation() {
+        double height = (double) textArea.getPreferredSize().height;
+        double a = AnimationUtil.easeInOut(count / height);
+        count += direction;
+        txah = (int) (.5 + a * height);
+        textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+        if (direction > 0) { //show
+            if (txah >= textArea.getPreferredSize().height) {
+                txah = textArea.getPreferredSize().height;
+                animator.stop();
+            }
+        } else { //hide
+            if (txah <= 0) {
+                txah = 0;
+                animator.stop();
+            }
+        }
+        JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
+        p.revalidate();
+        p.repaint();
     }
     public int getTextAreaHeight() {
         return txah;

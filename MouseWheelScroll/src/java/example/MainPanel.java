@@ -61,17 +61,15 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (r2.isSelected()) {
-                    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-                    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                } else {
-                    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                    scroll.setVerticalScrollBar(r0.isSelected() ? vsb : vBar);
-                    scroll.setHorizontalScrollBar(r0.isSelected() ? hsb : hBar);
-                }
+        ActionListener al = e -> {
+            if (r2.isSelected()) {
+                scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+                scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            } else {
+                scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                scroll.setVerticalScrollBar(r0.isSelected() ? vsb : vBar);
+                scroll.setHorizontalScrollBar(r0.isSelected() ? hsb : hBar);
             }
         };
         ButtonGroup bg = new ButtonGroup();

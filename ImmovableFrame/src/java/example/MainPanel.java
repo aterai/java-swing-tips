@@ -54,13 +54,11 @@ public final class MainPanel extends JPanel {
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
-        menuItem.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame frame = createInternalFrame();
-                desktop.add(frame);
-                frame.setVisible(true);
-                //desktop.getDesktopManager().activateFrame(frame);
-            }
+        menuItem.addActionListener(e -> {
+            JInternalFrame frame = createInternalFrame();
+            desktop.add(frame);
+            frame.setVisible(true);
+            //desktop.getDesktopManager().activateFrame(frame);
         });
         menu.add(menuItem);
         return menuBar;

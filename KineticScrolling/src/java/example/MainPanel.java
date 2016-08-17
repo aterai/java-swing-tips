@@ -9,7 +9,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     private final JScrollPane scroll = new JScrollPane();
-    private final JViewport viewport; // = scroll.getViewport();
     private final JRadioButton r1 = new JRadioButton("scrollRectToVisible");
     private final JRadioButton r2 = new JRadioButton("setViewPosition");
 
@@ -19,7 +18,7 @@ public final class MainPanel extends JPanel {
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         //JDK 1.7.0
-        viewport = new JViewport() {
+        JViewport viewport = new JViewport() {
             private boolean flag;
             @Override public void revalidate() {
                 if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
@@ -41,26 +40,24 @@ public final class MainPanel extends JPanel {
 
         JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         viewport.add(label);
-        final KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
-        final KineticScrollingListener2 l2 = new KineticScrollingListener2(label);
+        KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
+        KineticScrollingListener2 l2 = new KineticScrollingListener2(label);
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == r1) {
-                    viewport.removeMouseListener(l2);
-                    viewport.removeMouseMotionListener(l2);
-                    viewport.removeHierarchyListener(l2);
-                    viewport.addMouseMotionListener(l1);
-                    viewport.addMouseListener(l1);
-                    viewport.addHierarchyListener(l1);
-                } else {
-                    viewport.removeMouseListener(l1);
-                    viewport.removeMouseMotionListener(l1);
-                    viewport.removeHierarchyListener(l1);
-                    viewport.addMouseMotionListener(l2);
-                    viewport.addMouseListener(l2);
-                    viewport.addHierarchyListener(l2);
-                }
+        ActionListener al = e -> {
+            if (e.getSource() == r1) {
+                viewport.removeMouseListener(l2);
+                viewport.removeMouseMotionListener(l2);
+                viewport.removeHierarchyListener(l2);
+                viewport.addMouseMotionListener(l1);
+                viewport.addMouseListener(l1);
+                viewport.addHierarchyListener(l1);
+            } else {
+                viewport.removeMouseListener(l1);
+                viewport.removeMouseMotionListener(l1);
+                viewport.removeHierarchyListener(l1);
+                viewport.addMouseMotionListener(l2);
+                viewport.addMouseListener(l2);
+                viewport.addHierarchyListener(l2);
             }
         };
         Box box = Box.createHorizontalBox();
