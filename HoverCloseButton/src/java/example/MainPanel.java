@@ -127,15 +127,13 @@ class TabPanel extends JPanel {
         label.setText(title);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
 
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int idx = pane.indexOfComponent(content);
-                pane.removeTabAt(idx);
-                int count = pane.getTabCount();
-                if (count > idx) {
-                    TabPanel tab = (TabPanel) pane.getTabComponentAt(idx);
-                    tab.setButtonVisible(true);
-                }
+        button.addActionListener(e -> {
+            int idx = pane.indexOfComponent(content);
+            pane.removeTabAt(idx);
+            int count = pane.getTabCount();
+            if (count > idx) {
+                TabPanel tab = (TabPanel) pane.getTabComponentAt(idx);
+                tab.setButtonVisible(true);
             }
         });
         add(label);

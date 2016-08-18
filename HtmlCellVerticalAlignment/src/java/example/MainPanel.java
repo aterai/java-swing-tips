@@ -38,20 +38,18 @@ public class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(16);
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                TableCellRenderer r = table.getDefaultRenderer(String.class);
-                if (r instanceof JLabel) {
-                    JLabel label = (JLabel) r;
-                    if (topRadio.isSelected()) {
-                        label.setVerticalAlignment(SwingConstants.TOP);
-                    } else if (bottomRadio.isSelected()) {
-                        label.setVerticalAlignment(SwingConstants.BOTTOM);
-                    } else {
-                        label.setVerticalAlignment(SwingConstants.CENTER);
-                    }
-                    table.repaint();
+        ActionListener al = e -> {
+            TableCellRenderer r = table.getDefaultRenderer(String.class);
+            if (r instanceof JLabel) {
+                JLabel label = (JLabel) r;
+                if (topRadio.isSelected()) {
+                    label.setVerticalAlignment(SwingConstants.TOP);
+                } else if (bottomRadio.isSelected()) {
+                    label.setVerticalAlignment(SwingConstants.BOTTOM);
+                } else {
+                    label.setVerticalAlignment(SwingConstants.CENTER);
                 }
+                table.repaint();
             }
         };
         ButtonGroup bg = new ButtonGroup();
