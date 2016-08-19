@@ -44,13 +44,11 @@ public final class MainPanel extends JPanel {
 
         add(scrollPane);
         JCheckBox check = new JCheckBox("JTableHeader visible: ", true);
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                //table.getTableHeader().setVisible(cb.isSelected());
-                scrollPane.getColumnHeader().setVisible(cb.isSelected());
-                scrollPane.revalidate();
-            }
+        check.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            //table.getTableHeader().setVisible(cb.isSelected());
+            scrollPane.getColumnHeader().setVisible(cb.isSelected());
+            scrollPane.revalidate();
         });
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

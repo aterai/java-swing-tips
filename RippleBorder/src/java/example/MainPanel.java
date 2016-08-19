@@ -59,11 +59,9 @@ class RippleBorder extends EmptyBorder {
     protected RippleBorder(JComponent c, int width) {
         super(width, width, width, width);
         this.comp = c;
-        animator = new Timer(80, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                comp.repaint();
-                count += .9f;
-            }
+        animator = new Timer(80, e -> {
+            comp.repaint();
+            count += .9f;
         });
         comp.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
