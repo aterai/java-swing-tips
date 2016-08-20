@@ -37,21 +37,16 @@ public final class MainPanel extends JPanel {
         editorPane.setEditorKit(new NoWrapEditorKit2());
 //*/
 
-        ActionListener longTextListener = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                final JComponent c = (JComponent) e.getSource();
-                threadPool.execute(new Runnable() {
-                    @Override public void run() {
-                        if (Objects.nonNull(text)) {
-                            if (c.equals(editorPaneButton)) {
-                                editorPane.setText(text);
-                            } else {
-                                textArea.setText(text);
-                            }
-                        }
+        ActionListener longTextListener = e -> {
+            threadPool.execute(() -> {
+                if (Objects.nonNull(text)) {
+                    if (editorPaneButton.equals(e.getSource())) {
+                        editorPane.setText(text);
+                    } else {
+                        textArea.setText(text);
                     }
-                });
-            }
+                }
+            });
         };
         editorPaneButton.addActionListener(longTextListener);
         textAreaButton.addActionListener(longTextListener);
