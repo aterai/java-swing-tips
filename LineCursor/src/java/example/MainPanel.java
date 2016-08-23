@@ -10,14 +10,14 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\naaaaaaaaaaafasdfas");
+    private final JCheckBox check = new JCheckBox("LineWrap");
     public MainPanel() {
         super(new BorderLayout());
-        add(new JCheckBox(new AbstractAction("LineWrap") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected());
-                textArea.requestFocusInWindow();
-            }
-        }), BorderLayout.NORTH);
+        check.addActionListener(e -> {
+            textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected());
+            textArea.requestFocusInWindow();
+        });
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -67,7 +67,7 @@ class LineCursorTextArea extends JTextArea {
     }
     @Override public void updateUI() {
         super.updateUI();
-        DefaultCaret caret = new DefaultCaret() {
+        Caret caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
                 if (Objects.nonNull(r)) {
                     JTextComponent c = getComponent();

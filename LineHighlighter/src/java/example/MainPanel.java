@@ -16,11 +16,9 @@ public final class MainPanel extends JPanel {
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         textArea.setText("Highlight Cursor Test\n\naaaaaaaaaaaasdfasdfasdfasdfsadffasdfas");
 
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setLineWrap(check.isSelected());
-                textArea.requestFocusInWindow();
-            }
+        check.addActionListener(e -> {
+            textArea.setLineWrap(check.isSelected());
+            textArea.requestFocusInWindow();
         });
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.getViewport().setBackground(Color.WHITE);
@@ -57,7 +55,7 @@ class HighlightCursorTextArea extends JTextArea {
     @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
-        DefaultCaret caret = new DefaultCaret() {
+        Caret caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
                 if (Objects.nonNull(r)) {
                     JTextComponent c = getComponent();

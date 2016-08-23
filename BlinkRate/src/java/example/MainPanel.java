@@ -11,10 +11,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(2, 1));
 
         JTextField textField = new JTextField();
-//         textField.setCaret(new DefaultCaret() {
-//             @Override public void paint(Graphics g) {}
-//         });
-        ((DefaultCaret) textField.getCaret()).setBlinkRate(0);
+        textField.getCaret().setBlinkRate(0);
 
         add(makeTitlePanel(new JTextField(), "default"));
         add(makeTitlePanel(textField, "DefaultCaret#setBlinkRate(0)"));
