@@ -42,17 +42,15 @@ public final class MainPanel extends JPanel {
     //         doc.setLogicalStyle(0, style);
     //         textpane.setDocument(doc);
 
-//     private static Font makeFont(URL url) {
+//     private static Font makeFontOld(URL url) {
 //         Font font = null;
 //         InputStream is = null;
 //         try {
 //             is = url.openStream();
 //             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
 //             is.close();
-//         } catch (IOException ioe) {
-//             ioe.printStackTrace();
-//         } catch (FontFormatException ffe) {
-//             ffe.printStackTrace();
+//         } catch (IOException | FontFormatException ex) {
+//             ex.printStackTrace();
 //         } finally {
 //             if (is != null) {
 //                 try {

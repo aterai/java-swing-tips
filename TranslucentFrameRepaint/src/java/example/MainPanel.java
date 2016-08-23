@@ -166,9 +166,9 @@ final class TextureUtil {
         try {
             //http://www.viva-edo.com/komon/edokomon.html
             bi = ImageIO.read(TextureUtil.class.getResource("unkaku_w.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException(ex);
         }
         return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }

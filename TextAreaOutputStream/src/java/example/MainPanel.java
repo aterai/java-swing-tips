@@ -333,8 +333,8 @@ class TextAreaHandler extends StreamHandler {
 //                     displayPane.append(line + "\n");
 //                     displayPane.setCaretPosition(displayPane.getDocument().getLength());
 //                 }
-//             } catch (IOException ioe) {
-//                 //JOptionPane.showMessageDialog(null, "Error redirecting output : " + ioe.getMessage());
+//             } catch (IOException ex) {
+//                 //JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
 //             }
 //         }
 //     }).start();

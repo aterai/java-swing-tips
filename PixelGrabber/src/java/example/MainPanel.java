@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
         BufferedImage image;
         try {
             image = ImageIO.read(getClass().getResource("screenshot.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             return;
         }
 
@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
 
 //         try {
 //             ImageIO.write(bi, "png", File.createTempFile("screenshot", ".png"));
-//         } catch (IOException ioe) {
-//             ioe.printStackTrace();
+//         } catch (IOException ex) {
+//             ex.printStackTrace();
 //         }
 
         p.add(new JLabel(new ImageIcon(image)), "original");

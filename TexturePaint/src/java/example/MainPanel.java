@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(getClass().getResource("16x16.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException(ex);
         }
         texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
 

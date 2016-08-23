@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
                     } else {
                         System.out.println("the named file already exists.");
                     }
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                    Object[] obj = {ioe.getMessage()};
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    Object[] obj = {ex.getMessage()};
                     JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
 //                 JFileChooser fileChooser = new JFileChooser();
@@ -34,8 +34,8 @@ public final class MainPanel extends JPanel {
 //                     try {
 //                         file.createNewFile();
 //                         file.deleteOnExit();
-//                     } catch (IOException ioe) {
-//                         ioe.printStackTrace();
+//                     } catch (IOException ex) {
+//                         ex.printStackTrace();
 //                     }
 //                 }
             }
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
             if (file.getCanonicalPath() == null) {
                 return false;
             }
-        } catch (IOException ioe) {
+        } catch (IOException ex) {
             return false;
         }
         return true;

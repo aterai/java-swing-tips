@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
 //         BufferedImage image;
 //         try {
 //             image = ImageIO.read(getClass().getResource(str));
-//         } catch (IOException ioe) {
-//             ioe.printStackTrace();
+//         } catch (IOException ex) {
+//             ex.printStackTrace();
 //             return null;
 //         }
 //         return image;

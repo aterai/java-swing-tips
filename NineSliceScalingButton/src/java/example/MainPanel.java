@@ -18,8 +18,8 @@ public final class MainPanel extends JPanel {
             //symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
             //http://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
             bi = ImageIO.read(getClass().getResource("symbol_scale_2.jpg"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
         JButton b1 = new ScalingButton("Scaling", bi);
@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
 
         try {
             bi = ImageIO.read(getClass().getResource("blue.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
         b3.setContentAreaFilled(false);

@@ -63,19 +63,17 @@ public final class MainPanel extends JPanel {
         add(field2, c);
     }
     private TexturePaint makeTexturePaint() {
-        //Viva! edo>http://www.viva-edo.com/komon/edokomon.html
+        //Viva! edo > http://www.viva-edo.com/komon/edokomon.html
         URL url = getClass().getResource("unkaku_w.gif");
-        BufferedImage bfimage = null;
+        BufferedImage bi = null;
         try {
-            bfimage = ImageIO.read(url);
-            //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
+            bi = ImageIO.read(url);
+            //bi = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException(ex);
         }
-        int w = bfimage.getWidth();
-        int h = bfimage.getHeight();
-        return new TexturePaint(bfimage, new Rectangle(w, h));
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

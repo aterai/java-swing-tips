@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
         BufferedImage img = null;
         try {
             img = ImageIO.read(url);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return img;
     }

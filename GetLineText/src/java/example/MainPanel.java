@@ -56,8 +56,8 @@ public final class MainPanel extends JPanel {
 //                         count++;
 //                     }
 //                 }
-//             } catch (java.io.IOException ioe) {
-//                 ioe.printStackTrace();
+//             } catch (java.io.IOException ex) {
+//                 ex.printStackTrace();
 //             }
 //             //<<<< LineNumberReader
 //

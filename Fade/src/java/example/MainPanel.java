@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
         URL url = getClass().getResource("test.png");
         try {
             icon = ImageIO.read(url);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         FadeImage fade = new FadeImage();
         animator = new Timer(25, fade);

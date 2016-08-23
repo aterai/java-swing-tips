@@ -137,8 +137,8 @@ final class ImageUtil {
         BufferedImage image;
         try {
             image = ImageIO.read(url);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);

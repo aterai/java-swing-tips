@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
 //                 FileWriter w = new FileWriter(outfile);
 //                 w.writeData(textArea.getText());
 //                 //outfile.deleteOnExit();
-//             } catch (IOException ioe) {
+//             } catch (IOException ex) {
 //                 Toolkit.getDefaultToolkit().beep();
 //                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
 //                 return;
