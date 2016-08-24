@@ -12,9 +12,9 @@ public class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     public MainPanel() {
         super(new BorderLayout());
-        desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), new JScrollPane(makeTextArea(false))));
-        desktop.add(makeInternalFrame("FocusCaret",   new Point(50, 50), new JScrollPane(makeTextArea(true))));
-        desktop.add(makeInternalFrame("FocusCaret",   new Point(90, 90), new JScrollPane(makeTextArea(true))));
+        desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), makeTextArea(false)));
+        desktop.add(makeInternalFrame("FocusCaret",   new Point(50, 50), makeTextArea(true)));
+        desktop.add(makeInternalFrame("FocusCaret",   new Point(90, 90), makeTextArea(true)));
         EventQueue.invokeLater(() -> {
             for (JInternalFrame f: desktop.getAllFrames()) {
                 f.setVisible(true);
@@ -32,8 +32,8 @@ public class MainPanel extends JPanel {
         return f;
     }
 
-    private static JComponent makeTextArea(final boolean flag) {
-        final JTextArea textArea = new JTextArea() {
+    private static JComponent makeTextArea(boolean flag) {
+        JTextArea textArea = new JTextArea() {
             @Override public void updateUI() {
                 setCaret(null);
                 super.updateUI();
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         };
         textArea.setText("aaa\nbbbbbb\ncccccccccccc\n");
         textArea.selectAll();
-        return textArea;
+        return new JScrollPane(textArea);
     }
 
     public static void main(String... args) {

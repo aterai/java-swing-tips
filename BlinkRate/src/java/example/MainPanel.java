@@ -13,8 +13,8 @@ public final class MainPanel extends JPanel {
         JTextField textField = new JTextField();
         textField.getCaret().setBlinkRate(0);
 
-        add(makeTitlePanel(new JTextField(), "default"));
-        add(makeTitlePanel(textField, "DefaultCaret#setBlinkRate(0)"));
+        add(makeTitlePanel(new JTextField(), "Default"));
+        add(makeTitlePanel(textField, "Caret#setBlinkRate(0)"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
