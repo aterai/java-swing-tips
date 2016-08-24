@@ -70,15 +70,13 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     protected AnimeListCellRenderer(JList l) {
         super(new BorderLayout());
         this.list = l;
-        animator = new Timer(80, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int i = list.getSelectedIndex();
-                if (i >= 0) {
-                    isRunning = true;
-                    list.repaint(list.getCellBounds(i, i));
-                } else {
-                    isRunning = false;
-                }
+        animator = new Timer(80, e -> {
+            int i = list.getSelectedIndex();
+            if (i >= 0) {
+                isRunning = true;
+                list.repaint(list.getCellBounds(i, i));
+            } else {
+                isRunning = false;
             }
         });
         setOpaque(true);
