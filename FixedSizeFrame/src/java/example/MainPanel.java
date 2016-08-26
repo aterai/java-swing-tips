@@ -10,12 +10,10 @@ public final class MainPanel extends JPanel {
     private final JCheckBox checkbox = new JCheckBox("setResizable:", true);
     public MainPanel() {
         super(new BorderLayout());
-        checkbox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Container c = getTopLevelAncestor();
-                if (c instanceof JFrame) {
-                    ((JFrame) c).setResizable(checkbox.isSelected());
-                }
+        checkbox.addActionListener(e -> {
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                ((JFrame) c).setResizable(checkbox.isSelected());
             }
         });
         JPanel p = new JPanel();

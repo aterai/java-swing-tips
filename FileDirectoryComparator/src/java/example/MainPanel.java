@@ -36,25 +36,23 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        final ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                RowSorter<? extends TableModel> rs = table.getRowSorter();
-                if (rs instanceof TableRowSorter) {
-                    TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
-                    Object source = e.getSource();
-                    if (source.equals(check2)) {
-                        sorter.setComparator(0, new FileComparator(0));
-                        sorter.setComparator(1, new FileComparator(1));
-                        sorter.setComparator(2, new FileComparator(2));
-                    } else if (source.equals(check3)) {
-                        sorter.setComparator(0, new FileGroupComparator(table, 0));
-                        sorter.setComparator(1, new FileGroupComparator(table, 1));
-                        sorter.setComparator(2, new FileGroupComparator(table, 2));
-                    } else {
-                        sorter.setComparator(0, new DefaultFileComparator(0));
-                        sorter.setComparator(1, new DefaultFileComparator(1));
-                        sorter.setComparator(2, new DefaultFileComparator(2));
-                    }
+        ActionListener al = e -> {
+            RowSorter<? extends TableModel> rs = table.getRowSorter();
+            if (rs instanceof TableRowSorter) {
+                TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
+                Object source = e.getSource();
+                if (source.equals(check2)) {
+                    sorter.setComparator(0, new FileComparator(0));
+                    sorter.setComparator(1, new FileComparator(1));
+                    sorter.setComparator(2, new FileComparator(2));
+                } else if (source.equals(check3)) {
+                    sorter.setComparator(0, new FileGroupComparator(table, 0));
+                    sorter.setComparator(1, new FileGroupComparator(table, 1));
+                    sorter.setComparator(2, new FileGroupComparator(table, 2));
+                } else {
+                    sorter.setComparator(0, new DefaultFileComparator(0));
+                    sorter.setComparator(1, new DefaultFileComparator(1));
+                    sorter.setComparator(2, new DefaultFileComparator(2));
                 }
             }
         };
