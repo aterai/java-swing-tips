@@ -11,37 +11,29 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
-    private final Timer timer = new Timer(200, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            String s = new Date().toString();
-            textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
-        }
+    private final Timer timer = new Timer(200, e -> {
+        String s = new Date().toString();
+        textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
     });
-    private final JButton start = new JButton(new AbstractAction("Start") {
-        @Override public void actionPerformed(ActionEvent e) {
+
+    public MainPanel() {
+        super(new BorderLayout());
+        //TEST: ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FIFODocumentFilter());
+        textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
+        textArea.setEditable(false);
+
+        JButton start = new JButton("Start");
+        start.addActionListener(e -> {
             if (!timer.isRunning()) {
                 timer.start();
             }
-        }
-    });
-    private final JButton stop = new JButton(new AbstractAction("Stop") {
-        @Override public void actionPerformed(ActionEvent e) {
-            timer.stop();
-        }
-    });
-    private final JButton clr = new JButton(new AbstractAction("Clear") {
-        @Override public void actionPerformed(ActionEvent e) {
-            textArea.setText("");
-        }
-    });
-    public MainPanel() {
-        super(new BorderLayout());
-        /* //TEST
-        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FIFODocumentFilter());
-        /*/
-        textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
-        //*/
-        textArea.setEditable(false);
+        });
+
+        JButton stop  = new JButton("Stop");
+        stop.addActionListener(e -> timer.stop());
+
+        JButton clear = new JButton("Clear");
+        clear.addActionListener(e -> textArea.setText(""));
 
         addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
@@ -54,7 +46,7 @@ public final class MainPanel extends JPanel {
         box.add(start);
         box.add(stop);
         box.add(Box.createHorizontalStrut(5));
-        box.add(clr);
+        box.add(clear);
 
         add(new JScrollPane(textArea));
         add(box, BorderLayout.SOUTH);
