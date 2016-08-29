@@ -17,16 +17,14 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton rb = (JRadioButton) e.getSource();
-                if (rb.equals(r2)) {
-                    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-                } else if (rb.equals(r1)) {
-                    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-                } else {
-                    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-                }
+        ActionListener al = e -> {
+            JRadioButton rb = (JRadioButton) e.getSource();
+            if (rb.equals(r2)) {
+                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+            } else if (rb.equals(r1)) {
+                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+            } else {
+                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             }
         };
         r0.setSelected(true);

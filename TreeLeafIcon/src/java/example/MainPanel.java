@@ -20,35 +20,31 @@ public final class MainPanel extends JPanel {
             tree.expandRow(i);
         }
 
-        DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
-        r.setOpenIcon(null);
-        r.setClosedIcon(null);
-        r.setLeafIcon(null);
+        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
+        renderer.setOpenIcon(null);
+        renderer.setClosedIcon(null);
+        renderer.setLeafIcon(null);
         allNodesChanged(tree);
 
-        folderCheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    r.setOpenIcon(r.getDefaultOpenIcon());
-                    r.setClosedIcon(r.getDefaultClosedIcon());
-                } else {
-                    r.setOpenIcon(null);
-                    r.setClosedIcon(null);
-                }
-                allNodesChanged(tree);
+        folderCheck.addActionListener(e -> {
+            DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                r.setOpenIcon(r.getDefaultOpenIcon());
+                r.setClosedIcon(r.getDefaultClosedIcon());
+            } else {
+                r.setOpenIcon(null);
+                r.setClosedIcon(null);
             }
+            allNodesChanged(tree);
         });
-        leafCheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    r.setLeafIcon(r.getDefaultLeafIcon());
-                } else {
-                    r.setLeafIcon(null);
-                }
-                allNodesChanged(tree);
+        leafCheck.addActionListener(e -> {
+            DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                r.setLeafIcon(r.getDefaultLeafIcon());
+            } else {
+                r.setLeafIcon(null);
             }
+            allNodesChanged(tree);
         });
 
 //         tree.setCellRenderer(new DefaultTreeCellRenderer() {
