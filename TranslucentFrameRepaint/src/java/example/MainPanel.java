@@ -17,13 +17,11 @@ public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
     private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
-    private final Timer timer = new Timer(1000, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            label.setText(df.format(new Date()));
-            Container parent = SwingUtilities.getUnwrappedParent(label);
-            if (Objects.nonNull(parent) && parent.isOpaque()) {
-                repaintWindowAncestor(label);
-            }
+    private final Timer timer = new Timer(1000, e -> {
+        label.setText(df.format(new Date()));
+        Container parent = SwingUtilities.getUnwrappedParent(label);
+        if (Objects.nonNull(parent) && parent.isOpaque()) {
+            repaintWindowAncestor(label);
         }
     });
     private final TexturePanel tp;

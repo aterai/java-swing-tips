@@ -44,30 +44,7 @@ public final class MainPanel extends JPanel {
 
 class LabelWithToolBox extends JLabel {
     private static final int DELAY = 8;
-    private final Timer animator = new Timer(DELAY, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            int height = toolBox.getPreferredSize().height;
-            double h = (double) height;
-            if (isHidden) {
-                double a = AnimationUtil.easeInOut(++counter / h);
-                yy = (int) (.5 + a * h);
-                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-                if (yy >= height) {
-                    yy = height;
-                    animator.stop();
-                }
-            } else {
-                double a = AnimationUtil.easeInOut(--counter / h);
-                yy = (int) (.5 + a * h);
-                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-                if (yy <= 0) {
-                    yy = 0;
-                    animator.stop();
-                }
-            }
-            toolBox.revalidate();
-        }
-    });
+    private final Timer animator = new Timer(DELAY, null);
     private transient ToolBoxHandler handler;
     private boolean isHidden;
     private int counter;
@@ -96,6 +73,28 @@ class LabelWithToolBox extends JLabel {
     protected LabelWithToolBox(Icon image) {
         super(image);
 
+        animator.addActionListener(e -> {
+            int height = toolBox.getPreferredSize().height;
+            double h = (double) height;
+            if (isHidden) {
+                double a = AnimationUtil.easeInOut(++counter / h);
+                yy = (int) (.5 + a * h);
+                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                if (yy >= height) {
+                    yy = height;
+                    animator.stop();
+                }
+            } else {
+                double a = AnimationUtil.easeInOut(--counter / h);
+                yy = (int) (.5 + a * h);
+                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                if (yy <= 0) {
+                    yy = 0;
+                    animator.stop();
+                }
+            }
+            toolBox.revalidate();
+        });
         //toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
         toolBox.add(Box.createGlue());
         //http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
