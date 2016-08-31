@@ -61,10 +61,10 @@ public class MainPanel extends JPanel {
 
     @Override public void updateUI() {
         super.updateUI();
-        if (dfbaiCheck != null) {
+        if (Objects.nonNull(dfbaiCheck)) {
             dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
         }
-        if (ddfiCheck != null) {
+        if (Objects.nonNull(ddfiCheck)) {
             ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
         }
     }
