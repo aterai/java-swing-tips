@@ -188,7 +188,7 @@ class Task extends SwingWorker<Integer, Integer> {
             current++;
             try {
                 Thread.sleep(sleepDummy);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 break;
             }
             publish(100 * current / lengthOfTask);

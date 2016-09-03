@@ -230,9 +230,9 @@ public final class MainPanel extends JPanel {
 //         try {
 //             scount = 0;
 //             recursiveSearch(dir, list);
-//         } catch (InterruptedException ie) {
+//         } catch (InterruptedException ex) {
 //             //recursiveSearch(dir.toPath(), list);
-//             //} catch (Exception ie) {
+//             //} catch (Exception ex) {
 //             publish(new Message("The search was canceled", true));
 //             return "Interrupted1";
 //         }
@@ -255,7 +255,7 @@ public final class MainPanel extends JPanel {
 //                 current++;
 //                 publish(new Message(current + "/" + lengthOfTask + ", " + file.getAbsolutePath(), true));
 //             }
-//         } catch (InterruptedException ie) {
+//         } catch (InterruptedException ex) {
 //             return "Interrupted";
 //         }
 //         return "Done";
@@ -316,7 +316,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
                 current++;
                 publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
             }
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ex) {
             return "Interrupted";
         }
         return "Done";

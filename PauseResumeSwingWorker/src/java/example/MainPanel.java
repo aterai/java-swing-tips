@@ -228,7 +228,7 @@ class Task extends SwingWorker<String, Progress> {
             publish(new Progress(Component.LOG, "*"));
             try {
                 convertFileToSomething();
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 return "Interrupted";
             }
             publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
@@ -245,7 +245,7 @@ class Task extends SwingWorker<String, Progress> {
             if (isPaused) {
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ex) {
                     return;
                 }
                 publish(new Progress(Component.PAUSE, blinking));
@@ -312,7 +312,7 @@ class Task extends SwingWorker<String, Progress> {
 //                         }
 //                         try {
 //                             convertFileToSomething();
-//                         } catch (InterruptedException ie) {
+//                         } catch (InterruptedException ex) {
 //                             return "Interrupted";
 //                         }
 //                         publish("*");

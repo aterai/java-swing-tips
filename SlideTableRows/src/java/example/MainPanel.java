@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
 //                 while (current > START_HEIGHT && !isCancelled()) {
 //                     try {
 //                         Thread.sleep(DELAY);
-//                     } catch (InterruptedException ie) {
+//                     } catch (InterruptedException ex) {
 //                         return null;
 //                     }
 //                     publish(current--);

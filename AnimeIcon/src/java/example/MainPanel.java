@@ -144,7 +144,7 @@ class Task extends SwingWorker<String, String> {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ex) {
             if (isCancelled()) {
                 cancel(true);
             }
@@ -157,7 +157,7 @@ class Task extends SwingWorker<String, String> {
         while (current < lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 return "Interrupted";
             }
             publish(".");

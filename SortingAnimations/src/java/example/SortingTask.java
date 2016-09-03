@@ -59,7 +59,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
               default:
                 throw new AssertionError("Unknown SortAlgorithms");
             }
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ex) {
             return "Interrupted";
         }
         return "Done";

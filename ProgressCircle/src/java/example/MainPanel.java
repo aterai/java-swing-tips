@@ -147,7 +147,7 @@ class Task extends SwingWorker<String, Void> {
         while (current <= lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(rnd.nextInt(50) + 1);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);

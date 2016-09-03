@@ -145,7 +145,7 @@ class Task extends SwingWorker<String, String> {
             if (current % 10 == 0) {
                 try {
                     Thread.sleep(5);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ex) {
                     return "Interrupted";
                 }
             }

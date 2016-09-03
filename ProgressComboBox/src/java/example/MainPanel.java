@@ -147,7 +147,7 @@ class Task extends SwingWorker<String[], Integer> {
                 publish(iv);
                 //setProgress(iv);
                 list.add("Test: " + current);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 break;
             }
             current++;

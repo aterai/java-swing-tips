@@ -125,7 +125,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         while (current <= lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(sleepDummy);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 break;
             }
             publish(100 * current++ / lengthOfTask);

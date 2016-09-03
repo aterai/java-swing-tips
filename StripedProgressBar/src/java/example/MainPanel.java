@@ -169,7 +169,7 @@ class Task extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         try { // dummy task
             Thread.sleep(5000);
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ex) {
             return "Interrupted";
         }
         int current = 0;
@@ -177,7 +177,7 @@ class Task extends SwingWorker<String, Void> {
         while (current <= lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(50);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);

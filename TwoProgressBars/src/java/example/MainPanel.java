@@ -158,7 +158,7 @@ class Task extends SwingWorker<String, Progress> {
         while (current < lengthOfTask && !isCancelled()) {
             try {
                 convertFileToSomething();
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ex) {
                 return "Interrupted";
             }
             publish(new Progress(Component.LOG, "*"));
@@ -232,7 +232,7 @@ class Task extends SwingWorker<String, Progress> {
 //                         }
 //                         try {
 //                             convertFileToSomething();
-//                         } catch (InterruptedException ie) {
+//                         } catch (InterruptedException ex) {
 //                             return "Interrupted";
 //                         }
 //                         publish("*");
