@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         c.setCellRenderer(new CheckBoxesRenderer());
         c.setCellEditor(new CheckBoxesEditor());
 
-        final EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
+        EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
         map.put(Permissions.READ,    1 << 2);
         map.put(Permissions.WRITE,   1 << 1);
         map.put(Permissions.EXECUTE, 1 << 0);

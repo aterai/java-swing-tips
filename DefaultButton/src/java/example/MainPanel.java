@@ -32,18 +32,13 @@ public final class MainPanel extends JPanel {
         return box;
     }
     private Box makeRadioPane() {
-        final ButtonGroup bg = new ButtonGroup();
-        final Box box = Box.createHorizontalBox();
-        final HashMap<String, JButton> map = new HashMap<>();
+        ButtonGroup bg = new ButtonGroup();
+        Box box = Box.createHorizontalBox();
+        HashMap<String, JButton> map = new HashMap<>();
         map.put("null",    null);
         map.put("Button1", b1);
         map.put("Button2", b2);
-        ActionListener al = e -> {
-            JRootPane rootPane = box.getRootPane();
-            if (Objects.nonNull(rootPane)) {
-                rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
-            }
-        };
+        ActionListener al = e -> Optional.ofNullable(box.getRootPane()).ifPresent(r -> r.setDefaultButton(map.get(bg.getSelection().getActionCommand())));
         for (String key: map.keySet()) {
             JRadioButton r = new JRadioButton(key);
             r.setActionCommand(key);
@@ -56,7 +51,6 @@ public final class MainPanel extends JPanel {
         bg.getElements().nextElement().setSelected(true);
         return box;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
