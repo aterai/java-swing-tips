@@ -5,7 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
+import java.util.List;
 import java.util.regex.*;
+import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -64,31 +66,27 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private Optional<Pattern> getPattern() {
-        String pattern = field.getText();
-        if (Objects.isNull(pattern) || pattern.isEmpty()) {
-            return Optional.empty();
-        }
         try {
-            return Optional.of(Pattern.compile(pattern));
+            return Optional.ofNullable(field.getText()).filter(s -> !s.isEmpty()).map(Pattern::compile);
         } catch (PatternSyntaxException ex) {
             return Optional.empty();
         }
     }
     private void filter() {
         getPattern().ifPresent(pattern -> {
-            for (ListItem item: defaultModel) {
-                if (pattern.matcher(item.title).find()) {
-                    if (!model.contains(item)) {
-                        model.addElement(item);
-                    }
-                } else {
-                    model.removeElement(item);
-                }
+            List<ListItem> selected = list.getSelectedValuesList();
+            model.clear();
+            Stream.of(defaultModel).filter(item -> pattern.matcher(item.title).find()).forEach(model::addElement);
+//             for (ListItem item: defaultModel) {
 //                 if (!pattern.matcher(item.title).find()) {
 //                     model.removeElement(item);
 //                 } else if (!model.contains(item)) {
 //                     model.addElement(item);
 //                 }
+//             }
+            for (ListItem item: selected) {
+                int i = model.indexOf(item);
+                list.addSelectionInterval(i, i);
             }
         });
     }

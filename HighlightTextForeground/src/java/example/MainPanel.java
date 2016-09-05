@@ -95,19 +95,19 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    private Pattern getPattern() {
+    private Optional<Pattern> getPattern() {
         String text = field.getText();
         if (Objects.isNull(text) || text.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
+        String cw = checkWord.isSelected() ? "\\b" : "";
+        String pattern = String.format("%s%s%s", cw, text, cw);
+        int flags = checkCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
         try {
-            String cw = checkWord.isSelected() ? "\\b" : "";
-            String pattern = String.format("%s%s%s", cw, text, cw);
-            int flags = checkCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-            return Pattern.compile(pattern, flags);
+            return Optional.of(Pattern.compile(pattern, flags));
         } catch (PatternSyntaxException ex) {
             field.setBackground(WARNING_COLOR);
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -126,9 +126,8 @@ public final class MainPanel extends JPanel {
         //doc.setCharacterAttributes(0, doc.getLength(), def, true);
 
         //match highlighting:
-        try {
-            Pattern pattern = getPattern();
-            if (Objects.nonNull(pattern)) {
+        getPattern().ifPresent(pattern -> {
+            try {
                 Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
                 int pos = 0;
                 while (matcher.find(pos)) {
@@ -138,26 +137,31 @@ public final class MainPanel extends JPanel {
                     //doc.setCharacterAttributes(start, end - start, red, true);
                     pos = end;
                 }
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
             }
-            JLabel label = layerUI.hint;
-            Highlighter.Highlight[] array = highlighter.getHighlights();
-            int hits = array.length;
-            if (hits == 0) {
-                current = -1;
-                label.setOpaque(true);
-            } else {
-                current = (current + hits) % hits;
-                label.setOpaque(false);
-                Highlighter.Highlight hh = highlighter.getHighlights()[current];
-                highlighter.removeHighlight(hh);
+        });
+        JLabel label = layerUI.hint;
+        Highlighter.Highlight[] array = highlighter.getHighlights();
+        int hits = array.length;
+        if (hits == 0) {
+            current = -1;
+            label.setOpaque(true);
+        } else {
+            current = (current + hits) % hits;
+            label.setOpaque(false);
+            Highlighter.Highlight hh = highlighter.getHighlights()[current];
+            highlighter.removeHighlight(hh);
+            try {
                 highlighter.addHighlight(hh.getStartOffset(), hh.getEndOffset(), currentPainter);
+
                 doc.setCharacterAttributes(hh.getStartOffset(), hh.getEndOffset() - hh.getStartOffset(), s, true);
                 scrollToCenter(textPane, hh.getStartOffset());
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
             }
-            label.setText(String.format("%02d / %02d%n", current + 1, hits));
-        } catch (BadLocationException ex) {
-            ex.printStackTrace();
         }
+        label.setText(String.format("%02d / %02d%n", current + 1, hits));
         field.repaint();
     }
 
