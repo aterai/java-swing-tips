@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         //UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
         //UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
         ////UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
-        final HashMap<String, Color> map = new HashMap<>();
+        HashMap<String, Color> map = new HashMap<>();
         map.put("TabbedPane.darkShadow",            Color.GRAY);
         map.put("TabbedPane.light",                 Color.GRAY);
         map.put("TabbedPane.tabAreaBackground",     Color.GRAY);
@@ -61,9 +61,9 @@ public final class MainPanel extends JPanel {
         //}
         map.forEach(UIManager::put);
 
-        final JTabbedPane tabs = makeTabbedPane();
-        final JComboBox combo  = makeComboBox(map);
-        final JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
+        JTabbedPane tabs = makeTabbedPane();
+        JComboBox combo  = makeComboBox(map);
+        JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
 
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
@@ -72,11 +72,9 @@ public final class MainPanel extends JPanel {
         p.add(opaque, c);
         p.add(combo,  c);
 
-        opaque.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabs.setOpaque(((JCheckBox) e.getSource()).isSelected());
-                tabs.repaint();
-            }
+        opaque.addActionListener(e -> {
+            tabs.setOpaque(((JCheckBox) e.getSource()).isSelected());
+            tabs.repaint();
         });
         combo.addItemListener(e -> {
             if (e.getStateChange() != ItemEvent.SELECTED) {
@@ -107,7 +105,7 @@ public final class MainPanel extends JPanel {
     }
 
     private static JTabbedPane makeTabbedPane() {
-        final JTabbedPane tabs = new JTabbedPane();
+        JTabbedPane tabs = new JTabbedPane();
         //tabs.setBackground(Color.GREEN);
         tabs.setOpaque(true);
         tabs.addChangeListener(e -> {
@@ -117,7 +115,7 @@ public final class MainPanel extends JPanel {
                 t.setForegroundAt(i, (i == si) ? Color.BLACK : Color.WHITE);
             }
         });
-        tabs.addMouseMotionListener(new MouseMotionAdapter() {
+        tabs.addMouseMotionListener(new MouseAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
                 JTabbedPane t = (JTabbedPane) e.getComponent();
                 int si = t.getSelectedIndex();

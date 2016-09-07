@@ -9,23 +9,30 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        final JTabbedPane jtp = new JTabbedPane();
-        jtp.addTab("11111", new JScrollPane(new JTree()));
-        jtp.addTab("22222", new JScrollPane(new JLabel("asdfasdfsadf")));
-        jtp.addTab("33333", new JScrollPane(new JTree()));
-        jtp.addTab("44444", new JScrollPane(new JLabel("qerwqerqwerqwe")));
-        jtp.addTab("55555", new JScrollPane(new JTree()));
-
-        jtp.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane) e.getComponent();
-                int num = source.indexAtLocation(e.getX(), e.getY());
-                for (int i = 0; i < source.getTabCount(); i++) {
-                    source.setForegroundAt(i, i == num ? Color.GREEN : Color.BLACK);
-                }
+        JTabbedPane tabbedPane = new JTabbedPane() {
+            private transient MouseMotionListener hoverHandler;
+            @Override public void updateUI() {
+                removeMouseMotionListener(hoverHandler);
+                super.updateUI();
+                hoverHandler = new MouseAdapter() {
+                    @Override public void mouseMoved(MouseEvent e) {
+                        JTabbedPane source = (JTabbedPane) e.getComponent();
+                        int num = source.indexAtLocation(e.getX(), e.getY());
+                        for (int i = 0; i < source.getTabCount(); i++) {
+                            source.setForegroundAt(i, i == num ? Color.GREEN : Color.BLACK);
+                        }
+                    }
+                };
+                addMouseMotionListener(hoverHandler);
             }
-        });
-        add(jtp);
+        };
+        tabbedPane.addTab("11111", new JScrollPane(new JTree()));
+        tabbedPane.addTab("22222", new JScrollPane(new JLabel("asdfasdfsadf")));
+        tabbedPane.addTab("33333", new JScrollPane(new JTree()));
+        tabbedPane.addTab("44444", new JScrollPane(new JLabel("qerwqerqwerqwe")));
+        tabbedPane.addTab("55555", new JScrollPane(new JTree()));
+
+        add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
 

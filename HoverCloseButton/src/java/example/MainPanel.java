@@ -77,7 +77,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
         removeMouseMotionListener(hoverHandler);
         super.updateUI();
         //setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        hoverHandler = new MouseMotionAdapter() {
+        hoverHandler = new MouseAdapter() {
             private int prev = -1;
             @Override public void mouseMoved(MouseEvent e) {
                 JTabbedPane source = (JTabbedPane) e.getComponent();
