@@ -94,7 +94,9 @@ class CustomTooltipEditorPane extends JEditorPane {
     //                Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
     //            }
     //            return r1.contains(x, y);
-    //        } catch (BadLocationException ble) {}
+    //        } catch (BadLocationException ex) {
+    //            ex.printStackTrace();
+    //        }
     //    }
     //    return true;
     //}

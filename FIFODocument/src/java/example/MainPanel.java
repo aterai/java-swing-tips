@@ -96,8 +96,8 @@ class FIFODocumentListener implements DocumentListener {
         Element fl = root.getElement(0);
         try {
             doc.remove(0, fl.getEndOffset());
-        } catch (BadLocationException ble) {
-            ble.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
     @Override public void removeUpdate(DocumentEvent e)  { /* not needed */ }

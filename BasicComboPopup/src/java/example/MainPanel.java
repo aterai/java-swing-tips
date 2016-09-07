@@ -55,8 +55,8 @@ public final class MainPanel extends JPanel {
                         }
                         popup.requestFocusInWindow();
                     });
-                } catch (BadLocationException ble) {
-                    ble.printStackTrace();
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

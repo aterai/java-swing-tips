@@ -72,8 +72,8 @@ public final class MainPanel extends JPanel {
 //                         count++;
 //                     }
 //                 }
-//             } catch (BadLocationException ble) {
-//                 ble.printStackTrace();
+//             } catch (BadLocationException ex) {
+//                 ex.printStackTrace();
 //             }
 //             //<<<< ElementCount
 

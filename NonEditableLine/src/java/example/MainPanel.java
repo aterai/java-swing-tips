@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
                 Element elem = root.getElement(i);
                 hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
             }
-        } catch (BadLocationException ble) {
-            ble.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));

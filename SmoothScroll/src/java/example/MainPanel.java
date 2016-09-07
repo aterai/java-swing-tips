@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
                     animator.stop();
                 }
             }).start();
-        } catch (BadLocationException ble) {
+        } catch (BadLocationException ex) {
             Toolkit.getDefaultToolkit().beep();
         }
     }

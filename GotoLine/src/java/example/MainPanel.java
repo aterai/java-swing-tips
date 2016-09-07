@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
                     textArea.scrollRectToVisible(rect);
                     textArea.setCaretPosition(elem.getStartOffset());
                     //textArea.requestFocus();
-                } catch (BadLocationException ble) {
+                } catch (BadLocationException ex) {
                     Toolkit.getDefaultToolkit().beep();
                 }
             }

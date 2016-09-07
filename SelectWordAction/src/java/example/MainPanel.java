@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                         int endOffs = TextUtilties.getWordEnd(target, offs);
                         target.setCaretPosition(begOffs);
                         target.moveCaretPosition(endOffs);
-                    } catch (BadLocationException bl) {
+                    } catch (BadLocationException ex) {
                         UIManager.getLookAndFeel().provideErrorFeedback(target);
                     }
                 }

@@ -63,8 +63,8 @@ public final class MainPanel extends JPanel {
             doc.insertString(doc.getLength(), "\n----\nJButton:\n", null);
             doc.insertString(doc.getLength(), LINK + "\n", doc.getStyle("button"));
             //doc.insertString(doc.getLength(), "\n", null);
-        } catch (BadLocationException ble) {
-            ble.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
         return editorPane;
     }
