@@ -39,11 +39,11 @@ public final class MainPanel extends JPanel {
     }
     private static JPanel makeColorSpinner(String... items) {
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        final JComboBox<String> comboBox = new JComboBox<String>(items) {
+        JComboBox<String> comboBox = new JComboBox<String>(items) {
             @Override public void updateUI() {
                 super.updateUI();
                 setUI(new NoPopupComboBoxUI());
-                final ListCellRenderer<? super String> r = getRenderer();
+                ListCellRenderer<? super String> r = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
                         JComponent c = (JComponent) r.getListCellRendererComponent(list, value, index, false, false);
@@ -54,18 +54,14 @@ public final class MainPanel extends JPanel {
             }
         };
         JButton nb = createArrowButton(SwingConstants.NORTH);
-        nb.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                e.setSource(comboBox);
-                comboBox.getActionMap().get("selectPrevious2").actionPerformed(e);
-            }
+        nb.addActionListener(e -> {
+            e.setSource(comboBox);
+            comboBox.getActionMap().get("selectPrevious2").actionPerformed(e);
         });
         JButton sb = createArrowButton(SwingConstants.SOUTH);
-        sb.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                e.setSource(comboBox);
-                comboBox.getActionMap().get("selectNext2").actionPerformed(e);
-            }
+        sb.addActionListener(e -> {
+            e.setSource(comboBox);
+            comboBox.getActionMap().get("selectNext2").actionPerformed(e);
         });
         Box box = Box.createVerticalBox();
         box.add(nb);
@@ -74,7 +70,8 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout()) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
-                return new Dimension(d.width, 20);
+                d.height = 20;
+                return d;
             }
         };
         p.add(comboBox);

@@ -27,29 +27,29 @@ public final class MainPanel extends JPanel {
     private final Icon customAscendingSortIcon  = new ImageIcon(getClass().getResource("ascending.png"));
     private final Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
 
+    private final JButton clearButton = new JButton("clear SortKeys");
+
     private Box makeRadioPane() {
-        final JRadioButton r0 = new JRadioButton("Default");
-        final JRadioButton r1 = new JRadioButton("Empty");
-        final JRadioButton r2 = new JRadioButton("Cumstom");
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton r = (JRadioButton) e.getSource();
-                Icon ascending  = null;
-                Icon descending = null;
-                if (r.equals(r0)) {
-                    ascending  = UIManager.getIcon("Table.ascendingSortIcon");
-                    descending = UIManager.getIcon("Table.descendingSortIcon");
-                } else if (r.equals(r1)) {
-                    ascending  = new IconUIResource(EMPTY_ICON);
-                    descending = new IconUIResource(EMPTY_ICON);
-                } else {
-                    ascending  = new IconUIResource(customAscendingSortIcon);
-                    descending = new IconUIResource(customDescendingSortIcon);
-                }
-                UIManager.put("Table.ascendingSortIcon",  ascending);
-                UIManager.put("Table.descendingSortIcon", descending);
-                table.getTableHeader().repaint();
+        JRadioButton r0 = new JRadioButton("Default");
+        JRadioButton r1 = new JRadioButton("Empty");
+        JRadioButton r2 = new JRadioButton("Cumstom");
+        ActionListener al = e -> {
+            JRadioButton r = (JRadioButton) e.getSource();
+            Icon ascending  = null;
+            Icon descending = null;
+            if (r.equals(r0)) {
+                ascending  = UIManager.getIcon("Table.ascendingSortIcon");
+                descending = UIManager.getIcon("Table.descendingSortIcon");
+            } else if (r.equals(r1)) {
+                ascending  = new IconUIResource(EMPTY_ICON);
+                descending = new IconUIResource(EMPTY_ICON);
+            } else {
+                ascending  = new IconUIResource(customAscendingSortIcon);
+                descending = new IconUIResource(customDescendingSortIcon);
             }
+            UIManager.put("Table.ascendingSortIcon",  ascending);
+            UIManager.put("Table.descendingSortIcon", descending);
+            table.getTableHeader().repaint();
         };
         Box box1 = Box.createHorizontalBox();
         box1.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -69,12 +69,10 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(sorter);
+        clearButton.addActionListener(e -> sorter.setSortKeys(null));
+
         add(makeRadioPane(), BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("clear SortKeys") {
-            @Override public void actionPerformed(ActionEvent e) {
-                sorter.setSortKeys(null);
-            }
-        }), BorderLayout.SOUTH);
+        add(clearButton), BorderLayout.SOUTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
