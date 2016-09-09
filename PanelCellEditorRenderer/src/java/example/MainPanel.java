@@ -110,7 +110,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public boolean stopCellEditing() {
         try {
             p.spinner.commitEdit();
-        } catch (ParseException pe) {
+        } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
         }
@@ -154,7 +154,7 @@ class SpinnerEditor extends SpinnerPanel implements TableCellEditor {
     @Override public boolean stopCellEditing() {
         try {
             spinner.commitEdit();
-        } catch (ParseException pe) {
+        } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
         }

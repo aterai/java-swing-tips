@@ -118,7 +118,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     @Override public boolean stopCellEditing() {
         try {
             commitEdit();
-        } catch (ParseException pe) {
+        } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
 //             // Edited value is invalid, spinner.getValue() will return
