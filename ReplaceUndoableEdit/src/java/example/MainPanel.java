@@ -110,10 +110,10 @@ public final class MainPanel extends JPanel {
 class CustomUndoPlainDocument extends PlainDocument {
     private CompoundEdit compoundEdit;
     @Override protected void fireUndoableEditUpdate(UndoableEditEvent e) {
-        if (compoundEdit == null) {
-            super.fireUndoableEditUpdate(e);
-        } else {
+        if (Objects.nonNull(compoundEdit)) {
             compoundEdit.addEdit(e.getEdit());
+        } else {
+            super.fireUndoableEditUpdate(e);
         }
     }
     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -150,10 +150,10 @@ class DocumentFilterUndoManager extends UndoManager {
         return undoFilter;
     }
     @Override public void undoableEditHappened(UndoableEditEvent e) {
-        if (compoundEdit == null) {
-            addEdit(e.getEdit());
-        } else {
+        if (Objects.nonNull(compoundEdit)) {
             compoundEdit.addEdit(e.getEdit());
+        } else {
+            addEdit(e.getEdit());
         }
     }
 }
