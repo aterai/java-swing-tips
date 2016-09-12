@@ -23,29 +23,27 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel box = new JPanel(new GridLayout(2, 2));
-        ActionListener sortActionListener = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox check = (JCheckBox) e.getSource();
-                if (check.isSelected()) {
-                    TreeUtil.compareCount.set(0);
-                    TreeUtil.swapCount.set(0);
-                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
-                    if (check.equals(sort0)) {
-                        TreeUtil.sortTree0(r);
-                    } else if (check.equals(sort1)) {
-                        TreeUtil.sortTree1(r);
-                    } else if (check.equals(sort2)) {
-                        TreeUtil.sortTree2(r);
-                    } else {
-                        TreeUtil.sortTree3(r);
-                    }
-                    //log(check.getText());
-                    tree.setModel(new DefaultTreeModel(r));
+        ActionListener sortActionListener = e -> {
+            JCheckBox check = (JCheckBox) e.getSource();
+            if (check.isSelected()) {
+                TreeUtil.compareCount.set(0);
+                TreeUtil.swapCount.set(0);
+                DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
+                if (check.equals(sort0)) {
+                    TreeUtil.sortTree0(r);
+                } else if (check.equals(sort1)) {
+                    TreeUtil.sortTree1(r);
+                } else if (check.equals(sort2)) {
+                    TreeUtil.sortTree2(r);
                 } else {
-                    tree.setModel(new DefaultTreeModel(root));
+                    TreeUtil.sortTree3(r);
                 }
-                TreeUtil.expandAll(tree);
+                //log(check.getText());
+                tree.setModel(new DefaultTreeModel(r));
+            } else {
+                tree.setModel(new DefaultTreeModel(root));
             }
+            TreeUtil.expandAll(tree);
         };
         for (JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
             box.add(check);

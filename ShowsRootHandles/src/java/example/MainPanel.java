@@ -19,12 +19,10 @@ public final class MainPanel extends JPanel {
         tree1.setShowsRootHandles(true);
         tree2.setShowsRootHandles(false);
 
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox) e.getSource()).isSelected();
-                for (JTree tree: list) {
-                    tree.setRootVisible(flag);
-                }
+        check.addActionListener(e -> {
+            boolean flag = ((JCheckBox) e.getSource()).isSelected();
+            for (JTree tree: list) {
+                tree.setRootVisible(flag);
             }
         });
 

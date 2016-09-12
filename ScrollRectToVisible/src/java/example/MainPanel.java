@@ -39,36 +39,32 @@ public final class MainPanel extends JPanel {
         t.addTab("JList",  new JScrollPane(list));
         t.addTab("JTree",  new JScrollPane(tree));
 
-        timer = new Timer(1000, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Date date = new Date();
+        timer = new Timer(1000, e -> {
+            Date date = new Date();
 
-                //JTable
-                model.addRow(new Object[] {date.toString(), model.getRowCount(), false});
-                int i = table.convertRowIndexToView(model.getRowCount() - 1);
-                Rectangle r = table.getCellRect(i, 0, true);
-                table.scrollRectToVisible(r);
+            //JTable
+            model.addRow(new Object[] {date.toString(), model.getRowCount(), false});
+            int i = table.convertRowIndexToView(model.getRowCount() - 1);
+            Rectangle r = table.getCellRect(i, 0, true);
+            table.scrollRectToVisible(r);
 
-                //JList
-                listModel.addElement(date);
-                int index = listModel.getSize() - 1;
-                list.ensureIndexIsVisible(index);
-                //Rectangle cellBounds = list.getCellBounds(index, index);
-                //if (Objects.nonNull(cellBounds)) {
-                //    list.scrollRectToVisible(cellBounds);
-                //}
+            //JList
+            listModel.addElement(date);
+            int index = listModel.getSize() - 1;
+            list.ensureIndexIsVisible(index);
+            //Rectangle cellBounds = list.getCellBounds(index, index);
+            //if (Objects.nonNull(cellBounds)) {
+            //    list.scrollRectToVisible(cellBounds);
+            //}
 
-                //JTree
-                DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-                DefaultMutableTreeNode parent   = (DefaultMutableTreeNode) treeModel.getRoot();
-                DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
-                treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
-                /* //tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
-                tree.scrollRowToVisible(tree.getRowCount() - 1);
-                /*/
-                tree.scrollPathToVisible(new TreePath(newChild.getPath()));
-                //*/
-            }
+            //JTree
+            DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+            DefaultMutableTreeNode parent   = (DefaultMutableTreeNode) treeModel.getRoot();
+            DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
+            treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
+            //tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
+            //tree.scrollRowToVisible(tree.getRowCount() - 1);
+            tree.scrollPathToVisible(new TreePath(newChild.getPath()));
         });
         timer.start();
         add(t);
