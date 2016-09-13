@@ -35,7 +35,9 @@ public final class MainPanel extends JPanel {
     private static Charset getCharset(URLConnection urlConnection, String defaultEncoding) {
         Charset cs = Charset.forName(defaultEncoding);
         String encoding = urlConnection.getContentEncoding();
-        if (encoding == null) {
+        if (Objects.nonNull(encoding)) {
+            cs = Charset.forName(encoding);
+        } else {
             String contentType = urlConnection.getContentType();
             for (String value: contentType.split(";")) {
                 value = value.trim();
@@ -44,11 +46,9 @@ public final class MainPanel extends JPanel {
                 }
             }
             System.out.println(encoding);
-            if (encoding != null) {
+            if (Objects.nonNull(encoding)) {
                 cs = Charset.forName(encoding);
             }
-        } else {
-            cs = Charset.forName(encoding);
         }
         System.out.println(cs);
         return cs;
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
             textArea.setText("");
 
             URLConnection urlConnection = getURLConnection();
-            if (urlConnection == null) {
+            if (Objects.isNull(urlConnection)) {
                 return;
             }
             Charset cs = getCharset(urlConnection, "UTF-8");
@@ -131,7 +131,7 @@ public final class MainPanel extends JPanel {
             runButton.setEnabled(true);
             String text = null;
             try {
-                if (pmis != null) {
+                if (Objects.nonNull(pmis)) {
                     pmis.close();
                 }
                 text = isCancelled() ? "Cancelled" : get();
