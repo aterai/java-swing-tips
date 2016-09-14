@@ -76,19 +76,18 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
     public final JPopupMenu pop = new JPopupMenu();
     public final ButtonGroup bg = new ButtonGroup();
     private AbstractButton arrowButton;
-    private final Timer holdTimer = new Timer(1000, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
+    private final Timer holdTimer = new Timer(1000, null);
+    protected PressAndHoldHandler() {
+        super();
+        holdTimer.setInitialDelay(1000);
+        holdTimer.addActionListener(e -> {
             System.out.println("InitialDelay(1000)");
             if (Objects.nonNull(arrowButton) && arrowButton.getModel().isPressed() && holdTimer.isRunning()) {
                 holdTimer.stop();
                 pop.show(arrowButton, 0, arrowButton.getHeight());
                 pop.requestFocusInWindow();
             }
-        }
-    });
-    protected PressAndHoldHandler() {
-        super();
-        holdTimer.setInitialDelay(1000);
+        });
         pop.setLayout(new GridLayout(0, 3, 5, 5));
         for (MenuContext m: makeMenuList()) {
             AbstractButton b = new JRadioButton(m.command);

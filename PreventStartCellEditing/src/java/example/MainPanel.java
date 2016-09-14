@@ -49,12 +49,10 @@ public final class MainPanel extends JPanel {
         //}
 
         final DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton rb = (JRadioButton) e.getSource();
-                table.putClientProperty("JTable.autoStartsEdit", !rb.equals(r1) && !rb.equals(r3));
-                ce.setClickCountToStart(rb.equals(r2) || rb.equals(r3) ? Integer.MAX_VALUE : 2);
-            }
+        ActionListener al = e -> {
+            JRadioButton rb = (JRadioButton) e.getSource();
+            table.putClientProperty("JTable.autoStartsEdit", !rb.equals(r1) && !rb.equals(r3));
+            ce.setClickCountToStart(rb.equals(r2) || rb.equals(r3) ? Integer.MAX_VALUE : 2);
         };
         r0.setSelected(true);
         Box p = Box.createVerticalBox();

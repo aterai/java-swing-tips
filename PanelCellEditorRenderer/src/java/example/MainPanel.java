@@ -243,20 +243,16 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     private final ButtonsPanel p = new ButtonsPanel();
     protected ButtonsEditor() {
         super();
-        p.buttons.get(0).addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                p.i++;
-                p.label.setText(Integer.toString(p.i));
-                fireEditingStopped();
-            }
+        p.buttons.get(0).addActionListener(e -> {
+            p.i++;
+            p.label.setText(Integer.toString(p.i));
+            fireEditingStopped();
         });
 
-        p.buttons.get(1).addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                p.i--;
-                p.label.setText(Integer.toString(p.i));
-                fireEditingStopped();
-            }
+        p.buttons.get(1).addActionListener(e -> {
+            p.i--;
+            p.label.setText(Integer.toString(p.i));
+            fireEditingStopped();
         });
 
         p.addMouseListener(new MouseAdapter() {

@@ -16,11 +16,9 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
-                panel.revalidate();
-            }
+        check.addActionListener(e -> {
+            layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
+            panel.revalidate();
         });
         layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
 
