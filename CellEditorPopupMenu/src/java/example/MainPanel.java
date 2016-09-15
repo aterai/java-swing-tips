@@ -124,7 +124,7 @@ class UndoAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         try {
             undoManager.undo();
-        } catch (CannotUndoException cue) {
+        } catch (CannotUndoException ex) {
             Toolkit.getDefaultToolkit().beep();
         }
     }
@@ -139,7 +139,7 @@ class RedoAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         try {
             undoManager.redo();
-        } catch (CannotRedoException cre) {
+        } catch (CannotRedoException ex) {
             Toolkit.getDefaultToolkit().beep();
         }
     }

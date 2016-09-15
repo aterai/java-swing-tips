@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(2, 1));
         try {
             cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
-        } catch (UnavailableServiceException t) {
+        } catch (UnavailableServiceException ex) {
             cs = null;
         }
         JTextArea textArea = new JTextArea() {
@@ -131,8 +131,8 @@ class UndoAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         try {
             undoManager.undo();
-        } catch (CannotUndoException cue) {
-            //cue.printStackTrace();
+        } catch (CannotUndoException ex) {
+            //ex.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }
     }
@@ -147,8 +147,8 @@ class RedoAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         try {
             undoManager.redo();
-        } catch (CannotRedoException cre) {
-            //cre.printStackTrace();
+        } catch (CannotRedoException ex) {
+            //ex.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }
     }

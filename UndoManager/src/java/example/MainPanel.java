@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             try {
                 undoManager.undo();
-            } catch (CannotUndoException cue) {
+            } catch (CannotUndoException ex) {
                 //cue.printStackTrace();
                 Toolkit.getDefaultToolkit().beep();
             }
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             try {
                 undoManager.redo();
-            } catch (CannotRedoException cre) {
+            } catch (CannotRedoException ex) {
                 //cre.printStackTrace();
                 Toolkit.getDefaultToolkit().beep();
             }
