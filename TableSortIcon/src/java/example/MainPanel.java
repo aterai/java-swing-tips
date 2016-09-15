@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
         clearButton.addActionListener(e -> sorter.setSortKeys(null));
 
         add(makeRadioPane(), BorderLayout.NORTH);
-        add(clearButton), BorderLayout.SOUTH);
+        add(clearButton, BorderLayout.SOUTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
