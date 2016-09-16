@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -12,7 +12,7 @@ import javax.swing.plaf.basic.*;
 public class JTabbedPaneWithCloseButton extends JTabbedPane {
     private List<JButton> closeButtons;
     @Override public void updateUI() {
-        if (closeButtons != null) {
+        if (Objects.nonNull(closeButtons)) {
             for (JButton b: closeButtons) {
                 remove(b);
             }

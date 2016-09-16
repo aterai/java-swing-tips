@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -63,11 +64,11 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private boolean isCanonicalPath(File file) {
-        if (file == null) {
+        if (Objects.isNull(file)) {
             return false;
         }
         try {
-            if (file.getCanonicalPath() == null) {
+            if (Objects.isNull(file.getCanonicalPath())) {
                 return false;
             }
         } catch (IOException ex) {
