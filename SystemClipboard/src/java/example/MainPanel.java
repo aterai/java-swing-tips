@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         ClipboardService tmp;
         try {
             tmp = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
-        } catch (UnavailableServiceException t) {
+        } catch (UnavailableServiceException ex) {
             tmp = null;
         }
         cs = tmp;

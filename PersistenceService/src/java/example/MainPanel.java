@@ -78,8 +78,8 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
         try {
             bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
             ps = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
-        } catch (UnavailableServiceException use) {
-            //use.printStackTrace();
+        } catch (UnavailableServiceException ex) {
+            //ex.printStackTrace();
             ps = null;
             bs = null;
         }

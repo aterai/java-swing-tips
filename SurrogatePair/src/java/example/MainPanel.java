@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 //                 BasicService bs = null;
 //                 try {
 //                     bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-//                 } catch (UnavailableServiceException t) {
+//                 } catch (UnavailableServiceException ex) {
 //                     bs = null;
 //                 }
 //                 if (Objects.nonNull(bs)) {

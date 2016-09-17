@@ -279,7 +279,7 @@ class ClipboardServiceTextArea extends JTextArea {
         super();
         try {
             cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
-        } catch (UnavailableServiceException t) {
+        } catch (UnavailableServiceException ex) {
             cs = null;
         }
     }

@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
                     });
                 }
             });
-        } catch (UnavailableServiceException use) {
-            use.printStackTrace();
+        } catch (UnavailableServiceException ex) {
+            ex.printStackTrace();
             return;
         }
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
