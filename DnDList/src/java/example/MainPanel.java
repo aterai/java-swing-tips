@@ -118,8 +118,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         }
         try {
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new ListDragSourceListener());
-        } catch (InvalidDnDOperationException idoe) {
-            idoe.printStackTrace();
+        } catch (InvalidDnDOperationException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -173,9 +173,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
 //             DataFlavor[] f = t.getTransferDataFlavors();
 //             try {
 //                 Component comp = (Component) t.getTransferData(f[0]);
-//             } catch (UnsupportedFlavorException ex) {
-//                 e.dropComplete(false);
-//             } catch (IOException ie) {
+//             } catch (UnsupportedFlavorException | IOException ex) {
 //                 e.dropComplete(false);
 //             }
             if (isDropAcceptable(e)) {

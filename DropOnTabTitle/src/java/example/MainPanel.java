@@ -69,8 +69,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     @Override public void dragGestureRecognized(DragGestureEvent e) {
         try {
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, (DragSourceListener) this);
-        } catch (InvalidDnDOperationException idoe) {
-            idoe.printStackTrace();
+        } catch (InvalidDnDOperationException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -151,7 +151,7 @@ class TabTitleDropTargetListener implements DropTargetListener {
             } else {
                 e.dropComplete(false);
             }
-        } catch (UnsupportedFlavorException | IOException ie) {
+        } catch (UnsupportedFlavorException | IOException ex) {
             e.dropComplete(false);
         }
     }

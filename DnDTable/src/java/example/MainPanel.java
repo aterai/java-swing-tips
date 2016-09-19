@@ -167,8 +167,8 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         }
         try {
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new TableDragSourceListener());
-        } catch (InvalidDnDOperationException idoe) {
-            idoe.printStackTrace();
+        } catch (InvalidDnDOperationException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -222,9 +222,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
 //             Component c = null;
 //             try {
 //                 c = (Component) t.getTransferData(f[0]);
-//             } catch (UnsupportedFlavorException ex) {
-//                 e.dropComplete(false);
-//             } catch (IOException ie) {
+//             } catch (UnsupportedFlavorException | IOException ex) {
 //                 e.dropComplete(false);
 //             }
 //             if (c instanceof JTable) {
