@@ -30,8 +30,8 @@ public final class BarFactory {
         ResourceBundle res;
         try {
             res = ResourceBundle.getBundle(restr, new UTF8ResourceBundleControl());
-        } catch (MissingResourceException mre) {
-            mre.printStackTrace();
+        } catch (MissingResourceException ex) {
+            ex.printStackTrace();
             System.err.println("resources/" + restr + " not found");
             res = null;
             //System.exit(1);
@@ -65,7 +65,7 @@ public final class BarFactory {
         String str;
         try {
             str = resources.getString(nm);
-        } catch (MissingResourceException mre) {
+        } catch (MissingResourceException ex) {
             str = null;
         }
         return str;
