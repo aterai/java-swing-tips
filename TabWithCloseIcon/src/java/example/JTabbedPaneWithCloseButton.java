@@ -12,12 +12,10 @@ import javax.swing.plaf.basic.*;
 public class JTabbedPaneWithCloseButton extends JTabbedPane {
     private List<JButton> closeButtons;
     @Override public void updateUI() {
-        if (Objects.nonNull(closeButtons)) {
-            for (JButton b: closeButtons) {
-                remove(b);
-            }
-            closeButtons.clear();
-        }
+        Optional.ofNullable(closeButtons).ifPresent(list -> {
+            list.stream().forEach(this::remove);
+            list.clear();
+        });
         super.updateUI();
         closeButtons = new ArrayList<>();
         setUI(new CloseButtonTabbedPaneUI(closeButtons));
