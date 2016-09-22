@@ -110,11 +110,14 @@ public final class MainPanel extends JPanel {
 class CustomUndoPlainDocument extends PlainDocument {
     private CompoundEdit compoundEdit;
     @Override protected void fireUndoableEditUpdate(UndoableEditEvent e) {
-        if (Objects.nonNull(compoundEdit)) {
-            compoundEdit.addEdit(e.getEdit());
-        } else {
-            super.fireUndoableEditUpdate(e);
-        }
+        //FindBugs: UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR
+        //if (Objects.nonNull(compoundEdit)) {
+        //    compoundEdit.addEdit(e.getEdit());
+        //} else {
+        //    super.fireUndoableEditUpdate(e);
+        //}
+        Optional.ofNullable(compoundEdit).ifPresent(ce -> ce.addEdit(e.getEdit()));
+        //JDK9: Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
     }
     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         if (length == 0) {
@@ -150,11 +153,7 @@ class DocumentFilterUndoManager extends UndoManager {
         return undoFilter;
     }
     @Override public void undoableEditHappened(UndoableEditEvent e) {
-        if (Objects.nonNull(compoundEdit)) {
-            compoundEdit.addEdit(e.getEdit());
-        } else {
-            addEdit(e.getEdit());
-        }
+        Optional.ofNullable(compoundEdit).orElseGet(() -> this).addEdit(e.getEdit());
     }
 }
 
