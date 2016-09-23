@@ -82,9 +82,9 @@ public class CloseTabIcon implements Icon {
         //        doPaintCloseIcon = ((Boolean) prop).booleanValue();
         //    }
         //}
-        ////} catch (Exception ignored) {
-        ////    /*Could probably be a ClassCastException*/
-        ////    ignored.printStackTrace();
+        ////} catch (Exception ex) {
+        ////    // Could probably be a ClassCastException
+        ////    ex.printStackTrace();
         ////}
         //if (doPaintCloseIcon) {
         xpos = x;

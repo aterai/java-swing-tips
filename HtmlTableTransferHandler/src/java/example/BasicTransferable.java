@@ -32,7 +32,7 @@ class BasicTransferable implements Transferable {
             stringFlavors[0] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=java.lang.String");
             stringFlavors[1] = DataFlavor.stringFlavor;
 
-        } catch (ClassNotFoundException cle) {
+        } catch (ClassNotFoundException ex) {
             System.err.println("error initializing javax.swing.plaf.basic.BasicTranserable");
         }
     }

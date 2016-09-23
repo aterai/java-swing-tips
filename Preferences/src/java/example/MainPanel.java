@@ -114,8 +114,8 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
             }
             try {
                 pos.setLocation(pt);
-            } catch (IllegalComponentStateException icse) {
-                icse.printStackTrace();
+            } catch (IllegalComponentStateException ex) {
+                ex.printStackTrace();
             }
         }
     }

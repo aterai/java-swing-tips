@@ -37,8 +37,8 @@ public class MainPanel extends JPanel {
                     try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                         xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
 //                         xe.setExceptionListener(new ExceptionListener() {
-//                             @Override public void exceptionThrown(Exception exception) {
-//                                 //XXX: exception.printStackTrace();
+//                             @Override public void exceptionThrown(Exception ex) {
+//                                 //XXX: ex.printStackTrace();
 //                             }
 //                         });
                         xe.writeObject(model);
