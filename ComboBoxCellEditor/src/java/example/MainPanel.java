@@ -170,8 +170,8 @@ class PluginCellEditor extends DefaultCellEditor {
             return false;
         }
         JTree tree = (JTree) source;
-        MouseEvent me = (MouseEvent) e;
-        TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+        Point p = ((MouseEvent) e).getPoint();
+        TreePath path = tree.getPathForLocation(p.x, p.y);
         if (Objects.isNull(path)) {
             return false;
         }
@@ -184,16 +184,16 @@ class PluginCellEditor extends DefaultCellEditor {
             return false;
         }
         Dimension d = panel.getPreferredSize();
-        r.setSize(new Dimension(d.width, r.height));
-        if (r.contains(me.getX(), me.getY())) {
-            showComboPopup(tree, me);
+        r.width = d.width;
+        if (r.contains(p)) {
+            showComboPopup(tree, p);
             return true;
         }
         return delegate.isCellEditable(e);
     }
-    private void showComboPopup(JTree tree, MouseEvent e) {
+    private void showComboPopup(JTree tree, Point p) {
         EventQueue.invokeLater(() -> {
-            Point pt = SwingUtilities.convertPoint(tree, e.getPoint(), panel);
+            Point pt = SwingUtilities.convertPoint(tree, p, panel);
             Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
             if (o instanceof JComboBox) {
                 panel.comboBox.showPopup();
