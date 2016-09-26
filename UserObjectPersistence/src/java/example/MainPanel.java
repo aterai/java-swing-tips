@@ -328,7 +328,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             return Optional.ofNullable(tree.getPathBounds(path)).map(r -> {
                 r.width = checkBox.getPreferredSize().width;
                 return r.contains(p);
-            }).orElseGet(() -> false);
+            }).orElse(false);
 //             MouseEvent me = (MouseEvent) e;
 //             JTree tree = (JTree) e.getSource();
 //             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
