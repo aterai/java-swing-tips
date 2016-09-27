@@ -134,9 +134,10 @@ class CellButtonsMouseListener extends MouseAdapter {
         }
     }
     private static void listRepaint(JList list, Rectangle rect) {
-        if (Objects.nonNull(rect)) {
-            list.repaint(rect);
-        }
+        Optional.ofNullable(rect).ifPresent(list::repaint);
+//         if (Objects.nonNull(rect)) {
+//             list.repaint(rect);
+//         }
     }
     private static JButton getButton(JList<String> list, Point pt, int index) {
         Component c = list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -151,7 +152,9 @@ class RoundedCornerButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return shape != null && shape.contains(x, y);
+        //return shape != null && shape.contains(x, y);
+        //return Optional.ofNullable(shape).filter(s -> s.contains(x, y)).isPresent();
+        return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
     }
 }
 
