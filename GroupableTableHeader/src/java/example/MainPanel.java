@@ -86,9 +86,11 @@ class GroupableTableHeader extends JTableHeader {
         super.updateUI();
         setUI(new GroupableTableHeaderUI());
     }
-//     @Override public boolean getReorderingAllowed() {
-//         return false;
-//     }
+    // [java] BooleanGetMethodName: Don't report bad method names on @Override #97
+    // https://github.com/pmd/pmd/pull/97
+    @Override public boolean getReorderingAllowed() {
+        return false;
+    }
     @Override public void setReorderingAllowed(boolean b) {
         super.setReorderingAllowed(false);
     }
