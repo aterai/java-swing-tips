@@ -53,12 +53,8 @@ public final class BarFactory {
         }
     }
 
-    public URL getResource(String key) {
-        String name = getResourceString(key);
-        if (Objects.isNull(name)) {
-            return null;
-        }
-        return getClass().getResource(name);
+    public Optional<URL> getResource(String key) {
+        return Optional.ofNullable(getResourceString(key)).map(path -> getClass().getResource(path));
     }
 
     private String getResourceString(String nm) {
@@ -93,14 +89,13 @@ public final class BarFactory {
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
-        String[] toolKeys = tokenize(tmp);
-        for (int i = 0; i < toolKeys.length; i++) {
-            if (toolKeys[i].equals("-")) {
+        for (String key: tokenize(tmp)) {
+            if ("-".equals(key)) {
                 toolbar.add(Box.createHorizontalStrut(5));
                 toolbar.addSeparator();
                 toolbar.add(Box.createHorizontalStrut(5));
             } else {
-                toolbar.add(createTool(toolKeys[i]));
+                toolbar.add(createTool(key));
             }
         }
         toolbar.add(Box.createHorizontalGlue());
@@ -112,35 +107,25 @@ public final class BarFactory {
     }
 
     private JButton createToolBarButton(String key) {
-        URL url = getResource(key + IMAGE_SUFFIX);
-        JButton b;
-        if (Objects.nonNull(url)) {
-            b = new JButton(new ImageIcon(url));
-        } else {
-            b = new JButton(getResourceString(key + LABEL_SUFFIX));
-        }
+        JButton b = getResource(key + IMAGE_SUFFIX)
+            .map(url -> new JButton(new ImageIcon(url)))
+            .orElseGet(() -> new JButton(getResourceString(key + LABEL_SUFFIX)));
         b.setAlignmentY(Component.CENTER_ALIGNMENT);
         b.setFocusPainted(false);
         b.setFocusable(false);
         b.setRequestFocusEnabled(false);
         b.setMargin(new Insets(1, 1, 1, 1));
 
-        String astr = getResourceString(key + ACTION_SUFFIX);
-        if (Objects.isNull(astr)) {
-            astr = key;
-        }
-        Action a = getAction(astr);
+        String acmd = Optional.ofNullable(getResourceString(key + ACTION_SUFFIX)).orElse(key);
+        Action a = getAction(acmd);
         if (Objects.nonNull(a)) {
-            b.setActionCommand(astr);
+            b.setActionCommand(acmd);
             b.addActionListener(a);
         } else {
             b.setEnabled(false);
         }
 
-        String tip = getResourceString(key + TIP_SUFFIX);
-        //if (Objects.nonNull(tip)) {
-        b.setToolTipText(tip);
-        //}
+        b.setToolTipText(getResourceString(key + TIP_SUFFIX));
 
         toolButtons.put(key, b);
         return b;
@@ -156,35 +141,29 @@ public final class BarFactory {
 
     public JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
-        String[] menuKeys = tokenize(getResourceString("menubar"));
-        for (int i = 0; i < menuKeys.length; i++) {
-            JMenu m = createMenu(menuKeys[i]);
-            //if (Objects.nonNull(m))
-            mb.add(m);
+        for (String key: tokenize(getResourceString("menubar"))) {
+            mb.add(createMenu(key));
         }
         return mb;
     }
 
     private JMenu createMenu(String key) {
-        String[] itemKeys = tokenize(getResourceString(key));
         String mitext = getResourceString(key + LABEL_SUFFIX);
         JMenu menu = new JMenu(mitext);
-        String mn = getResourceString(key + MNE_SUFFIX);
-        if (Objects.nonNull(mn)) {
-            String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if (tmp.length() > 0) {
-                if (mitext.indexOf(tmp) < 0) {
-                    menu.setText(String.format("%s (%s)", mitext, tmp));
-                }
-                menu.setMnemonic(tmp.codePointAt(0));
-            }
-        }
-        for (int i = 0; i < itemKeys.length; i++) {
-            if (itemKeys[i].equals("-")) {
+        Optional.ofNullable(getResourceString(key + MNE_SUFFIX))
+                .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
+                .filter(txt -> txt.length() > 0)
+                .ifPresent(txt -> {
+                    if (mitext.indexOf(txt) < 0) {
+                        menu.setText(String.format("%s (%s)", mitext, txt));
+                    }
+                    menu.setMnemonic(txt.codePointAt(0));
+                });
+        for (String m: tokenize(getResourceString(key))) {
+            if ("-".equals(m)) {
                 menu.addSeparator();
             } else {
-                JMenuItem mi = createMenuItem(itemKeys[i]);
-                menu.add(mi);
+                menu.add(createMenuItem(m));
             }
         }
         menus.put(key, menu);
@@ -194,28 +173,22 @@ public final class BarFactory {
     private JMenuItem createMenuItem(String cmd) {
         String mitext = getResourceString(cmd + LABEL_SUFFIX);
         JMenuItem mi = new JMenuItem(mitext);
-        URL url = getResource(cmd + IMAGE_SUFFIX);
-        if (Objects.nonNull(url)) {
+        getResource(cmd + IMAGE_SUFFIX).ifPresent(url -> {
             mi.setHorizontalTextPosition(SwingConstants.RIGHT);
             mi.setIcon(new ImageIcon(url));
-        }
-        String astr = getResourceString(cmd + ACTION_SUFFIX);
-        if (Objects.isNull(astr)) {
-            astr = cmd;
-        }
-        String mn = getResourceString(cmd + MNE_SUFFIX);
-        //System.out.println(mn);
-        if (Objects.nonNull(mn)) {
-            String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if (tmp.length() > 0) {
-                if (mitext.indexOf(tmp) < 0) {
-                    mi.setText(String.format("%s (%s)", mitext, tmp));
-                }
-                mi.setMnemonic(tmp.codePointAt(0));
-            }
-        }
-        mi.setActionCommand(astr);
-        Action a = getAction(astr);
+        });
+        Optional.ofNullable(getResourceString(cmd + MNE_SUFFIX))
+                .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
+                .filter(txt -> txt.length() > 0)
+                .ifPresent(txt -> {
+                    if (mitext.indexOf(txt) < 0) {
+                        mi.setText(String.format("%s (%s)", mitext, txt));
+                    }
+                    mi.setMnemonic(txt.codePointAt(0));
+                });
+        String acmd = Optional.ofNullable(getResourceString(cmd + ACTION_SUFFIX)).orElse(cmd);
+        mi.setActionCommand(acmd);
+        Action a = getAction(acmd);
         if (Objects.nonNull(a)) {
             mi.addActionListener(a);
             //a.addPropertyChangeListener(createActionChangeListener(mi));
@@ -248,7 +221,7 @@ public final class BarFactory {
 //    }
 }
 
-//http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
+//http://docs.oracle.com/javase/jp/8/docs/api/java/util/ResourceBundle.Control.html
 class UTF8ResourceBundleControl extends ResourceBundle.Control {
     @Override public List<String> getFormats(String baseName) {
         Objects.requireNonNull(baseName, "baseName must not be null");
