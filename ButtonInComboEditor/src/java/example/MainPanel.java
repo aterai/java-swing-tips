@@ -34,8 +34,8 @@ public final class MainPanel extends JPanel {
         model.addElement(new URLItem("http://ateraimemo.com/", image1, true));
         model.addElement(new URLItem("http://ateraimemo.com/Swing.html", image1, true));
         model.addElement(new URLItem("http://ateraimemo.com/JavaWebStart.html", image1, true));
-        model.addElement(new URLItem("http://d.hatena.ne.jp/aterai/", image2, true));
-        model.addElement(new URLItem("http://java-swing-tips.blogspot.com/", image2, true));
+        model.addElement(new URLItem("https://github.com/aterai/java-swing-tips", image2, true));
+        model.addElement(new URLItem("https://java-swing-tips.blogspot.com/", image2, true));
         model.addElement(new URLItem("http://www.example.com/", image2, false));
         return model;
     }
