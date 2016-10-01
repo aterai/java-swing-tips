@@ -155,14 +155,12 @@ class PluginCellEditor extends DefaultCellEditor {
     }
     @Override public Object getCellEditorValue() {
         Object o = super.getCellEditorValue();
-        //FindBugs? if (Objects.isNull(node)) {
-        if (node == null) {
-            return o;
-        }
-        DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
-        Node n = new Node(panel.pluginName.getText(), node.plugins);
-        n.setSelectedPluginIndex(m.getIndexOf(o));
-        return n;
+        return Optional.ofNullable(node).map(node -> {
+            DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
+            Node n = new Node(panel.pluginName.getText(), node.plugins);
+            n.setSelectedPluginIndex(m.getIndexOf(o));
+            return (Object) n;
+        }).orElse(o);
     }
     @Override public boolean isCellEditable(EventObject e) {
         Object source = e.getSource();
