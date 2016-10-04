@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -99,10 +99,7 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
         if (selected) {
             bColor = getBackgroundSelectionColor();
         } else {
-            bColor = getBackgroundNonSelectionColor();
-            if (Objects.isNull(bColor)) {
-                bColor = getBackground();
-            }
+            bColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
         }
 
         int imageOffset = -1;
@@ -203,14 +200,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
                 text.setOpaque(true);
             }
         } else {
-            bColor = getBackgroundNonSelectionColor();
-            fColor = getTextNonSelectionColor();
-            if (Objects.isNull(bColor)) {
-                bColor = getBackground();
-            }
-            if (Objects.isNull(fColor)) {
-                fColor = getForeground();
-            }
+            bColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
+            fColor = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
             text.setOpaque(false);
         }
         text.setForeground(fColor);
