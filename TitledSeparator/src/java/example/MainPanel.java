@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -91,24 +91,23 @@ class TitledSeparator extends JLabel {
         private Paint painter2;
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             int w = c.getWidth();
-            Color color = getBackground();
             if (w != width || Objects.isNull(painter1) || Objects.isNull(painter2)) {
                 width = w;
                 Point2D start = new Point2D.Float();
                 Point2D end   = new Point2D.Float(width, 0);
                 float[] dist  = {0f, 1f};
-                color = Objects.nonNull(color) ? color : UIManager.getColor("Panel.background");
-                Color tc = Objects.nonNull(target) ? target : color;
-                painter1 = new LinearGradientPaint(start, end, dist, new Color[] {tc.darker(),   color});
-                painter2 = new LinearGradientPaint(start, end, dist, new Color[] {tc.brighter(), color});
+                Color ec = Optional.ofNullable(getBackground()).orElse(UIManager.getColor("Panel.background"));
+                Color sc = Optional.ofNullable(target).orElse(ec);
+                painter1 = new LinearGradientPaint(start, end, dist, new Color[] {sc.darker(),   ec});
+                painter2 = new LinearGradientPaint(start, end, dist, new Color[] {sc.brighter(), ec});
             }
             int h = getIconHeight() / 2;
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.translate(x, y);
+            //XXX: g2.translate(x, y);
             g2.setPaint(painter1);
-            g2.fillRect(0, 0, width, getIconHeight());
+            g2.fillRect(x, y, width, getIconHeight());
             g2.setPaint(painter2);
-            g2.fillRect(0, h, width, getIconHeight() - h);
+            g2.fillRect(x, y + h, width, getIconHeight() - h);
             g2.dispose();
         }
         @Override public int getIconWidth() {
