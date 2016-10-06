@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -47,9 +47,7 @@ public final class MainPanel extends JPanel {
         label = new JLabel() {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (Objects.isNull(dashedStroke)) {
-                    dashedStroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f);
-                }
+                dashedStroke = Optional.ofNullable(dashedStroke).orElseGet(() -> new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f));
                 Insets i = getInsets();
                 int w = getWidth();
                 int h = getHeight() / 2;
