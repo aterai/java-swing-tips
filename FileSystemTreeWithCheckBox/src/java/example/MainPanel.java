@@ -22,11 +22,9 @@ public final class MainPanel extends JPanel {
         for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
             root.add(node);
-            for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
-                if (file.isDirectory()) {
-                    node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED)));
-                }
-            }
+            Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
+                  .filter(File::isDirectory)
+                  .forEach(file -> node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED))));
         }
         treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
@@ -344,12 +342,9 @@ class Task extends SwingWorker<String, File> {
         this.parent = parent;
     }
     @Override public String doInBackground() {
-        File[] children = fileSystemView.getFiles(parent, true);
-        for (File child: children) {
-            if (child.isDirectory()) {
-                publish(child);
-            }
-        }
+        Arrays.stream(fileSystemView.getFiles(parent, true))
+              .filter(File::isDirectory)
+              .forEach(file -> publish(file));
         return "done";
     }
 }

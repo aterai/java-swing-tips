@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -19,11 +20,9 @@ public final class MainPanel extends JPanel {
         for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
-            for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
-                if (file.isDirectory()) {
-                    node.add(new DefaultMutableTreeNode(file));
-                }
-            }
+            Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
+                  .filter(File::isDirectory)
+                  .forEach(file -> node.add(new DefaultMutableTreeNode(file)));
         }
 
         JTree tree = new JTree(treeModel);
@@ -73,9 +72,9 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
         if (o instanceof DefaultMutableTreeNode) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
             File file = (File) node.getUserObject();
-            String title = file.getName();
-            System.out.println(title);
-            if (title.codePointAt(0) == '.') {
+            String name = file.getName();
+            //System.out.println(name);
+            if (!name.isEmpty() && name.codePointAt(0) == '.') {
                 throw new ExpandVetoException(e, "Tree expansion cancelled");
             }
         }
@@ -127,11 +126,9 @@ class Task extends SwingWorker<String, File> {
         this.parent = parent;
     }
     @Override public String doInBackground() {
-        for (File child: fileSystemView.getFiles(parent, true)) {
-            if (child.isDirectory()) {
-                publish(child);
-            }
-        }
+        Arrays.stream(fileSystemView.getFiles(parent, true))
+              .filter(File::isDirectory)
+              .forEach(file -> publish(file));
         return "done";
     }
 }
@@ -162,8 +159,10 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
                 c.setIcon(fileSystemView.getSystemIcon(file));
                 c.setText(fileSystemView.getSystemDisplayName(file));
                 c.setToolTipText(file.getPath());
-                //c.setEnabled(!file.getName().startsWith("."));
-                c.setEnabled(file.getName().codePointAt(0) != '.');
+                c.setEnabled(!file.getName().startsWith(".")); //NOPMD SimplifyStartsWith
+                //StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
+                //String name = file.getName();
+                //c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
             }
         }
         return c;
