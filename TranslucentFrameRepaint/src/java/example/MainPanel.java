@@ -27,12 +27,9 @@ public final class MainPanel extends JPanel {
     private final TexturePanel tp;
 
     private void repaintWindowAncestor(JComponent c) {
-        JRootPane root = c.getRootPane();
-        if (Objects.isNull(root)) {
-            return;
-        }
-        Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), root);
-        root.repaint(r.x, r.y, r.width, r.height);
+        Optional.ofNullable(c.getRootPane())
+                .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
+
     }
 //     private void repaintWindowAncestor(Component c) {
 //         Window w = SwingUtilities.getWindowAncestor(c);
@@ -42,7 +39,7 @@ public final class MainPanel extends JPanel {
 //             //cp.repaint();
 //             Rectangle r = c.getBounds();
 //             r = SwingUtilities.convertRectangle(c, r, cp);
-//             cp.repaint(r.x, r.y, r.width, r.height);
+//             cp.repaint(r);
 //             //r = SwingUtilities.convertRectangle(c, r, f);
 //             //f.repaint(r.x, r.y, r.width, r.height);
 //         } else {
