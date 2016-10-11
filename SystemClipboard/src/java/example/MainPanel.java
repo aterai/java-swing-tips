@@ -6,46 +6,46 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
 import javax.jnlp.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
-    private final ClipboardService cs;
+    private final JButton button = new JButton("get Clipboard DataFlavor");
     public MainPanel() {
         super(new BorderLayout());
-
-        ClipboardService tmp;
+        Object o;
         try {
-            tmp = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+            o = ServiceManager.lookup("javax.jnlp.ClipboardService");
         } catch (UnavailableServiceException ex) {
-            tmp = null;
+            o = null;
         }
-        cs = tmp;
-        add(new JScrollPane(label));
-        add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try {
-                    Transferable t = Objects.nonNull(cs) ? cs.getContents() : Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-                    if (Objects.isNull(t)) {
-                        Toolkit.getDefaultToolkit().beep();
-                        return;
-                    }
-                    String str = "";
-                    ImageIcon image = null;
-                    if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                        image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
-                    } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                        str = (String) t.getTransferData(DataFlavor.stringFlavor);
-                    }
-                    label.setText(str);
-                    label.setIcon(image);
-                } catch (UnsupportedFlavorException | IOException ex) {
-                    ex.printStackTrace();
+        Optional<ClipboardService> csOp = Optional.ofNullable((ClipboardService) o);
+        button.addActionListener(e -> {
+            try {
+                Transferable t = csOp.map(ClipboardService::getContents)
+                                     .orElse(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null));
+                if (Objects.isNull(t)) {
+                    Toolkit.getDefaultToolkit().beep();
+                    return;
                 }
+                String str = "";
+                ImageIcon image = null;
+                if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                    image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
+                } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    str = (String) t.getTransferData(DataFlavor.stringFlavor);
+                }
+                label.setText(str);
+                label.setIcon(image);
+            } catch (UnsupportedFlavorException | IOException ex) {
+                ex.printStackTrace();
             }
-        }), BorderLayout.SOUTH);
+        });
+
+        add(new JScrollPane(label));
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
