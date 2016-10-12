@@ -32,12 +32,14 @@ public final class MainPanel extends JPanel {
                 if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY);
                     Transferable transferable = dtde.getTransferable();
-                    List list = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                    for (Object o: list) {
-                        if (o instanceof File) {
-                            addImageFile((File) o);
-                        }
-                    }
+                    ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
+                        .stream().filter(o -> o instanceof File).forEach(o -> addImageFile((File) o));
+//                     List list = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+//                     for (Object o: list) {
+//                         if (o instanceof File) {
+//                             addImageFile((File) o);
+//                         }
+//                     }
                     dtde.dropComplete(true);
                     return;
                 }
@@ -77,9 +79,7 @@ public final class MainPanel extends JPanel {
     private void addImageFile(File file) {
         String path = file.getAbsolutePath();
         Image img = Toolkit.getDefaultToolkit().createImage(path);
-        if (Objects.isNull(tracker)) {
-            tracker = new MediaTracker((Container) this);
-        }
+        tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker((Container) this));
         tracker.addImage(img, IMAGE_ID);
         try {
             tracker.waitForID(IMAGE_ID);
@@ -87,8 +87,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         } finally {
             if (!tracker.isErrorID(IMAGE_ID)) {
-                model.addTest(new Test(file.getName(), path,
-                                       img.getWidth(this), img.getHeight(this)));
+                model.addTest(new Test(file.getName(), path, img.getWidth(this), img.getHeight(this)));
             }
             tracker.removeImage(img);
         }
@@ -128,8 +127,7 @@ class FileModel extends DefaultTableModel {
     private int number;
     public void addTest(Test t) {
         Object[] obj = {
-            number, t.getName(), t.getComment(),
-            t.getWidth(), t.getHeight()
+            number, t.getName(), t.getComment(), t.getWidth(), t.getHeight()
         };
         super.addRow(obj);
         number++;
