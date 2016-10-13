@@ -4,7 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
@@ -154,36 +156,54 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
             TableColumn column = table.getColumnModel().getColumn(vci);
             Object status = column.getHeaderValue();
             TableModel m = table.getModel();
-            if (fireUpdateEvent(m, column, status)) {
+            if (m instanceof DefaultTableModel && fireUpdateEvent((DefaultTableModel) m, column, status)) {
                 JTableHeader h = table.getTableHeader();
                 h.repaint(h.getHeaderRect(vci));
             }
         }
     }
-    private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+    private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
         if (Status.INDETERMINATE.equals(status)) {
-            boolean selected = true;
-            boolean deselected = true;
-            for (int i = 0; i < m.getRowCount(); i++) {
-                Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-                selected &= b;
-                deselected &= !b;
-                if (selected == deselected) {
-                    return false;
-                }
-            }
-            if (deselected) {
-                column.setHeaderValue(Status.DESELECTED);
-            } else if (selected) {
-                column.setHeaderValue(Status.SELECTED);
+            List<Boolean> l = ((Vector<?>) m.getDataVector())
+              .stream()
+              .map(v -> (Boolean) ((Vector<?>) v).get(targetColumnIndex))
+              .distinct()
+              .collect(Collectors.toList());
+            if (l.size() == 1) {
+                column.setHeaderValue(l.get(0) ? Status.SELECTED : Status.DESELECTED);
+                return true;
             } else {
                 return false;
             }
         } else {
             column.setHeaderValue(Status.INDETERMINATE);
+            return true;
         }
-        return true;
     }
+//     private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+//         if (Status.INDETERMINATE.equals(status)) {
+//             boolean selected = true;
+//             boolean deselected = true;
+//             for (int i = 0; i < m.getRowCount(); i++) {
+//                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+//                 selected &= b;
+//                 deselected &= !b;
+//                 if (selected == deselected) {
+//                     return false;
+//                 }
+//             }
+//             if (deselected) {
+//                 column.setHeaderValue(Status.DESELECTED);
+//             } else if (selected) {
+//                 column.setHeaderValue(Status.SELECTED);
+//             } else {
+//                 return false;
+//             }
+//         } else {
+//             column.setHeaderValue(Status.INDETERMINATE);
+//         }
+//         return true;
+//     }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
         JTable table = header.getTable();
