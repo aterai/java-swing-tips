@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -122,10 +122,10 @@ class TreePopupMenu extends JPopupMenu {
             //TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
             //if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
-            if (Objects.nonNull(path)) {
-                tree.setSelectionPath(path);
+            Optional.ofNullable(path).ifPresent(p -> {
+                tree.setSelectionPath(p);
                 super.show(c, x, y);
-            }
+            });
         }
     }
 }
