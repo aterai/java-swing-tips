@@ -161,16 +161,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         super();
         ActionMap am = getActionMap();
         for (int i = 0; i < buttons.length; i++) {
-            //buttons[i].addActionListener(al);
-            final String t = title[i];
+            String t = title[i];
             am.put(t, new AbstractAction(t) {
                 @Override public void actionPerformed(ActionEvent e) {
-                    for (JCheckBox b: buttons) {
-                        if (b.getText().equals(t)) {
-                            b.doClick();
-                            break;
-                        }
-                    }
+                    Arrays.stream(buttons)
+                          .filter(b -> b.getText().equals(t))
+                          .findFirst()
+                          .ifPresent(b -> b.doClick());
                     fireEditingStopped();
                 }
             });

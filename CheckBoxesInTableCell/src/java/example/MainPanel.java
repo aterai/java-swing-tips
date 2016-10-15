@@ -240,12 +240,16 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
                     String title = TITLES[i];
                     am.put(title, new AbstractAction(title) {
                         @Override public void actionPerformed(ActionEvent e) {
-                            for (JCheckBox b: buttons) {
-                                if (b.getText().equals(title)) {
-                                    b.doClick();
-                                    break;
-                                }
-                            }
+//                             for (JCheckBox b: buttons) {
+//                                 if (b.getText().equals(title)) {
+//                                     b.doClick();
+//                                     break;
+//                                 }
+//                             }
+                            Arrays.stream(buttons)
+                                  .filter(b -> b.getText().equals(title))
+                                  .findFirst()
+                                  .ifPresent(b -> b.doClick());
                             fireEditingStopped();
                         }
                     });
