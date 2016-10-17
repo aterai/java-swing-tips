@@ -17,8 +17,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTextField textField01 = new JTextField(20) {
-            //Unleash Your Creativity with Swing and the Java 2D API!
-            //http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
+            // Unleash Your Creativity with Swing and the Java 2D API!
+            // http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
+            // http://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
             @Override protected void paintComponent(Graphics g) {
                 if (!isOpaque()) {
                     int w = getWidth() - 1;
@@ -172,7 +173,7 @@ class RoundedCornerBorder extends AbstractBorder {
     }
     public Shape getBorderShape(int x, int y, int w, int h) {
         int r = h; //h / 2;
-        return new RoundRectangle2D.Double(0, 0, w, h, r, r);
+        return new RoundRectangle2D.Double(x, y, w, h, r, r);
     }
     @Override public Insets getBorderInsets(Component c) {
         return new Insets(4, 8, 4, 8);
