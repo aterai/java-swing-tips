@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -62,11 +63,7 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
                 table.getRowSorter().setSortKeys(null);
-                for (int i = 0; i < 100; i++) {
-                    model.addRow(new Object[] {
-                        i, i + 1, "A" + i, "B" + i
-                    });
-                }
+                IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
             }
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        itemsPerPage = 180;
+        itemsPerPage = 100;
         currentPageIndex = 1;
 
         table.setFillsViewportHeight(true);
@@ -81,7 +82,7 @@ public final class MainPanel extends JPanel {
             b.addActionListener(jumpActionListener);
         }
 
-        new TableUpdateTask(2013, itemsPerPage).execute();
+        new TableUpdateTask(2016, itemsPerPage).execute();
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
@@ -196,13 +197,18 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         return "Done";
     }
     private int makeRowListAndPublish(int current, int size) {
-        List<Object[]> result = new ArrayList<Object[]>(size);
-        int j = current;
-        while (j < current + size) {
-            result.add(new Object[] {j, "Test: " + j, j % 2 == 0 ? "" : "comment..."});
-            j++;
-        }
+        List<Object[]> result = IntStream.range(current, current + size)
+                                         .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
+                                         .collect(Collectors.toList());
         publish(result);
-        return j;
+        return result.size();
+//         List<Object[]> result = new ArrayList<>(size);
+//         int j = current;
+//         while (j < current + size) {
+//             result.add(new Object[] {j, "Test: " + j, j % 2 == 0 ? "" : "comment..."});
+//             j++;
+//         }
+//         publish(result);
+//         return j;
     }
 }

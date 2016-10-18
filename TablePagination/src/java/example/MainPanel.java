@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -31,9 +32,9 @@ public final class MainPanel extends JPanel {
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         table.setRowSorter(sorter);
 
-        for (int i = 1; i <= 2013; i++) {
-            model.addRow(Arrays.asList(i, "Test: " + i, i % 2 == 0 ? "" : "comment...").toArray());
-        }
+        IntStream.rangeClosed(1, 2016).forEach(i -> model.addRow(new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."}));
+        //IntStream.rangeClosed(1, 2016).forEach(i -> model.addRow(Arrays.asList(i, "Test: " + i, i % 2 == 0 ? "" : "comment...").toArray()));
+
         initLinkBox(100, 1);
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         add(box, BorderLayout.NORTH);
