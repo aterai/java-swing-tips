@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        for (JRadioButton rb : Arrays.asList(r0, r1, r2)) {
+        for (JRadioButton rb: Arrays.asList(r0, r1, r2)) {
             rb.addActionListener(al);
             bg.add(rb);
             p2.add(rb);

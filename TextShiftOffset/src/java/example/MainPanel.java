@@ -22,11 +22,11 @@ public final class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"Button.textShiftOffset\", offset)"));
         box.add(new JLabel("offset = "));
-        boolean flag = true;
+        boolean isFirst = true;
         for (JRadioButton rb: rl) {
-            if (flag) {
+            if (isFirst) {
                 rb.setSelected(true);
-                flag = false;
+                isFirst = false;
             }
             bg.add(rb);
             box.add(rb);
