@@ -8,6 +8,7 @@ import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -30,11 +31,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        for (int i = 0; i < 100; i++) {
-            boolean flag = i % 19 == 0 || i % 17 == 0;
-            String str = flag ? PATTERN : "aaaaa";
-            model.addRow(new Object[] {str, ""});
-        }
+        IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i % 19 == 0 || i % 17 == 0 ? PATTERN : "aaaaa", ""}));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
