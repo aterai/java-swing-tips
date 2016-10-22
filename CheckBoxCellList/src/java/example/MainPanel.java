@@ -36,12 +36,12 @@ public final class MainPanel extends JPanel {
         for (String title: Arrays.asList(
                 "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
                 "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")) {
-            boolean flag = title.length() % 2 == 0;
-            JCheckBox c = new JCheckBox(title, flag);
+            boolean isSelected = title.length() % 2 == 0;
+            JCheckBox c = new JCheckBox(title, isSelected);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             list1.add(c);
-            model.addElement(new CheckBoxNode(title, flag));
-            root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, flag)));
+            model.addElement(new CheckBoxNode(title, isSelected));
+            root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
         }
         list3.setModel(new DefaultTreeModel(root));
         p.add(makeTitledPanel("Box",   list1));
