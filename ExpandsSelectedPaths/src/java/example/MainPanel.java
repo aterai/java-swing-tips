@@ -43,17 +43,17 @@ public final class MainPanel extends JPanel {
         return scroll;
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
-        TreeNode node = (TreeNode) path.getLastPathComponent();
-        if (Objects.isNull(node)) {
-            return;
-        }
-        if (node.toString().equals(q)) {
-            tree.addSelectionPath(path);
-        }
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration e = node.children();
-            while (e.hasMoreElements()) {
-                searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+        Object o = path.getLastPathComponent();
+        if (o instanceof TreeNode) {
+            TreeNode node = (TreeNode) o;
+            if (node.toString().equals(q)) {
+                tree.addSelectionPath(path);
+            }
+            if (!node.isLeaf() && node.getChildCount() >= 0) {
+                Enumeration e = node.children();
+                while (e.hasMoreElements()) {
+                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+                }
             }
         }
     }
