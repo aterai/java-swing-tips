@@ -20,17 +20,14 @@ public final class MainPanel extends JPanel {
             if (((AbstractButton) e.getSource()).isSelected()) {
                 //tabbedPane.removeAll();
                 Arrays.stream(desktopPane.getAllFrames())
-                  .sorted(Comparator.comparing(JInternalFrame::getTitle))
-                  .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
-
-                JInternalFrame sf = desktopPane.getSelectedFrame();
-                if (Objects.nonNull(sf)) {
-                    tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(sf.getTitle()));
-                }
+                      .sorted(Comparator.comparing(JInternalFrame::getTitle))
+                      .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
+                Optional.ofNullable(desktopPane.getSelectedFrame())
+                        .ifPresent(f -> tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(f.getTitle())));
                 cardLayout.show(panel, tabbedPane.getClass().getName());
             } else {
                 Arrays.stream(desktopPane.getAllFrames())
-                  .forEach(f -> f.setContentPane((Container) tabbedPane.getComponentAt(tabbedPane.indexOfTab(f.getTitle()))));
+                      .forEach(f -> f.setContentPane((Container) tabbedPane.getComponentAt(tabbedPane.indexOfTab(f.getTitle()))));
                 cardLayout.show(panel, desktopPane.getClass().getName());
             }
         }
