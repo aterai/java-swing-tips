@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
@@ -32,9 +33,7 @@ public class MainPanel extends JPanel {
         p.add(makeTitledPanel("ALWAYS_UPDATE", new JScrollPane(textArea1)));
         p.add(makeTitledPanel("NEVER_UPDATE", new JScrollPane(textArea2)));
 
-        for (int i = 0; i < 10; i++) {
-            test(Integer.toString(i));
-        }
+        IntStream.range(0, 10).mapToObj(Integer::toString).forEach(this::test);
 
         start.addActionListener(e -> startTest());
         stop.setEnabled(false);
