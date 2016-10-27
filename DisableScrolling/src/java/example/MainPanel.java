@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -42,9 +43,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        for (int i = 0; i < 100; i++) {
-            model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE});
-        }
+        IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
         table.setAutoCreateRowSorter(true);
 
         check.addItemListener(e -> {
