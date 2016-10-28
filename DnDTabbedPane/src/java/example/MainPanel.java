@@ -267,9 +267,7 @@ class TabTransferable implements Transferable {
         return tabbedPane;
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        DataFlavor[] f = new DataFlavor[1];
-        f[0] = FLAVOR;
-        return f;
+        return new DataFlavor[] {FLAVOR};
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getHumanPresentableName().equals(NAME);

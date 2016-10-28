@@ -177,9 +177,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         return this;
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        DataFlavor[] f = new DataFlavor[1];
-        f[0] = this.FLAVOR;
-        return f;
+        return new DataFlavor[] {FLAVOR};
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getHumanPresentableName().equals(NAME);
@@ -247,13 +245,10 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             repaint();
         }
         private boolean isDragAcceptable(DropTargetDragEvent e) {
-            DataFlavor[] f = e.getCurrentDataFlavors();
-            return isDataFlavorSupported(f[0]);
+            return isDataFlavorSupported(e.getCurrentDataFlavors()[0]);
         }
         private boolean isDropAcceptable(DropTargetDropEvent e) {
-            Transferable t = e.getTransferable();
-            DataFlavor[] f = t.getTransferDataFlavors();
-            return isDataFlavorSupported(f[0]);
+            return isDataFlavorSupported(e.getTransferable().getTransferDataFlavors()[0]);
         }
     }
 }
