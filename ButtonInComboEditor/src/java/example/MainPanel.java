@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -153,10 +153,10 @@ class URLItemComboBox extends JComboBox<URLItem> {
             return Optional.of((URLItem) o);
         }
         String str = Objects.toString(o, "");
-        return Stream.iterate(0, i -> i++).limit(model.getSize())
-                     .map(model::getElementAt)
-                     .filter(ui -> ui.url.equals(str))
-                     .findFirst();
+        return IntStream.range(0, model.getSize())
+                        .mapToObj(model::getElementAt)
+                        .filter(ui -> ui.url.equals(str))
+                        .findFirst();
 //         DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
 //         URLItem item = null;
 //         for (int i = 0; i < model.getSize(); i++) {
