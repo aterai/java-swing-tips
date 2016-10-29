@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -20,7 +21,7 @@ public final class MainPanel extends JPanel {
         {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
         {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
     };
-    private final Object[] columnNames = {"fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f"};
+    private final Object[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -28,6 +29,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    private final JButton addButton = new JButton("add");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -54,7 +56,7 @@ public final class MainPanel extends JPanel {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        final JScrollPane scroll = new JScrollPane(table);
+        JScrollPane scroll = new JScrollPane(table);
 //         JViewport viewport = new JViewport();
 //         viewport.setView(fixedTable);
 //         viewport.setPreferredSize(fixedTable.getPreferredSize());
@@ -73,17 +75,14 @@ public final class MainPanel extends JPanel {
             scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
         });
         //</blockquote>
+
+        addButton.addActionListener(e -> {
+            sorter.setSortKeys(null);
+            IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
+        });
+
         add(scroll);
-        add(new JButton(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                sorter.setSortKeys(null);
-                for (int i = 0; i < 100; i++) {
-                    model.addRow(new Object[] {
-                        i, i + 1, "A" + i, "B" + i
-                    });
-                }
-            }
-        }), BorderLayout.SOUTH);
+        add(addButton, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
