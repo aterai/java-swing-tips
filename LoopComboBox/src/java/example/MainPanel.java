@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,23 +16,25 @@ public final class MainPanel extends JPanel {
 
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex(index == 0 ? combo02.getItemCount() - 1 : index - 1);
+                JComboBox c = (JComboBox) e.getSource();
+                int i = c.getSelectedIndex();
+                c.setSelectedIndex(i == 0 ? c.getItemCount() - 1 : i - 1);
             }
         };
         Action down = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex(index == combo02.getItemCount() - 1 ? 0 : index + 1);
+                JComboBox c = (JComboBox) e.getSource();
+                int i = c.getSelectedIndex();
+                c.setSelectedIndex(i == c.getItemCount() - 1 ? 0 : i + 1);
             }
         };
-        ActionMap amc = combo02.getActionMap();
-        amc.put("myUp",   up);
-        amc.put("myDown", down);
+        ActionMap am = combo02.getActionMap();
+        am.put("myUp",   up);
+        am.put("myDown", down);
 
-        InputMap imc = combo02.getInputMap();
-        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),   "myUp");
-        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
+        InputMap im = combo02.getInputMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),   "myUp");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
 
         Box box = Box.createVerticalBox();
         box.add(createPanel(combo01, "default:"));
@@ -49,12 +52,7 @@ public final class MainPanel extends JPanel {
     }
     private static ComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        model.addElement("aaaa");
-        model.addElement("aaaabbb");
-        model.addElement("aaaabbbcc");
-        model.addElement("1354123451234513512");
-        model.addElement("bbb1");
-        model.addElement("bbb12");
+        IntStream.range(0, 10).forEach(i -> model.addElement("item: " + i));
         return model;
     }
     public static void main(String... args) {
