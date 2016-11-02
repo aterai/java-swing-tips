@@ -231,14 +231,23 @@ class DnDTabbedPane extends JTabbedPane {
 
     protected Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
+        //XXX: Rectangle compRect = getSelectedComponent().getBounds();
         //pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
-        //Rectangle compRect = getSelectedComponent().getBounds();
-        Component comp = getSelectedComponent();
-        int idx = 0;
-        while (comp == null && idx < getTabCount()) {
-            comp = getComponentAt(idx++);
-        }
-        Rectangle compRect = (comp == null) ? new Rectangle() : comp.getBounds();
+        //Component comp = getSelectedComponent();
+        //int idx = 0;
+        //while (comp == null && idx < getTabCount()) {
+        //    comp = getComponentAt(idx++);
+        //}
+
+        Rectangle compRect = Optional.ofNullable(getSelectedComponent()).map(Component::getBounds).orElseGet(Rectangle::new);
+//         //TEST:
+//         Rectangle compRect = Optional.ofNullable(getSelectedComponent())
+//                                      .map(Component::getBounds)
+//                                      .orElseGet(() -> IntStream.range(0, getTabCount())
+//                                                                .mapToObj(this::getComponentAt)
+//                                                                .map(Component::getBounds)
+//                                                                .findFirst()
+//                                                                .orElseGet(Rectangle::new));
         int tabPlacement = getTabPlacement();
         if (tabPlacement == TOP) {
             tabbedRect.height = tabbedRect.height - compRect.height;
