@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -13,9 +14,7 @@ public final class MainPanel extends JPanel {
 
         JTextArea textArea = new JTextArea();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 2000; i++) {
-            sb.append(String.format("%04d%n", i));
-        }
+        IntStream.range(0, 2000).forEach(i -> sb.append(String.format("%04d%n", i)));
         textArea.setText(sb.toString());
         textArea.setCaretPosition(0);
 
