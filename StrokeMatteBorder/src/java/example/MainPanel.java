@@ -81,7 +81,7 @@ class StrokeMatteBorder extends EmptyBorder {
             Insets insets = getBorderInsets(c);
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setStroke(this.stroke);
-            g2.setPaint(Objects.nonNull(this.paint) ? this.paint : Objects.nonNull(c) ? c.getForeground() : null);
+            g2.setPaint(Optional.ofNullable(this.paint).orElse(Optional.ofNullable(c).map(Component::getForeground).orElse(null)));
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.translate(x, y);
 
