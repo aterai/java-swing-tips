@@ -7,6 +7,8 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.*;
+import java.util.Collections;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -49,18 +51,16 @@ public final class MainPanel extends JPanel {
 //             tracker.removeImage(img);
 //         }
 
-        StringBuilder sb0 = new StringBuilder();
-        StringBuilder sb1 = new StringBuilder();
-        for (int i = 0; i < 50; i++) {
-            sb0.append(TEXT);
-            sb1.append(TEXT);
-        }
+        String str = String.join("\n", Collections.nCopies(50, TEXT));
+        StringBuilder sb0 = new StringBuilder(str);
+        StringBuilder sb1 = new StringBuilder(str);
+
         sb0.append(String.format("<p><img src='%s'></p>", path));
         sb1.append(String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h));
-        for (int i = 0; i < 3; i++) {
+        IntStream.range(0, 3).forEach(i -> {
             sb0.append(TEXT);
             sb1.append(TEXT);
-        }
+        });
         String st0 = sb0.toString();
         String st1 = sb1.toString();
 
