@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -11,11 +12,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < 100; i++) {
-            buf.append(i + LF);
-        }
+        IntStream.range(0, 100).forEach(i -> buf.append(i + LF));
 
-        final JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
+        JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1));
