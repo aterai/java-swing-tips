@@ -113,16 +113,17 @@ class ListItemTransferHandler extends TransferHandler {
         System.out.println("getSourceActions");
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
-        if (!(c instanceof JList)) {
-            return TransferHandler.NONE;
+        if (c instanceof JList) {
+            JList source = (JList) c;
+            setDragImage(createDragImage(source));
+            //Point pt = c.getMousePosition();
+            //if (Objects.nonNull(pt)) {
+            //    setDragImageOffset(pt);
+            //}
+            Optional.ofNullable(c.getMousePosition()).ifPresent(this::setDragImageOffset);
+            return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
         }
-        JList source = (JList) c;
-        setDragImage(createDragImage(source));
-        Point pt = c.getMousePosition();
-        if (Objects.nonNull(pt)) {
-            setDragImageOffset(pt);
-        }
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.NONE;
     }
     private static BufferedImage createDragImage(JList source) {
         int w = source.getWidth();
