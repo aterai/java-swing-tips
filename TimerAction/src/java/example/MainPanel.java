@@ -121,20 +121,18 @@ class Tile2 extends JComponent {
 }
 
 class TilePanel extends JPanel {
-    protected TilePanel(final Random rnd) {
+    protected TilePanel(Random rnd) {
         super(new GridLayout(10, 10));
         for (int i = 0; i < 100; i++) {
             JLabel l = new JLabel();
             l.setOpaque(true);
             add(l);
         }
-        final Timer timer = new Timer(16, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < 100; i++) {
-                    JComponent l = (JComponent) getComponent(i);
-                    int red = rnd.nextInt(256);
-                    l.setBackground(new Color(red, 255 - red, 0));
-                }
+        Timer timer = new Timer(16, e -> {
+            for (int i = 0; i < 100; i++) {
+                JComponent l = (JComponent) getComponent(i);
+                int red = rnd.nextInt(256);
+                l.setBackground(new Color(red, 255 - red, 0));
             }
         });
         addHierarchyListener(e -> {
