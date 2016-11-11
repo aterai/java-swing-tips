@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,12 +14,12 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel c1 = new JPanel(new GridLayout(10, 10));
-        final JPanel c2 = new JPanel(new GridLayout(10, 10));
-        final Timer timer = new Timer(16, null);
-        for (int i = 0; i < 100; i++) {
+        JPanel c2 = new JPanel(new GridLayout(10, 10));
+        Timer timer = new Timer(16, null);
+        IntStream.range(0, 100).forEach(i -> {
             c1.add(new Tile1(rnd));
             c2.add(new Tile2(rnd, timer));
-        }
+        });
         c2.addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                 if (e.getComponent().isShowing()) {
@@ -123,18 +124,16 @@ class Tile2 extends JComponent {
 class TilePanel extends JPanel {
     protected TilePanel(Random rnd) {
         super(new GridLayout(10, 10));
-        for (int i = 0; i < 100; i++) {
+        IntStream.range(0, 100).forEach(i -> {
             JLabel l = new JLabel();
             l.setOpaque(true);
             add(l);
-        }
-        Timer timer = new Timer(16, e -> {
-            for (int i = 0; i < 100; i++) {
-                JComponent l = (JComponent) getComponent(i);
-                int red = rnd.nextInt(256);
-                l.setBackground(new Color(red, 255 - red, 0));
-            }
         });
+        Timer timer = new Timer(16, e -> IntStream.range(0, 100).forEach(i -> {
+            JComponent c = (JComponent) getComponent(i);
+            int red = rnd.nextInt(256);
+            c.setBackground(new Color(red, 255 - red, 0));
+        }));
         addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                 if (e.getComponent().isShowing()) {
