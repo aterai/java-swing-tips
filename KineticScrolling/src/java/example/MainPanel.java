@@ -120,18 +120,16 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
         super();
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-                Point vp = vport.getViewPosition();
-                vp.translate(-delta.x, -delta.y);
-                label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-                //System.out.println(delta);
-                if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-                    delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
-                } else {
-                    scroller.stop();
-                }
+        this.scroller = new Timer(DELAY, e -> {
+            JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+            Point vp = vport.getViewPosition();
+            vp.translate(-delta.x, -delta.y);
+            label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            //System.out.println(delta);
+            if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+                delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+            } else {
+                ((Timer) e.getSource()).stop();
             }
         });
     }
@@ -186,7 +184,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                     delta.y = (int) (delta.y * D);
                 }
             } else {
-                inside.stop();
+                //inside.stop();
+                ((Timer) e.getSource()).stop();
                 if (!isInside(vport, label)) {
                     outside.start();
                 }
@@ -212,7 +211,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
             }
             vport.setViewPosition(vp);
             if (isInside(vport, label)) {
-                outside.stop();
+                //outside.stop();
+                ((Timer) e.getSource()).stop();
             }
         }
     });
