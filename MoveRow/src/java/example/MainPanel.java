@@ -104,15 +104,19 @@ class TablePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         int row   = table.rowAtPoint(new Point(x, y));
         int count = table.getSelectedRowCount();
-        int[] l   = table.getSelectedRows();
-        boolean flg = true;
-        for (int i = 0; i < l.length; i++) {
-            if (l[i] == row) {
-                flg = false;
-                break;
-            }
-        }
-        if (row > 0 && flg) {
+//         int[] l   = table.getSelectedRows();
+//         boolean flg = true;
+//         for (int i = 0; i < l.length; i++) {
+//             if (l[i] == row) {
+//                 flg = false;
+//                 break;
+//             }
+//         }
+//         if (row > 0 && flg) {
+//             table.setRowSelectionInterval(row, row);
+//         }
+        boolean flg = Arrays.stream(table.getSelectedRows()).anyMatch(i -> i == row);
+        if (row > 0 && !flg) {
             table.setRowSelectionInterval(row, row);
         }
 
