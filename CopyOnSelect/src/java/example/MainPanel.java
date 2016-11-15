@@ -25,10 +25,12 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 removeCaretListener(handler);
                 removeMouseListener(handler);
+                removeKeyListener(handler);
                 super.updateUI();
                 handler = new CopyOnSelectListener();
                 addCaretListener(handler);
                 addMouseListener(handler);
+                addKeyListener(handler);
             }
         };
 
@@ -65,34 +67,45 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class CopyOnSelectListener extends MouseAdapter implements CaretListener {
+class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyListener {
     private final transient Logger logger = Logger.getLogger(getClass().getName());
     private boolean dragActive;
+    private boolean shiftActive;
     private int dot;
     private int mark;
-    @Override public final void caretUpdate(CaretEvent e) {
-        if (!dragActive) {
+    @Override public void caretUpdate(CaretEvent e) {
+        if (!dragActive && !shiftActive) {
             fire(e.getSource());
         }
     }
-    @Override public final void mousePressed(MouseEvent e) {
+    @Override public void mousePressed(MouseEvent e) {
         dragActive = true;
     }
-    @Override public final void mouseReleased(MouseEvent e) {
+    @Override public void mouseReleased(MouseEvent e) {
         dragActive = false;
         fire(e.getSource());
     }
+    @Override public void keyPressed(KeyEvent e) {
+        shiftActive = (e.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) != 0;
+    }
+    @Override public void keyReleased(KeyEvent e) {
+        shiftActive = (e.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) != 0;
+        if (!shiftActive) {
+            fire(e.getSource());
+        }
+    }
+    @Override public void keyTyped(KeyEvent e) { /* empty */ }
     private void fire(Object c) {
         if (c instanceof JTextComponent) {
             JTextComponent tc = (JTextComponent) c;
             Caret caret = tc.getCaret();
             int d = caret.getDot();
             int m = caret.getMark();
-            logger.info(m + " / " + d);
+            //logger.info(m + " / " + d);
             if (d != m && (dot != d || mark != m)) {
                 String str = tc.getSelectedText();
-                logger.info(str);
                 if (Objects.nonNull(str)) {
+                    logger.info(str);
                     //StringSelection data = new StringSelection(str);
                     //Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
                     tc.copy();
