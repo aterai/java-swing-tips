@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -12,29 +13,26 @@ public final class MainPanel extends JPanel {
 
         Box box0 = Box.createVerticalBox();
         box0.setBorder(BorderFactory.createTitledBorder("Default"));
-        int i = 0;
-        while (i < 4) {
+        IntStream.range(0, 4).forEach(i -> {
             JRadioButton b = new JRadioButton("Default: " + i);
             bg.add(b);
             box0.add(b);
             b.setAlignmentX(Component.LEFT_ALIGNMENT);
             box0.add(Box.createVerticalStrut(5));
-            i++;
-        }
+        });
 
         Box box1 = Box.createVerticalBox();
         box1.setBorder(BorderFactory.createTitledBorder("Text Color"));
-        while (i < 8) {
+        IntStream.range(4, 8).forEach(i -> {
             JRadioButton b = new ColorRadioButton("Text: " + i);
             bg.add(b);
             box1.add(b);
             box1.add(Box.createVerticalStrut(5));
-            i++;
-        }
+        });
 
         Box box2 = Box.createVerticalBox();
         box2.setBorder(BorderFactory.createTitledBorder("Icon Color"));
-        while (i < 12) {
+        IntStream.range(8, 12).forEach(i -> {
             JRadioButton b = new ColorRadioButton("Icon: " + i) {
                 @Override public void updateUI() {
                     super.updateUI();
@@ -47,8 +45,7 @@ public final class MainPanel extends JPanel {
             bg.add(b);
             box2.add(b);
             box2.add(Box.createVerticalStrut(5));
-            i++;
-        }
+        });
 
         add(box0);
         add(box1);
