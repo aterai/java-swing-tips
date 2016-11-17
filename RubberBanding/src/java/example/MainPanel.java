@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
-import java.util.List;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -123,8 +123,8 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             rubberBand.lineTo(destPoint.x, destPoint.y);
             rubberBand.lineTo(srcPoint.x,  destPoint.y);
             rubberBand.closePath();
-            l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-            //JDK 1.8.0: l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
+            //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
@@ -149,22 +149,21 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
     }
-    //JDK 1.7.0
-    private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-        ListModel model = l.getModel();
-        List<Integer> ll = new ArrayList<>(model.getSize());
-        for (int i = 0; i < model.getSize(); i++) {
-            if (rect.intersects(l.getCellBounds(i, i))) {
-                ll.add(i);
-            }
-        }
-        //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
-        int[] il = new int[ll.size()];
-        for (int i = 0; i < ll.size(); i++) {
-            il[i] = ll.get(i);
-        }
-        return il;
-    }
+//     //JDK 1.7.0
+//     private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+//         ListModel model = l.getModel();
+//         List<Integer> ll = new ArrayList<>(model.getSize());
+//         for (int i = 0; i < model.getSize(); i++) {
+//             if (rect.intersects(l.getCellBounds(i, i))) {
+//                 ll.add(i);
+//             }
+//         }
+//         int[] il = new int[ll.size()];
+//         for (int i = 0; i < ll.size(); i++) {
+//             il[i] = ll.get(i);
+//         }
+//         return il;
+//     }
 }
 
 class SelectedImageFilter extends RGBImageFilter {
