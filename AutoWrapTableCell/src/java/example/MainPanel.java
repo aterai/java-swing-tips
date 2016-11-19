@@ -149,11 +149,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
             cellHeightList.add(0);
         }
         cellHeightList.set(column, preferredHeight);
-        //JDK 1.8.0: int max = cellHeightList.stream().max(Integer::compare).get();
-        int max = preferredHeight;
-        for (int h: cellHeightList) {
-            max = Math.max(h, max);
-        }
+        int max = cellHeightList.stream().max(Integer::compare).get();
         if (table.getRowHeight(row) != max) {
             table.setRowHeight(row, max);
         }
