@@ -8,6 +8,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.*;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -143,9 +144,7 @@ final class ImageUtil {
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for (int i = 0; i < 256; i++) {
-            b[i] = (byte) (i * .5);
-        }
+        IntStream.range(0, b.length).forEach(i -> b[i] = (byte) (i * .5));
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
         return dest;
