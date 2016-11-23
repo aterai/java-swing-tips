@@ -31,15 +31,13 @@ public final class MainPanel extends JPanel {
         rightPane.setResizeWeight(.5);
         centerPane.setResizeWeight(.5);
 
-        PropertyChangeListener pcl = new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                if (JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
-                    JSplitPane source = (JSplitPane) e.getSource();
-                    int location = ((Integer) e.getNewValue()).intValue();
-                    JSplitPane target = Objects.equals(source, leftPane) ? rightPane : leftPane;
-                    if (location != target.getDividerLocation()) {
-                        target.setDividerLocation(location);
-                    }
+        PropertyChangeListener pcl = e -> {
+            if (JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
+                JSplitPane source = (JSplitPane) e.getSource();
+                int location = ((Integer) e.getNewValue()).intValue();
+                JSplitPane target = Objects.equals(source, leftPane) ? rightPane : leftPane;
+                if (location != target.getDividerLocation()) {
+                    target.setDividerLocation(location);
                 }
             }
         };
