@@ -173,12 +173,20 @@ class AnimeIcon implements Icon {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
         g2.translate(x, y);
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            float alpha = isRunning ? (i + 1) / (float) size : .5f;
+
+        float size = (float) list.size();
+        list.stream().forEach(s -> {
+            float alpha = isRunning ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(list.get(i));
-        }
+            g2.fill(s);
+        });
+
+//         int size = list.size();
+//         for (int i = 0; i < size; i++) {
+//             float alpha = isRunning ? (i + 1) / (float) size : .5f;
+//             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+//             g2.fill(list.get(i));
+//         }
         g2.dispose();
     }
     @Override public int getIconWidth() {
