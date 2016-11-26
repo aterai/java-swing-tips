@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.image.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 //import javax.swing.plaf.nimbus.*; //JDK 1.7.0
@@ -80,18 +80,17 @@ class TransparentTree extends JTree {
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(SELC);
-        for (int i: getSelectionRows()) {
+        Arrays.stream(getSelectionRows()).forEach(i -> {
             Rectangle r = getRowBounds(i);
             g2.fillRect(0, r.y, getWidth(), r.height);
-        }
+        });
         super.paintComponent(g);
         if (hasFocus()) {
-            TreePath path = getLeadSelectionPath();
-            if (Objects.nonNull(path)) {
+            Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
                 Rectangle r = getRowBounds(getRowForPath(path));
                 g2.setPaint(SELC.darker());
                 g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-            }
+            });
         }
         g2.dispose();
     }
