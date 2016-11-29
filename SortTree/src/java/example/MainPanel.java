@@ -188,7 +188,7 @@ final class TreeUtil {
         }
     }
     public static void sortTree2(DefaultMutableTreeNode root) {
-        Enumeration e = root.depthFirstEnumeration();
+        Enumeration<?> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             if (!node.isLeaf()) {
@@ -215,7 +215,7 @@ final class TreeUtil {
         }
     }
     public static void sortTree3(DefaultMutableTreeNode root) {
-        Enumeration e = root.depthFirstEnumeration();
+        Enumeration<?> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             if (!node.isLeaf()) {
