@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -97,27 +97,27 @@ final class TreeUtil {
     public static AtomicInteger compareCount = new AtomicInteger();
     public static AtomicInteger swapCount = new AtomicInteger();
 
-//* //JDK 1.7.0
-    private static TreeNodeComparator tnc = new TreeNodeComparator();
-    private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
-        private static final long serialVersionUID = 1L;
-        @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-            compareCount.getAndIncrement();
-            if (a.isLeaf() && !b.isLeaf()) {
-                return 1;
-            } else if (!a.isLeaf() && b.isLeaf()) {
-                return -1;
-            } else {
-                String sa = a.getUserObject().toString();
-                String sb = b.getUserObject().toString();
-                return sa.compareToIgnoreCase(sb);
-            }
-        }
-    }
-/*/ //JDK 1.8.0
+//     //JDK 1.7.0
+//     private static TreeNodeComparator tnc = new TreeNodeComparator();
+//     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+//         private static final long serialVersionUID = 1L;
+//         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+//             compareCount.getAndIncrement();
+//             if (a.isLeaf() && !b.isLeaf()) {
+//                 return 1;
+//             } else if (!a.isLeaf() && b.isLeaf()) {
+//                 return -1;
+//             } else {
+//                 String sa = a.getUserObject().toString();
+//                 String sb = b.getUserObject().toString();
+//                 return sa.compareToIgnoreCase(sb);
+//             }
+//         }
+//     }
+
+    //JDK 1.8.0
     private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
                                                                       .thenComparing(n -> n.getUserObject().toString());
-//*/
 
     private TreeUtil() { /* Singleton */ }
 
