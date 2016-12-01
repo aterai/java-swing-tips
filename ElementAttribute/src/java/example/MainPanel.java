@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -129,24 +129,19 @@ class CustomTooltipEditorPane extends JEditorPane {
     @Override public String getToolTipText(MouseEvent e) {
         String title = super.getToolTipText(e);
         JEditorPane editor = (JEditorPane) e.getComponent();
-        //HTMLEditorKit kit = (HTMLEditorKit) editor.getEditorKit();
         if (!editor.isEditable()) {
-            Point pt = new Point(e.getX(), e.getY());
-            int pos = editor.getUI().viewToModel(editor, pt, bias);
+            int pos = editor.getUI().viewToModel(editor, e.getPoint(), bias);
             if (bias[0] == Position.Bias.Backward && pos > 0) {
                 pos--;
             }
             if (pos >= 0 && editor.getDocument() instanceof HTMLDocument) {
-                HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
-                String str = getSpanTitleAttribute(hdoc, pos);
-                if (Objects.nonNull(str)) {
-                    title = str;
-                }
+                HTMLDocument doc = (HTMLDocument) editor.getDocument();
+                return getSpanTitleAttribute(doc, pos).orElse(title);
             }
         }
         return title;
     }
-    private String getSpanTitleAttribute(HTMLDocument hdoc, int pos) {
+    private Optional<String> getSpanTitleAttribute(HTMLDocument hdoc, int pos) {
         //HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
         Element elem = hdoc.getCharacterElement(pos);
         //if (!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
@@ -155,11 +150,7 @@ class CustomTooltipEditorPane extends JEditorPane {
         //if (elem != null) {
         AttributeSet a = elem.getAttributes();
         AttributeSet span = (AttributeSet) a.getAttribute(HTML.Tag.SPAN);
-        if (Objects.nonNull(span)) {
-            return (String) span.getAttribute(HTML.Attribute.TITLE);
-        }
-        //}
-        return null;
+        return Optional.ofNullable(span).map(s -> (String) s.getAttribute(HTML.Attribute.TITLE));
     }
 }
 
