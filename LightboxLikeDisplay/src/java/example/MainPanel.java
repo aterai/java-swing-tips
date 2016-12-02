@@ -142,10 +142,7 @@ class LightboxGlassPane extends JPanel {
         g2.fill(rect);
 
         if (alpha > 0) {
-            if (alpha > 1f) {
-                alpha = 1f;
-            }
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(alpha, 1f)));
             g2.drawImage(image.getImage(), rect.x + BW, rect.y + BW, image.getIconWidth(), image.getIconHeight(), this);
         } else {
             animatedIcon.paintIcon(this, g2, centerPt.x - animatedIcon.getIconWidth() / 2, centerPt.y - animatedIcon.getIconHeight() / 2);
