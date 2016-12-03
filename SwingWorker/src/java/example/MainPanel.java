@@ -103,9 +103,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent e) {
-            if (Objects.nonNull(worker) && !worker.isDone()) {
-                worker.cancel(true);
-            }
+            Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
         }
     }
 
@@ -240,16 +238,17 @@ class AnimeIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        //g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
         g2.fillRect(0, 0, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            float alpha = isRunning ? (i + 1) / (float) size : .5f;
+        float size = (float) list.size();
+        list.stream().forEach(s -> {
+            float alpha = isRunning ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(list.get(i));
-        }
+            g2.fill(s);
+        });
         g2.dispose();
     }
     @Override public int getIconWidth() {
