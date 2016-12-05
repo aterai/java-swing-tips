@@ -297,7 +297,7 @@ class CloseableTabIconHandler extends MouseAdapter {
             Rectangle rect = icon.getBounds();
             Point pos = tabbedPane.getHeaderViewPosition();
             drawRect.setBounds(rect.x - pos.x, rect.y - pos.y, rect.width, rect.height);
-            icon.mousepressed = e.getModifiers() == e.BUTTON1_MASK;
+            icon.mousepressed = e.getModifiers() == MouseEvent.BUTTON1_MASK;
             tabbedPane.repaint(drawRect);
         }
     }
@@ -324,7 +324,7 @@ class CloseableTabIconHandler extends MouseAdapter {
         if (Objects.nonNull(icon)) {
             if (isCloseTabIconRollover(tabbedPane, icon, e)) {
                 icon.mouseover = true;
-                icon.mousepressed = e.getModifiers() == e.BUTTON1_MASK;
+                icon.mousepressed = e.getModifiers() == MouseEvent.BUTTON1_MASK;
             } else {
                 icon.mouseover = false;
             }
@@ -347,7 +347,7 @@ class CloseableTabIconHandler extends MouseAdapter {
         if (Objects.nonNull(icon)) {
             if (isCloseTabIconRollover(tabbedPane, icon, e)) {
                 icon.mouseover = true;
-                icon.mousepressed = e.getModifiers() == e.BUTTON1_MASK;
+                icon.mousepressed = e.getModifiers() == MouseEvent.BUTTON1_MASK;
             } else {
                 icon.mouseover = false;
             }
