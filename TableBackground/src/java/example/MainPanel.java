@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
     private final JCheckBox check = new JCheckBox("viewport setOpaque");
+    private final JButton button = new JButton("Choose background color");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        final JScrollPane scroll = new JScrollPane(table);
+        JScrollPane scroll = new JScrollPane(table);
         scroll.setComponentPopupMenu(new TablePopupMenu());
         //scroll.getViewport().setInheritsPopupMenu(true); // 1.5.0
         table.setInheritsPopupMenu(true);
@@ -62,18 +63,17 @@ public final class MainPanel extends JPanel {
             }
             scroll.repaint();
         });
+
+        button.addActionListener(e -> {
+            Color color = JColorChooser.showDialog(getRootPane(), "background color", scroll.getViewport().getBackground());
+            scroll.getViewport().setBackground(color);
+            scroll.repaint();
+        });
+
         JPanel pnl = new JPanel();
         pnl.add(check);
-        pnl.add(new JButton(new AbstractAction("Choose background color") {
-            private final JColorChooser cc = new JColorChooser();
-            @Override public void actionPerformed(ActionEvent e) {
-                EventQueue.invokeLater(() -> {
-                    Color color = cc.showDialog(getRootPane(), "background color", scroll.getViewport().getBackground());
-                    scroll.getViewport().setBackground(color);
-                });
-                scroll.repaint();
-            }
-        }));
+        pnl.add(button);
+
         add(scroll);
         add(pnl, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
