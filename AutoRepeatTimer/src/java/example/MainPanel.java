@@ -25,13 +25,13 @@ public final class MainPanel extends JPanel {
         label.setFont(label.getFont().deriveFont(30f));
 
         Box box = Box.createHorizontalBox();
-        box.createHorizontalGlue();
+        box.add(Box.createHorizontalGlue());
         box.add(makeButton(-5, label));
         box.add(makeButton(-1, label));
         box.add(label);
         box.add(makeButton(+1, label));
         box.add(makeButton(+5, label));
-        box.createHorizontalGlue();
+        box.add(Box.createHorizontalGlue());
 
         add(box);
         setPreferredSize(new Dimension(320, 240));
