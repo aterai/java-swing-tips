@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
 
         iframe.addPropertyChangeListener(e -> {
             String prop = e.getPropertyName();
-            if (JInternalFrame.IS_MAXIMUM_PROPERTY == prop) {
-                if (e.getNewValue() == Boolean.TRUE) {
+            if (Objects.equals(JInternalFrame.IS_MAXIMUM_PROPERTY, prop)) {
+                if (Objects.equals(e.getNewValue(), Boolean.TRUE)) {
                     displayMessage("* Internal frame maximized", e);
                 } else {
                     displayMessage("* Internal frame minimized", e);
