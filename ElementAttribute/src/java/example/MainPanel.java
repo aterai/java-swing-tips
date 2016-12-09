@@ -39,8 +39,9 @@ public final class MainPanel extends JPanel {
                 JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
             } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                 tooltip = editorPane.getToolTipText();
-                URL url = e.getURL();
-                editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+                editorPane.setToolTipText(Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null));
+//                 URL url = e.getURL();
+//                 editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
             } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                 editorPane.setToolTipText(tooltip);
             }
@@ -111,14 +112,17 @@ class CustomTooltipEditorPane extends JEditorPane {
                     JOptionPane.showMessageDialog(editor, e.getURL());
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editor.getToolTipText();
-                    Element elem = e.getSourceElement();
-                    if (Objects.nonNull(elem)) {
-                        AttributeSet attr = elem.getAttributes();
-                        AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
-                        if (Objects.nonNull(a)) {
-                            editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
-                        }
-                    }
+                    Optional.ofNullable(e.getSourceElement())
+                            .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
+                            .ifPresent(attr -> editor.setToolTipText((String) attr.getAttribute(HTML.Attribute.TITLE)));
+//                     Element elem = e.getSourceElement();
+//                     if (Objects.nonNull(elem)) {
+//                         AttributeSet attr = elem.getAttributes();
+//                         AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
+//                         if (Objects.nonNull(a)) {
+//                             editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
+//                         }
+//                     }
                 } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editor.setToolTipText(tooltip);
                 }
