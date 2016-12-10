@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -17,12 +18,9 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeList() {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        for (int i = 0; i < 50; i++) {
-            Date d = new Date();
-            model.addElement(String.format("%d: %s", i, d.toString()));
-        }
-        return new JList<String>(model);
+        DefaultListModel<String> m = new DefaultListModel<>();
+        IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%d: %s", i, Objects.toString(new Date()))));
+        return new JList<String>(m);
     }
     private static JScrollPane makeTranslucentScrollBar(JComponent c) {
         return new JScrollPane(c) {
