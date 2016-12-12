@@ -178,7 +178,7 @@ class MyInternalFrameListener implements InternalFrameListener {
 }
 
 class ToolBarButton extends JButton {
-    private transient MouseAdapter handler;
+    private transient MouseListener handler;
     protected ToolBarButton(Action a) {
         super(a);
     }

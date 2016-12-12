@@ -50,7 +50,7 @@ class LabelWithToolBox extends JLabel {
     private int counter;
     private int yy;
     private final JToolBar toolBox = new JToolBar() {
-        private transient MouseAdapter listener;
+        private transient MouseListener listener;
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());

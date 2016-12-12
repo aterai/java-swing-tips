@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
 class DisableInputLayerUI extends LayerUI<JComponent> {
     private static final String CMD_BLOCKING = "lock";
     private static final boolean DEBUG_POPUP_BLOCK = false;
-    private final transient MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
-    private final transient KeyAdapter dummyKeyListener = new KeyAdapter() { /* Dummy listener */ };
+    private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient KeyListener dummyKeyListener = new KeyAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
 
     @Override public void installUI(JComponent c) {

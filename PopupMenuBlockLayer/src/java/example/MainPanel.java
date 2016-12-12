@@ -131,7 +131,7 @@ public final class MainPanel extends JPanel {
 }
 class DisableInputLayerUI extends LayerUI<JComponent> {
     private static final String CMD_REPAINT = "lock";
-    private final transient MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
     public void setLocked(boolean flag) {
         firePropertyChange(CMD_REPAINT, isBlocking, flag);

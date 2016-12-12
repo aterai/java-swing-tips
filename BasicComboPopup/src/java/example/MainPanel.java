@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
 
 class EditorComboPopup extends BasicComboPopup {
     private final JTextComponent textArea;
-    private transient MouseAdapter listener;
+    private transient MouseListener listener;
     protected EditorComboPopup(JTextComponent textArea, JComboBox cb) {
         super(cb);
         this.textArea = textArea;
