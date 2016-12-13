@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
             SingleInstanceService singleInstanceService = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
             singleInstanceService.addSingleInstanceListener(new SingleInstanceListener() {
                 private int count;
-                @Override public void newActivation(String... args) {
+                @Override public void newActivation(String[] args) {
                     //System.out.println(EventQueue.isDispatchThread());
                     EventQueue.invokeLater(() -> {
                         JOptionPane.showMessageDialog(frame, "already running: " + count);

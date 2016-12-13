@@ -125,7 +125,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setTransferHandler(new TransferHandler("text") {
-            @Override public boolean canImport(JComponent c, DataFlavor... flavors) {
+            @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
                 return flavors.length > 0 && flavors[0].equals(URI_FLAVOR);
             }
             @Override protected Transferable createTransferable(JComponent c) {
