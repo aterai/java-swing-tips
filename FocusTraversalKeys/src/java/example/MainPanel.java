@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createHorizontalBox();
-        box.add(box.createHorizontalGlue());
+        box.add(Box.createHorizontalGlue());
         box.add(new JButton("111"));
         box.add(new JButton("222"));
         box.add(button);
