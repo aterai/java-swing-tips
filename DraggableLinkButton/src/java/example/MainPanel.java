@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 //         final DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
 //         final JLabel label = new JLabel(MYSITE);
 //         label.setTransferHandler(new TransferHandler("text") {
-//             @Override public boolean canImport(JComponent c, DataFlavor... flavors) {
+//             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
 //                 return (flavors.length > 0 && flavors[0].equals(uriflavor));
 //             }
 //             @Override protected Transferable createTransferable(JComponent c) {
