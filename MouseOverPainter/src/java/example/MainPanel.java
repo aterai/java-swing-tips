@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
 class HighlightCursorTextArea extends JTextArea {
     private static final Color LINE_COLOR = new Color(250, 250, 220);
     private int rollOverRowIndex = -1;
-    private transient MouseAdapter rolloverHandler;
+    private transient MouseInputListener rolloverHandler;
 
     protected HighlightCursorTextArea() {
         super();
@@ -84,7 +85,7 @@ class HighlightCursorTextArea extends JTextArea {
         g2.dispose();
         super.paintComponent(g);
     }
-    private class RollOverListener extends MouseAdapter {
+    private class RollOverListener extends MouseInputAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();

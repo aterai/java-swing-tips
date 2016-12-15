@@ -5,9 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private transient MouseAdapter handler;
+    private transient MouseInputListener handler;
     private MainPanel() {
         super();
         add(new JLabel("mouseDragged: Show JToolTip"));
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ToolTipLocationHandler extends MouseAdapter {
+class ToolTipLocationHandler extends MouseInputAdapter {
     private final JWindow window = new JWindow();
     private final JToolTip tip = new JToolTip();
     private final PopupFactory factory = PopupFactory.getSharedInstance();

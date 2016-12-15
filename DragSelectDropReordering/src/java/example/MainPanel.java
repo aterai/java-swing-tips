@@ -15,6 +15,7 @@ import java.util.stream.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
@@ -76,7 +77,7 @@ class ListItem {
 
 class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
-    private transient RubberBandingListener rbl;
+    private transient MouseInputListener rbl;
     private Color rubberBandColor;
     private final Path2D rubberBand = new Path2D.Double();
 
@@ -130,7 +131,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
                      : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
 
-    private class RubberBandingListener extends MouseAdapter {
+    private class RubberBandingListener extends MouseInputAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             JList l = (JList) e.getComponent();

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
@@ -13,7 +14,7 @@ public final class MainPanel extends JPanel {
 
         Box box1 = makeTestBox();
         box1.setBorder(BorderFactory.createTitledBorder("DragScrollListener"));
-        MouseAdapter l = new DragScrollListener();
+        MouseInputListener l = new DragScrollListener();
         box1.addMouseListener(l);
         box1.addMouseMotionListener(l);
         add(new JScrollPane(box1));
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DragScrollListener extends MouseAdapter {
+class DragScrollListener extends MouseInputAdapter {
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Point pp = new Point();

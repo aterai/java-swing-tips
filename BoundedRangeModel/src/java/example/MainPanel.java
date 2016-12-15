@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         Border in  = BorderFactory.createLineBorder(Color.BLACK);
         Border out = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         label.setBorder(BorderFactory.createCompoundBorder(out, in));
-        HighlightBarHandler handler = new HighlightBarHandler();
+        MouseInputListener handler = new HighlightBarHandler();
         label.addMouseListener(handler);
         label.addMouseMotionListener(handler);
 
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    class HighlightBarHandler extends MouseAdapter {
+    class HighlightBarHandler extends MouseInputAdapter {
         private void processMouseEvent(MouseEvent e) {
             Point pt = e.getPoint();
             Component c = (Component) e.getComponent();

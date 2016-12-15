@@ -9,6 +9,7 @@ import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -122,12 +123,12 @@ class PaintPanel extends JPanel {
     private static final Stroke STROKE = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     private transient List<Shape> list;
     private transient Path2D path;
-    private transient MouseAdapter handler;
+    private transient MouseInputListener handler;
     @Override public void updateUI() {
         removeMouseMotionListener(handler);
         removeMouseListener(handler);
         super.updateUI();
-        handler = new MouseAdapter() {
+        handler = new MouseInputAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 path = new Path2D.Double();
                 path.moveTo(e.getX(), e.getY());

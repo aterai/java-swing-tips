@@ -5,8 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 
-public class ResizeMouseListener extends MouseAdapter { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
+public class ResizeMouseListener extends MouseInputAdapter { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
     private static final Dimension MIN = new Dimension(50, 50);
     private static final Dimension MAX = new Dimension(500, 500);
     private int cursor;

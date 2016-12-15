@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -18,7 +19,7 @@ public final class MainPanel extends JPanel {
         model.addElement("444");
 
         JList<String> list = new JList<String>(model) {
-            private transient MouseAdapter cbml;
+            private transient MouseInputListener cbml;
             @Override public void updateUI() {
                 removeMouseListener(cbml);
                 removeMouseMotionListener(cbml);
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class CellButtonsMouseListener extends MouseAdapter {
+class CellButtonsMouseListener extends MouseInputAdapter {
     private int prevIndex = -1;
     private JButton prevButton;
     private final JList<String> list;

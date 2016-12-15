@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
     private final JLayeredPane layeredPane = new JLayeredPane();
@@ -95,7 +96,7 @@ public final class MainPanel extends JPanel {
 }
 
 class JResizer extends JPanel { // implements Serializable {
-    private transient MouseAdapter resizeListener;
+    private transient MouseInputListener resizeListener;
 
     protected JResizer(LayoutManager layout) {
         super(layout);

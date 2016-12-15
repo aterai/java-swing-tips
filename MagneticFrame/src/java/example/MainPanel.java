@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
 
 //         BasicInternalFrameUI ui = (BasicInternalFrameUI) magneticFrame.getUI();
 //         Component north = ui.getNorthPane();
-//         MouseInputAdapter mml = new MagneticListener(magneticFrame);
+//         MouseInputListener mml = new MagneticListener(magneticFrame);
 //         north.addMouseMotionListener(mml);
 //         north.addMouseListener(mml);
 

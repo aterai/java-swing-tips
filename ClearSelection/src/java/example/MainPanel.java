@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -24,7 +25,7 @@ public final class MainPanel extends JPanel {
             return new JList<String>(model);
         }
         JList<String> list = new JList<String>(model) {
-            private transient MouseAdapter listener;
+            private transient MouseInputListener listener;
             @Override public void updateUI() {
                 removeMouseListener(listener);
                 removeMouseMotionListener(listener);
@@ -75,7 +76,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ClearSelectionListener extends MouseAdapter {
+class ClearSelectionListener extends MouseInputAdapter {
     private boolean startOutside;
     private static void clearSelectionAndFocus(JList list) {
         list.clearSelection();

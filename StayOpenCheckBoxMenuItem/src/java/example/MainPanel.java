@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         JMenuItem mi = new JMenuItem(" ");
         mi.setLayout(new BorderLayout());
         mi.add(new JCheckBox(title) {
-            private transient MouseAdapter handler;
+            private transient MouseInputListener handler;
             @Override public void updateUI() {
                 removeMouseListener(handler);
                 removeMouseMotionListener(handler);
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DispatchParentHandler extends MouseAdapter {
+class DispatchParentHandler extends MouseInputAdapter {
     private void dispatchEvent(MouseEvent e) {
         Component src = e.getComponent();
         Container tgt = SwingUtilities.getUnwrappedParent(src);

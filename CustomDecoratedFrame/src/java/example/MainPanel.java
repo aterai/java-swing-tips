@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private static final int W = 4;
@@ -83,7 +84,7 @@ public final class MainPanel extends JPanel {
         frame.setBackground(new Color(255, 255, 255, 0));
 
         JPanel title = new JPanel(new BorderLayout());
-        DragWindowListener dwl = new DragWindowListener();
+        MouseInputListener dwl = new DragWindowListener();
         title.addMouseListener(dwl);
         title.addMouseMotionListener(dwl);
         title.setOpaque(false);
@@ -94,7 +95,7 @@ public final class MainPanel extends JPanel {
         title.add(makeCloseButton(), BorderLayout.EAST);
         //title.add(iconify, BorderLayout.WEST);
 
-        ResizeWindowListener rwl = new ResizeWindowListener();
+        MouseInputListener rwl = new ResizeWindowListener();
         for (SideLabel l: Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
@@ -190,7 +191,7 @@ class SideLabel extends JLabel {
     }
 }
 
-class ResizeWindowListener extends MouseAdapter {
+class ResizeWindowListener extends MouseInputAdapter {
     private final Rectangle rect = new Rectangle();
     @Override public void mousePressed(MouseEvent e) {
         Component p = SwingUtilities.getRoot(e.getComponent());
@@ -248,7 +249,7 @@ class ResizeWindowListener extends MouseAdapter {
     }
 }
 
-class DragWindowListener extends MouseAdapter {
+class DragWindowListener extends MouseInputAdapter {
     private final Point startPt = new Point();
     @Override public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {

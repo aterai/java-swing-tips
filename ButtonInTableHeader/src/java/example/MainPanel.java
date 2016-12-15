@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
@@ -93,7 +94,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final Color BUTTONBGC = new Color(200, 200, 200, 100);
     private final JPopupMenu pop;
     private int rolloverIndex = -1;
-    private final transient MouseAdapter handler = new MouseAdapter() {
+    private final transient MouseInputListener handler = new MouseInputAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader header = (JTableHeader) e.getComponent();
             JTable table = header.getTable();
