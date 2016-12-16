@@ -157,9 +157,9 @@ class TriSliderUI extends MetalSliderUI {
 //     slider.setMinorTickSpacing(5);
 //     //slider.setPaintTicks(true);
 //     slider.setPaintLabels(true);
-//     Dictionary dictionary = slider.getLabelTable();
+//     Dictionary<?, ?> dictionary = slider.getLabelTable();
 //     if (Objects.nonNull(dictionary)) {
-//         Enumeration elements = dictionary.elements();
+//         Enumeration<?> elements = dictionary.elements();
 //         while (elements.hasMoreElements()) {
 //             JLabel label = (JLabel) elements.nextElement();
 //             label.setIcon(new TickIcon());

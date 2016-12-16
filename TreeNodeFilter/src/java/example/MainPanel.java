@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         tree.setRowHeight(-1);
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration e = root.breadthFirstEnumeration();
+        Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), "")));
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
                 tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
             }
             if (!uo.status && !node.isLeaf() && node.getChildCount() >= 0) {
-                Enumeration e = node.children();
+                Enumeration<?> e = node.children();
                 while (e.hasMoreElements()) {
                     searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
                 }
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         FilterableNode uo = (FilterableNode) node.getUserObject();
         uo.status = match;
         if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration e = node.children();
+            Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
                 TreePath path = parent.pathByAddingChild((TreeNode) e.nextElement());
                 resetAll(tree, path, match);
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
     private void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration e = node.children();
+            Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
                 TreePath path = parent.pathByAddingChild((TreeNode) e.nextElement());
                 visitAll(tree, path, expand);
@@ -189,7 +189,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         FilterableNode uo = (FilterableNode) parent.getUserObject();
-        Enumeration children = parent.children();
+        Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
             FilterableNode check = (FilterableNode) node.getUserObject();
@@ -201,7 +201,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
         uo.status = false;
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, boolean match) {
-        Enumeration breadth = root.breadthFirstEnumeration();
+        Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
             if (Objects.equals(root, node)) {

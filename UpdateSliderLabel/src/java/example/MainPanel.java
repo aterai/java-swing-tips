@@ -23,11 +23,11 @@ public final class MainPanel extends JPanel {
         //}
         //@see JSlider#updateLabelUIs()
         //protected void updateLabelUIs() {
-        //    Dictionary labelTable = getLabelTable();
+        //    Dictionary<?, ?> labelTable = getLabelTable();
         //    if (labelTable == null) {
         //        return;
         //    }
-        //    Enumeration labels = labelTable.keys();
+        //    Enumeration<?> labels = labelTable.keys();
         //    while (labels.hasMoreElements()) {
         //        JComponent component = (JComponent) labelTable.get(labels.nextElement());
         //        component.updateUI();
@@ -69,8 +69,8 @@ public final class MainPanel extends JPanel {
         slider.setPaintTicks(true);
         slider.setSnapToTicks(true);
         //slider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
-        Dictionary labelTable = slider.getLabelTable();
-        Enumeration ed = labelTable.keys();
+        Dictionary<?, ?> labelTable = slider.getLabelTable();
+        Enumeration<?> ed = labelTable.keys();
         while (ed.hasMoreElements()) {
             Integer i = (Integer) ed.nextElement();
             JLabel label = (JLabel) labelTable.get(i);

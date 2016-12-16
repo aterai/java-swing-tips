@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
                 BoundedRangeModel m = (BoundedRangeModel) e.getSource();
                 int i = m.getValue();
                 if ((slider.getMajorTickSpacing() == 0 || i % slider.getMajorTickSpacing() == 0) && i != prev) {
-                    Dictionary dictionary = slider.getLabelTable();
+                    Dictionary<?, ?> dictionary = slider.getLabelTable();
                     resetForeground(dictionary.get(i), Color.RED);
                     resetForeground(dictionary.get(prev), Color.BLACK);
                     slider.repaint();

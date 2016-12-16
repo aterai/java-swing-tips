@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration e = root.breadthFirstEnumeration();
+        Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             node.setUserObject(new CheckBoxNode(Objects.toString(node.getUserObject(), ""), Status.DESELECTED));
@@ -154,7 +154,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         int selectedCount = 0;
-        Enumeration children = parent.children();
+        Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
             CheckBoxNode check = (CheckBoxNode) node.getUserObject();
@@ -176,7 +176,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-        Enumeration breadth = root.breadthFirstEnumeration();
+        Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
             if (Objects.equals(root, node)) {

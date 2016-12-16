@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         boolean b = true;
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration e = root.breadthFirstEnumeration();
+        Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             node.setUserObject(new CheckBoxNode(Objects.toString(node.getUserObject(), ""), b));

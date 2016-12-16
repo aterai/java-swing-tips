@@ -121,7 +121,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
             if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 Transferable t = dtde.getTransferable();
-                List list = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+                List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
                 for (Object o: list) {
                     if (o instanceof File) {
                         File f = (File) o;

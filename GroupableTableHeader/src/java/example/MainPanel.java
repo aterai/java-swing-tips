@@ -211,7 +211,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         long width = Collections.list(header.getColumnModel().getColumns()).stream()
                                 .mapToLong(TableColumn::getPreferredWidth).sum();
 //         long width = 0;
-//         Enumeration enumeration = header.getColumnModel().getColumns();
+//         Enumeration<TableColumn> enumeration = header.getColumnModel().getColumns();
 //         while (enumeration.hasMoreElements()) {
 //             TableColumn aColumn = (TableColumn) enumeration.nextElement();
 //             width += aColumn.getPreferredWidth();

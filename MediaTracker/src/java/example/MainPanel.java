@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
                     Transferable transferable = dtde.getTransferable();
                     ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
                         .stream().filter(o -> o instanceof File).forEach(o -> addImageFile((File) o));
-//                     List list = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+//                     List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 //                     for (Object o: list) {
 //                         if (o instanceof File) {
 //                             addImageFile((File) o);

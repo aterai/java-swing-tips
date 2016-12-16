@@ -135,7 +135,7 @@ public final class MainPanel extends JPanel {
                 tree.expandPath(path.getParentPath());
             }
             if (!node.isLeaf() && node.getChildCount() >= 0) {
-                Enumeration e = node.children();
+                Enumeration<?> e = node.children();
                 while (e.hasMoreElements()) {
                     searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
                 }

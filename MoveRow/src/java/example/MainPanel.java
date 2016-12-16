@@ -241,10 +241,10 @@ class InitAction extends AbstractAction {
         }
         TestModel model = (TestModel) table.getModel();
         TestModel nmodel = new TestModel();
-        Vector dv = model.getDataVector();
+        Vector<?> dv = model.getDataVector();
         for (int i = 0; i < row; i++) {
             //Test test = model.getTest(i);
-            Vector v = (Vector) dv.get(i);
+            Vector<?> v = (Vector<?>) dv.get(i);
             //new Test((String) v.get(1), (String) v.get(2));
             nmodel.addTest(new Test((String) v.get(1), (String) v.get(2)));
         }

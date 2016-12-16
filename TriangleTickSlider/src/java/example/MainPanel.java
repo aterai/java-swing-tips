@@ -28,9 +28,9 @@ public final class MainPanel extends JPanel {
         slider.setSnapToTicks(true);
         slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
         if (icon) {
-            Dictionary dictionary = slider.getLabelTable();
+            Dictionary<?, ?> dictionary = slider.getLabelTable();
             if (Objects.nonNull(dictionary)) {
-                Enumeration elements = dictionary.elements();
+                Enumeration<?> elements = dictionary.elements();
                 Icon tick = new TickIcon();
                 while (elements.hasMoreElements()) {
                     JLabel label = (JLabel) elements.nextElement();

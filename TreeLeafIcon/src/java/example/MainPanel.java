@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
     private static void allNodesChanged(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration depth = root.depthFirstEnumeration();
+        Enumeration<?> depth = root.depthFirstEnumeration();
         while (depth.hasMoreElements()) {
             model.nodeChanged((TreeNode) depth.nextElement());
         }

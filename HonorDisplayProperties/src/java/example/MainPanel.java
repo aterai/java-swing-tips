@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
         HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
         StyleSheet styles = htmlEditorKit.getStyleSheet();
         //System.out.println(styles);
-        Enumeration rules = styles.getStyleNames();
+        Enumeration<?> rules = styles.getStyleNames();
         while (rules.hasMoreElements()) {
             String name = (String) rules.nextElement();
             if ("body".equals(name)) {
                 Style rule = styles.getRule(name);
-                Enumeration attrs = rule.getAttributeNames();
+                Enumeration<?> attrs = rule.getAttributeNames();
                 while (attrs.hasMoreElements()) {
                     Object a = attrs.nextElement();
                     buf.append(String.format("%s: %s<br />", a, rule.getAttribute(a)));

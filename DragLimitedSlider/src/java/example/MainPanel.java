@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
         slider.setMajorTickSpacing(10);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        Dictionary dictionary = slider.getLabelTable();
+        Dictionary<?, ?> dictionary = slider.getLabelTable();
         if (Objects.nonNull(dictionary)) {
-            Enumeration elements = dictionary.elements();
+            Enumeration<?> elements = dictionary.elements();
             while (elements.hasMoreElements()) {
                 JLabel label = (JLabel) elements.nextElement();
                 int v = Integer.parseInt(label.getText());

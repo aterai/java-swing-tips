@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("<html>depthFirst<br>postorder") {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
-                Enumeration e = root.depthFirstEnumeration();
+                Enumeration<?> e = root.depthFirstEnumeration();
                 while (e.hasMoreElements()) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
                     textArea.append(node.toString() + "\n");
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("breadthFirst") {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
-                Enumeration e = root.breadthFirstEnumeration();
+                Enumeration<?> e = root.breadthFirstEnumeration();
                 while (e.hasMoreElements()) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
                     textArea.append(node.toString() + "\n");
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 //         p.add(new JButton(new AbstractAction("postorder") {
 //             @Override public void actionPerformed(ActionEvent ev) {
 //                 textArea.setText("");
-//                 Enumeration e = root.postorderEnumeration();
+//                 Enumeration<?> e = root.postorderEnumeration();
 //                 while (e.hasMoreElements()) {
 //                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
 //                     textArea.append(node.toString() + "\n");
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("preorder") {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
-                Enumeration e = root.preorderEnumeration();
+                Enumeration<?> e = root.preorderEnumeration();
                 while (e.hasMoreElements()) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
                     textArea.append(node.toString() + "\n");

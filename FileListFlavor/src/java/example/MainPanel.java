@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
                     if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                         dtde.acceptDrop(DnDConstants.ACTION_COPY);
                         Transferable transferable = dtde.getTransferable();
-                        List list = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                        List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
                         for (Object o: list) {
                             if (o instanceof File) {
                                 File file = (File) o;

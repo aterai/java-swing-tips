@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
                 return Objects.nonNull(o) ? o : getList().get(0);
             }
             @Override public Object getPreviousValue() {
-                List l = getList();
+                List<?> l = getList();
                 Object o = super.getPreviousValue();
                 return Objects.nonNull(o) ? o : l.get(l.size() - 1);
             }
