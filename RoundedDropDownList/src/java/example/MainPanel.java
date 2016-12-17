@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         };
 
         JComboBox<String> combo2 = new JComboBox<String>(makeModel()) {
-            private transient MouseAdapter handler;
+            private transient MouseListener handler;
             private transient PopupMenuListener listener;
             @Override public void updateUI() {
                 removeMouseListener(handler);

@@ -54,7 +54,7 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
 }
 
 class BasicComboPopup2 extends BasicComboPopup {
-    private transient Handler2 handler2;
+    private transient MouseListener handler2;
     protected BasicComboPopup2(JComboBox combo) {
         super(combo);
     }
