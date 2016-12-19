@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -12,9 +13,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < 1000; i++) {
-            buf.append(i + LF);
-        }
+        IntStream.range(0, 1000).forEach(i -> buf.append(i + LF));
 
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(new JScrollPane(new JTextArea(buf.toString())));

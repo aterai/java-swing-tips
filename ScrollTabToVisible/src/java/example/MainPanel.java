@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -10,11 +11,11 @@ public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("setSelectedIndex");
     public MainPanel() {
         super(new BorderLayout());
-        final JTabbedPane jtp = new JTabbedPane();
+
+        JTabbedPane jtp = new JTabbedPane();
         jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        for (int i = 0; i < 100; i++) {
-            jtp.addTab("title" + i, new JLabel("label" + i));
-        }
+        IntStream.range(0, 100).forEach(i -> jtp.addTab("title" + i, new JLabel("label" + i)));
+
         JSlider slider = new JSlider(0, jtp.getTabCount() - 1, 50);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);

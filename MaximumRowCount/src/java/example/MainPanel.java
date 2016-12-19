@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -34,9 +35,7 @@ public final class MainPanel extends JPanel {
     }
     private static DefaultComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        for (int i = 0; i < 100; i++) {
-            model.addElement("Item" + i);
-        }
+        IntStream.range(0, 100).forEach(i -> model.addElement("Item" + i));
         return model;
     }
     public static void main(String... args) {
