@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 
@@ -70,15 +71,16 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerLayout extends BorderLayout {
+    private final Map<Object, Object> layoutMap;
+    protected SpinnerLayout() {
+        super();
+        layoutMap = new HashMap<>();
+        layoutMap.put("Editor",   "Center");
+        layoutMap.put("Next",     "East");
+        layoutMap.put("Previous", "West");
+    }
     @Override public void addLayoutComponent(Component comp, Object constraints) {
-        Object cons = constraints;
-        if ("Editor".equals(cons)) {
-            cons = "Center";
-        } else if ("Next".equals(cons)) {
-            cons = "East";
-        } else if ("Previous".equals(cons)) {
-            cons = "West";
-        }
+        Object cons = Optional.ofNullable(layoutMap.get(constraints)).orElse(constraints);
         super.addLayoutComponent(comp, cons);
     }
 }
