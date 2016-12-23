@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -18,12 +19,12 @@ public final class MainPanel extends JPanel {
         StringBuilder sb = new StringBuilder();
         String dummy   = "aaaaaaaaaaaaa\n";
         String comment = "#comment\n";
-        for (int i = 0; i < 200; i++) {
+        IntStream.range(0, 200).forEach(i -> {
             sb.append(dummy);
             if (i % 16 == 0) {
                 sb.append(comment);
             }
-        }
+        });
         textArea.setText(sb.toString());
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
