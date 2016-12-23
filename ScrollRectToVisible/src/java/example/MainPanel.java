@@ -73,12 +73,10 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
         removeHierarchyListener(hierarchyListener);
         super.updateUI();
-        hierarchyListener = new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if (Objects.nonNull(timer) && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-                    System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
-                    timer.stop();
-                }
+        hierarchyListener = e -> {
+            if (Objects.nonNull(timer) && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
+                timer.stop();
             }
         };
         addHierarchyListener(hierarchyListener);

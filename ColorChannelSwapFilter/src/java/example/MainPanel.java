@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-public final class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel {
     private final BoundedRangeModel model = new DefaultBoundedRangeModel();
     private final JProgressBar progress01 = new JProgressBar(model);
     private final JProgressBar progress02 = new JProgressBar(model);
@@ -54,18 +54,18 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         }));
         box.add(Box.createHorizontalStrut(2));
 
-        addHierarchyListener(this);
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+                System.out.println("DISPOSE_ON_CLOSE");
+                worker.cancel(true);
+                worker = null;
+            }
+        });
+
         add(p);
         add(box, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
-    }
-    @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
-            System.out.println("DISPOSE_ON_CLOSE");
-            worker.cancel(true);
-            worker = null;
-        }
     }
     private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
