@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -97,19 +97,23 @@ class LockingGlassPane extends JPanel {
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
-        JRootPane rootPane = getRootPane();
-        if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
-            rootPane.getLayeredPane().setVisible(!isVisible);
-        }
+        Optional.ofNullable(getRootPane())
+                .filter(rootPane -> isVisible() != oldVisible)
+                .ifPresent(rootPane -> rootPane.getLayeredPane().setVisible(!isVisible));
+//         JRootPane rootPane = getRootPane();
+//         if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
+//             rootPane.getLayeredPane().setVisible(!isVisible);
+//         }
     }
     @Override protected void paintComponent(Graphics g) {
-        JRootPane rootPane = getRootPane();
-        if (Objects.nonNull(rootPane)) {
-            // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
-            // it is important to call print() instead of paint() here
-            // because print() doesn't affect the frame's double buffer
-            rootPane.getLayeredPane().print(g);
-        }
+        Optional.ofNullable(getRootPane()).ifPresent(rootPane -> rootPane.getLayeredPane().print(g));
+//         JRootPane rootPane = getRootPane();
+//         if (Objects.nonNull(rootPane)) {
+//             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
+//             // it is important to call print() instead of paint() here
+//             // because print() doesn't affect the frame's double buffer
+//             rootPane.getLayeredPane().print(g);
+//         }
         super.paintComponent(g);
     }
 }
