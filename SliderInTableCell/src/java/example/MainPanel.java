@@ -70,9 +70,10 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
         setOpaque(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Integer i = (Integer) value;
         this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        this.setValue(i.intValue());
+        if (value instanceof Integer) {
+            this.setValue(((Integer) value).intValue());
+        }
         return this;
     }
     //Overridden for performance reasons. ---->
