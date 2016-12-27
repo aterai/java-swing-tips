@@ -144,9 +144,9 @@ public final class MainPanel extends JPanel {
 class DnDTabbedPane extends JTabbedPane {
     private static final int SCROLL_SIZE = 20; //Test
     private static final int BUTTON_SIZE = 30; //XXX 30 is magic number of scroll button size
-    public static Rectangle rBackward = new Rectangle();
-    public static Rectangle rForward  = new Rectangle();
-    private final DropMode dropMode   = DropMode.INSERT;
+    private static final Rectangle RECT_BACKWARD = new Rectangle();
+    private static final Rectangle RECT_FORWARD  = new Rectangle();
+    private final DropMode dropMode = DropMode.INSERT;
     public int dragTabIndex = -1;
     private transient DropLocation dropLocation;
 
@@ -174,27 +174,31 @@ class DnDTabbedPane extends JTabbedPane {
 //         }
     }
     private void clickArrowButton(String actionKey) {
-        ActionMap map = getActionMap();
-        if (Objects.nonNull(map)) {
-            Action action = map.get(actionKey);
-            if (Objects.nonNull(action) && action.isEnabled()) {
-                action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-            }
-        }
+       Optional.ofNullable(getActionMap())
+               .map(am -> am.get(actionKey))
+               .filter(Action::isEnabled)
+               .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+//         ActionMap map = getActionMap();
+//         if (Objects.nonNull(map)) {
+//             Action action = map.get(actionKey);
+//             if (Objects.nonNull(action) && action.isEnabled()) {
+//                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+//             }
+//         }
     }
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
         int tabPlacement = getTabPlacement();
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
-            rBackward.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
-            rForward.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
+            RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
+            RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
         } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-            rBackward.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
-            rForward.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
+            RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
+            RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }
-        if (rBackward.contains(pt)) {
+        if (RECT_BACKWARD.contains(pt)) {
             clickArrowButton("scrollTabsBackwardAction");
-        } else if (rForward.contains(pt)) {
+        } else if (RECT_FORWARD.contains(pt)) {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
@@ -242,19 +246,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
-        if (targetIndex < 0) {
-            return;
-        }
-
-        Component cmp    = getComponentAt(dragIndex);
-        Container parent = target;
-        while (Objects.nonNull(parent)) {
-            if (cmp.equals(parent)) { //target == child: JTabbedPane in JTabbedPane
-                return;
-            }
-            parent = parent.getParent();
-        }
-
+        Component cmp = getComponentAt(dragIndex);
         Component tab = getTabComponentAt(dragIndex);
         String str    = getTitleAt(dragIndex);
         Icon icon     = getIconAt(dragIndex);
@@ -275,12 +267,11 @@ class DnDTabbedPane extends JTabbedPane {
             ((JComponent) tab).scrollRectToVisible(tab.getBounds());
         }
     }
-
     public void convertTab(int prev, int next) {
         System.out.println("convertTab");
-        if (next < 0 || prev == next) {
-            return;
-        }
+//         if (next < 0 || prev == next) {
+//             return;
+//         }
         Component cmp = getComponentAt(prev);
         Component tab = getTabComponentAt(prev);
         String str    = getTitleAt(prev);
@@ -300,7 +291,6 @@ class DnDTabbedPane extends JTabbedPane {
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
-
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
         int xx = tabbedRect.x;
@@ -433,27 +423,6 @@ class TabTransferHandler extends TransferHandler {
         }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
-    private static Component getSourceDraggingComponent(DnDTabbedPane tabbedPane) {
-        if (Objects.nonNull(tabbedPane)) {
-            return tabbedPane.getComponentAt(tabbedPane.dragTabIndex);
-        } else {
-            return null;
-        }
-    }
-    private boolean isDropable(DnDTabbedPane target, Point pt, int idx) {
-        boolean isDropable = false;
-        Rectangle tr = target.getTabAreaBounds();
-        if (target.equals(source)) {
-            //System.out.println("target == source");
-            isDropable = tr.contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
-        } else {
-            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            if (target != getSourceDraggingComponent(source)) {
-                isDropable = tr.contains(pt) && idx >= 0;
-            }
-        }
-        return isDropable;
-    }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         //System.out.println("canImport");
         if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
@@ -476,7 +445,16 @@ class TabTransferHandler extends TransferHandler {
 //                 ex.printStackTrace();
 //             }
 //         }
-        boolean isDropable = isDropable(target, pt, idx);
+
+        boolean isDropable = false;
+        boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
+        if (target.equals(source)) {
+            //System.out.println("target == source");
+            isDropable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+        } else {
+            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
+            isDropable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
+        }
 
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         // http://bugs.java.com/view_bug.do?bug_id=6700748
@@ -581,15 +559,25 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
         if (c instanceof JLayer) {
             JLayer layer = (JLayer) c;
             DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
-            DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-            if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-                g2.setPaint(Color.RED);
-                initLineRect(tabbedPane, loc);
-                g2.fill(LINE_RECT);
-                g2.dispose();
-            }
+            Optional.ofNullable(tabbedPane.getDropLocation())
+                    .filter(loc -> loc.isDropable() && loc.getIndex() >= 0)
+                    .ifPresent(loc -> {
+                        Graphics2D g2 = (Graphics2D) g.create();
+                        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+                        g2.setPaint(Color.RED);
+                        initLineRect(tabbedPane, loc);
+                        g2.fill(LINE_RECT);
+                        g2.dispose();
+                    });
+//             DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
+//             if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
+//                 Graphics2D g2 = (Graphics2D) g.create();
+//                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+//                 g2.setPaint(Color.RED);
+//                 initLineRect(tabbedPane, loc);
+//                 g2.fill(LINE_RECT);
+//                 g2.dispose();
+//             }
         }
     }
     private static void initLineRect(JTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
