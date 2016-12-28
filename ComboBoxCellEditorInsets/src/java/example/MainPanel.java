@@ -108,9 +108,7 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        if (Objects.nonNull(value)) {
-            comboBox.setSelectedItem(value);
-        }
+        Optional.ofNullable(value).ifPresent(comboBox::setSelectedItem);
         return this;
     }
 }
