@@ -144,11 +144,10 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
         }
     }
     private int getLabelStart() {
-        Icon currentI = getIcon();
-        if (Objects.nonNull(currentI) && Objects.nonNull(getText())) {
-            return currentI.getIconWidth() + Math.max(0, getIconTextGap() - 1);
-        }
-        return 0;
+        return Optional.ofNullable(getIcon())
+                       .filter(icon -> Objects.nonNull(getText()))
+                       .map(icon -> icon.getIconWidth() + Math.max(0, getIconTextGap() - 1))
+                       .orElse(0);
     }
 }
 
