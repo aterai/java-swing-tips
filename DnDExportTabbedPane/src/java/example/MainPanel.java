@@ -122,7 +122,7 @@ class DnDTabbedPane extends JTabbedPane {
     private static final int LINE_WIDTH  = 3;
     private static final Rectangle RECT_BACKWARD = new Rectangle();
     private static final Rectangle RECT_FORWARD  = new Rectangle();
-    private final Rectangle lineRect  = new Rectangle();
+    private static final Rectangle RECT_LINE     = new Rectangle();
     private final DropMode dropMode   = DropMode.INSERT;
     public int dragTabIndex = -1;
     private transient DropLocation dropLocation;
@@ -274,17 +274,17 @@ class DnDTabbedPane extends JTabbedPane {
                             .map(DropLocation::getIndex)
                             .orElse(-1);
         if (index < 0) {
-            lineRect.setBounds(0, 0, 0, 0);
+            RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();
         }
         int a = index == 0 ? 0 : 1;
         Rectangle r = getBoundsAt(a * (index - 1));
         if (getTabPlacement() == TOP || getTabPlacement() == BOTTOM) {
-            lineRect.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+            RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
-            lineRect.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+            RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
         }
-        return Optional.of(lineRect);
+        return Optional.of(RECT_LINE);
     }
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
@@ -350,7 +350,7 @@ class DnDTabbedPane extends JTabbedPane {
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-                lineRect.setBounds(0, 0, 0, 0);
+                RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocation(new DropLocation(tabPt, -1), null, true);
                 startPt = null;
