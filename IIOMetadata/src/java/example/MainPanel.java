@@ -56,12 +56,7 @@ public final class MainPanel extends JPanel {
     }
 
     private void print(StringBuilder buf, Node node, int level) {
-        StringBuilder indent = new StringBuilder();
-        int l = level * 2;
-        while (l > 0) {
-            indent.append(' ');
-            l--;
-        }
+        String indent = String.join("", Collections.nCopies(level * 2, " "));
         buf.append(String.format("%s%s%n", indent, node.getNodeName()));
         if (node.hasAttributes()) {
             for (int i = 0; i < node.getAttributes().getLength(); i++) {
