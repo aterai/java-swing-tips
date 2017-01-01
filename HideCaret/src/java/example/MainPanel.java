@@ -11,8 +11,8 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea("aaaaaaaaaaaaaaaaa\nbbbbb\nccc");
     private final JCheckBox hidingCaretCheck = new JCheckBox("Hide Caret");
     private final JCheckBox hidingHighlighterCheck = new JCheckBox("Hide Highlighter");
-    private final JCheckBox focusableCheck = new JCheckBox("Focusable", true);
     private final JCheckBox editableCheck = new JCheckBox("Editable", true);
+    private final JCheckBox focusableCheck = new JCheckBox("Focusable", true);
 
     public MainPanel() {
         super(new BorderLayout());
