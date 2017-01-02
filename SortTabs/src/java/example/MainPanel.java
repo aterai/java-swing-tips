@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,24 +17,24 @@ public final class MainPanel extends JPanel {
     private static final String MENUITEM_SORT = "Sort";
     private static int count;
 
-    private final JTabbedPane tab;
+    private final JTabbedPane tabbedPane;
     private final Action closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
     private final Action closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
     private final Action closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
     private final Action sortAction = new SortAction(MENUITEM_SORT);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
-            sortAction.setEnabled(tab.getTabCount() > 1);
-            closePageAction.setEnabled(tab.indexAtLocation(x, y) >= 0);
-            closeAllAction.setEnabled(tab.getTabCount() > 0);
-            closeAllButActiveAction.setEnabled(tab.getTabCount() > 0);
+            sortAction.setEnabled(tabbedPane.getTabCount() > 1);
+            closePageAction.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
+            closeAllAction.setEnabled(tabbedPane.getTabCount() > 0);
+            closeAllButActiveAction.setEnabled(tabbedPane.getTabCount() > 0);
             super.show(c, x, y);
         }
     };
 
     public MainPanel() {
         super(new BorderLayout());
-        tab = new EditableTabbedPane();
+        tabbedPane = new EditableTabbedPane();
         pop.add(new NewTabAction(MENUITEM_NEWTAB));
         pop.add(sortAction);
         pop.addSeparator();
@@ -41,9 +42,11 @@ public final class MainPanel extends JPanel {
         pop.addSeparator();
         pop.add(closeAllAction);
         pop.add(closeAllButActiveAction);
-        tab.setComponentPopupMenu(pop);
-        tab.addTab("Title", new JLabel("Tab"));
-        add(tab);
+        tabbedPane.setComponentPopupMenu(pop);
+        tabbedPane.addTab("Title", new JLabel("Tab1"));
+        tabbedPane.addTab("aaa", new JLabel("Tab2"));
+        tabbedPane.addTab("000", new JLabel("Tab3"));
+        add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
@@ -51,8 +54,8 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            tab.addTab("Title: " + count, new JLabel("Tab: " + count));
-            tab.setSelectedIndex(tab.getTabCount() - 1);
+            tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             count++;
         }
     }
@@ -61,7 +64,7 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            tab.remove(tab.getSelectedIndex());
+            tabbedPane.remove(tabbedPane.getSelectedIndex());
         }
     }
     class CloseAllAction extends AbstractAction {
@@ -69,7 +72,7 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            tab.removeAll();
+            tabbedPane.removeAll();
         }
     }
     class CloseAllButActiveAction extends AbstractAction {
@@ -77,11 +80,11 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            int tabidx = tab.getSelectedIndex();
-            String title = tab.getTitleAt(tabidx);
-            Component cmp = tab.getComponentAt(tabidx);
-            tab.removeAll();
-            tab.addTab(title, cmp);
+            int tabidx = tabbedPane.getSelectedIndex();
+            String title = tabbedPane.getTitleAt(tabidx);
+            Component cmp = tabbedPane.getComponentAt(tabidx);
+            tabbedPane.removeAll();
+            tabbedPane.addTab(title, cmp);
         }
     }
     class SortAction extends AbstractAction {
@@ -89,18 +92,9 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            setSortedTab(tab, makeSortedList(tab));
-        }
-        private List<ComparableTab> makeSortedList(JTabbedPane t) {
-            List<ComparableTab> l = new ArrayList<>();
-            for (int i = 0; i < t.getTabCount(); i++) {
-                l.add(new ComparableTab(t.getTitleAt(i), t.getComponentAt(i)));
-            }
-            Collections.sort(l);
-            //Collections.<ComparableTab>sort(l);
-            return l;
-        }
-        private void setSortedTab(JTabbedPane tabbedPane, List<ComparableTab> list) {
+            List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
+              .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
+              .sorted().collect(Collectors.toList());
             tabbedPane.setVisible(false);
             tabbedPane.removeAll();
             for (ComparableTab c: list) {
@@ -141,17 +135,20 @@ class ComparableTab implements Comparable<ComparableTab> {
         this.comp  = comp;
     }
     @Override public int compareTo(ComparableTab o) {
-        return title.compareTo(o.title);
+        return title.compareToIgnoreCase(o.title);
     }
     @Override public boolean equals(Object o) {
-        if (o instanceof ComparableTab) {
-            return compareTo((ComparableTab) o) == 0;
-        } else {
-            return false;
+        if (o == this) {
+            return true;
         }
+        if (o instanceof ComparableTab) {
+            ComparableTab other = (ComparableTab) o;
+            return Objects.equals(title, other.title) && Objects.equals(comp, other.comp);
+        }
+        return false;
     }
     @Override public int hashCode() {
-        return title.hashCode() + comp.hashCode();
+        return Objects.hash(title, comp);
     }
 }
 
