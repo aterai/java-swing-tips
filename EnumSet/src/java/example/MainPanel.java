@@ -167,7 +167,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
                     Arrays.stream(buttons)
                           .filter(b -> b.getText().equals(t))
                           .findFirst()
-                          .ifPresent(b -> b.doClick());
+                          .ifPresent(JCheckBox::doClick);
                     fireEditingStopped();
                 }
             });
