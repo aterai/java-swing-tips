@@ -121,7 +121,7 @@ class Task extends SwingWorker<String, File> {
     @Override public String doInBackground() {
         Arrays.stream(fileSystemView.getFiles(parent, true))
               .filter(File::isDirectory)
-              .forEach(file -> publish(file));
+              .forEach(this::publish);
 //         File[] children = fileSystemView.getFiles(parent, true);
 //         for (File child: children) {
 //             if (child.isDirectory()) {
