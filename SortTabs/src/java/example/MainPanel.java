@@ -137,7 +137,8 @@ class ComparableTab implements Comparable<ComparableTab> {
     @Override public int compareTo(ComparableTab o) {
         return title.compareToIgnoreCase(o.title);
     }
-    @Override public boolean equals(Object o) {
+    // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
+    @Override public final boolean equals(Object o) {
         if (o == this) {
             return true;
         }
@@ -147,7 +148,7 @@ class ComparableTab implements Comparable<ComparableTab> {
         }
         return false;
     }
-    @Override public int hashCode() {
+    @Override public final int hashCode() {
         return Objects.hash(title, comp);
     }
 }
