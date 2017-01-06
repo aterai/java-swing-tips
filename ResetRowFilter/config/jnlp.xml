@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 一旦ファルタを外してソート" />
- <property name="jnlp.Name"     value="ResetRowFilter" />
- <property name="jnlp.name"     value="resetrowfilter" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ResetRowFilter" />
+  <property name="jnlp.Name"     value="ResetRowFilter" />
+  <property name="jnlp.name"     value="resetrowfilter" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/resetrowfilter/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ResetRowFilter.html" />
 </project>

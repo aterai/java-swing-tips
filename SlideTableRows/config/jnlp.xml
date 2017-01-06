@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 行追加・削除アニメーション" />
- <property name="jnlp.Name"     value="SlideTableRows" />
- <property name="jnlp.name"     value="slidetablerows" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SlideTableRows" />
+  <property name="jnlp.Name"     value="SlideTableRows" />
+  <property name="jnlp.name"     value="slidetablerows" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/slidetablerows/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SlideTableRows.html" />
 </project>

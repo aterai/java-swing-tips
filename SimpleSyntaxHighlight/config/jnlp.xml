@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST SyntaxHighlightのテスト" />
- <property name="jnlp.Name"     value="SimpleSyntaxHighlight" />
- <property name="jnlp.name"     value="simplesyntaxhighlight" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SimpleSyntaxHighlight" />
+  <property name="jnlp.Name"     value="SimpleSyntaxHighlight" />
+  <property name="jnlp.name"     value="simplesyntaxhighlight" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/simplesyntaxhighlight/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SimpleSyntaxHighlight.html" />
 </project>

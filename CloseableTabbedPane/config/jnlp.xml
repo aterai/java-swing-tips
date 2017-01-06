@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST タブ内のJButton位置" />
- <property name="jnlp.Name"     value="CloseableTabbedPane" />
- <property name="jnlp.name"     value="closeabletabbedpane" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST CloseableTabbedPane" />
+  <property name="jnlp.Name"     value="CloseableTabbedPane" />
+  <property name="jnlp.name"     value="closeabletabbedpane" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/closeabletabbedpane/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CloseableTabbedPane.html" />
 </project>

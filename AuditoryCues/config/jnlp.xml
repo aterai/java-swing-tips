@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 聴覚フィードバック" />
- <property name="jnlp.Name"     value="AuditoryCues" />
- <property name="jnlp.name"     value="auditorycues" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST AuditoryCues" />
+  <property name="jnlp.Name"     value="AuditoryCues" />
+  <property name="jnlp.name"     value="auditorycues" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/auditorycues/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AuditoryCues.html" />
 </project>

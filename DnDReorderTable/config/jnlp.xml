@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTableをDnDで並べ替え" />
- <property name="jnlp.Name"     value="DnDReorderTable" />
- <property name="jnlp.name"     value="dndreordertable" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST DnDReorderTable" />
+  <property name="jnlp.Name"     value="DnDReorderTable" />
+  <property name="jnlp.name"     value="dndreordertable" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndreordertable/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDReorderTable.html" />
 </project>

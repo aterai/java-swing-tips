@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ヘッダカラムの比率" />
- <property name="jnlp.Name"     value="HeaderRatio" />
- <property name="jnlp.name"     value="headerratio" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST HeaderRatio" />
+  <property name="jnlp.Name"     value="HeaderRatio" />
+  <property name="jnlp.name"     value="headerratio" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/headerratio/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HeaderRatio.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTreeを掴んでスクロール" />
- <property name="jnlp.Name"     value="TreeDragScroll" />
- <property name="jnlp.name"     value="treedragscroll" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST TreeDragScroll" />
+  <property name="jnlp.Name"     value="TreeDragScroll" />
+  <property name="jnlp.name"     value="treedragscroll" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treedragscroll/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeDragScroll.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 上書きモード、挿入モード" />
- <property name="jnlp.Name"     value="OverTypeMode" />
- <property name="jnlp.name"     value="overtypemode" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST OverTypeMode" />
+  <property name="jnlp.Name"     value="OverTypeMode" />
+  <property name="jnlp.name"     value="overtypemode" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/overtypemode/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OverTypeMode.html" />
 </project>

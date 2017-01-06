@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST WebStartでユーザー設定の保存" />
- <property name="jnlp.Name"     value="PersistenceService" />
- <property name="jnlp.name"     value="persistenceservice" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST PersistenceService" />
+  <property name="jnlp.Name"     value="PersistenceService" />
+  <property name="jnlp.name"     value="persistenceservice" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/persistenceservice/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PersistenceService.html" />
 </project>

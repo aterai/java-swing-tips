@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ソート中のカラム色" />
- <property name="jnlp.Name"     value="SortColumnColor" />
- <property name="jnlp.name"     value="sortcolumncolor" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SortColumnColor" />
+  <property name="jnlp.Name"     value="SortColumnColor" />
+  <property name="jnlp.name"     value="sortcolumncolor" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sortcolumncolor/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SortColumnColor.html" />
 </project>

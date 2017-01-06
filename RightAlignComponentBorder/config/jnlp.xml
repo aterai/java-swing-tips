@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Borderに右寄せしたJComponent" />
- <property name="jnlp.Name"     value="RightAlignComponentBorder" />
- <property name="jnlp.name"     value="rightaligncomponentborder" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST RightAlignComponentBorder" />
+  <property name="jnlp.Name"     value="RightAlignComponentBorder" />
+  <property name="jnlp.name"     value="rightaligncomponentborder" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rightaligncomponentborder" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RightAlignComponentBorder.html" />
 </project>

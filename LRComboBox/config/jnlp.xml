@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Itemを左右に配置" />
- <property name="jnlp.Name"     value="LRComboBox" />
- <property name="jnlp.name"     value="lrcombobox" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST LRComboBox" />
+  <property name="jnlp.Name"     value="LRComboBox" />
+  <property name="jnlp.name"     value="lrcombobox" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lrcombobox/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LRComboBox.html" />
 </project>

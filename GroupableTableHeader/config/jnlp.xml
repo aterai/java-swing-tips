@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTableHeaderのグループ化" />
- <property name="jnlp.Name"     value="GroupableTableHeader" />
- <property name="jnlp.name"     value="groupabletableheader" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST GroupableTableHeader" />
+  <property name="jnlp.Name"     value="GroupableTableHeader" />
+  <property name="jnlp.name"     value="groupabletableheader" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/groupabletableheader/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GroupableTableHeader.html" />
 </project>

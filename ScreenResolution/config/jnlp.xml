@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 解像度でサイズ変更" />
- <property name="jnlp.Name"     value="ScreenResolution" />
- <property name="jnlp.name"     value="screenresolution" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ScreenResolution" />
+  <property name="jnlp.Name"     value="ScreenResolution" />
+  <property name="jnlp.name"     value="screenresolution" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/screenresolution/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScreenResolution.html" />
 </project>

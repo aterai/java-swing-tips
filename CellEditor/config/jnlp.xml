@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST セルの編集を禁止" />
- <property name="jnlp.Name"     value="CellEditor" />
- <property name="jnlp.name"     value="celleditor" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST CellEditor" />
+  <property name="jnlp.Name"     value="CellEditor" />
+  <property name="jnlp.name"     value="celleditor" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/celleditor/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CellEditor.html" />
 </project>

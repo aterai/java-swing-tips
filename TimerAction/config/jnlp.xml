@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Timerのテスト" />
- <property name="jnlp.Name"     value="TimerAction" />
- <property name="jnlp.name"     value="timeraction" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST TimerAction" />
+  <property name="jnlp.Name"     value="TimerAction" />
+  <property name="jnlp.name"     value="timeraction" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/timeraction/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TimerAction.html" />
 </project>

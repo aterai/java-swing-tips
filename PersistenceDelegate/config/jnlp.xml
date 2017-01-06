@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST TableModelのXML書出、読込" />
- <property name="jnlp.Name"     value="PersistenceDelegate" />
- <property name="jnlp.name"     value="persistencedelegate" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST PersistenceDelegate" />
+  <property name="jnlp.Name"     value="PersistenceDelegate" />
+  <property name="jnlp.name"     value="persistencedelegate" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/persistencedelegate/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PersistenceDelegate.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Animated Gifから画像抽出" />
- <property name="jnlp.Name"     value="ExtractFramesFromAnimatedGif" />
- <property name="jnlp.name"     value="extractframesfromanimatedgif" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ExtractFramesFromAnimatedGif" />
+  <property name="jnlp.Name"     value="ExtractFramesFromAnimatedGif" />
+  <property name="jnlp.name"     value="extractframesfromanimatedgif" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/extractframesfromanimatedgif" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExtractFramesFromAnimatedGif.html" />
 </project>

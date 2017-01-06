@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST フレームの移動を同期する" />
- <property name="jnlp.Name"     value="DockingFrames" />
- <property name="jnlp.name"     value="dockingframes" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST DockingFrames" />
+  <property name="jnlp.Name"     value="DockingFrames" />
+  <property name="jnlp.name"     value="dockingframes" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dockingframes/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DockingFrames.html" />
 </project>

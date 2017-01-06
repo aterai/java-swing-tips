@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTableの罫線と内余白" />
- <property name="jnlp.Name"     value="IntercellSpacing" />
- <property name="jnlp.name"     value="intercellspacing" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST IntercellSpacing" />
+  <property name="jnlp.Name"     value="IntercellSpacing" />
+  <property name="jnlp.name"     value="intercellspacing" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/intercellspacing/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IntercellSpacing.html" />
 </project>

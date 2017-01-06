@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JLayeredPaneで小窓を表示" />
- <property name="jnlp.Name"     value="JLayeredPane1" />
- <property name="jnlp.name"     value="jlayeredpane1" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST JLayeredPane1" />
+  <property name="jnlp.Name"     value="JLayeredPane1" />
+  <property name="jnlp.name"     value="jlayeredpane1" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/jlayeredpane1/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/JLayeredPane1.html" />
 </project>

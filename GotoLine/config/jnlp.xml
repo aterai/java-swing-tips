@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 任意の行にジャンプ" />
- <property name="jnlp.Name"     value="GotoLine" />
- <property name="jnlp.name"     value="gotoline" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST GotoLine" />
+  <property name="jnlp.Name"     value="GotoLine" />
+  <property name="jnlp.name"     value="gotoline" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/gotoline/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GotoLine.html" />
 </project>

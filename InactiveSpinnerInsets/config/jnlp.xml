@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JSpinnerの編集不可時内余白" />
- <property name="jnlp.Name"     value="InactiveSpinnerInsets" />
- <property name="jnlp.name"     value="inactivespinnerinsets" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST InactiveSpinnerInsets" />
+  <property name="jnlp.Name"     value="InactiveSpinnerInsets" />
+  <property name="jnlp.name"     value="inactivespinnerinsets" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inactivespinnerinsets/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InactiveSpinnerInsets.html" />
 </project>

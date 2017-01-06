@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ColumnHeaderにIconを表示" />
- <property name="jnlp.Name"     value="TableColumnHeaderIcon" />
- <property name="jnlp.name"     value="tablecolumnheadericon" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST TableColumnHeaderIcon" />
+  <property name="jnlp.Name"     value="TableColumnHeaderIcon" />
+  <property name="jnlp.name"     value="tablecolumnheadericon" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablecolumnheadericon/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableColumnHeaderIcon.html" />
 </project>

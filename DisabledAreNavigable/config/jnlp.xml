@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST DisabledなJMenuItemのハイライト" />
- <property name="jnlp.Name"     value="DisabledAreNavigable" />
- <property name="jnlp.name"     value="disabledarenavigable" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST DisabledAreNavigable" />
+  <property name="jnlp.Name"     value="DisabledAreNavigable" />
+  <property name="jnlp.name"     value="disabledarenavigable" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disabledarenavigable/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisabledAreNavigable.html" />
 </project>

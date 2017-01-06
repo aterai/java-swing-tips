@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JMenuにカーソルのみで開く" />
- <property name="jnlp.Name"     value="PopupWithoutClickOnMenu" />
- <property name="jnlp.name"     value="popupwithoutclickonmenu" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST PopupWithoutClickOnMenu" />
+  <property name="jnlp.Name"     value="PopupWithoutClickOnMenu" />
+  <property name="jnlp.name"     value="popupwithoutclickonmenu" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/popupwithoutclickonmenu" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PopupWithoutClickOnMenu.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST PopupMenu取得を親に委譲" />
- <property name="jnlp.Name"     value="InheritsPopupMenu" />
- <property name="jnlp.name"     value="inheritspopupmenu" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST InheritsPopupMenu" />
+  <property name="jnlp.Name"     value="InheritsPopupMenu" />
+  <property name="jnlp.name"     value="inheritspopupmenu" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inheritspopupmenu/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InheritsPopupMenu.html" />
 </project>

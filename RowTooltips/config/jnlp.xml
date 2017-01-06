@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 行ごとのTooltips" />
- <property name="jnlp.Name"     value="RowTooltips" />
- <property name="jnlp.name"     value="rowtooltips" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST RowTooltips" />
+  <property name="jnlp.Name"     value="RowTooltips" />
+  <property name="jnlp.name"     value="rowtooltips" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowtooltips/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowTooltips.html" />
 </project>

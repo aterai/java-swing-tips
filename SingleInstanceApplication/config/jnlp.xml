@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Prevent Multiple Instances" />
- <property name="jnlp.Name"     value="SingleInstanceApplication" />
- <property name="jnlp.name"     value="singleinstanceapplication" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SingleInstanceApplication" />
+  <property name="jnlp.Name"     value="SingleInstanceApplication" />
+  <property name="jnlp.name"     value="singleinstanceapplication" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/singleinstanceapplication" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SingleInstanceApplication.html" />
 </project>

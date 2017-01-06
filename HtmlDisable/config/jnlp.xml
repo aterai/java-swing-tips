@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Htmlタグを無効化" />
- <property name="jnlp.Name"     value="HtmlDisable" />
- <property name="jnlp.name"     value="htmldisable" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST HtmlDisable" />
+  <property name="jnlp.Name"     value="HtmlDisable" />
+  <property name="jnlp.name"     value="htmldisable" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmldisable/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HtmlDisable.html" />
 </project>

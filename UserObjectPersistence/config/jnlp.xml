@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST TreeModelの永続化" />
- <property name="jnlp.Name"     value="UserObjectPersistence" />
- <property name="jnlp.name"     value="userobjectpersistence" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST UserObjectPersistence" />
+  <property name="jnlp.Name"     value="UserObjectPersistence" />
+  <property name="jnlp.name"     value="userobjectpersistence" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/userobjectpersistence/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UserObjectPersistence.html" />
 </project>

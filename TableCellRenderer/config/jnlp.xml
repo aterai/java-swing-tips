@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTableのセル中で折り返し" />
- <property name="jnlp.Name"     value="TableCellRenderer" />
- <property name="jnlp.name"     value="tablecellrenderer" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST TableCellRenderer" />
+  <property name="jnlp.Name"     value="TableCellRenderer" />
+  <property name="jnlp.name"     value="tablecellrenderer" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablecellrenderer/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableCellRenderer.html" />
 </project>

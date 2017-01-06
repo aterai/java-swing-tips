@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 最終行のみ編集可能" />
- <property name="jnlp.Name"     value="LastLineEditableTextArea" />
- <property name="jnlp.name"     value="lastlineeditabletextarea" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST LastLineEditableTextArea" />
+  <property name="jnlp.Name"     value="LastLineEditableTextArea" />
+  <property name="jnlp.name"     value="lastlineeditabletextarea" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lastlineeditabletextarea" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LastLineEditableTextArea.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 星型図形のSVGを生成" />
- <property name="jnlp.Name"     value="PathIterator" />
- <property name="jnlp.name"     value="pathiterator" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST PathIterator" />
+  <property name="jnlp.Name"     value="PathIterator" />
+  <property name="jnlp.name"     value="pathiterator" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pathiterator/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PathIterator.html" />
 </project>

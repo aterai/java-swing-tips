@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Listenerを削除して操作不可に" />
- <property name="jnlp.Name"     value="UninstallListeners" />
- <property name="jnlp.name"     value="uninstalllisteners" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST UninstallListeners" />
+  <property name="jnlp.Name"     value="UninstallListeners" />
+  <property name="jnlp.name"     value="uninstalllisteners" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/uninstalllisteners/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UninstallListeners.html" />
 </project>

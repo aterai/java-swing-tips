@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JSplitPaneのDivider位置変更" />
- <property name="jnlp.Name"     value="DividerLocationDragLayer" />
- <property name="jnlp.name"     value="dividerlocationdraglayer" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST DividerLocationDragLayer" />
+  <property name="jnlp.Name"     value="DividerLocationDragLayer" />
+  <property name="jnlp.name"     value="dividerlocationdraglayer" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dividerlocationdraglayer" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DividerLocationDragLayer.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTextField内にアイコン" />
- <property name="jnlp.Name"     value="IconTextField" />
- <property name="jnlp.name"     value="icontextfield" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST IconTextField" />
+  <property name="jnlp.Name"     value="IconTextField" />
+  <property name="jnlp.name"     value="icontextfield" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/icontextfield/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IconTextField.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JSliderの表示を反転" />
- <property name="jnlp.Name"     value="InvertedSlider" />
- <property name="jnlp.name"     value="invertedslider" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST InvertedSlider" />
+  <property name="jnlp.Name"     value="InvertedSlider" />
+  <property name="jnlp.name"     value="invertedslider" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/invertedslider/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InvertedSlider.html" />
 </project>

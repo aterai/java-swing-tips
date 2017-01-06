@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTextFieldでの選択色などを変更" />
- <property name="jnlp.Name"     value="SelectionHighlightPainter" />
- <property name="jnlp.name"     value="selectionhighlightpainter" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SelectionHighlightPainter" />
+  <property name="jnlp.Name"     value="SelectionHighlightPainter" />
+  <property name="jnlp.name"     value="selectionhighlightpainter" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectionhighlightpainter" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectionHighlightPainter.html" />
 </project>

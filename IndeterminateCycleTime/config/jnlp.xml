@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JProgressBarの不確定進捗サイクル時間" />
- <property name="jnlp.Name"     value="IndeterminateCycleTime" />
- <property name="jnlp.name"     value="indeterminatecycletime" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST IndeterminateCycleTime" />
+  <property name="jnlp.Name"     value="IndeterminateCycleTime" />
+  <property name="jnlp.name"     value="indeterminatecycletime" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/indeterminatecycletime/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IndeterminateCycleTime.html" />
 </project>

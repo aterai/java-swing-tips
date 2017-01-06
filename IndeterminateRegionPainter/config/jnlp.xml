@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST NimbusのJProgressBar不確定状態描画を変更" />
- <property name="jnlp.Name"     value="IndeterminateRegionPainter" />
- <property name="jnlp.name"     value="indeterminateregionpainter" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST IndeterminateRegionPainter" />
+  <property name="jnlp.Name"     value="IndeterminateRegionPainter" />
+  <property name="jnlp.name"     value="indeterminateregionpainter" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/indeterminateregionpainter" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IndeterminateRegionPainter.html" />
 </project>

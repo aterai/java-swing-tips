@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ScrollBarのButtonの位置" />
- <property name="jnlp.Name"     value="ScrollBarButtonLayout" />
- <property name="jnlp.name"     value="scrollbarbuttonlayout" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ScrollBarButtonLayout" />
+  <property name="jnlp.Name"     value="ScrollBarButtonLayout" />
+  <property name="jnlp.name"     value="scrollbarbuttonlayout" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollbarbuttonlayout/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollBarButtonLayout.html" />
 </project>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST TreeNodeの折り畳み禁止" />
- <property name="jnlp.Name"     value="TreeNodeCollapseVeto" />
- <property name="jnlp.name"     value="treenodecollapseveto" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST TreeNodeCollapseVeto" />
+  <property name="jnlp.Name"     value="TreeNodeCollapseVeto" />
+  <property name="jnlp.name"     value="treenodecollapseveto" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treenodecollapseveto/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeNodeCollapseVeto.html" />
 </project>

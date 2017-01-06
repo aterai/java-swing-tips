@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JTreeのノード展開状態" />
- <property name="jnlp.Name"     value="ExpandedDescendants" />
- <property name="jnlp.name"     value="expandeddescendants" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ExpandedDescendants" />
+  <property name="jnlp.Name"     value="ExpandedDescendants" />
+  <property name="jnlp.name"     value="expandeddescendants" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/expandeddescendants/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExpandedDescendants.html" />
 </project>

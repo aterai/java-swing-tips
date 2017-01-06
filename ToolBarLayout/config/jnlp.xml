@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ツールアイコンの右寄せ" />
- <property name="jnlp.Name"     value="ToolBarLayout" />
- <property name="jnlp.name"     value="toolbarlayout" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST ToolBarLayout" />
+  <property name="jnlp.Name"     value="ToolBarLayout" />
+  <property name="jnlp.name"     value="toolbarlayout" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/toolbarlayout/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolBarLayout.html" />
 </project>

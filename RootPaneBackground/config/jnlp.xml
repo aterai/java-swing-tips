@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JRootPaneの背景" />
- <property name="jnlp.Name"     value="RootPaneBackground" />
- <property name="jnlp.name"     value="rootpanebackground" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST RootPaneBackground" />
+  <property name="jnlp.Name"     value="RootPaneBackground" />
+  <property name="jnlp.name"     value="rootpanebackground" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rootpanebackground/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RootPaneBackground.html" />
 </project>

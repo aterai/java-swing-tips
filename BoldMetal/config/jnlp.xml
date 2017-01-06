@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST swing.boldMetal" />
- <property name="jnlp.Name"     value="BoldMetal" />
- <property name="jnlp.name"     value="boldmetal" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST BoldMetal" />
+  <property name="jnlp.Name"     value="BoldMetal" />
+  <property name="jnlp.name"     value="boldmetal" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/boldmetal/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BoldMetal.html" />
 </project>

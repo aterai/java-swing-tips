@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST ドラッグ＆ドロップのテスト" />
- <property name="jnlp.Name"     value="DnDList" />
- <property name="jnlp.name"     value="dndlist" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST DnDList" />
+  <property name="jnlp.Name"     value="DnDList" />
+  <property name="jnlp.name"     value="dndlist" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndlist/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDList.html" />
 </project>

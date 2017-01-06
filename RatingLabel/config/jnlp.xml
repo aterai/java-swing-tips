@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST Rating Bar" />
- <property name="jnlp.Name"     value="RatingLabel" />
- <property name="jnlp.name"     value="ratinglabel" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST RatingLabel" />
+  <property name="jnlp.Name"     value="RatingLabel" />
+  <property name="jnlp.name"     value="ratinglabel" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/ratinglabel/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RatingLabel.html" />
 </project>

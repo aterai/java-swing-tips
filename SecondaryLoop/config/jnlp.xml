@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST SecondaryLoopを使用する" />
- <property name="jnlp.Name"     value="SecondaryLoop" />
- <property name="jnlp.name"     value="secondaryloop" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST SecondaryLoop" />
+  <property name="jnlp.Name"     value="SecondaryLoop" />
+  <property name="jnlp.name"     value="secondaryloop" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/secondaryloop/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SecondaryLoop.html" />
 </project>

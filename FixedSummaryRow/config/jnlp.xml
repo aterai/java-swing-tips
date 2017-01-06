@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 最終行はソートしない" />
- <property name="jnlp.Name"     value="FixedSummaryRow" />
- <property name="jnlp.name"     value="fixedsummaryrow" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST FixedSummaryRow" />
+  <property name="jnlp.Name"     value="FixedSummaryRow" />
+  <property name="jnlp.name"     value="fixedsummaryrow" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fixedsummaryrow/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FixedSummaryRow.html" />
 </project>

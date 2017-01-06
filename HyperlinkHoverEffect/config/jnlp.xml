@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JEditorPaneのリンク色をHover時に変更" />
- <property name="jnlp.Name"     value="HyperlinkHoverEffect" />
- <property name="jnlp.name"     value="hyperlinkhovereffect" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST HyperlinkHoverEffect" />
+  <property name="jnlp.Name"     value="HyperlinkHoverEffect" />
+  <property name="jnlp.name"     value="hyperlinkhovereffect" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hyperlinkhovereffect/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HyperlinkHoverEffect.html" />
 </project>

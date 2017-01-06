@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST 画像のズーム" />
- <property name="jnlp.Name"     value="Zoom" />
- <property name="jnlp.name"     value="zoom" />
- <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
+  <property name="jnlp.title"    value="JST Zoom" />
+  <property name="jnlp.Name"     value="Zoom" />
+  <property name="jnlp.name"     value="zoom" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/zoom/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Zoom.html" />
 </project>
