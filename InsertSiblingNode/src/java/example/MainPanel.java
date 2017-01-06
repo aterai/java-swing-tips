@@ -90,9 +90,7 @@ class TreePopupMenu extends JPopupMenu {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
             path = tree.getPathForLocation(x, y);
-            Optional.ofNullable(path).ifPresent(tp -> {
-                super.show(c, x, y);
-            });
+            Optional.ofNullable(path).ifPresent(tp -> super.show(c, x, y));
         }
     }
 }
