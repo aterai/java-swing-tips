@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         tree.setComponentPopupMenu(new TreePopupMenu());
         tree.getSelectionModel().addTreeSelectionListener(e -> {
-            Optional.ofNullable(e.getNewLeadSelectionPath()).ifPresent(path -> updateLabel(path));
+            Optional.ofNullable(e.getNewLeadSelectionPath()).ifPresent(this::updateLabel);
         });
 
         check.addActionListener(e -> tree.setRootVisible(((JCheckBox) e.getSource()).isSelected()));
