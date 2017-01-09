@@ -152,7 +152,7 @@ public final class BarFactory {
         JMenu menu = new JMenu(mitext);
         Optional.ofNullable(getResourceString(key + MNE_SUFFIX))
                 .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
-                .filter(txt -> txt.length() > 0)
+                .filter(txt -> !txt.isEmpty())
                 .ifPresent(txt -> {
                     if (mitext.indexOf(txt) < 0) {
                         menu.setText(String.format("%s (%s)", mitext, txt));
@@ -179,7 +179,7 @@ public final class BarFactory {
         });
         Optional.ofNullable(getResourceString(cmd + MNE_SUFFIX))
                 .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
-                .filter(txt -> txt.length() > 0)
+                .filter(txt -> !txt.isEmpty())
                 .ifPresent(txt -> {
                     if (mitext.indexOf(txt) < 0) {
                         mi.setText(String.format("%s (%s)", mitext, txt));
