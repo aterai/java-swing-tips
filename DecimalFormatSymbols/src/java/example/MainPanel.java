@@ -87,10 +87,12 @@ public final class MainPanel extends JPanel {
     }
     private static DefaultFormatterFactory makeFFactory(DecimalFormatSymbols dfs) {
         DecimalFormat format = new DecimalFormat("0.00", dfs);
+
         NumberFormatter displayFormatter = new NumberFormatter(format);
-        ((NumberFormatter) displayFormatter).setValueClass(Double.class);
+        displayFormatter.setValueClass(Double.class);
+
         NumberFormatter editFormatter = new NumberFormatter(format);
-        ((NumberFormatter) editFormatter).setValueClass(Double.class);
+        editFormatter.setValueClass(Double.class);
         return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
     }
     public static void main(String... args) {
