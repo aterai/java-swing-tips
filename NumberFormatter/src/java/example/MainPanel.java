@@ -15,8 +15,10 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(3, 1));
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s1.getEditor();
-        DefaultFormatter formatter = (DefaultFormatter) editor.getTextField().getFormatter();
-        formatter.setAllowsInvalid(false);
+        JFormattedTextField.AbstractFormatter formatter = editor.getTextField().getFormatter();
+        if (formatter instanceof DefaultFormatter) {
+            ((DefaultFormatter) formatter).setAllowsInvalid(false);
+        }
         add(makeTitlePanel(s0, "Default"));
         add(makeTitlePanel(s1, "NumberFormatter#setAllowsInvalid(false)"));
         add(makeTitlePanel(s2, "BackgroundColor"));
