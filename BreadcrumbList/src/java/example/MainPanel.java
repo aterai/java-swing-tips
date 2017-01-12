@@ -183,13 +183,13 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
     private Shape shape;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (Objects.nonNull(shape)) {
+        Optional.ofNullable(shape).ifPresent(s -> {
             Graphics2D g2 = (Graphics2D) g.create();
             //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setPaint(Color.GRAY);
             g2.draw(shape);
             g2.dispose();
-        }
+        });
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
