@@ -88,8 +88,7 @@ public final class MainPanel extends JPanel {
     }
     private void updateHighlighter() {
         for (int i = 0; i < table.getRowCount(); i++) {
-            Object o = table.getValueAt(i, 0);
-            if (Objects.equals(PATTERN, o)) {
+            if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
                 highlighter.add(i);
             }
         }
