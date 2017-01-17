@@ -460,17 +460,10 @@ class TabTransferHandler extends TransferHandler {
         // http://bugs.java.com/view_bug.do?bug_id=6700748
         target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
-        if (isDropable) {
-            support.setShowDropLocation(true);
-            dl.setDropable(true);
-            target.setDropLocation(dl, null, true);
-            return true;
-        } else {
-            support.setShowDropLocation(false);
-            dl.setDropable(false);
-            target.setDropLocation(dl, null, false);
-            return false;
-        }
+        support.setShowDropLocation(isDropable);
+        dl.setDropable(isDropable);
+        target.setDropLocation(dl, null, isDropable);
+        return isDropable;
     }
 //     private static boolean isWebStart() {
 //         try {

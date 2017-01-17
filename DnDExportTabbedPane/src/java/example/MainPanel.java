@@ -443,22 +443,13 @@ class TabTransferHandler extends TransferHandler {
         // http://bugs.java.com/view_bug.do?bug_id=6700748
         Cursor cursor = isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
         Component glassPane = target.getRootPane().getGlassPane();
-        glassPane.setVisible(false);
         glassPane.setCursor(cursor);
-        glassPane.setVisible(true);
         target.setCursor(cursor);
 
-        if (isDropable) {
-            support.setShowDropLocation(true);
-            dl.setDropable(true);
-            target.setDropLocation(dl, null, true);
-            return true;
-        } else {
-            support.setShowDropLocation(false);
-            dl.setDropable(false);
-            target.setDropLocation(dl, null, false);
-            return false;
-        }
+        support.setShowDropLocation(isDropable);
+        dl.setDropable(isDropable);
+        target.setDropLocation(dl, null, isDropable);
+        return isDropable;
     }
 //     private static boolean isWebStart() {
 //         try {
