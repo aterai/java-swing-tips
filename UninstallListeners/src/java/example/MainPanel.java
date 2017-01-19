@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         private void uninstallSilderUIListeners() {
             try {
                 // https://community.oracle.com/threads/1360123
-                Class<?> uiClass = BasicSliderUI.class;
+                Class<BasicSliderUI> uiClass = BasicSliderUI.class;
                 Method uninstallListeners = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
                 uninstallListeners.setAccessible(true);
                 uninstallListeners.invoke(getUI(), this);
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             }
             //removeFocusListener(focusListener);
             //removeComponentListener(componentListener);
-            //removePropertyChangeListener( propertyChangeListener );
+            //removePropertyChangeListener(propertyChangeListener);
             //getModel().removeChangeListener(changeListener);
         }
     };
