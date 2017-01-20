@@ -134,7 +134,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     }
     @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e) {
-        Rectangle r = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
+        Rectangle r = tabbedPane.getBoundsAt(tabbedPane.getSelectedIndex());
         if (r.contains(e.getPoint()) && e.getClickCount() == 2) {
             startEditing.actionPerformed(null);
         } else {

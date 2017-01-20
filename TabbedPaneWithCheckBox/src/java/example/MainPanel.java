@@ -74,7 +74,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Dimension size = cbox.getPreferredSize();
         int xx = tab.getSize().width - size.width;
-        Rectangle lastTab = tab.getUI().getTabBounds(tab, tab.getTabCount() - 1);
+        Rectangle lastTab = tab.getBoundsAt(tab.getTabCount() - 1);
         int tabEnd = lastTab.x + lastTab.width;
         if (xx < tabEnd) {
             xx = tabEnd;

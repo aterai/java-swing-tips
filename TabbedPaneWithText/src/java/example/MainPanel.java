@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
                 FontMetrics fm = getFontMetrics(getFont());
                 int stringWidth = fm.stringWidth(TEXT) + 10;
                 int x = getSize().width - stringWidth;
-                Rectangle lastTab = getUI().getTabBounds(this, getTabCount() - 1);
+                Rectangle lastTab = getBoundsAt(getTabCount() - 1);
                 int tabEnd = lastTab.x + lastTab.width;
                 if (x < tabEnd) {
                     x = tabEnd;

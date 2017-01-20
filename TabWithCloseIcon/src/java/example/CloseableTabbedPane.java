@@ -238,7 +238,7 @@ class CloseableTabIconHandler extends MouseAdapter {
             if (tabbedPane.fireCloseTab(selIndex)) {
                 if (selIndex > 0) {
                     // to prevent uncatchable null-pointers
-                    Rectangle rec = tabbedPane.getUI().getTabBounds(tabbedPane, selIndex - 1);
+                    Rectangle rec = tabbedPane.getBoundsAt(selIndex - 1);
                     MouseEvent event = new MouseEvent(e.getComponent(),
                                                       e.getID() + 1,
                                                       System.currentTimeMillis(),
