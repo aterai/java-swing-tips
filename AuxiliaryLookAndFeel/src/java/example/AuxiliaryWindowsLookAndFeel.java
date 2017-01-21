@@ -20,7 +20,7 @@ public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
     @Override public boolean isNativeLookAndFeel() {
         return false;
     }
-    public UIDefaults getDefaults() {
+    @Override public UIDefaults getDefaults() {
         UIDefaults table = new UIDefaults() {
             @Override protected void getUIError(String msg) { /* not needed */ }
         };
