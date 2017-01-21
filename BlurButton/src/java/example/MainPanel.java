@@ -65,9 +65,10 @@ public final class MainPanel extends JPanel {
         add(new JToggleButton(new AbstractAction("setEnabled(false)") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean f = !((AbstractButton) e.getSource()).isSelected();
-                for (JButton b: list) {
-                    b.setEnabled(f);
-                }
+                list.forEach(b -> b.setEnabled(f));
+                //for (JButton b: list) {
+                //    b.setEnabled(f);
+                //}
             }
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
