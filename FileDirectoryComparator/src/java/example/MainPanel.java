@@ -229,7 +229,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
     @Override public int compare(File a, File b) {
         switch (column) {
           case 0:  return a.getName().compareToIgnoreCase(b.getName());
-          case 1:  return (int) (a.length() - b.length());
+          case 1:  return Long.compare(a.length(), b.length());
           default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
         }
     }
