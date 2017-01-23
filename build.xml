@@ -340,6 +340,25 @@
   <!-- static code analysis -->
   <property name="sca.dir" value="${user.dir}" />
 
+  <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+    <componentdef name="errorprone" classname="com.google.errorprone.ErrorProneExternalCompilerAdapter"
+                  classpath="${env.ERRORPRONE_JAR}" />
+    <javac srcdir="${build.src}"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           includeAntRuntime="no"
+           fork="true"
+           classpathref="project.class.path">
+      <errorprone />
+      <compilerarg value="-Xlint:unchecked" />
+      <compilerarg value="-Xep:MultipleTopLevelClasses:OFF" />
+    </javac>
+  </target>
+
   <condition property="have.findbugs">
     <and>
       <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
