@@ -420,10 +420,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
      * @param textRect the text boundaries
      * @param isSelected true whether the tab is selected, false otherwise
      */
-    protected void layoutLabel(int tabPlacement, FontMetrics metrics,
-                               int tabIndex, String title, Icon icon,
-                               Rectangle tabRect, Rectangle iconRect,
-                               Rectangle textRect, boolean isSelected) {
+    @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
 
@@ -495,10 +492,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
      * @param textRect the text boundaries
      * @param isSelected true whether the tab is selected, false otherwise
      */
-    protected void layoutLabel(int tabPlacement, FontMetrics metrics,
-                               int tabIndex, String title, Icon icon,
-                               Rectangle tabRect, Rectangle iconRect,
-                               Rectangle textRect, boolean isSelected) {
+    @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
         //textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);

@@ -154,7 +154,7 @@ class TabButton extends JRadioButton {
 //     @Override public void setUI(TabViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
-    public TabViewButtonUI getUI() {
+    @Override public TabViewButtonUI getUI() {
         return (TabViewButtonUI) ui;
     }
     protected TabButton() {

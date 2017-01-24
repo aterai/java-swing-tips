@@ -206,7 +206,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         //return null;
     }
 
-    public int getResizeCursor(MouseEvent e) {
+    @Override public int getResizeCursor(MouseEvent e) {
         Component c = e.getComponent();
         int w = c.getWidth();
         int h = c.getHeight();

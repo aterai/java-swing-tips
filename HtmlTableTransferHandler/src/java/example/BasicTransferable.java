@@ -48,7 +48,7 @@ class BasicTransferable implements Transferable {
      * for providing the data (from most richly descriptive to least descriptive).
      * @return an array of data flavors in which this data can be transferred
      */
-    public DataFlavor[] getTransferDataFlavors() {
+    @Override public DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] richerFlavors = getRicherFlavors();
         int nRicher = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
         int nHTML = isHTMLSupported() ? htmlFlavors.length : 0;
@@ -84,7 +84,7 @@ class BasicTransferable implements Transferable {
      * @param flavor the requested flavor for the data
      * @return boolean indicating whether or not the data flavor is supported
      */
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
+    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //         DataFlavor[] flavors = getTransferDataFlavors();
 //         for (int i = 0; i < flavors.length; i++) {
 //             if (flavors[i].equals(flavor)) {
@@ -106,7 +106,7 @@ class BasicTransferable implements Transferable {
      * @exception UnsupportedFlavorException if the requested data flavor is
      *              not supported.
      */
-    public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         //???: DataFlavor[] richerFlavors = getRicherFlavors();
         if (isRicherFlavor(flavor)) {
             return getRicherData(flavor);

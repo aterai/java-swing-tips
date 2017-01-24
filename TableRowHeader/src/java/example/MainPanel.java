@@ -242,7 +242,7 @@ class TestModel extends DefaultTableModel {
         rowListModel.addElement("row" + number);
         number++;
     }
-    public void removeRow(int index) {
+    @Override public void removeRow(int index) {
         super.removeRow(index);
         rowListModel.remove(index);
     }
