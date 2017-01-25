@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -124,10 +125,10 @@ final class LookAndFeelUtil {
     }
     private static boolean isAvailableLookAndFeel(String laf) {
         try {
-            Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel) lnfClass.newInstance();
+            Class<?> lnfClass = Class.forName(laf);
+            LookAndFeel newLAF = (LookAndFeel) lnfClass.getConstructor().newInstance();
             return newLAF.isSupportedLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }
     }

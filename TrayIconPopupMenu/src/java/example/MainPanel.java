@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -236,12 +237,12 @@ class ChangeLookAndFeelAction extends AbstractAction {
         this.lnf = lnfe.getClassName();
         this.setEnabled(isAvailableLookAndFeel(lnf));
     }
-    private static boolean isAvailableLookAndFeel(String lnf) {
+    private static boolean isAvailableLookAndFeel(String laf) {
         try {
-            Class lnfClass = Class.forName(lnf);
-            LookAndFeel newLnF = (LookAndFeel) lnfClass.newInstance();
-            return newLnF.isSupportedLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Class<?> lnfClass = Class.forName(laf);
+            LookAndFeel newLAF = (LookAndFeel) lnfClass.getConstructor().newInstance();
+            return newLAF.isSupportedLookAndFeel();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }
     }
