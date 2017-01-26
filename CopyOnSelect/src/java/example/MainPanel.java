@@ -153,11 +153,11 @@ class TextAreaHandler extends StreamHandler {
         configure();
         setOutputStream(os);
     }
-    @Override public void publish(LogRecord record) {
+    @Override synchronized public void publish(LogRecord record) {
         super.publish(record);
         flush();
     }
-    @Override public void close() {
+    @Override synchronized public void close() {
         flush();
     }
 }

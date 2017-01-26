@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
 final class ComboBoxUtil {
     private ComboBoxUtil() { /* Singleton */ }
 //     public static Border makeIconComboBorder(final JComponent comp, final ImageIcon icon) {
-//         Icon wrappedIcon = new ImageIcon() {
+//         Icon wrappedIcon = new Icon() {
 //             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //                 g.translate(x, y);
 //                 int ih = icon.getIconHeight();
@@ -131,9 +131,9 @@ final class ComboBoxUtil {
 //         Border b3 = BorderFactory.createCompoundBorder(b1, b2);
 //         return BorderFactory.createCompoundBorder(comp.getBorder(), b3);
 //     }
-    public static void initIconComboBorder1(JComboBox comboBox, final ImageIcon icon) {
-        final JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
-        Icon wrappedIcon = new ImageIcon() {
+    public static void initIconComboBorder1(JComboBox comboBox, ImageIcon icon) {
+        JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
+        Icon wrappedIcon = new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 int ih = icon.getIconHeight();
@@ -155,7 +155,7 @@ final class ComboBoxUtil {
         Border b3 = BorderFactory.createCompoundBorder(b1, b2);
         comp.setBorder(BorderFactory.createCompoundBorder(comp.getBorder(), b3));
     }
-    public static void initIconComboBorder2(final JComboBox comboBox, final ImageIcon icon) {
+    public static void initIconComboBorder2(JComboBox comboBox, ImageIcon icon) {
         EventQueue.invokeLater(() -> {
             JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
             Insets is = c.getInsets();
@@ -176,7 +176,7 @@ final class ComboBoxUtil {
             label.setBounds(is.left, yy, icon.getIconWidth(), icon.getIconHeight());
         });
     }
-    public static void initComboBoxRenderer(JComboBox<String> combo, final ImageIcon icon) {
+    public static void initComboBoxRenderer(JComboBox<String> combo, ImageIcon icon) {
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
