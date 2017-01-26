@@ -12,9 +12,9 @@ import javax.swing.*;
 // import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final transient Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
+    private final transient Logger logger = Logger.getLogger(TextAreaLogger.class.getName());
     private final JTextArea textArea = new JTextArea();
-    private final JTextField textField = new JTextField(TextAreaLogger.TEST.getClass().getName());
+    private final JTextField textField = new JTextField("aaa");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -80,12 +80,11 @@ public final class MainPanel extends JPanel {
     }
 }
 
-enum TextAreaLogger {
-    TEST;
+class TextAreaLogger {
 }
 
 class EnterAction extends AbstractAction {
-    private final transient Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
+    private final transient Logger logger = Logger.getLogger(TextAreaLogger.class.getName());
     private final JTextField textField;
     protected EnterAction(JTextField textField) {
         super("Enter");
@@ -202,11 +201,11 @@ class TextAreaHandler extends StreamHandler {
         configure();
         setOutputStream(os);
     }
-    @Override public void publish(LogRecord record) {
+    @Override public synchronized void publish(LogRecord record) {
         super.publish(record);
         flush();
     }
-    @Override public void close() {
+    @Override public synchronized void close() {
         flush();
     }
 }
