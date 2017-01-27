@@ -155,7 +155,7 @@ public final class MainPanel extends JPanel {
 enum AutoResizeMode {
     AUTO_RESIZE_OFF(JTable.AUTO_RESIZE_OFF),
     AUTO_RESIZE_ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    public int mode;
+    public final int mode;
     AutoResizeMode(int mode) {
         this.mode = mode;
     }

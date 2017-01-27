@@ -113,14 +113,14 @@ public final class MainPanel extends JPanel {
 }
 
 class TexturePanel extends JPanel {
-    protected transient TexturePaint texture;
+    protected transient Paint texture;
     protected TexturePanel() {
         super();
     }
     protected TexturePanel(LayoutManager lm) {
         super(lm);
     }
-    public void setTexturePaint(TexturePaint texture) {
+    public void setTexturePaint(Paint texture) {
         this.texture = texture;
         //setOpaque(false);
         setOpaque(Objects.isNull(texture));
@@ -141,16 +141,17 @@ enum TexturePaints {
     Image(TextureUtil.makeImageTexture(),     "Image TexturePaint"),
     Checker(TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
     private final String description;
-    private final TexturePaint texture;
-    TexturePaints(TexturePaint texture, String description) {
+    @SuppressWarnings("ImmutableEnumChecker")
+    private final Paint texture;
+    TexturePaints(Paint texture, String description) {
         this.texture = texture;
         this.description = description;
     }
     @Override public String toString() {
         return description;
     }
-    public TexturePaint getTexturePaint() {
-        return this.texture;
+    public Paint getTexturePaint() {
+        return texture;
     }
 }
 

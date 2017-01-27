@@ -25,7 +25,38 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-    private final JComboBox<? extends Enum> componentChoices = new JComboBox<>(JComponentType.values());
+    private final JComponent[] list = {
+        new JComboBox(),
+        new JFormattedTextField(),
+        //new JFileChooser(),
+        new JInternalFrame(),
+        new JLabel(),
+        new JLayeredPane(),
+        new JList(),
+        new JMenuBar(),
+        new JOptionPane(),
+        new JPanel(),
+        new JPopupMenu(),
+        new JProgressBar(),
+        new JRootPane(),
+        new JScrollBar(),
+        new JScrollPane(),
+        new JSeparator(),
+        new JSlider(),
+        new JSpinner(),
+        new JSplitPane(),
+        new JTabbedPane(),
+        new JTable(),
+        new JTableHeader(),
+        new JToolBar(),
+        new JToolTip(),
+        new JTree(),
+        new JEditorPane(),
+        new JTextArea(),
+        new JTextField()
+    };
+    private final JComboBox<JComponent> componentChoices = new JComboBox<>(list);
+    private final JButton button = new JButton("show");
     private final List<Integer> focusType = Arrays.asList(
         JComponent.WHEN_FOCUSED, JComponent.WHEN_IN_FOCUSED_WINDOW,
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -33,18 +64,32 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
+        componentChoices.setRenderer(new ListCellRenderer<JComponent>() {
+            private final JLabel l = new JLabel();
+            @Override public Component getListCellRendererComponent(JList<? extends JComponent> list, JComponent value, int index, boolean isSelected, boolean cellHasFocus) {
+                l.setOpaque(index >= 0);
+                l.setText(value.getClass().getName());
+                if (isSelected) {
+                    l.setBackground(list.getSelectionBackground());
+                    l.setForeground(list.getSelectionForeground());
+                } else {
+                    l.setBackground(list.getBackground());
+                    l.setForeground(list.getForeground());
+                }
+                return l;
+            }
+        });
+        button.addActionListener(e -> {
+            model.setRowCount(0);
+            JComponent c = componentChoices.getItemAt(componentChoices.getSelectedIndex());
+            for (Integer f: focusType) {
+                loadBindingMap(f, c.getInputMap(f), c.getActionMap());
+            }
+        });
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(componentChoices);
-        p.add(new JButton(new AbstractAction("show") {
-            @Override public void actionPerformed(ActionEvent e) {
-                model.setRowCount(0);
-                JComponent c = ((JComponentType) componentChoices.getSelectedItem()).component;
-                for (Integer f: focusType) {
-                    loadBindingMap(f, c.getInputMap(f), c.getActionMap());
-                }
-            }
-        }));
+        p.add(button);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -117,41 +162,6 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-enum JComponentType {
-    JComboBox(new JComboBox()),
-    JFormattedTextField(new JFormattedTextField()),
-    //JFileChooser(new JFileChooser()),
-    JInternalFrame(new JInternalFrame()),
-    JLabel(new JLabel()),
-    JLayeredPane(new JLayeredPane()),
-    JList(new JList()),
-    JMenuBar(new JMenuBar()),
-    JOptionPane(new JOptionPane()),
-    JPanel(new JPanel()),
-    JPopupMenu(new JPopupMenu()),
-    JProgressBar(new JProgressBar()),
-    JRootPane(new JRootPane()),
-    JScrollBar(new JScrollBar()),
-    JScrollPane(new JScrollPane()),
-    JSeparator(new JSeparator()),
-    JSlider(new JSlider()),
-    JSpinner(new JSpinner()),
-    JSplitPane(new JSplitPane()),
-    JTabbedPane(new JTabbedPane()),
-    JTable(new JTable()),
-    JTableHeader(new JTableHeader()),
-    JToolBar(new JToolBar()),
-    JToolTip(new JToolTip()),
-    JTree(new JTree()),
-    JEditorPane(new JEditorPane()),
-    JTextArea(new JTextArea()),
-    JTextField(new JTextField());
-    public final JComponent component;
-    JComponentType(JComponent component) {
-        this.component = component;
     }
 }
 

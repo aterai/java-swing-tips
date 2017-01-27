@@ -157,19 +157,21 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-    N(Cursor.N_RESIZE_CURSOR,   new Dimension(0, 4)),
-    W(Cursor.W_RESIZE_CURSOR,   new Dimension(4, 0)),
-    E(Cursor.E_RESIZE_CURSOR,   new Dimension(4, 0)),
-    S(Cursor.S_RESIZE_CURSOR,   new Dimension(0, 4)),
-    NW(Cursor.NW_RESIZE_CURSOR, new Dimension(4, 4)),
-    NE(Cursor.NE_RESIZE_CURSOR, new Dimension(4, 4)),
-    SW(Cursor.SW_RESIZE_CURSOR, new Dimension(4, 4)),
-    SE(Cursor.SE_RESIZE_CURSOR, new Dimension(4, 4));
-    public final Dimension dim;
+    N(Cursor.N_RESIZE_CURSOR,   0, 4),
+    W(Cursor.W_RESIZE_CURSOR,   4, 0),
+    E(Cursor.E_RESIZE_CURSOR,   4, 0),
+    S(Cursor.S_RESIZE_CURSOR,   0, 4),
+    NW(Cursor.NW_RESIZE_CURSOR, 4, 4),
+    NE(Cursor.NE_RESIZE_CURSOR, 4, 4),
+    SW(Cursor.SW_RESIZE_CURSOR, 4, 4),
+    SE(Cursor.SE_RESIZE_CURSOR, 4, 4);
     public final int cursor;
-    Side(int cursor, Dimension dim) {
+    public final int width;
+    public final int height;
+    Side(int cursor, int width, int height) {
         this.cursor = cursor;
-        this.dim = dim;
+        this.width  = width;
+        this.height = height;
     }
 }
 
@@ -181,13 +183,13 @@ class SideLabel extends JLabel {
         setCursor(Cursor.getPredefinedCursor(side.cursor));
     }
     @Override public Dimension getPreferredSize() {
-        return side.dim;
+        return new Dimension(side.width, side.height);
     }
     @Override public Dimension getMinimumSize() {
-        return side.dim;
+        return getPreferredSize();
     }
     @Override public Dimension getMaximumSize() {
-        return side.dim;
+        return getPreferredSize();
     }
 }
 
