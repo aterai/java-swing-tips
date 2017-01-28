@@ -196,7 +196,9 @@ final class MenuItemUIHelper {
         Optional.ofNullable(lh.getCheckIcon()).ifPresent(checkIcon -> {
             JMenuItem menuItem = lh.getMenuItem();
             ButtonModel model = menuItem.getModel();
-            if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
+            if (model.isArmed()) {
+                g.setColor(foreground);
+            } else if (menuItem instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             } else {
                 g.setColor(holdc);
@@ -221,7 +223,9 @@ final class MenuItemUIHelper {
         g.setFont(lh.getAccFontMetrics().getFont());
         if (model.isEnabled()) {
             // *** paint the accText normally
-            if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
+            if (model.isArmed()) {
+                g.setColor(acceleratorSelectionForeground);
+            } else if (menuItem instanceof JMenu && model.isSelected()) {
                 g.setColor(acceleratorSelectionForeground);
             } else {
                 g.setColor(acceleratorForeground);
@@ -252,7 +256,9 @@ final class MenuItemUIHelper {
         Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
             JMenuItem menuItem = lh.getMenuItem();
             ButtonModel model = menuItem.getModel();
-            if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
+            if (model.isArmed()) {
+                g.setColor(foreground);
+            } else if (menuItem instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             }
             if (lh.useCheckAndArrow()) {

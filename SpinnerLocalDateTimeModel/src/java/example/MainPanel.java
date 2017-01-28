@@ -250,7 +250,9 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
                 }
                 Comparable<ChronoLocalDateTime<?>> min = model.getStart();
                 Comparable<ChronoLocalDateTime<?>> max = model.getEnd();
-                if (Objects.nonNull(min) && min.compareTo(value) > 0 || Objects.nonNull(max) && max.compareTo(value) < 0) {
+                if (Objects.nonNull(min) && min.compareTo(value) > 0) {
+                    throw new ParseException(text + " is out of range", 0);
+                } else if (Objects.nonNull(max) && max.compareTo(value) < 0) {
                     throw new ParseException(text + " is out of range", 0);
                 }
                 return value;

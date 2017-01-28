@@ -219,7 +219,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
 //             g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
             float x = (fillRight - fillLeft) / (float) (trackRight - trackLeft);
-            g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x));
+            g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
             g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
         } else {
             g.setColor(controlShadow);
@@ -260,15 +260,16 @@ final class GradientPalletFactory {
         }
         return pallet;
     }
-    public static Color getColorFromPallet(int[] pallet, float x) {
+    public static Color getColorFromPallet(int[] pallet, float x, int alpha) {
 //         if (x < 0f || x > 1f) {
 //             throw new IllegalArgumentException("Parameter outside of expected range");
 //         }
         int i = (int) (pallet.length * x);
         int max = pallet.length - 1;
         int index = Math.min(Math.max(i, 0), max);
-        int pix = pallet[index] & 0x00FFFFFF | (0x64 << 24);
-        return new Color(pix, true);
+        int pix = pallet[index] & 0x00FFFFFF;
+        //int alpha = 0x64 << 24;
+        return new Color(alpha | pix, true);
     }
 }
 

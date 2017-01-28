@@ -178,10 +178,12 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         isRollover = isURLColumn(table, col) && pointInsidePrefSize(table, pt);
-        if (row == prevRow && col == prevCol && isRollover == prevRollover || !isRollover && !prevRollover) {
+        if (row == prevRow && col == prevCol && isRollover == prevRollover) {
             return;
         }
-
+        if (!isRollover && !prevRollover) {
+            return;
+        }
 // >>>> HyperlinkCellRenderer.java
 // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         Rectangle repaintRect;
