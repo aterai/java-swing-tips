@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST GetAllPopupMenus" />
+  <property name="jnlp.Name"     value="GetAllPopupMenus" />
+  <property name="jnlp.name"     value="getallpopupmenus" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/getallpopupmenus/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GetAllPopupMenus.html" />
+</project>
