@@ -8,6 +8,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -28,7 +29,7 @@ public final class MainPanel extends JPanel {
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tab.addTab("JTree 00",       new JScrollPane(new JTree()));
         tab.addTab("JLabel 01",      new JLabel("Test"));
-        tab.addTab("JTable 02",      new JScrollPane(makeJTable()));
+        tab.addTab("JTable 02",      new JScrollPane(new JTable(20, 3)));
         tab.addTab("JTextArea 03",   new JScrollPane(new JTextArea("asfasdfasfasdfas\nafasfasdfaf\n")));
         tab.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
         tab.addTab("null 05",        null);
@@ -57,18 +58,6 @@ public final class MainPanel extends JPanel {
         p.add(p1, BorderLayout.NORTH);
         p.add(p2, BorderLayout.SOUTH);
         return p;
-    }
-    private JTable makeJTable() {
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"AAA", 1, true}, {"BBB", 2, false},
-        };
-        TableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        return new JTable(model);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -110,11 +99,10 @@ class DnDTabbedPane extends JTabbedPane {
     protected Rectangle rForward  = new Rectangle();
     public void autoScrollTest(Point glassPt) {
         Rectangle r = getTabAreaBounds();
-        int tabPlacement = getTabPlacement();
-        if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        if (isTopBottomTabPlacement(getTabPlacement())) {
             rBackward.setBounds(r.x, r.y, RWH, r.height);
             rForward.setBounds(r.x + r.width - RWH - BUTTON_SIZE, r.y, RWH + BUTTON_SIZE, r.height);
-        } else { //if (tabPlacement == LEFT || tabPlacement == RIGHT) {
+        } else {
             rBackward.setBounds(r.x, r.y, r.width, RWH);
             rForward.setBounds(r.x, r.y + r.height - RWH - BUTTON_SIZE, r.width, RWH + BUTTON_SIZE);
         }
@@ -149,24 +137,33 @@ class DnDTabbedPane extends JTabbedPane {
 
     protected int getTargetTabIndex(Point glassPt) {
         Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
-        boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
-        Point d = isTB ? new Point(1, 0) : new Point(0, 1);
-        for (int i = 0; i < getTabCount(); i++) {
+        Point d = isTopBottomTabPlacement(getTabPlacement()) ? new Point(1, 0) : new Point(0, 1);
+        return IntStream.range(0, getTabCount()).filter(i -> {
             Rectangle r = getBoundsAt(i);
             r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
-            if (r.contains(tabPt)) {
-                return i;
-            }
-        }
-        Rectangle r = getBoundsAt(getTabCount() - 1);
-        r.translate(r.width * d.x / 2, r.height * d.y / 2);
-        return r.contains(tabPt) ? getTabCount() : -1;
+            return r.contains(tabPt);
+        }).findFirst().orElseGet(() -> {
+            int count = getTabCount();
+            Rectangle r = getBoundsAt(count - 1);
+            r.translate(r.width * d.x / 2, r.height * d.y / 2);
+            return r.contains(tabPt) ? count : -1;
+        });
+//         for (int i = 0; i < getTabCount(); i++) {
+//             Rectangle r = getBoundsAt(i);
+//             r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
+//             if (r.contains(tabPt)) {
+//                 return i;
+//             }
+//         }
+//         Rectangle r = getBoundsAt(getTabCount() - 1);
+//         r.translate(r.width * d.x / 2, r.height * d.y / 2);
+//         return r.contains(tabPt) ? getTabCount() : -1;
     }
 
     protected void convertTab(int prev, int next) {
-        if (next < 0 || prev == next) {
-            return;
-        }
+//         if (next < 0 || prev == next) {
+//             return;
+//         }
         Component cmp = getComponentAt(prev);
         Component tab = getTabComponentAt(prev);
         String str    = getTitleAt(prev);
@@ -187,27 +184,17 @@ class DnDTabbedPane extends JTabbedPane {
         setTabComponentAt(tgtindex, tab);
     }
 
-    protected void initTargetLeftRightLine(int next) {
+    protected void initTargetLine(int next) {
         if (next < 0 || dragTabIndex == next || next - dragTabIndex == 1) {
             glassPane.setTargetRect(0, 0, 0, 0);
-        } else if (next == 0) {
-            Rectangle r = SwingUtilities.convertRectangle(this, getBoundsAt(0), glassPane);
-            glassPane.setTargetRect(r.x - LINEWIDTH / 2, r.y, LINEWIDTH, r.height);
-        } else {
-            Rectangle r = SwingUtilities.convertRectangle(this, getBoundsAt(next - 1), glassPane);
-            glassPane.setTargetRect(r.x + r.width - LINEWIDTH / 2, r.y, LINEWIDTH, r.height);
+            return;
         }
-    }
-
-    protected void initTargetTopBottomLine(int next) {
-        if (next < 0 || dragTabIndex == next || next - dragTabIndex == 1) {
-            glassPane.setTargetRect(0, 0, 0, 0);
-        } else if (next == 0) {
-            Rectangle r = SwingUtilities.convertRectangle(this, getBoundsAt(0), glassPane);
-            glassPane.setTargetRect(r.x, r.y - LINEWIDTH / 2, r.width, LINEWIDTH);
+        Rectangle r = SwingUtilities.convertRectangle(this, getBoundsAt(Math.max(0, next - 1)), glassPane);
+        int a = Math.min(next, 1); //a = (next == 0) ? 0 : 1;
+        if (isTopBottomTabPlacement(getTabPlacement())) {
+            glassPane.setTargetRect(r.x + r.width * a - LINEWIDTH / 2, r.y, LINEWIDTH, r.height);
         } else {
-            Rectangle r = SwingUtilities.convertRectangle(this, getBoundsAt(next - 1), glassPane);
-            glassPane.setTargetRect(r.x, r.y + r.height - LINEWIDTH / 2, r.width, LINEWIDTH);
+            glassPane.setTargetRect(r.x, r.y + r.height * a - LINEWIDTH / 2, r.width, LINEWIDTH);
         }
     }
 
@@ -249,19 +236,33 @@ class DnDTabbedPane extends JTabbedPane {
 //                                                                .findFirst()
 //                                                                .orElseGet(Rectangle::new));
         int tabPlacement = getTabPlacement();
-        if (tabPlacement == TOP) {
+        if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
-        } else if (tabPlacement == BOTTOM) {
-            tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
-            tabbedRect.height = tabbedRect.height - compRect.height;
-        } else if (tabPlacement == LEFT) {
+            if (tabPlacement == BOTTOM) {
+                tabbedRect.y += compRect.y + compRect.height;
+            }
+        } else {
             tabbedRect.width = tabbedRect.width - compRect.width;
-        } else if (tabPlacement == RIGHT) {
-            tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
-            tabbedRect.width = tabbedRect.width - compRect.width;
+            if (tabPlacement == RIGHT) {
+                tabbedRect.x += compRect.x + compRect.width;
+            }
         }
+//         if (tabPlacement == TOP) {
+//             tabbedRect.height = tabbedRect.height - compRect.height;
+//         } else if (tabPlacement == BOTTOM) {
+//             tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
+//             tabbedRect.height = tabbedRect.height - compRect.height;
+//         } else if (tabPlacement == LEFT) {
+//             tabbedRect.width = tabbedRect.width - compRect.width;
+//         } else if (tabPlacement == RIGHT) {
+//             tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
+//             tabbedRect.width = tabbedRect.width - compRect.width;
+//         }
         tabbedRect.grow(2, 2);
         return tabbedRect;
+    }
+    public static boolean isTopBottomTabPlacement(int tabPlacement) {
+        return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
     }
 }
 
@@ -315,26 +316,21 @@ class TabDragSourceListener implements DragSourceListener {
 
 class TabDragGestureListener implements DragGestureListener {
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        Component c = e.getComponent();
-        if (!(c instanceof DnDTabbedPane)) {
-            return;
-        }
-        DnDTabbedPane tabbedPane = (DnDTabbedPane) c;
-        if (tabbedPane.getTabCount() <= 1) {
-            return;
-        }
-        Point tabPt = e.getDragOrigin();
-        tabbedPane.dragTabIndex = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
-        //"disabled tab problem".
-        if (tabbedPane.dragTabIndex < 0 || !tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
-            return;
-        }
-        tabbedPane.initGlassPane(e.getDragOrigin());
-        try {
-            e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(c), new TabDragSourceListener());
-        } catch (InvalidDnDOperationException ex) {
-            ex.printStackTrace();
-        }
+        Optional.ofNullable(e.getComponent())
+                .filter(c -> c instanceof DnDTabbedPane).map(c -> (DnDTabbedPane) c)
+                .filter(tabbedPane -> tabbedPane.getTabCount() > 1)
+                .ifPresent(tabbedPane -> {
+                    Point tabPt = e.getDragOrigin();
+                    tabbedPane.dragTabIndex = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
+                    if (tabbedPane.dragTabIndex >= 0 && tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
+                        tabbedPane.initGlassPane(tabPt);
+                        try {
+                            e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabbedPane), new TabDragSourceListener());
+                        } catch (InvalidDnDOperationException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
     }
 }
 
@@ -345,10 +341,10 @@ class TabDropTargetListener implements DropTargetListener {
     }
     @Override public void dragEnter(DropTargetDragEvent e) {
         getGhostGlassPane(e.getDropTargetContext().getComponent()).ifPresent(glassPane -> {
-            DnDTabbedPane tabbedPane = glassPane.tabbedPane;
+            //DnDTabbedPane tabbedPane = glassPane.tabbedPane;
             Transferable t = e.getTransferable();
             DataFlavor[] f = e.getCurrentDataFlavors();
-            if (t.isDataFlavorSupported(f[0]) && tabbedPane.dragTabIndex >= 0) {
+            if (t.isDataFlavorSupported(f[0])) { // && tabbedPane.dragTabIndex >= 0) {
                 e.acceptDrag(e.getDropAction());
             } else {
                 e.rejectDrag();
@@ -369,16 +365,13 @@ class TabDropTargetListener implements DropTargetListener {
     @Override public void dragOver(DropTargetDragEvent e) {
         Component c = e.getDropTargetContext().getComponent();
         getGhostGlassPane(c).ifPresent(glassPane -> {
-            DnDTabbedPane tabbedPane = glassPane.tabbedPane;
             Point glassPt = e.getLocation();
-            if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
-                tabbedPane.initTargetLeftRightLine(tabbedPane.getTargetTabIndex(glassPt));
-            } else {
-                tabbedPane.initTargetTopBottomLine(tabbedPane.getTargetTabIndex(glassPt));
-            }
-            //if (tabbedPane.hasGhost)
-            glassPane.setPoint(glassPt);
+
+            DnDTabbedPane tabbedPane = glassPane.tabbedPane;
+            tabbedPane.initTargetLine(tabbedPane.getTargetTabIndex(glassPt));
             tabbedPane.autoScrollTest(glassPt);
+
+            glassPane.setPoint(glassPt);
             glassPane.repaint();
         });
     }
@@ -388,15 +381,16 @@ class TabDropTargetListener implements DropTargetListener {
             DnDTabbedPane tabbedPane = glassPane.tabbedPane;
             Transferable t = e.getTransferable();
             DataFlavor[] f = t.getTransferDataFlavors();
-            if (t.isDataFlavorSupported(f[0]) && tabbedPane.dragTabIndex >= 0) {
-                tabbedPane.convertTab(tabbedPane.dragTabIndex, tabbedPane.getTargetTabIndex(e.getLocation()));
+            int prev = tabbedPane.dragTabIndex;
+            int next = tabbedPane.getTargetTabIndex(e.getLocation());
+            if (t.isDataFlavorSupported(f[0]) && prev != next) {
+                tabbedPane.convertTab(prev, next);
                 e.dropComplete(true);
             } else {
                 e.dropComplete(false);
             }
-            tabbedPane.dragTabIndex = -1;
             glassPane.setVisible(false);
-            //tabbedPane.repaint();
+            //tabbedPane.dragTabIndex = -1;
         });
     }
 }
