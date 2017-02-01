@@ -93,14 +93,10 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
-              .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
-              .sorted().collect(Collectors.toList());
-            tabbedPane.setVisible(false);
+                .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
+                .sorted(Comparator.comparing(ComparableTab::getTitle)).collect(Collectors.toList());
             tabbedPane.removeAll();
-            for (ComparableTab c: list) {
-                tabbedPane.addTab(c.title, c.comp);
-            }
-            tabbedPane.setVisible(true);
+            list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
         }
     }
 
@@ -127,30 +123,36 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ComparableTab implements Comparable<ComparableTab> {
-    public final String title;
-    public final Component comp;
+class ComparableTab { //implements Comparable<ComparableTab> {
+    private final String title;
+    private final Component comp;
     protected ComparableTab(String title, Component comp) {
         this.title = title;
         this.comp  = comp;
     }
-    @Override public int compareTo(ComparableTab o) {
-        return title.compareToIgnoreCase(o.title);
+    public String getTitle() {
+        return title;
     }
-    // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
-    @Override public final boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (o instanceof ComparableTab) {
-            ComparableTab other = (ComparableTab) o;
-            return Objects.equals(title, other.title) && Objects.equals(comp, other.comp);
-        }
-        return false;
+    public Component getComponent() {
+        return comp;
     }
-    @Override public final int hashCode() {
-        return Objects.hash(title, comp);
-    }
+//     @Override public int compareTo(ComparableTab o) {
+//         return title.compareToIgnoreCase(o.title);
+//     }
+//     // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
+//     @Override public final boolean equals(Object o) {
+//         if (o == this) {
+//             return true;
+//         }
+//         if (o instanceof ComparableTab) {
+//             ComparableTab other = (ComparableTab) o;
+//             return Objects.equals(title, other.title) && Objects.equals(comp, other.comp);
+//         }
+//         return false;
+//     }
+//     @Override public final int hashCode() {
+//         return Objects.hash(title, comp);
+//     }
 }
 
 class EditableTabbedPane extends JTabbedPane {
