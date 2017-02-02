@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         col.setResizable(false);
 
         JPopupMenu pop = new TablePopupMenu();
-        final JTableHeader header = table.getTableHeader();
+        JTableHeader header = table.getTableHeader();
         header.setComponentPopupMenu(pop);
         pop.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -59,18 +59,13 @@ public final class MainPanel extends JPanel {
             //new SortAction(SortOrder.UNSORTED));
         protected TablePopupMenu() {
             super();
-            for (Action a: actions) {
-                add(a);
-            }
+            actions.forEach(this::add);
         }
         @Override public void show(Component c, int x, int y) {
             if (c instanceof JTableHeader) {
                 JTableHeader h = (JTableHeader) c;
-                int i = h.columnAtPoint(new Point(x, y));
-                i = h.getTable().convertColumnIndexToModel(i);
-                for (SortAction a: actions) {
-                    a.setIndex(i);
-                }
+                int i = h.getTable().convertColumnIndexToModel(h.columnAtPoint(new Point(x, y)));
+                actions.forEach(a -> a.setIndex(i));
                 super.show(c, x, y);
             }
         }
