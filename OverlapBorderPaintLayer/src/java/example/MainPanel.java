@@ -14,6 +14,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         List<String> list = Arrays.asList("aaa", "bb", "c");
+        BreadcrumbLayerUI<Component> layerUI = new BreadcrumbLayerUI<>();
 
         JPanel p1 = new JPanel(new GridLayout(0, 1));
         p1.setBorder(BorderFactory.createTitledBorder("Icon border"));
@@ -23,9 +24,9 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new GridLayout(0, 1));
         p2.setBorder(BorderFactory.createTitledBorder("JLayer border"));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList0(list, Color.ORANGE,  1), new BreadcrumbLayerUI()));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList1(list, Color.ORANGE, 11), new BreadcrumbLayerUI()));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList2(list, Color.ORANGE, 11), new BreadcrumbLayerUI()));
+        p2.add(new JLayer<>(makeBreadcrumbList0(list, Color.ORANGE,  1), layerUI));
+        p2.add(new JLayer<>(makeBreadcrumbList1(list, Color.ORANGE, 11), layerUI));
+        p2.add(new JLayer<>(makeBreadcrumbList2(list, Color.ORANGE, 11), layerUI));
 
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(p1);
@@ -222,7 +223,7 @@ class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
     }
 }
 
-class BreadcrumbLayerUI extends LayerUI<JPanel> {
+class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     private Shape shape;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
@@ -261,7 +262,7 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
         }
         super.uninstallUI(c);
     }
-    private void update(MouseEvent e, JLayer<? extends JPanel> l) {
+    private void update(MouseEvent e, JLayer<? extends V> l) {
         int id = e.getID();
         Shape s = null;
         if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
@@ -281,10 +282,10 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
             l.getView().repaint();
         }
     }
-    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
-    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
 }

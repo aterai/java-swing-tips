@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
                 loop.enter();
             }
         }));
-        add(new JLayer<JComponent>(p, layerUI), BorderLayout.NORTH);
+        add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }

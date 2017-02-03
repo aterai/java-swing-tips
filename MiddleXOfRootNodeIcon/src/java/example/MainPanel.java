@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         };
 
         add(new JScrollPane(tree0));
-        add(new JScrollPane(new JLayer<JTree>(tree, layerUI)));
+        add(new JScrollPane(new JLayer<>(tree, layerUI)));
         setPreferredSize(new Dimension(320, 240));
     }
 

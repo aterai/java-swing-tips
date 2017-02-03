@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         final JButton button2 = makeButton("setForeground");
         final JButton button3 = makeButton("JLayer");
 
-        final DisableInputLayerUI layerUI = new DisableInputLayerUI();
+        DisableInputLayerUI<AbstractButton> layerUI = new DisableInputLayerUI<>();
         JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         p1.setBorder(BorderFactory.createTitledBorder("setEnabled"));
         p1.add(button1);
         p1.add(button2);
-        p1.add(new JLayer<JComponent>(button3, layerUI));
+        p1.add(new JLayer<>(button3, layerUI));
 
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("Focus dummy"));
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DisableInputLayerUI extends LayerUI<JComponent> {
+class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     private static final String CMD_BLOCKING = "lock";
     private static final boolean DEBUG_POPUP_BLOCK = false;
     private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
@@ -119,16 +119,16 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         }
         super.uninstallUI(c);
     }
-    @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends JComponent> l) {
+    @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends V> l) {
         System.out.println("processComponentEvent");
     }
-    @Override protected void processKeyEvent(KeyEvent e, JLayer<? extends JComponent> l) {
+    @Override protected void processKeyEvent(KeyEvent e, JLayer<? extends V> l) {
         System.out.println("processKeyEvent");
     }
-    @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends JComponent> l) {
+    @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends V> l) {
         System.out.println("processFocusEvent");
     }
-    @Override public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
+    @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
         if (isBlocking && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
@@ -138,10 +138,10 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         isBlocking = flag;
         firePropertyChange(CMD_BLOCKING, oldv, isBlocking);
     }
-    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends JComponent> l) {
+    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends V> l) {
         String cmd = pce.getPropertyName();
         if (CMD_BLOCKING.equals(cmd)) {
-            JButton b = (JButton) l.getView();
+            AbstractButton b = l.getView();
             b.setFocusable(!isBlocking);
             b.setMnemonic(isBlocking ? 0 : b.getText().codePointAt(0));
             b.setForeground(isBlocking ? Color.RED : Color.BLACK);

@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     private final JButton nextButton  = new JButton("\u22C1");
     private final JCheckBox checkCase = new JCheckBox("Match case");
     private final JCheckBox checkWord = new JCheckBox("Match whole word only");
-    private final PlaceholderLayerUI layerUI = new PlaceholderLayerUI();
+    private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
     private final transient HighlightHandler handler = new HighlightHandler();
     private int current;
 
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 
         JPanel sp = new JPanel(new BorderLayout(5, 5));
         sp.setBorder(BorderFactory.createTitledBorder("Search"));
-        sp.add(new JLayer<JTextComponent>(field, layerUI));
+        sp.add(new JLayer<>(field, layerUI));
         sp.add(bp, BorderLayout.EAST);
         sp.add(cp, BorderLayout.SOUTH);
 
@@ -210,7 +210,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class PlaceholderLayerUI extends LayerUI<JTextComponent> {
+class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
     public final JLabel hint = new JLabel() {
         @Override public void updateUI() {
             super.updateUI();

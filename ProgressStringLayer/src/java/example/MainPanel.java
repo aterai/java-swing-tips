@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         };
         progressBar.setOrientation(SwingConstants.VERTICAL);
         progressBar.setStringPainted(false);
-        return new JLayer<JProgressBar>(progressBar, new ProgressBarLayerUI(label));
+        return new JLayer<>(progressBar, new ProgressBarLayerUI(label));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

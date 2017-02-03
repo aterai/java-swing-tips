@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(10));
         box.add(makeTitledPanel("Override TrackListener#shouldScroll(...): false",  slider1));
         box.add(Box.createVerticalStrut(10));
-        box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<JSlider>(slider2, new DisableLeftPressedLayerUI())));
+        box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<Component>(slider2, new DisableLeftPressedLayerUI<>())));
         box.add(Box.createVerticalGlue());
         for (Component c: box.getComponents()) {
             ((JComponent) c).setAlignmentX(0f);
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DisableLeftPressedLayerUI extends LayerUI<JSlider> {
+class DisableLeftPressedLayerUI<V extends Component> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
@@ -108,7 +108,7 @@ class DisableLeftPressedLayerUI extends LayerUI<JSlider> {
         }
         super.uninstallUI(c);
     }
-    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JSlider> l) {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         if (e.getID() == MouseEvent.MOUSE_PRESSED && SwingUtilities.isLeftMouseButton(e)) {
             e.getComponent().dispatchEvent(new MouseEvent(
                 e.getComponent(),

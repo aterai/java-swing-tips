@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         mb.add(menu);
         return mb;
     }
-    private static JMenuItem makeEditMenuItem(final JComponent edit) {
+    private static JMenuItem makeEditMenuItem(JComponent edit) {
         JMenuItem item = new JMenuItem("Edit") {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         p.setOpaque(false);
 
-        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size - 1)));
+        return new JLayer<Component>(p, new EditMenuLayerUI<>(list.get(size - 1)));
     }
     private static AbstractButton makeButton(String title, Action action) {
         AbstractButton b = new JButton(action);
@@ -191,7 +191,7 @@ class ToggleButtonBarCellIcon implements Icon {
     }
 }
 
-class EditMenuLayerUI extends LayerUI<JPanel> {
+class EditMenuLayerUI<V extends Component> extends LayerUI<V> {
     private final AbstractButton lastButton;
     private Shape shape;
     protected EditMenuLayerUI(AbstractButton button) {
@@ -219,7 +219,7 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
         }
         super.uninstallUI(c);
     }
-    private void update(MouseEvent e, JLayer<? extends JPanel> l) {
+    private void update(MouseEvent e, JLayer<? extends V> l) {
         int id = e.getID();
         Shape s = null;
         if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
@@ -234,10 +234,10 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
             l.getView().repaint();
         }
     }
-    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
-    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
 }

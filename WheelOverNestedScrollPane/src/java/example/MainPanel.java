@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
-        add(new JLayer<JScrollPane>(new JScrollPane(textPane), new WheelScrollLayerUI()));
+        add(new JLayer<>(new JScrollPane(textPane), new WheelScrollLayerUI()));
         //add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }

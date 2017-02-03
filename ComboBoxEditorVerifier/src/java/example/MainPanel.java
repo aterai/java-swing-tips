@@ -59,9 +59,9 @@ public class MainPanel extends JPanel {
             @Override public Component getEditorComponent() {
 //                 if (Objects.isNull(editorComponent)) {
 //                     JTextComponent tc = (JTextComponent) super.getEditorComponent();
-//                     editorComponent = new JLayer<JTextComponent>(tc, new ValidationLayerUI());
+//                     editorComponent = new JLayer<JTextComponent>(tc, new ValidationLayerUI<>());
 //                 }
-                editorComponent = Optional.ofNullable(editorComponent).orElseGet(() -> new JLayer<JTextComponent>((JTextComponent) super.getEditorComponent(), new ValidationLayerUI()));
+                editorComponent = Optional.ofNullable(editorComponent).orElseGet(() -> new JLayer<JTextComponent>((JTextComponent) super.getEditorComponent(), new ValidationLayerUI<>()));
                 return editorComponent;
             }
         });
@@ -110,11 +110,10 @@ class SelectItemMenuListener implements PopupMenuListener {
 }
 
 //@see http://docs.oracle.com/javase/tutorial/uiswing/examples/misc/FieldValidatorProject/src/FieldValidator.java
-class ValidationLayerUI extends LayerUI<JTextComponent> {
+class ValidationLayerUI<V extends JTextComponent> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        //JLayer jlayer = (JLayer) c;
-        //JTextComponent tc = (JTextComponent) jlayer.getView();
+        //JTextComponent tc = ((JLayer) c).getView();
         Container p = SwingUtilities.getAncestorOfClass(JComboBox.class, c);
         if (p instanceof JComboBox) {
             JComboBox cb = (JComboBox) p;

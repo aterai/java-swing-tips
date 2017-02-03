@@ -10,8 +10,7 @@ import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
     private final JPanel p = new JPanel();
-    private final DisableInputLayerUI layerUI = new DisableInputLayerUI();
-    private final JLayer<JPanel> jlayer = new JLayer<>(p, layerUI);
+    private final DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
     private final Timer stopper = new Timer(5000, e -> layerUI.stop());
 
     public MainPanel() {
@@ -29,7 +28,7 @@ public final class MainPanel extends JPanel {
         }));
         stopper.setRepeats(false);
 
-        add(jlayer, BorderLayout.NORTH);
+        add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -57,7 +56,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DisableInputLayerUI extends LayerUI<JPanel> {
+class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
     private static final String CMD_REPAINT = "repaint";
     private boolean isRunning;
     public void start() {
@@ -98,12 +97,12 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
         }
         super.uninstallUI(c);
     }
-    @Override public void eventDispatched(AWTEvent e, JLayer<? extends JPanel> l) {
+    @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
         if (isRunning && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }
-    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends JPanel> l) {
+    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends V> l) {
         String cmd = pce.getPropertyName();
         if (CMD_REPAINT.equals(cmd)) {
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());

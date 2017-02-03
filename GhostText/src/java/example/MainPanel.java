@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(10));
         box.add(makePanel("Search", field2));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("JLayer", new JLayer<JTextComponent>(field3, new PlaceholderLayerUI("JLayer version"))));
+        box.add(makePanel("JLayer", new JLayer<JTextComponent>(field3, new PlaceholderLayerUI<>("JLayer version"))));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -81,7 +81,7 @@ class PlaceholderFocusListener implements FocusListener {
     }
 }
 
-class PlaceholderLayerUI extends LayerUI<JTextComponent> {
+class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
     private final JLabel hint = new JLabel() {
         @Override public void updateUI() {
             super.updateUI();
@@ -124,7 +124,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
             ((JLayer) c).setLayerEventMask(0);
         }
     }
-    @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends JTextComponent> l) {
+    @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends V> l) {
         l.getView().repaint();
     }
 }

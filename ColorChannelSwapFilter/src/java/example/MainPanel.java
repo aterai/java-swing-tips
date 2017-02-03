@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final JProgressBar progress02 = new JProgressBar(model);
     private final JProgressBar progress03 = new JProgressBar(model);
     private final JProgressBar progress04 = new JProgressBar(model);
-    private final BlockedColorLayerUI layerUI = new BlockedColorLayerUI();
+    private final BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
     private final JPanel p = new JPanel(new GridLayout(2, 1));
     private SwingWorker<String, Void> worker;
 
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         progress04.setOpaque(true); //for NimbusLookAndFeel
 
         p.add(makeTitlePanel("setStringPainted(true)",  Arrays.asList(progress01, progress02)));
-        p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<JProgressBar>(progress04, layerUI))));
+        p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
@@ -104,19 +104,15 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class BlockedColorLayerUI extends LayerUI<JProgressBar> {
+class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
     public boolean isPreventing;
     private transient BufferedImage buf;
 
     @Override public void paint(Graphics g, JComponent c) {
         if (isPreventing && c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
-            JProgressBar progress = (JProgressBar) jlayer.getView();
-            int w = progress.getSize().width;
-            int h = progress.getSize().height;
-
-            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == w && bi.getHeight() == h)
-                          .orElseGet(() -> new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB));
+            Dimension d = ((JLayer) c).getView().getSize();
+            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+                          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
 
             Graphics2D g2 = buf.createGraphics();
             super.paint(g2, c);

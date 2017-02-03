@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(tabbedPane0);
-        sp.setBottomComponent(new JLayer<JTabbedPane>(tabbedPane1, new CloseableTabbedPaneLayerUI()));
+        sp.setBottomComponent(new JLayer<>(tabbedPane1, new CloseableTabbedPaneLayerUI()));
 
         add(sp);
         add(addTabButton, BorderLayout.SOUTH);
@@ -167,7 +167,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JTabbedPane> l) {
         if (e.getID() == MouseEvent.MOUSE_CLICKED) {
             pt.setLocation(e.getPoint());
-            JTabbedPane tabbedPane = (JTabbedPane) l.getView();
+            JTabbedPane tabbedPane = l.getView();
             int index = tabbedPane.indexAtLocation(pt.x, pt.y);
             if (index >= 0 && getTabButtonRect(tabbedPane, index).contains(pt)) {
                 tabbedPane.removeTabAt(index);
@@ -177,7 +177,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JTabbedPane> l) {
         Point loc = e.getPoint();
         pt.setLocation(loc);
-        if (((JTabbedPane) l.getView()).indexAtLocation(pt.x, pt.y) >= 0) {
+        if (l.getView().indexAtLocation(pt.x, pt.y) >= 0) {
             //Dimension d = button.getPreferredSize();
             loc.translate(-d.width, -d.height);
             repaintRect.setLocation(loc);

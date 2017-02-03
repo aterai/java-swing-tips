@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         });
 
         initBreadcrumbList(breadcrumb, tree);
-        add(new JLayer<JPanel>(breadcrumb, new BreadcrumbLayerUI()), BorderLayout.NORTH);
+        add(new JLayer<Component>(breadcrumb, new BreadcrumbLayerUI<>()), BorderLayout.NORTH);
 
         JComponent c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
         add(c, BorderLayout.SOUTH);
@@ -179,7 +179,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
     }
 }
 
-class BreadcrumbLayerUI extends LayerUI<JPanel> {
+class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     private Shape shape;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
@@ -203,7 +203,7 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
         }
         super.uninstallUI(c);
     }
-    private void update(MouseEvent e, JLayer<? extends JPanel> l) {
+    private void update(MouseEvent e, JLayer<? extends V> l) {
         int id = e.getID();
         Shape s = null;
         if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
@@ -223,10 +223,10 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
             l.getView().repaint();
         }
     }
-    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
-    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
         update(e, l);
     }
 }

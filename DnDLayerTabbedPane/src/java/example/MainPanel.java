@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
         tabbedPane.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
         tabbedPane.addTab("null 05",        null);
-        tabbedPane.addTab("JTabbedPane 06", new JLayer<DnDTabbedPane>(sub, layerUI));
+        tabbedPane.addTab("JTabbedPane 06", new JLayer<>(sub, layerUI));
         tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
 
         //ButtonTabComponent
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
         }
 
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(new JLayer<DnDTabbedPane>(tabbedPane, layerUI));
-        p.add(new JLayer<DnDTabbedPane>(sub2, layerUI));
+        p.add(new JLayer<>(tabbedPane, layerUI));
+        p.add(new JLayer<>(sub2, layerUI));
         add(p);
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

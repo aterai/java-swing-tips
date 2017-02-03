@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         });
 
         add(check, BorderLayout.NORTH);
-        add(new JLayer<JSplitPane>(splitPane, new DividerLocationDragLayerUI()));
+        add(new JLayer<>(splitPane, new DividerLocationDragLayerUI()));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeTestBox() {

@@ -59,11 +59,10 @@ public final class MainPanel extends JPanel {
         table.setInheritsPopupMenu(true);
         table.setAutoCreateRowSorter(true);
 
-        final DisableInputLayerUI layerUI = new DisableInputLayerUI();
+        DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
         check.addItemListener(e -> layerUI.setLocked(((JCheckBox) e.getItemSelectable()).isSelected()));
 
-        JLayer<JComponent> layer = new JLayer<>(scroll, layerUI);
-        add(layer);
+        add(new JLayer<>(scroll, layerUI));
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -129,7 +128,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class DisableInputLayerUI extends LayerUI<JComponent> {
+class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
     private static final String CMD_REPAINT = "lock";
     private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
@@ -154,12 +153,12 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         }
         super.uninstallUI(c);
     }
-    @Override public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
+    @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
         if (isBlocking && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }
-    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends JComponent> l) {
+    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends V> l) {
         String cmd = pce.getPropertyName();
         if (CMD_REPAINT.equals(cmd)) {
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());

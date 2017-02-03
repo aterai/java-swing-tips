@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
             new JButton("2"), new JCheckBox("3"), new JTextField(14))) {
             box.add(createToolBarButton(idx++, c));
         }
-        add(new JLayer<JComponent>(box, new ReorderingLayerUI()), BorderLayout.NORTH);
+        add(new JLayer<JComponent>(box, new ReorderingLayerUI<>()), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ReorderingLayerUI extends LayerUI<JComponent> {
+class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     private static final Rectangle R1 = new Rectangle();
     private static final Rectangle R2 = new Rectangle();
     private static final Rectangle R3 = new Rectangle();
@@ -99,7 +99,7 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
         super.uninstallUI(c);
     }
 
-    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JComponent> l) {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         JComponent parent = l.getView();
         switch (e.getID()) {
           case MouseEvent.MOUSE_PRESSED:
@@ -142,7 +142,7 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
         }
     }
 
-    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JComponent> l) {
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
         if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
             Point pt = e.getPoint();
             JComponent parent = l.getView();

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
         Box box2 = makeTestBox();
         box2.setBorder(BorderFactory.createTitledBorder("DragScrollLayerUI"));
-        add(new JLayer<JScrollPane>(new JScrollPane(box2), new DragScrollLayerUI()));
+        add(new JLayer<>(new JScrollPane(box2), new DragScrollLayerUI()));
 
         setPreferredSize(new Dimension(320, 240));
     }
