@@ -258,8 +258,6 @@ class ChangeLookAndFeelAction extends AbstractAction {
             SwingUtilities.updateComponentTreeUI(f);
             f.pack();
         }
-        for (JComponent c: list) {
-            SwingUtilities.updateComponentTreeUI(c);
-        }
+        list.forEach(SwingUtilities::updateComponentTreeUI);
     }
 }

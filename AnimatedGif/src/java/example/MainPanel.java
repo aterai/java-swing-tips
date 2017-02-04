@@ -4,23 +4,17 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
-        List<String> list = Arrays.asList(
-            "no_disposal_specified",
-            "do_not_dispose",
-            "restore_to_background_color",
-            "restore_to_previous");
-        for (String s: list) {
+        Arrays.asList("no_disposal_specified", "do_not_dispose", "restore_to_background_color", "restore_to_previous").forEach(s -> {
             Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
             box.add(new JLabel(s, i, SwingConstants.LEFT));
             box.add(Box.createVerticalStrut(20));
-        }
+        });
         box.add(Box.createVerticalGlue());
         add(box);
         setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
