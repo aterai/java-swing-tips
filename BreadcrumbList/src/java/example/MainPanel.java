@@ -60,11 +60,11 @@ public final class MainPanel extends JPanel {
     private static JComponent makeBreadcrumbList(List<String> list) {
         JPanel p = makePanel(5 + 1);
         ButtonGroup bg = new ButtonGroup();
-        for (String title: list) {
+        list.forEach(title -> {
             AbstractButton b = makeButton(null, new TreePath(title), Color.PINK);
             p.add(b);
             bg.add(b);
-        }
+        });
         return p;
     }
     private static AbstractButton makeButton(final JTree tree, final TreePath path, Color color) {

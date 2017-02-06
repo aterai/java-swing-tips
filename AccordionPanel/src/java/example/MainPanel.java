@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
         accordion.setOpaque(true);
         accordion.setBackground(new Color(180, 180, 255));
         accordion.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        for (AbstractExpansionPanel p: makeList()) {
+        makeExpansionPanelList().forEach(p -> {
             accordion.add(p);
             accordion.add(Box.createVerticalStrut(5));
-        }
+        });
         accordion.add(Box.createVerticalGlue());
 
         JScrollPane scroll = new JScrollPane(accordion);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 //         box.revalidate();
 //     }
 
-    private List<AbstractExpansionPanel> makeList() {
+    private List<AbstractExpansionPanel> makeExpansionPanelList() {
         return Arrays.asList(
             new AbstractExpansionPanel("System Tasks") {
                 @Override public JPanel makePanel() {
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
                 @Override public JPanel makePanel() {
                     JPanel pnl = new JPanel(new GridLayout(0, 1));
                     ButtonGroup bg = new ButtonGroup();
-                    for (String s: Arrays.asList("aaa", "bbb", "ccc", "ddd")) {
+                    Arrays.asList("aaa", "bbb", "ccc", "ddd").forEach(s -> {
                         JRadioButton b = new JRadioButton(s);
                         if (pnl.getComponentCount() == 0) {
                             b.setSelected(true);
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
                         b.setOpaque(false);
                         pnl.add(b);
                         bg.add(b);
-                    }
+                    });
                     return pnl;
                 }
             }

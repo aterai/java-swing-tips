@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
                     int i = ((Integer) spinner.getValue()).intValue();
                     d.setSize(i, i);
                 }
-                return d;
+                    return d;
             }
         };
         l.setOpaque(true);

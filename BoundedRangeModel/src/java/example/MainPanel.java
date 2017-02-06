@@ -111,12 +111,11 @@ public final class MainPanel extends JPanel {
             AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
             //paint Highlight
             g.setColor(Color.YELLOW);
-            for (Integer viewIndex: highlighter) {
+            highlighter.forEach(viewIndex -> {
                 Rectangle r = table.getCellRect(viewIndex, 0, true);
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = Math.max(2, s.height - 2);
-                g.fillRect(x, crect.y + s.y, getIconWidth(), h);
-            }
+                g.fillRect(x, crect.y + s.y, getIconWidth(), Math.max(2, s.height - 2));
+            });
             //paint Thumb
             if (scrollbar.isVisible()) {
                 Rectangle thumbRect = new Rectangle(vrect);

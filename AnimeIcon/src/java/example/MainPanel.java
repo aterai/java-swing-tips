@@ -109,11 +109,6 @@ public final class MainPanel extends JPanel {
 //         return Objects.isNull(worker) && worker.isCancelled();
 //     }
 
-    private void appendLine(String str) {
-        area.append(str);
-        area.setCaretPosition(area.getDocument().getLength());
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
