@@ -71,9 +71,7 @@ public final class MainPanel extends JPanel {
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
-                TreeNode n = (TreeNode) e.nextElement();
-                TreePath path = parent.pathByAddingChild(n);
-                visitAll(tree, path, expand);
+                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
             }
         }
         if (expand) {
@@ -104,8 +102,7 @@ public final class MainPanel extends JPanel {
 //         tree.expandPath(p);
 //         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
 //         for (int i = 0; i < n.getChildCount(); i++) {
-//             TreePath path = p.pathByAddingChild(n.getChildAt(i));
-//             expandAPath(path);
+//             expandAPath(p.pathByAddingChild(n.getChildAt(i)));
 //         }
 //     }
     public static void main(String... args) {

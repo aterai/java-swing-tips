@@ -66,9 +66,7 @@ public final class MainPanel extends JPanel {
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
-                TreeNode n = (TreeNode) e.nextElement();
-                TreePath path = parent.pathByAddingChild(n);
-                collapseAll(tree, path);
+                collapseAll(tree, parent.pathByAddingChild(e.nextElement()));
             }
         }
         tree.collapsePath(parent);

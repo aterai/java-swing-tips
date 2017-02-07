@@ -93,8 +93,7 @@ public final class MainPanel extends JPanel {
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
-                TreePath path = parent.pathByAddingChild((TreeNode) e.nextElement());
-                resetAll(tree, path, match);
+                resetAll(tree, parent.pathByAddingChild(e.nextElement()), match);
             }
         }
     }
@@ -103,8 +102,7 @@ public final class MainPanel extends JPanel {
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
-                TreePath path = parent.pathByAddingChild((TreeNode) e.nextElement());
-                visitAll(tree, path, expand);
+                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
             }
         }
         if (expand) {
