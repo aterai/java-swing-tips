@@ -57,12 +57,11 @@ public class MainPanel extends JPanel {
                 return new Dimension(50, 50);
             }
             @Override public Dimension getMinimumSize() {
-                Dimension d = super.getMinimumSize();
-                if (Objects.nonNull(d)) {
+                return Optional.ofNullable(super.getMinimumSize()).map(d -> {
                     int i = ((Integer) spinner.getValue()).intValue();
                     d.setSize(i, i);
-                }
                     return d;
+                }).orElse(null);
             }
         };
         l.setOpaque(true);

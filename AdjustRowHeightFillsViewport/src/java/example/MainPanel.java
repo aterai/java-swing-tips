@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -21,7 +22,7 @@ public class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         int prevHeight = -1;
         int prevCount = -1;
-        protected void updateRowsHeight(JViewport vport) {
+        private void updateRowsHeight(JViewport vport) {
             int height = vport.getExtentSize().height;
             int rowCount = getModel().getRowCount();
             int defautlRowHeight = height / rowCount;
@@ -37,10 +38,14 @@ public class MainPanel extends JPanel {
         }
         @Override public void doLayout() {
             super.doLayout();
-            Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-            if (p instanceof JViewport) {
-                updateRowsHeight((JViewport) p);
-            }
+            Class<JViewport> clz = JViewport.class;
+            Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+                    .filter(clz::isInstance).map(clz::cast)
+                    .ifPresent(this::updateRowsHeight);
+//             Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
+//             if (p instanceof JViewport) {
+//                 updateRowsHeight((JViewport) p);
+//             }
         }
     };
 
