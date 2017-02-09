@@ -23,12 +23,12 @@ public final class MainPanel extends JPanel {
         DnDTabbedPane sub = new DnDTabbedPane();
         sub.addTab("Title aa", new JLabel("aaa"));
         sub.addTab("Title bb", new JScrollPane(new JTree()));
-        sub.addTab("Title cc", new JScrollPane(makeJTextArea()));
+        sub.addTab("Title cc", new JScrollPane(new JTextArea("JTextArea cc")));
 
         tabbedPane.addTab("JTree 00",       new JScrollPane(new JTree()));
         tabbedPane.addTab("JLabel 01",      new JLabel("Test"));
-        tabbedPane.addTab("JTable 02",      new JScrollPane(makeJTable()));
-        tabbedPane.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
+        tabbedPane.addTab("JTable 02",      new JScrollPane(new JTable(10, 3)));
+        tabbedPane.addTab("JTextArea 03",   new JScrollPane(new JTextArea("JTextArea 03")));
         tabbedPane.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
         tabbedPane.addTab("null 05",        null);
         tabbedPane.addTab("JTabbedPane 06", new JLayer<>(sub, layerUI));
@@ -41,24 +41,24 @@ public final class MainPanel extends JPanel {
         }
 
         DnDTabbedPane sub2 = new DnDTabbedPane();
-        sub2.addTab("Title aa", new JLabel("aaa"));
-        sub2.addTab("Title bb", new JScrollPane(new JTree()));
-        sub2.addTab("Title cc", new JScrollPane(makeJTextArea()));
+        sub2.addTab("Title aaa", new JLabel("aaa"));
+        sub2.addTab("Title bbb", new JScrollPane(new JTree()));
+        sub2.addTab("Title ccc", new JScrollPane(new JTextArea("JTextArea ccc")));
 
         tabbedPane.setName("JTabbedPane#main");
         sub.setName("JTabbedPane#sub1");
         sub2.setName("JTabbedPane#sub2");
 
         DropTargetListener dropTargetListener = new TabDropTargetAdapter();
-        try {
-            for (JTabbedPane t: Arrays.asList(tabbedPane, sub, sub2)) {
-                t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-                t.setTransferHandler(handler);
+        Arrays.asList(tabbedPane, sub, sub2).forEach(t -> {
+            t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+            t.setTransferHandler(handler);
+            try {
                 t.getDropTarget().addDropTargetListener(dropTargetListener);
+            } catch (TooManyListenersException ex) {
+                ex.printStackTrace();
             }
-        } catch (TooManyListenersException ex) {
-            ex.printStackTrace();
-        }
+        });
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(new JLayer<>(tabbedPane, layerUI));
@@ -76,23 +76,6 @@ public final class MainPanel extends JPanel {
         p.add(tcheck);
         p.add(scheck);
         return p;
-    }
-    private static JTextArea makeJTextArea() {
-        JTextArea textArea = new JTextArea("asfasdfasfasdfas\nafasfasdfaf\n");
-        //textArea.setTransferHandler(null); //XXX
-        return textArea;
-    }
-    private static JTable makeJTable() {
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"AAA", 1, true}, {"BBB", 2, false},
-        };
-        TableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        return new JTable(model);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
