@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -79,14 +79,16 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-
     private static void allNodesChanged(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration<?> depth = root.depthFirstEnumeration();
-        while (depth.hasMoreElements()) {
-            model.nodeChanged((TreeNode) depth.nextElement());
-        }
+        Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
+          .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
+          .forEach(model::nodeChanged);
+//         Enumeration<?> e = root.preorderEnumeration();
+//         while (e.hasMoreElements()) {
+//             model.nodeChanged((TreeNode) e.nextElement());
+//         }
         //tree.revalidate();
         //tree.repaint();
     }
