@@ -27,15 +27,10 @@ public final class MainPanel extends JPanel {
     }
     private static void expandTree(JTree tree) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-        Enumeration<?> e = root.breadthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            if (node.isLeaf()) {
-                continue;
-            }
-            int row = tree.getRowForPath(new TreePath(node.getPath()));
-            tree.expandRow(row);
-        }
+        Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
+          .filter(DefaultMutableTreeNode.class::isInstance)
+          .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
+          .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
     }
     private static JComponent makeTitledComponent(JComponent c, String title) {
         JScrollPane scroll = new JScrollPane(c);
@@ -72,24 +67,22 @@ class DragScrollListener extends MouseAdapter {
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);
-        if (p instanceof JViewport) {
-            JViewport vport = (JViewport) p;
-            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-            Point vp = vport.getViewPosition();
+        Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
+          .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+          .ifPresent(v -> {
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), v);
+            Point vp = v.getViewPosition();
             vp.translate(pp.x - cp.x, pp.y - cp.y);
-            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, v.getSize()));
             pp.setLocation(cp);
-        }
+          });
     }
     @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
         c.setCursor(hndCursor);
-        Container p = SwingUtilities.getUnwrappedParent(c);
-        if (p instanceof JViewport) {
-            JViewport vport = (JViewport) p;
-            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-            pp.setLocation(cp);
-        }
+        Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
+          .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+          .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
     }
     @Override public void mouseReleased(MouseEvent e) {
         e.getComponent().setCursor(defCursor);
