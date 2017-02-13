@@ -10,7 +10,12 @@ import javax.swing.border.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JButton button1 = makeButton("Default BevelBorder", new BevelBorder(BevelBorder.RAISED));
+        JButton button1 = makeButton("Default BevelBorder", new BevelBorder(BevelBorder.RAISED) {
+            @Override public Insets getBorderInsets(Component c, Insets insets) {
+                insets.set(10, 10, 10, 10);
+                return insets;
+            }
+        });
         JButton button2 = makeButton("Custom BevelBorder", new CustomBevelBorder(BevelBorder.RAISED));
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
