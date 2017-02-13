@@ -66,7 +66,6 @@ class DragScrollListener extends MouseAdapter {
     private final Point pp = new Point();
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
-        Container p = SwingUtilities.getUnwrappedParent(c);
         Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
           .filter(JViewport.class::isInstance).map(JViewport.class::cast)
           .ifPresent(v -> {
