@@ -558,7 +558,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     }
     private static void initLineRect(JTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
         int index = loc.getIndex();
-        int a = index == 0 ? 0 : 1;
+        int a = Math.min(index, 1); //index == 0 ? 0 : 1;
         Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
         if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
             LINE_RECT.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
@@ -568,7 +568,6 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     }
 }
 
-// a closeable tab test
 // How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // http://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
