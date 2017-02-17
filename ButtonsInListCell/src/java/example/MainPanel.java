@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
                 cbml = new CellButtonsMouseListener(this);
                 addMouseListener(cbml);
                 addMouseMotionListener(cbml);
-                setCellRenderer(new ButtonsRenderer<String>(model));
+                setCellRenderer(new ButtonsRenderer<>(model));
             }
         };
 

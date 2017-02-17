@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         URL url2 = getClass().getResource("animated.gif");
         JComboBox<Icon> combo1 = new JComboBox<>(new Icon[] {new ImageIcon(url1), new ImageIcon(url2)});
         JComboBox<Icon> combo2 = new JComboBox<>();
-        combo2.setModel(new DefaultComboBoxModel<Icon>(new Icon[] {new ImageIcon(url1), makeImageIcon(url2, combo2, 1)}));
+        combo2.setModel(new DefaultComboBoxModel<>(new Icon[] {new ImageIcon(url1), makeImageIcon(url2, combo2, 1)}));
 
         JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
         setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));

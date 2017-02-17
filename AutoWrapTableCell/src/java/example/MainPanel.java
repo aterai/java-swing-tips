@@ -142,7 +142,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 
         int preferredHeight = getPreferredSize().height;
         while (rowAndCellHeightList.size() <= row) {
-            rowAndCellHeightList.add(new ArrayList<Integer>(column));
+            rowAndCellHeightList.add(new ArrayList<>(column));
         }
         List<Integer> cellHeightList = rowAndCellHeightList.get(row);
         while (cellHeightList.size() <= column) {

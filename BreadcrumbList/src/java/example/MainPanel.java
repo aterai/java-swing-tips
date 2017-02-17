@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         });
 
         initBreadcrumbList(breadcrumb, tree);
-        add(new JLayer<Component>(breadcrumb, new BreadcrumbLayerUI<>()), BorderLayout.NORTH);
+        add(new JLayer<>(breadcrumb, new BreadcrumbLayerUI<>()), BorderLayout.NORTH);
 
         JComponent c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
         add(c, BorderLayout.SOUTH);
@@ -48,8 +48,7 @@ public final class MainPanel extends JPanel {
     private static void initBreadcrumbList(JPanel p, JTree tree) {
         p.removeAll();
         ButtonGroup bg = new ButtonGroup();
-        TreePath tp = tree.getSelectionPath();
-        Object[] paths = tp.getPath();
+        Object[] paths = tree.getSelectionPath().getPath();
         for (int i = 0; i < paths.length; i++) {
             TreePath cur = new TreePath(Arrays.copyOf(paths, i + 1));
             AbstractButton b = makeButton(tree, cur, Color.ORANGE);
