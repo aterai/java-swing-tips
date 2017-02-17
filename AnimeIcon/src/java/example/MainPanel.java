@@ -58,9 +58,7 @@ public final class MainPanel extends JPanel {
                         cancel(true);
                         return;
                     }
-                    for (String message: chunks) {
-                        appendLine(message);
-                    }
+                    chunks.forEach(this::appendLine);
                 }
                 @Override public void done() {
                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
@@ -85,6 +83,10 @@ public final class MainPanel extends JPanel {
                         appendLine("Exception");
                     }
                     appendLine("\n\n");
+                }
+                private void appendLine(String str) {
+                    area.append(str);
+                    area.setCaretPosition(area.getDocument().getLength());
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
