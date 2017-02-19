@@ -27,10 +27,10 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         p.add(new JLabel("Default:"));
-        p.add(new JComboBox<CheckableItem>(m));
+        p.add(new JComboBox<>(m));
         p.add(Box.createVerticalStrut(20));
         p.add(new JLabel("CheckedComboBox:"));
-        p.add(new CheckedComboBox<CheckableItem>(new DefaultComboBoxModel<CheckableItem>(m)));
+        p.add(new CheckedComboBox<>(new DefaultComboBoxModel<>(m)));
 
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -128,7 +128,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
                 keepOpen = true;
             }
         };
-        setRenderer(new CheckBoxCellRenderer<CheckableItem>());
+        setRenderer(new CheckBoxCellRenderer<>());
         addActionListener(listener);
         getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
         getActionMap().put("checkbox-select", new AbstractAction() {

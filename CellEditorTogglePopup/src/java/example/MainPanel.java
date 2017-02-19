@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setRowHeight(20);
 
-        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox<String>(model)));
+        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox<>(model)));
 
         JComboBox<String> comboBox = new JComboBox<>(model);
         //comboBox.setEnabled(false);

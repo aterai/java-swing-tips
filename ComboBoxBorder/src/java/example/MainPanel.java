@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
         model.addElement("1234");
         model.addElement("5555555555555555555555");
         model.addElement("6789000000000");
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

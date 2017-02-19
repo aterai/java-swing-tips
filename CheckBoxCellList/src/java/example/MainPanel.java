@@ -106,7 +106,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
         removeMouseListener(renderer);
         removeMouseMotionListener(renderer);
         super.updateUI();
-        renderer = new CheckBoxCellRenderer<E>();
+        renderer = new CheckBoxCellRenderer<>();
         setCellRenderer(renderer);
         addMouseListener(renderer);
         addMouseMotionListener(renderer);

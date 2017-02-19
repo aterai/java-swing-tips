@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         model.addElement("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
     }
     // https://community.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
     private static class WidePopupMenuListener implements PopupMenuListener {

@@ -54,7 +54,7 @@ class LinkCellList<E> extends JList<E> {
         setSelectionBackground(null);
         super.updateUI();
         setFixedCellHeight(32);
-        setCellRenderer(new LinkCellRenderer<E>());
+        setCellRenderer(new LinkCellRenderer<>());
         //TEST: putClientProperty("List.isFileList", Boolean.TRUE);
     }
     @Override protected void processMouseMotionEvent(MouseEvent e) {

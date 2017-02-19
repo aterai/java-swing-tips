@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox(String... model) {
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
 //         //Test: Remove ArrowButtn(look like a JTextField)
 //         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 //         return new JComboBox(model) {
@@ -152,7 +152,7 @@ class ComboKeyHandler extends KeyAdapter {
             ComboBoxModel<String> m;
             if (text.isEmpty()) {
                 String[] array = list.toArray(new String[list.size()]);
-                m = new DefaultComboBoxModel<String>(array);
+                m = new DefaultComboBoxModel<>(array);
                 setSuggestionModel(comboBox, m, "");
                 comboBox.hidePopup();
             } else {

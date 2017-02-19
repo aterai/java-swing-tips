@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     private final String[] model = {"123456", "7890", "a"};
     public MainPanel() {
         super(new BorderLayout());
-        JComboBox comboBox0 = new JComboBox<String>(model);
+        JComboBox<String> comboBox0 = new JComboBox<>(model);
         comboBox0.setEditable(true);
 
         JComboBox<String> comboBox1 = new JComboBox<String>(model) {

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         model.addElement("ddddddddd");
         model.addElement("eeeeeeeeee");
         if (def) {
-            return new JList<String>(model);
+            return new JList<>(model);
         }
         JList<String> list = new JList<String>(model) {
             private transient MouseInputListener listener;

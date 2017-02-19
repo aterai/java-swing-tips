@@ -13,11 +13,11 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 //setRenderer(null);
                 super.updateUI();
-                setRenderer(new MultiColumnCellRenderer<LRItem>());
+                setRenderer(new MultiColumnCellRenderer<>());
             }
         };
         add(makeTitledBox("MultiColumnComboBox", combo), BorderLayout.NORTH);
-        add(makeTitledBox("DefaultComboBox", new JComboBox<LRItem>(makeModel())), BorderLayout.SOUTH);
+        add(makeTitledBox("DefaultComboBox", new JComboBox<>(makeModel())), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static Box makeTitledBox(String title, JComboBox combo) {
