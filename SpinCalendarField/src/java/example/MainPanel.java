@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         //c.clear(Calendar.HOUR_OF_DAY);
         //c.clear(Calendar.AM_PM);
         //c.clear(Calendar.HOUR);
-        c.set(Calendar.HOUR_OF_DAY, 0)
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.clear(Calendar.MINUTE);
         c.clear(Calendar.SECOND);
         c.clear(Calendar.MILLISECOND);
