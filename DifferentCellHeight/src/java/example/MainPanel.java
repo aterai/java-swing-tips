@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(null);
                 super.updateUI();
                 if (hasTextAreaRenderer) {
-                    setCellRenderer(new TextAreaRenderer<String>());
+                    setCellRenderer(new TextAreaRenderer<>());
                     if (getFixedCellHeight() != -1) {
                         System.out.println(getFixedCellHeight());
                         setFixedCellHeight(-1);

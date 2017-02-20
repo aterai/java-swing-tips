@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(10));
         box.add(makeTitledPanel("Override TrackListener#shouldScroll(...): false",  slider1));
         box.add(Box.createVerticalStrut(10));
-        box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<Component>(slider2, new DisableLeftPressedLayerUI<>())));
+        box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<>(slider2, new DisableLeftPressedLayerUI<>())));
         box.add(Box.createVerticalGlue());
         for (Component c: box.getComponents()) {
             ((JComponent) c).setAlignmentX(0f);

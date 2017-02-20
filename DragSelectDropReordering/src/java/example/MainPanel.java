@@ -100,7 +100,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         setFixedCellHeight(62);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        setCellRenderer(new ListItemListCellRenderer<E>());
+        setCellRenderer(new ListItemListCellRenderer<>());
         rbl = new RubberBandingListener();
         addMouseMotionListener(rbl);
         addMouseListener(rbl);

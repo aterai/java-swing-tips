@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         model.addElement(index + " - asdfasdfasdfasdfasd");
         model.addElement(index + " - AAAAAAAAAAAAAA");
         model.addElement(index + " - ****");
-        return new DnDList<String>(model);
+        return new DnDList<>(model);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < size; i++) {
             model.addElement("No." + i);
         }
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
