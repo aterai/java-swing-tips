@@ -341,8 +341,13 @@
   <property name="sca.dir" value="${user.dir}" />
 
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+    <path id="errorprone.classpath">
+      <fileset dir="${env.ERRORPRONE_HOME}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
     <componentdef name="errorprone" classname="com.google.errorprone.ErrorProneExternalCompilerAdapter"
-                  classpath="${env.ERRORPRONE_JAR}" />
+                  classpathref="errorprone.classpath" />
     <javac srcdir="${build.src}"
            includes="**/*.java"
            destdir="${build.dest}"
@@ -403,10 +408,15 @@
   </target>
 
   <condition property="have.checkstyle">
-    <available file="${env.CHECKSTYLE_JAR}" />
+    <available file="${env.CHECKSTYLE_HOME}" />
   </condition>
   <target name="checkstyle" if="have.checkstyle">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
+    <path id="checkstyle.classpath">
+      <fileset dir="${env.CHECKSTYLE_HOME}">
+        <include name="*-all.jar" />
+      </fileset>
+    </path>
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
     <mkdir dir="${build.reports}" />
     <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
@@ -452,4 +462,78 @@
       <fileset refid="ftp.upload.fileset" />
     </ftp>
   </target>
+
+  <target name="ftps">
+    <echo message="ftps" />
+    <property name="ftp.userid" value="${env.FTP_USERID}" />
+    <property name="ftp.server" value="${env.FTP_SERVER}" />
+    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
+    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
+    <property name="ssh.in" value="${env.SSH_IN}" />
+    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
+      <arg value="rsautl" />
+      <arg value="-decrypt" />
+      <arg value="-inkey" />
+      <arg value="${ssh.inkey}" />
+      <arg value="-in" />
+      <arg value="${ssh.in}" />
+    </exec>
+    <ftps server="${ftp.server}" remotedir="${ftp.remotedir}"
+          userid="${ftp.userid}" password="${ftp.password}">
+      <fileset refid="ftp.upload.fileset" />
+    </ftps>
+  </target>
+
+  <scriptdef name="ftps" language="javascript">
+    <attribute name="server" />
+    <attribute name="remotedir" />
+    <attribute name="userid" />
+    <attribute name="password" />
+    <element name="fileset" type="fileset" />
+    <![CDATA[
+      var server = attributes.get("server");
+      var remotedir = attributes.get("remotedir");
+      var username = attributes.get("userid");
+      var password = attributes.get("password");
+      try {
+        var ftps = new org.apache.commons.net.ftp.FTPSClient("SSL");
+        ftps.connect(server);
+        var reply = ftps.getReplyCode();
+        if (!org.apache.commons.net.ftp.FTPReply.isPositiveCompletion(reply)) {
+          ftps.disconnect();
+          print("FTP server refused connection.");
+          System.exit(1);
+        }
+        ftps.setBufferSize(1000);
+        if (!ftps.login(username, password)) {
+          print("FTP server refused connection.");
+        } else {
+          print("Remote system is " + ftps.getSystemName());
+          //ftps.setFileType(FTP.BINARY_FILE_TYPE);
+          ftps.enterLocalPassiveMode();
+          ftps.makeDirectory(remotedir);
+          var filesets = elements.get("fileset");
+          for (i = 0; i < filesets.size(); i++) {
+            var fileset = filesets.get(i);
+            var scanner = fileset.getDirectoryScanner(project);
+            scanner.scan();
+            var basedir  = fileset.getDir(project);
+            var files = scanner.getIncludedFiles();
+            for(j = 0; j < files.length; j++) {
+              var filename = files[j];
+                var local = new java.io.File(basedir, filename);
+                print("file: " + remotedir + "/" +  filename);
+                var input = new java.io.FileInputStream(local);
+                ftps.storeFile(remotedir + "/" +  filename, input);
+                input.close();
+              }
+            }
+        }
+        ftps.logout();
+      } catch (ex) {
+        ex.printStackTrace();
+      }
+      ftps.disconnect();
+    ]]>
+  </scriptdef>
 </project>

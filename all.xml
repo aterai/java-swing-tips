@@ -35,11 +35,15 @@
   </target>
 
   <condition property="have.checkstyle">
-    <available file="${env.CHECKSTYLE_JAR}" />
+    <available file="${env.CHECKSTYLE_HOME}" />
   </condition>
   <target name="checkstyle" if="have.checkstyle">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
-    <!-- mkdir dir="${build.reports}" / -->
+    <path id="checkstyle.classpath">
+      <fileset dir="${env.CHECKSTYLE_HOME}">
+        <include name="*-all.jar" />
+      </fileset>
+    </path>
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
     <checkstyle config="${basedir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="checkstyle-result.xml" />
