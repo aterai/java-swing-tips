@@ -142,7 +142,7 @@ class FontChangeEvent extends EventObject {
 
 class MyComboBox extends JComboBox<String> implements FontChangeListener {
     protected MyComboBox() {
-        super(new DefaultComboBoxModel<String>(new String[] {"test test"}));
+        super(new DefaultComboBoxModel<>(new String[] {"test test"}));
     }
     @Override public void fontStateChanged(FontChangeEvent e) {
         setFont(e.getFont());

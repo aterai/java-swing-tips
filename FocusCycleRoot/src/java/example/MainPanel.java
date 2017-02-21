@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
             Collections.<AWTKeyStroke>emptySet());
         p2.setFocusTraversalKeys(
             KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-            new HashSet<AWTKeyStroke>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK))));
+            new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK))));
         p2.setFocusTraversalKeys(
             KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-            new HashSet<AWTKeyStroke>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
+            new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
 
         add(p1);
         //p1.add(p2);

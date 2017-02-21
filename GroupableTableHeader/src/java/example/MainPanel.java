@@ -105,7 +105,7 @@ class GroupableTableHeader extends JTableHeader {
             return Collections.emptyList();
         }
         for (ColumnGroup cGroup: columnGroups) {
-            List<?> groups = cGroup.getColumnGroupList(col, new ArrayList<Object>());
+            List<?> groups = cGroup.getColumnGroupList(col, new ArrayList<>());
             if (!groups.isEmpty()) {
                 return groups;
             }
@@ -250,7 +250,7 @@ class ColumnGroup {
         }
         for (Object obj: v) {
             if (obj instanceof ColumnGroup) {
-                List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, new ArrayList<Object>(g));
+                List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, new ArrayList<>(g));
                 if (!groups.isEmpty()) {
                     return groups;
                 }

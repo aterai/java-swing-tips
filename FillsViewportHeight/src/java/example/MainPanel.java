@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         table.setComponentPopupMenu(new TablePopupMenu(table, model));
         //scroll.getViewport().setComponentPopupMenu(makePop());
         //scroll.setComponentPopupMenu(makePop());
-        table.setRowSorter(new TableRowSorter<TableModel>(model));
+        table.setRowSorter(new TableRowSorter<>(model));
 
         add(makeToolBox(table),  BorderLayout.NORTH);
         add(makeColorBox(table), BorderLayout.SOUTH);

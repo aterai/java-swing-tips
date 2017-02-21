@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
             setFixedCellWidth(82);
             setFixedCellHeight(64);
             setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            setCellRenderer(new ListItemListCellRenderer<ListItem>());
+            setCellRenderer(new ListItemListCellRenderer<>());
             getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         }
     };

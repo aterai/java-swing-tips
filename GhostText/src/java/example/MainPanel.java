@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(10));
         box.add(makePanel("Search", field2));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("JLayer", new JLayer<JTextComponent>(field3, new PlaceholderLayerUI<>("JLayer version"))));
+        box.add(makePanel("JLayer", new JLayer<>(field3, new PlaceholderLayerUI<>("JLayer version"))));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
