@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         Graphics g = image.createGraphics();
         g.drawImage(img, 0, 0, null);
         g.dispose();
-        return ((DataBufferInt) (image.getRaster().getDataBuffer())).getData();
+        return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 //         int[] pixels = new int[w * h];
 //         try {
 //             new PixelGrabber(image, 0, 0, width, height, pixels, 0, width).grabPixels();
