@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             try {
                 if (!isCancelled()) {
                     String[] array = get();
-                    combo.setModel(new DefaultComboBoxModel<String>(array));
+                    combo.setModel(new DefaultComboBoxModel<>(array));
                     combo.setSelectedIndex(0);
                 }
             } catch (InterruptedException | ExecutionException ex) {

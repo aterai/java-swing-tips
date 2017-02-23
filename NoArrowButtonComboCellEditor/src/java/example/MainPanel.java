@@ -98,7 +98,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
             putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
             setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             setOpaque(false);
-            setRenderer(new LocalDateTimeCellRenderer<LocalDateTime>());
+            setRenderer(new LocalDateTimeCellRenderer<>());
             setUI(new ZeroSizeButtonUI());
         }
     };

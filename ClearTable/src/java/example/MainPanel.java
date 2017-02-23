@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         if (DEBUG) {
-            //table.setRowSorter(new TableRowSorter<TableModel>(model));
+            //table.setRowSorter(new TableRowSorter<>(model));
             table.setRowSorter(sorter);
         } else {
             table.setAutoCreateRowSorter(true);
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         private final Action addAction = new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
                 if (DEBUG && model.getRowCount() == 0) {
-                    //table.setRowSorter(new TableRowSorter<TableModel>(model));
+                    //table.setRowSorter(new TableRowSorter<>(model));
                     table.setRowSorter(sorter);
                     model.fireTableDataChanged();
                 }

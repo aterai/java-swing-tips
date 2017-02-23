@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     }
     private static JPanel makePanel() {
         final JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.add(new JComboBox<String>(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
+        p.add(new JComboBox<>(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
 
         String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
         JComboBox<String> comboBox = new JComboBox<String>(items) {

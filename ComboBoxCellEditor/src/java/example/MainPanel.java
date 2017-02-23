@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
         JTree tree = new JTree(root);
         tree.setRowHeight(0);
         tree.setEditable(true);
-        tree.setCellRenderer(new PluginCellRenderer(new JComboBox<String>()));
-        tree.setCellEditor(new PluginCellEditor(new JComboBox<String>()));
+        tree.setCellRenderer(new PluginCellRenderer(new JComboBox<>()));
+        tree.setCellEditor(new PluginCellEditor(new JComboBox<>()));
 
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override public void treeNodesChanged(TreeModelEvent e) {

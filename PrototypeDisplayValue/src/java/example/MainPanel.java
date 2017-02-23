@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         combo3.setPrototypeDisplayValue(TITLE);
         combo3.setEditable(true);
 
-        combo4.setRenderer(new SiteListCellRenderer<Site>());
-        combo5.setRenderer(new SiteListCellRenderer<Site>());
+        combo4.setRenderer(new SiteListCellRenderer<>());
+        combo5.setRenderer(new SiteListCellRenderer<>());
         combo5.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
-        combo6.setRenderer(new SiteListCellRenderer<Site>());
+        combo6.setRenderer(new SiteListCellRenderer<>());
         combo6.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
 
         add(combo1);

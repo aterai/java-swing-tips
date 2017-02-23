@@ -9,9 +9,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(1, 3));
-        add(makeTitledPanel("Default", new JList<String>(makeModel())));
-        add(makeTitledPanel("MouseEvent", new SingleMouseClickSelectList<String>(makeModel())));
-        add(makeTitledPanel("SelectionInterval", new SingleClickSelectList<String>(makeModel())));
+        add(makeTitledPanel("Default", new JList<>(makeModel())));
+        add(makeTitledPanel("MouseEvent", new SingleMouseClickSelectList<>(makeModel())));
+        add(makeTitledPanel("SelectionInterval", new SingleClickSelectList<>(makeModel())));
         setPreferredSize(new Dimension(320, 240));
     }
     private static DefaultListModel<String> makeModel() {

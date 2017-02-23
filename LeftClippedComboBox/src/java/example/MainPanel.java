@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         model.addElement("aaaabbbcc.pdf");
         model.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
         model.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
     }
     private static void initComboBoxRenderer(final JComboBox<String> combo) {
         final JButton arrowButton = getArrowButton(combo);
