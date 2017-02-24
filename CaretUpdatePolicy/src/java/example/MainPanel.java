@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
             while (true) {
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ex) {
                     return "Interrupted";
                 }
                 if (check.isSelected()) {
@@ -114,7 +114,7 @@ public class MainPanel extends JPanel {
                     while (true) {
                         try {
                             Thread.sleep(500);
-                        } catch (InterruptedException ie) {
+                        } catch (InterruptedException ex) {
                             return "Interrupted";
                         }
                         if (check.isSelected()) {
