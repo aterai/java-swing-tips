@@ -205,7 +205,9 @@ class BindingMapModel extends DefaultTableModel {
 
 class Binding {
     private Integer focusType;
-    private String actionName, keyDescription;
+    private String actionName;
+    private String keyDescription;
+
     protected Binding(Integer focusType, String actionName, String keyDescription) {
         this.focusType = focusType;
         this.actionName = actionName;

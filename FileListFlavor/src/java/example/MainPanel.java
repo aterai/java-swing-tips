@@ -178,7 +178,9 @@ class FileModel extends DefaultTableModel {
     }
 }
 class FileName {
-    private String name, absolutePath;
+    private String name;
+    private String absolutePath;
+
     protected FileName(String name, String absolutePath) {
         this.name = name;
         this.absolutePath = absolutePath;

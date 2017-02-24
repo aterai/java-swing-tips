@@ -68,7 +68,9 @@ class RandomDissolve extends JComponent implements ActionListener {
     private transient BufferedImage srcimg;
     private boolean mode = true;
     private int currentStage;
-    private int[] src, dst, step;
+    private int[] src;
+    private int[] dst;
+    private int[] step;
 
     protected RandomDissolve(BufferedImage i1, BufferedImage i2) {
         super();

@@ -190,7 +190,9 @@ class ComboRolloverHandler extends MouseAdapter {
 }
 
 class ArrowIcon implements Icon {
-    private final Color color, rollover;
+    private final Color color;
+    private final Color rollover;
+
     protected ArrowIcon(Color color, Color rollover) {
         this.color = color;
         this.rollover = rollover;

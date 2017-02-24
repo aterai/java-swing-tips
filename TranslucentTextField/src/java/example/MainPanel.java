@@ -14,19 +14,19 @@ import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);
-    private final JTextField field0, field1, field2;
     private transient TexturePaint texture;
 
     public MainPanel() {
-        super();
-        field0 = new JTextField("aaaaaaaaa");
+        super(new GridBagLayout());
+
+        JTextField field0 = new JTextField("aaaaaaaaa");
         field0.setBackground(BG_COLOR);
 
-        field1 = new JTextField("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+        JTextField field1 = new JTextField("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         field1.setOpaque(false);
         field1.setBackground(BG_COLOR);
 
-        field2 = new JTextField("cccccccccccccccccccccc") {
+        JTextField field2 = new JTextField("cccccccccccccccccccccc") {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(getBackground());
@@ -38,11 +38,6 @@ public final class MainPanel extends JPanel {
         field2.setOpaque(false);
         field2.setBackground(BG_COLOR);
 
-        initComponents();
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private void initComponents() {
-        setLayout(new GridBagLayout());
         Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("setBackground(1.0, 0.8, 0.8, 0.2)");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
@@ -61,6 +56,8 @@ public final class MainPanel extends JPanel {
         add(field0, c);
         add(field1, c);
         add(field2, c);
+
+        setPreferredSize(new Dimension(320, 240));
     }
     private TexturePaint makeTexturePaint() {
         //Viva! edo > http://www.viva-edo.com/komon/edokomon.html

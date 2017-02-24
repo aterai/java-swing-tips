@@ -56,8 +56,8 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) { //NOPMD
         int tabCount = tabPane.getTabCount();
 
-        Rectangle iconRect = new Rectangle(),
-        textRect = new Rectangle();
+        Rectangle iconRect = new Rectangle();
+        Rectangle textRect = new Rectangle();
         Rectangle clipRect = g.getClipBounds();
 
         for (int i = runCount - 1; i >= 0; i--) {
