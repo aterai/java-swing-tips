@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
                     setOpaque(false);
                 }
                 super.fireStateChanged();
-            };
+            }
             @Override public void updateUI() {
                 super.updateUI();
                 setOpaque(false); // Motif lnf
