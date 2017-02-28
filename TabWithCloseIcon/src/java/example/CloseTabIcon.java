@@ -150,7 +150,7 @@ public class CloseTabIcon implements Icon {
     }
 
     /**
-     * Gets the bounds of this icon in the form of a <code>Rectangle<code>
+     * Gets the bounds of this icon in the form of a <code>Rectangle</code>
      * object. The bounds specify this icon's width, height, and location
      * relative to its parent.
      * @return a rectangle indicating this icon's bounds
