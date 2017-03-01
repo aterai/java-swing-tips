@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                 g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
 
                 int fillBottom = fillTop + trackHeight;
-                int fillRight  = xPositionForValue(c, new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop));
+                int fillRight  = getXPositionForValue(c, new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop));
 
                 g.setColor(Color.ORANGE);
                 g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
                 g.drawRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
             }
             //@see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
-            protected int xPositionForValue(JSlider slider, Rectangle trackRect) {
+            protected int getXPositionForValue(JSlider slider, Rectangle trackRect) {
                 int value = slider.getValue();
                 int min = slider.getMinimum();
                 int max = slider.getMaximum();
