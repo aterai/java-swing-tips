@@ -138,6 +138,7 @@ class VerticalTitledBorder extends TitledBorder {
         this.label.setBackground(c.getBackground()); //???
         return this.label;
     }
+    // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border border, Component c, Insets insets)
     private static Insets makeComponentBorderInsets(Border border, Component c, Insets i) {
         Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
         if (Objects.isNull(border)) {
