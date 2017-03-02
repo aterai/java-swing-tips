@@ -104,7 +104,6 @@ class WavyLineSeparator extends JSeparator {
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             Graphics2D g2 = (Graphics2D) g.create();
-            AffineTransform oldTransform = g2.getTransform();
             g2.setPaint(sfc);
             if (orientation == SwingConstants.VERTICAL) {
                 g2.translate(x + getIconWidth(), y);
@@ -117,7 +116,6 @@ class WavyLineSeparator extends JSeparator {
             g2.drawLine(2, 0, 3, 0);
             g2.drawLine(4, 1, 4, 1);
             g2.drawLine(5, 2, 5, 2);
-            g2.setTransform(oldTransform);
             g2.dispose();
         }
         @Override public int getIconWidth() {
