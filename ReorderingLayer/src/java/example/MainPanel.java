@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
             new JButton("2"), new JCheckBox("3"), new JTextField(14))) {
             box.add(createToolBarButton(idx++, c));
         }
-        add(new JLayer<JComponent>(box, new ReorderingLayerUI<>()), BorderLayout.NORTH);
+        add(new JLayer<>(box, new ReorderingLayerUI<>()), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 

@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         model.addElement(new ListItem("22222",      "wi0062-32.png"));
         model.addElement(new ListItem("3333",       "wi0063-32.png"));
 
-        add(new JScrollPane(new RubberBandSelectionList<ListItem>(model)));
+        add(new JScrollPane(new RubberBandSelectionList<>(model)));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -89,7 +89,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         setFixedCellHeight(62);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        setCellRenderer(new ListItemListCellRenderer<E>());
+        setCellRenderer(new ListItemListCellRenderer<>());
         rbl = new RubberBandingListener();
         addMouseMotionListener(rbl);
         addMouseListener(rbl);

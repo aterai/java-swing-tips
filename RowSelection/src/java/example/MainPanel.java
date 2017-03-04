@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        //table.setRowSorter(new TableRowSorter<TableModel>(model));
+        //table.setRowSorter(new TableRowSorter<>(model));
 
         table.getSelectionModel().addListSelectionListener(e -> {
             if (e.getValueIsAdjusting()) {

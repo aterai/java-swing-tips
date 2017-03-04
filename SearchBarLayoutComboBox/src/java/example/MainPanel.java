@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
         setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         p.add(new JLabel("Default JComboBox"));
-        p.add(new JComboBox<String>(new String[] {"Google", "Yahoo!", "Bing"}));
+        p.add(new JComboBox<>(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
 
         DefaultComboBoxModel<SearchEngine> model = new SearchEngineComboBoxModel<>();
@@ -116,7 +116,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
     }
 //     protected JSearchBar() {
 //         super();
-//         setModel(new DefaultComboBoxModel<SearchEngine>());
+//         setModel(new DefaultComboBoxModel<>());
 //         init();
 //     }
     protected JSearchBar(ComboBoxModel<SearchEngine> aModel) {
@@ -126,7 +126,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
     }
     protected JSearchBar(SearchEngine... items) {
         super(items);
-        //setModel(new DefaultComboBoxModel<SearchEngine>(items));
+        //setModel(new DefaultComboBoxModel<>(items));
         //init();
     }
 //     protected JSearchBar(Vector<?> items) {

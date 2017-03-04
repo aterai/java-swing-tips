@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         if (isDefault) {
             comboBox = new JComboBox<>(m);
         } else {
-            comboBox = new RemoveButtonComboBox<String>(m);
+            comboBox = new RemoveButtonComboBox<>(m);
         }
         comboBox.setEditable(isEditable);
         return comboBox;
@@ -94,7 +94,7 @@ class RemoveButtonComboBox<E> extends JComboBox<E> {
             });
         }
         super.updateUI();
-        setRenderer(new ButtonsRenderer<E>(this));
+        setRenderer(new ButtonsRenderer<>(this));
         getList().ifPresent(list -> {
             cbml = new CellButtonsMouseListener();
             list.addMouseListener(cbml);
