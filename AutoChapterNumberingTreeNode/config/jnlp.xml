@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST AutoChapterNumberingTreeNode" />
+  <property name="jnlp.Name"     value="AutoChapterNumberingTreeNode" />
+  <property name="jnlp.name"     value="autochapternumberingtreenode" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/autochapternumberingtreenode/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutoChapterNumberingTreeNode.html" />
+</project>
