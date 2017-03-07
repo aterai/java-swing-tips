@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     private static JComponent makeList() {
         DefaultListModel<String> m = new DefaultListModel<>();
         IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%d: %s", i, Objects.toString(new Date()))));
-        return new JList<String>(m);
+        return new JList<>(m);
     }
     private static JScrollPane makeTranslucentScrollBar(JComponent c) {
         return new JScrollPane(c) {

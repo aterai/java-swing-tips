@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("gray-white");
         map.forEach((key, value) -> model.addElement(key));
-        return new JComboBox<String>(model);
+        return new JComboBox<>(model);
     }
 
     public static void main(String... args) {

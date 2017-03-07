@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         combo.setSelectedIndex(-1);
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(new JComboBox<DefaultMutableTreeNode>(model1), "default:"));
+        box.add(createPanel(new JComboBox<>(model1), "default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo, "Tree ComboBoxModel:"));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

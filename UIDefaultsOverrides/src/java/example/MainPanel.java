@@ -238,7 +238,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
 
         int prefH = getPreferredSize().height;
         while (rowColHeight.size() <= row) {
-            rowColHeight.add(new ArrayList<Integer>(column));
+            rowColHeight.add(new ArrayList<>(column));
         }
         List<Integer> colHeights = rowColHeight.get(row);
         while (colHeights.size() <= column) {

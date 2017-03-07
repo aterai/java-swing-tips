@@ -130,7 +130,7 @@ class RowHeaderList<E> extends JList<E> {
         super(model);
         this.table = table;
         setFixedCellHeight(table.getRowHeight());
-        setCellRenderer(new RowHeaderRenderer<E>(table.getTableHeader()));
+        setCellRenderer(new RowHeaderRenderer<>(table.getTableHeader()));
         //setSelectionModel(table.getSelectionModel());
         RollOverListener rol = new RollOverListener();
         addMouseListener(rol);

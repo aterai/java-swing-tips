@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         //table.setAutoCreateRowSorter(true);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-        table.setRowSorter(new TableRowSorter<TableModel>(model));
+        table.setRowSorter(new TableRowSorter<>(model));
         //sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
 
         TableCellRenderer renderer = new TableCellRenderer() {
