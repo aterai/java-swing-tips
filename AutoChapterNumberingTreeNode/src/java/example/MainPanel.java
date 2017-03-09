@@ -74,19 +74,10 @@ class ChapterNumberingTreeCellRenderer extends DefaultTreeCellRenderer {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if (value instanceof DefaultMutableTreeNode) {
             TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
-            String s = IntStream.range(1, tn.length).mapToObj(i -> {
-                TreeNode n = tn[i];
-                TreeNode p = n.getParent();
-                return String.valueOf(1 + p.getIndex(n));
-            }).collect(Collectors.joining("."));
+            String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
+              .mapToObj(i -> String.valueOf(1 + tn[i - 1].getIndex(tn[i])))
+              .collect(Collectors.joining("."));
             l.setText(String.format("%s%s %s", MARK, s, value));
-//             String[] arr = new String[tn.length - 1];
-//             for (int i = 1; i < tn.length; i++) {
-//                 TreeNode n = tn[i];
-//                 TreeNode p = n.getParent();
-//                 arr[i - 1] = String.valueOf(1 + p.getIndex(n));
-//             }
-//             l.setText(String.format("%s%s %s", MARK, String.join(".", arr), value));
         }
         return l;
     }
