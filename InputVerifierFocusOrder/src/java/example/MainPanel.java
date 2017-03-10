@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.add(check);
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        for (JComponent c: list) {
+        list.stream().forEach(c -> {
             box.add(Box.createVerticalStrut(10));
             box.add(c);
-        }
+        });
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         p.add(button);
         add(box, BorderLayout.NORTH);
