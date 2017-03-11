@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
@@ -75,9 +76,7 @@ public final class MainPanel extends JPanel {
     }
     private static JComboBox<String> makeComboBox(int size) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        for (int i = 0; i < size; i++) {
-            model.addElement("No." + i);
-        }
+        IntStream.range(0, size).forEach(i -> model.addElement("No." + i));
         return new JComboBox<>(model);
     }
     public static void main(String... args) {
