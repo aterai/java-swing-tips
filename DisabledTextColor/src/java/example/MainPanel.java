@@ -30,6 +30,7 @@ public final class MainPanel extends JPanel {
     private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
     private final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
     private final List<? extends JComponent> list = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
+    private final JCheckBox cbx = new JCheckBox("setEnabled");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -37,14 +38,9 @@ public final class MainPanel extends JPanel {
         UIManager.put("ComboBox.disabledForeground", Color.GREEN);
         UIManager.put("Button.disabledText", Color.YELLOW);
         UIManager.put("Label.disabledForeground", Color.ORANGE);
-        final JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox source = (JCheckBox) e.getSource();
-                boolean flg = source.isSelected();
-                for (JComponent c: list) {
-                    c.setEnabled(flg);
-                }
-            }
+        cbx.addActionListener(e -> {
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            list.forEach(c -> c.setEnabled(flg));
         });
         combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -66,14 +62,14 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
-        for (JComponent c: list) {
+        list.forEach(c -> {
             c.setEnabled(false);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             int h = c.getPreferredSize().height;
             c.setMaximumSize(new Dimension(Integer.MAX_VALUE, h));
             box.add(c);
             box.add(Box.createVerticalStrut(5));
-        }
+        });
         box.add(Box.createVerticalGlue());
         add(cbx, BorderLayout.NORTH);
         add(box);
