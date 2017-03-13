@@ -41,11 +41,11 @@ public final class MainPanel extends JPanel {
         if (!node.isRoot()) {
             model.addElement(node);
         }
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                makeComboBoxModel(model, (DefaultMutableTreeNode) e.nextElement());
-            }
+        if (!node.isLeaf() && node.getChildCount() > 0) {
+            Collections.list((Enumeration<?>) node.children()).stream()
+              .filter(DefaultMutableTreeNode.class::isInstance)
+              .map(DefaultMutableTreeNode.class::cast)
+              .forEach(n -> makeComboBoxModel(model, n));
         }
     }
     private static TreeModel makeModel() {
