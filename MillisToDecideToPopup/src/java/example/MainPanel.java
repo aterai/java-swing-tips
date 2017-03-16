@@ -11,19 +11,21 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea area    = new JTextArea();
-    private final JButton runButton = new JButton(new RunAction());
+    private final JButton runButton = new JButton("run");
     private final JSpinner millisToDecideToPopup;
     private final JSpinner millisToPopup;
-    private transient SwingWorker<String, String> worker;
-    private transient ProgressMonitor monitor;
+    //private transient SwingWorker<String, String> worker;
+    //private transient ProgressMonitor monitor;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         area.setEditable(false);
 
-        monitor = new ProgressMonitor(null, "message", "note", 0, 100);
-        millisToDecideToPopup = makeSpinner(monitor.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
-        millisToPopup = makeSpinner(monitor.getMillisToPopup(), 0, 5 * 1000, 100);
+        ProgressMonitor monitorDefault = new ProgressMonitor(null, "message dummy", "note", 0, 100);
+        millisToDecideToPopup = makeSpinner(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
+        millisToPopup = makeSpinner(monitorDefault.getMillisToPopup(), 0, 5 * 1000, 100);
+
+        runButton.addActionListener(e -> executeWorker((Component) e.getSource()));
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -48,63 +50,58 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-            int toDecideToPopup = (int) millisToDecideToPopup.getValue();
-            int toPopup         = (int) millisToPopup.getValue();
-            int lengthOfTask    = Math.max(10000, toDecideToPopup * 5);
-            monitor = new ProgressMonitor(w, "message", "note", 0, 100);
-            monitor.setMillisToDecideToPopup(toDecideToPopup);
-            monitor.setMillisToPopup(toPopup);
+    protected void executeWorker(Component c) {
+        Window w = SwingUtilities.getWindowAncestor(c);
+        int toDecideToPopup = (int) millisToDecideToPopup.getValue();
+        int toPopup         = (int) millisToPopup.getValue();
+        int lengthOfTask    = Math.max(10000, toDecideToPopup * 5);
+        ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
+        monitor.setMillisToDecideToPopup(toDecideToPopup);
+        monitor.setMillisToPopup(toPopup);
 
-            //System.out.println(monitor.getMillisToDecideToPopup());
-            //System.out.println(monitor.getMillisToPopup());
+        //System.out.println(monitor.getMillisToDecideToPopup());
+        //System.out.println(monitor.getMillisToPopup());
 
-            runButton.setEnabled(false);
-            worker = new Task(lengthOfTask) {
-                @Override protected void process(List<String> chunks) {
-                    if (isCancelled()) {
-                        return;
-                    }
-                    if (!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    for (String message: chunks) {
-                        monitor.setNote(message);
+        runButton.setEnabled(false);
+        SwingWorker<String, String> worker = new Task(lengthOfTask) {
+            @Override protected void process(List<String> chunks) {
+                if (isCancelled()) {
+                    return;
+                }
+                if (!isDisplayable()) {
+                    System.out.println("process: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
+                for (String message: chunks) {
+                    monitor.setNote(message);
+                }
+            }
+            @Override public void done() {
+                if (!isDisplayable()) {
+                    System.out.println("done: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
+                runButton.setEnabled(true);
+                monitor.close();
+                String text = null;
+                if (isCancelled()) {
+                    text = "Cancelled";
+                } else {
+                    try {
+                        text = get();
+                    } catch (InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                        text = "Exception";
                     }
                 }
-                @Override public void done() {
-                    if (!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    runButton.setEnabled(true);
-                    monitor.close();
-                    String text = null;
-                    if (isCancelled()) {
-                        text = "Cancelled";
-                    } else {
-                        try {
-                            text = get();
-                        } catch (InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
-                        }
-                    }
-                    area.append(text + "\n");
-                    area.setCaretPosition(area.getDocument().getLength());
-                }
-            };
-            worker.addPropertyChangeListener(new ProgressListener(monitor));
-            worker.execute();
-        }
+                area.append(text + "\n");
+                area.setCaretPosition(area.getDocument().getLength());
+            }
+        };
+        worker.addPropertyChangeListener(new ProgressListener(monitor));
+        worker.execute();
     }
     private static JSpinner makeSpinner(int num, int min, int max, int step) {
         return new JSpinner(new SpinnerNumberModel(num, min, max, step));

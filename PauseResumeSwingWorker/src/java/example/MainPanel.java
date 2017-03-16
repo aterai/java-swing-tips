@@ -12,45 +12,68 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea area      = new JTextArea();
-    private final JPanel statusPanel  = new JPanel(new BorderLayout());
-    private final JButton runButton   = new JButton(new RunAction());
-    private final JButton canButton   = new JButton(new CancelAction());
-    private final JButton pauseButton = new JButton(new PauseAction());
-    private final JProgressBar bar1   = new JProgressBar();
-    private final JProgressBar bar2   = new JProgressBar();
+    private static final String PAUSE  = "pause";
+    private static final String RESUME = "resume";
+    private final JTextArea area       = new JTextArea();
+    private final JPanel statusPanel   = new JPanel(new BorderLayout());
+    private final JButton runButton    = new JButton("run");
+    private final JButton cancelButton = new JButton("cancel");
+    private final JButton pauseButton  = new JButton(PAUSE);
+    private final JProgressBar bar1    = new JProgressBar();
+    private final JProgressBar bar2    = new JProgressBar();
     private transient Task worker;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         area.setEditable(false);
-        pauseButton.setEnabled(false);
-        canButton.setEnabled(false);
 
-        JComponent box = createRightAlignButtonBox4(Arrays.asList(pauseButton, canButton, runButton), 80, 5);
+        runButton.addActionListener(e -> {
+            //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
+            runButton.setEnabled(false);
+            cancelButton.setEnabled(true);
+            pauseButton.setEnabled(true);
+            bar1.setValue(0);
+            bar2.setValue(0);
+            statusPanel.add(bar1, BorderLayout.NORTH);
+            statusPanel.add(bar2, BorderLayout.SOUTH);
+            statusPanel.revalidate();
+            //bar1.setIndeterminate(true);
+            worker = new ProgressTask();
+            worker.execute();
+        });
+
+        pauseButton.setEnabled(false);
+        pauseButton.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            //String pause = (String) getValue(Action.NAME);
+            if (Objects.nonNull(worker)) {
+                if (worker.isCancelled() || worker.isPaused) {
+                    b.setText(PAUSE);
+                } else {
+                    b.setText(RESUME);
+                }
+                worker.isPaused ^= true;
+            } else {
+                b.setText(PAUSE);
+            }
+        });
+
+        cancelButton.setEnabled(false);
+        cancelButton.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = null;
+            pauseButton.setText("pause");
+            pauseButton.setEnabled(false);
+        });
+
+        JComponent box = createRightAlignButtonBox4(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-            runButton.setEnabled(false);
-            canButton.setEnabled(true);
-            pauseButton.setEnabled(true);
-            statusPanel.add(bar1, BorderLayout.NORTH);
-            statusPanel.add(bar2, BorderLayout.SOUTH);
-            statusPanel.revalidate();
-            //bar1.setIndeterminate(true);
-
-            worker = new ProgressTask();
-            worker.execute();
-        }
     }
     private class ProgressTask extends Task {
         @Override protected void process(List<Progress> chunks) {
@@ -63,36 +86,7 @@ public final class MainPanel extends JPanel {
                 cancel(true);
                 return;
             }
-            for (Progress s: chunks) {
-                switch (s.component) {
-                  case TOTAL:
-                    bar1.setValue((Integer) s.value);
-                    break;
-                  case FILE:
-                    bar2.setValue((Integer) s.value);
-                    break;
-                  case LOG:
-                    area.append((String) s.value);
-                    break;
-                  case PAUSE:
-                    textProgress((Boolean) s.value);
-                    break;
-                  default:
-                    throw new AssertionError("Unknown Progress");
-                }
-            }
-        }
-        private void textProgress(boolean append) {
-            if (append) {
-                area.append("*");
-            } else {
-                try {
-                    Document doc = area.getDocument();
-                    doc.remove(doc.getLength() - 1, 1);
-                } catch (BadLocationException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            processChunks(chunks);
         }
         @Override public void done() {
             if (!isDisplayable()) {
@@ -101,50 +95,54 @@ public final class MainPanel extends JPanel {
                 return;
             }
             //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-            runButton.requestFocusInWindow();
-            runButton.setEnabled(true);
-            canButton.setEnabled(false);
-            pauseButton.setEnabled(false);
-            statusPanel.removeAll();
-            statusPanel.revalidate();
+            updateComponentDone();
+            String message;
             try {
-                area.append(String.format("%n%s%n", isCancelled() ? "Cancelled" : get()));
+                message = String.format("%n%s%n", isCancelled() ? "Cancelled" : get());
             } catch (InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
-                area.append(String.format("%n%s%n", "Exception"));
+                message = String.format("%n%s%n", "Exception");
             }
-            area.setCaretPosition(area.getDocument().getLength());
+            appendLine(message);
         }
     }
-    private class CancelAction extends AbstractAction {
-        protected CancelAction() {
-            super("cancel");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if (Objects.nonNull(worker) && !worker.isDone()) {
-                worker.cancel(true);
+    protected void updateComponentDone() {
+        runButton.requestFocusInWindow();
+        runButton.setEnabled(true);
+        cancelButton.setEnabled(false);
+        pauseButton.setEnabled(false);
+        statusPanel.removeAll();
+        statusPanel.revalidate();
+    }
+    protected void processChunks(List<Progress> chunks) {
+        for (Progress s: chunks) {
+            switch (s.component) {
+              case TOTAL:
+                bar1.setValue((Integer) s.value);
+                break;
+              case FILE:
+                bar2.setValue((Integer) s.value);
+                break;
+              case LOG:
+                area.append((String) s.value);
+                break;
+              case PAUSE:
+                textProgress((Boolean) s.value);
+                break;
+              default:
+                throw new AssertionError("Unknown Progress");
             }
-            worker = null;
-            pauseButton.setText("pause");
-            pauseButton.setEnabled(false);
         }
     }
-    private class PauseAction extends AbstractAction {
-        protected PauseAction() {
-            super("pause");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton) e.getSource();
-            String pause = (String) getValue(Action.NAME);
-            if (Objects.nonNull(worker)) {
-                if (worker.isCancelled() || worker.isPaused) {
-                    b.setText(pause);
-                } else {
-                    b.setText("resume");
-                }
-                worker.isPaused ^= true;
-            } else {
-                b.setText(pause);
+    protected void textProgress(boolean append) {
+        if (append) {
+            area.append("*");
+        } else {
+            try {
+                Document doc = area.getDocument();
+                doc.remove(doc.getLength() - 1, 1);
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -172,10 +170,10 @@ public final class MainPanel extends JPanel {
         }
         return p;
     }
-//     private void appendLine(String str) {
-//         area.append(str);
-//         area.setCaretPosition(area.getDocument().getLength());
-//     }
+    protected void appendLine(String str) {
+        area.append(str);
+        area.setCaretPosition(area.getDocument().getLength());
+    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -222,13 +220,13 @@ class Task extends SwingWorker<String, Progress> {
         publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
         while (current < lengthOfTask && !isCancelled()) {
+            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
             publish(new Progress(Component.LOG, "*"));
             try {
                 convertFileToSomething();
             } catch (InterruptedException ex) {
                 return "Interrupted";
             }
-            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
             current++;
         }
         publish(new Progress(Component.LOG, "\n"));
@@ -261,7 +259,7 @@ class Task extends SwingWorker<String, Progress> {
 //     private final JTextArea area     = new JTextArea();
 //     private final JPanel statusPanel = new JPanel(new BorderLayout());
 //     private final JButton runButton  = new JButton(new RunAction());
-//     private final JButton canButton  = new JButton(new CancelAction());
+//     private final JButton cancelButton  = new JButton(new CancelAction());
 //     private SwingWorker<String, String> worker;
 //
 //     public MainPanel() {
@@ -271,7 +269,7 @@ class Task extends SwingWorker<String, Progress> {
 //         box.add(Box.createHorizontalGlue());
 //         box.add(runButton);
 //         box.add(Box.createHorizontalStrut(2));
-//         box.add(canButton);
+//         box.add(cancelButton);
 //         add(new JScrollPane(area));
 //         add(box, BorderLayout.NORTH);
 //         add(statusPanel, BorderLayout.SOUTH);
@@ -288,7 +286,7 @@ class Task extends SwingWorker<String, Progress> {
 //             final JProgressBar bar1 = new JProgressBar(0, 100);
 //             final JProgressBar bar2 = new JProgressBar(0, 100);
 //             runButton.setEnabled(false);
-//             canButton.setEnabled(true);
+//             cancelButton.setEnabled(true);
 //             statusPanel.removeAll();
 //             statusPanel.add(bar1, BorderLayout.NORTH);
 //             statusPanel.add(bar2, BorderLayout.SOUTH);
@@ -339,7 +337,7 @@ class Task extends SwingWorker<String, Progress> {
 //                 @Override public void done() {
 //                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //                     runButton.setEnabled(true);
-//                     canButton.setEnabled(false);
+//                     cancelButton.setEnabled(false);
 //                     statusPanel.remove(bar1);
 //                     statusPanel.remove(bar2);
 //                     statusPanel.revalidate();

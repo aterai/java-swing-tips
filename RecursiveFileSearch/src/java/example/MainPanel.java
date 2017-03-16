@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JProgressBar pBar  = new JProgressBar();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton(new RunAction());
-    private final JButton canButton  = new JButton(new CancelAction());
-    private final JButton openButton = new JButton(new OpenAction());
-    private SwingWorker<String, Message> worker;
+    private final JButton runButton  = new JButton("Run");
+    private final JButton canButton  = new JButton("Cancel");
+    private final JButton openButton = new JButton("Choose...");
+    private transient SwingWorker<String, Message> worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -35,129 +35,19 @@ public final class MainPanel extends JPanel {
         statusPanel.add(pBar);
         statusPanel.setVisible(false);
 
-        JPanel box1 = new JPanel(new BorderLayout(5, 5));
-        box1.add(new JLabel("Search folder:"), BorderLayout.WEST);
-        box1.add(dirCombo);
-        box1.add(openButton, BorderLayout.EAST);
+        runButton.addActionListener(e -> {
+            updateComponentStatus(true);
+            executeWorker();
+        });
 
-        Box box2 = Box.createHorizontalBox();
-        box2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        box2.add(Box.createHorizontalGlue());
-        box2.add(runButton);
-        box2.add(Box.createHorizontalStrut(2));
-        box2.add(canButton);
-
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(box1, BorderLayout.NORTH);
-        panel.add(box2, BorderLayout.SOUTH);
-
-        add(new JScrollPane(textArea));
-        add(panel, BorderLayout.NORTH);
-        add(statusPanel, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
-    public static void addItem(JComboBox<String> dirCombo, String str, int max) {
-        if (Objects.isNull(str) || str.trim().isEmpty()) {
-            return;
-        }
-        dirCombo.setVisible(false);
-        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) dirCombo.getModel();
-        model.removeElement(str);
-        model.insertElementAt(str, 0);
-        if (model.getSize() > max) {
-            model.removeElementAt(max);
-        }
-        dirCombo.setSelectedIndex(0);
-        dirCombo.setVisible(true);
-    }
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("Run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            addItem(dirCombo, (String) dirCombo.getEditor().getItem(), 4);
-            statusPanel.setVisible(true);
-            dirCombo.setEnabled(false);
-            openButton.setEnabled(false);
-            runButton.setEnabled(false);
-            canButton.setEnabled(true);
-            pBar.setIndeterminate(true);
-            textArea.setText("");
-            File dir = new File((String) dirCombo.getSelectedItem());
-            RecursiveFileSearchTask worker = new UITask(dir);
-            worker.addPropertyChangeListener(new ProgressListener(pBar));
-            worker.execute();
-        }
-    }
-    class UITask extends RecursiveFileSearchTask {
-        protected UITask(File dir) {
-            super(dir);
-        }
-        @Override protected void process(List<Message> chunks) {
-            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-            if (isCancelled()) {
-                return;
-            }
-            if (!isDisplayable()) {
-                System.out.println("process: DISPOSE_ON_CLOSE");
-                cancel(true);
-                return;
-            }
-            for (Message c: chunks) {
-                if (c.append) {
-                    appendLine(c.text);
-                } else {
-                    textArea.setText(c.text + "\n");
-                }
-            }
-        }
-        @Override public void done() {
-            //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-            if (!isDisplayable()) {
-                System.out.println("done: DISPOSE_ON_CLOSE");
-                cancel(true);
-                return;
-            }
-            dirCombo.setEnabled(true);
-            openButton.setEnabled(true);
-            runButton.setEnabled(true);
-            canButton.setEnabled(false);
-            statusPanel.setVisible(false);
-
-            String text = null;
-            if (isCancelled()) {
-                text = "Cancelled";
-            } else {
-                try {
-                    text = get();
-                } catch (InterruptedException | ExecutionException ex) {
-                    ex.printStackTrace();
-                    text = "Exception";
-                }
-            }
-            appendLine("----------------");
-            appendLine(text);
-        }
-    }
-    class CancelAction extends AbstractAction {
-        protected CancelAction() {
-            super("Cancel");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        canButton.addActionListener(e -> {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
-        }
-    }
-//     private boolean isCancelled() {
-//         return Objects.isNull(worker) && worker.isCancelled();
-//     }
-    class OpenAction extends AbstractAction {
-        protected OpenAction() {
-            super("Choose...");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+
+        openButton.addActionListener(e -> {
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //fileChooser.setDialogTitle("...");
             fileChooser.setSelectedFile(new File((String) dirCombo.getEditor().getItem()));
@@ -181,9 +71,122 @@ public final class MainPanel extends JPanel {
                 JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
                 return;
             }
+        });
+
+        JPanel box1 = new JPanel(new BorderLayout(5, 5));
+        box1.add(new JLabel("Search folder:"), BorderLayout.WEST);
+        box1.add(dirCombo);
+        box1.add(openButton, BorderLayout.EAST);
+
+        Box box2 = Box.createHorizontalBox();
+        box2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        box2.add(Box.createHorizontalGlue());
+        box2.add(runButton);
+        box2.add(Box.createHorizontalStrut(2));
+        box2.add(canButton);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(box1, BorderLayout.NORTH);
+        panel.add(box2, BorderLayout.SOUTH);
+
+        add(new JScrollPane(textArea));
+        add(panel, BorderLayout.NORTH);
+        add(statusPanel, BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    class UITask extends RecursiveFileSearchTask {
+        protected UITask(File dir) {
+            super(dir);
+        }
+        @Override protected void process(List<Message> chunks) {
+            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            if (isCancelled()) {
+                return;
+            }
+            if (!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            processChunks(chunks);
+        }
+        @Override public void done() {
+            //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+            if (!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            updateComponentStatus(false);
+            String text;
+            if (isCancelled()) {
+                text = "Cancelled";
+            } else {
+                try {
+                    text = get();
+                } catch (InterruptedException | ExecutionException ex) {
+                    ex.printStackTrace();
+                    text = "Exception";
+                }
+            }
+            appendLine("----------------");
+            appendLine(text);
         }
     }
-    private void appendLine(String str) {
+
+    protected void updateComponentStatus(boolean start) {
+        if (start) {
+            addItem(dirCombo, (String) dirCombo.getEditor().getItem(), 4);
+            statusPanel.setVisible(true);
+            dirCombo.setEnabled(false);
+            openButton.setEnabled(false);
+            runButton.setEnabled(false);
+            canButton.setEnabled(true);
+            pBar.setIndeterminate(true);
+            textArea.setText("");
+        } else {
+            dirCombo.setEnabled(true);
+            openButton.setEnabled(true);
+            runButton.setEnabled(true);
+            canButton.setEnabled(false);
+            statusPanel.setVisible(false);
+        }
+    }
+
+    protected static void addItem(JComboBox<String> dirCombo, String str, int max) {
+        if (Objects.isNull(str) || str.trim().isEmpty()) {
+            return;
+        }
+        dirCombo.setVisible(false);
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) dirCombo.getModel();
+        model.removeElement(str);
+        model.insertElementAt(str, 0);
+        if (model.getSize() > max) {
+            model.removeElementAt(max);
+        }
+        dirCombo.setSelectedIndex(0);
+        dirCombo.setVisible(true);
+    }
+
+    protected void executeWorker() {
+        File dir = new File((String) dirCombo.getSelectedItem());
+        worker = new UITask(dir);
+        worker.addPropertyChangeListener(new ProgressListener(pBar));
+        worker.execute();
+    }
+
+    protected void processChunks(List<Message> chunks) {
+        chunks.forEach(m -> {
+            if (m.append) {
+                appendLine(m.text);
+            } else {
+                textArea.setText(m.text + "\n");
+            }
+        });
+    }
+
+    protected void appendLine(String str) {
         //System.out.println(str);
         textArea.append(str + "\n");
         textArea.setCaretPosition(textArea.getDocument().getLength());

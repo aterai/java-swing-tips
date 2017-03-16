@@ -15,16 +15,20 @@ import javax.swing.Timer;
 public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton(new RunAction());
-    private final JButton canButton  = new JButton(new CancelAction());
-    private final JProgressBar bar   = new JProgressBar(0, 100);
+    private final JButton runButton  = new JButton("run");
+    private final JButton canButton  = new JButton("cancel");
+    private final JProgressBar bar   = new JProgressBar();
     private final AnimatedLabel anil = new AnimatedLabel();
-    private SwingWorker<String, String> worker;
+    private transient SwingWorker<String, String> worker;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         area.setEditable(false);
         area.setLineWrap(true);
+
+        runButton.addActionListener(e -> executeWorker());
+        canButton.addActionListener(e -> Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true)));
+
         Box box = Box.createHorizontalBox();
         box.add(anil);
         box.add(Box.createHorizontalGlue());
@@ -51,11 +55,7 @@ public final class MainPanel extends JPanel {
                 cancel(true);
                 return;
             }
-            for (String message: chunks) {
-                if (!isCancelled()) {
-                    appendText(message);
-                }
-            }
+            chunks.forEach(s -> appendText(s));
         }
         @Override public void done() {
             System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
@@ -64,10 +64,7 @@ public final class MainPanel extends JPanel {
                 cancel(true);
                 return;
             }
-            anil.stopAnimation();
-            runButton.setEnabled(true);
-            canButton.setEnabled(false);
-            statusPanel.setVisible(false);
+            updateComponentDone();
             try {
                 if (isCancelled()) {
                     appendText("\nCancelled\n");
@@ -81,33 +78,26 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-            runButton.setEnabled(false);
-            canButton.setEnabled(true);
-            anil.startAnimation();
-            statusPanel.setVisible(true);
-            bar.setIndeterminate(true);
-            worker = new UIUpdateTask();
-            worker.addPropertyChangeListener(new ProgressListener(bar));
-            worker.execute();
-        }
+    protected void executeWorker() {
+        System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
+        runButton.setEnabled(false);
+        canButton.setEnabled(true);
+        anil.startAnimation();
+        statusPanel.setVisible(true);
+        bar.setIndeterminate(true);
+        worker = new UIUpdateTask();
+        worker.addPropertyChangeListener(new ProgressListener(bar));
+        worker.execute();
     }
 
-    class CancelAction extends AbstractAction {
-        protected CancelAction() {
-            super("cancel");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
-        }
+    protected void updateComponentDone() {
+        anil.stopAnimation();
+        runButton.setEnabled(true);
+        canButton.setEnabled(false);
+        statusPanel.setVisible(false);
     }
 
-    private void appendText(String str) {
+    protected void appendText(String str) {
         area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
     }

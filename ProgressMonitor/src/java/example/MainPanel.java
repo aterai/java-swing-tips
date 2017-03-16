@@ -11,31 +11,20 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea area    = new JTextArea();
-    private final JButton runButton = new JButton(new RunAction());
-    private transient SwingWorker<String, String> worker;
+    private final JButton runButton = new JButton("run");
+    //private transient SwingWorker<String, String> worker;
     private final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         monitor = new ProgressMonitor(this, "message", "note", 0, 100);
         area.setEditable(false);
-        Box box = Box.createHorizontalBox();
-        box.add(Box.createHorizontalGlue());
-        box.add(runButton);
-        add(new JScrollPane(area));
-        add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+
+        runButton.addActionListener(e -> {
             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             monitor.setProgress(0);
-            worker = new Task() {
+            SwingWorker<String, String> worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     if (isCancelled()) {
@@ -68,7 +57,15 @@ public final class MainPanel extends JPanel {
             };
             worker.addPropertyChangeListener(new ProgressListener(monitor));
             worker.execute();
-        }
+        });
+
+        Box box = Box.createHorizontalBox();
+        box.add(Box.createHorizontalGlue());
+        box.add(runButton);
+        add(new JScrollPane(area));
+        add(box, BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -105,9 +102,9 @@ class Task extends SwingWorker<String, String> {
             } catch (InterruptedException ex) {
                 return "Interrupted";
             }
+            current++;
             setProgress(100 * current / lengthOfTask);
             publish(current + "/" + lengthOfTask);
-            current++;
         }
         return "Done";
     }

@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JProgressBar bar   = new JProgressBar();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton(new RunAction());
-    private final JButton canButton  = new JButton(new CancelAction());
+    private final JButton runButton  = new JButton("run");
+    private final JButton canButton  = new JButton("cancel");
     private final AnimatedLabel anil = new AnimatedLabel();
     private transient Task worker;
 
@@ -25,6 +25,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         area.setEditable(false);
         area.setLineWrap(true);
+        runButton.addActionListener(e -> executeWorker());
+        canButton.addActionListener(e -> {
+            Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
+            worker = null;
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(anil);
         box.add(Box.createHorizontalGlue());
@@ -36,75 +42,58 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            runButton.setEnabled(false);
-            canButton.setEnabled(true);
-            anil.startAnimation();
-            statusPanel.removeAll();
-            statusPanel.add(bar);
-            statusPanel.revalidate();
-            bar.setIndeterminate(true);
-            worker = new Task() {
-                @Override protected void process(List<String> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+    protected void executeWorker() {
+        runButton.setEnabled(false);
+        canButton.setEnabled(true);
+        anil.startAnimation();
+        statusPanel.removeAll();
+        statusPanel.add(bar);
+        statusPanel.revalidate();
+        bar.setIndeterminate(true);
+        worker = new Task() {
+            @Override protected void process(List<String> chunks) {
+                //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                if (isCancelled()) {
+                    return;
+                }
+                if (!isDisplayable()) {
+                    cancel(true);
+                    return;
+                }
+                chunks.forEach(s -> appendLine(s));
+            }
+            @Override public void done() {
+                //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+                if (!isDisplayable()) {
+                    cancel(true);
+                    return;
+                }
+                anil.stopAnimation();
+                runButton.setEnabled(true);
+                canButton.setEnabled(false);
+                statusPanel.remove(bar);
+                statusPanel.revalidate();
+                appendLine("\n");
+                try {
                     if (isCancelled()) {
-                        return;
+                        appendLine("Cancelled");
+                    } else {
+                        appendLine(get());
                     }
-                    if (!isDisplayable()) {
-                        cancel(true);
-                        return;
-                    }
-                    chunks.forEach(this::appendLine);
+                } catch (InterruptedException | ExecutionException ex) {
+                    ex.printStackTrace();
+                    appendLine("Exception");
                 }
-                @Override public void done() {
-                    //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    if (!isDisplayable()) {
-                        cancel(true);
-                        return;
-                    }
-                    anil.stopAnimation();
-                    runButton.setEnabled(true);
-                    canButton.setEnabled(false);
-                    statusPanel.remove(bar);
-                    statusPanel.revalidate();
-                    appendLine("\n");
-                    try {
-                        if (isCancelled()) {
-                            appendLine("Cancelled");
-                        } else {
-                            appendLine(get());
-                        }
-                    } catch (InterruptedException | ExecutionException ex) {
-                        ex.printStackTrace();
-                        appendLine("Exception");
-                    }
-                    appendLine("\n\n");
-                }
-                private void appendLine(String str) {
-                    area.append(str);
-                    area.setCaretPosition(area.getDocument().getLength());
-                }
-            };
-            worker.addPropertyChangeListener(new ProgressListener(bar));
-            worker.execute();
-        }
+                appendLine("\n\n");
+            }
+        };
+        worker.addPropertyChangeListener(new ProgressListener(bar));
+        worker.execute();
     }
 
-    class CancelAction extends AbstractAction {
-        protected CancelAction() {
-            super("cancel");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-//             if (Objects.nonNull(worker) && !worker.isDone()) {
-//                 worker.cancel(true);
-//             }
-            Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
-            worker = null;
-        }
+    protected void appendLine(String str) {
+        area.append(str);
+        area.setCaretPosition(area.getDocument().getLength());
     }
 
 //     private boolean isCancelled() {
@@ -153,13 +142,13 @@ class Task extends SwingWorker<String, String> {
         publish("Length Of Task: " + lengthOfTask);
         publish("\n------------------------------\n");
         while (current < lengthOfTask && !isCancelled()) {
+            publish(".");
+            setProgress(100 * current / lengthOfTask);
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
                 return "Interrupted";
             }
-            publish(".");
-            setProgress(100 * current / lengthOfTask);
             current++;
         }
         return "Done";

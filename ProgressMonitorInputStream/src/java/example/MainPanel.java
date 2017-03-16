@@ -14,13 +14,15 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
-    private final JButton runButton  = new JButton(new RunAction());
-    private transient SwingWorker<String, Chunk> worker;
+    private final JButton runButton  = new JButton("Load");
+    //private transient SwingWorker<String, Chunk> worker;
     private transient ProgressMonitor monitor;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         textArea.setEditable(false);
+
+        runButton.addActionListener(e -> executeWorker(e));
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
@@ -30,6 +32,34 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
+    }
+
+    protected void executeWorker(ActionEvent e) {
+        JButton b = (JButton) e.getSource();
+        b.setEnabled(false);
+        textArea.setText("");
+
+        URLConnection urlConnection = getURLConnection();
+        if (Objects.isNull(urlConnection)) {
+            return;
+        }
+        Charset cs = getCharset(urlConnection, "UTF-8");
+        int length = urlConnection.getContentLength();
+
+        try {
+            InputStream is = urlConnection.getInputStream();
+            ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getTopLevelAncestor(), "Loading", is);
+            monitor = pmis.getProgressMonitor();
+            monitor.setNote(" "); //Need for JLabel#getPreferredSize
+            monitor.setMillisToDecideToPopup(0);
+            monitor.setMillisToPopup(0);
+            monitor.setMinimum(0);
+            monitor.setMaximum(length);
+
+            new MonitorTask(pmis, cs, length).execute();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static Charset getCharset(URLConnection urlConnection, String defaultEncoding) {
@@ -75,40 +105,6 @@ public final class MainPanel extends JPanel {
         return urlConnection;
     }
 
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("Load");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton) e.getSource();
-            b.setEnabled(false);
-            textArea.setText("");
-
-            URLConnection urlConnection = getURLConnection();
-            if (Objects.isNull(urlConnection)) {
-                return;
-            }
-            Charset cs = getCharset(urlConnection, "UTF-8");
-            int length = urlConnection.getContentLength();
-
-            try {
-                InputStream is = urlConnection.getInputStream();
-                ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getTopLevelAncestor(), "Loading", is);
-                monitor = pmis.getProgressMonitor();
-                monitor.setNote(" "); //Need for JLabel#getPreferredSize
-                monitor.setMillisToDecideToPopup(0);
-                monitor.setMillisToPopup(0);
-                monitor.setMinimum(0);
-                monitor.setMaximum(length);
-
-                worker = new MonitorTask(pmis, cs, length);
-                worker.execute();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
     private class MonitorTask extends Task {
         protected MonitorTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
             super(pmis, cs, length);
@@ -117,19 +113,15 @@ public final class MainPanel extends JPanel {
             if (isCancelled()) {
                 return;
             }
-            if (!textArea.isDisplayable()) {
+            if (!isDisplayable()) {
                 cancel(true);
                 return;
             }
-            for (Chunk c: chunks) {
-                textArea.append(c.line + "\n");
-                monitor.setNote(c.note);
-            }
-            textArea.setCaretPosition(textArea.getDocument().getLength());
+            processChunks(chunks);
         }
         @Override public void done() {
-            runButton.setEnabled(true);
-            String text = null;
+            updateComponentDone();
+            String text;
             try {
                 if (Objects.nonNull(pmis)) {
                     pmis.close();
@@ -141,6 +133,18 @@ public final class MainPanel extends JPanel {
             }
             System.out.println(text);
         }
+    }
+
+    protected void updateComponentDone() {
+        runButton.setEnabled(true);
+    }
+
+    protected void processChunks(List<Chunk> chunks) {
+        chunks.forEach(c -> {
+            textArea.append(c.line + "\n");
+            monitor.setNote(c.note);
+        });
+        textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
     public static void main(String... args) {

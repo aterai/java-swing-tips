@@ -13,15 +13,25 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton(new RunAction());
-    private final JButton canButton  = new JButton(new CancelAction());
+    private final JButton runButton  = new JButton("run");
+    private final JButton canButton  = new JButton("cancel");
     private final JProgressBar bar1  = new JProgressBar(0, 100);
     private final JProgressBar bar2  = new JProgressBar(0, 100);
-    private SwingWorker<String, Progress> worker;
+    private transient SwingWorker<String, Progress> worker;
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
         area.setEditable(false);
+        runButton.addActionListener(e -> {
+            initStatusPanel(true);
+            executeWorker();
+        });
+        canButton.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = null;
+        });
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(runButton);
@@ -33,10 +43,20 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initStatusPanel(boolean start) {
+
+    protected void executeWorker() {
+        if (Objects.isNull(worker)) {
+            worker = new ProgressTask();
+        }
+        worker.execute();
+    }
+
+    protected void initStatusPanel(boolean start) {
         if (start) {
             runButton.setEnabled(false);
             canButton.setEnabled(true);
+            bar1.setValue(0);
+            bar2.setValue(0);
             statusPanel.add(bar1, BorderLayout.NORTH);
             statusPanel.add(bar2, BorderLayout.SOUTH);
         } else {
@@ -46,16 +66,7 @@ public final class MainPanel extends JPanel {
         }
         statusPanel.revalidate();
     }
-    class RunAction extends AbstractAction {
-        protected RunAction() {
-            super("run");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            initStatusPanel(true);
-            worker = new ProgressTask();
-            worker.execute();
-        }
-    }
+
     class ProgressTask extends Task {
         @Override protected void process(List<Progress> chunks) {
             if (isCancelled()) {
@@ -65,21 +76,7 @@ public final class MainPanel extends JPanel {
                 cancel(true);
                 return;
             }
-            for (Progress s: chunks) {
-                switch (s.component) {
-                  case TOTAL:
-                    bar1.setValue((Integer) s.value);
-                    break;
-                  case FILE:
-                    bar2.setValue((Integer) s.value);
-                    break;
-                  case LOG:
-                    area.append((String) s.value);
-                    break;
-                  default:
-                    throw new AssertionError("Unknown Progress");
-                }
-            }
+            processChunks(chunks);
         }
         @Override public void done() {
             if (!isDisplayable()) {
@@ -95,19 +92,26 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    class CancelAction extends AbstractAction {
-        protected CancelAction() {
-            super("cancel");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if (Objects.nonNull(worker) && !worker.isDone()) {
-                worker.cancel(true);
+
+    protected void processChunks(List<Progress> chunks) {
+        chunks.forEach(s -> {
+            switch (s.component) {
+              case TOTAL:
+                bar1.setValue((Integer) s.value);
+                break;
+              case FILE:
+                bar2.setValue((Integer) s.value);
+                break;
+              case LOG:
+                area.append((String) s.value);
+                break;
+              default:
+                throw new AssertionError("Unknown Progress");
             }
-            worker = null;
-        }
+        });
     }
 
-    private void appendLine(String str) {
+    protected void appendLine(String str) {
         area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
     }
@@ -156,13 +160,13 @@ class Task extends SwingWorker<String, Progress> {
         publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
         while (current < lengthOfTask && !isCancelled()) {
+            publish(new Progress(Component.LOG, "*"));
+            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
             try {
                 convertFileToSomething();
             } catch (InterruptedException ex) {
                 return "Interrupted";
             }
-            publish(new Progress(Component.LOG, "*"));
-            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
             current++;
         }
         publish(new Progress(Component.LOG, "\n"));
