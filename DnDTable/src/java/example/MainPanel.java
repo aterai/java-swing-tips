@@ -48,45 +48,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {"New row", 0, Boolean.FALSE});
-            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(new TestCreateAction("add"));
-            //add(new ClearAction("clearSelection"));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -110,13 +71,54 @@ public final class MainPanel extends JPanel {
     }
 }
 
+class TablePopupMenu extends JPopupMenu {
+    private final Action deleteAction = new DeleteAction("delete");
+    protected TablePopupMenu() {
+        super();
+        add(new TestCreateAction("add"));
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
+    }
+    class TestCreateAction extends AbstractAction {
+        protected TestCreateAction(String label) {
+            super(label);
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(new Object[] {"New row", 0, true});
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
+        }
+    }
+    class DeleteAction extends AbstractAction {
+        protected DeleteAction(String label) {
+            super(label);
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    }
+}
+
 class DnDTable extends JTable implements DragGestureListener, Transferable {
     private static final String NAME = "test";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private static final Color LINE_COLOR = new Color(255, 100, 100);
     private final Rectangle targetLine = new Rectangle();
-    private int draggedIndex = -1;
-    private int targetIndex  = -1;
+    protected int draggedIndex = -1;
+    protected int targetIndex  = -1;
 
     protected DnDTable(TableModel model) {
         super(model);
@@ -133,7 +135,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             g2.dispose();
         }
     }
-    private void initTargetLine(Point p) {
+    protected void initTargetLine(Point p) {
         Rectangle rect = new Rectangle();
         int cellHeight = getRowHeight();
         int lineWidth  = getWidth();
