@@ -102,32 +102,8 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             if (flg) {
                 t.setSelectedIndex(i);
             }
-
             //JComponent c = (JComponent) t.getTabComponentAt(idx);
             //c.revalidate();
-        }
-        private int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
-            int i;
-            if (dir) {
-                for (i = 0; i < idx; i++) {
-                    String s = t.getTitleAt(i);
-                    if (isEmpty(s)) {
-                       continue;
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                for (i = t.getTabCount() - 1; i > idx; i--) {
-                    String s = t.getTitleAt(i);
-                    if (isEmpty(s)) {
-                        break;
-                    } else {
-                        continue;
-                    }
-                }
-            }
-            return i;
         }
     });
 //     private final Action newTabAction = new AbstractAction("new tab") {
@@ -156,6 +132,29 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         add(pinTabMenuItem);
         addSeparator();
         add(closeAllAction);
+    }
+    private static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
+        int i;
+        if (dir) {
+            for (i = 0; i < idx; i++) {
+                String s = t.getTitleAt(i);
+                if (isEmpty(s)) {
+                    continue;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            for (i = t.getTabCount() - 1; i > idx; i--) {
+                String s = t.getTitleAt(i);
+                if (isEmpty(s)) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        }
+        return i;
     }
     private static boolean isPinTab(JTabbedPane t, int x, int y) {
         int i = t.indexAtLocation(x, y);

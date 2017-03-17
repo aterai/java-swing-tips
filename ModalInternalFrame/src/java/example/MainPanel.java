@@ -82,6 +82,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
+    protected JDesktopPane getDesktop() {
+        return desktop;
+    }
+
     //menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
     //menuItem.setMnemonic(KeyEvent.VK_1);
     class ModalInternalFrameAction1 extends AbstractAction {
@@ -90,7 +94,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             setJMenuEnabled(false);
-            JOptionPane.showInternalMessageDialog(desktop, "information", "modal1", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(getDesktop(), "information", "modal1", JOptionPane.INFORMATION_MESSAGE);
             setJMenuEnabled(true);
         }
     }
@@ -103,15 +107,15 @@ public final class MainPanel extends JPanel {
             super(label);
             glass.setOpaque(false);
             glass.setVisible(false);
-            desktop.add(glass, JLayeredPane.MODAL_LAYER);
+            getDesktop().add(glass, JLayeredPane.MODAL_LAYER);
         }
         @Override public void actionPerformed(ActionEvent e) {
             setJMenuEnabled(false);
-            Window w = SwingUtilities.getWindowAncestor(desktop);
+            Window w = SwingUtilities.getWindowAncestor(getDesktop());
             Rectangle screen = w.getGraphicsConfiguration().getBounds();
             glass.setSize(screen.width, screen.height);
             glass.setVisible(true);
-            JOptionPane.showInternalMessageDialog(desktop, "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(getDesktop(), "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
             glass.setVisible(false);
             setJMenuEnabled(true);
         }
@@ -130,7 +134,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JOptionPane optionPane = new JOptionPane();
             //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.FALSE);
-            JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
+            JInternalFrame modal = optionPane.createInternalFrame(getDesktop(), "modal3");
             //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.TRUE);
 //*
             optionPane.setMessage("Hello, World");
@@ -176,13 +180,13 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    private void setJMenuEnabled(boolean flag) {
+    protected void setJMenuEnabled(boolean flag) {
         JMenuBar bar = getRootPane().getJMenuBar();
         bar.setVisible(flag);
         dummyBar.setVisible(!flag);
     }
 
-    private static void removeSystemMenuListener(JInternalFrame modal) {
+    protected static void removeSystemMenuListener(JInternalFrame modal) {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
         JComponent titleBar = (JComponent) ui.getNorthPane();
         for (Component c: titleBar.getComponents()) {

@@ -15,7 +15,8 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private transient RubberBandingListener rbl;
     private Color rubberBandColor;
-    private final Path2D rubberBand = new Path2D.Double();
+    protected final Path2D rubberBand = new Path2D.Double();
+
     public ReorderbleList(ListModel<E> model) {
         super(model);
     }

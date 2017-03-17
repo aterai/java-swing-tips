@@ -7,9 +7,6 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final int OVERPAINT = 6;
-    private static final int STROKE_SIZE = 2;
-    private static final int ARC = 10;
     private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -27,7 +24,36 @@ public final class MainPanel extends JPanel {
             }
         });
     }
-    private static void configureUI() {
+    public static void createAndShowGUI() {
+        try {
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                    NimbusTabbedPanePainter.configureUI();
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+final class NimbusTabbedPanePainter {
+    public static final int OVERPAINT = 6;
+    public static final int STROKE_SIZE = 2;
+    public static final int ARC = 10;
+
+    private NimbusTabbedPanePainter() { /* Singleton */ }
+
+    public static void configureUI() {
         UIDefaults d = UIManager.getLookAndFeelDefaults();
         d.put("TabbedPane:TabbedPaneContent.contentMargins", new Insets(0, 5, 5, 5));
         //d.put("TabbedPane:TabbedPaneTab.contentMargins",     new Insets(2, 8, 3, 8));
@@ -55,27 +81,8 @@ public final class MainPanel extends JPanel {
         d.put("TabbedPane:TabbedPaneTab[Selected].backgroundPainter",                   selectedTabPainter);
         d.put("TabbedPane:TabbedPaneTab[Pressed+Selected].backgroundPainter",           selectedTabPainter);
     }
-    public static void createAndShowGUI() {
-        try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(laf.getName())) {
-                    UIManager.setLookAndFeel(laf.getClassName());
-                    configureUI();
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-    private static class TabPainter implements Painter<JComponent> {
+
+    protected static class TabPainter implements Painter<JComponent> {
         private final Color color;
         private final boolean selected;
         protected TabPainter(boolean selected) {
@@ -104,7 +111,8 @@ public final class MainPanel extends JPanel {
             g2.dispose();
         }
     }
-    private static class TabAreaPainter implements Painter<JComponent> {
+
+    protected static class TabAreaPainter implements Painter<JComponent> {
         @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
             Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -118,7 +126,8 @@ public final class MainPanel extends JPanel {
             g2.dispose();
         }
     }
-    private static class TabContentPainter implements Painter<JComponent> {
+
+    protected static class TabContentPainter implements Painter<JComponent> {
         @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
             Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

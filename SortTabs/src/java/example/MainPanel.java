@@ -10,96 +10,18 @@ import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MENUITEM_NEWTAB    = "New tab";
-    private static final String MENUITEM_CLOSEPAGE = "Close";
-    private static final String MENUITEM_CLOSEALL  = "Close all";
-    private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
-    private static final String MENUITEM_SORT = "Sort";
-    private static int count;
-
-    private final JTabbedPane tabbedPane;
-    private final Action closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
-    private final Action closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
-    private final Action closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
-    private final Action sortAction = new SortAction(MENUITEM_SORT);
-    private final JPopupMenu pop = new JPopupMenu() {
-        @Override public void show(Component c, int x, int y) {
-            sortAction.setEnabled(tabbedPane.getTabCount() > 1);
-            closePageAction.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
-            closeAllAction.setEnabled(tabbedPane.getTabCount() > 0);
-            closeAllButActiveAction.setEnabled(tabbedPane.getTabCount() > 0);
-            super.show(c, x, y);
-        }
-    };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        tabbedPane = new EditableTabbedPane();
-        pop.add(new NewTabAction(MENUITEM_NEWTAB));
-        pop.add(sortAction);
-        pop.addSeparator();
-        pop.add(closePageAction);
-        pop.addSeparator();
-        pop.add(closeAllAction);
-        pop.add(closeAllButActiveAction);
-        tabbedPane.setComponentPopupMenu(pop);
+
+        JTabbedPane tabbedPane = new EditableTabbedPane();
         tabbedPane.addTab("Title", new JLabel("Tab1"));
         tabbedPane.addTab("aaa", new JLabel("Tab2"));
         tabbedPane.addTab("000", new JLabel("Tab3"));
+        tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
+
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
-    class NewTabAction extends AbstractAction {
-        protected NewTabAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
-            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-            count++;
-        }
-    }
-    class ClosePageAction extends AbstractAction {
-        protected ClosePageAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tabbedPane.remove(tabbedPane.getSelectedIndex());
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tabbedPane.removeAll();
-        }
-    }
-    class CloseAllButActiveAction extends AbstractAction {
-        protected CloseAllButActiveAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int tabidx = tabbedPane.getSelectedIndex();
-            String title = tabbedPane.getTitleAt(tabidx);
-            Component cmp = tabbedPane.getComponentAt(tabidx);
-            tabbedPane.removeAll();
-            tabbedPane.addTab(title, cmp);
-        }
-    }
-    class SortAction extends AbstractAction {
-        protected SortAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
-                .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
-                .sorted(Comparator.comparing(ComparableTab::getTitle)).collect(Collectors.toList());
-            tabbedPane.removeAll();
-            list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -179,25 +101,22 @@ class EditableTabbedPane extends JTabbedPane {
             glassPane.setVisible(false);
         }
     };
-    private final Action renameTab = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            if (!editor.getText().trim().isEmpty()) {
-                setTitleAt(getSelectedIndex(), editor.getText());
-                //java 1.6.0 ---->
-                Component c = getTabComponentAt(getSelectedIndex());
-                if (c instanceof JComponent) {
-                    ((JComponent) c).revalidate();
-                }
-                //<----
-            }
-            glassPane.setVisible(false);
-        }
-    };
     protected EditableTabbedPane() {
         super();
         editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
-        editor.getActionMap().put("rename-tab", renameTab);
+        editor.getActionMap().put("rename-tab", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                if (!editor.getText().trim().isEmpty()) {
+                    setTitleAt(getSelectedIndex(), editor.getText());
+                    Component c = getTabComponentAt(getSelectedIndex());
+                    if (c instanceof JComponent) {
+                        ((JComponent) c).revalidate();
+                    }
+                }
+                glassPane.setVisible(false);
+            }
+        });
         editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
         editor.getActionMap().put("cancel-editing", cancelEditing);
 
@@ -211,21 +130,24 @@ class EditableTabbedPane extends JTabbedPane {
         getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
         getActionMap().put("start-editing", startEditing);
     }
+    protected JTextField getEditor() {
+        return editor;
+    }
     private class EditorGlassPane extends JComponent {
         protected EditorGlassPane() {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
                 @Override public boolean accept(Component c) {
-                    return Objects.equals(c, editor);
+                    return Objects.equals(c, getEditor());
                 }
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent e) {
-                    //if (Objects.nonNull(rect) && !rect.contains(e.getPoint())) {
-                    if (!editor.getBounds().contains(e.getPoint())) {
-                        renameTab.actionPerformed(null);
-                    }
+                    JTextField editor = getEditor();
+                    Optional.ofNullable(editor.getActionMap().get("rename-tab"))
+                      .filter(a -> !editor.getBounds().contains(e.getPoint()))
+                      .ifPresent(a -> a.actionPerformed(null));
                 }
             });
         }
@@ -233,6 +155,75 @@ class EditableTabbedPane extends JTabbedPane {
             super.setVisible(flag);
             setFocusTraversalPolicyProvider(flag);
             setFocusCycleRoot(flag);
+        }
+    }
+}
+
+class TabbedPanePopupMenu extends JPopupMenu {
+    private static final String MENUITEM_NEWTAB = "New tab";
+    private static final String MENUITEM_CLOSEPAGE = "Close";
+    private static final String MENUITEM_CLOSEALL = "Close all";
+    private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
+    private static final String MENUITEM_SORT = "Sort";
+    private static int count;
+    private final Action closePageAction = new AbstractAction(MENUITEM_CLOSEPAGE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            tabbedPane.remove(tabbedPane.getSelectedIndex());
+        }
+    };
+    private final Action closeAllAction = new AbstractAction(MENUITEM_CLOSEALL) {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            tabbedPane.removeAll();
+        }
+    };
+    private final Action closeAllButActiveAction = new AbstractAction(MENUITEM_CLOSEALLBUTACTIVE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            int tabidx = tabbedPane.getSelectedIndex();
+            String title = tabbedPane.getTitleAt(tabidx);
+            Component cmp = tabbedPane.getComponentAt(tabidx);
+            tabbedPane.removeAll();
+            tabbedPane.addTab(title, cmp);
+        }
+    };
+    private final Action sortAction = new AbstractAction(MENUITEM_SORT) {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
+                .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
+                .sorted(Comparator.comparing(ComparableTab::getTitle)).collect(Collectors.toList());
+            tabbedPane.removeAll();
+            list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
+        }
+    };
+    private final Action newTabAction = new AbstractAction(MENUITEM_NEWTAB) {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+            count++;
+        }
+    };
+    protected TabbedPanePopupMenu() {
+        super();
+        add(newTabAction);
+        add(sortAction);
+        addSeparator();
+        add(closePageAction);
+        addSeparator();
+        add(closeAllAction);
+        add(closeAllButActiveAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTabbedPane) {
+            JTabbedPane tabbedPane = (JTabbedPane) c;
+            sortAction.setEnabled(tabbedPane.getTabCount() > 1);
+            closePageAction.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
+            closeAllAction.setEnabled(tabbedPane.getTabCount() > 0);
+            closeAllButActiveAction.setEnabled(tabbedPane.getTabCount() > 0);
+            super.show(c, x, y);
         }
     }
 }

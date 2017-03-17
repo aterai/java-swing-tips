@@ -57,45 +57,6 @@ public final class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addTest(new Test("add row", ""));
-            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(rect);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(new TestCreateAction("add"));
-            //add(new ClearAction("clearSelection"));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -120,11 +81,11 @@ public final class MainPanel extends JPanel {
 }
 
 class RowHeaderList<E> extends JList<E> {
-    private final JTable table;
-    private final ListSelectionModel tableSelection;
-    private final ListSelectionModel rListSelection;
-    private int rollOverRowIndex = -1;
-    private int pressedRowIndex  = -1;
+    protected final JTable table;
+    protected final ListSelectionModel tableSelection;
+    protected final ListSelectionModel rListSelection;
+    protected int rollOverRowIndex = -1;
+    protected int pressedRowIndex  = -1;
 
     protected RowHeaderList(ListModel<E> model, JTable table) {
         super(model);
@@ -288,5 +249,39 @@ class Test {
     }
     public String getComment() {
         return comment;
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action addAction = new AbstractAction("add") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            TestModel model = (TestModel) table.getModel();
+            model.addTest(new Test("add row", ""));
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(rect);
+        }
+    };
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add(addAction);
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }
