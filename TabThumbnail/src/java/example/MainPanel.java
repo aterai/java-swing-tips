@@ -100,8 +100,11 @@ class TabThumbnailTabbedPane extends JTabbedPane {
         return tip;
     }
     @Override public String getToolTipText(MouseEvent e) {
+        String str = null;
         int index = indexAtLocation(e.getX(), e.getY());
-        String str = (current == index) ? super.getToolTipText(e) : null;
+        if (current == index) {
+            str = super.getToolTipText(e);
+        }
         current = index;
         return str;
     }

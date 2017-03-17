@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 //import javax.swing.plaf.basic.BasicComboBoxUI;
 
@@ -27,10 +27,12 @@ public final class MainPanel extends JPanel {
         combo2.setRenderer(new DefaultListCellRenderer() {
             private int cheight;
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                Dimension d = super.getPreferredSize();
-                cheight = index < 0 ? d.height : 32;
-                return c;
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                //Dimension d = super.getPreferredSize();
+                //cheight = index < 0 ? d.height : 32;
+                cheight = Optional.ofNullable(super.getPreferredSize())
+                  .filter(d -> index < 0).map(d -> d.height).orElse(32);
+                return this;
             }
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();

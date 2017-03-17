@@ -78,19 +78,22 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
         return pp;
     }
 /*/
-    @Override public Popup getPopup(final JPopupMenu popup, int x, int y) {
+    @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
         Popup pp = super.getPopup(popup, x, y);
-        EventQueue.invokeLater(() -> {
-            Window p = SwingUtilities.getWindowAncestor(popup);
-            if (p instanceof JWindow) {
-                p.setBackground(new Color(0x0, true)); //JDK 1.7.0
+        if (pp != null) {
+            System.out.println(pp);
+            EventQueue.invokeLater(() -> {
+                Window p = SwingUtilities.getWindowAncestor(popup);
+                if (p instanceof JWindow) {
+                    p.setBackground(new Color(0x0, true)); //JDK 1.7.0
+                }
+            });
+            Container c = SwingUtilities.getUnwrappedParent(popup);
+            if (c instanceof JComponent) {
+                JComponent panel = (JComponent) c;
+                panel.setBorder(new ShadowBorderInPanel());
+                panel.setOpaque(false);
             }
-        });
-        Container c = SwingUtilities.getUnwrappedParent(popup);
-        if (c instanceof JComponent) {
-            JComponent panel = (JComponent) c;
-            panel.setBorder(new ShadowBorderInPanel());
-            panel.setOpaque(false);
         }
         return pp;
     }

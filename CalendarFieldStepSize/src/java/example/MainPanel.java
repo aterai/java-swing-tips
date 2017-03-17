@@ -37,10 +37,11 @@ public final class MainPanel extends JPanel {
                 Integer calendarField = getCalendarField();
                 Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
                 cal.add(calendarField, -stepSize);
-                Date prev = cal.getTime();
+                //Date prev = cal.getTime();
                 //Comparable start = getStart();
                 //return ((start == null) || (start.compareTo(prev) <= 0)) ? prev : null;
-                return prev;
+                //return prev;
+                return cal.getTime();
             }
             @Override public Object getNextValue() {
                 Calendar cal = Calendar.getInstance();
@@ -48,10 +49,11 @@ public final class MainPanel extends JPanel {
                 Integer calendarField = getCalendarField();
                 Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
                 cal.add(calendarField, stepSize);
-                Date next = cal.getTime();
+                //Date next = cal.getTime();
                 //Comparable end = getEnd();
                 //return ((end == null) || (end.compareTo(next) >= 0)) ? next : null;
-                return next;
+                //return next;
+                return cal.getTime();
             }
         });
         ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
