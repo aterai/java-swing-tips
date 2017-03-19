@@ -19,6 +19,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
+        jtp.setText("Shift+Tab");
+
         ActionMap amc = popup.getActionMap();
         amc.put("myUp", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -99,8 +101,9 @@ public final class MainPanel extends JPanel {
 }
 
 class EditorComboPopup extends BasicComboPopup {
-    private final JTextComponent textArea;
-    private transient MouseListener listener;
+    protected final JTextComponent textArea;
+    protected transient MouseListener listener;
+
     protected EditorComboPopup(JTextComponent textArea, JComboBox cb) {
         super(cb);
         this.textArea = textArea;

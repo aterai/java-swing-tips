@@ -134,12 +134,12 @@ class SingleClickSelectList<E> extends JList<E> {
             super.setSelectionInterval(anchor, lead);
         }
     }
-    private void clearSelectionAndFocus() {
+    protected void clearSelectionAndFocus() {
         getSelectionModel().clearSelection();
         getSelectionModel().setAnchorSelectionIndex(-1);
         getSelectionModel().setLeadSelectionIndex(-1);
     }
-    private boolean cellsContains(Point pt) {
+    protected boolean cellsContains(Point pt) {
         for (int i = 0; i < getModel().getSize(); i++) {
             Rectangle r = getCellBounds(i, i);
             if (r.contains(pt)) {
@@ -148,7 +148,7 @@ class SingleClickSelectList<E> extends JList<E> {
         }
         return false;
     }
-    private class SelectionHandler extends MouseAdapter {
+    protected class SelectionHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
             //JList list = (JList) e.getComponent();
             startOutside = !cellsContains(e.getPoint());

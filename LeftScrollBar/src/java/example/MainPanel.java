@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))) { //http://sozai-free.com/
-            private transient MouseAdapter listener;
+            protected transient MouseAdapter listener;
             @Override public void updateUI() {
                 removeMouseMotionListener(listener);
                 removeMouseListener(listener);

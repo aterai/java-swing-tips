@@ -76,7 +76,7 @@ class TranslucentTree extends JTree {
 
 class TransparentTree extends JTree {
     //http://ateraimemo.com/Swing/TreeRowSelection.html
-    private static final Color SELC = new Color(100, 100, 255, 100);
+    public static final Color SELC = new Color(100, 100, 255, 100);
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(SELC);

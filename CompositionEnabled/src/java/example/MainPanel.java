@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             }
             return retValue;
         }
-        private boolean isTabOrEnterKey(KeyStroke ks) {
+        protected boolean isTabOrEnterKey(KeyStroke ks) {
             return KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks);
         }
     };

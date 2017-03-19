@@ -44,11 +44,11 @@ public final class MainPanel extends JPanel {
 }
 
 class ZoomAndPanePanel extends JPanel {
-    private final AffineTransform zoomTransform = new AffineTransform();
-    private final transient Image img;
-    private final Rectangle imgrect;
-    private transient ZoomHandler handler;
-    private transient DragScrollListener listener;
+    protected final AffineTransform zoomTransform = new AffineTransform();
+    protected final transient Image img;
+    protected final Rectangle imgrect;
+    protected transient ZoomHandler handler;
+    protected transient DragScrollListener listener;
 
     protected ZoomAndPanePanel(Image img) {
         super();
