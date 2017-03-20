@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.*;
+import java.security.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -14,21 +15,24 @@ public final class MainPanel extends JPanel {
     private final JSlider slider2 = new JSlider(0, 100, 50) {
         @Override public void updateUI() {
             super.updateUI();
-            uninstallSilderUIListeners();
-        }
-        private void uninstallSilderUIListeners() {
-            try {
-                // https://community.oracle.com/threads/1360123
-                Class<BasicSliderUI> uiClass = BasicSliderUI.class;
-                Method uninstallListeners = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
-                uninstallListeners.setAccessible(true);
-                uninstallListeners.invoke(getUI(), this);
-                Method uninstallKeyboardActions = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
-                uninstallKeyboardActions.setAccessible(true);
-                uninstallKeyboardActions.invoke(getUI(), this);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-                ex.printStackTrace();
-            }
+            JSlider slider = this;
+            AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                @Override public Void run() {
+                    try {
+                        // https://community.oracle.com/threads/1360123
+                        Class<BasicSliderUI> uiClass = BasicSliderUI.class;
+                        Method uninstallListeners = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
+                        uninstallListeners.setAccessible(true);
+                        uninstallListeners.invoke(getUI(), slider);
+                        Method uninstallKeyboardActions = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
+                        uninstallKeyboardActions.setAccessible(true);
+                        uninstallKeyboardActions.invoke(getUI(), slider);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+                        ex.printStackTrace();
+                    }
+                    return null;
+                }
+            });
         }
     };
     private final JSlider slider3 = new JSlider(0, 100, 50) {
