@@ -14,7 +14,13 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
+    private final JComboBox<Enum> combo = new JComboBox<Enum>(TexturePaints.values()) {
+        @Override public Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            d.width = Math.max(150, d.width);
+            return d;
+        }
+    };
     private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
     private final Timer timer = new Timer(1000, e -> {
@@ -50,6 +56,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
+        //XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
+        //combo.setPrototypeDisplayValue(TexturePaints.Checker);
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 TexturePaints t = (TexturePaints) e.getItem();
@@ -137,21 +145,31 @@ class TexturePanel extends JPanel {
 }
 
 enum TexturePaints {
-    Null(null,                                "Color(.5f, .8f, .5f, .5f)"),
-    Image(TextureUtil.makeImageTexture(),     "Image TexturePaint"),
-    Checker(TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
+    Null("Color(.5f, .8f, .5f, .5f)"),
+    Image("Image TexturePaint"),
+    Checker("Checker TexturePaint");
     private final String description;
-    @SuppressWarnings("ImmutableEnumChecker")
-    private final Paint texture;
-    TexturePaints(Paint texture, String description) {
-        this.texture = texture;
+    TexturePaints(String description) {
         this.description = description;
+    }
+    public Paint getTexturePaint() {
+        Paint p;
+        switch (this) {
+          case Image:
+            p = TextureUtil.makeImageTexture();
+            break;
+          case Checker:
+            p = TextureUtil.makeCheckerTexture();
+            break;
+          case Null:
+          default:
+            p = null;
+            break;
+        }
+        return p;
     }
     @Override public String toString() {
         return description;
-    }
-    public Paint getTexturePaint() {
-        return texture;
     }
 }
 
