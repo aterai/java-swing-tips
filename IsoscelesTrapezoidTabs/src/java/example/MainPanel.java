@@ -53,17 +53,18 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private final Color tabBackgroundColor = Color.LIGHT_GRAY;
     private final Color tabBorderColor = Color.GRAY;
 
-    @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) { //NOPMD
+    @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) { //NOPMD The method paintTabArea() has an NPath complexity of 303
         int tabCount = tabPane.getTabCount();
 
         Rectangle iconRect = new Rectangle();
         Rectangle textRect = new Rectangle();
         Rectangle clipRect = g.getClipBounds();
 
+        // copied from BasicTabbedPaneUI#paintTabArea(...)
         for (int i = runCount - 1; i >= 0; i--) {
             int start = tabRuns[i];
             int next = tabRuns[(i == runCount - 1) ? 0 : i + 1];
-            int end = next != 0 ? next - 1 : tabCount - 1; //NOPMD
+            int end = next != 0 ? next - 1 : tabCount - 1; //NOPMD Avoid if (x != y) ..; else ..;
             // for (int j = start; j <= end; j++) {
             // http://stackoverflow.com/questions/41566659/tabs-rendering-order-in-custom-jtabbedpane
             for (int j = end; j >= start; j--) {
