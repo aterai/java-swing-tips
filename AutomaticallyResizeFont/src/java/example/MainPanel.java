@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     private final JTextPane editor1 = new JTextPane();
     private final JTextPane editor2 = new JTextPane() {
-        private float fontSize;
+        protected float fontSize;
         @Override public void doLayout() {
             Insets i = getInsets();
             float f = .08f * (getWidth() - i.left - i.right);

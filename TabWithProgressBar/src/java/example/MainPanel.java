@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         Action act = new AbstractAction("Add") {
-            private int count;
+            protected int count;
             @Override public void actionPerformed(ActionEvent e) {
                 JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
                 tab.addTab("Title" + count, c);
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
-        private int count;
+        protected int count;
         protected NewTabAction(String label) {
             super(label);
         }

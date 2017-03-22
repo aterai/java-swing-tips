@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        private transient HighlightListener highlighter;
+        protected transient HighlightListener highlighter;
         @Override public void updateUI() {
             addMouseListener(highlighter);
             addMouseMotionListener(highlighter);

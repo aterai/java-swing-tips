@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JScrollPane scroll = new JScrollPane(table) {
-        private final TexturePaint texture = makeImageTexture();
+        protected final TexturePaint texture = makeImageTexture();
         @Override protected JViewport createViewport() {
             return new JViewport() {
                 @Override protected void paintComponent(Graphics g) {

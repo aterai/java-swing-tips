@@ -87,7 +87,7 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         private final JTextField textField = new JTextField(24) {
-            private transient AncestorListener listener;
+            protected transient AncestorListener listener;
             @Override public void updateUI() {
                 removeAncestorListener(listener);
                 super.updateUI();

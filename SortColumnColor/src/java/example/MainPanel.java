@@ -10,7 +10,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 230, 230);
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -22,6 +21,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
+        protected final Color evenColor = new Color(250, 230, 230);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if (isRowSelected(row)) {
@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground(isSortingColumn(column) ? EVEN_COLOR : getBackground());
+                c.setBackground(isSortingColumn(column) ? evenColor : getBackground());
             }
             return c;
         }
-        private boolean isSortingColumn(int column) {
+        protected boolean isSortingColumn(int column) {
             RowSorter<? extends TableModel> sorter = getRowSorter();
             if (Objects.nonNull(sorter)) {
                 List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();

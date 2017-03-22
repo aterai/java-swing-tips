@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private final JTextField textField = new JTextField("\u2605", 20);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final JToggleButton button = new JToggleButton(new AbstractAction("show") {
-        private JFrame frame;
+        protected transient JFrame frame;
         @Override public void actionPerformed(ActionEvent e) {
             AbstractButton button = (AbstractButton) e.getSource();
             if (Objects.isNull(frame)) {

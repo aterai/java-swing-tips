@@ -50,8 +50,8 @@ class TableHeaderTabbedPane extends JPanel {
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final TableColumnModel model;
     private final JTableHeader header;
-    private Object selectedColumn;
-    private int rolloverColumn = -1;
+    protected Object selectedColumn;
+    protected int rolloverColumn = -1;
 
     protected TableHeaderTabbedPane() {
         super(new BorderLayout());
@@ -66,7 +66,7 @@ class TableHeaderTabbedPane extends JPanel {
         header = table.getTableHeader();
         model = (TableColumnModel) header.getColumnModel();
 
-        MouseAdapter handler = new MouseInputHandler();
+        MouseAdapter handler = new TableHeaderMouseInputHandler();
         header.addMouseListener(handler);
         header.addMouseMotionListener(handler);
 
@@ -104,7 +104,7 @@ class TableHeaderTabbedPane extends JPanel {
             selectedColumn = title;
         }
     }
-    private class MouseInputHandler extends MouseAdapter {
+    private class TableHeaderMouseInputHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
             JTableHeader header = (JTableHeader) e.getComponent();
             int index = header.columnAtPoint(e.getPoint());
@@ -131,6 +131,7 @@ class TableHeaderTabbedPane extends JPanel {
         }
         //@see BasicTableHeaderUI.MouseInputHandler
         private void updateRolloverColumn(MouseEvent e) {
+            JTableHeader header = (JTableHeader) e.getComponent();
             if (Objects.isNull(header.getDraggedColumn()) && header.contains(e.getPoint())) {
                 int col = header.columnAtPoint(e.getPoint());
                 if (col != rolloverColumn) {

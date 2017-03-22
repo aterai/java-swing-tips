@@ -10,14 +10,14 @@ public final class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
     private final JLabel label2 = new JLabel("", SwingConstants.CENTER);
     private final Timer timer1 = new Timer(600, new ActionListener() {
-        private boolean flg = true;
+        protected boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
             flg ^= true;
             label1.setText(flg ? "\u25CB" : "\u25CF");
         }
     });
     private final Timer timer2 = new Timer(300, new ActionListener() {
-        private boolean flg = true;
+        protected boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
             flg ^= true;
             label2.setText(flg ? "!!!Warning!!!" : "");

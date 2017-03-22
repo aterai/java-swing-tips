@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RowHeaderRenderer extends JLabel implements TableCellRenderer {
-    private int rollOverRowIndex = -1;
+    protected int rollOverRowIndex = -1;
 
     protected RowHeaderRenderer(JTable table) {
         super();

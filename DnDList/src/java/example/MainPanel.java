@@ -69,11 +69,10 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     private static final String NAME = "test";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private final Rectangle targetLine = new Rectangle();
-    private int draggedIndex = -1;
-    private int targetIndex  = -1;
+    protected int draggedIndex = -1;
+    protected int targetIndex  = -1;
     protected DnDList() {
         super();
-        //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
@@ -86,7 +85,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
             g2.dispose();
         }
     }
-    private void initTargetLine(Point p) {
+    protected void initTargetLine(Point p) {
         Rectangle rect = getCellBounds(0, 0);
         int cellHeight = rect.height;
         int lineHeight = 2;
