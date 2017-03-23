@@ -126,11 +126,11 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             break;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
-        tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
+        tabWidth -= tabInsets.left + tabInsets.right + 3;
         for (int i = 0; i < tabCount; i++) {
-            JComponent l = (JComponent) getTabComponentAt(i);
-            int v = i < gap ? 1 : 0;
-            l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
+            int w = i < gap ? tabWidth + 1 : tabWidth;
+            Optional.ofNullable((JComponent) getTabComponentAt(i))
+              .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
         }
         super.doLayout();
     }
@@ -214,17 +214,17 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
 //How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 //http://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-    private final JTabbedPane pane;
+    protected final JTabbedPane tabbedPane;
 
     protected ButtonTabComponent(final JTabbedPane pane) {
         super(new BorderLayout()); //FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.pane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+        this.tabbedPane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
         JLabel label = new JLabel() {
             @Override public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
-                    return pane.getTitleAt(i);
+                    return tabbedPane.getTitleAt(i);
                 }
                 return null;
             }
@@ -240,9 +240,9 @@ class ButtonTabComponent extends JPanel {
     }
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
-                pane.remove(i);
+                tabbedPane.remove(i);
             }
         }
         @Override public void mouseEntered(MouseEvent e) {

@@ -4,14 +4,14 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
 public final class MainPanel extends JPanel {
     //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
     private final JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
-        private transient MouseListener handler;
+        protected transient MouseListener handler;
         @Override public void updateUI() {
             removeMouseListener(handler);
             super.updateUI();
@@ -172,11 +172,11 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             gap = 0;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
-        tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
+        tabWidth -= tabInsets.left + tabInsets.right + 3;
         for (int i = 0; i < tabCount; i++) {
-            JComponent l = (JComponent) getTabComponentAt(i);
-            int v = i < gap ? 1 : 0;
-            l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
+            int w = i < gap ? tabWidth + 1 : tabWidth;
+            Optional.ofNullable((JComponent) getTabComponentAt(i))
+              .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
         }
         super.doLayout();
     }
