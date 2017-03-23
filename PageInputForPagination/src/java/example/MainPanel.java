@@ -11,15 +11,15 @@ import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
-    private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    protected final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return column == 0 ? Integer.class : Object.class;
         }
     };
-    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-    private final JTable table = new JTable(model);
+    protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    protected final JTable table = new JTable(model);
 
     private final JButton first = new JButton("|<");
     private final JButton prev  = new JButton("<");
@@ -38,9 +38,9 @@ public final class MainPanel extends JPanel {
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
 
-    private final int itemsPerPage;
-    private int maxPageIndex;
-    private int currentPageIndex;
+    protected final int itemsPerPage;
+    protected int maxPageIndex;
+    protected int currentPageIndex;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -65,19 +65,7 @@ public final class MainPanel extends JPanel {
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        ActionListener jumpActionListener = e -> {
-            Object c = e.getSource();
-            if (first.equals(c)) {
-                currentPageIndex = 1;
-            } else if (prev.equals(c)) {
-                currentPageIndex -= 1;
-            } else if (next.equals(c)) {
-                currentPageIndex += 1;
-            } else if (last.equals(c)) {
-                currentPageIndex = maxPageIndex;
-            }
-            initFilterAndButtons();
-        };
+        ActionListener jumpActionListener = this::updateCurrentPageIndex;
         for (JButton b: Arrays.asList(first, prev, next, last)) {
             b.addActionListener(jumpActionListener);
         }
@@ -87,6 +75,20 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
+    }
+
+    protected void updateCurrentPageIndex(ActionEvent e) {
+        Object c = e.getSource();
+        if (first.equals(c)) {
+            currentPageIndex = 1;
+        } else if (prev.equals(c)) {
+            currentPageIndex -= 1;
+        } else if (next.equals(c)) {
+            currentPageIndex += 1;
+        } else if (last.equals(c)) {
+            currentPageIndex = maxPageIndex;
+        }
+        initFilterAndButtons();
     }
 
     class TableUpdateTask extends LoadTask {
@@ -129,7 +131,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    private void initFilterAndButtons() {
+    protected void initFilterAndButtons() {
         sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 int ti = currentPageIndex - 1;
@@ -198,10 +200,12 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     }
     private int makeRowListAndPublish(int current, int size) {
         List<Object[]> result = IntStream.range(current, current + size)
-                                         .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
-                                         .collect(Collectors.toList());
+          .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
+          .collect(Collectors.toList());
         publish(result);
-        return result.size();
+        return current + result.size();
+    }
+//     private int makeRowListAndPublish(int current, int size) {
 //         List<Object[]> result = new ArrayList<>(size);
 //         int j = current;
 //         while (j < current + size) {
@@ -210,5 +214,5 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
 //         }
 //         publish(result);
 //         return j;
-    }
+//     }
 }
