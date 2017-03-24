@@ -39,27 +39,6 @@ public final class MainPanel extends JPanel {
         add(new JButton(act), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    class NewTabAction extends AbstractAction {
-        protected int count;
-        protected NewTabAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
-            tab.addTab("Title" + count, c);
-            tab.setSelectedIndex(tab.getTabCount() - 1);
-            count++;
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tab.removeAll();
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
