@@ -73,35 +73,16 @@ public final class MainPanel extends JPanel {
 }
 
 class TablePopupMenu extends JPopupMenu {
-    private final Action deleteAction = new DeleteAction("delete");
-    protected TablePopupMenu() {
-        super();
-        add(new TestCreateAction("add"));
-        addSeparator();
-        add(deleteAction);
-    }
-    @Override public void show(Component c, int x, int y) {
-        if (c instanceof JTable) {
-            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
+    private final Action addAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.addRow(new Object[] {"New row", 0, true});
+            model.addRow(new Object[] {"New row", model.getRowCount(), false});
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
-    }
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
+    };
+    private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -109,6 +90,18 @@ class TablePopupMenu extends JPopupMenu {
             for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add(addAction);
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
         }
     }
 }

@@ -15,19 +15,16 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
-    private static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);
-    private static final String PATTERN     = "Swing";
-    private final List<Integer> highlighter = new ArrayList<>();
-    private final DefaultTableModel model   = new DefaultTableModel(0, 2) {
-        @Override public Class<?> getColumnClass(int column) {
-            return String.class;
-        }
-    };
-    private final JTable table         = new JTable(model);
-    private final JScrollPane scroll   = new JScrollPane(table);
-    private final JLabel label         = new JLabel();
-    private final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
+public class MainPanel extends JPanel {
+    protected static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);
+    protected static final String PATTERN     = "Swing";
+    protected final List<Integer> highlighter = new ArrayList<>();
+
+    protected final DefaultTableModel model = new DefaultTableModel(0, 2);
+    protected final JTable table         = new JTable(model);
+    protected final JScrollPane scroll   = new JScrollPane(table);
+    protected final JLabel label         = new JLabel();
+    protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -72,21 +69,21 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class HighlightBarHandler extends MouseInputAdapter {
-        private void processMouseEvent(MouseEvent e) {
-            Point pt = e.getPoint();
-            Component c = (Component) e.getComponent();
-            BoundedRangeModel m = scrollbar.getModel();
-            int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
-            m.setValue(iv);
-        }
         @Override public void mousePressed(MouseEvent e) {
-            processMouseEvent(e);
+            processHighlightBarMouseEvent(e);
         }
         @Override public void mouseDragged(MouseEvent e) {
-            processMouseEvent(e);
+            processHighlightBarMouseEvent(e);
         }
     }
-    private void updateHighlighter() {
+    protected void processHighlightBarMouseEvent(MouseEvent e) {
+        Point pt = e.getPoint();
+        Component c = (Component) e.getComponent();
+        BoundedRangeModel m = scrollbar.getModel();
+        int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
+        m.setValue(iv);
+    }
+    protected void updateHighlighter() {
         for (int i = 0; i < table.getRowCount(); i++) {
             if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
                 highlighter.add(i);

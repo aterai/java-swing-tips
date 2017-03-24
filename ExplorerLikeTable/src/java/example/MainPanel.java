@@ -198,36 +198,7 @@ class FileListTable extends JTable {
 }
 
 class TablePopupMenu extends JPopupMenu {
-    private final Action deleteAction = new DeleteAction("delete");
-    protected TablePopupMenu() {
-        super();
-        add(new CreateAction("add"));
-        add(new ClearAction("clearSelection"));
-        addSeparator();
-        add(deleteAction);
-    }
-    @Override public void show(Component c, int x, int y) {
-        if (c instanceof JTable) {
-            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-    protected class CreateAction extends AbstractAction {
-        protected CreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            JTable table = (JTable) getInvoker();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.addRow(new Object[] {"new", ""});
-            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(rect);
-        }
-    }
-    protected class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
+    private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -236,14 +207,24 @@ class TablePopupMenu extends JPopupMenu {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
-    }
-    protected class ClearAction extends AbstractAction {
-        protected ClearAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+    };
+    protected TablePopupMenu() {
+        super();
+        add("add").addActionListener(e -> {
             JTable table = (JTable) getInvoker();
-            table.clearSelection();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(new Object[] {"New row", model.getRowCount(), false});
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
+        });
+        add("clearSelection").addActionListener(e -> (JTable) getInvoker().clearSelection());
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
         }
     }
 }

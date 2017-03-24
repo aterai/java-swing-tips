@@ -38,14 +38,14 @@ public final class MainPanel extends JPanel {
     //        }
     //    }
     //};
-    private final JCheckBox check    = new JCheckBox("Disable Scrolling");
-    private final TablePopupMenu pop = new TablePopupMenu();
+
     public MainPanel() {
         super(new BorderLayout());
 
         IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
         table.setAutoCreateRowSorter(true);
 
+        JCheckBox check = new JCheckBox("Disable Scrolling");
         check.addItemListener(e -> {
             table.clearSelection();
             JScrollBar bar = scroll.getVerticalScrollBar();
@@ -64,53 +64,14 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        scroll.setComponentPopupMenu(pop);
-        table.setInheritsPopupMenu(true);
+        //scroll.setComponentPopupMenu(new TablePopupMenu());
+        //table.setInheritsPopupMenu(true);
+        table.setComponentPopupMenu(new TablePopupMenu());
 
         add(scroll);
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {"New Name", 0, Boolean.FALSE});
-            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(rect);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action createAction = new TestCreateAction("add");
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(createAction);
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            createAction.setEnabled(!check.isSelected());
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -131,5 +92,39 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final JMenuItem createMenuItem;
+    private final JMenuItem deleteMenuItem;
+
+    protected TablePopupMenu() {
+        super();
+        createMenuItem = add("add");
+        createMenuItem.addActionListener(e -> {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(new Object[] {"New row", 0, Boolean.FALSE});
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
+        });
+        addSeparator();
+        deleteMenuItem = add("delete");
+        deleteMenuItem.addActionListener(e -> {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        });
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            createMenuItem.setEnabled(c.isEnabled());
+            deleteMenuItem.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }
