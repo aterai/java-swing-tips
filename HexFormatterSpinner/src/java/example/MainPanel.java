@@ -12,62 +12,73 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
-    private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
-    private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
-
-    private final JRadioButton exMi = new JRadioButton("IPAexMincho");
-    private final JRadioButton mjMi = new JRadioButton("IPAmjMincho");
+public class MainPanel extends JPanel {
+    private final JRadioButton exMi = new JRadioButton(FontPaint.IPAexMincho.toString());
+    private final JRadioButton mjMi = new JRadioButton(FontPaint.IPAmjMincho.toString());
     private final JRadioButton both = new JRadioButton("Both", true);
-
-    private final SpinnerNumberModel model = new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1);
-    private final JSpinner spinner = new JSpinner(model);
+    private final JSpinner spinner  = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));
+    protected EnumSet<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
     public MainPanel() {
         super(new BorderLayout());
 
-        spinner.addChangeListener(e -> repaint());
+        JPanel fontPanel = new GlyphPaintPanel();
+
+        spinner.addChangeListener(e -> fontPanel.repaint());
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
         ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
         ftf.setFormatterFactory(makeFFactory());
 
-        add(spinner, BorderLayout.NORTH);
-        add(new GlyphPaintPanel());
-
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        ActionListener al = e -> repaint();
-        for (AbstractButton b: Arrays.asList(exMi, mjMi, both)) {
+        ActionListener al = e -> {
+            if (exMi.isSelected()) {
+                fontPaintFlag = EnumSet.of(FontPaint.IPAexMincho);
+            } else if (mjMi.isSelected()) {
+                fontPaintFlag = EnumSet.of(FontPaint.IPAmjMincho);
+            } else { //if (both.isSelected()) {
+                fontPaintFlag = EnumSet.allOf(FontPaint.class);
+            }
+            fontPanel.repaint();
+        };
+        Arrays.asList(exMi, mjMi, both).forEach(b -> {
             p.add(b);
             bg.add(b);
             b.addActionListener(al);
-        }
+        });
+
+        add(spinner, BorderLayout.NORTH);
+        add(fontPanel);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+    protected String getCharacterString() {
+        int code = ((Integer) spinner.getValue()).intValue();
+        //char[] ca = Character.toChars(code);
+        //int len = Character.charCount(code);
+        //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
+        return new String(Character.toChars(code)); //, 0, len);
+//         if (code < 0x10000) {
+//             str = Character.toString((char) code);
+//         } else {
+//             int x = code - 0x10000;
+//             char[] ca = new char[2];
+//             ca[0] = (char) (Math.floor(x / 0x400) + 0xD800);
+//             ca[1] = (char) (x % 0x400 + 0xDC00);
+//             str = new String(ca, 0, 2);
+//         }
+    }
     private class GlyphPaintPanel extends JPanel {
+        private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
+        private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setPaint(Color.WHITE);
             g2.fillRect(0, 0, getWidth(), getHeight());
 
-            int code = ((Integer) spinner.getValue()).intValue();
-            //char[] ca = Character.toChars(code);
-            //int len = Character.charCount(code);
-            //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
-            String str = new String(Character.toChars(code)); //, 0, len);
-
-//                 //if (code < 0x10000) {
-//                     str = Character.toString((char) code);
-//                 } else {
-//                     int x = code - 0x10000;
-//                     char[] ca = new char[2];
-//                     ca[0] = (char) (Math.floor(x / 0x400) + 0xD800);
-//                     ca[1] = (char) (x % 0x400 + 0xDC00);
-//                     str = new String(ca, 0, 2);
-//                 }
+            String str = getCharacterString();
 
             FontRenderContext frc = g2.getFontRenderContext();
             Shape exShape = new TextLayout(str, ipaEx, frc).getOutline(null);
@@ -82,15 +93,15 @@ public final class MainPanel extends JPanel {
             Shape s1 = toCenterAT.createTransformedShape(exShape);
             Shape s2 = toCenterAT.createTransformedShape(mjShape);
 
-            if (exMi.isSelected() || both.isSelected()) {
+            if (fontPaintFlag.contains(FontPaint.IPAexMincho)) {
                 g2.setPaint(Color.CYAN);
                 g2.fill(s1);
             }
-            if (mjMi.isSelected() || both.isSelected()) {
+            if (fontPaintFlag.contains(FontPaint.IPAmjMincho)) {
                 g2.setPaint(Color.MAGENTA);
                 g2.fill(s2);
             }
-            if (both.isSelected()) {
+            if (fontPaintFlag.containsAll(EnumSet.allOf(FontPaint.class))) {
                 g2.setClip(s1);
                 g2.setPaint(Color.BLACK);
                 g2.fill(s2);
@@ -145,3 +156,5 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum FontPaint { IPAexMincho, IPAmjMincho }

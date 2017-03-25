@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
+    private class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (c instanceof JLabel) {
@@ -77,20 +77,22 @@ public final class MainPanel extends JPanel implements ActionListener {
             }
             return c;
         }
-        private void initLabel(JLabel l, int row) {
-            if (leftRadio.isSelected()) {
-                l.setHorizontalAlignment(SwingConstants.LEFT);
-            } else if (centerRadio.isSelected()) {
-                l.setHorizontalAlignment(SwingConstants.CENTER);
-            } else if (rightRadio.isSelected()) {
-                l.setHorizontalAlignment(SwingConstants.RIGHT);
-            } else if (customRadio.isSelected()) {
-                l.setHorizontalAlignment(row % 3 == 0 ? SwingConstants.LEFT
-                                       : row % 3 == 1 ? SwingConstants.CENTER
-                                                      : SwingConstants.RIGHT);
-            }
+    }
+
+    protected void initLabel(JLabel l, int row) {
+        if (leftRadio.isSelected()) {
+            l.setHorizontalAlignment(SwingConstants.LEFT);
+        } else if (centerRadio.isSelected()) {
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+        } else if (rightRadio.isSelected()) {
+            l.setHorizontalAlignment(SwingConstants.RIGHT);
+        } else if (customRadio.isSelected()) {
+            l.setHorizontalAlignment(row % 3 == 0 ? SwingConstants.LEFT
+                                   : row % 3 == 1 ? SwingConstants.CENTER
+                                                  : SwingConstants.RIGHT);
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

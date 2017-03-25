@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
     private final List<String> fileHistoryCache = new ArrayList<>();
-    private final JMenuItem noFile = new JMenuItem("なし");
+    private final JMenuItem noFile = new JMenuItem("(Empty)");
     private JMenu fileHistoryMenu;
 
     public MainPanel() {
@@ -23,7 +23,6 @@ public final class MainPanel extends JPanel {
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
         JMenuBar menuBar = BAR_FACTORY.createMenuBar();
-        //if (Objects.nonNull(menuBar))
         menupanel.add(menuBar, BorderLayout.NORTH);
         initHistory();
 
@@ -41,8 +40,8 @@ public final class MainPanel extends JPanel {
         if (Objects.nonNull(fileHistoryMenu)) {
             fileHistoryMenu.removeAll();
         } else {
-            fileHistoryMenu = new JMenu("最近使ったファイル(F)");
-            fileHistoryMenu.setMnemonic('F');
+            fileHistoryMenu = new JMenu("Recent Items");
+            fileHistoryMenu.setMnemonic('R');
             JMenuItem exit = BAR_FACTORY.getMenuItem("exit");
             fm.remove(exit);
             fm.add(fileHistoryMenu);
@@ -64,7 +63,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    private void updateHistory(String str) {
+    protected void updateHistory(String str) {
         fileHistoryMenu.removeAll();
         fileHistoryCache.remove(str);
         fileHistoryCache.add(0, str);
@@ -93,9 +92,9 @@ public final class MainPanel extends JPanel {
             this.fileName = fileName;
         }
         @Override public void actionPerformed(ActionEvent e) {
-            Object[] obj = {"本来はファイルを開いたりする。\n",
-                "このサンプルではなにもせずに\n",
-                "履歴の先頭にファイルを移動する。"};
+            Object[] obj = {"Open the file.\n",
+                "This example do nothing\n",
+                " and move the file to the beginning of the history."};
             JComponent c = (JComponent) e.getSource();
             JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
             updateHistory(fileName);
@@ -123,15 +122,6 @@ public final class MainPanel extends JPanel {
 //         new VersionAction(),
 //     };
 
-    private static class NewAction extends AbstractAction {
-        protected NewAction() {
-            super("new");
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            // dummy
-        }
-    }
-
     private class OpenAction extends AbstractAction {
         private int count;
         protected OpenAction() {
@@ -145,9 +135,9 @@ public final class MainPanel extends JPanel {
             //if (retvalue == JFileChooser.APPROVE_OPTION) {
             //    file = fileChooser.getSelectedFile();
             //}
-            Object[] obj = {"本来はJFileChooserなどでファイルを選択する。\n",
-                "このサンプルではなにもせずに\n",
-                "適当なファイル名を生成して開いたふりをする。"};
+            Object[] obj = {"Select files with JFileChooser.\n",
+                "This example do nothing\n",
+                " and pretend to generate an appropriate file name and open it."};
             JComponent c = (JComponent) e.getSource();
             JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
             String fileName = "C:/tmp/dummy.jpg." + count + "~";
@@ -176,6 +166,15 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class NewAction extends AbstractAction {
+    protected NewAction() {
+        super("new");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        // dummy
     }
 }
 

@@ -14,32 +14,26 @@ import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
-    private final JTextField field = new JTextField("b", 10);
-    private boolean isHidden = true;
-    private final JPanel searchBox = new JPanel(new BorderLayout());
-    private int yy;
-    private final Timer animator = new Timer(5, new ActionListener() {
-        private int counter;
-        @Override public void actionPerformed(ActionEvent e) {
-            int height = searchBox.getPreferredSize().height;
-            double h = (double) height;
-            if (isHidden) {
-                yy = (int) (.5 + AnimationUtil.easeInOut(++counter / h) * h);
-                if (yy >= height) {
-                    yy = height;
-                    animator.stop();
+    private final JTextField field = new JTextField("b", 10) {
+        protected transient AncestorListener listener;
+        @Override public void updateUI() {
+            removeAncestorListener(listener);
+            super.updateUI();
+            listener = new AncestorListener() {
+                @Override public void ancestorAdded(AncestorEvent e) {
+                    e.getComponent().requestFocusInWindow();
                 }
-            } else {
-                yy = (int) (.5 + AnimationUtil.easeInOut(--counter / h) * h);
-                if (yy <= 0) {
-                    yy = 0;
-                    animator.stop();
-                    searchBox.setVisible(false);
-                }
-            }
-            searchBox.revalidate();
+                @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+                @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+            };
+            addAncestorListener(listener);
         }
-    });
+    };
+    private final JPanel searchBox = new JPanel(new BorderLayout());
+    private boolean isHidden = true;
+    private int yy;
+    private int counter;
+    private final Timer animator = new Timer(5, null);
     private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
             if (!animator.isRunning()) {
@@ -60,6 +54,27 @@ public final class MainPanel extends JPanel {
     };
     private MainPanel() {
         super(new BorderLayout());
+
+        animator.addActionListener(e -> {
+            int height = searchBox.getPreferredSize().height;
+            double h = (double) height;
+            if (isHidden) {
+                yy = (int) (.5 + AnimationUtil.easeInOut(++counter / h) * h);
+                if (yy >= height) {
+                    yy = height;
+                    animator.stop();
+                }
+            } else {
+                yy = (int) (.5 + AnimationUtil.easeInOut(--counter / h) * h);
+                if (yy <= 0) {
+                    yy = 0;
+                    animator.stop();
+                    searchBox.setVisible(false);
+                }
+            }
+            searchBox.revalidate();
+        });
+
         JPanel p = new JPanel() {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false;
@@ -99,16 +114,6 @@ public final class MainPanel extends JPanel {
         button.setToolTipText("Find next");
         button.setText("v");
 
-        field.getActionMap().put("find-next", findNextAction);
-        field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
-        field.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent e) {
-                e.getComponent().requestFocusInWindow();
-            }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
-            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
-        });
-
         searchBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         searchBox.add(field);
         searchBox.add(button, BorderLayout.EAST);
@@ -119,6 +124,9 @@ public final class MainPanel extends JPanel {
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
         p.getActionMap().put("open-searchbox", showHideAction);
         p.getActionMap().put("close-searchbox", hideAction);
+
+        field.getActionMap().put("find-next", findNextAction);
+        field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
 
         add(p);
         setPreferredSize(new Dimension(320, 240));

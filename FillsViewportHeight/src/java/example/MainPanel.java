@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         //table.setOpaque(false);
         //table.setBackground(scroll.getBackground());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table.setComponentPopupMenu(new TablePopupMenu(table, model));
+        table.setComponentPopupMenu(new TablePopupMenu());
         //scroll.getViewport().setComponentPopupMenu(makePop());
         //scroll.setComponentPopupMenu(makePop());
         table.setRowSorter(new TableRowSorter<>(model));
@@ -128,6 +128,8 @@ public final class MainPanel extends JPanel {
 class TablePopupMenu extends JPopupMenu {
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             int[] selection = table.getSelectedRows();
             for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
@@ -136,21 +138,21 @@ class TablePopupMenu extends JPopupMenu {
     };
     private final Action addAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.addRow(new Object[] {"example", model.getRowCount(), false});
         }
     };
-    private final DefaultTableModel model;
-    private final JTable table;
-    protected TablePopupMenu(JTable table, DefaultTableModel model) {
+    protected TablePopupMenu() {
         super();
-        this.table = table;
-        this.model = model;
         add(addAction);
         addSeparator();
         add(deleteAction);
     }
     @Override public void show(Component c, int x, int y) {
-        deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-        super.show(c, x, y);
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }

@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     };
     private final Action createNewFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            JInternalFrame frame = new MyInternalFrame();
+            JInternalFrame frame = makeInternalFrame();
             //frame.setVisible(true);
             desktop.add(frame);
             try {
@@ -96,40 +96,37 @@ public final class MainPanel extends JPanel {
         toolbar.add(b);
         return toolbar;
     }
-
-    class MyInternalFrame extends JInternalFrame {
-        protected MyInternalFrame() {
-            super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
-            row += 1;
-            setSize(240, 120);
-            setLocation(20 * row + 20 * col, 20 * row);
-            setVisible(true);
-            EventQueue.invokeLater(() -> {
-                Rectangle drect = desktop.getBounds();
-                drect.setLocation(0, 0);
-                if (!drect.contains(getBounds())) {
-                    row = 0;
-                    col += 1;
-                }
-            });
-            addInternalFrameListener(new MyInternalFrameListener());
-            //JComponent c = (JComponent) frame.getContentPane();
-            //ActionMap am = frame.getActionMap();
-            //Action a = new AbstractAction() {
-            //    @Override public void actionPerformed(ActionEvent e) {
-            //        try {
-            //            frame.setClosed(true);
-            //        } catch (PropertyVetoException ex) {
-            //            ex.printStackTrace();
-            //        }
-            //    }
-            //};
-            //am.put("myTest", a);
-            //InputMap im = frame.getInputMap();
-            //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
-        }
+    protected JInternalFrame makeInternalFrame() {
+        JInternalFrame f = new JInternalFrame(String.format("Document #%s", ++openFrameCount), true, true, true, true);
+        row += 1;
+        f.setSize(240, 120);
+        f.setLocation(20 * row + 20 * col, 20 * row);
+        f.setVisible(true);
+        EventQueue.invokeLater(() -> {
+            Rectangle drect = desktop.getBounds();
+            drect.setLocation(0, 0);
+            if (!drect.contains(getBounds())) {
+                row = 0;
+                col += 1;
+            }
+        });
+        f.addInternalFrameListener(new TestInternalFrameListener());
+        //JComponent c = (JComponent) f.getContentPane();
+        //ActionMap am = f.getActionMap();
+        //Action a = new AbstractAction() {
+        //    @Override public void actionPerformed(ActionEvent e) {
+        //        try {
+        //            f.setClosed(true);
+        //        } catch (PropertyVetoException ex) {
+        //            ex.printStackTrace();
+        //        }
+        //    }
+        //};
+        //am.put("myTest", a);
+        //InputMap im = frame.getInputMap();
+        //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
+        return f;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -153,7 +150,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyInternalFrameListener implements InternalFrameListener {
+class TestInternalFrameListener implements InternalFrameListener {
     @Override public void internalFrameClosing(InternalFrameEvent e) {
         System.out.println("internalFrameClosing: " + e.getInternalFrame().getTitle());
     }
