@@ -7,40 +7,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static int count;
     private final MyJTabbedPane tab = new MyJTabbedPane();
-    private final JPopupMenu pop = new JPopupMenu();
 
     public MainPanel() {
         super(new BorderLayout());
-        pop.add(new NewTabAction("Add"));
-        pop.addSeparator();
-        pop.add(new CloseAllAction("Close All"));
-        tab.setComponentPopupMenu(pop);
+        tab.setComponentPopupMenu(new TabbedPanePopupMenu());
         tab.addTab("JLabel", new JLabel("JDK 6"));
         tab.addTab("JTree",  new JScrollPane(new JTree()));
         add(tab);
         setPreferredSize(new Dimension(320, 240));
     }
-    class NewTabAction extends AbstractAction {
-        protected NewTabAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tab.addTab("Title" + count, new JLabel("Tab" + count));
-            tab.setSelectedIndex(tab.getTabCount() - 1);
-            count++;
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tab.removeAll();
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -103,5 +79,28 @@ class CloseTabIcon implements Icon {
     }
     @Override public int getIconHeight() {
         return 16;
+    }
+}
+
+class TabbedPanePopupMenu extends JPopupMenu {
+    protected transient int count;
+    private final JMenuItem closeAllMenuItem;
+    protected TabbedPanePopupMenu() {
+        super();
+        add("Add").addActionListener(e -> {
+            JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
+            tabbedPane.addTab("Title" + count, new JLabel("Tab" + count));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+            count++;
+        });
+        addSeparator();
+        closeAllMenuItem = add("Close All");
+        closeAllMenuItem.addActionListener(e -> ((JTabbedPane) getInvoker()).removeAll());
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTabbedPane) {
+            closeAllMenuItem.setEnabled(((JTabbedPane) c).getTabCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }

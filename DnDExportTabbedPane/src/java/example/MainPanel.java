@@ -105,7 +105,7 @@ class DnDTabbedPane extends JTabbedPane {
     private static final int LINE_WIDTH  = 3;
     private static final Rectangle RECT_BACKWARD = new Rectangle();
     private static final Rectangle RECT_FORWARD  = new Rectangle();
-    private static final Rectangle RECT_LINE     = new Rectangle();
+    protected static final Rectangle RECT_LINE = new Rectangle();
     private final DropMode dropMode = DropMode.INSERT;
     public int dragTabIndex = -1;
     private transient DropLocation dropLocation;

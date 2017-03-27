@@ -76,7 +76,7 @@ class EditableTabbedPane extends JTabbedPane {
             glassPane.setVisible(false);
         }
     };
-    private final Action renameTab = new AbstractAction() {
+    protected final Action renameTab = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             if (!editor.getText().trim().isEmpty()) {
                 setTitleAt(getSelectedIndex(), editor.getText());
@@ -108,19 +108,22 @@ class EditableTabbedPane extends JTabbedPane {
         getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
         getActionMap().put("start-editing", startEditing);
     }
+    protected JTextField getEditorTextField() {
+        return editor;
+    }
     private class EditorGlassPane extends JComponent {
         protected EditorGlassPane() {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
                 @Override public boolean accept(Component c) {
-                    return Objects.equals(c, editor);
+                    return Objects.equals(c, getEditorTextField());
                 }
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent e) {
                     //if (Objects.nonNull(rect) && !rect.contains(e.getPoint())) {
-                    if (!editor.getBounds().contains(e.getPoint())) {
+                    if (!getEditorTextField().getBounds().contains(e.getPoint())) {
                         renameTab.actionPerformed(null);
                     }
                 }

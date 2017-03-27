@@ -52,17 +52,17 @@ public final class MainPanel extends JPanel {
 // How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // http://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-    private final JTabbedPane pane;
+    protected final JTabbedPane tabbedPane;
 
-    protected ButtonTabComponent(final JTabbedPane pane) {
+    protected ButtonTabComponent(final JTabbedPane tabbedPane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.pane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+        this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
         JLabel label = new JLabel() {
             @Override public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
-                    return pane.getTitleAt(i);
+                    return tabbedPane.getTitleAt(i);
                 }
                 return null;
             }
@@ -78,9 +78,9 @@ class ButtonTabComponent extends JPanel {
     }
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
-                pane.remove(i);
+                tabbedPane.remove(i);
             }
         }
         @Override public void mouseEntered(MouseEvent e) {

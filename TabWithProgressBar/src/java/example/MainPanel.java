@@ -10,33 +10,28 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab = new ProgressJTabbedPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        Action act = new AbstractAction("Add") {
+        JTabbedPane tabbedPane = new ProgressJTabbedPane();
+        Action addAction = new AbstractAction("Add") {
             protected int count;
             @Override public void actionPerformed(ActionEvent e) {
                 JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
-                tab.addTab("Title" + count, c);
-                tab.setSelectedIndex(tab.getTabCount() - 1);
+                tabbedPane.addTab("Title" + count, c);
+                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                 count++;
             }
         };
         JPopupMenu popup = new JPopupMenu();
-        popup.add(act);
+        popup.add(addAction);
         popup.addSeparator();
-        popup.add(new AbstractAction("Close All") {
-            @Override public void actionPerformed(ActionEvent e) {
-                tab.removeAll();
-            }
-        });
-        tab.setComponentPopupMenu(popup);
+        popup.add("Close All").addActionListener(e -> tabbedPane.removeAll());
+        tabbedPane.setComponentPopupMenu(popup);
 
-        tab.addTab("PopupMenu+addTab", new JScrollPane(new JTree()));
-        add(tab);
-        add(new JButton(act), BorderLayout.SOUTH);
+        tabbedPane.addTab("PopupMenu+addTab", new JScrollPane(new JTree()));
+        add(tabbedPane);
+        add(new JButton(addAction), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
