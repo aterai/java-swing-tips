@@ -13,6 +13,9 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
     private final DateFormat df = DateFormat.getDateTimeInstance();
+    private final JButton formatButton = new JButton("format");
+    private final JButton parseButton = new JButton("parse");
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -20,21 +23,18 @@ public final class MainPanel extends JPanel {
         textArea.setEditable(false);
         df.setTimeZone(TimeZone.getTimeZone("JST"));
 
+        formatButton.addActionListener(e -> field.setText(format.format(new Date())));
+        parseButton.addActionListener(e -> {
+            String str = field.getText().trim();
+            ParsePosition pp = new ParsePosition(0);
+            Date date = format.parse(str, pp);
+            String o = Objects.nonNull(date) ? df.format(date) : "error";
+            textArea.append(o + "\n");
+        });
+
         JPanel bp = new JPanel(new GridLayout(1, 0, 2, 2));
-        bp.add(new JButton(new AbstractAction("format") {
-            @Override public void actionPerformed(ActionEvent e) {
-                field.setText(format.format(new Date()));
-            }
-        }));
-        bp.add(new JButton(new AbstractAction("parse") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String str = field.getText().trim();
-                ParsePosition pp = new ParsePosition(0);
-                Date date = format.parse(str, pp);
-                String o = Objects.nonNull(date) ? df.format(date) : "error";
-                textArea.append(o + "\n");
-            }
-        }));
+        bp.add(formatButton);
+        bp.add(parseButton);
 
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());

@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private TreePath path;
+    protected TreePath path;
     private final Action addChildNodeAction = new AbstractAction("add child node") {
         @Override public void actionPerformed(ActionEvent e) {
             JTree tree = (JTree) getInvoker();

@@ -10,8 +10,6 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final DefaultTreeModel model = makeDefaultTreeModel();
-    private final JTree tree = new JTree(model);
     private MainPanel() {
         super(new GridLayout(1, 2));
 
@@ -19,18 +17,19 @@ public final class MainPanel extends JPanel {
         t.setComponentPopupMenu(new TreePopupMenu());
         add(makeTitledPanel("Default", new JScrollPane(t)));
 
+        DefaultTreeModel model = makeDefaultTreeModel();
+        JTree tree = new JTree(model);
         tree.setComponentPopupMenu(new TreePopupMenu());
         //model.setAsksAllowsChildren(true);
-        JPanel p = makeTitledPanel("setAsksAllowsChildren", new JScrollPane(tree));
-        p.add(new JCheckBox(new AbstractAction("setAsksAllowsChildren") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                model.setAsksAllowsChildren(c.isSelected());
-                tree.repaint();
-            }
-        }), BorderLayout.SOUTH);
-        add(p);
 
+        JPanel p = makeTitledPanel("setAsksAllowsChildren", new JScrollPane(tree));
+        JCheckBox check = new JCheckBox("setAsksAllowsChildren");
+        check.addActionListener(e -> {
+            model.setAsksAllowsChildren(((JCheckBox) e.getSource()).isSelected());
+            tree.repaint();
+        });
+        p.add(check, BorderLayout.SOUTH);
+        add(p);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makeTitledPanel(String title, JComponent c) {
@@ -94,7 +93,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private TreePath path;
+    protected TreePath path;
     private final Action addFolderAction = new AbstractAction("add folder") {
         @Override public void actionPerformed(ActionEvent e) {
             JTree tree = (JTree) getInvoker();
@@ -116,8 +115,8 @@ class TreePopupMenu extends JPopupMenu {
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
-        private final JTextField textField = new JTextField(24) {
-            private transient AncestorListener listener;
+        protected final JTextField textField = new JTextField(24) {
+            protected transient AncestorListener listener;
             @Override public void updateUI() {
                 removeAncestorListener(listener);
                 super.updateUI();

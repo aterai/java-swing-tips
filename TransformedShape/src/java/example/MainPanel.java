@@ -39,23 +39,10 @@ public final class MainPanel extends JPanel {
 }
 
 class FontRotateAnimation extends JComponent {
-    private int rotate;
-    private final Shape shape;
-    private Shape s;
-    private final Timer animator = new Timer(10, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            repaint(s.getBounds());
-            Rectangle2D b = shape.getBounds2D();
-            AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), b.getCenterX(), b.getCenterY());
-            AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
-
-            Shape s1 = at.createTransformedShape(shape);
-            s = toCenterAT.createTransformedShape(s1);
-            repaint(s.getBounds());
-            //rotate = rotate >= 360 ? 0 : rotate + 2;
-            rotate = (rotate + 2) % 360;
-        }
-    });
+    protected int rotate;
+    protected final Shape shape;
+    protected Shape s;
+    private final Timer animator = new Timer(10, null);
     protected FontRotateAnimation(String str) {
         super();
         addHierarchyListener(e -> {
@@ -67,6 +54,18 @@ class FontRotateAnimation extends JComponent {
         FontRenderContext frc = new FontRenderContext(null, true, true);
         shape = new TextLayout(str, font, frc).getOutline(null);
         s = shape;
+        animator.addActionListener(e -> {
+            repaint(s.getBounds());
+            Rectangle2D b = shape.getBounds2D();
+            AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), b.getCenterX(), b.getCenterY());
+            AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
+
+            Shape s1 = at.createTransformedShape(shape);
+            s = toCenterAT.createTransformedShape(s1);
+            repaint(s.getBounds());
+            //rotate = rotate >= 360 ? 0 : rotate + 2;
+            rotate = (rotate + 2) % 360;
+        });
         animator.start();
     }
     @Override protected void paintComponent(Graphics g) {

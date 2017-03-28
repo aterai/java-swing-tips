@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private TreePath path;
-    private final JTextField textField = new JTextField();
+    protected TreePath path;
+    protected final JTextField textField = new JTextField();
     private final Action editAction = new AbstractAction("Edit") {
         @Override public void actionPerformed(ActionEvent e) {
             if (Objects.nonNull(path)) {

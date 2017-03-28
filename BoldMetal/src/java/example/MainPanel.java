@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private TreePath path;
+    protected TreePath path;
     private final Action addNodeAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
             JTree tree = (JTree) getInvoker();
@@ -86,7 +86,7 @@ class TreePopupMenu extends JPopupMenu {
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
-        private final JTextField textField = new JTextField(24) {
+        protected final JTextField textField = new JTextField(24) {
             protected transient AncestorListener listener;
             @Override public void updateUI() {
                 removeAncestorListener(listener);
