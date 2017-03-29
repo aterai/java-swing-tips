@@ -78,9 +78,9 @@ class ComparableTab { //implements Comparable<ComparableTab> {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-    private final JComponent glassPane = new EditorGlassPane();
-    private final JTextField editor = new JTextField();
-    private final Action startEditing = new AbstractAction() {
+    protected final JComponent glassPane = new EditorGlassPane();
+    protected final JTextField editor = new JTextField();
+    protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getRootPane().setGlassPane(glassPane);
             Rectangle rect = getBoundsAt(getSelectedIndex());
@@ -96,7 +96,7 @@ class EditableTabbedPane extends JTabbedPane {
             editor.requestFocusInWindow();
         }
     };
-    private final Action cancelEditing = new AbstractAction() {
+    protected final Action cancelEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             glassPane.setVisible(false);
         }
@@ -160,25 +160,25 @@ class EditableTabbedPane extends JTabbedPane {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-    private static final String MENUITEM_NEWTAB = "New tab";
-    private static final String MENUITEM_CLOSEPAGE = "Close";
-    private static final String MENUITEM_CLOSEALL = "Close all";
-    private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
-    private static final String MENUITEM_SORT = "Sort";
-    private static int count;
-    private final Action closePageAction = new AbstractAction(MENUITEM_CLOSEPAGE) {
+    protected static final String MENUITEM_NEWTAB = "New tab";
+    protected static final String MENUITEM_CLOSEPAGE = "Close";
+    protected static final String MENUITEM_CLOSEALL = "Close all";
+    protected static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
+    protected static final String MENUITEM_SORT = "Sort";
+    protected int count;
+    protected final Action closePageAction = new AbstractAction(MENUITEM_CLOSEPAGE) {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.remove(tabbedPane.getSelectedIndex());
         }
     };
-    private final Action closeAllAction = new AbstractAction(MENUITEM_CLOSEALL) {
+    protected final Action closeAllAction = new AbstractAction(MENUITEM_CLOSEALL) {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.removeAll();
         }
     };
-    private final Action closeAllButActiveAction = new AbstractAction(MENUITEM_CLOSEALLBUTACTIVE) {
+    protected final Action closeAllButActiveAction = new AbstractAction(MENUITEM_CLOSEALLBUTACTIVE) {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             int tabidx = tabbedPane.getSelectedIndex();
@@ -188,7 +188,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
             tabbedPane.addTab(title, cmp);
         }
     };
-    private final Action sortAction = new AbstractAction(MENUITEM_SORT) {
+    protected final Action sortAction = new AbstractAction(MENUITEM_SORT) {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
@@ -198,7 +198,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
             list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
         }
     };
-    private final Action newTabAction = new AbstractAction(MENUITEM_NEWTAB) {
+    protected final Action newTabAction = new AbstractAction(MENUITEM_NEWTAB) {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));

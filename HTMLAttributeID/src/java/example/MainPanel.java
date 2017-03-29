@@ -11,12 +11,12 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.text.html.parser.ParserDelegator;
 
-public final class MainPanel extends JPanel {
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private final JTextArea textArea = new JTextArea();
-    private final JEditorPane editorPane = new JEditorPane();
-    private final JTextField field = new JTextField("3");
-    private final Action elementIDAction = new AbstractAction("Element#getElement(id)") {
+public class MainPanel extends JPanel {
+    protected final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    protected final JTextArea textArea = new JTextArea();
+    protected final JEditorPane editorPane = new JEditorPane();
+    protected final JTextField field = new JTextField("3");
+    protected final Action elementIDAction = new AbstractAction("Element#getElement(id)") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
             final String id = field.getText().trim();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
+    protected final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
             JToggleButton b = (JToggleButton) e.getSource();
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final Action parserAction = new AbstractAction("ParserDelegator") {
+    protected final Action parserAction = new AbstractAction("ParserDelegator") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
             final String id = field.getText().trim();
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void addHighlight(Element element, boolean isBlock) {
+    protected void addHighlight(Element element, boolean isBlock) {
         Highlighter highlighter = editorPane.getHighlighter();
         int start = element.getStartOffset();
         int lf    = isBlock ? 1 : 0;
@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
-    private void traverseElementById(Element element) {
+    protected void traverseElementById(Element element) {
         if (element.isLeaf()) {
             checkID(element);
         } else {
@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    private void checkID(Element element) {
+    protected void checkID(Element element) {
         AttributeSet attrs = element.getAttributes();
         Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;

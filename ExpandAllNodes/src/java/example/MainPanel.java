@@ -9,9 +9,10 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTree tree = new JTree();
         //tree.setModel(makeModel());
 
         JPanel p = new JPanel(new GridLayout(0, 1, 2, 2));
@@ -66,7 +67,7 @@ public final class MainPanel extends JPanel {
 
     //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
     //http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
-    private void visitAll(JTree tree, TreePath parent, boolean expand) {
+    protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
@@ -83,14 +84,14 @@ public final class MainPanel extends JPanel {
 
     //Expand or collapse a JTree - Real's Java How-to
     //http://www.rgagnon.com/javadetails/java-0210.html
-    private void expandAll(JTree tree) {
+    protected static void expandAll(JTree tree) {
         int row = 0;
         while (row < tree.getRowCount()) {
             tree.expandRow(row);
             row++;
         }
     }
-    private void collapseAll(JTree tree) {
+    protected static void collapseAll(JTree tree) {
         int row = tree.getRowCount() - 1;
         while (row >= 0) {
             tree.collapseRow(row);

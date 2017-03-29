@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-    private final JComponent glassPane = new EditorGlassPane();
-    private final JTextField editor = new JTextField();
-    private final Action startEditing = new AbstractAction() {
+    protected final JComponent glassPane = new EditorGlassPane();
+    protected final JTextField editor = new JTextField();
+    protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getRootPane().setGlassPane(glassPane);
             Rectangle rect = getBoundsAt(getSelectedIndex());
@@ -71,7 +71,7 @@ class EditableTabbedPane extends JTabbedPane {
             editor.requestFocusInWindow();
         }
     };
-    private final Action cancelEditing = new AbstractAction() {
+    protected final Action cancelEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             glassPane.setVisible(false);
         }

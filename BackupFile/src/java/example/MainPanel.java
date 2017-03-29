@@ -18,8 +18,22 @@ public final class MainPanel extends JPanel {
     private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));
     private final JLabel label      = new JLabel("2", SwingConstants.RIGHT);
     private final JTextPane jtp     = new JTextPane();
-    private final JButton ok        = new JButton(new AbstractAction("Create new " + FILE_NAME) {
-        @Override public void actionPerformed(ActionEvent e) {
+    private final JButton ok        = new JButton("Create new " + FILE_NAME);
+    private final JButton clear     = new JButton("clear");
+
+    public MainPanel() {
+        super(new BorderLayout());
+        jtp.setEditable(false);
+        StyledDocument doc = jtp.getStyledDocument();
+        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+        //Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
+        //StyleConstants.setForeground(error, Color.BLACK);
+        //Style error = doc.addStyle(ERROR, regular);
+        StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
+        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  def), Color.BLUE);
+
+        ok.addActionListener(e -> {
             File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
             int i1 = ((Integer) spinner1.getValue()).intValue();
             int i2 = ((Integer) spinner2.getValue()).intValue();
@@ -52,31 +66,15 @@ public final class MainPanel extends JPanel {
                     append(new Message("----------------------------------", MessageType.REGULAR));
                 }
             }).execute();
-        }
-    });
-
-    public MainPanel() {
-        super(new BorderLayout());
-        jtp.setEditable(false);
-        StyledDocument doc = jtp.getStyledDocument();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-        //Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
-        //StyleConstants.setForeground(error, Color.BLACK);
-        //Style error = doc.addStyle(ERROR, regular);
-        StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
-        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  def), Color.BLUE);
+        });
+        clear.addActionListener(e -> jtp.setText(""));
 
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         box.add(Box.createHorizontalGlue());
         box.add(ok);
         box.add(Box.createHorizontalStrut(5));
-        box.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                jtp.setText("");
-            }
-        }));
+        box.add(clear);
 
         JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0");
         editor1.getTextField().setEditable(false);
@@ -115,7 +113,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void append(Message m) {
+    protected void append(Message m) {
         StyledDocument doc = jtp.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), m.text + "\n", doc.getStyle(m.type.toString()));

@@ -9,13 +9,14 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
-    private final JTextPane jtp = new JTextPane();
-    private final JComboBox<String> combo = new JComboBox<>(new String[] {
+public class MainPanel extends JPanel {
+    protected final JTextPane jtp = new JTextPane();
+    protected final JComboBox<String> combo = new JComboBox<>(new String[] {
         "public", "protected", "private",
         "final", "transient", "super", "this", "return", "class"
     });
-    private final BasicComboPopup popup = new EditorComboPopup(jtp, combo);
+    protected final BasicComboPopup popup = new EditorComboPopup(jtp, combo);
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -67,7 +68,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(jtp));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void append(String str) {
+    protected void append(String str) {
         popup.hide();
         try {
             Document doc = jtp.getDocument();

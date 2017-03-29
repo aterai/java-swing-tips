@@ -10,14 +10,14 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public final class MainPanel extends JPanel {
-    private final JTree tree       = new JTree(makeModel());
-    private final JTextField field = new JTextField("asd", 10);
-    private final JButton button   = new JButton();
-    private final JButton showHideButton = new JButton();
-    private final List<TreePath> rollOverPathLists = new ArrayList<>();
-    private boolean isHidden = true;
-    private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
+public class MainPanel extends JPanel {
+    protected final JTree tree       = new JTree(makeModel());
+    protected final JTextField field = new JTextField("asd", 10);
+    protected final JButton button   = new JButton();
+    protected final JButton showHideButton = new JButton();
+    protected final List<TreePath> rollOverPathLists = new ArrayList<>();
+    protected boolean isHidden = true;
+    protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         protected int controlsHeight;
         protected int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {
@@ -46,8 +46,8 @@ public final class MainPanel extends JPanel {
             return ps;
         }
     });
-    private final Timer animator = new Timer(5, e -> controls.revalidate());
-    private final Action findNextAction = new AbstractAction("Find Next") {
+    protected final Timer animator = new Timer(5, e -> controls.revalidate());
+    protected final Action findNextAction = new AbstractAction("Find Next") {
         @Override public void actionPerformed(ActionEvent e) {
             TreePath selectedPath = tree.getSelectionPath();
             tree.clearSelection();
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
+    protected final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
             if (!animator.isRunning()) {
                 isHidden = controls.getHeight() == 0;
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
         set2.add(set3);
         return new DefaultTreeModel(root);
     }
-    private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
+    protected static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
         Object o = path.getLastPathComponent();
         if (o instanceof TreeNode) {
             TreeNode node = (TreeNode) o;

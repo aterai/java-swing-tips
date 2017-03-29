@@ -10,11 +10,11 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
-    private final JTextField textField1 = new JTextField(TEXT);
-    private final JTextField textField2 = new JTextField(TEXT);
-    private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
-    private final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
+    protected static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
+    protected final JTextField textField1 = new JTextField(TEXT);
+    protected final JTextField textField2 = new JTextField(TEXT);
+    protected final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
+    protected final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ArrowButtonlessScrollBarUI());
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
             return d;
         }
     };
-    private final transient EmptyThumbHandler handler = new EmptyThumbHandler(textField1, scroller1);
+    protected final transient EmptyThumbHandler handler = new EmptyThumbHandler(textField1, scroller1);
 
     public MainPanel() {
         super(new BorderLayout());

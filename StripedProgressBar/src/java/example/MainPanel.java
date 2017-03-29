@@ -11,18 +11,20 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.nimbus.*;
 
-public class MainPanel extends JPanel implements HierarchyListener {
-    private final BoundedRangeModel model = new DefaultBoundedRangeModel();
-    private final JProgressBar progressBar0 = new JProgressBar(model);
-    private final JProgressBar progressBar1 = new JProgressBar(model);
-    private final JProgressBar progressBar2 = new JProgressBar(model);
-    private final JProgressBar progressBar3 = new JProgressBar(model);
-    private final JProgressBar progressBar4 = new JProgressBar(model);
-    private SwingWorker<String, Void> worker;
-    public MainPanel() {
+public final class MainPanel extends JPanel implements HierarchyListener {
+    private transient SwingWorker<String, Void> worker;
+
+    private MainPanel() {
         super(new BorderLayout());
         UIManager.put("ProgressBar.cycleTime", 1000);
         UIManager.put("ProgressBar.repaintInterval", 10);
+
+        BoundedRangeModel model = new DefaultBoundedRangeModel();
+        JProgressBar progressBar0 = new JProgressBar(model);
+        JProgressBar progressBar1 = new JProgressBar(model);
+        JProgressBar progressBar2 = new JProgressBar(model);
+        JProgressBar progressBar3 = new JProgressBar(model);
+        JProgressBar progressBar4 = new JProgressBar(model);
 
         progressBar1.setUI(new StripedProgressBarUI(true,  true));
         progressBar2.setUI(new StripedProgressBarUI(true,  false));
@@ -36,27 +38,28 @@ public class MainPanel extends JPanel implements HierarchyListener {
         p.add(makePanel(progressBar3));
         p.add(makePanel(progressBar4));
 
+        JButton button = new JButton("Test start");
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            progressBar0.setIndeterminate(true);
+            progressBar1.setIndeterminate(true);
+            progressBar2.setIndeterminate(true);
+            progressBar3.setIndeterminate(true);
+            progressBar4.setIndeterminate(true);
+            worker = new Task();
+            worker.addPropertyChangeListener(new ProgressListener(progressBar0));
+            worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+            worker.addPropertyChangeListener(new ProgressListener(progressBar2));
+            worker.addPropertyChangeListener(new ProgressListener(progressBar3));
+            worker.addPropertyChangeListener(new ProgressListener(progressBar4));
+            worker.execute();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Test start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                progressBar0.setIndeterminate(true);
-                progressBar1.setIndeterminate(true);
-                progressBar2.setIndeterminate(true);
-                progressBar3.setIndeterminate(true);
-                progressBar4.setIndeterminate(true);
-                worker = new Task();
-                worker.addPropertyChangeListener(new ProgressListener(progressBar0));
-                worker.addPropertyChangeListener(new ProgressListener(progressBar1));
-                worker.addPropertyChangeListener(new ProgressListener(progressBar2));
-                worker.addPropertyChangeListener(new ProgressListener(progressBar3));
-                worker.addPropertyChangeListener(new ProgressListener(progressBar4));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(5));
 
         addHierarchyListener(this);
@@ -73,7 +76,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
     }
 
-    private static JComponent makePanel(JComponent cmp) {
+    protected static JComponent makePanel(JComponent cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill    = GridBagConstraints.HORIZONTAL;
@@ -106,8 +109,8 @@ public class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class StripedProgressBarUI extends BasicProgressBarUI {
-    private final boolean dir;
-    private final boolean slope;
+    protected final boolean dir;
+    protected final boolean slope;
     protected StripedProgressBarUI(boolean dir, boolean slope) {
         super();
         this.dir = dir;

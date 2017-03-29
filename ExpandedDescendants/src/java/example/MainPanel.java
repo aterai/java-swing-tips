@@ -13,16 +13,14 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-//*
-    private final DefaultMutableTreeNode root = makeTreeRoot();
-    private final JTree tree = new JTree(new DefaultTreeModel(root));
-/*/
-    private final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-    private final JTree tree = new JTree();
-//*/
     private Enumeration<TreePath> expandedState;
+
     public MainPanel() {
         super(new BorderLayout());
+
+        DefaultMutableTreeNode root = makeTreeRoot();
+        JTree tree = new JTree(new DefaultTreeModel(root));
+
 //         //TEST:
 //         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 //         DefaultTreeModel treeModel = new DefaultTreeModel(root);
@@ -42,41 +40,52 @@ public final class MainPanel extends JPanel {
 //         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
 //         tree.expandRow(0);
 
-        final TreePath rootPath = new TreePath(root);
+        TreePath rootPath = new TreePath(root);
+
+        JButton save = new JButton("Save");
+        save.addActionListener(e -> setExpandedState(tree.getExpandedDescendants(rootPath)));
+
+        JButton load = new JButton("Load");
+        load.addActionListener(e -> {
+            visitAll(tree, rootPath, false);
+            if (Objects.isNull(expandedState)) {
+                return;
+            }
+            Enumeration<TreePath> expandedState = getExpandedState();
+            while (expandedState.hasMoreElements()) {
+                tree.expandPath(expandedState.nextElement());
+            }
+            setExpandedState(tree.getExpandedDescendants(rootPath));
+        });
+
+        JButton expand = new JButton("Expand");
+        expand.addActionListener(e -> visitAll(tree, rootPath, true));
+
+        JButton collapse = new JButton("Collapse");
+        collapse.addActionListener(e -> {
+            visitAll(tree, rootPath, false);
+            //tree.expandPath(rootPath);
+        });
+
         JPanel box = new JPanel(new GridLayout(1, 4));
-        box.add(new JButton(new AbstractAction("Save") {
-            @Override public void actionPerformed(ActionEvent e) {
-                expandedState = tree.getExpandedDescendants(rootPath);
-            }
-        }));
-        box.add(new JButton(new AbstractAction("Load") {
-            @Override public void actionPerformed(ActionEvent e) {
-                visitAll(tree, rootPath, false);
-                if (Objects.isNull(expandedState)) {
-                    return;
-                }
-                while (expandedState.hasMoreElements()) {
-                    tree.expandPath(expandedState.nextElement());
-                }
-                expandedState = tree.getExpandedDescendants(rootPath);
-            }
-        }));
-        box.add(new JButton(new AbstractAction("Expand") {
-            @Override public void actionPerformed(ActionEvent e) {
-                visitAll(tree, rootPath, true);
-            }
-        }));
-        box.add(new JButton(new AbstractAction("Collapse") {
-            @Override public void actionPerformed(ActionEvent e) {
-                visitAll(tree, rootPath, false);
-                //tree.expandPath(rootPath);
-            }
-        }));
+        box.add(save);
+        box.add(load);
+        box.add(expand);
+        box.add(collapse);
         add(box, BorderLayout.SOUTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void visitAll(JTree tree, TreePath parent, boolean expand) {
+
+    protected void setExpandedState(Enumeration<TreePath> expandedState) {
+        this.expandedState = expandedState;
+    }
+
+    protected Enumeration<TreePath> getExpandedState() {
+        return expandedState;
+    }
+
+    protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration<?> e = node.children();
@@ -91,7 +100,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    private static DefaultMutableTreeNode makeTreeRoot() {
+    protected static DefaultMutableTreeNode makeTreeRoot() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");

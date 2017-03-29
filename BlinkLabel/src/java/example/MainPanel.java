@@ -6,17 +6,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
-    private final JLabel label2 = new JLabel("", SwingConstants.CENTER);
-    private final Timer timer1 = new Timer(600, new ActionListener() {
+public class MainPanel extends JPanel {
+    protected final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
+    protected final JLabel label2 = new JLabel("", SwingConstants.CENTER);
+    protected final Timer timer1 = new Timer(600, new ActionListener() {
         protected boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
             flg ^= true;
             label1.setText(flg ? "\u25CB" : "\u25CF");
         }
     });
-    private final Timer timer2 = new Timer(300, new ActionListener() {
+    protected final Timer timer2 = new Timer(300, new ActionListener() {
         protected boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
             flg ^= true;

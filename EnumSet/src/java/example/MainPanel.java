@@ -10,33 +10,32 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"user", "rwx"};
-    private final Object[][] data = {
-        {"owner", EnumSet.allOf(Permissions.class)}, //EnumSet.of(Permissions.READ, Permissions.WRITE, Permissions.EXECUTE)},
-        {"group", EnumSet.of(Permissions.READ)},
-        {"other", EnumSet.noneOf(Permissions.class)}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-    private final JLabel label = new JLabel();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"user", "rwx"};
+        Object[][] data = {
+            {"owner", EnumSet.allOf(Permissions.class)}, //EnumSet.of(Permissions.READ, Permissions.WRITE, Permissions.EXECUTE)},
+            {"group", EnumSet.of(Permissions.READ)},
+            {"other", EnumSet.noneOf(Permissions.class)}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        if (System.getProperty("java.version").startsWith("1.6.0")) {
-            //1.6.0_xx bug? column header click -> edit cancel?
-            table.getTableHeader().addMouseListener(new MouseAdapter() {
-                @Override public void mousePressed(MouseEvent e) {
-                    if (table.isEditing()) {
-                        table.getCellEditor().stopCellEditing();
-                    }
-                }
-            });
-        }
+//         if (System.getProperty("java.version").startsWith("1.6.0")) {
+//             //1.6.0_xx bug? column header click -> edit cancel?
+//             table.getTableHeader().addMouseListener(new MouseAdapter() {
+//                 @Override public void mousePressed(MouseEvent e) {
+//                     if (table.isEditing()) {
+//                         table.getCellEditor().stopCellEditing();
+//                     }
+//                 }
+//             });
+//         }
 
         TableColumn c = table.getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());
@@ -47,39 +46,40 @@ public final class MainPanel extends JPanel {
         map.put(Permissions.WRITE,   1 << 1);
         map.put(Permissions.EXECUTE, 1 << 0);
 
+        JLabel label = new JLabel();
+        JButton button = new JButton("ls -l (chmod)");
+        button.addActionListener(e -> {
+            StringBuilder nbuf = new StringBuilder(3);
+            StringBuilder buf = new StringBuilder(9);
+            for (int i = 0; i < model.getRowCount(); i++) {
+                EnumSet<?> v = (EnumSet<?>) model.getValueAt(i, 1);
+                int flg = 0;
+                if (v.contains(Permissions.READ)) {
+                    flg |= map.get(Permissions.READ);
+                    buf.append('r');
+                } else {
+                    buf.append('-');
+                }
+                if (v.contains(Permissions.WRITE)) {
+                    flg |= map.get(Permissions.WRITE);
+                    buf.append('w');
+                } else {
+                    buf.append('-');
+                }
+                if (v.contains(Permissions.EXECUTE)) {
+                    flg |= map.get(Permissions.EXECUTE);
+                    buf.append('x');
+                } else {
+                    buf.append('-');
+                }
+                nbuf.append(flg);
+            }
+            label.setText(String.format(" %s -%s", nbuf, buf));
+        });
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(label);
-        p.add(new JButton(new AbstractAction("ls -l (chmod)") {
-            private static final String M = "-";
-            @Override public void actionPerformed(ActionEvent e) {
-                StringBuilder nbuf = new StringBuilder(3);
-                StringBuilder buf = new StringBuilder(9);
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    EnumSet<?> v = (EnumSet<?>) model.getValueAt(i, 1);
-                    int flg = 0;
-                    if (v.contains(Permissions.READ)) {
-                        flg |= map.get(Permissions.READ);
-                        buf.append('r');
-                    } else {
-                        buf.append(M);
-                    }
-                    if (v.contains(Permissions.WRITE)) {
-                        flg |= map.get(Permissions.WRITE);
-                        buf.append('w');
-                    } else {
-                        buf.append(M);
-                    }
-                    if (v.contains(Permissions.EXECUTE)) {
-                        flg |= map.get(Permissions.EXECUTE);
-                        buf.append('x');
-                    } else {
-                        buf.append(M);
-                    }
-                    nbuf.append(flg);
-                }
-                label.setText(String.format(" %s %s%s", nbuf, M, buf));
-            }
-        }), BorderLayout.EAST);
+        p.add(button, BorderLayout.EAST);
         add(new JScrollPane(table));
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
