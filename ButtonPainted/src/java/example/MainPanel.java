@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
+// @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
     private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
     private LookAndFeelUtil() { /* Singleton */ }
@@ -133,19 +133,17 @@ final class LookAndFeelUtil {
         }
         return menu;
     }
-    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, final ButtonGroup lookAndFeelRadioGroup) {
+    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lookAndFeelRadioGroup) {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
         lafItem.setSelected(lafClassName.equals(lookAndFeel));
         lafItem.setHideActionText(true);
-        lafItem.setAction(new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try {
-                    setLookAndFeel(m.getActionCommand());
-                } catch (ClassNotFoundException | InstantiationException
-                       | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
-                }
+        lafItem.addActionListener(e -> {
+            ButtonModel m = lookAndFeelRadioGroup.getSelection();
+            try {
+                setLookAndFeel(m.getActionCommand());
+            } catch (ClassNotFoundException | InstantiationException
+                   | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
             }
         });
         lafItem.setText(lafName);

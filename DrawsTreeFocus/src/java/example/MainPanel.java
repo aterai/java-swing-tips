@@ -116,7 +116,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
+// @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
     private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
     private LookAndFeelUtil() { /* Singleton */ }
@@ -128,7 +128,7 @@ final class LookAndFeelUtil {
         }
         return menu;
     }
-    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, final ButtonGroup lookAndFeelRadioGroup) {
+    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lookAndFeelRadioGroup) {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
         lafItem.setSelected(lafClassName.equals(lookAndFeel));
         lafItem.setHideActionText(true);
