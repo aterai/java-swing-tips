@@ -3,25 +3,23 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    private final JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
-    private final JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
-    private final JSlider slider2 = new JSlider(SwingConstants.VERTICAL);
-    private final JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
-    private final JSlider slider4 = new JSlider(SwingConstants.HORIZONTAL);
-    private final JSlider slider5 = new JSlider(SwingConstants.HORIZONTAL);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        for (JSlider s: Arrays.asList(slider0, slider1, slider2, slider3, slider4, slider5)) {
-            s.setModel(model);
-        }
+        JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
+        JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
+        JSlider slider2 = new JSlider(SwingConstants.VERTICAL);
+        JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
+        JSlider slider4 = new JSlider(SwingConstants.HORIZONTAL);
+        JSlider slider5 = new JSlider(SwingConstants.HORIZONTAL);
+
+        BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
+        Arrays.asList(slider0, slider1, slider2, slider3, slider4, slider5).forEach(s -> s.setModel(model));
+
         slider1.setMajorTickSpacing(20);
         slider1.setPaintTicks(true);
         slider2.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
