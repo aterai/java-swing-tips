@@ -11,18 +11,17 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
-
-    private final String[] columnNames = {"A", "B"};
-    private final Object[][] data = {
-        {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
-    };
-    private final JTable table = new JTable(new DefaultTableModel(data, columnNames));
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTextArea textArea = new JTextArea();
+
+        String[] columnNames = {"A", "B"};
+        Object[][] data = {
+            {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
+        };
+        JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setAutoCreateRowSorter(true);
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -52,7 +51,11 @@ public class MainPanel extends JPanel {
         }));
         p.add(new JButton(new AbstractAction("XMLDecoder") {
             @Override public void actionPerformed(ActionEvent e) {
-                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(textArea.getText().getBytes(StandardCharsets.UTF_8))))) {
+                String text = textArea.getText();
+                if (text.isEmpty()) {
+                    return;
+                }
+                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
                     @SuppressWarnings("unchecked")
                     List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
                     DefaultTableModel model = (DefaultTableModel) xd.readObject();

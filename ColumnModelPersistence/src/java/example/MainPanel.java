@@ -6,23 +6,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
-
-    private final String[] columnNames = {"A", "B"};
-    private final Object[][] data = {
-        {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
-    };
-    private final JTable table = new JTable(new DefaultTableModel(data, columnNames));
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextArea textArea = new JTextArea();
 
+        String[] columnNames = {"A", "B"};
+        Object[][] data = {
+            {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
+        };
+        JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu());
 
@@ -31,50 +30,53 @@ public class MainPanel extends JPanel {
         sp.setTopComponent(new JScrollPane(table));
         sp.setBottomComponent(new JScrollPane(textArea));
 
+        JButton encButton = new JButton("XMLEncoder");
+        encButton.addActionListener(e -> {
+            try {
+                File file = File.createTempFile("output", ".xml");
+                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                    xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
+                    xe.writeObject(table.getRowSorter().getSortKeys());
+
+                    xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+                    xe.writeObject(table.getModel());
+
+                    xe.setPersistenceDelegate(DefaultTableColumnModel.class, new DefaultTableColumnModelPersistenceDelegate());
+                    xe.writeObject(table.getColumnModel());
+                }
+                try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                    textArea.read(r, "temp");
+                }
+//             } catch (IOException ex) {
+//                 ex.printStackTrace();
+            }
+        });
+
+        JButton decButton = new JButton("XMLDecoder");
+        decButton.addActionListener(e -> {
+            String text = textArea.getText();
+            if (text.isEmpty()) {
+                return;
+            }
+            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+                @SuppressWarnings("unchecked")
+                List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+                DefaultTableModel model = (DefaultTableModel) xd.readObject();
+                table.setModel(model);
+                table.setAutoCreateRowSorter(true);
+                table.getRowSorter().setSortKeys(keys);
+                DefaultTableColumnModel cm = (DefaultTableColumnModel) xd.readObject();
+                table.setColumnModel(cm);
+            }
+        });
+
+        JButton clearButton = new JButton("clear");
+        clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
+
         JPanel p = new JPanel();
-        p.add(new JButton(new AbstractAction("XMLEncoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try {
-                    File file = File.createTempFile("output", ".xml");
-                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-                        xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
-                        xe.writeObject(table.getRowSorter().getSortKeys());
-
-                        xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
-                        xe.writeObject(table.getModel());
-
-                        xe.setPersistenceDelegate(DefaultTableColumnModel.class, new DefaultTableColumnModelPersistenceDelegate());
-                        xe.writeObject(table.getColumnModel());
-                    }
-                    try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-                        textArea.read(r, "temp");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("XMLDecoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(textArea.getText().getBytes("UTF-8"))))) {
-                    @SuppressWarnings("unchecked")
-                    List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
-                    DefaultTableModel model = (DefaultTableModel) xd.readObject();
-                    table.setModel(model);
-                    table.setAutoCreateRowSorter(true);
-                    table.getRowSorter().setSortKeys(keys);
-                    DefaultTableColumnModel cm = (DefaultTableColumnModel) xd.readObject();
-                    table.setColumnModel(cm);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setModel(new DefaultTableModel());
-            }
-        }));
+        p.add(encButton);
+        p.add(decButton);
+        p.add(clearButton);
         add(sp);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
@@ -130,8 +132,8 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
 }
 
 class TableHeaderPopupMenu extends JPopupMenu {
-    private final JTextField textField = new JTextField();
-    private final JMenuItem editItem = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
+    protected final JTextField textField = new JTextField();
+    protected final JMenuItem editItem = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
         @Override public void actionPerformed(ActionEvent e) {
             JTableHeader header = (JTableHeader) getInvoker();
             TableColumn column = header.getColumnModel().getColumn(index);
@@ -149,7 +151,7 @@ class TableHeaderPopupMenu extends JPopupMenu {
             }
         }
     });
-    private int index = -1;
+    protected int index = -1;
     protected TableHeaderPopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {

@@ -59,8 +59,12 @@ public final class MainPanel extends JPanel {
         });
 
         load.addActionListener(e -> {
+            String text = textArea.getText();
+            if (text.isEmpty()) {
+                return;
+            }
             //try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("output.xml"))))) {
-            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(textArea.getText().getBytes(StandardCharsets.UTF_8))))) {
+            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
                 DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
                 m.addTreeModelListener(new CheckBoxStatusUpdateListener());
                 tree.setModel(m);
