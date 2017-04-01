@@ -9,46 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
-    private final JComboBox<? extends Enum> algorithmsChoices    = new JComboBox<>(SortAlgorithms.values());
-    private final SpinnerNumberModel model;
-    private final JSpinner spinner;
-    private SwingWorker<String, Rectangle> worker;
-    private final JButton startButton = new JButton(new AbstractAction("Start") {
-        @Override public void actionPerformed(ActionEvent e) {
-            setComponentEnabled(false);
-            int tmp = model.getNumber().intValue();
-            if (tmp != number) {
-                number = tmp;
-                genArray(number);
-            }
-            SortAlgorithms sa = (SortAlgorithms) algorithmsChoices.getSelectedItem();
-            Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
-            worker = new UITask(sa, number, array, paintArea, factorx, factory);
-            worker.execute();
-        }
-    });
-    private final JButton cancelButton = new JButton(new AbstractAction("Cancel") {
-        @Override public void actionPerformed(ActionEvent e) {
-            if (Objects.nonNull(worker) && !worker.isDone()) {
-                worker.cancel(true);
-            }
-        }
-    });
-    private final JPanel panel = new JPanel() {
-        @Override protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            //g.setColor(DRAW_COLOR);
-            for (int i = 0; i < number; i++) {
-                int px = (int) (MINX + factorx * i);
-                int py = MAXY - (int) (factory * array.get(i));
-                g.setColor(i % 5 == 0 ? Color.RED : DRAW_COLOR);
-                g.drawOval(px, py, 4, 4);
-            }
-        }
-    };
-
+public class MainPanel extends JPanel {
     private static final Color DRAW_COLOR = Color.BLACK;
     private static final Color BACK_COLOR = Color.WHITE;
     private static final int MINX = 5;
@@ -61,18 +22,40 @@ public final class MainPanel extends JPanel {
     private int number = 150;
     private double factorx;
     private double factory;
+    private transient SwingWorker<String, Rectangle> worker;
+
+    private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
+    private final JComboBox<? extends Enum> algorithmsChoices    = new JComboBox<>(SortAlgorithms.values());
+    private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
+    private final JSpinner spinner = new JSpinner(model);
+    private final JButton startButton  = new JButton("Start");
+    private final JButton cancelButton = new JButton("Cancel");
+    protected final JPanel panel = new JPanel() {
+        @Override protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            drawAllOval(g);
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
         genArray(number);
-        model = new SpinnerNumberModel(number, MINN, MAXN, 10);
-        spinner = new JSpinner(model);
-        ItemListener il = new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    genArray(number);
-                    panel.repaint();
-                }
+
+        startButton.addActionListener(e -> {
+            setComponentEnabled(false);
+            workerExecute();
+        });
+
+        cancelButton.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+        });
+
+        ItemListener il = e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                genArray(number);
+                panel.repaint();
             }
         };
         distributionsChoices.addItemListener(il);
@@ -100,14 +83,23 @@ public final class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void setComponentEnabled(boolean flag) {
+    protected void drawAllOval(Graphics g) {
+        //g.setColor(DRAW_COLOR);
+        for (int i = 0; i < number; i++) {
+            int px = (int) (MINX + factorx * i);
+            int py = MAXY - (int) (factory * array.get(i));
+            g.setColor(i % 5 == 0 ? Color.RED : DRAW_COLOR);
+            g.drawOval(px, py, 4, 4);
+        }
+    }
+    protected final void setComponentEnabled(boolean flag) {
         cancelButton.setEnabled(!flag);
         startButton.setEnabled(flag);
         spinner.setEnabled(flag);
         distributionsChoices.setEnabled(flag);
         algorithmsChoices.setEnabled(flag);
     }
-    private void genArray(int n) {
+    protected void genArray(int n) {
         array.clear();
         factorx = (MAXX - MINX) / (double) n;
         factory = MAXY - MINY;
@@ -127,6 +119,17 @@ public final class MainPanel extends JPanel {
                 throw new AssertionError("Unknown GenerateInputs");
             }
         }
+    }
+    protected final void workerExecute() {
+        int tmp = model.getNumber().intValue();
+        if (tmp != number) {
+            number = tmp;
+            genArray(number);
+        }
+        SortAlgorithms sa = (SortAlgorithms) algorithmsChoices.getSelectedItem();
+        Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
+        worker = new UITask(sa, number, array, paintArea, factorx, factory);
+        worker.execute();
     }
     private class UITask extends SortingTask {
         protected UITask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {

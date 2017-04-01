@@ -10,8 +10,8 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(240, 255, 250);
-    private final JCheckBox check1;
-    private final JCheckBox check2;
+    private final JCheckBox check1 = new JCheckBox("!comment.isEmpty()");
+    private final JCheckBox check2 = new JCheckBox("idx % 2 == 0");
     private final TestModel model = new TestModel();
     private final transient TableRowSorter<? extends TestModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model) {
@@ -27,7 +27,6 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(sorter);
@@ -51,42 +50,38 @@ public final class MainPanel extends JPanel {
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        final Set<RowFilter<? super TestModel, ? super Integer>> filters = new HashSet<>(2);
-        final RowFilter<TestModel, Integer> filter1 = new RowFilter<TestModel, Integer>() {
+        Set<RowFilter<? super TestModel, ? super Integer>> filters = new HashSet<>(2);
+        RowFilter<TestModel, Integer> filter1 = new RowFilter<TestModel, Integer>() {
             @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
                 TestModel model = entry.getModel();
                 Test t = model.getTest(entry.getIdentifier());
                 return !t.getComment().trim().isEmpty();
             }
         };
-        final RowFilter<TestModel, Integer> filter2 = new RowFilter<TestModel, Integer>() {
+        RowFilter<TestModel, Integer> filter2 = new RowFilter<TestModel, Integer>() {
             @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
                 return entry.getIdentifier() % 2 == 0;
             }
         };
         //sorter.setRowFilter(RowFilter.andFilter(filters));
         //sorter.setRowFilter(filter1);
-        check1 = new JCheckBox(new AbstractAction("!comment.isEmpty()") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                if (cb.isSelected()) {
-                    filters.add(filter1);
-                } else {
-                    filters.remove(filter1);
-                }
-                sorter.setRowFilter(RowFilter.andFilter(filters));
+        check1.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            if (cb.isSelected()) {
+                filters.add(filter1);
+            } else {
+                filters.remove(filter1);
             }
+            sorter.setRowFilter(RowFilter.andFilter(filters));
         });
-        check2 = new JCheckBox(new AbstractAction("idx % 2 == 0") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                if (cb.isSelected()) {
-                    filters.add(filter2);
-                } else {
-                    filters.remove(filter2);
-                }
-                sorter.setRowFilter(RowFilter.andFilter(filters));
+        check2.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            if (cb.isSelected()) {
+                filters.add(filter2);
+            } else {
+                filters.remove(filter2);
             }
+            sorter.setRowFilter(RowFilter.andFilter(filters));
         });
         Box box = Box.createHorizontalBox();
         box.add(check1);
@@ -95,25 +90,42 @@ public final class MainPanel extends JPanel {
         add(scrollPane);
         setPreferredSize(new Dimension(320, 240));
     }
+    protected boolean canAddRow() {
+        return !check1.isSelected() && !check2.isSelected();
+        //return filters.isEmpty();
+    }
     private class TablePopupMenu extends JPopupMenu {
-        private final Action addAction;
-        private final Action deleteAction;
+        private final Action addAction = new AbstractAction("add") {
+            @Override public void actionPerformed(ActionEvent e) {
+                JTable table = (JTable) getInvoker();
+                TestModel model = (TestModel) table.getModel();
+                model.addTest(new Test("example", ""));
+            }
+        };
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                JTable table = (JTable) getInvoker();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                int[] selection = table.getSelectedRows();
+                for (int i = selection.length - 1; i >= 0; i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+            }
+        };
         protected TablePopupMenu() {
             super();
-            addAction = new TestCreateAction("add", table);
-            deleteAction = new DeleteAction("delete", table);
             add(addAction);
-            //add(new ClearAction("clearSelection"));
             addSeparator();
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            addAction.setEnabled(!check1.isSelected() && !check2.isSelected());
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
+            if (c instanceof JTable) {
+                addAction.setEnabled(canAddRow());
+                deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+                super.show(c, x, y);
+            }
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -194,32 +206,5 @@ class Test {
     }
     public String getComment() {
         return comment;
-    }
-}
-
-class TestCreateAction extends AbstractAction {
-    private final JTable table;
-    protected TestCreateAction(String label, JTable table) {
-        super(label);
-        this.table = table;
-    }
-    @Override public void actionPerformed(ActionEvent e) {
-        TestModel model = (TestModel) table.getModel();
-        model.addTest(new Test("example", ""));
-    }
-}
-
-class DeleteAction extends AbstractAction {
-    private final JTable table;
-    protected DeleteAction(String label, JTable table) {
-        super(label);
-        this.table = table;
-    }
-    @Override public void actionPerformed(ActionEvent e) {
-        int[] selection = table.getSelectedRows();
-        TestModel model = (TestModel) table.getModel();
-        for (int i = selection.length - 1; i >= 0; i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
-        }
     }
 }

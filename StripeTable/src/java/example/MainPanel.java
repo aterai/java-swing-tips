@@ -8,25 +8,34 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
-    private final JTable table;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model);
-//        table = new JTable(model) {
-//            private static final Color EVEN_COLOR = new Color(240, 240, 255);
-//            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//                Component c = super.prepareRenderer(tcr, row, column);
-//                if (isRowSelected(row)) {
-//                    c.setForeground(getSelectionForeground());
-//                    c.setBackground(getSelectionBackground());
-//                } else {
-//                    c.setForeground(getForeground());
-//                    c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
-//                }
-//               return c;
-//            }
-//        };
+
+        TestModel model = new TestModel();
+        model.addTest(new Test("Name 1", "comment..."));
+        model.addTest(new Test("Name 2", "Test"));
+        model.addTest(new Test("Name d", "ee"));
+        model.addTest(new Test("Name c", "Test cc"));
+        model.addTest(new Test("Name b", "Test bb"));
+        model.addTest(new Test("Name a", "ff"));
+        model.addTest(new Test("Name 0", "Test aa"));
+
+        JTable table = new JTable(model);
+//         //TEST:
+//         JTable table = new JTable(model) {
+//             protected final Color evenColor = new Color(240, 240, 255);
+//             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+//                 Component c = super.prepareRenderer(tcr, row, column);
+//                 if (isRowSelected(row)) {
+//                     c.setForeground(getSelectionForeground());
+//                     c.setBackground(getSelectionBackground());
+//                 } else {
+//                     c.setForeground(getForeground());
+//                     c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+//                 }
+//                 return c;
+//             }
+//         };
 
         StripeTableRenderer renderer = new StripeTableRenderer();
         table.setDefaultRenderer(Object.class, renderer);
@@ -41,59 +50,12 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
-
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addTest(new Test("New row", ""));
-            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(new TestCreateAction("add"));
-            //add(new ClearAction("clearSelection"));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -187,5 +149,39 @@ class Test {
     }
     public String getComment() {
         return comment;
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action addAction = new AbstractAction("add") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            TestModel model = (TestModel) table.getModel();
+            model.addTest(new Test("New row", ""));
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
+        }
+    };
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add(addAction);
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }

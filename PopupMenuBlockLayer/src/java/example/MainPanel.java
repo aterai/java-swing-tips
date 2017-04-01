@@ -5,107 +5,56 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false},
-    };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            // ArrayIndexOutOfBoundsException: 0 >= 0
-            // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
-            // http://bugs.java.com/view_bug.do?bug_id=6967479
-            //return getValueAt(0, column).getClass();
-            switch (column) {
-              case 0:
-                return String.class;
-              case 1:
-                return Number.class;
-              case 2:
-                return Boolean.class;
-              default:
-                return super.getColumnClass(column);
-            }
-        }
-    };
-    private final JTable table = new JTable(model) {
-        @Override public String getToolTipText(MouseEvent e) {
-            int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-            TableModel m = getModel();
-            return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
-        }
-    };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        for (int i = 0; i < 100; i++) {
-            model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE});
-        }
 
-        JScrollPane scroll = new JScrollPane(table);
-//         {
-//             @Override public JPopupMenu getComponentPopupMenu() {
-//                 System.out.println("JScrollPane#getComponentPopupMenu");
-//                 return check.isSelected() ? null : super.getComponentPopupMenu();
-//             }
-//         };
-        scroll.setComponentPopupMenu(new TablePopupMenu());
-        table.setInheritsPopupMenu(true);
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                // ArrayIndexOutOfBoundsException: 0 >= 0
+                // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+                // http://bugs.java.com/view_bug.do?bug_id=6967479
+                //return getValueAt(0, column).getClass();
+                switch (column) {
+                  case 0:
+                    return String.class;
+                  case 1:
+                    return Number.class;
+                  case 2:
+                    return Boolean.class;
+                  default:
+                    return super.getColumnClass(column);
+                }
+            }
+        };
+        IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
+
+        JTable table = new JTable(model) {
+            @Override public String getToolTipText(MouseEvent e) {
+                int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
+                TableModel m = getModel();
+                return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+            }
+        };
         table.setAutoCreateRowSorter(true);
+        table.setComponentPopupMenu(new TablePopupMenu());
 
         DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
+        JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
         check.addItemListener(e -> layerUI.setLocked(((JCheckBox) e.getItemSelectable()).isSelected()));
+
+        JScrollPane scroll = new JScrollPane(table);
 
         add(new JLayer<>(scroll, layerUI));
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {"New Name", 0, Boolean.FALSE});
-            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(rect);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action createAction = new TestCreateAction("add");
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(createAction);
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            createAction.setEnabled(!check.isSelected());
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -128,10 +77,12 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
     private static final String CMD_REPAINT = "lock";
     private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
+
     public void setLocked(boolean flag) {
         firePropertyChange(CMD_REPAINT, isBlocking, flag);
         isBlocking = flag;
@@ -162,6 +113,37 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
         String cmd = pce.getPropertyName();
         if (CMD_REPAINT.equals(cmd)) {
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());
+        }
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final JMenuItem deleteMenuItem;
+
+    protected TablePopupMenu() {
+        super();
+        add("add").addActionListener(e -> {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(new Object[] {"New Name", 0, Boolean.FALSE});
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(rect);
+        });
+        addSeparator();
+        deleteMenuItem = add("delete");
+        deleteMenuItem.addActionListener(e -> {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        });
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteMenuItem.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
         }
     }
 }
