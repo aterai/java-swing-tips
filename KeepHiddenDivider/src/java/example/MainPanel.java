@@ -9,23 +9,23 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
+public class MainPanel extends JPanel {
+    protected final String[] columnNames = {"String", "Integer", "Boolean"};
+    protected final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
+    protected final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model);
-    private final JScrollPane s1 = new JScrollPane(new JTable(model));
-    private final JScrollPane s2 = new JScrollPane(new JTree());
-    private final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
+    protected final JTable table = new JTable(model);
+    protected final JScrollPane s1 = new JScrollPane(new JTable(model));
+    protected final JScrollPane s2 = new JScrollPane(new JTree());
+    protected final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
 
-    private final Action minAction = new AbstractAction("Min:Action") {
+    protected final Action minAction = new AbstractAction("Min:Action") {
         @Override public void actionPerformed(final ActionEvent e) {
             splitPane.requestFocusInWindow();
             EventQueue.invokeLater(() -> {
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
             });
         }
     };
-    private final Action maxAction = new AbstractAction("Max:Action") {
+    protected final Action maxAction = new AbstractAction("Max:Action") {
         @Override public void actionPerformed(final ActionEvent e) {
             splitPane.requestFocusInWindow();
             EventQueue.invokeLater(() -> {

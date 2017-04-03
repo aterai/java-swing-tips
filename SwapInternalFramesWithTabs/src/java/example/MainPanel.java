@@ -15,8 +15,14 @@ public final class MainPanel extends JPanel {
     private int openFrameCount;
     private int row;
     private int col;
-    private final Action swapAction = new AbstractAction("JDesktopPane <-> JTabbedPane") {
-        @Override public void actionPerformed(ActionEvent e) {
+
+    public MainPanel() {
+        super(new BorderLayout());
+        panel.add(desktopPane, desktopPane.getClass().getName());
+        panel.add(tabbedPane, tabbedPane.getClass().getName());
+
+        JToggleButton swapButton = new JToggleButton("JDesktopPane <-> JTabbedPane");
+        swapButton.addActionListener(e -> {
             if (((AbstractButton) e.getSource()).isSelected()) {
                 //tabbedPane.removeAll();
                 Arrays.stream(desktopPane.getAllFrames())
@@ -30,10 +36,10 @@ public final class MainPanel extends JPanel {
                       .forEach(f -> f.setContentPane((Container) tabbedPane.getComponentAt(tabbedPane.indexOfTab(f.getTitle()))));
                 cardLayout.show(panel, desktopPane.getClass().getName());
             }
-        }
-    };
-    private final Action addAction = new AbstractAction("add") {
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+
+        JButton addButton = new JButton("add");
+        addButton.addActionListener(e -> {
             JInternalFrame f = createInternalFrame();
             desktopPane.add(f);
             Icon icon = f.getFrameIcon();
@@ -44,19 +50,13 @@ public final class MainPanel extends JPanel {
             } else {
                 tabbedPane.addTab(title, icon, c);
             }
-        }
-    };
-
-    public MainPanel() {
-        super(new BorderLayout());
-        panel.add(desktopPane, desktopPane.getClass().getName());
-        panel.add(tabbedPane, tabbedPane.getClass().getName());
+        });
 
         JToolBar toolbar = new JToolBar("toolbar");
         toolbar.setFloatable(false);
-        toolbar.add(new JButton(addAction));
+        toolbar.add(addButton);
         toolbar.add(Box.createGlue());
-        toolbar.add(new JToggleButton(swapAction));
+        toolbar.add(swapButton);
 
         add(panel);
         add(toolbar, BorderLayout.NORTH);

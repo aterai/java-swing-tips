@@ -50,13 +50,13 @@ public final class MainPanel extends JPanel {
 }
 
 class TabTitleEditListener extends MouseAdapter implements ChangeListener, DocumentListener {
-    private final JTextField editor = new JTextField();
-    private final JTabbedPane tabbedPane;
-    private int editingIdx = -1;
-    private int len = -1;
-    private Dimension dim;
-    private Component tabComponent;
-    private final Action startEditing = new AbstractAction() {
+    protected final JTextField editor = new JTextField();
+    protected final JTabbedPane tabbedPane;
+    protected int editingIdx = -1;
+    protected int len = -1;
+    protected Dimension dim;
+    protected Component tabComponent;
+    protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             editingIdx = tabbedPane.getSelectedIndex();
             tabComponent = tabbedPane.getTabComponentAt(editingIdx);
@@ -70,7 +70,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
             editor.setMinimumSize(dim);
         }
     };
-    private final Action renameTabTitle = new AbstractAction() {
+    protected final Action renameTabTitle = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             String title = editor.getText().trim();
             if (editingIdx >= 0 && !title.isEmpty()) {
@@ -79,7 +79,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
             cancelEditing.actionPerformed(null);
         }
     };
-    private final Action cancelEditing = new AbstractAction() {
+    protected final Action cancelEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             if (editingIdx >= 0) {
                 tabbedPane.setTabComponentAt(editingIdx, tabComponent);
@@ -141,7 +141,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
             renameTabTitle.actionPerformed(null);
         }
     }
-    private void updateTabSize() {
+    protected void updateTabSize() {
         editor.setPreferredSize(editor.getText().length() > len ? null : dim);
         tabbedPane.revalidate();
     }

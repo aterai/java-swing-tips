@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JComboBox<String> combo = new JComboBox<>();
-    private final JButton button;
-    private SwingWorker<String[], Integer> worker;
-    private int counter;
+public class MainPanel extends JPanel {
+    protected final JComboBox<String> combo;
+    protected final JButton button;
+    protected transient SwingWorker<String[], Integer> worker;
+    protected int counter;
+
     public MainPanel() {
         super(new BorderLayout(5, 5));
+        combo = new JComboBox<>();
         combo.setRenderer(new ProgressCellRenderer());
         button = new JButton(new AbstractAction("load") {
             @Override public void actionPerformed(ActionEvent e) {

@@ -10,14 +10,14 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public final class MainPanel extends JPanel {
-    private final JTextField textField0 = new JTextField("default");
-    private final JTextField textField1 = new JTextField();
-    private final JTextField textField2 = new JTextField();
-    private final UndoManager undoManager0 = new UndoManager();
-    private final UndoManager undoManager1 = new UndoManager();
-    private final DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
-    private final Action undoAction = new AbstractAction("undo") {
+public class MainPanel extends JPanel {
+    protected final JTextField textField0 = new JTextField("default");
+    protected final JTextField textField1 = new JTextField();
+    protected final JTextField textField2 = new JTextField();
+    protected final UndoManager undoManager0 = new UndoManager();
+    protected final UndoManager undoManager1 = new UndoManager();
+    protected final DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
+    protected final Action undoAction = new AbstractAction("undo") {
         @Override public void actionPerformed(ActionEvent e) {
             for (UndoManager um: Arrays.asList(undoManager0, undoManager1, undoManager2)) {
                 if (um.canUndo()) {
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final Action redoAction = new AbstractAction("redo") {
+    protected final Action redoAction = new AbstractAction("redo") {
         @Override public void actionPerformed(ActionEvent e) {
             for (UndoManager um: Arrays.asList(undoManager0, undoManager1, undoManager2)) {
                 if (um.canRedo()) {
@@ -135,7 +135,7 @@ class CustomUndoPlainDocument extends PlainDocument {
 }
 
 class DocumentFilterUndoManager extends UndoManager {
-    private CompoundEdit compoundEdit;
+    protected CompoundEdit compoundEdit;
     private final transient DocumentFilter undoFilter = new DocumentFilter() {
         @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
             if (length == 0) {
