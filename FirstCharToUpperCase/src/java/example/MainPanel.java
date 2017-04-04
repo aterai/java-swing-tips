@@ -8,19 +8,19 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field1 = new JTextField("asdfasdfasdfasdfasdf");
-    private final JTextField field2 = new JTextField();
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
-        ((AbstractDocument) field2.getDocument()).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field2));
-        field2.setText("asdfasdfasdfasdfasdf");
 
-        add(makeTitlePanel(field1, "Default"));
-        add(makeTitlePanel(field2, "FirstCharToUpperCase"));
+        JTextField field = new JTextField();
+        ((AbstractDocument) field.getDocument()).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field));
+        field.setText("abcdefghijklmn");
+
+        add(makeTitlePanel(new JTextField("abcdefghijklmn"), "Default"));
+        add(makeTitlePanel(field, "FirstCharToUpperCase"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
@@ -52,25 +52,20 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
-    private final JTextComponent textArea;
-    protected FirstCharToUpperCaseDocumentFilter(JTextComponent textArea) {
+    protected final JTextComponent textField;
+    protected FirstCharToUpperCaseDocumentFilter(JTextComponent textField) {
         super();
-        this.textArea = textArea;
-    }
-    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
-        if (Objects.nonNull(text)) {
-            replace(fb, offset, 0, text, attrs);
-        }
+        this.textField = textField;
     }
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
         Document doc = fb.getDocument();
         if (offset == 0 && doc.getLength() - length > 0) {
-            fb.replace(0, length + 1, doc.getText(length, 1).toUpperCase(Locale.ENGLISH), null);
-            textArea.setCaretPosition(0);
-        } else {
-            fb.remove(offset, length);
+            fb.replace(length, 1, doc.getText(length, 1).toUpperCase(Locale.ENGLISH), null);
+            textField.setCaretPosition(offset);
         }
+        fb.remove(offset, length);
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         String str = text;
