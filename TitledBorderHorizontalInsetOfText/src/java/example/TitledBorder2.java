@@ -214,7 +214,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
-            Insets insets = getBorderInsets(border, c, new Insets(0, 0, 0, 0));
+            Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
             int borderX = x + edge;
             int borderY = y + edge;
@@ -320,7 +320,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
      */
     @Override public Insets getBorderInsets(Component c, Insets insets) { // NOPMD
         Border border = getBorder();
-        insets = getBorderInsets(border, c, insets);
+        insets = makeBorderInsets(border, c, insets);
 
         String title = getTitle();
         if (Objects.nonNull(title) && !title.isEmpty()) {
@@ -332,24 +332,22 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
               case ABOVE_TOP:
                 insets.top += size.height - edge;
                 break;
-              case TOP: {
-                  if (insets.top < size.height) {
-                      insets.top = size.height - edge;
-                  }
-                  break;
-              }
+              case TOP:
+                if (insets.top < size.height) {
+                    insets.top = size.height - edge;
+                }
+                break;
               case BELOW_TOP:
                 insets.top += size.height;
                 break;
               case ABOVE_BOTTOM:
                 insets.bottom += size.height;
                 break;
-              case BOTTOM: {
-                  if (insets.bottom < size.height) {
-                      insets.bottom = size.height - edge;
-                  }
-                  break;
-              }
+              case BOTTOM:
+                if (insets.bottom < size.height) {
+                    insets.bottom = size.height - edge;
+                }
+                break;
               case BELOW_BOTTOM:
                 insets.bottom += size.height - edge;
                 break;
@@ -545,7 +543,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
-            Insets insets = getBorderInsets(border, c, new Insets(0, 0, 0, 0));
+            Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
             int baseline = label.getBaseline(size.width, size.height);
             switch (getPosition()) { // NOPMD
@@ -567,6 +565,8 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
                     : baseline + height - size.height + insets.bottom;
               case BELOW_BOTTOM:
                 return baseline + height - size.height;
+              default:
+                // will NOT execute because of the line preceding the switch.
             }
         }
         return -1;
@@ -673,7 +673,8 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
         return this.label;
     }
 
-    private static Insets getBorderInsets(Border border, Component c, Insets insets) { // NOPMD
+    //private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
+    private static Insets makeBorderInsets(Border border, Component c, Insets insets) { // NOPMD
         if (Objects.isNull(border)) {
             insets.set(0, 0, 0, 0);
         } else if (border instanceof AbstractBorder) {
