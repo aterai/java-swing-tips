@@ -10,11 +10,11 @@ import java.io.IOException;
 import javax.imageio.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private Flip mode;
-    private final transient BufferedImage bufferedImage;
-    private final ButtonGroup bg = new ButtonGroup();
-    private final JPanel p = new JPanel() {
+public class MainPanel extends JPanel {
+    protected Flip mode;
+    protected final transient BufferedImage bufferedImage;
+    protected final ButtonGroup bg = new ButtonGroup();
+    protected final JPanel p = new JPanel() {
         @Override protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         BufferedImage bi = null;
         try {
-            bi = ImageIO.read(getClass().getResource("test.jpg"));
+            bi = ImageIO.read(MainPanel.class.getResource("test.jpg"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

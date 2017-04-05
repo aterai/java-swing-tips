@@ -6,11 +6,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JDialog dialog = new JDialog();
-    private final Timer animator;
-    private final transient Image[] imglist = new Image[4];
-    private final transient TrayIcon icon;
+public class MainPanel extends JPanel {
+    protected final JDialog dialog = new JDialog();
+    protected final Timer animator = new Timer(100, null);
+    protected final transient Image[] imglist = new Image[4];
+    protected final transient TrayIcon icon;
+    protected int idx;
 
     public MainPanel() {
         super();
@@ -20,10 +21,11 @@ public final class MainPanel extends JPanel {
             throw new UnsupportedOperationException("SystemTray is not supported");
         }
 
-        imglist[0] = new ImageIcon(getClass().getResource("16x16.png")).getImage();
-        imglist[1] = new ImageIcon(getClass().getResource("16x16l.png")).getImage();
+        Class<?> clz = MainPanel.class;
+        imglist[0] = new ImageIcon(clz.getResource("16x16.png")).getImage();
+        imglist[1] = new ImageIcon(clz.getResource("16x16l.png")).getImage();
         imglist[2] = imglist[0];
-        imglist[3] = new ImageIcon(getClass().getResource("16x16r.png")).getImage();
+        imglist[3] = new ImageIcon(clz.getResource("16x16r.png")).getImage();
 
         dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         dialog.setSize(new Dimension(120, 100));
@@ -32,12 +34,9 @@ public final class MainPanel extends JPanel {
 
         //TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
         icon = new TrayIcon(imglist[0], "TRAY", makeTrayPopupMenu());
-        animator = new Timer(100, new ActionListener() {
-            private int idx;
-            @Override public void actionPerformed(ActionEvent e) {
-                icon.setImage(imglist[idx]);
-                idx = (idx + 1) % imglist.length;
-            }
+        animator.addActionListener(e -> {
+            icon.setImage(imglist[idx]);
+            idx = (idx + 1) % imglist.length;
         });
         try {
             SystemTray.getSystemTray().add(icon);
@@ -45,7 +44,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
-    private PopupMenu makeTrayPopupMenu() {
+    protected final PopupMenu makeTrayPopupMenu() {
         MenuItem item1 = new MenuItem("Open:Frame");
         item1.addActionListener(e -> {
             Container c = getTopLevelAncestor();

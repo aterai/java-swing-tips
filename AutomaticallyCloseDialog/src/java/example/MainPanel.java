@@ -9,10 +9,10 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
-    private final JLabel label = new JLabel();
 
     public MainPanel() {
         super(new BorderLayout());
+        JLabel label = new JLabel();
         label.addHierarchyListener(new AutomaticallyCloseListener());
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.add(makePanel("HierarchyListener", label));
@@ -21,29 +21,29 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JPanel makePanel(String title, final JComponent c) {
-        final JPanel p = new JPanel(new BorderLayout());
+    private JPanel makePanel(String title, JComponent c) {
+        JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JButton(new AbstractAction("show") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int r = JOptionPane.showConfirmDialog(p, c, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                switch (r) {
-                  case JOptionPane.OK_OPTION:
-                    textArea.append("OK\n");
-                    break;
-                  case JOptionPane.CANCEL_OPTION:
-                    textArea.append("Cancel\n");
-                    break;
-                  case JOptionPane.CLOSED_OPTION:
-                    textArea.append("Closed(automatically)\n");
-                    break;
-                  default:
-                    textArea.append("----\n");
-                    break;
-                }
-                textArea.append("\n");
+        JButton button = new JButton("show");
+        button.addActionListener(e -> {
+            int r = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(p), c, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            switch (r) {
+              case JOptionPane.OK_OPTION:
+                textArea.append("OK\n");
+                break;
+              case JOptionPane.CANCEL_OPTION:
+                textArea.append("Cancel\n");
+                break;
+              case JOptionPane.CLOSED_OPTION:
+                textArea.append("Closed(automatically)\n");
+                break;
+              default:
+                textArea.append("----\n");
+                break;
             }
-        }));
+            textArea.append("\n");
+        });
+        p.add(button);
         return p;
     }
     public static void main(String... args) {

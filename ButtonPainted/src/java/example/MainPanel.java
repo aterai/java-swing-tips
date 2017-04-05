@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JPanel p = new JPanel();
-    private final JButton b1 = new JButton("button");
-    private final JButton b2 = new JButton();
-    private final List<JButton> list = Arrays.asList(b1, b2);
-    private final List<JCheckBox> clist = Arrays.asList(
+public class MainPanel extends JPanel {
+    protected final JPanel p = new JPanel();
+    protected final JButton b1 = new JButton("button");
+    protected final JButton b2 = new JButton();
+    protected final List<JButton> list = Arrays.asList(b1, b2);
+    protected final List<JCheckBox> clist = Arrays.asList(
         new JCheckBox(new AbstractAction("setFocusPainted") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
+        ImageIcon rss = new ImageIcon(MainPanel.class.getResource("feed-icon-14x14.png")); //http://feedicons.com/
         b2.setIcon(rss);
         b2.setRolloverIcon(makeRolloverIcon(rss));
 

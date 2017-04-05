@@ -158,22 +158,22 @@ class CellButtonsMouseListener extends MouseInputAdapter {
 }
 
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
-    private static final Color EVEN_COLOR = new Color(230, 255, 230);
-    private final JTextArea textArea = new JTextArea();
-    private final JButton deleteButton = new JButton(new AbstractAction("delete") {
+    protected static final Color EVEN_COLOR = new Color(230, 255, 230);
+    protected final JTextArea textArea = new JTextArea();
+    protected final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             if (model.getSize() > 1) {
                 model.remove(index);
             }
         }
     });
-    private final JButton copyButton = new JButton(new AbstractAction("copy") {
+    protected final JButton copyButton = new JButton(new AbstractAction("copy") {
         @Override public void actionPerformed(ActionEvent e) {
             model.add(index, model.get(index));
         }
     });
-    private final DefaultListModel<E> model;
-    private int index;
+    protected final DefaultListModel<E> model;
+    protected int index;
     public int pressedIndex  = -1;
     public int rolloverIndex = -1;
     public JButton button;

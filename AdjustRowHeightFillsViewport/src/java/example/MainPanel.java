@@ -48,15 +48,16 @@ public class MainPanel extends JPanel {
 //             }
         }
     };
+    private final JScrollPane scroll = new JScrollPane(table);
+    private final JButton button = new JButton("add");
 
     public MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-        add(new JButton(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                model.addRow(new Object[] {"", 0, false});
-            }
-        }), BorderLayout.SOUTH);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
+        add(scroll);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {

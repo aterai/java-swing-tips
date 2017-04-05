@@ -10,34 +10,34 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final List<JButton> list = Arrays.asList(
-        new JButton("JButton"),
-        new JButton("+getPreferredSize") {
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                d.width += 3 + 3;
-                return d;
-            }
-        },
-        new BlurJButton("Blurred JButton1"),
-        new BlurJButton("+getPreferredSize") {
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                d.width += 9;
-                return d;
-            }
-        },
-        new BlurButton("Blurred JButton2"),
-        new BlurButton("+getPreferredSize") {
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                d.width += 9;
-                return d;
-            }
-        });
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        List<JButton> list = Arrays.asList(
+            new JButton("JButton"),
+            new JButton("+getPreferredSize") {
+                @Override public Dimension getPreferredSize() {
+                    Dimension d = super.getPreferredSize();
+                    d.width += 3 + 3;
+                    return d;
+                }
+            },
+            new BlurJButton("Blurred JButton1"),
+            new BlurJButton("+getPreferredSize") {
+                @Override public Dimension getPreferredSize() {
+                    Dimension d = super.getPreferredSize();
+                    d.width += 9;
+                    return d;
+                }
+            },
+            new BlurButton("Blurred JButton2"),
+            new BlurButton("+getPreferredSize") {
+                @Override public Dimension getPreferredSize() {
+                    Dimension d = super.getPreferredSize();
+                    d.width += 9;
+                    return d;
+                }
+            });
 
         Box box = Box.createVerticalBox();
         JPanel p0 = new JPanel();
@@ -61,16 +61,14 @@ public final class MainPanel extends JPanel {
         box.add(p2);
         box.add(Box.createVerticalStrut(10));
 
+        JToggleButton button = new JToggleButton("setEnabled(false)");
+        button.addActionListener(e -> {
+            boolean f = !((AbstractButton) e.getSource()).isSelected();
+            list.forEach(b -> b.setEnabled(f));
+        });
+
         add(box, BorderLayout.NORTH);
-        add(new JToggleButton(new AbstractAction("setEnabled(false)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean f = !((AbstractButton) e.getSource()).isSelected();
-                list.forEach(b -> b.setEnabled(f));
-                //for (JButton b: list) {
-                //    b.setEnabled(f);
-                //}
-            }
-        }), BorderLayout.SOUTH);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -84,7 +82,7 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

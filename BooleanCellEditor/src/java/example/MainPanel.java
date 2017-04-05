@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
             }
         };
     }
-    private static JCheckBox makeBooleanEditor(final JTable table) {
+    protected static JCheckBox makeBooleanEditor(final JTable table) {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setHorizontalAlignment(SwingConstants.CENTER);
         checkBox.setBorderPainted(true);

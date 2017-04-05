@@ -9,46 +9,52 @@ import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-//Swing Changes and New Features>http://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
-////                             http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
-//Magic with Merlin: Swinging audio>http://www.ibm.com/developerworks/java/library/j-mer0730/
-////                                http://www.ibm.com/developerworks/jp/java/library/j-mer0730/
-public final class MainPanel extends JPanel {
-    private static final Object[] OPTION_PANE_AUDITORY_CUES = {
+// Swing Changes and New Features
+// http://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
+// http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
+// Magic with Merlin: Swinging audio
+// http://www.ibm.com/developerworks/java/library/j-mer0730/
+// http://www.ibm.com/developerworks/jp/java/library/j-mer0730/
+public class MainPanel extends JPanel {
+    private static final String[] OPTION_PANE_AUDITORY_CUES = {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
     };
-    private final JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
+
     public MainPanel() {
         super(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panel.add(makePanel("Look&Feel Default", new JButton(new AbstractAction("showMessageDialog1") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(panel, "showMessageDialog1");
-            }
-        })));
-        panel.add(makePanel("notice2.wav", new JButton(new AbstractAction("showMessageDialog2") {
-            @Override public void actionPerformed(ActionEvent e) {
+
+        JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
+
+        JButton button1 = new JButton("showMessageDialog1");
+        button1.addActionListener(e -> JOptionPane.showMessageDialog(panel, "showMessageDialog1"));
+
+        JButton button2 = new JButton("showMessageDialog2");
+        button2.addActionListener(e -> {
             UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
             loadAndPlayAudio("notice2.wav");
             JOptionPane.showMessageDialog(panel, "showMessageDialog2");
             UIManager.put("AuditoryCues.playList", OPTION_PANE_AUDITORY_CUES);
-            }
-        })));
+        });
+
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.add(makePanel("Look&Feel Default", button1));
+        panel.add(makePanel("notice2.wav", button2));
+
         JMenuBar mb = new JMenuBar();
         mb.add(LookAndFeelUtil.createLookAndFeelMenu());
         add(mb, BorderLayout.NORTH);
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    protected static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
         return p;
     }
-    private void loadAndPlayAudio(String audioResource) {
-        try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(getClass().getResource(audioResource))) {
+    protected void loadAndPlayAudio(String audioResource) {
+        try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource))) {
             DataLine.Info info = new DataLine.Info(Clip.class, soundStream.getFormat());
             Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(soundStream);

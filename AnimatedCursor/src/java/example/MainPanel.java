@@ -5,47 +5,44 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
-public final class MainPanel extends JPanel {
-    private final Timer animator;
-    private final JButton button;
-    private final Toolkit tk    = Toolkit.getDefaultToolkit();
-    private final Cursor[] list = new Cursor[3];
-    private final URL url00     = getClass().getResource("00.png");
-    private final URL url01     = getClass().getResource("01.png");
-    private final URL url02     = getClass().getResource("02.png");
+public class MainPanel extends JPanel {
+    protected int counter;
+
     public MainPanel() {
         super(new BorderLayout());
+
         Point pt = new Point();
-        list[0] = tk.createCustomCursor(tk.createImage(url00), pt, "00");
-        list[1] = tk.createCustomCursor(tk.createImage(url01), pt, "01");
-        list[2] = tk.createCustomCursor(tk.createImage(url02), pt, "02");
-        animator = new Timer(100, new ActionListener() {
-            private int counter;
-            @Override public void actionPerformed(ActionEvent e) {
-                button.setCursor(list[counter]);
-                counter = (counter + 1) % list.length;
-            }
-        });
-        button = new JButton(new AbstractAction("Start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton) e.getSource();
-                if (animator.isRunning()) {
-                    b.setText("Start");
-                    animator.stop();
-                } else {
-                    b.setText("Stop");
-                    animator.start();
-                }
-            }
-        });
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        Cursor[] list = Stream.of("00", "01", "02")
+          .map(s -> tk.createCustomCursor(tk.createImage(MainPanel.class.getResource(s + ".png")), pt, s))
+          .toArray(Cursor[]::new);
+
+        Timer animator = new Timer(100, null);
+        JButton button = new JButton("Start");
         button.setCursor(list[0]);
+        button.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            if (animator.isRunning()) {
+                b.setText("Start");
+                animator.stop();
+            } else {
+                b.setText("Stop");
+                animator.start();
+            }
+        });
         button.addHierarchyListener(e -> {
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
                 animator.stop();
             }
+        });
+        animator.addActionListener(e -> {
+            button.setCursor(list[counter]);
+            counter = (counter + 1) % list.length;
         });
 
         JPanel p = new JPanel(new BorderLayout());

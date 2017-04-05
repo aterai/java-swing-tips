@@ -12,14 +12,14 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.Timer;
 
-public final class MainPanel extends JPanel {
-    private final JTextArea area     = new JTextArea();
-    private final JProgressBar bar   = new JProgressBar();
-    private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton("run");
-    private final JButton canButton  = new JButton("cancel");
-    private final AnimatedLabel anil = new AnimatedLabel();
-    private transient Task worker;
+public class MainPanel extends JPanel {
+    protected final JTextArea area     = new JTextArea();
+    protected final JProgressBar bar   = new JProgressBar();
+    protected final JPanel statusPanel = new JPanel(new BorderLayout());
+    protected final JButton runButton  = new JButton("run");
+    protected final JButton canButton  = new JButton("cancel");
+    protected final AnimatedLabel anil = new AnimatedLabel();
+    protected transient Task worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected void executeWorker() {
+    protected final void executeWorker() {
         runButton.setEnabled(false);
         canButton.setEnabled(true);
         anil.startAnimation();

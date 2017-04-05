@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
+    protected final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
 
     public MainPanel() {
         super(new BorderLayout(5, 5));

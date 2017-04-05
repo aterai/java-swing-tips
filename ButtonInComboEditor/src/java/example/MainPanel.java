@@ -148,7 +148,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return label;
     }
-    private Optional<URLItem> getURLItemFromModel(ComboBoxModel<URLItem> model, Object o) {
+    protected Optional<URLItem> getURLItemFromModel(ComboBoxModel<URLItem> model, Object o) {
         if (o instanceof URLItem) {
             return Optional.of((URLItem) o);
         }

@@ -11,8 +11,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.Timer;
 
-public final class MainPanel extends JPanel {
-    private final URL url = getClass().getResource("anime.gif");
+public class MainPanel extends JPanel {
+    protected final URL url = MainPanel.class.getResource("anime.gif");
     private final JLabel l1 = new JLabel("Timer Animated ToolTip") {
         @Override public JToolTip createToolTip() {
             JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));

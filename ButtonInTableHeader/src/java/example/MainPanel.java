@@ -90,11 +90,11 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderRenderer extends JButton implements TableCellRenderer {
-    private static final int BUTTON_WIDTH = 16;
-    private static final Color BUTTONBGC = new Color(200, 200, 200, 100);
-    private final JPopupMenu pop;
-    private int rolloverIndex = -1;
-    private final transient MouseInputListener handler = new MouseInputAdapter() {
+    protected static final int BUTTON_WIDTH = 16;
+    protected static final Color BUTTONBGC = new Color(200, 200, 200, 100);
+    protected final JPopupMenu pop;
+    protected int rolloverIndex = -1;
+    protected final transient MouseInputListener handler = new MouseInputAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader header = (JTableHeader) e.getComponent();
             JTable table = header.getTable();
