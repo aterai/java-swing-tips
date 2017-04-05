@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        private static final int MODEL_COLUMN_INDEX = 0;
-        private transient HeaderCheckBoxHandler handler;
+        protected static final int MODEL_COLUMN_INDEX = 0;
+        protected transient HeaderCheckBoxHandler handler;
         @Override public void updateUI() {
             // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
             // http://bugs.java.com/view_bug.do?bug_id=6788475
@@ -70,45 +70,6 @@ public final class MainPanel extends JPanel {
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    class AddRowAction extends AbstractAction {
-        private final boolean isSelected;
-        protected AddRowAction(String label, boolean isSelected) {
-            super(label);
-            this.isSelected = isSelected;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {isSelected, 0, ""});
-            table.scrollRectToVisible(table.getCellRect(model.getRowCount() - 1, 0, true));
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(new AddRowAction("add(true)", true));
-            add(new AddRowAction("add(false)", false));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
     }
 
     public static void main(String... args) {
@@ -196,3 +157,35 @@ class ComponentIcon implements Icon {
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add("add(true)").addActionListener(e -> addRowActionPerformed(true));
+        add("add(false)").addActionListener(e -> addRowActionPerformed(false));
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
+    }
+    private void addRowActionPerformed(boolean isSelected) {
+        JTable table = (JTable) getInvoker();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.addRow(new Object[] {isSelected, 0, ""});
+        table.scrollRectToVisible(table.getCellRect(model.getRowCount() - 1, 0, true));
+   }
+}

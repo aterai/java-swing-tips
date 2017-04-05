@@ -14,30 +14,72 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<Enum> combo = new JComboBox<Enum>(TexturePaints.values()) {
-        @Override public Dimension getPreferredSize() {
-            Dimension d = super.getPreferredSize();
-            d.width = Math.max(150, d.width);
-            return d;
-        }
-    };
-    private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-    private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
-    private final Timer timer = new Timer(1000, e -> {
-        label.setText(df.format(new Date()));
-        Container parent = SwingUtilities.getUnwrappedParent(label);
-        if (Objects.nonNull(parent) && parent.isOpaque()) {
-            repaintWindowAncestor(label);
-        }
-    });
-    private final TexturePanel tp;
+    private MainPanel() {
+        super(new BorderLayout());
 
-    private void repaintWindowAncestor(JComponent c) {
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
+        Timer timer = new Timer(1000, e -> {
+            label.setText(df.format(new Date()));
+            Container parent = SwingUtilities.getUnwrappedParent(label);
+            if (Objects.nonNull(parent) && parent.isOpaque()) {
+                repaintWindowAncestor(label);
+            }
+        });
+        TexturePanel tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
+
+        JFrame digitalClock = new JFrame();
+        digitalClock.setUndecorated(true);
+        //digitalClock.setAlwaysOnTop(true);
+        //AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
+        digitalClock.setBackground(new Color(0x0, true)); //JDK 1.7.0
+        digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        digitalClock.getContentPane().add(tp);
+        digitalClock.pack();
+        digitalClock.setLocationRelativeTo(null);
+
+        JComboBox<Enum> combo = new JComboBox<Enum>(TexturePaints.values()) {
+            @Override public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                d.width = Math.max(150, d.width);
+                return d;
+            }
+        };
+        //XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
+        //combo.setPrototypeDisplayValue(TexturePaints.Checker);
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                TexturePaints t = (TexturePaints) e.getItem();
+                tp.setTexturePaint(t.getTexturePaint());
+                repaintWindowAncestor(tp);
+            }
+        });
+
+        JToggleButton button = new JToggleButton("timer");
+        button.addActionListener(e -> {
+            if (((AbstractButton) e.getSource()).isSelected()) {
+                TexturePaints t = (TexturePaints) combo.getSelectedItem();
+                tp.setTexturePaint(t.getTexturePaint());
+                timer.start();
+                digitalClock.setVisible(true);
+            } else {
+                timer.stop();
+                digitalClock.setVisible(false);
+            }
+        });
+        JPanel p = new JPanel();
+        p.add(combo);
+        p.add(button);
+        add(p, BorderLayout.NORTH);
+        add(new JScrollPane(new JTree()));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    protected static void repaintWindowAncestor(JComponent c) {
         Optional.ofNullable(c.getRootPane())
-                .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
+          .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
 
     }
-//     private void repaintWindowAncestor(Component c) {
+//     protected void repaintWindowAncestor(Component c) {
 //         Window w = SwingUtilities.getWindowAncestor(c);
 //         if (w instanceof JFrame) {
 //             JFrame f = (JFrame) w;
@@ -52,51 +94,6 @@ public final class MainPanel extends JPanel {
 //             c.repaint();
 //         }
 //     }
-
-    public MainPanel() {
-        super(new BorderLayout());
-        tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
-        //XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
-        //combo.setPrototypeDisplayValue(TexturePaints.Checker);
-        combo.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                TexturePaints t = (TexturePaints) e.getItem();
-                tp.setTexturePaint(t.getTexturePaint());
-                repaintWindowAncestor(tp);
-            }
-        });
-        JToggleButton button = new JToggleButton(new AbstractAction("timer") {
-            private JFrame digitalClock;
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.isNull(digitalClock)) {
-                    digitalClock = new JFrame();
-                    digitalClock.setUndecorated(true);
-                    //digitalClock.setAlwaysOnTop(true);
-                    //AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
-                    digitalClock.setBackground(new Color(0x0, true)); //JDK 1.7.0
-                    digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-                    digitalClock.getContentPane().add(tp);
-                    digitalClock.pack();
-                    digitalClock.setLocationRelativeTo(null);
-                }
-                if (((AbstractButton) e.getSource()).isSelected()) {
-                    TexturePaints t = (TexturePaints) combo.getSelectedItem();
-                    tp.setTexturePaint(t.getTexturePaint());
-                    timer.start();
-                    digitalClock.setVisible(true);
-                } else {
-                    timer.stop();
-                    digitalClock.setVisible(false);
-                }
-            }
-        });
-        JPanel p = new JPanel();
-        p.add(combo);
-        p.add(button);
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(new JTree()));
-        setPreferredSize(new Dimension(320, 240));
-    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

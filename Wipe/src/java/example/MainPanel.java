@@ -7,29 +7,55 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private boolean mode = true;
-    private final Timer animator;
-    private final ImageIcon icon;
+    private Wipe mode = Wipe.In;
 
     public MainPanel() {
         super(new BorderLayout());
-        icon = new ImageIcon(getClass().getResource("test.png"));
-        WipeImage wipe = new WipeImage();
+        Timer animator = new Timer(5, null);
+        ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+        JComponent wipe = new JComponent() {
+            protected int ww;
+            @Override protected void paintComponent(Graphics g) {
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+                switch (getWipeMode()) {
+                  case In:
+                    if (ww < icon.getIconWidth()) {
+                        ww += 10;
+                    } else {
+                        animator.stop();
+                    }
+                    break;
+                  case Out:
+                  default:
+                    if (ww > 0) {
+                        ww -= 10;
+                    } else {
+                        animator.stop();
+                    }
+                    break;
+                }
+                int iw = icon.getIconWidth();
+                int ih = icon.getIconHeight();
+                g.drawImage(icon.getImage(), 0, 0, iw, ih, this);
+                g.fillRect(ww, 0, iw, ih);
+            }
+        };
         wipe.setBackground(Color.BLACK);
-        animator = new Timer(5, wipe);
+        animator.addActionListener(e -> wipe.repaint());
 
-        JButton button1 = new JButton(new AbstractAction("Wipe In") {
-            @Override public void actionPerformed(ActionEvent e) {
-                mode = true;
-                animator.start();
-            }
+        JButton button1 = new JButton("Wipe In");
+        button1.addActionListener(e -> {
+            setWipeMode(Wipe.In);
+            animator.start();
         });
-        JButton button2 = new JButton(new AbstractAction("Wipe Out") {
-            @Override public void actionPerformed(ActionEvent e) {
-                mode = false;
-                animator.start();
-            }
+
+        JButton button2 = new JButton("Wipe Out");
+        button2.addActionListener(e -> {
+            setWipeMode(Wipe.Out);
+            animator.start();
         });
+
         add(wipe);
         add(button1, BorderLayout.SOUTH);
         add(button2, BorderLayout.NORTH);
@@ -37,33 +63,12 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         animator.start();
     }
-
-    class WipeImage extends JComponent implements ActionListener {
-        private int ww;
-        @Override protected void paintComponent(Graphics g) {
-            g.setColor(getBackground());
-            g.fillRect(0, 0, getWidth(), getHeight());
-            if (mode) {
-                if (ww < icon.getIconWidth()) {
-                    ww += 10;
-                } else {
-                    animator.stop();
-                }
-            } else {
-                if (ww > 0) {
-                    ww -= 10;
-                } else {
-                    animator.stop();
-                }
-            }
-            g.drawImage(icon.getImage(), 0, 0, (int) (icon.getIconWidth()), (int) (icon.getIconHeight()), this);
-            g.fillRect(ww, 0, (int) (icon.getIconWidth()), (int) (icon.getIconHeight()));
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            repaint();
-        }
+    protected void setWipeMode(Wipe mode) {
+        this.mode = mode;
     }
-
+    protected Wipe getWipeMode() {
+        return mode;
+    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -86,3 +91,5 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum Wipe { In, Out }

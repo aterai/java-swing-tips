@@ -8,31 +8,31 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public boolean isCellEditable(int row, int column) {
-            return column == 2;
-        }
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model) {
-        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-            Component c = super.prepareEditor(editor, row, column);
-            if (c instanceof JCheckBox) {
-                ((JCheckBox) c).setBackground(getSelectionBackground());
-            }
-            return c;
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public boolean isCellEditable(int row, int column) {
+                return column == 2;
+            }
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model) {
+            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+                Component c = super.prepareEditor(editor, row, column);
+                if (c instanceof JCheckBox) {
+                    ((JCheckBox) c).setBackground(getSelectionBackground());
+                }
+                return c;
+            }
+        };
         table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setFillsViewportHeight(true);
@@ -42,31 +42,33 @@ public final class MainPanel extends JPanel {
         table.setShowHorizontalLines(false);
         table.setIntercellSpacing(new Dimension());
 
+        JCheckBox verticalLinesButton = new JCheckBox("setShowVerticalLines");
+        verticalLinesButton.addActionListener(e -> {
+            Dimension d = table.getIntercellSpacing();
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                table.setShowVerticalLines(true);
+                table.setIntercellSpacing(new Dimension(1, d.height));
+            } else {
+                table.setShowVerticalLines(false);
+                table.setIntercellSpacing(new Dimension(0, d.height));
+            }
+        });
+
+        JCheckBox horizontalLinesButton = new JCheckBox("setShowHorizontalLines");
+        horizontalLinesButton.addActionListener(e -> {
+            Dimension d = table.getIntercellSpacing();
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                table.setShowHorizontalLines(true);
+                table.setIntercellSpacing(new Dimension(d.width, 1));
+            } else {
+                table.setShowHorizontalLines(false);
+                table.setIntercellSpacing(new Dimension(d.width, 0));
+            }
+        });
+
         JPanel p = new JPanel(new BorderLayout());
-        p.add(new JCheckBox(new AbstractAction("setShowVerticalLines") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Dimension d = table.getIntercellSpacing();
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    table.setShowVerticalLines(true);
-                    table.setIntercellSpacing(new Dimension(1, d.height));
-                } else {
-                    table.setShowVerticalLines(false);
-                    table.setIntercellSpacing(new Dimension(0, d.height));
-                }
-            }
-        }), BorderLayout.WEST);
-        p.add(new JCheckBox(new AbstractAction("setShowHorizontalLines") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Dimension d = table.getIntercellSpacing();
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    table.setShowHorizontalLines(true);
-                    table.setIntercellSpacing(new Dimension(d.width, 1));
-                } else {
-                    table.setShowHorizontalLines(false);
-                    table.setIntercellSpacing(new Dimension(d.width, 0));
-                }
-            }
-        }), BorderLayout.EAST);
+        p.add(verticalLinesButton, BorderLayout.WEST);
+        p.add(horizontalLinesButton, BorderLayout.EAST);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

@@ -12,65 +12,68 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
+    protected final JTextArea textArea = new JTextArea();
 
-    private final String[] columnNames = {"A", "B"};
-    private final Object[][] data = {
+    protected final String[] columnNames = {"A", "B"};
+    protected final Object[][] data = {
         {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
     };
-    private DefaultTableModel model = new DefaultTableModel(data, columnNames);
-    private final JTable table = new JTable(model);
+    protected DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
     public MainPanel() {
         super(new BorderLayout());
 
+        JTable table = new JTable(model);
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);
         sp.setTopComponent(new JScrollPane(table));
         sp.setBottomComponent(new JScrollPane(textArea));
 
-        JPanel p = new JPanel();
-        p.add(new JButton(new AbstractAction("XMLEncoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try {
-                    File file = File.createTempFile("output", ".xml");
-                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-                        xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
-//                         xe.setExceptionListener(new ExceptionListener() {
-//                             @Override public void exceptionThrown(Exception ex) {
-//                                 //XXX: ex.printStackTrace();
-//                             }
-//                         });
-                        xe.writeObject(model);
-                        //xe.flush();
-                        //xe.close();
-                    }
-                    try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-                        textArea.read(r, "temp");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+        JButton encButton = new JButton("XMLEncoder");
+        encButton.addActionListener(e -> {
+            try {
+                File file = File.createTempFile("output", ".xml");
+                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                    xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+//                     xe.setExceptionListener(new ExceptionListener() {
+//                         @Override public void exceptionThrown(Exception ex) {
+//                             //XXX: ex.printStackTrace();
+//                         }
+//                     });
+                    xe.writeObject(model);
+                    //xe.flush();
+                    //xe.close();
                 }
+                try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                    textArea.read(r, "temp");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        }));
-        p.add(new JButton(new AbstractAction("XMLDecoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String text = textArea.getText();
-                if (text.isEmpty()) {
-                    return;
-                }
-                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
-                    model = (DefaultTableModel) xd.readObject();
-                    table.setModel(model);
-                }
+        });
+
+        JButton decButton = new JButton("XMLDecoder");
+        decButton.addActionListener(e -> {
+            String text = textArea.getText();
+            if (text.isEmpty()) {
+                return;
             }
-        }));
-        p.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                model = new DefaultTableModel();
+            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+                model = (DefaultTableModel) xd.readObject();
                 table.setModel(model);
             }
-        }));
+        });
+
+        JButton clearButton = new JButton("clear");
+        clearButton.addActionListener(e -> {
+            model = new DefaultTableModel();
+            table.setModel(model);
+        });
+
+        JPanel p = new JPanel();
+        p.add(encButton);
+        p.add(decButton);
+        p.add(clearButton);
 
         add(sp);
         add(p, BorderLayout.SOUTH);

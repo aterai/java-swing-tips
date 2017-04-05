@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(80);
         col.setResizable(false);
 
-        JPopupMenu pop = new TablePopupMenu();
+        JPopupMenu pop = new TableHeaderPopupMenu();
         JTableHeader header = table.getTableHeader();
         header.setComponentPopupMenu(pop);
         pop.addPopupMenuListener(new PopupMenuListener() {
@@ -51,39 +51,6 @@ public final class MainPanel extends JPanel {
         });
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private class TablePopupMenu extends JPopupMenu {
-        private final List<SortAction> actions = Arrays.asList(
-            new SortAction(SortOrder.ASCENDING),
-            new SortAction(SortOrder.DESCENDING));
-            //new SortAction(SortOrder.UNSORTED));
-        protected TablePopupMenu() {
-            super();
-            actions.forEach(this::add);
-        }
-        @Override public void show(Component c, int x, int y) {
-            if (c instanceof JTableHeader) {
-                JTableHeader h = (JTableHeader) c;
-                int i = h.getTable().convertColumnIndexToModel(h.columnAtPoint(new Point(x, y)));
-                actions.forEach(a -> a.setIndex(i));
-                super.show(c, x, y);
-            }
-        }
-    }
-    private class SortAction extends AbstractAction {
-        private final SortOrder dir;
-        private int index = -1;
-
-        protected SortAction(SortOrder dir) {
-            super(dir.toString());
-            this.dir = dir;
-        }
-        public void setIndex(int index) {
-            this.index = index;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, dir)));
-        }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -105,5 +72,40 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TableHeaderPopupMenu extends JPopupMenu {
+    private final List<SortAction> actions = Arrays.asList(
+        new SortAction(SortOrder.ASCENDING),
+        new SortAction(SortOrder.DESCENDING));
+        //new SortAction(SortOrder.UNSORTED));
+    protected TableHeaderPopupMenu() {
+        super();
+        actions.forEach(this::add);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTableHeader) {
+            JTableHeader h = (JTableHeader) c;
+            int i = h.getTable().convertColumnIndexToModel(h.columnAtPoint(new Point(x, y)));
+            actions.forEach(a -> a.setIndex(i));
+            super.show(c, x, y);
+        }
+    }
+    private class SortAction extends AbstractAction {
+        private final SortOrder dir;
+        private int index = -1;
+
+        protected SortAction(SortOrder dir) {
+            super(dir.toString());
+            this.dir = dir;
+        }
+        public void setIndex(int index) {
+            this.index = index;
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            JTableHeader h = (JTableHeader) getInvoker();
+            h.getTable().getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, dir)));
+        }
     }
 }
