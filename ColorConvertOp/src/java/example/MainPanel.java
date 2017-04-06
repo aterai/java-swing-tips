@@ -8,11 +8,12 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final ImageIcon orgImage;
+public class MainPanel extends JPanel {
+    protected final ImageIcon orgImage;
+
     public MainPanel() {
         super(new GridLayout(0, 1));
-        orgImage = new ImageIcon(getClass().getResource("i03-10.gif"));
+        orgImage = new ImageIcon(MainPanel.class.getResource("i03-10.gif"));
 
         JPanel p1 = new JPanel(new GridLayout(1, 2));
         p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), "ColorConvertOp"));

@@ -10,8 +10,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea(5, 1);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         String[] m1 = {"Disabled", "Enabled", "Debug mode"};
@@ -29,6 +28,8 @@ public final class MainPanel extends JPanel {
         tree.setEditable(true);
         tree.setCellRenderer(new PluginCellRenderer(new JComboBox<>()));
         tree.setCellEditor(new PluginCellEditor(new JComboBox<>()));
+
+        JTextArea textArea = new JTextArea(5, 1);
 
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override public void treeNodesChanged(TreeModelEvent e) {

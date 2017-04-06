@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
                 try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                     textArea.read(r, "temp");
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+//             } catch (IOException ex) {
+//                 ex.printStackTrace();
             }
         });
 

@@ -9,19 +9,19 @@ import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public final class MainPanel extends JPanel {
-    private final JDesktopPane desktop = new JDesktopPane();
-    private final Action closeSelectedFrameAction1 = new AbstractAction() {
+public class MainPanel extends JPanel {
+    protected final JDesktopPane desktop = new JDesktopPane();
+    protected final Action closeSelectedFrameAction1 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getSelectedFrame().ifPresent(desktop.getDesktopManager()::closeFrame);
         }
     };
-    private final Action closeSelectedFrameAction2 = new AbstractAction() {
+    protected final Action closeSelectedFrameAction2 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getSelectedFrame().ifPresent(JInternalFrame::doDefaultCloseAction);
         }
     };
-    private final Action closeSelectedFrameAction3 = new AbstractAction() {
+    protected final Action closeSelectedFrameAction3 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getSelectedFrame().ifPresent(f -> {
                 try {
@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
             });
         }
     };
-    private final Action disposeSelectedFrameAction = new AbstractAction() {
+    protected final Action disposeSelectedFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getSelectedFrame().ifPresent(JInternalFrame::dispose);
         }
     };
-    private final Action createNewFrameAction = new AbstractAction() {
+    protected final Action createNewFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             JInternalFrame frame = makeInternalFrame();
             //frame.setVisible(true);
@@ -52,9 +52,9 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private int openFrameCount;
-    private int row;
-    private int col;
+    protected int openFrameCount;
+    protected int row;
+    protected int col;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -67,14 +67,14 @@ public final class MainPanel extends JPanel {
         add(createToolBar(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private Optional<? extends JInternalFrame> getSelectedFrame() {
+    protected Optional<? extends JInternalFrame> getSelectedFrame() {
         return Optional.ofNullable(desktop.getSelectedFrame());
     }
     private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar("toolbar");
         toolbar.setFloatable(false);
         JButton b = new ToolBarButton(createNewFrameAction);
-        b.setIcon(new ImageIcon(getClass().getResource("icon_new-file.png")));
+        b.setIcon(new ImageIcon(MainPanel.class.getResource("icon_new-file.png")));
         b.setToolTipText("create new InternalFrame");
         toolbar.add(b);
         toolbar.add(Box.createGlue());

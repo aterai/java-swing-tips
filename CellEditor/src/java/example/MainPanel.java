@@ -9,19 +9,19 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox modelCheck    = new JCheckBox("isCellEditable return false");
-    private final JCheckBox objectCheck   = new JCheckBox("setDefaultEditor(Object.class, null)");
-    private final JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
-    private final TestModel model = new TestModel() {
-        @Override public boolean isCellEditable(int row, int col) {
-            return !modelCheck.isSelected();
-        }
-    };
-    private final JTable table = new JTable(model);
-    private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        DefaultCellEditor dce   = new DefaultCellEditor(new JTextField());
+        JCheckBox modelCheck    = new JCheckBox("isCellEditable return false");
+        JCheckBox objectCheck   = new JCheckBox("setDefaultEditor(Object.class, null)");
+        JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
+
+        TestModel model = new TestModel() {
+            @Override public boolean isCellEditable(int row, int col) {
+                return !modelCheck.isSelected();
+            }
+        };
         model.addTest(new Test("Name 1", "Comment"));
         model.addTest(new Test("Name 2", "Test"));
         model.addTest(new Test("Name d", "ee"));
@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 0", "gg"));
 
+        JTable table = new JTable(model);
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(50);
         col.setMaxWidth(50);

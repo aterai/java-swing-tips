@@ -11,47 +11,51 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-public final class MainPanel extends JPanel {
-    private final BoundedRangeModel model = new DefaultBoundedRangeModel();
-    private final JProgressBar progress01 = new JProgressBar(model);
-    private final JProgressBar progress02 = new JProgressBar(model);
-    private final JProgressBar progress03 = new JProgressBar(model);
-    private final JProgressBar progress04 = new JProgressBar(model);
-    private final BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
-    private final JPanel p = new JPanel(new GridLayout(2, 1));
-    private SwingWorker<String, Void> worker;
+public class MainPanel extends JPanel {
+    protected transient SwingWorker<String, Void> worker;
 
     public MainPanel() {
         super(new BorderLayout());
+
+        BoundedRangeModel model = new DefaultBoundedRangeModel();
+        JProgressBar progress01 = new JProgressBar(model);
+        JProgressBar progress02 = new JProgressBar(model);
+        JProgressBar progress03 = new JProgressBar(model);
+        JProgressBar progress04 = new JProgressBar(model);
+
         progress01.setStringPainted(true);
         progress02.setStringPainted(true);
 
         progress04.setOpaque(true); //for NimbusLookAndFeel
 
+        BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(makeTitlePanel("setStringPainted(true)",  Arrays.asList(progress01, progress02)));
         p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
 
+        JCheckBox check = new JCheckBox("Turn the progress bar red");
+        check.addActionListener(e -> {
+            boolean b = ((JCheckBox) e.getSource()).isSelected();
+            progress02.setForeground(b ? new Color(255, 0, 0, 100) : progress01.getForeground());
+            layerUI.isPreventing = b;
+            p.repaint();
+        });
+
+        JButton button = new JButton("Start");
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = new Task();
+            worker.addPropertyChangeListener(new ProgressListener(progress01));
+            worker.execute();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JCheckBox(new AbstractAction("Turn the progress bar red") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean b = ((JCheckBox) e.getSource()).isSelected();
-                progress02.setForeground(b ? new Color(255, 0, 0, 100) : progress01.getForeground());
-                layerUI.isPreventing = b;
-                p.repaint();
-            }
-        }));
+        box.add(check);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("Start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                worker = new Task();
-                worker.addPropertyChangeListener(new ProgressListener(progress01));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(2));
 
         addHierarchyListener(e -> {
@@ -67,7 +71,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

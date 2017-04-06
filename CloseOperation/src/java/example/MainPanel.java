@@ -5,18 +5,18 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static int number;
+    public static final AtomicInteger COUNTER = new AtomicInteger(0);
     public static JFrame createFrame(String title) {
-        JFrame frame = new JFrame(Objects.toString(title, "Frame #" + number));
+        JFrame frame = new JFrame(Objects.toString(title, "Frame #" + COUNTER));
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        number++;
+        COUNTER.getAndIncrement();
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
-                number--;
-                if (number == 0) {
+                if (COUNTER.getAndDecrement() == 0) {
                     Window w = e.getWindow();
                     if (w instanceof JFrame) {
                         ((JFrame) w).setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -29,20 +29,19 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new BorderLayout());
-        JButton button = new JButton(new AbstractAction("New Frame") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JButton button = (JButton) e.getSource();
-                JFrame frame   = createFrame(null);
-                frame.getContentPane().add(new MainPanel());
-                frame.pack();
-                Container c = button.getTopLevelAncestor();
-                if (c instanceof Window) {
-                    Point pt = ((Window) c).getLocation();
-                    frame.setLocation(pt.x, pt.y + frame.getSize().height);
-                }
-                //frame.setLocationByPlatform(true);
-                frame.setVisible(true);
+        JButton button = new JButton("New Frame");
+        button.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            JFrame f = createFrame(null);
+            f.getContentPane().add(new MainPanel());
+            f.pack();
+            Container c = b.getTopLevelAncestor();
+            if (c instanceof Window) {
+                Point pt = ((Window) c).getLocation();
+                f.setLocation(pt.x, pt.y + f.getSize().height);
             }
+            //f.setLocationByPlatform(true);
+            f.setVisible(true);
         });
         add(button);
         setPreferredSize(new Dimension(320, 100));

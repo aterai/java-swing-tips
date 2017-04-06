@@ -82,15 +82,10 @@ final class SizeVariantUtil {
         }
         return menu;
     }
-    private static JRadioButtonMenuItem createSizeVariantItem(String key, final ButtonGroup sizeVariantRadioGroup) {
-        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem();
+    private static JRadioButtonMenuItem createSizeVariantItem(String key, ButtonGroup sizeVariantRadioGroup) {
+        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(key);
         menuItem.setSelected("regular".equals(key));
-        menuItem.setAction(new AbstractAction(key) {
-            @Override public void actionPerformed(ActionEvent e) {
-                ButtonModel m = sizeVariantRadioGroup.getSelection();
-                setSizeVariant(m.getActionCommand());
-            }
-        });
+        menuItem.addActionListener(e -> setSizeVariant(sizeVariantRadioGroup.getSelection().getActionCommand()));
         menuItem.setActionCommand(key);
         sizeVariantRadioGroup.add(menuItem);
         return menuItem;

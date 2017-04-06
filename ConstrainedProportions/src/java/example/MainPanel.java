@@ -9,7 +9,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final int MW = 300;
     private static final int MH = 200;
-    private final JLabel label = new JLabel();
     private final JCheckBox checkbox = new JCheckBox(new AbstractAction("Fixed aspect ratio, Minimum size: " + MW + "*" + MH) {
         @Override public void actionPerformed(ActionEvent e) {
             Container c = getTopLevelAncestor();
@@ -33,11 +32,14 @@ public final class MainPanel extends JPanel {
             }
         });
         //checkbox.setSelected(true);
+
+        JLabel label = new JLabel();
         label.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
+                JLabel l = (JLabel) e.getComponent();
                 Container c = getTopLevelAncestor();
                 if (c instanceof JFrame) {
-                    label.setText(c.getSize().toString());
+                    l.setText(c.getSize().toString());
                 }
             }
         });
@@ -55,7 +57,7 @@ public final class MainPanel extends JPanel {
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initFrameSize(JFrame frame) {
+    protected void initFrameSize(JFrame frame) {
         if (!checkbox.isSelected()) {
             return;
         }

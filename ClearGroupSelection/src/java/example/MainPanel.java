@@ -10,9 +10,9 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final ButtonGroup bg = new ButtonGroup();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon nicon  = new ImageIcon(getClass().getResource("wi0063-32.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
@@ -23,6 +23,7 @@ public final class MainPanel extends JPanel {
         t2.setSelectedIcon(sicon);
         List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
 
+        ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("ButtonGroup"));
         for (AbstractButton b: l) {

@@ -9,12 +9,12 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JSplitPane leftPane   = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    private final JSplitPane rightPane  = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    private final JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JSplitPane leftPane   = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        JSplitPane rightPane  = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         //leftPane.setContinuousLayout(true);
         //rightPane.setContinuousLayout(true);
@@ -44,14 +44,15 @@ public final class MainPanel extends JPanel {
         leftPane.addPropertyChangeListener(pcl);
         rightPane.addPropertyChangeListener(pcl);
 
-        add(new JCheckBox(new AbstractAction("setContinuousLayout") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox) e.getSource()).isSelected();
-                leftPane.setContinuousLayout(flag);
-                rightPane.setContinuousLayout(flag);
-                centerPane.setContinuousLayout(flag);
-            }
-        }), BorderLayout.NORTH);
+        JCheckBox check = new JCheckBox("setContinuousLayout");
+        check.addActionListener(e -> {
+            boolean flag = ((JCheckBox) e.getSource()).isSelected();
+            leftPane.setContinuousLayout(flag);
+            rightPane.setContinuousLayout(flag);
+            centerPane.setContinuousLayout(flag);
+        });
+
+        add(check, BorderLayout.NORTH);
         add(centerPane);
         setPreferredSize(new Dimension(320, 240));
     }

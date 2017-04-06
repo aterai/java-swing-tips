@@ -6,16 +6,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private int alpha = 10;
-    private Crossfade mode = Crossfade.In;
+public class MainPanel extends JPanel {
+    protected int alpha = 10;
+    protected Crossfade mode = Crossfade.In;
 
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
 
+        Class<?> clz = MainPanel.class;
         JCheckBox check = new JCheckBox("Crossfade Type?", true);
-        ImageIcon icon1 = new ImageIcon(getClass().getResource("test.png"));
-        ImageIcon icon2 = new ImageIcon(getClass().getResource("test.jpg"));
+        ImageIcon icon1 = new ImageIcon(clz.getResource("test.png"));
+        ImageIcon icon2 = new ImageIcon(clz.getResource("test.jpg"));
         JButton button  = new JButton("change");
         JComponent crossfade = new JComponent() {
             @Override protected void paintComponent(Graphics g) {

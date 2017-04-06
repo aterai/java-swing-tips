@@ -141,7 +141,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
             }
         });
     }
-    private void updateItem(int index) {
+    protected void updateItem(int index) {
         if (isPopupVisible()) {
             E item = getItemAt(index);
             item.selected ^= true;

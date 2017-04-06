@@ -8,16 +8,16 @@ import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private static final int BOOLEAN_COLUMN = 2;
-    private static String[] columnNames = {"String", "Number", "Boolean"};
-    private static Object[][] data = {
+public class MainPanel extends JPanel {
+    protected static final int BOOLEAN_COLUMN = 2;
+    protected final String[] columnNames = {"String", "Number", "Boolean"};
+    protected final Object[][] data = {
         {"aaa", 1, false}, {"bbb", 20, false},
         {"ccc", 2, false}, {"ddd", 3,  false},
         {"aaa", 1, false}, {"bbb", 20, false},
         {"ccc", 2, false}, {"ddd", 3,  false},
     };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
+    protected final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
@@ -25,9 +25,11 @@ public final class MainPanel extends JPanel {
             return col == BOOLEAN_COLUMN;
         }
     };
+
     public MainPanel() {
         super(new BorderLayout());
-        final JTable table = makeTable(model);
+
+        JTable table = makeTable(model);
         //TEST: final JTable table = makeTable2(model);
         model.addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE) {

@@ -6,12 +6,12 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final double A2 = 4d;
     private MainPanel() {
         super(new BorderLayout());
 
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panel2 = new JPanel() {
+            protected static final double A2 = 4d;
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Insets i = getInsets();
@@ -29,33 +29,36 @@ public final class MainPanel extends JPanel {
                 }
                 g2.dispose();
             }
-        };
-        panel2.setLayout(new FlowLayout() {
-            @Override public void layoutContainer(Container target) {
-                synchronized (target.getTreeLock()) {
-                    int nmembers = target.getComponentCount();
-                    if (nmembers <= 0) {
-                        return;
-                    }
-                    Insets insets = target.getInsets();
-                    int vgap = getVgap();
-                    int hgap = getHgap();
-                    int rowh = (target.getHeight() - insets.top - insets.bottom - vgap * 2) / nmembers;
-                    int x = insets.left + hgap;
-                    int y = insets.top  + vgap;
-                    for (int i = 0; i < nmembers; i++) {
-                        Component m = target.getComponent(i);
-                        if (m.isVisible()) {
-                            Dimension d = m.getPreferredSize();
-                            m.setSize(d.width, d.height);
-                            m.setLocation(x, y);
-                            y += vgap + Math.min(rowh, d.height);
-                            x = (int) (A2 * Math.sqrt(y));
+            @Override public void updateUI() {
+                super.updateUI();
+                setLayout(new FlowLayout() {
+                    @Override public void layoutContainer(Container target) {
+                        synchronized (target.getTreeLock()) {
+                            int nmembers = target.getComponentCount();
+                            if (nmembers <= 0) {
+                                return;
+                            }
+                            Insets insets = target.getInsets();
+                            int vgap = getVgap();
+                            int hgap = getHgap();
+                            int rowh = (target.getHeight() - insets.top - insets.bottom - vgap * 2) / nmembers;
+                            int x = insets.left + hgap;
+                            int y = insets.top  + vgap;
+                            for (int i = 0; i < nmembers; i++) {
+                                Component m = target.getComponent(i);
+                                if (m.isVisible()) {
+                                    Dimension d = m.getPreferredSize();
+                                    m.setSize(d.width, d.height);
+                                    m.setLocation(x, y);
+                                    y += vgap + Math.min(rowh, d.height);
+                                    x = (int) (A2 * Math.sqrt(y));
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
-        });
+        };
 
         JPanel p = new JPanel(new GridLayout(1, 2));
         p.add(initPanel("FlowLayout(LEFT)", panel1));

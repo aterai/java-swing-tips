@@ -8,11 +8,12 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
-    private static final String ENTER_PRESSED = "enterPressed";
-    private final String[] model = {"123456", "7890", "a"};
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] model = {"123456", "7890", "a"};
+
         JComboBox<String> comboBox0 = new JComboBox<>(model);
         comboBox0.setEditable(true);
 
@@ -28,6 +29,7 @@ public class MainPanel extends JPanel {
         };
 
         JComboBox<String> comboBox2 = new JComboBox<String>(model) {
+            private static final String ENTER_PRESSED = "enterPressed";
             private transient PopupMenuListener handler;
             @Override public void updateUI() {
                 removePopupMenuListener(handler);

@@ -10,7 +10,7 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final JTable table = new JTable(new DefaultTableModel(10, 10)) {
-        private transient HighlightListener highlighter;
+        protected transient HighlightListener highlighter;
         @Override public void updateUI() {
             removeMouseListener(highlighter);
             removeMouseMotionListener(highlighter);

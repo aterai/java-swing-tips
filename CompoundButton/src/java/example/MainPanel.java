@@ -85,8 +85,8 @@ class CompoundButton extends JButton {
     protected final Color rc = Color.ORANGE;
     protected transient Shape shape;
     protected transient Shape base;
-    private final ButtonLocation bl;
-    private final Dimension dim;
+    protected final ButtonLocation bl;
+    protected final Dimension dim;
     protected CompoundButton(Dimension d, ButtonLocation bl) {
         super();
         this.dim = d;
@@ -141,7 +141,7 @@ class CompoundButton extends JButton {
             }
         }
     }
-    private void paintFocusAndRollover(Graphics2D g2, Color color) {
+    protected void paintFocusAndRollover(Graphics2D g2, Color color) {
         g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
         g2.setPaint(getBackground());

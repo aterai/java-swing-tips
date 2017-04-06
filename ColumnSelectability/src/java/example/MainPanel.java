@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        private boolean isColumnSelectable(int column) {
+        protected boolean isColumnSelectable(int column) {
             return convertColumnIndexToModel(column) == 0;
         }
         @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {

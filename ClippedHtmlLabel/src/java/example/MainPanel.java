@@ -11,29 +11,28 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final String[] columnNames = {"No.", "Name", "URL"};
-    private final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-        @Override public Class<?> getColumnClass(int column) {
-            switch (column) {
-              case 0:
-                return Integer.class;
-              case 1:
-                return String.class;
-              case 2:
-                return URL.class;
-              default:
-                return super.getColumnClass(column);
-            }
-        }
-        @Override public boolean isCellEditable(int row, int col) {
-            return false;
-        }
-    };
     private MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
+        String[] columnNames = {"No.", "Name", "URL"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override public Class<?> getColumnClass(int column) {
+                switch (column) {
+                  case 0:
+                    return Integer.class;
+                  case 1:
+                    return String.class;
+                  case 2:
+                    return URL.class;
+                  default:
+                    return super.getColumnClass(column);
+                }
+            }
+            @Override public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
         try {
             model.addRow(new Object[] {0, "FrontPage",       new URL("http://ateraimemo.com/")});
             model.addRow(new Object[] {1, "Java Swing Tips", new URL("http://ateraimemo.com/Swing.html")});
@@ -63,10 +62,11 @@ public final class MainPanel extends JPanel {
     }
     private static JTable makeTable(DefaultTableModel model) {
         JTable table = new JTable(model) {
+            private final Color evenColor = new Color(250, 250, 250);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
                 c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
                 return c;
             }
         };

@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
+public class MainPanel extends JPanel {
+    protected final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
     private final String[] columnNames = {"A", "B", "C"};
     private final Object[][] data = {
         {"aaa", "eeee", "l"}, {"bbb", "ff", "ggg"},
@@ -55,7 +55,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

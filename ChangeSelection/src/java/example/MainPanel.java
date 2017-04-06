@@ -7,10 +7,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final String[] columnNames = {"A", "B", "C"};
-    private final Object[][] data = {
+public class MainPanel extends JPanel {
+    protected final String[] columnNames = {"A", "B", "C"};
+    protected final Object[][] data = {
         {"0, 0", "0, 1", "0, 2"},
         {"1, 0", "1, 1", "1, 2"},
         {"2, 0", "2, 1", "2, 2"},
@@ -22,12 +21,13 @@ public final class MainPanel extends JPanel {
         {"8, 0", "8, 1", "8, 2"},
         {"9, 0", "9, 1", "9, 2"}
     };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
+    protected final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model) {
+    protected final JTable table = new JTable(model) {
+        private final Color evenColor = new Color(250, 250, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if (isCellSelected(row, column)) {
@@ -35,15 +35,15 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
             }
             return c;
         }
     };
-    private final JSpinner rowField;
-    private final JSpinner colField;
-    private final JCheckBox toggle = new JCheckBox("toggle", false);
-    private final JCheckBox extend = new JCheckBox("extend", false);
+    protected final JSpinner rowField;
+    protected final JSpinner colField;
+    protected final JCheckBox toggle = new JCheckBox("toggle", false);
+    protected final JCheckBox extend = new JCheckBox("extend", false);
 
     public MainPanel() {
         super(new BorderLayout());

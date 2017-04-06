@@ -11,15 +11,15 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 public class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("on EDT", true);
-    private final JButton start = new JButton("Start");
-    private final JButton stop  = new JButton("Stop");
-    private final JTextArea textArea0 = new JTextArea();
-    private final JTextArea textArea1 = new JTextArea();
-    private final JTextArea textArea2 = new JTextArea();
-    //TEST: private final Timer timer = new Timer(500, e -> test(new Date().toString()));
-    //TEST: private Thread thread;
-    private transient SwingWorker<String, String> worker;
+    protected final JCheckBox check = new JCheckBox("on EDT", true);
+    protected final JButton start = new JButton("Start");
+    protected final JButton stop  = new JButton("Stop");
+    protected final JTextArea textArea0 = new JTextArea();
+    protected final JTextArea textArea1 = new JTextArea();
+    protected final JTextArea textArea2 = new JTextArea();
+    //TEST: protected final Timer timer = new Timer(500, e -> test(new Date().toString()));
+    //TEST: protected Thread thread;
+    protected transient SwingWorker<String, String> worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
     private static void insertText(JTextArea textArea, String s) {
         textArea.append(s + "\n");
     }
-    private void test(String s) {
+    protected void test(String s) {
         insertText(textArea0, s);
         insertText(textArea1, s);
         insertText(textArea2, s);

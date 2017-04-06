@@ -11,15 +11,16 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
-    private static final String ENTER_PRESSED = "enterPressed";
-    private final String[] model = {"123456", "7890"};
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] model = {"123456", "7890"};
         JComboBox<String> combo = new JComboBox<>(model);
         combo.setEditable(true);
 
         JComboBox<String> comboBox = new JComboBox<String>(model) {
+            private static final String ENTER_PRESSED = "enterPressed";
             @Override public void updateUI() {
                 getActionMap().put(ENTER_PRESSED, null);
                 super.updateUI();

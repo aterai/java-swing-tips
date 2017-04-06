@@ -10,25 +10,26 @@ import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
 public final class MainPanel extends JPanel {
-    private final List<? extends JTabbedPane> list = Arrays.asList(
-        makeTestTabbedPane(new JTabbedPane()),
-        makeTestTabbedPane(new ClippedTitleTabbedPane()));
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        List<? extends JTabbedPane> list = Arrays.asList(
+            makeTestTabbedPane(new JTabbedPane()),
+            makeTestTabbedPane(new ClippedTitleTabbedPane()));
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         for (JTabbedPane t: list) {
             p.add(t);
         }
+
+        JCheckBox check = new JCheckBox("LEFT");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            list.forEach(t -> t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP));
+        });
+
         add(p);
-        add(new JCheckBox(new AbstractAction("LEFT") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                for (JTabbedPane t: list) {
-                    t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
-                }
-            }
-        }), BorderLayout.NORTH);
+        add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {

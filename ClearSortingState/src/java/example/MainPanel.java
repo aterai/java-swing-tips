@@ -9,24 +9,24 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                final RowSorter<? extends TableModel> sorter = table.getRowSorter();
+                RowSorter<? extends TableModel> sorter = table.getRowSorter();
                 if (Objects.isNull(sorter) || sorter.getSortKeys().isEmpty()) {
                     return;
                 }
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

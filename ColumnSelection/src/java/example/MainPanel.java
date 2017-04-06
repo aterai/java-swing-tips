@@ -8,22 +8,21 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final JCheckBox check = new JCheckBox("Header click: Select all cells in a column", true);
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model) {
+            private final Color evenColor = new Color(250, 250, 250);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
                 if (isCellSelected(row, column)) {
@@ -31,14 +30,16 @@ public final class MainPanel extends JPanel {
                     c.setBackground(getSelectionBackground());
                 } else {
                     c.setForeground(getForeground());
-                    c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
                 }
                 return c;
             }
         };
         table.setCellSelectionEnabled(true);
 
-        final JTableHeader header = table.getTableHeader();
+        JCheckBox check = new JCheckBox("Header click: Select all cells in a column", true);
+
+        JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 if (!check.isSelected()) {
@@ -53,29 +54,28 @@ public final class MainPanel extends JPanel {
             }
         });
 
-//         table.getTableHeader().addMouseListener(new MouseAdapter() {
-//             @Override public void mousePressed(MouseEvent e) {
-//                 JTable table = ((JTableHeader) e.getSource()).getTable();
-//                 if (table.isEditing()) {
-//                     table.getCellEditor().stopCellEditing();
-//                 }
-//                 if (check.isSelected()) {
-//                     //table.getSelectionModel().clearSelection();
-//                     //table.getSelectionModel().setAnchorSelectionIndex(-1);
-//                     //table.getSelectionModel().setLeadSelectionIndex(-1);
-//                     table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(-1);
-//                     table.getColumnModel().getSelectionModel().setLeadSelectionIndex(-1);
-//                 }
-//             }
-//         });
+        JButton button = new JButton("clear selection");
+        button.addActionListener(e -> table.clearSelection());
+
+        // table.getTableHeader().addMouseListener(new MouseAdapter() {
+        //     @Override public void mousePressed(MouseEvent e) {
+        //         JTable table = ((JTableHeader) e.getSource()).getTable();
+        //         if (table.isEditing()) {
+        //             table.getCellEditor().stopCellEditing();
+        //         }
+        //         if (check.isSelected()) {
+        //             //table.getSelectionModel().clearSelection();
+        //             //table.getSelectionModel().setAnchorSelectionIndex(-1);
+        //             //table.getSelectionModel().setLeadSelectionIndex(-1);
+        //             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(-1);
+        //             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(-1);
+        //         }
+        //     }
+        // });
 
         add(check, BorderLayout.NORTH);
         add(new JScrollPane(table));
-        add(new JButton(new AbstractAction("clear selection") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.clearSelection();
-            }
-        }), BorderLayout.SOUTH);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 

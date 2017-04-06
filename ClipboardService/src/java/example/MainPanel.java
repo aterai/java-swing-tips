@@ -11,8 +11,9 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public final class MainPanel extends JPanel {
-    private ClipboardService cs;
+public class MainPanel extends JPanel {
+    protected ClipboardService cs;
+
     public MainPanel() {
         super(new GridLayout(2, 1));
         try {

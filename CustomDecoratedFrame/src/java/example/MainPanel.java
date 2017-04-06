@@ -10,7 +10,6 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private static final int W = 4;
-    private static final Color BORDER_COLOR = new Color(100, 100, 100);
     private final SideLabel left        = new SideLabel(Side.W);
     private final SideLabel right       = new SideLabel(Side.E);
     private final SideLabel top         = new SideLabel(Side.N);
@@ -21,13 +20,14 @@ public final class MainPanel extends JPanel {
     private final SideLabel bottomright = new SideLabel(Side.SE);
     private final JPanel contentPanel   = new JPanel(new BorderLayout());
     private final JPanel resizePanel    = new JPanel(new BorderLayout()) {
+        private final Color borderColor = new Color(100, 100, 100);
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             int w = getWidth();
             int h = getHeight();
             g2.setPaint(Color.ORANGE);
             g2.fillRect(0, 0, w, h);
-            g2.setPaint(BORDER_COLOR);
+            g2.setPaint(borderColor);
             g2.drawRect(0, 0, w - 1, h - 1);
 
             g2.drawLine(0, 2, 2, 0);
@@ -73,11 +73,13 @@ public final class MainPanel extends JPanel {
 //         iconify.setBackground(Color.ORANGE);
 //         iconify.addActionListener(e -> frame.setExtendedState(state | Frame.ICONIFIED));
 //     }
-
+    protected Container getMainContentPane() {
+        return contentPanel;
+    }
     public JFrame makeFrame(String str) {
-        final JFrame frame = new JFrame(str) {
+        JFrame frame = new JFrame(str) {
             @Override public Container getContentPane() {
-                return contentPanel;
+                return getMainContentPane();
             }
         };
         frame.setUndecorated(true);

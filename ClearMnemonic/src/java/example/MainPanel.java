@@ -7,36 +7,34 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField textField = new JTextField("B");
-    public MainPanel() {
+    private MainPanel() {
         super();
 
-        final JButton button = new JButton(new AbstractAction("Button") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
+        JTextField textField = new JTextField("B");
+        JButton button = new JButton("Button");
+        button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
+
+        JButton setMnemonicButton = new JButton("setMnemonic(...)");
+        setMnemonicButton.addActionListener(e -> {
+            String str = textField.getText().trim();
+            if (str.isEmpty()) {
+                str = button.getText();
             }
+            //button.setMnemonic(str.charAt(0));
+            button.setMnemonic(str.codePointAt(0));
+        });
+        JButton clearMnemonicButton = new JButton("clear Mnemonic");
+        clearMnemonicButton.addActionListener(e -> {
+            button.setMnemonic(0);
+            //button.setMnemonic('\u0000');
+            //button.setMnemonic('\0');
         });
 
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("setMnemonic"));
         p.add(textField);
-        p.add(new JButton(new AbstractAction("setMnemonic(...)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String str = textField.getText().trim();
-                if (str.isEmpty()) {
-                    str = button.getText();
-                }
-                //button.setMnemonic(str.charAt(0));
-                button.setMnemonic(str.codePointAt(0));
-            }
-        }));
-        p.add(new JButton(new AbstractAction("clear Mnemonic") {
-            @Override public void actionPerformed(ActionEvent e) {
-                button.setMnemonic(0);
-                //button.setMnemonic('\u0000');
-                //button.setMnemonic('\0');
-            }
-        }));
+        p.add(setMnemonicButton);
+        p.add(clearMnemonicButton);
 
         add(button);
         add(p);
