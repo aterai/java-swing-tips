@@ -350,7 +350,7 @@ class TablePopupMenu extends JPopupMenu {
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         });
-        add("clearSelection").addActionListener(e -> (JTable) getInvoker().clearSelection());
+        add("clearSelection").addActionListener(e -> ((JTable) getInvoker()).clearSelection());
         addSeparator();
         add(deleteAction);
     }

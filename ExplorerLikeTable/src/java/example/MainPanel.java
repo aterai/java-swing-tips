@@ -12,29 +12,29 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"Name", "Comment"};
-    private final Object[][] data = {
-        {"test1.jpg", "adfasd"},
-        {"test1234.jpg", "  "},
-        {"test15354.gif", "fasdf"},
-        {"t.png", "comment"},
-        {"tfasdfasd.jpg", "123"},
-        {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
-        {"fffffffffffasdfasdf", ""},
-        {"test1.jpg", ""}
-    };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-        @Override public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
-    private final JTable table = new FileListTable(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"Name", "Comment"};
+        Object[][] data = {
+            {"test1.jpg", "adfasd"},
+            {"test1234.jpg", "  "},
+            {"test15354.gif", "fasdf"},
+            {"t.png", "comment"},
+            {"tfasdfasd.jpg", "123"},
+            {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
+            {"fffffffffffasdfasdf", ""},
+            {"test1.jpg", ""}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable table = new FileListTable(model);
 
         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke tab    = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
@@ -98,7 +98,7 @@ class SelectedImageFilter extends RGBImageFilter {
 }
 
 class FileNameRenderer implements TableCellRenderer {
-    private final Dimension dim = new Dimension();
+    protected final Dimension dim = new Dimension();
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override public Dimension getPreferredSize() {
             return dim;
@@ -217,7 +217,7 @@ class TablePopupMenu extends JPopupMenu {
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         });
-        add("clearSelection").addActionListener(e -> (JTable) getInvoker().clearSelection());
+        add("clearSelection").addActionListener(e -> ((JTable) getInvoker()).clearSelection());
         addSeparator();
         add(deleteAction);
     }
