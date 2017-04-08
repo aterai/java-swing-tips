@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 //class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
-    private final JSpinner.DateEditor editor;
+    protected final JSpinner.DateEditor editor;
 
     protected SpinnerCellEditor() {
         super(new SpinnerDateModel());
@@ -91,7 +91,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         });
         setBorder(BorderFactory.createEmptyBorder());
     }
-    private void setArrowButtonEnabled(boolean flag) {
+    protected final void setArrowButtonEnabled(boolean flag) {
         for (Component c: getComponents()) {
             if (c instanceof JButton) {
                 ((JButton) c).setEnabled(flag);

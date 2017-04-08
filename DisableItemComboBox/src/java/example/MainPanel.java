@@ -9,22 +9,22 @@ import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
-    private final JTextField field = new JTextField("1, 2, 5");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        combo.setDisableIndex(getDisableIndexFromTextField());
+        JTextField field = new JTextField("1, 2, 5");
+
+        DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
+        combo.setDisableIndex(getDisableIndexFromTextField(field));
+
+        JButton button = new JButton("init");
+        button.addActionListener(e -> combo.setDisableIndex(getDisableIndexFromTextField(field)));
 
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("Disabled Item Index:"));
         box.add(field);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent e) {
-                combo.setDisableIndex(getDisableIndexFromTextField());
-            }
-        }));
+        box.add(button);
         add(box, BorderLayout.SOUTH);
         add(combo, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         return model;
     }
 
-    private Set<Integer> getDisableIndexFromTextField() {
+    private static Set<Integer> getDisableIndexFromTextField(JTextField field) {
         try {
             return Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet());
         } catch (NumberFormatException ex) {
@@ -77,9 +77,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DisableItemComboBox<E> extends JComboBox<E> {
-    private final Set<Integer> disableIndexSet = new HashSet<>();
-    private boolean isDisableIndex;
-    private final Action up = new AbstractAction() {
+    protected final Set<Integer> disableIndexSet = new HashSet<>();
+    protected boolean isDisableIndex;
+    protected final Action up = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int si = getSelectedIndex();
             for (int i = si - 1; i >= 0; i--) {
@@ -90,7 +90,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
             }
         }
     };
-    private final Action down = new AbstractAction() {
+    protected final Action down = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int si = getSelectedIndex();
             for (int i = si + 1; i < getModel().getSize(); i++) {
@@ -125,14 +125,16 @@ class DisableItemComboBox<E> extends JComboBox<E> {
                 return c;
             }
         });
-        ActionMap am = getActionMap();
-        am.put("selectPrevious3", up);
-        am.put("selectNext3", down);
-        InputMap im = getInputMap();
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+        EventQueue.invokeLater(() -> {
+            ActionMap am = getActionMap();
+            am.put("selectPrevious3", up);
+            am.put("selectNext3", down);
+            InputMap im = getInputMap();
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+        });
     }
     public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();

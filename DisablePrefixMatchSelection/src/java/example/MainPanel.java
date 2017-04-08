@@ -6,9 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Position;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final String TXT = "<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select";
-    private final JCheckBox check = new JCheckBox(TXT);
+    protected final JCheckBox check = new JCheckBox(TXT);
+
     public MainPanel() {
         super(new BorderLayout(5, 5));
 

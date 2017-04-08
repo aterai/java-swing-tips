@@ -9,23 +9,24 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
-    private final JPanel p = new JPanel();
-    private final DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
-    private final Timer stopper = new Timer(5000, e -> layerUI.stop());
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
+        Timer stopper = new Timer(5000, e -> layerUI.stop());
+
+        JButton button = new JButton("Stop 5sec");
+        button.addActionListener(e -> {
+            layerUI.start();
+            if (!stopper.isRunning()) {
+                stopper.start();
+            }
+        });
+
+        JPanel p = new JPanel();
         p.add(new JCheckBox());
         p.add(new JTextField(10));
-        p.add(new JButton(new AbstractAction("Stop 5sec") {
-            @Override public void actionPerformed(ActionEvent e) {
-                layerUI.start();
-                if (!stopper.isRunning()) {
-                    stopper.start();
-                }
-            }
-        }));
+        p.add(button);
         stopper.setRepeats(false);
 
         add(new JLayer<>(p, layerUI), BorderLayout.NORTH);

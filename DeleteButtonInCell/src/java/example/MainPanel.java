@@ -11,18 +11,20 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private static final int BUTTON_COLUMN = 3;
-    private final TestModel model = new TestModel();
-//     private final JTable table = new JTable(model) {
-//         @Override public int rowAtPoint(Point pt) {
-//             // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
-//             // http://bugs.java.com/view_bug.do?bug_id=6291631
-//             return pt.y < 0 ? -1 : super.rowAtPoint(pt);
-//         }
-//     };
-    private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        TestModel model = new TestModel();
+        //JTable table = new JTable(model) {
+        //    @Override public int rowAtPoint(Point pt) {
+        //        // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
+        //        // http://bugs.java.com/view_bug.do?bug_id=6291631
+        //        return pt.y < 0 ? -1 : super.rowAtPoint(pt);
+        //    }
+        //};
+        JTable table = new JTable(model);
+
         TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
         sorter.setSortable(BUTTON_COLUMN, false);
@@ -41,29 +43,29 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 0", "gg"));
 
-//         table.addMouseListener(new MouseAdapter() {
-//             private int targetRow = -1;
-//             @Override public void mousePressed(MouseEvent e) {
-//                 Point pt = e.getPoint();
-//                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-//                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
-//                 if (mrow >= 0 && mcol == BUTTON_COLUMN) {
-//                     targetRow = mrow;
-//                 }
-//             }
-//             @Override public void mouseReleased(MouseEvent e) {
-//                 Point pt = e.getPoint();
-//                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-//                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
-//                 if (targetRow == mrow && mcol == BUTTON_COLUMN) {
-//                     model.removeRow(mrow);
-//                 }
-//                 targetRow = -1;
-//             }
-//         });
-//         ButtonColumn buttonColumn = new ButtonColumn();
+        //         table.addMouseListener(new MouseAdapter() {
+        //             private int targetRow = -1;
+        //             @Override public void mousePressed(MouseEvent e) {
+        //                 Point pt = e.getPoint();
+        //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+        //                 int vrow = table.rowAtPoint(e.getPoint());
+        //                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
+        //                 if (mrow >= 0 && mcol == BUTTON_COLUMN) {
+        //                     targetRow = mrow;
+        //                 }
+        //             }
+        //             @Override public void mouseReleased(MouseEvent e) {
+        //                 Point pt = e.getPoint();
+        //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+        //                 int vrow = table.rowAtPoint(e.getPoint());
+        //                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
+        //                 if (targetRow == mrow && mcol == BUTTON_COLUMN) {
+        //                     model.removeRow(mrow);
+        //                 }
+        //                 targetRow = -1;
+        //             }
+        //         });
+        //         ButtonColumn buttonColumn = new ButtonColumn();
 
         //ButtonColumn buttonColumn = new ButtonColumn(table);
         TableColumn column = table.getColumnModel().getColumn(BUTTON_COLUMN);

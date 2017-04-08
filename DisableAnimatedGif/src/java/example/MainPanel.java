@@ -36,13 +36,12 @@ public final class MainPanel extends JPanel {
         ImageIcon i = new ImageIcon(getClass().getResource("duke.running_frame_0001.gif"));
         label3.setDisabledIcon(makeDisabledIcon(i));
 
-        JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                label1.setEnabled(c.isSelected());
-                label2.setEnabled(c.isSelected());
-                label3.setEnabled(c.isSelected());
-            }
+        JCheckBox check = new JCheckBox("setEnabled");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            label1.setEnabled(c.isSelected());
+            label2.setEnabled(c.isSelected());
+            label3.setEnabled(c.isSelected());
         });
         JPanel p = new JPanel(new GridLayout(2, 2));
         p.add(label1);

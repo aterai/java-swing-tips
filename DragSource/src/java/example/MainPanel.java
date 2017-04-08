@@ -104,15 +104,15 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private File getFile() {
+    protected File getFile() {
         return file;
     }
-    private void setFile(File file) {
+    protected void setFile(File file) {
         this.file = file;
         label.setIcon(i2);
         label.setText("tmpfile#exists(): true(draggable)");
     }
-    private void clearFile() {
+    protected void clearFile() {
         file = null;
         label.setIcon(i1);
         label.setText("tmpfile#exists(): false");

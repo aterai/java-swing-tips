@@ -7,9 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JLabel label = new JLabel("", SwingConstants.CENTER);
         label.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
                 label.setText(label.getSize().toString());

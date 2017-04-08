@@ -6,13 +6,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final int DELAY = 10 * 1000; //10s
-    private final Timer timer = new Timer(DELAY, null);
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox<String> combo = makeComboBox();
     private final JTextField textField = new JTextField(20);
-    private final JButton button;
+    private final JButton button = new JButton("Connect");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -24,6 +23,7 @@ public final class MainPanel extends JPanel {
 //                 }
 //             }
 //         };
+        Timer timer = new Timer(DELAY, null);
         AWTEventListener awtEvent = e -> {
             if (timer.isRunning()) {
                 System.out.println("timer.restart()");
@@ -34,16 +34,15 @@ public final class MainPanel extends JPanel {
             System.out.println("timeout");
             setTestConnected(false);
             Toolkit.getDefaultToolkit().removeAWTEventListener(awtEvent);
-            timer.stop();
+            ((Timer) e.getSource()).stop();
         });
-        button = new JButton(new AbstractAction("Connect") {
-            @Override public void actionPerformed(ActionEvent e) {
-                setTestConnected(true);
-                Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
-                //Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
-                timer.setRepeats(false);
-                timer.start();
-            }
+
+        button.addActionListener(e -> {
+            setTestConnected(true);
+            Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
+            //Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
+            timer.setRepeats(false);
+            timer.start();
         });
         setTestConnected(false);
 
@@ -64,7 +63,7 @@ public final class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void setTestConnected(boolean flag) {
+    protected final void setTestConnected(boolean flag) {
         String str = flag ? "<font color='blue'>Connected" : "<font color='red'>Not connected";
         label.setText("<html>Status: " + str);
         combo.setEnabled(flag);

@@ -7,14 +7,10 @@ import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
-class MainPanel {
-    private transient JFrame frame;
-    private transient JWindow splashScreen;
-
-    public void start(JFrame f) {
-        this.frame = f;
-        ImageIcon img = new ImageIcon(getClass().getResource("splash.png"));
-        splashScreen = createSplashScreen(frame, img);
+public class MainPanel {
+    public void start(JFrame frame) {
+        ImageIcon img = new ImageIcon(MainPanel.class.getResource("splash.png"));
+        JWindow splashScreen = createSplashScreen(frame, img);
         splashScreen.setVisible(true);
 
         (new Thread() {
@@ -36,7 +32,7 @@ class MainPanel {
             }
         }).start();
     }
-    private JPanel makeUI() {
+    private static JPanel makeUI(JFrame frame) {
         JLabel label = new JLabel("Draggable Label (@title@)");
         DragWindowListener dwl = new DragWindowListener();
         label.addMouseListener(dwl);
@@ -74,8 +70,8 @@ class MainPanel {
         window.setLocationRelativeTo(null);
         return window;
     }
-    private void showFrame(JFrame frame) {
-        frame.getContentPane().add(makeUI());
+    protected void showFrame(JFrame frame) {
+        frame.getContentPane().add(makeUI(frame));
         frame.setMinimumSize(new Dimension(100, 100));
         frame.setSize(320, 240);
         frame.setLocationRelativeTo(null);

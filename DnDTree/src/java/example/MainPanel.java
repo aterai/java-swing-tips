@@ -66,10 +66,10 @@ public final class MainPanel extends JPanel {
 //Java Swing Hacks - HACK #26: DnD JTree
 //http://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-    private transient DragGestureRecognizer dragGestureRecognizer;
-    private transient DropTarget dropTarget;
-    private TreeNode dropTargetNode;
-    private TreeNode draggedNode;
+    protected transient DragGestureRecognizer dragGestureRecognizer;
+    protected transient DropTarget dropTarget;
+    protected TreeNode dropTargetNode;
+    protected TreeNode draggedNode;
 
     @Override public void updateUI() {
         setCellRenderer(null);

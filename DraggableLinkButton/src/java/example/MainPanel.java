@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.io.IOException;
+// import java.io.IOException;
 import java.net.*;
 import java.util.Objects;
 import javax.swing.*;
@@ -17,20 +17,21 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "http://ateraimemo.com/";
-    private final JTextArea textArea = new JTextArea();
-    public MainPanel() {
+
+    private MainPanel() {
         super(new BorderLayout());
-        JButton label = new JButton(new AbstractAction(MYSITE) {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(MYSITE));
-                    } catch (IOException | URISyntaxException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
+
+        JButton label = new JButton(MYSITE);
+//         label.addActionListener(e -> {
+//             System.out.println(e);
+//             if (Desktop.isDesktopSupported()) {
+//                 try {
+//                     Desktop.getDesktop().browse(new URI(MYSITE));
+//                 } catch (IOException | URISyntaxException ex) {
+//                     ex.printStackTrace();
+//                 }
+//             }
+//         });
         label.setUI(LinkViewButtonUI.createUI(label, MYSITE));
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
@@ -39,7 +40,7 @@ public final class MainPanel extends JPanel {
         p.add(label);
 
         add(p, BorderLayout.NORTH);
-        add(new JScrollPane(textArea));
+        add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }
 //         //TransferHandler
@@ -112,13 +113,13 @@ public final class MainPanel extends JPanel {
 }
 
 class LinkViewButtonUI extends BasicButtonUI {
-    private static final LinkViewButtonUI LINK_VIEW_BUTTON_UI = new LinkViewButtonUI();
-    //private static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
-    private static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
-    private final Dimension size;
-    private final Rectangle viewRect;
-    private final Rectangle iconRect;
-    private final Rectangle textRect;
+    protected static final LinkViewButtonUI LINK_VIEW_BUTTON_UI = new LinkViewButtonUI();
+    //protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
+    protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
+    protected final Dimension size;
+    protected final Rectangle viewRect;
+    protected final Rectangle iconRect;
+    protected final Rectangle textRect;
 
     public static ButtonUI createUI(JButton b, final String href) {
         b.setForeground(Color.BLUE);

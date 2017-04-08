@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private static final String DEVICE_NAME = "con.txt";
+public class MainPanel extends JPanel {
+    protected static final String DEVICE_NAME = "con.txt";
     public MainPanel() {
         super(new BorderLayout(10, 10));
         JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
-    private boolean isCanonicalPath(File file) {
+    protected boolean isCanonicalPath(File file) {
         if (Objects.isNull(file)) {
             return false;
         }

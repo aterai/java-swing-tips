@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
 // RadioButton.disabledText
 // ComboBox.disabledForeground
 // ComboBox.disabledBackground
@@ -22,15 +22,15 @@ public final class MainPanel extends JPanel {
 // Menu.disabledForeground
 // MenuItem.disabledForeground
 // Button.disabledText
-    private final JCheckBox cbx1 = new JCheckBox("default", true);
-    private final JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
-    private final JLabel label   = new JLabel("label disabledForeground");
-    private final JButton button = new JButton("button disabledText");
-    private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
-    private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
-    private final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
-    private final List<? extends JComponent> list = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
-    private final JCheckBox cbx = new JCheckBox("setEnabled");
+    protected final JCheckBox cbx1 = new JCheckBox("default", true);
+    protected final JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
+    protected final JLabel label   = new JLabel("label disabledForeground");
+    protected final JButton button = new JButton("button disabledText");
+    protected final JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
+    protected final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
+    protected final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
+    protected final List<? extends JComponent> list = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
+    protected final JCheckBox cbx = new JCheckBox("setEnabled");
 
     public MainPanel() {
         super(new BorderLayout());

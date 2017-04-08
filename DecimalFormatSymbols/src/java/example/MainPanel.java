@@ -10,29 +10,24 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
-    private final JSpinner s1 = makeSpinner1(makeSpinnerNumberModel());
-    private final JSpinner s2 = makeSpinner2(makeSpinnerNumberModel());
-    private final JSpinner s3 = makeSpinner3(makeSpinnerNumberModel());
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
+        JSpinner s1 = makeSpinner1(makeSpinnerNumberModel());
+        JSpinner s2 = makeSpinner2(makeSpinnerNumberModel());
+        JSpinner s3 = makeSpinner3(makeSpinnerNumberModel());
+
         JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
             private Object old;
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JSpinner c: Arrays.asList(s0, s1, s2, s3)) {
-                    c.setEnabled(flg);
-                }
+                Arrays.asList(s0, s1, s2, s3).forEach(c -> c.setEnabled(flg));
                 if (flg) {
-                    for (JSpinner c: Arrays.asList(s2, s3)) {
-                        c.setValue(old);
-                    }
+                    Arrays.asList(s2, s3).forEach(c -> c.setValue(old));
                 } else {
                     old = s2.getValue();
-                    for (JSpinner c: Arrays.asList(s2, s3)) {
-                        c.setValue(Double.NaN);
-                    }
+                    Arrays.asList(s2, s3).forEach(c -> c.setValue(Double.NaN));
                 }
             }
         });

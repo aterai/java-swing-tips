@@ -9,15 +9,16 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public final class MainPanel extends JPanel {
-    private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
+public class MainPanel extends JPanel {
+    protected static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
     private final JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
         @Override public void actionPerformed(ActionEvent e) {
             Boolean b = ((JCheckBox) e.getSource()).isSelected();
             UIManager.put(DISABLED_ARE_NAVIGABLE, b);
         }
     });
-    private MainPanel() {
+
+    public MainPanel() {
         super();
         Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
         System.out.println(DISABLED_ARE_NAVIGABLE + ": " + b);

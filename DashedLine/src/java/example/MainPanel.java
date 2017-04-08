@@ -7,16 +7,14 @@ import java.awt.event.*;
 import java.util.Optional;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private static final float[] DEFAULT_DASH_ARRAY = {1f};
+public class MainPanel extends JPanel {
     private final JTextField field = new JTextField("1f, 1f, 5f, 1f");
-    private final JLabel label;
-    private transient BasicStroke dashedStroke;
+    protected transient BasicStroke dashedStroke;
 
-    private float[] getDashArray() {
+    protected float[] getDashArray() {
         String[] slist = field.getText().split(",");
         if (slist.length == 0) {
-            return DEFAULT_DASH_ARRAY;
+            return new float[] {1f};
         }
         float[] list = new float[slist.length];
         int i = 0;
@@ -32,19 +30,13 @@ public final class MainPanel extends JPanel {
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             });
-            return DEFAULT_DASH_ARRAY;
+            return new float[] {1f};
         }
-        return i == 0 ? DEFAULT_DASH_ARRAY : list;
+        return i == 0 ? new float[] {1f} : list;
     }
     public MainPanel() {
         super(new BorderLayout());
-        JButton button = new JButton(new AbstractAction("Change") {
-            @Override public void actionPerformed(ActionEvent e) {
-                dashedStroke = null;
-                label.repaint();
-            }
-        });
-        label = new JLabel() {
+        JLabel label = new JLabel() {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 dashedStroke = Optional.ofNullable(dashedStroke).orElseGet(() -> new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f));
@@ -58,6 +50,12 @@ public final class MainPanel extends JPanel {
             }
         };
         label.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+
+        JButton button = new JButton("Change");
+        button.addActionListener(e -> {
+            dashedStroke = null;
+            label.repaint();
+        });
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.add(field);

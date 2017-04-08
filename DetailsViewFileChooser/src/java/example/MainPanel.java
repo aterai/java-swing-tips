@@ -8,10 +8,11 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JPanel p = new JPanel();
+
+        JTextArea log = new JTextArea();
+        JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(new JButton(new AbstractAction("List View(Default)") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -53,19 +54,19 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static boolean searchAndClick(Container parent, Icon icon) {
-        for (Component c: parent.getComponents()) {
-            if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
-                ((AbstractButton) c).doClick();
-                return true;
-            } else {
-                if (searchAndClick((Container) c, icon)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//     public static boolean searchAndClick(Container parent, Icon icon) {
+//         for (Component c: parent.getComponents()) {
+//             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
+//                 ((AbstractButton) c).doClick();
+//                 return true;
+//             } else {
+//                 if (searchAndClick((Container) c, icon)) {
+//                     return true;
+//                 }
+//             }
+//         }
+//         return false;
+//     }
 //         AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
 //         if (Objects.nonNull(b)) {
 //             Dimension d = chooser.getPreferredSize();

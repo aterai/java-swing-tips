@@ -11,7 +11,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
-    private static final int MAXI = 80;
+    public static final int MAXI = 80;
     private MainPanel() {
         super(new GridLayout(2, 1, 5, 5));
 

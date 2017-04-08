@@ -9,11 +9,12 @@ import javax.swing.*;
 import javax.swing.plaf.synth.*;
 import com.sun.java.swing.plaf.motif.*;
 
-public final class MainPanel extends JPanel {
-    private static final int DESKTOPICON_WIDTH = 150;
-    private static final int DESKTOPICON_HEIGHT = 40;
-    private final JDesktopPane desktop = new JDesktopPane();
-    private final JCheckBox check = new JCheckBox(String.format("JDesktopIcon: %dx%d", DESKTOPICON_WIDTH, DESKTOPICON_HEIGHT));
+public class MainPanel extends JPanel {
+    protected static final int DESKTOPICON_WIDTH = 150;
+    protected static final int DESKTOPICON_HEIGHT = 40;
+    protected final JDesktopPane desktop = new JDesktopPane();
+    protected final JCheckBox check = new JCheckBox(String.format("JDesktopIcon: %dx%d", DESKTOPICON_WIDTH, DESKTOPICON_HEIGHT));
+
     public MainPanel() {
         super(new BorderLayout());
         desktop.setDesktopManager(new DefaultDesktopManager() {
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
         add(mb, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JInternalFrame createFrame(String t, int x, int y) {
+    protected JInternalFrame createFrame(String t, int x, int y) {
         JInternalFrame f = new JInternalFrame(t, true, true, true, true);
         f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
             @Override public Dimension getPreferredSize() {

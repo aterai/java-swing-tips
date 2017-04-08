@@ -8,10 +8,10 @@ import java.util.*;
 import java.util.stream.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final Set<Integer> disableIndexSet = new HashSet<>();
-    private final JTextField field = new JTextField("1, 2, 5");
-    private final JList list = makeList(disableIndexSet);
+public class MainPanel extends JPanel {
+    protected final Set<Integer> disableIndexSet = new HashSet<>();
+    protected final JTextField field = new JTextField("1, 2, 5");
+    protected final JList list = makeList(disableIndexSet);
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         return list;
     }
 
-    private void initDisableIndex(Set<Integer> set) {
+    protected final void initDisableIndex(Set<Integer> set) {
         set.clear();
         try {
             set.addAll(Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet()));
