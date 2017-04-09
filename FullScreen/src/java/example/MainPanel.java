@@ -7,8 +7,9 @@ import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private static final String KEY = "full-screen";
+public class MainPanel extends JPanel {
+    protected static final String KEY = "full-screen";
+
     public MainPanel() {
         super(new BorderLayout());
         setFocusable(true);
@@ -53,7 +54,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void toggleFullScreenWindow() {
+    protected void toggleFullScreenWindow() {
         Component c = SwingUtilities.getRoot(getRootPane());
         if (c instanceof JDialog) {
             JDialog dialog = (JDialog) c;

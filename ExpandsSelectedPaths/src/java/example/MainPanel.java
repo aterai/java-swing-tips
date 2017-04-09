@@ -9,13 +9,13 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField textField = new JTextField("soccer");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JTree tree1 = new JTree();
+
+        JTree tree1 = new JTree();
         tree1.setExpandsSelectedPaths(false);
 
-        final JTree tree2 = new JTree();
+        JTree tree2 = new JTree();
         tree2.setExpandsSelectedPaths(true);
 
         JPanel p1 = new JPanel(new GridLayout(1, 2));
@@ -23,15 +23,16 @@ public final class MainPanel extends JPanel {
         p1.add(makeTitledScrollPane(tree1, "false"));
         p1.add(makeTitledScrollPane(tree2, "true"));
 
+        JTextField textField = new JTextField("soccer");
+        JButton button = new JButton("Select");
+        button.addActionListener(e -> {
+            String q = textField.getText().trim();
+            searchTree(tree1, tree1.getPathForRow(0), q);
+            searchTree(tree2, tree2.getPathForRow(0), q);
+        });
         JPanel p2 = new JPanel(new BorderLayout());
         p2.add(textField);
-        p2.add(new JButton(new AbstractAction("Select") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String q = textField.getText().trim();
-                searchTree(tree1, tree1.getPathForRow(0), q);
-                searchTree(tree2, tree2.getPathForRow(0), q);
-            }
-        }), BorderLayout.EAST);
+        p2.add(button, BorderLayout.EAST);
 
         add(p1);
         add(p2, BorderLayout.SOUTH);

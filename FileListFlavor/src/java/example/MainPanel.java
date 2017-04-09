@@ -12,11 +12,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final FileModel model = new FileModel();
-    private final JTable table = new JTable(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        FileModel model = new FileModel();
+        JTable table = new JTable(model);
+
         DropTargetListener dtl = new DropTargetAdapter() {
             @Override public void dragOver(DropTargetDragEvent dtde) {
                 if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {

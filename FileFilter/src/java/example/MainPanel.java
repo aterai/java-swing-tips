@@ -11,28 +11,30 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public final class MainPanel extends JPanel {
-    private final JFileChooser fileChooser = new JFileChooser();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PngFileFilter());
         fileChooser.addChoosableFileFilter(new JpgFileFilter());
 
         FileFilter filter = new FileNameExtensionFilter("*.jpg, *.jpeg", "jpg", "jpeg");
         fileChooser.addChoosableFileFilter(filter);
 
-        JPanel p = new JPanel(new BorderLayout());
+        JButton button = new JButton("showOpenDialog");
+        button.addActionListener(e -> {
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            System.out.println(retvalue);
+            //if (retvalue == JFileChooser.APPROVE_OPTION) {
+            //    File file = fileChooser.getSelectedFile();
+            //    ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
+            //    combo1.setSelectedIndex(0);
+            //}
+        });
+
+        JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showOpenDialog(...)"));
-        p.add(new JButton(new AbstractAction("showOpenDialog") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int retvalue = fileChooser.showOpenDialog(getRootPane());
-                System.out.println(retvalue);
-                //if (retvalue == JFileChooser.APPROVE_OPTION) {
-                //    File file = fileChooser.getSelectedFile();
-                //    ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
-                //    combo1.setSelectedIndex(0);
-                //}
-            }
-        }));
+        p.add(button);
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));

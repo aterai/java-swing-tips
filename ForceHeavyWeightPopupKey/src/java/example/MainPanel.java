@@ -8,19 +8,12 @@ import java.security.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    private static final Color BACKGROUND_COLOR = new Color(200, 100, 100, 100);
-    private final JComponent glass = new JPanel(new BorderLayout()) {
-        @Override protected void paintComponent(Graphics g) {
-            g.setColor(BACKGROUND_COLOR);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            super.paintComponent(g);
-        }
-    };
-    private final JLabel label1 = makeLabel("Default: setToolTipText");
-    private final JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP");
-    public MainPanel() {
+    private MainPanel() {
         super();
+
+        JLabel label1 = makeLabel("Default: ToolTipText", Color.ORANGE);
+        JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
+
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override public Void run() {
@@ -43,25 +36,31 @@ public final class MainPanel extends JPanel {
             }
         });
 
+        JComponent glass = new JPanel(new BorderLayout()) {
+            private final Color backgroundColor = new Color(100, 100, 200, 100);
+            @Override protected void paintComponent(Graphics g) {
+                g.setColor(backgroundColor);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        glass.setOpaque(false);
+        glass.add(label1, BorderLayout.WEST);
+        glass.add(label2, BorderLayout.EAST);
+        glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
         EventQueue.invokeLater(() -> {
-            glass.setOpaque(false);
-            glass.add(label1, BorderLayout.WEST);
-            glass.add(label2, BorderLayout.EAST);
-            glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
             getRootPane().setGlassPane(glass);
             getRootPane().getGlassPane().setVisible(true);
         });
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JLabel makeLabel(String title) {
+    private static JLabel makeLabel(String title, Color color) {
         JLabel label = new JLabel(title);
-        label.setFont(FONT);
         label.setOpaque(true);
-        label.setBackground(Color.ORANGE);
+        label.setBackground(color);
         label.setToolTipText("1234567890");
         return label;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

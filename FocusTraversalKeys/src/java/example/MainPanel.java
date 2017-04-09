@@ -9,9 +9,11 @@ import javax.swing.*;
 // import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textarea = new JTextArea();
-    private final JButton button = new JButton(new AbstractAction("showOptionDialog") {
-        @Override public void actionPerformed(ActionEvent e) {
+    private MainPanel() {
+        super(new BorderLayout());
+
+        JButton button = new JButton("showOptionDialog");
+        button.addActionListener(e -> {
             JComponent c = (JComponent) e.getSource();
             String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
                         + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
@@ -23,10 +25,9 @@ public final class MainPanel extends JPanel {
             } else if (retValue == JOptionPane.CANCEL_OPTION) {
                 System.out.println("CANCEL_OPTION");
             }
-        }
-    });
-    public MainPanel() {
-        super(new BorderLayout());
+        });
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JButton("111"));
@@ -51,17 +52,18 @@ public final class MainPanel extends JPanel {
 
         setFocusCycleRoot(true);
         setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-        //frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override protected boolean accept(Component c) {
-                return !Objects.equals(c, textarea) && super.accept(c);
+                //return !Objects.equals(c, textarea) && super.accept(c);
+                return !JTextArea.class.isInstance(c) && super.accept(c);
             }
             @Override public Component getDefaultComponent(Container aContainer) {
-                return button;
+                //return button;
+                return getRootPane().getDefaultButton();
             }
         });
-        textarea.setText("FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP");
+
         add(box, BorderLayout.SOUTH);
-        add(new JScrollPane(textarea));
+        add(new JScrollPane(new JTextArea("FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP")));
         setPreferredSize(new Dimension(320, 240));
     }
 

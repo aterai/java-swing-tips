@@ -11,29 +11,29 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.synth.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String CLOSE_CURRENT_TAB = "close_current_tab";
-    private final JTabbedPane tabbedPane = new ClippedTitleTabbedPane() {
-        protected final List<Component> history = new ArrayList<>(5);
-        @Override public void setSelectedIndex(int index) {
-            super.setSelectedIndex(index);
-            Component component = getComponentAt(index);
-            history.remove(component);
-            history.add(0, component);
-        }
-        @Override public void removeTabAt(int index) {
-            Component component = getComponentAt(index);
-            super.removeTabAt(index);
-            history.remove(component);
-            if (!history.isEmpty()) {
-                setSelectedComponent(history.get(0));
-            }
-        }
-    };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTabbedPane tabbedPane = new ClippedTitleTabbedPane() {
+            private final List<Component> history = new ArrayList<>(5);
+            @Override public void setSelectedIndex(int index) {
+                super.setSelectedIndex(index);
+                Component component = getComponentAt(index);
+                history.remove(component);
+                history.add(0, component);
+            }
+            @Override public void removeTabAt(int index) {
+                Component component = getComponentAt(index);
+                super.removeTabAt(index);
+                history.remove(component);
+                if (!history.isEmpty()) {
+                    setSelectedComponent(history.get(0));
+                }
+            }
+        };
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tabbedPane.addTab("aaaa", new JLabel("aaa"));
         tabbedPane.addTab("bbbbbb", new JLabel("bbb"));

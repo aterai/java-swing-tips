@@ -10,54 +10,53 @@ import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
 public final class MainPanel extends JPanel {
-    private final Box northBox  = Box.createVerticalBox();
-    private final Box centerBox = Box.createVerticalBox();
-    private final Box southBox  = Box.createVerticalBox();
-    private final List<? extends AbstractExpansionPanel> panelList = makeList();
-    private final transient ExpansionListener rl = new ExpansionListener() {
-        @Override public void expansionStateChanged(ExpansionEvent e) {
-            initComps(panelList, (JComponent) e.getSource());
-        }
-    };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        JPanel panel = new JPanel(new BorderLayout());
-        for (AbstractExpansionPanel exp: panelList) {
+
+        Box northBox  = Box.createVerticalBox();
+        Box centerBox = Box.createVerticalBox();
+        Box southBox  = Box.createVerticalBox();
+        List<? extends AbstractExpansionPanel> panelList = makeList();
+
+        ExpansionListener rl = e -> {
+            setVisible(false);
+            JComponent source = (JComponent) e.getSource();
+            centerBox.removeAll();
+            northBox.removeAll();
+            southBox.removeAll();
+            boolean insertSouth = false;
+            for (AbstractExpansionPanel exp: panelList) {
+                if (source.equals(exp) && exp.isSelected()) {
+                    centerBox.add(exp);
+                    insertSouth = true;
+                    continue;
+                }
+                exp.setSelected(false);
+                if (insertSouth) {
+                    southBox.add(exp);
+                } else {
+                    northBox.add(exp);
+                }
+            }
+            setVisible(true);
+        };
+
+        panelList.forEach(exp -> {
             northBox.add(exp);
             exp.addExpansionListener(rl);
-        }
+        });
+
+        JPanel panel = new JPanel(new BorderLayout());
         panel.add(northBox, BorderLayout.NORTH);
         panel.add(centerBox);
         panel.add(southBox, BorderLayout.SOUTH);
         panel.setMinimumSize(new Dimension(120, 0));
+
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(panel);
         sp.setRightComponent(new JScrollPane(new JTree()));
         add(sp);
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    private void initComps(List<? extends AbstractExpansionPanel> list, JComponent source) {
-        setVisible(false);
-        centerBox.removeAll();
-        northBox.removeAll();
-        southBox.removeAll();
-        boolean insertSouth = false;
-        for (AbstractExpansionPanel exp: list) {
-            if (source.equals(exp) && exp.isSelected()) {
-                centerBox.add(exp);
-                insertSouth = true;
-                continue;
-            }
-            exp.setSelected(false);
-            if (insertSouth) {
-                southBox.add(exp);
-            } else {
-                northBox.add(exp);
-            }
-        }
-        setVisible(true);
     }
 
     private List<? extends AbstractExpansionPanel> makeList() {

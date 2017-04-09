@@ -9,10 +9,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-");
-    private final JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-");
+        JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
+
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"aaa", 12, true}, {"bbb", 5, false},

@@ -7,22 +7,22 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final Image icon;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        icon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("16x16.png"));
+
+        Image icon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("16x16.png"));
+        JCheckBox check = new JCheckBox("setIconImage");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            Container w = c.getTopLevelAncestor();
+            if (w instanceof Window) {
+                ((Window) w).setIconImage(c.isSelected() ? icon : null);
+            }
+        });
 
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("Window#setIconImage(Image)"));
-        p.add(new JCheckBox(new AbstractAction("setIconImage") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                Container w = c.getTopLevelAncestor();
-                if (w instanceof Window) {
-                    ((Window) w).setIconImage(c.isSelected() ? icon : null);
-                }
-            }
-        }));
+        p.add(check);
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));

@@ -56,9 +56,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TablePopupMenu extends JPopupMenu {
-    private final String[] columnNames;
-    private final JTextField textField = new JTextField();
-    private final JMenuItem editItem1 = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
+    protected final String[] columnNames;
+    protected final JTextField textField = new JTextField();
+    protected final JMenuItem editItem1 = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
         @Override public void actionPerformed(ActionEvent e) {
             JTableHeader header = (JTableHeader) getInvoker();
             TableColumn column = header.getColumnModel().getColumn(index);
@@ -75,7 +75,7 @@ class TablePopupMenu extends JPopupMenu {
             }
         }
     });
-    private final JMenuItem editItem2 = new JMenuItem(new AbstractAction("Edit: setColumnIdentifiers") {
+    protected final JMenuItem editItem2 = new JMenuItem(new AbstractAction("Edit: setColumnIdentifiers") {
         @Override public void actionPerformed(ActionEvent e) {
             final JTableHeader header = (JTableHeader) getInvoker();
             final JTable table = header.getTable();
@@ -95,7 +95,7 @@ class TablePopupMenu extends JPopupMenu {
             }
         }
     });
-    private int index = -1;
+    protected int index = -1;
     protected TablePopupMenu(String... arrays) {
         super();
         columnNames = new String[arrays.length];

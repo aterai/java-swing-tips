@@ -11,14 +11,27 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final JTable table;
-    private final JCheckBox check = new JCheckBox("display an odd number of rows");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
         TestModel model = new TestModel();
-        table = new JTable(model) {
+        model.addTest(new Test("Name 1", "comment..."));
+        model.addTest(new Test("Name 2", "Test"));
+        model.addTest(new Test("Name d", "ee"));
+        model.addTest(new Test("Name c", "Test cc"));
+        model.addTest(new Test("Name b", "Test bb"));
+        model.addTest(new Test("Name a", "ff"));
+        model.addTest(new Test("Name 0", "Test aa"));
+        model.addTest(new Test("Name 1", "comment..."));
+        model.addTest(new Test("Name 2", "Test"));
+        model.addTest(new Test("Name d", "gg"));
+        model.addTest(new Test("Name c", "Test cc"));
+        model.addTest(new Test("Name b", "Test bb"));
+        model.addTest(new Test("Name a", "hh"));
+        model.addTest(new Test("Name 0", "Test aa"));
+
+        JTable table = new JTable(model) {
+            private final Color evenColor = new Color(250, 250, 250);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
                 if (isRowSelected(row)) {
@@ -26,7 +39,7 @@ public final class MainPanel extends JPanel {
                     c.setBackground(getSelectionBackground());
                 } else {
                     c.setForeground(getForeground());
-                    c.setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
                 }
                 return c;
             }
@@ -43,21 +56,7 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "gg"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "hh"));
-        model.addTest(new Test("Name 0", "Test aa"));
-
+        JCheckBox check = new JCheckBox("display an odd number of rows");
         check.addActionListener(e -> model.filterRows(check.isSelected()));
         add(new JScrollPane(table));
         add(check, BorderLayout.NORTH);

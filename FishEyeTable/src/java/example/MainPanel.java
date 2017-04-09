@@ -197,7 +197,7 @@ class FishEyeTable extends JTable {
         return fishEyeRowList.size();
     }
 
-    private void initRowHeight(int height, int ccRow) {
+    protected void initRowHeight(int height, int ccRow) {
         int rd2      = (fishEyeRowList.size() - 1) / 2;
         int rowCount = getModel().getRowCount();
         int viewRc   = getViewableColoredRowCount(ccRow);

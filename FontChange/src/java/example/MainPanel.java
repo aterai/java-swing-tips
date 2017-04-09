@@ -8,22 +8,15 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public final class MainPanel extends JPanel {
-    private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    private static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
-    private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-    private final JToolBar toolbar = new JToolBar();
-    private final JLabel label = new JLabel("Test:");
-    private final JComboBox<String> combo = new JComboBox<>(new String[] {"Test"});
-    private final JButton button = new JButton(new AbstractAction("Dialog") {
-        @Override public void actionPerformed(ActionEvent e) {
-            Toolkit.getDefaultToolkit().beep();
-            JComponent c = (JComponent) e.getSource();
-            JOptionPane.showMessageDialog(c.getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
-        }
-    });
+public class MainPanel extends JPanel {
+    protected static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    protected static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+    protected static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
+
     public MainPanel() {
         super(new BorderLayout());
+
+        JToolBar toolbar = new JToolBar();
         toolbar.add(new AbstractAction("12") {
             @Override public void actionPerformed(ActionEvent e) {
                 updateFont(FONT12);
@@ -40,38 +33,15 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        add(toolbar, BorderLayout.NORTH);
-        add(createCompButtonPanel());
-        updateFont(FONT12);
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private void updateFont(Font font) {
-        FontUIResource fontUIResource = new FontUIResource(font);
-        for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
-            if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
-                UIManager.put(o, fontUIResource);
-            }
-        }
-        recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
-        Container c = getTopLevelAncestor();
-        if (c instanceof Window) {
-            ((Window) c).pack();
-        }
-    }
-    private void recursiveUpdateUI(JComponent p) {
-        for (Component c: p.getComponents()) {
-            if (c instanceof JToolBar) {
-                continue;
-            } else if (c instanceof JComponent) {
-                JComponent jc = (JComponent) c;
-                jc.updateUI();
-                if (jc.getComponentCount() > 0) {
-                    recursiveUpdateUI(jc);
-                }
-            }
-        }
-    }
-    private JComponent createCompButtonPanel() {
+        JLabel label = new JLabel("Test:");
+        JComboBox<String> combo = new JComboBox<>(new String[] {"Test"});
+        JButton button = new JButton("Dialog");
+        button.addActionListener(e -> {
+            Toolkit.getDefaultToolkit().beep();
+            JComponent c = (JComponent) e.getSource();
+            JOptionPane.showMessageDialog(c.getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
+        });
+
         GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -89,7 +59,36 @@ public final class MainPanel extends JPanel {
         c.anchor = GridBagConstraints.LINE_END;
         panel.add(button, c);
 
-        return panel;
+        add(toolbar, BorderLayout.NORTH);
+        add(panel);
+        updateFont(FONT12);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    protected final void updateFont(Font font) {
+        FontUIResource fontUIResource = new FontUIResource(font);
+        for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
+            if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
+                UIManager.put(o, fontUIResource);
+            }
+        }
+        recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
+        Container c = getTopLevelAncestor();
+        if (c instanceof Window) {
+            ((Window) c).pack();
+        }
+    }
+    private static void recursiveUpdateUI(JComponent p) {
+        for (Component c: p.getComponents()) {
+            if (c instanceof JToolBar) {
+                continue;
+            } else if (c instanceof JComponent) {
+                JComponent jc = (JComponent) c;
+                jc.updateUI();
+                if (jc.getComponentCount() > 0) {
+                    recursiveUpdateUI(jc);
+                }
+            }
+        }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

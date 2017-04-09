@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ImageCaptionLabel extends JLabel {
-    private final JTextArea textArea = new JTextArea() {
+    protected final JTextArea textArea = new JTextArea() {
         protected transient MouseListener listener;
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -74,8 +74,8 @@ class ImageCaptionLabel extends JLabel {
         //    return false;
         //}
     };
-    private final transient LabelHandler handler = new LabelHandler(textArea);
-    private void dispatchMouseEvent(MouseEvent e) {
+    protected final transient LabelHandler handler = new LabelHandler(textArea);
+    protected void dispatchMouseEvent(MouseEvent e) {
         Component src = e.getComponent();
         //this: target Component;
         this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));

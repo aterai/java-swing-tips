@@ -8,15 +8,15 @@ import java.io.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    private final JTextField field = new JTextField(24);
-    private final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
-    private final JCheckBox check2 = new JCheckBox("isParent reset?");
-    private final JPanel p = new JPanel(new GridBagLayout());
-    private final JFileChooser fc0 = new JFileChooser();
-    private final JFileChooser fc1 = new JFileChooser();
-    private final JFileChooser fc2 = new JFileChooser() {
+public class MainPanel extends JPanel {
+    protected final JTextArea log = new JTextArea();
+    protected final JTextField field = new JTextField(24);
+    protected final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
+    protected final JCheckBox check2 = new JCheckBox("isParent reset?");
+    protected final JPanel p = new JPanel(new GridBagLayout());
+    protected final JFileChooser fc0 = new JFileChooser();
+    protected final JFileChooser fc1 = new JFileChooser();
+    protected final JFileChooser fc2 = new JFileChooser() {
         @Override public void setCurrentDirectory(File dir) {
             if (Objects.nonNull(dir) && !dir.exists()) {
                 this.setCurrentDirectory(dir.getParentFile());
@@ -44,6 +44,34 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
 
+        JButton button1 = new JButton("setCurrentDirectory");
+        button1.addActionListener(e -> {
+            File f = new File(field.getText().trim());
+            JFileChooser fc = check1.isSelected() ? fc2 : fc0;
+            fc.setCurrentDirectory(f);
+            int retvalue = fc.showOpenDialog(p);
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fc.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JButton button2 = new JButton("setSelectedFile");
+        button2.addActionListener(e -> {
+            File f = new File(field.getText().trim());
+            JFileChooser fc = fc1;
+            System.out.format("isAbsolute: %s, isParent: %s%n",
+                              f.isAbsolute(),
+                              !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
+            fc.setSelectedFile(f);
+            int retvalue = fc.showOpenDialog(p);
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fc.getSelectedFile().getAbsolutePath());
+            }
+            if (check2.isSelected()) {
+                fc.setSelectedFile(f.getParentFile()); //XXX: reset???
+            }
+        });
+
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 0, 0, 0);
@@ -53,37 +81,11 @@ public final class MainPanel extends JPanel {
 
         c.gridwidth = 1;
         c.gridy = 1;
-        p.add(new JButton(new AbstractAction("setCurrentDirectory") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File f = new File(field.getText().trim());
-                JFileChooser fc = check1.isSelected() ? fc2 : fc0;
-                fc.setCurrentDirectory(f);
-                int retvalue = fc.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fc.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }), c);
+        p.add(button1, c);
         p.add(check1, c);
 
         c.gridy = 2;
-        p.add(new JButton(new AbstractAction("setSelectedFile") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File f = new File(field.getText().trim());
-                JFileChooser fc = fc1;
-                System.out.format("isAbsolute: %s, isParent: %s%n",
-                                  f.isAbsolute(),
-                                  !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
-                fc.setSelectedFile(f);
-                int retvalue = fc.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fc.getSelectedFile().getAbsolutePath());
-                }
-                if (check2.isSelected()) {
-                    fc.setSelectedFile(f.getParentFile()); //XXX: reset???
-                }
-            }
-        }), c);
+        p.add(button2, c);
         p.add(check2, c);
 
         add(p, BorderLayout.NORTH);

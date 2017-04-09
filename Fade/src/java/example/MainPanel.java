@@ -10,18 +10,18 @@ import java.net.*;
 import javax.imageio.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private Fade mode = Fade.In;
-    private final Timer animator = new Timer(25, null);
-    private int alpha = 10;
-    private transient BufferedImage icon;
-    private final JButton button1 = new JButton(new AbstractAction("Fade In") {
+public class MainPanel extends JPanel {
+    protected Fade mode = Fade.In;
+    protected final Timer animator = new Timer(25, null);
+    protected int alpha = 10;
+    protected transient BufferedImage icon;
+    protected final JButton button1 = new JButton(new AbstractAction("Fade In") {
         @Override public void actionPerformed(ActionEvent e) {
             mode = Fade.In;
             animator.start();
         }
     });
-    private final JButton button2 = new JButton(new AbstractAction("Fade Out") {
+    protected final JButton button2 = new JButton(new AbstractAction("Fade Out") {
         @Override public void actionPerformed(ActionEvent e) {
             mode = Fade.Out;
             animator.start();
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         try {
-            icon = ImageIO.read(getClass().getResource("test.png"));
+            icon = ImageIO.read(MainPanel.class.getResource("test.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

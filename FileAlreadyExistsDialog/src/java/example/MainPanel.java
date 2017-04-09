@@ -8,16 +8,15 @@ import java.io.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JFileChooser fileChooser;
-    private final JPanel p = new JPanel(new GridBagLayout());
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        fileChooser = new JFileChooser() {
+
+        JFileChooser fileChooser = new JFileChooser() {
             @Override public void approveSelection() {
                 File f = getSelectedFile();
                 if (f.exists() && getDialogType() == SAVE_DIALOG) {
                     //@see https://community.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
-                    //@see http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
+                    //@see https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
                     //String m = "Replace file: " + f.getAbsolutePath() + "?";
                     //String m = "The file exists, overwrite?";
                     String m = String.format("<html>%s already exists.<br>Do you want to replace it?", f.getAbsolutePath());
@@ -29,16 +28,20 @@ public final class MainPanel extends JPanel {
                 super.approveSelection();
             }
         };
-        p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showSaveDialog(...)"));
-        p.add(new JButton(new AbstractAction("Override JFileChooser#approveSelection()") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int retvalue = fileChooser.showSaveDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    System.out.println(file);
-                }
+
+        JButton button = new JButton("Override JFileChooser#approveSelection()");
+        button.addActionListener(e -> {
+            //int retvalue = fileChooser.showSaveDialog(SwingUtilities.getRoot((Component) e.getSource()));
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                System.out.println(file);
             }
-        }));
+        });
+
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showSaveDialog(...)"));
+        p.add(button);
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));

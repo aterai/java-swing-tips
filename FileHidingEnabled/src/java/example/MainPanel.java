@@ -8,36 +8,32 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         Object showHiddenProperty = Toolkit.getDefaultToolkit().getDesktopProperty("awt.file.showHiddenFiles");
         System.out.println("awt.file.showHiddenFiles: " + showHiddenProperty);
 
+        JFileChooser chooser = new JFileChooser();
+        JPopupMenu pop = searchPopupMenu(chooser);
+        pop.addSeparator();
+        JCheckBoxMenuItem mi = new JCheckBoxMenuItem("isFileHidingEnabled");
+        mi.addActionListener(e -> chooser.setFileHidingEnabled(((JCheckBoxMenuItem) e.getSource()).isSelected()));
+        mi.setSelected(chooser.isFileHidingEnabled());
+        pop.add(mi);
+
+        JTextArea log = new JTextArea();
+        JButton button = new JButton("showOpenDialog");
+        button.addActionListener(e -> {
+            int retvalue = chooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-        p.add(new JButton(new AbstractAction("showOpenDialog") {
-            private JFileChooser chooser;
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.isNull(chooser)) {
-                    chooser = new JFileChooser();
-                    JPopupMenu pop = searchPopupMenu(chooser);
-                    pop.addSeparator();
-                    JCheckBoxMenuItem mi = new JCheckBoxMenuItem(new AbstractAction("isFileHidingEnabled") {
-                        @Override public void actionPerformed(ActionEvent e) {
-                            chooser.setFileHidingEnabled(((JCheckBoxMenuItem) e.getSource()).isSelected());
-                        }
-                    });
-                    mi.setSelected(chooser.isFileHidingEnabled());
-                    pop.add(mi);
-                }
-                int retvalue = chooser.showOpenDialog(getRootPane());
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(chooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
+        p.add(button);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
