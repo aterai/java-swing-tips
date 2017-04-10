@@ -9,47 +9,50 @@ import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JPanel p = new JPanel();
+
+        JTextArea log = new JTextArea();
+
+        JButton button1 = new JButton("Default");
+        button1.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            int retvalue = chooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JButton button2 = new JButton("Details View");
+        button2.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
+            //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+            Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
+            if (Objects.nonNull(detailsAction)) {
+                detailsAction.actionPerformed(null);
+            }
+
+            //TEST1: searchAndResizeMode(chooser);
+            //TEST2: Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
+            //TEST3: getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+
+            //TEST4:
+            stream(chooser)
+              .filter(JTable.class::isInstance).map(JTable.class::cast)
+              .findFirst()
+              .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+
+            int retvalue = chooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-        p.add(new JButton(new AbstractAction("Default") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                int retvalue = chooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(chooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("Details View") {
-            private JFileChooser chooser;
-            @Override public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
-                //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-                Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-                if (Objects.nonNull(detailsAction)) {
-                    detailsAction.actionPerformed(null);
-                }
-
-                //TEST1: searchAndResizeMode(chooser);
-                //TEST2: Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
-                //TEST3: getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
-
-                //TEST4:
-                stream(chooser)
-                  .filter(JTable.class::isInstance).map(JTable.class::cast)
-                  .findFirst()
-                  .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
-
-                int retvalue = chooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(chooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
+        p.add(button1);
+        p.add(button2);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));

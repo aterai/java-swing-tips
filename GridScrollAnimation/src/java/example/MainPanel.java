@@ -81,47 +81,50 @@ class GridPanel extends JPanel implements Scrollable {
 }
 
 class ScrollAction extends AbstractAction {
-    private static final double SIZE = 100d;
-    private final Point vec;
-    private final JScrollPane scrollPane;
-    private final Timer scroller = new Timer(5, null);
-    private transient ActionListener listener;
+    protected static final double SIZE = 100d;
+    protected final Point vec;
+    protected final JScrollPane scrollPane;
+    protected final Timer scroller = new Timer(5, null);
+    protected transient ActionListener listener;
+    protected int count;
+
     protected ScrollAction(String name, JScrollPane scrollPane, Point vec) {
         super(name);
         this.scrollPane = scrollPane;
         this.vec = vec;
     }
     @Override public void actionPerformed(ActionEvent e) {
+        start();
+    }
+    protected void start() {
         if (scroller.isRunning()) {
             return;
         }
-        final JViewport vport = scrollPane.getViewport();
-        final JComponent v = (JComponent) vport.getView();
-        final int w  = vport.getWidth();
-        final int h  = vport.getHeight();
-        final int sx = vport.getViewPosition().x;
-        final int sy = vport.getViewPosition().y;
-        final Rectangle rect = new Rectangle(w, h);
+        JViewport vport = scrollPane.getViewport();
+        JComponent v = (JComponent) vport.getView();
+        int w  = vport.getWidth();
+        int h  = vport.getHeight();
+        int sx = vport.getViewPosition().x;
+        int sy = vport.getViewPosition().y;
+        Rectangle rect = new Rectangle(w, h);
         scroller.removeActionListener(listener);
-        listener = new ActionListener() {
-            int count = (int) SIZE;
-            @Override public void actionPerformed(ActionEvent e) {
-                double a = easeInOut(--count / SIZE);
-                int dx = (int) (w - a * w + .5);
-                int dy = (int) (h - a * h + .5);
-                if (count <= 0) {
-                    dx = w;
-                    dy = h;
-                    scroller.stop();
-                }
-                rect.setLocation(sx + vec.x * dx, sy + vec.y * dy);
-                v.scrollRectToVisible(rect);
+        count = (int) SIZE;
+        listener = e -> {
+            double a = easeInOut(--count / SIZE);
+            int dx = (int) (w - a * w + .5);
+            int dy = (int) (h - a * h + .5);
+            if (count <= 0) {
+                dx = w;
+                dy = h;
+                scroller.stop();
             }
+            rect.setLocation(sx + vec.x * dx, sy + vec.y * dy);
+            v.scrollRectToVisible(rect);
         };
         scroller.addActionListener(listener);
         scroller.start();
     }
-    private static double easeInOut(double t) {
+    protected static double easeInOut(double t) {
         //range: 0.0 <= t <= 1.0
         if (t < .5) {
             return .5 * pow3(t * 2d);
@@ -129,7 +132,7 @@ class ScrollAction extends AbstractAction {
             return .5 * (pow3(t * 2d - 2d) + 2d);
         }
     }
-    private static double pow3(double a) {
+    protected static double pow3(double a) {
         //return Math.pow(a, 3d);
         return a * a * a;
     }

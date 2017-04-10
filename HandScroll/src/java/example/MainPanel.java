@@ -8,19 +8,18 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label       = new JLabel();
-    private final JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
-    private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");
-    private final JRadioButton r2    = new JRadioButton("setViewPosition");
-    private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+        JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
+        JRadioButton r1    = new JRadioButton("scrollRectToVisible");
+        JRadioButton r2    = new JRadioButton("setViewPosition");
+
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         //JViewport vport = scroll.getViewport();
         //JDK 1.7.0
         JViewport vport = new JViewport() {
+            private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
             private boolean flag;
             @Override public void revalidate() {
                 if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {

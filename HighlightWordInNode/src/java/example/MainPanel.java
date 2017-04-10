@@ -9,10 +9,11 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
 
-public final class MainPanel extends JPanel {
-    private final JTree tree       = new JTree();
-    private final JTextField field = new JTextField("foo");
-    private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
+public class MainPanel extends JPanel {
+    protected final JTree tree       = new JTree();
+    protected final JTextField field = new JTextField("foo");
+    protected final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -37,7 +38,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void fireDocumentChangeEvent() {
+    protected final void fireDocumentChangeEvent() {
         String q = field.getText();
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);

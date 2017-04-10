@@ -113,8 +113,8 @@ class PropertyTable extends JTable {
 //*
 //delegation pattern
 class DateEditor extends AbstractCellEditor implements TableCellEditor {
-    private final JSpinner spinner;
-    private final JSpinner.DateEditor editor;
+    protected final JSpinner spinner;
+    protected final JSpinner.DateEditor editor;
 
     protected DateEditor() {
         super();
@@ -140,7 +140,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
         });
         spinner.setBorder(BorderFactory.createEmptyBorder());
     }
-    private void setArrowButtonEnabled(boolean flag) {
+    protected final void setArrowButtonEnabled(boolean flag) {
         for (Component c: spinner.getComponents()) {
             if (c instanceof JButton) {
                 ((JButton) c).setEnabled(flag);
@@ -307,10 +307,10 @@ class ColorRenderer extends DefaultTableCellRenderer {
 //http://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
 class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     protected static final String EDIT = "edit";
-    private final JButton button = new JButton();
-    private final JColorChooser colorChooser;
-    private final JDialog dialog;
-    private Color currentColor;
+    protected final JButton button = new JButton();
+    protected final JColorChooser colorChooser;
+    protected final JDialog dialog;
+    protected Color currentColor;
 
     protected ColorEditor() {
         super();

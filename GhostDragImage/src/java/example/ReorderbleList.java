@@ -66,6 +66,9 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
                      : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
+    protected Path2D getRubberBand() {
+        return rubberBand;
+    }
     private class RubberBandingListener extends MouseAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
@@ -76,6 +79,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
                 return;
             }
             Point destPoint = e.getPoint();
+            Path2D rubberBand = getRubberBand();
             rubberBand.reset();
             rubberBand.moveTo(srcPoint.x,  srcPoint.y);
             rubberBand.lineTo(destPoint.x, srcPoint.y);
@@ -93,7 +97,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             //    Component glassPane = l.getRootPane().getGlassPane();
             //    glassPane.setVisible(false);
             //}
-            rubberBand.reset();
+            getRubberBand().reset();
             l.setDragEnabled(l.getSelectedIndices().length > 0);
             l.repaint();
         }

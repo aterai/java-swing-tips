@@ -28,29 +28,33 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new BorderLayout());
-        final JTextArea jta = new JTextArea();
+
+        JTextArea jta = new JTextArea();
         jta.setLineWrap(true);
         jta.setText(INIT_TXT);
+
+        JButton highlight = new JButton("highlight: " + PATTERN);
+        highlight.addActionListener(e -> {
+            jta.setEditable(false);
+            setHighlight(jta, PATTERN);
+        });
+
+        JButton clear = new JButton("clear");
+        clear.addActionListener(e -> {
+            jta.setEditable(true);
+            jta.getHighlighter().removeAllHighlights();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("highlight: " + PATTERN) {
-            @Override public void actionPerformed(ActionEvent e) {
-                jta.setEditable(false);
-                setHighlight(jta, PATTERN);
-            }
-        }));
-        box.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                jta.setEditable(true);
-                jta.getHighlighter().removeAllHighlights();
-            }
-        }));
+        box.add(highlight);
+        box.add(clear);
         add(new JScrollPane(jta));
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static void setHighlight(JTextComponent jtc, String pattern) {
+    protected static void setHighlight(JTextComponent jtc, String pattern) {
         jtc.getHighlighter().removeAllHighlights();
         try {
             Highlighter highlighter = jtc.getHighlighter();

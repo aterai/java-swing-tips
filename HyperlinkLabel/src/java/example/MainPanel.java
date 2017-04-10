@@ -14,24 +14,12 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MYSITE = "http://ateraimemo.com/";
-    private final Action browseAction = new AbstractAction(MYSITE) {
-        @Override public void actionPerformed(ActionEvent e) {
-            Toolkit.getDefaultToolkit().beep();
-            try {
-                if (!Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().browse(new URI(MYSITE));
-                }
-            } catch (IOException | URISyntaxException ex) {
-                ex.printStackTrace();
-            }
-        }
-    };
-
-    protected MainPanel() {
+    private MainPanel() {
         super(new GridBagLayout());
 
-        JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
+        String siteLink = "http://ateraimemo.com/";
+
+        JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", siteLink, siteLink));
         editor.setOpaque(false); //editor.setBackground(getBackground());
         editor.setEditable(false); //REQUIRED
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -40,6 +28,19 @@ public final class MainPanel extends JPanel {
                 Toolkit.getDefaultToolkit().beep();
             }
         });
+
+        Action browseAction = new AbstractAction(siteLink) {
+            @Override public void actionPerformed(ActionEvent e) {
+                Toolkit.getDefaultToolkit().beep();
+                try {
+                    if (!Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().browse(new URI(siteLink));
+                    }
+                } catch (IOException | URISyntaxException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
 
         Border inside  = BorderFactory.createEmptyBorder(2, 5 + 2, 2, 5 + 2);
         Border outside = BorderFactory.createTitledBorder("HyperlinkLabel");
@@ -56,13 +57,12 @@ public final class MainPanel extends JPanel {
 
         c.gridx  = 1;
         c.anchor = GridBagConstraints.LINE_START;
-        add(new URILabel(MYSITE), c);
+        add(new URILabel(siteLink), c);
         add(new JButton(browseAction), c);
         add(new HyperlinkButton(browseAction), c);
         add(editor, c);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

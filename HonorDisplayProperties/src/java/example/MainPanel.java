@@ -10,12 +10,10 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
-    //private final HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    //private final JEditorPane editor = new JEditorPane();
-    private final JEditorPane editor = new JEditorPane("text/html", "");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JEditorPane editor = new JEditorPane("text/html", "");
         editor.setFont(new Font("Serif", Font.PLAIN, 16));
 
         //StyleSheet styleSheet = new StyleSheet();
@@ -43,14 +41,15 @@ public final class MainPanel extends JPanel {
         }
         editor.setText(buf.toString());
 
-        add(new JCheckBox(new AbstractAction("JEditorPane.HONOR_DISPLAY_PROPERTIES") {
-            @Override public void actionPerformed(ActionEvent e) {
-                editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, ((JCheckBox) e.getSource()).isSelected());
-                //HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
-                //StyleSheet styles = htmlEditorKit.getStyleSheet();
-                //styles.addRule("body {font-size: 64pt;}");
-            }
-        }), BorderLayout.NORTH);
+        JCheckBox check = new JCheckBox("JEditorPane.HONOR_DISPLAY_PROPERTIES");
+        check.addActionListener(e -> {
+            editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, ((JCheckBox) e.getSource()).isSelected());
+            //HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
+            //StyleSheet styles = htmlEditorKit.getStyleSheet();
+            //styles.addRule("body {font-size: 64pt;}");
+        });
+
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(editor));
         setPreferredSize(new Dimension(320, 240));
     }

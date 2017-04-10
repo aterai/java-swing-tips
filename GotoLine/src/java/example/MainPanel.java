@@ -10,43 +10,40 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField textField = new JTextField("10");
-    private final JTextArea textArea = new JTextArea();
-    private final JScrollPane scroll = new JScrollPane(textArea);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        textArea.setText(String.join("\n", Collections.nCopies(2000, "aaaaaaaaaaaaa")));
 
-        scroll.setRowHeaderView(new LineNumberView(textArea));
+        JTextField textField = new JTextField("10");
+        JTextArea textArea = new JTextArea(String.join("\n", Collections.nCopies(2000, "aaaaaaaaaaaaa")));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setRowHeaderView(new LineNumberView(textArea));
 
-        JButton button = new JButton(new AbstractAction("Goto Line") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Document doc = textArea.getDocument();
-                Element root = doc.getDefaultRootElement();
-                int i = Integer.parseInt(textField.getText().trim());
-                i = Math.max(1, Math.min(root.getElementCount(), i));
-                try {
-                    Element elem = root.getElement(i - 1);
-                    Rectangle rect = textArea.modelToView(elem.getStartOffset());
-                    Rectangle vr = scroll.getViewport().getViewRect();
-                    rect.setSize(10, vr.height);
-                    textArea.scrollRectToVisible(rect);
-                    textArea.setCaretPosition(elem.getStartOffset());
-                    //textArea.requestFocus();
-                } catch (BadLocationException ex) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
+        JButton button = new JButton("Goto Line");
+        button.addActionListener(e -> {
+            Document doc = textArea.getDocument();
+            Element root = doc.getDefaultRootElement();
+            int i = Math.max(1, Math.min(root.getElementCount(), Integer.parseInt(textField.getText().trim())));
+            try {
+                Element elem = root.getElement(i - 1);
+                Rectangle rect = textArea.modelToView(elem.getStartOffset());
+                Rectangle vr = scroll.getViewport().getViewRect();
+                rect.setSize(10, vr.height);
+                textArea.scrollRectToVisible(rect);
+                textArea.setCaretPosition(elem.getStartOffset());
+                //textArea.requestFocus();
+            } catch (BadLocationException ex) {
+                Toolkit.getDefaultToolkit().beep();
             }
         });
         //frame.getRootPane().setDefaultButton(button);
         EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(textField);
-        panel.add(button, BorderLayout.EAST);
-        add(panel, BorderLayout.NORTH);
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(textField);
+        p.add(button, BorderLayout.EAST);
+        add(p, BorderLayout.NORTH);
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }

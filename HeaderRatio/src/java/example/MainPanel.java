@@ -11,61 +11,59 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-    private final JTextField field = new JTextField("5 : 3 : 2");
-    private final JCheckBox check = new JCheckBox("ComponentListener#componentResized(...)", true);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
+
+        JTextField field = new JTextField("5 : 3 : 2");
+        JCheckBox check = new JCheckBox("ComponentListener#componentResized(...)", true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
                 if (check.isSelected()) {
-                    setTableHeaderColumnRaito();
+                    setTableHeaderColumnRaito(table, field.getText().trim());
                 }
             }
         });
-        add(makeSettingPanel(), BorderLayout.NORTH);
-        add(scrollPane);
-        setPreferredSize(new Dimension(320, 240));
-    }
 
-    private JPanel makeSettingPanel() {
+        JButton button = new JButton("revalidate");
+        button.addActionListener(e -> setTableHeaderColumnRaito(table, field.getText().trim()));
+
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(new JLabel("Ratio:"), BorderLayout.WEST);
         p.add(field);
-        p.add(new JButton(new AbstractAction("revalidate") {
-            @Override public void actionPerformed(ActionEvent e) {
-                setTableHeaderColumnRaito();
-            }
-        }), BorderLayout.EAST);
+        p.add(button, BorderLayout.EAST);
         JPanel panel = new JPanel(new GridLayout(2, 1));
         panel.setBorder(BorderFactory.createTitledBorder("JTableHeader column width ratio"));
         panel.add(p);
         panel.add(check);
-        return panel;
+
+        add(panel, BorderLayout.NORTH);
+        add(scrollPane);
+        setPreferredSize(new Dimension(320, 240));
     }
 
-    private void setTableHeaderColumnRaito() {
+    protected static void setTableHeaderColumnRaito(JTable table, String text) {
         TableColumnModel m = table.getColumnModel();
-        List<Integer> list = getWidthRaitoArray(columnNames.length);
+        List<Integer> list = getWidthRaitoArray(text, m.getColumnCount());
         //System.out.println("a: "+m.getTotalColumnWidth());
         //System.out.println("b: "+table.getSize().width);
         int total = table.getSize().width; //m.getTotalColumnWidth();
-        double raito = total / (double) getRaitoTotal(list);
+        double raito = total / (double) list.stream().mapToInt(i -> i).sum();
         for (int i = 0; i < m.getColumnCount() - 1; i++) {
             TableColumn col = m.getColumn(i);
             int colwidth = (int) (.5 + list.get(i) * raito);
@@ -78,23 +76,14 @@ public final class MainPanel extends JPanel {
         table.revalidate();
     }
 
-    private static int getRaitoTotal(List<Integer> list) {
-//         int w = 0;
-//         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-//             w += list.get(i);
-//         }
-//         return w;
-        return list.stream().mapToInt(i -> i).sum();
-    }
-
-    private List<Integer> getWidthRaitoArray(int length) {
+    protected static List<Integer> getWidthRaitoArray(String text, int length) {
         try {
-            Stream<Integer> a = Arrays.stream(field.getText().split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
+            Stream<Integer> a = Arrays.stream(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
             Stream<Integer> b = Stream.generate(() -> 1).limit(length);
             return Stream.concat(a, b).limit(length).collect(Collectors.toList());
         } catch (NumberFormatException ex) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(getRootPane(), "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return Stream.generate(() -> 1).limit(length).collect(Collectors.toList());
         }
     }

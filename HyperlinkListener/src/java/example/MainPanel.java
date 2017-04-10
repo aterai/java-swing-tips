@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JEditorPane makeEditorPane(boolean editable) {
-        final JEditorPane editorPane = new JEditorPane();
+        JEditorPane editorPane = new JEditorPane();
         editorPane.setEditable(editable);
         editorPane.setContentType("text/html");
         editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -49,12 +49,11 @@ public final class MainPanel extends JPanel {
         HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
         Style s = doc.addStyle("button", null);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
-        HyperlinkButton button = new HyperlinkButton(new AbstractAction(LINK) {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                editorPane.setBackground(b.isSelected() ? Color.RED : Color.WHITE);
-                JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + LINK);
-            }
+        HyperlinkButton button = new HyperlinkButton(LINK);
+        button.addActionListener(e -> {
+            AbstractButton b = (AbstractButton) e.getSource();
+            editorPane.setBackground(b.isSelected() ? Color.RED : Color.WHITE);
+            JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + LINK);
         });
         button.setToolTipText("button: " + LINK);
         button.setOpaque(false);

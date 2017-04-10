@@ -12,7 +12,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final String INIT_TXT =
         "Trail: Creating a GUI with JFC/Swing\n"
       + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     private final JCheckBox checkWord = new JCheckBox("Match whole word only");
     private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
     private final transient HighlightHandler handler = new HighlightHandler();
-    private int current;
+    protected int current;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -77,7 +77,12 @@ public final class MainPanel extends JPanel {
         sp.add(bp, BorderLayout.EAST);
         sp.add(cp, BorderLayout.SOUTH);
 
-        EventQueue.invokeLater(() -> changeHighlight());
+        //EventQueue.invokeLater(() -> changeHighlight()); //NOPMD: Overridable method 'changeHighlight' called during object construction
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                changeHighlight();
+            }
+        });
 
         add(sp, BorderLayout.NORTH);
         add(new JScrollPane(textPane));
@@ -111,7 +116,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    private void changeHighlight() {
+    protected void changeHighlight() {
         field.setBackground(Color.WHITE);
         StyledDocument doc = textPane.getStyledDocument();
         Style s = doc.getStyle("highlight-text-foreground");
