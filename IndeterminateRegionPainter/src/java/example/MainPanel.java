@@ -10,11 +10,12 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.*;
 
-public final class MainPanel extends JPanel {
-    private final BoundedRangeModel model = new DefaultBoundedRangeModel();
-    private final JProgressBar progressBar0 = new JProgressBar(model);
-    private final JProgressBar progressBar1;
-    private SwingWorker<String, Void> worker;
+public class MainPanel extends JPanel {
+    protected final BoundedRangeModel model = new DefaultBoundedRangeModel();
+    protected final JProgressBar progressBar0 = new JProgressBar(model);
+    protected final JProgressBar progressBar1;
+    protected transient SwingWorker<String, Void> worker;
+
     public MainPanel() {
         super(new BorderLayout());
 

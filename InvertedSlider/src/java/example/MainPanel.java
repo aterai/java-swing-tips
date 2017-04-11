@@ -3,37 +3,35 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    private final JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
-    private final JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
-    private final JSlider slider2 = new JSlider(SwingConstants.HORIZONTAL);
-    private final JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
-    private final JCheckBox check = new JCheckBox(new AbstractAction("ComponentOrientation.RIGHT_TO_LEFT") {
-        @Override public void actionPerformed(ActionEvent e) {
-            ComponentOrientation o = ((JCheckBox) e.getSource()).isSelected()
-              ? ComponentOrientation.RIGHT_TO_LEFT
-              : ComponentOrientation.LEFT_TO_RIGHT;
-            for (JSlider s: Arrays.asList(slider0, slider1, slider2, slider3)) {
-                s.setComponentOrientation(o);
-            }
-        }
-    });
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        for (JSlider s: Arrays.asList(slider0, slider1, slider2, slider3)) {
+        BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
+        JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
+        JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
+        JSlider slider2 = new JSlider(SwingConstants.HORIZONTAL);
+        JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
+        List<JSlider> list = Arrays.asList(slider0, slider1, slider2, slider3);
+
+        JCheckBox check = new JCheckBox("ComponentOrientation.RIGHT_TO_LEFT");
+        check.addActionListener(e -> {
+            ComponentOrientation orientation = ((JCheckBox) e.getSource()).isSelected()
+              ? ComponentOrientation.RIGHT_TO_LEFT
+              : ComponentOrientation.LEFT_TO_RIGHT;
+            list.forEach(s -> s.setComponentOrientation(orientation));
+        });
+        list.forEach(s -> {
             s.setModel(model);
             s.setMajorTickSpacing(20);
             s.setMinorTickSpacing(10);
             s.setPaintTicks(true);
             s.setPaintLabels(true);
-        }
+        });
         slider1.setInverted(true);
         slider3.setInverted(true);
 

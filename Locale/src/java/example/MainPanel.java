@@ -31,12 +31,9 @@ public final class MainPanel extends JPanel {
         Locale.CANADA,
         Locale.CANADA_FRENCH,
     };
-    private final JComboBox<Locale> combo = new JComboBox<>(LOCALE_ARRAY);
-    private final JPanel panel = new JPanel(new BorderLayout(5, 5));
-    private final JFileChooser fileChooser = new JFileChooser();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
         UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         //Locale.setDefault(new Locale("en", "US"));
         //Locale defaultLocale = JFileChooser.getDefaultLocale();
@@ -45,17 +42,23 @@ public final class MainPanel extends JPanel {
         //JFileChooser.setDefaultLocale(new Locale("en", "US"));
         //fileChooser.setLocale(new Locale("fr", "FR"));
 
-        panel.setBorder(BorderFactory.createTitledBorder("Open JFileChooser"));
-        panel.add(combo);
-        panel.add(new JButton(new AbstractAction("<-") {
-            @Override public void actionPerformed(ActionEvent e) {
-                fileChooser.setLocale((Locale) combo.getSelectedItem());
-                SwingUtilities.updateComponentTreeUI(fileChooser);
-                int retvalue = fileChooser.showOpenDialog(panel);
-                System.out.println(retvalue);
-            }
-        }), BorderLayout.EAST);
-        add(panel, BorderLayout.NORTH);
+        JComboBox<Locale> combo = new JComboBox<>(LOCALE_ARRAY);
+        JFileChooser fileChooser = new JFileChooser();
+
+        JButton button = new JButton("<-");
+        button.addActionListener(e -> {
+            fileChooser.setLocale((Locale) combo.getSelectedItem());
+            SwingUtilities.updateComponentTreeUI(fileChooser);
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            System.out.println(retvalue);
+        });
+
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.setBorder(BorderFactory.createTitledBorder("Open JFileChooser"));
+        p.add(combo);
+        p.add(button, BorderLayout.EAST);
+        add(p, BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 //     private static void printLocale(JFileChooser fileChooser) {

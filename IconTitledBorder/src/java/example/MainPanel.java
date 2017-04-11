@@ -9,15 +9,16 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final URL url = getClass().getResource("16x16.png");
-    private final String path = url.toString();
-    private final ImageIcon image = new ImageIcon(url);
-    private final String title1 = String.format("<html><img src='%s' />test", path);
-    private final String title2 = String.format("<html><table cellpadding='0'><tr><td><img src='%s'></td><td>test</td></tr></table></html>", path);
-    private final JLabel label  = new JLabel("test", image, SwingConstants.LEFT);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(4, 1, 5, 5));
+
+        URL url = getClass().getResource("16x16.png");
+        String path = url.toString();
+        ImageIcon image = new ImageIcon(url);
+        String title1 = String.format("<html><img src='%s' />test", path);
+        String title2 = String.format("<html><table cellpadding='0'><tr><td><img src='%s'></td><td>test</td></tr></table></html>", path);
+        JLabel label  = new JLabel("test", image, SwingConstants.LEFT);
+
         add(makeComp(title1, BorderFactory.createTitledBorder(title1)));
         add(makeComp(title2, BorderFactory.createTitledBorder(title2)));
         add(makeComp("TitledBorder#paintBorder(...)", new TitledBorder("    test") {

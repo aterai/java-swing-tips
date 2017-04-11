@@ -14,45 +14,48 @@ import javax.swing.text.html.*;
 public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>head<table id='log' border='1'></table>tail</body></html>";
     private static final String ROW_TEXT = "<tr bgColor='%s'><td>%s</td><td>%s</td></tr>";
-    private final HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    private final JEditorPane editor = new JEditorPane();
 
     private MainPanel() {
         super(new BorderLayout());
 
+        HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
+        JEditorPane editor = new JEditorPane();
         editor.setEditorKit(htmlEditorKit);
         editor.setText(HTML_TEXT);
         editor.setEditable(false);
 
+        JButton insertAfterStart = new JButton("insertAfterStart");
+        insertAfterStart.addActionListener(e -> {
+            HTMLDocument doc = (HTMLDocument) editor.getDocument();
+            Element element = doc.getElement("log");
+            Date d = new Date();
+            String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", d.toString());
+            try {
+                doc.insertAfterStart(element, tag);
+            } catch (BadLocationException | IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JButton insertBeforeEnd = new JButton("insertBeforeEnd");
+        insertBeforeEnd.addActionListener(e -> {
+            HTMLDocument doc = (HTMLDocument) editor.getDocument();
+            Element element = doc.getElement("log");
+            Date d = new Date();
+            String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", d.toString());
+            try {
+                doc.insertBeforeEnd(element, tag);
+            } catch (BadLocationException | IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         Box box = Box.createHorizontalBox();
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("insertAfterStart") {
-            @Override public void actionPerformed(ActionEvent e) {
-                HTMLDocument doc = (HTMLDocument) editor.getDocument();
-                Element element = doc.getElement("log");
-                Date d = new Date();
-                String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", d.toString());
-                try {
-                    doc.insertAfterStart(element, tag);
-                } catch (BadLocationException | IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }));
+        box.add(insertAfterStart);
         box.add(Box.createHorizontalStrut(5));
-        box.add(new JButton(new AbstractAction("insertBeforeEnd") {
-            @Override public void actionPerformed(ActionEvent e) {
-                HTMLDocument doc = (HTMLDocument) editor.getDocument();
-                Element element = doc.getElement("log");
-                Date d = new Date();
-                String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", d.toString());
-                try {
-                    doc.insertBeforeEnd(element, tag);
-                } catch (BadLocationException | IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }));
+        box.add(insertBeforeEnd);
         add(new JScrollPane(editor));
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

@@ -10,11 +10,12 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
-    private static final int MAX_LEN = 6;
-    private final JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
-    private final JButton button = new JButton("Next");
-    private final List<JTextField> list = Arrays.asList(makeTextField(), makeTextField());
+public class MainPanel extends JPanel {
+    protected static final int MAX_LEN = 6;
+    protected final JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
+    protected final JButton button = new JButton("Next");
+    protected final List<JTextField> list = Arrays.asList(makeTextField(), makeTextField());
+
     public MainPanel() {
         super(new BorderLayout());
         setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
@@ -47,10 +48,10 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private boolean isAllValid() {
+    protected boolean isAllValid() {
         return list.stream().allMatch(t -> t.getInputVerifier().verify(t));
     }
-    private void updateButton() {
+    protected void updateButton() {
         if (isAllValid()) {
             button.setEnabled(true);
             //EventQueue.invokeLater(() -> button.requestFocusInWindow());
@@ -58,7 +59,7 @@ public final class MainPanel extends JPanel {
             button.setEnabled(false);
         }
     }
-    private JTextField makeTextField() {
+    protected JTextField makeTextField() {
         JTextField textField = new JTextField(24);
         textField.setInputVerifier(new InputVerifier() {
             @Override public boolean verify(JComponent c) {

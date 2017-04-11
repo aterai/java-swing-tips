@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
 
 class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, HierarchyListener {
     private static final Color SELECTEDCOLOR = new Color(230, 230, 255);
-    private final AnimeIcon icon = new AnimeIcon();
+    protected final AnimeIcon icon = new AnimeIcon();
     private final MarqueeLabel label = new MarqueeLabel();
     private final Timer animator;
-    private final JList list;
+    protected final JList list;
     private boolean isRunning;
     private int animateIndex = -1;
 
@@ -100,7 +100,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         animateIndex = index;
         return this;
     }
-    private boolean isAnimatingCell() {
+    protected boolean isAnimatingCell() {
         return isRunning && animateIndex == list.getSelectedIndex();
     }
     private class MarqueeLabel extends JLabel {

@@ -7,13 +7,13 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             // ArrayIndexOutOfBoundsException: 0 >= 0
             // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final JTable table = new JTable(model);
+    protected final JTable table = new JTable(model);
     private final JCheckBox cb1 = new JCheckBox("InheritsPopupMenu", true);
     private final JCheckBox cb2 = new JCheckBox("FillsViewportHeight", true);
     public MainPanel() {

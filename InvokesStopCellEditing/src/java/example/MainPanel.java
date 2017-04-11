@@ -7,17 +7,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
+        JTree tree = new JTree();
         tree.setEditable(true);
-        add(new JCheckBox(new AbstractAction("terminateEditOnFocusLost") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                tree.setInvokesStopCellEditing(c.isSelected());
-            }
-        }), BorderLayout.NORTH);
+
+        JCheckBox check = new JCheckBox("terminateEditOnFocusLost");
+        check.addActionListener(e -> tree.setInvokesStopCellEditing(((JCheckBox) e.getSource()).isSelected()));
+
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(tree));
         add(new JTextField(), BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

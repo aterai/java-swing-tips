@@ -7,57 +7,61 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
+
+        JButton button1 = new JButton("JOptionPane.showMessageDialog");
+        button1.addActionListener(e -> JOptionPane.showMessageDialog(getRootPane(), "showMessageDialog"));
+
+        JButton button2 = new JButton("Default");
+        button2.addActionListener(e -> {
+            JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
+            Action act = new AbstractAction("OK") {
+                @Override public void actionPerformed(ActionEvent e) {
+                    dialog.dispose();
+                }
+            };
+            dialog.getContentPane().add(makePanel(act));
+            dialog.pack();
+            dialog.setResizable(false);
+            dialog.setLocationRelativeTo(getRootPane());
+            dialog.setVisible(true);
+        });
+
+        JButton button3 = new JButton("close JDialog with ESC key");
+        button3.addActionListener(e -> {
+            JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
+            Action act = new AbstractAction("OK") {
+                @Override public void actionPerformed(ActionEvent e) {
+                    dialog.dispose();
+                }
+            };
+            InputMap imap = dialog.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-it");
+            dialog.getRootPane().getActionMap().put("close-it", act);
+            dialog.getContentPane().add(makePanel(act));
+            dialog.pack();
+            dialog.setResizable(false);
+            dialog.setLocationRelativeTo(getRootPane());
+            dialog.setVisible(true);
+        });
+
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JOptionPane"));
-        p1.add(new JButton(new AbstractAction("JOptionPane.showMessageDialog") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(getRootPane(), "showMessageDialog");
-            }
-        }));
+        p1.add(button1);
+
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("JDialog"));
-        p2.add(new JButton(new AbstractAction("Default") {
-            @Override public void actionPerformed(ActionEvent e) {
-                final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
-                Action act = new AbstractAction("OK") {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        dialog.dispose();
-                    }
-                };
-                dialog.getContentPane().add(makePanel(act));
-                dialog.pack();
-                dialog.setResizable(false);
-                dialog.setLocationRelativeTo(getRootPane());
-                dialog.setVisible(true);
-            }
-        }));
-        p2.add(new JButton(new AbstractAction("close JDialog with ESC key") {
-            @Override public void actionPerformed(ActionEvent e) {
-                final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
-                Action act = new AbstractAction("OK") {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        dialog.dispose();
-                    }
-                };
-                InputMap imap = dialog.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-                imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-it");
-                dialog.getRootPane().getActionMap().put("close-it", act);
-                dialog.getContentPane().add(makePanel(act));
-                dialog.pack();
-                dialog.setResizable(false);
-                dialog.setLocationRelativeTo(getRootPane());
-                dialog.setVisible(true);
-            }
-        }));
+        p2.add(button2);
+        p2.add(button3);
+
         add(p1);
         add(p2);
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JPanel makePanel(Action act) {
+    protected static JPanel makePanel(Action act) {
         JPanel p = new JPanel(new GridBagLayout()) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();

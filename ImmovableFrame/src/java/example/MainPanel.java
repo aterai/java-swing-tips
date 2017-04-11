@@ -11,17 +11,17 @@ import javax.swing.plaf.basic.*;
 // How to Use Internal Frames
 // http://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
 // https://community.oracle.com/thread/1392111 Lock JInternalPane
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = 30;
     private static AtomicInteger openFrameCount = new AtomicInteger();
-    private final JDesktopPane desktop;
-    private final JInternalFrame immovableFrame;
+    protected final JDesktopPane desktop = new JDesktopPane();
+
     public MainPanel() {
         super(new BorderLayout());
-        desktop = new JDesktopPane();
+
         //title, resizable, closable, maximizable, iconifiable
-        immovableFrame = new JInternalFrame("immovable", false, false, true, true);
+        JInternalFrame immovableFrame = new JInternalFrame("immovable", false, false, true, true);
         Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
         MouseMotionListener[] actions = (MouseMotionListener[]) north.getListeners(MouseMotionListener.class);
         for (int i = 0; i < actions.length; i++) {
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JMenuBar createMenuBar() {
+    protected final JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Window");
         menu.setMnemonic(KeyEvent.VK_W);

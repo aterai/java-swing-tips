@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
     private final JTextArea textArea = new JTextArea();
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void displayMessage(String prefix, EventObject e) {
+    protected final void displayMessage(String prefix, EventObject e) {
         String s = prefix + ": " + e.getSource();
         textArea.append(s + "\n");
         textArea.setCaretPosition(textArea.getDocument().getLength());

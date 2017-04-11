@@ -7,15 +7,15 @@ import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JTree tree       = new JTree();
-    private final JTextField field = new JTextField("", 10);
-    private final JButton button   = new JButton("Find Next(dummy)");
-    private final JButton showHideButton = new JButton();
+public class MainPanel extends JPanel {
+    protected final JTree tree       = new JTree();
+    protected final JTextField field = new JTextField("", 10);
+    protected final JButton button   = new JButton("Find Next(dummy)");
+    protected final JButton showHideButton = new JButton();
 
-    private Timer animator;
-    private boolean isHidden = true;
-    private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
+    protected Timer animator;
+    protected boolean isHidden = true;
+    protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         protected int controlsHeight;
         protected int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private Action makeShowHideAction() {
+    protected final Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {
                 if (Objects.nonNull(animator) && animator.isRunning()) {

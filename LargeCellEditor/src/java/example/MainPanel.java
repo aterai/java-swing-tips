@@ -95,9 +95,9 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class IconTable extends JTable {
-    private static final int XOFF = 4;
-    private final JList<IconItem> editor;
-    private final JComponent glassPane = new JComponent() {
+    protected static final int XOFF = 4;
+    protected final JList<IconItem> editor;
+    protected final JComponent glassPane = new JComponent() {
         @Override public void setVisible(boolean flag) {
             super.setVisible(flag);
             setFocusTraversalPolicyProvider(flag);
@@ -201,7 +201,7 @@ class IconTable extends JTable {
         editor.setSelectedValue(getValueAt(sr, sc), true);
         editor.requestFocusInWindow();
     }
-    private void cancelEditing() {
+    protected void cancelEditing() {
         glassPane.setVisible(false);
     }
 }

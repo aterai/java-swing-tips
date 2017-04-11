@@ -67,8 +67,8 @@ class LightboxGlassPane extends JPanel {
     private int w;
     private int h;
     private final Rectangle rect = new Rectangle();
-    private Timer animator;
-    private transient Handler handler;
+    protected Timer animator;
+    protected transient Handler handler;
 
     @Override public void updateUI() {
         removeMouseListener(handler);
