@@ -9,9 +9,9 @@ import java.util.Objects;
 import javax.swing.*;
 // JDK 1.6.0 import com.sun.java.swing.Painter;
 
-public final class MainPanel extends JPanel implements HierarchyListener {
-    private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
-    private SwingWorker<String, Void> worker;
+public class MainPanel extends JPanel implements HierarchyListener {
+    protected transient SwingWorker<String, Void> worker;
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -30,8 +30,9 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         d.put("ProgressBar[Enabled].foregroundPainter", painter);
         d.put("ProgressBar[Enabled+Finished].foregroundPainter", painter);
 
-        final JProgressBar progressBar1 = new JProgressBar(model);
-        final JProgressBar progressBar2 = new JProgressBar(model);
+        BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
+        JProgressBar progressBar1 = new JProgressBar(model);
+        JProgressBar progressBar2 = new JProgressBar(model);
 
         progressBar2.putClientProperty("Nimbus.Overrides", d);
 

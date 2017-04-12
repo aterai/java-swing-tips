@@ -7,14 +7,14 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
         EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JMenuBar createMenuBar() {
+    private static JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar() {
-            private final TexturePaint texture = makeCheckerTexture();
+            private final transient TexturePaint texture = makeCheckerTexture();
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         }
         return mb;
     }
-    private JMenu createMenu(String key) {
+    private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key) {
             @Override protected void fireStateChanged() {
                 ButtonModel m = getModel();
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         menu.add("dummy3");
         return menu;
     }
-    private TexturePaint makeCheckerTexture() {
+    protected static TexturePaint makeCheckerTexture() {
         int cs = 6;
         int sz = cs * cs;
         BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);

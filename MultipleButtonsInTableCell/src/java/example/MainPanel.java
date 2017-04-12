@@ -134,7 +134,7 @@ class EditAction extends AbstractAction {
 
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
-    private final JTable table;
+    protected final JTable table;
     private class EditingStopHandler extends MouseAdapter implements ActionListener {
         @Override public void mousePressed(MouseEvent e) {
             Object o = e.getSource();

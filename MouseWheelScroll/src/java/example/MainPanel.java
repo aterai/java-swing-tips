@@ -7,13 +7,13 @@ import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private boolean isPressed;
-    private final JLabel label = new JLabel();
-    private final JScrollPane scroll = new JScrollPane(label);
-    private final JScrollBar vBar = scroll.getVerticalScrollBar();
-    private final JScrollBar hBar = scroll.getHorizontalScrollBar();
-    private final JScrollBar vsb = new JScrollBar(Adjustable.VERTICAL) {
+public class MainPanel extends JPanel {
+    protected boolean isPressed;
+    protected final JLabel label = new JLabel();
+    protected final JScrollPane scroll = new JScrollPane(label);
+    protected final JScrollBar vBar = scroll.getVerticalScrollBar();
+    protected final JScrollBar hBar = scroll.getHorizontalScrollBar();
+    protected final JScrollBar vsb = new JScrollBar(Adjustable.VERTICAL) {
         @Override public boolean isVisible() {
             if (isPressed) {
                 return false;
@@ -26,19 +26,20 @@ public final class MainPanel extends JPanel {
             return new Dimension(0, dim.height);
         }
     };
-    private final JScrollBar hsb = new JScrollBar(Adjustable.HORIZONTAL) {
+    protected final JScrollBar hsb = new JScrollBar(Adjustable.HORIZONTAL) {
         @Override public Dimension getPreferredSize() {
             Dimension dim = super.getPreferredSize();
             return new Dimension(dim.width, 0);
         }
     };
-    private final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling");
-    private final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
-    private final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
+    protected final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling");
+    protected final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
+    protected final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
 
     public MainPanel() {
         super(new BorderLayout());
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+
+        label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
@@ -123,9 +124,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DragScrollListener extends MouseAdapter {
-    private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Point pp = new Point();
+    protected final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    protected final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    protected final Point pp = new Point();
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);

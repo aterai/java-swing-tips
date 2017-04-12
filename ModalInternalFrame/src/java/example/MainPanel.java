@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
                 JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
                 iframe.setSize(130, 100);
                 iframe.setLocation(30 * openFrameCount, 30 * openFrameCount);
-                desktop.add(iframe);
+                getDesktop().add(iframe);
                 iframe.setVisible(true);
                 openFrameCount++;
             }
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     //Creating Modal Internal Frames -- Approach 1 and Approach 2
     //http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
     class ModalInternalFrameAction3 extends AbstractAction {
-        private final JComponent glass = new PrintGlassPane();
+        protected final JComponent glass = new PrintGlassPane();
         protected ModalInternalFrameAction3(String label) {
             super(label);
             glass.setVisible(false);

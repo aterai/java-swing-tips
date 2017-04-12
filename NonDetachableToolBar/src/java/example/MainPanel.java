@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsToolBarUI;
 
-public final class MainPanel extends JPanel {
-    private final JToolBar toolbar = new JToolBar("toolbar") {
+public class MainPanel extends JPanel {
+    protected final JToolBar toolbar = new JToolBar("toolbar") {
         @Override public void updateUI() {
             super.updateUI();
             if (getUI() instanceof WindowsToolBarUI) {
@@ -35,10 +35,11 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final JCheckBox movable = new JCheckBox("Floatable(movable)", true);
-    private final JCheckBox detachable = new JCheckBox("Floating(detachable)", false);
-    private final JComboBox<String> combo = new JComboBox<>(makeModel());
-    private final JButton button = new JButton("button");
+    protected final JCheckBox movable = new JCheckBox("Floatable(movable)", true);
+    protected final JCheckBox detachable = new JCheckBox("Floating(detachable)", false);
+    protected final JComboBox<String> combo = new JComboBox<>(makeModel());
+    protected final JButton button = new JButton("button");
+
     public MainPanel() {
         super(new BorderLayout());
 

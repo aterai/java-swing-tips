@@ -62,13 +62,13 @@ public final class MainPanel extends JPanel {
 }
 
 class WarningSpinner extends JSpinner {
-    private static final Color ERROR_BG = new Color(255, 200, 200);
     protected WarningSpinner(SpinnerNumberModel model) {
         super(model);
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) getEditor();
-        final JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+        JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
         ftf.setFormatterFactory(makeFFactory(model));
         ftf.getDocument().addDocumentListener(new DocumentListener() {
+            private final Color errorBackground = new Color(255, 200, 200);
             @Override public void changedUpdate(DocumentEvent e) {
                 updateEditValid();
             }
@@ -79,7 +79,7 @@ class WarningSpinner extends JSpinner {
                 updateEditValid();
             }
             private void updateEditValid() {
-                EventQueue.invokeLater(() -> ftf.setBackground(ftf.isEditValid() ? Color.WHITE : ERROR_BG));
+                EventQueue.invokeLater(() -> ftf.setBackground(ftf.isEditValid() ? Color.WHITE : errorBackground));
             }
         });
     }

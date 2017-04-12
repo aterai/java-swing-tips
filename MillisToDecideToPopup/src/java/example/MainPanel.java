@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JTextArea area    = new JTextArea();
-    private final JButton runButton = new JButton("run");
-    private final JSpinner millisToDecideToPopup;
-    private final JSpinner millisToPopup;
-    //private transient SwingWorker<String, String> worker;
-    //private transient ProgressMonitor monitor;
+public class MainPanel extends JPanel {
+    protected final JTextArea area    = new JTextArea();
+    protected final JButton runButton = new JButton("run");
+    protected final JSpinner millisToDecideToPopup;
+    protected final JSpinner millisToPopup;
+    //protected transient SwingWorker<String, String> worker;
+    //protected transient ProgressMonitor monitor;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void executeWorker(Component c) {
+    protected final void executeWorker(Component c) {
         Window w = SwingUtilities.getWindowAncestor(c);
         int toDecideToPopup = (int) millisToDecideToPopup.getValue();
         int toPopup         = (int) millisToPopup.getValue();

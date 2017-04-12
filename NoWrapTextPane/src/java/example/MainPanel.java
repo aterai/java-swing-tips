@@ -11,14 +11,17 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static String text;
-    //private final JTextPane   textPane;
-    private final JEditorPane editorPane   = new JEditorPane();
-    private final JTextArea   textArea     = new JTextArea();
-    private final JButton editorPaneButton = new JButton("JEditorPane");
-    private final JButton textAreaButton   = new JButton("JTextArea");
 
-    protected MainPanel(final ExecutorService threadPool) {
+    private MainPanel(ExecutorService threadPool) {
         super(new BorderLayout());
+
+        //JTextPane   textPane;
+        JEditorPane editorPane   = new JEditorPane();
+        JTextArea   textArea     = new JTextArea();
+        JButton editorPaneButton = new JButton("JEditorPane");
+        JButton textAreaButton   = new JButton("JTextArea");
+        JButton clearButton      = new JButton("clear all");
+
 /*
         textPane = new JTextPane() {
             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
@@ -50,17 +53,16 @@ public final class MainPanel extends JPanel {
         };
         editorPaneButton.addActionListener(longTextListener);
         textAreaButton.addActionListener(longTextListener);
+        clearButton.addActionListener(e -> {
+            editorPane.setText("");
+            textArea.setText("");
+        });
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(editorPaneButton);
         box.add(textAreaButton);
-        box.add(new JButton(new AbstractAction("clear all") {
-            @Override public void actionPerformed(ActionEvent e) {
-                editorPane.setText("");
-                textArea.setText("");
-            }
-        }));
+        box.add(clearButton);
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(makeTitledPanel(editorPane, "NoWrapEditorKit(JEditorPane)"));
@@ -75,16 +77,14 @@ public final class MainPanel extends JPanel {
         sp.setBorder(BorderFactory.createTitledBorder(title));
         return sp;
     }
-    private static void initLongLineStringInBackground(ExecutorService threadPool, final int length) {
-        threadPool.execute(new Runnable() {
-            @Override public void run() {
-                StringBuffer sb = new StringBuffer(length);
-                for (int i = 0; i < length - 2; i++) {
-                    sb.append('a');
-                }
-                sb.append("x\n");
-                text = sb.toString();
+    private static void initLongLineStringInBackground(ExecutorService threadPool, int length) {
+        threadPool.execute(() -> {
+            StringBuffer sb = new StringBuffer(length);
+            for (int i = 0; i < length - 2; i++) {
+                sb.append('a');
             }
+            sb.append("x\n");
+            text = sb.toString();
         });
     }
     public static void main(String... args) {

@@ -7,31 +7,35 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JPanel p = new JPanel();
+
+        JTextArea log = new JTextArea();
+
+        JButton button1 = new JButton("noPlacesBar");
+        button1.addActionListener(e -> {
+            UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
+            JFileChooser fileChooser = new JFileChooser();
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JButton button2 = new JButton("Default");
+        button2.addActionListener(e -> {
+            UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
+            JFileChooser fileChooser = new JFileChooser();
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-        p.add(new JButton(new AbstractAction("noPlacesBar") {
-            @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
-                JFileChooser fileChooser = new JFileChooser();
-                int retvalue = fileChooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("Default") {
-            @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
-                JFileChooser fileChooser = new JFileChooser();
-                int retvalue = fileChooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
+        p.add(button1);
+        p.add(button2);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));

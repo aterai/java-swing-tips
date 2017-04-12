@@ -9,9 +9,9 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     //http://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
-    private final JTextArea textArea = new JTextArea(1, 1) {
+    protected final JTextArea textArea = new JTextArea(1, 1) {
         @Override public void updateUI() {
             super.updateUI();
             setLineWrap(true);
@@ -50,7 +50,6 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final JScrollPane scroll = new JScrollPane(textArea);
 
     public MainPanel() {
         super();
@@ -58,22 +57,25 @@ public final class MainPanel extends JPanel {
         String msgShort = "This is a short error message.";
         String msgLong = String.join(" ", Collections.nCopies(10, "This is a long error message. 1, 22, 333, 4444, 55555."));
 
+        JScrollPane scroll = new JScrollPane(textArea);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        add(new JButton(new AbstractAction("JOptionPane: long") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setText(msgLong);
-                JOptionPane.showMessageDialog(getRootPane(), scroll, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }));
-        add(new JButton(new AbstractAction("JOptionPane: short") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setText(msgShort);
-                JOptionPane.showMessageDialog(getRootPane(), scroll, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }));
+        JButton longButton = new JButton("JOptionPane: long");
+        longButton.addActionListener(e -> {
+            textArea.setText(msgLong);
+            JOptionPane.showMessageDialog(getRootPane(), scroll, "Error", JOptionPane.ERROR_MESSAGE);
+        });
+
+        JButton shortButton = new JButton("JOptionPane: short");
+        shortButton.addActionListener(e -> {
+            textArea.setText(msgShort);
+            JOptionPane.showMessageDialog(getRootPane(), scroll, "Error", JOptionPane.ERROR_MESSAGE);
+        });
+
+        add(longButton);
+        add(shortButton);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {

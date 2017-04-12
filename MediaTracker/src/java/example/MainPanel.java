@@ -33,13 +33,8 @@ public final class MainPanel extends JPanel {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY);
                     Transferable transferable = dtde.getTransferable();
                     ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
-                        .stream().filter(o -> o instanceof File).forEach(o -> addImageFile((File) o));
-//                     List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-//                     for (Object o: list) {
-//                         if (o instanceof File) {
-//                             addImageFile((File) o);
-//                         }
-//                     }
+                      .stream().filter(File.class::isInstance).map(File.class::cast)
+                      .forEach(MainPanel.this::addImageFile);
                     dtde.dropComplete(true);
                     return;
                 }
@@ -76,7 +71,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void addImageFile(File file) {
+    protected void addImageFile(File file) {
         String path = file.getAbsolutePath();
         Image img = Toolkit.getDefaultToolkit().createImage(path);
         tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker((Container) this));
@@ -210,8 +205,7 @@ class TablePopupMenu extends JPopupMenu {
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
-            JTable table = (JTable) c;
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }
