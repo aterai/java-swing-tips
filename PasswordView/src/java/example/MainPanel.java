@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MyPasswordFieldUI extends BasicPasswordFieldUI {
-    private static final StarIcon ICON = new StarIcon();
+    protected static final StarIcon ICON = new StarIcon();
     public static MyPasswordFieldUI createUI(JPasswordField c) {
         c.setEchoChar('\u25A0'); //As wide as a CJK character cell (fullwidth)
         return new MyPasswordFieldUI();

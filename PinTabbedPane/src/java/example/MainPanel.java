@@ -133,7 +133,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         addSeparator();
         add(closeAllAction);
     }
-    private static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
+    protected static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
         int i;
         if (dir) {
             for (i = 0; i < idx; i++) {
@@ -166,7 +166,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         }
         return false;
     }
-    private static boolean isEmpty(String s) {
+    protected static boolean isEmpty(String s) {
         return Objects.isNull(s) || s.isEmpty();
     }
     @Override public void show(Component c, int x, int y) {

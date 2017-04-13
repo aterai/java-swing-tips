@@ -13,7 +13,8 @@ import javax.jnlp.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
+    private final JScrollPane scroll = new JScrollPane(new JTree());
+    protected MainPanel() {
         super(new BorderLayout());
 //         //Test
 //         JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {
@@ -28,8 +29,7 @@ public final class MainPanel extends JPanel {
 //         box.add(Box.createHorizontalGlue());
 //         box.add(clearButton);
 //         add(box, BorderLayout.SOUTH);
-
-        add(new JScrollPane(new JTree()));
+        add(scroll);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
-    private final WindowState windowState;
+    protected final WindowState windowState;
     protected LoadSaveTask(WindowState windowState) {
         super();
         this.windowState = windowState;
@@ -132,7 +132,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             }
         }
     }
-    private static void saveWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
+    protected static void saveWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
         try {
             FileContents fc = ps.get(codebase);
             try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {

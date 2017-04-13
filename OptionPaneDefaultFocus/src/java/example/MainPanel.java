@@ -7,16 +7,18 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final String DUMMY = "Hello";
-    private final JTextArea textArea = new JTextArea();
-    private final JTextField textField1 = new JTextField(DUMMY);
-    private final JTextField textField2 = new JTextField(DUMMY);
-    private final JTextField textField3 = new JTextField(DUMMY);
-    private final JTextField textField4 = new JTextField(DUMMY);
+    protected final JTextArea textArea = new JTextArea();
 
     public MainPanel() {
         super(new BorderLayout());
+
+        JTextField textField1 = new JTextField(DUMMY);
+        JTextField textField2 = new JTextField(DUMMY);
+        JTextField textField3 = new JTextField(DUMMY);
+        JTextField textField4 = new JTextField(DUMMY);
+
         textField3.addHierarchyListener(new FocusHierarchyListener());
         textField4.addAncestorListener(new FocusAncestorListener());
 
@@ -30,7 +32,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JPanel makePanel(String title, final JTextField textField) {
+    private JPanel makePanel(String title, JTextField textField) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JButton(new AbstractAction("show") {
@@ -43,7 +45,7 @@ public final class MainPanel extends JPanel {
         }));
         return p;
     }
-    private JPanel makePanel2(String title, final JTextField textField) {
+    private JPanel makePanel2(String title, JTextField textField) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JButton(new AbstractAction("show") {

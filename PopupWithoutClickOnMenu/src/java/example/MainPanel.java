@@ -7,15 +7,35 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String TXT = "JMenu: hover(show popup automatically) on cursor";
-    private final JCheckBox check = new JCheckBox(TXT, true);
-
     private MainPanel() {
         super(new BorderLayout());
+
+        JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
+        JMenuBar bar = makeMenuBar();
+        visitAll(bar, new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                if (check.isSelected()) {
+                    ((AbstractButton) e.getComponent()).doClick();
+                }
+            }
+            @Override public void mouseEntered(MouseEvent e) {
+                if (check.isSelected()) {
+                    ((AbstractButton) e.getComponent()).doClick();
+                }
+            }
+        });
+
+        EventQueue.invokeLater(() -> {
+            Component c = SwingUtilities.getRoot(this);
+            if (c instanceof JFrame) {
+                ((JFrame) c).setJMenuBar(bar);
+            }
+        });
+
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    public JMenuBar makeMenuBar() {
+    private static JMenuBar makeMenuBar() {
         JMenuBar bar = new JMenuBar();
 
         JMenu menu = new JMenu("File");
@@ -43,19 +63,6 @@ public final class MainPanel extends JPanel {
         menu.add(sub);
         menu.add(makeMenuItem("JMenuItem3"));
         bar.add(menu);
-
-        visitAll(bar, new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                if (check.isSelected()) {
-                    ((AbstractButton) e.getComponent()).doClick();
-                }
-            }
-            @Override public void mouseEntered(MouseEvent e) {
-                if (check.isSelected()) {
-                    ((AbstractButton) e.getComponent()).doClick();
-                }
-            }
-        });
         return bar;
     }
     private static void visitAll(Container p, MouseListener l) {
@@ -93,11 +100,9 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        MainPanel mainPanel = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(mainPanel);
-        frame.setJMenuBar(mainPanel.makeMenuBar());
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -10,19 +10,30 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
 
-public final class MainPanel extends JPanel implements HierarchyListener {
-    private SwingWorker<String, Void> worker;
+public class MainPanel extends JPanel implements HierarchyListener {
+    protected transient SwingWorker<String, Void> worker;
+
     public MainPanel() {
         super(new BorderLayout());
 
-        final BoundedRangeModel m = new DefaultBoundedRangeModel();
-        final JProgressBar progressBar = new JProgressBar(m);
+        BoundedRangeModel m = new DefaultBoundedRangeModel();
+        JProgressBar progressBar = new JProgressBar(m);
         progressBar.setOrientation(SwingConstants.VERTICAL);
 
         JProgressBar progressBar0 = new JProgressBar(m);
         progressBar0.setOrientation(SwingConstants.VERTICAL);
         progressBar0.setStringPainted(false);
         progressBar0.setStringPainted(true);
+
+        JButton button = new JButton("Test");
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = new Task();
+            worker.addPropertyChangeListener(new ProgressListener(progressBar));
+            worker.execute();
+        });
 
         JPanel p = new JPanel();
         p.add(progressBar);
@@ -41,16 +52,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Test") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                worker = new Task();
-                worker.addPropertyChangeListener(new ProgressListener(progressBar));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(5));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 

@@ -121,39 +121,43 @@ public final class MainPanel extends JPanel {
 
 class PaintPanel extends JPanel {
     private static final Stroke STROKE = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    private transient List<Shape> list;
-    private transient Path2D path;
     private transient MouseInputListener handler;
+    private transient List<Shape> list;
+
+    protected List<Shape> getList() {
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        return list;
+    }
     @Override public void updateUI() {
         removeMouseMotionListener(handler);
         removeMouseListener(handler);
         super.updateUI();
         handler = new MouseInputAdapter() {
+            private transient Path2D path;
             @Override public void mousePressed(MouseEvent e) {
                 path = new Path2D.Double();
                 path.moveTo(e.getX(), e.getY());
-                list.add(path);
+                getList().add(path);
                 repaint();
             }
             @Override public void mouseDragged(MouseEvent e) {
-                path.lineTo(e.getX(), e.getY());
-                repaint();
+                if (path != null) {
+                    path.lineTo(e.getX(), e.getY());
+                    repaint();
+                }
             }
         };
         addMouseMotionListener(handler);
         addMouseListener(handler);
-        list = new ArrayList<>();
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (list != null) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setPaint(Color.BLACK);
-            g2.setStroke(STROKE);
-            for (Shape s: list) {
-                g2.draw(s);
-            }
-            g2.dispose();
-        }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(Color.BLACK);
+        g2.setStroke(STROKE);
+        getList().forEach(g2::draw);
+        g2.dispose();
     }
 }

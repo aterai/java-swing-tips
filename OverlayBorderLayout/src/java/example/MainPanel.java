@@ -12,9 +12,9 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-    private final JTextField field = new JTextField("b", 10) {
+public class MainPanel extends JPanel {
+    protected final JTree tree = new JTree();
+    protected final JTextField field = new JTextField("b", 10) {
         protected transient AncestorListener listener;
         @Override public void updateUI() {
             removeAncestorListener(listener);
@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
             addAncestorListener(listener);
         }
     };
-    private final JPanel searchBox = new JPanel(new BorderLayout());
-    private boolean isHidden = true;
-    private int yy;
-    private int counter;
-    private final Timer animator = new Timer(5, null);
-    private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
+    protected final JPanel searchBox = new JPanel(new BorderLayout());
+    protected boolean isHidden = true;
+    protected int yy;
+    protected int counter;
+    protected final Timer animator = new Timer(5, null);
+    protected final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
             if (!animator.isRunning()) {
                 //isHidden = !searchBox.isVisible();
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final Action hideAction = new AbstractAction("Hide Search Box") {
+    protected final Action hideAction = new AbstractAction("Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
             if (!animator.isRunning()) {
                 isHidden = false;
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
 
         animator.addActionListener(e -> {

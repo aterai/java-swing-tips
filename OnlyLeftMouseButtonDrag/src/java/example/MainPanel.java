@@ -3,35 +3,34 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox(new AbstractAction("Slider.onlyLeftMouseButtonDrag") {
-        @Override public void actionPerformed(ActionEvent e) {
-            boolean f = ((JCheckBox) e.getSource()).isSelected();
-            UIManager.put("Slider.onlyLeftMouseButtonDrag", f);
-        }
-    }) {
-        @Override public void updateUI() {
-            super.updateUI();
-            setSelected(UIManager.getLookAndFeelDefaults().getBoolean("Slider.onlyLeftMouseButtonDrag"));
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
         JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
         JSlider slider2 = new JSlider(SwingConstants.HORIZONTAL);
 
-        for (JSlider s: Arrays.asList(slider1, slider2)) {
+        Arrays.asList(slider1, slider2).forEach(s -> {
             s.setModel(model);
             s.setMajorTickSpacing(20);
             s.setMinorTickSpacing(10);
             s.setPaintTicks(true);
             s.setPaintLabels(true);
-        }
+        });
+
+        JCheckBox check = new JCheckBox("Slider.onlyLeftMouseButtonDrag") {
+            @Override public void updateUI() {
+                super.updateUI();
+                setSelected(UIManager.getLookAndFeelDefaults().getBoolean("Slider.onlyLeftMouseButtonDrag"));
+            }
+        };
+        check.addActionListener(e -> {
+            boolean f = ((JCheckBox) e.getSource()).isSelected();
+            UIManager.put("Slider.onlyLeftMouseButtonDrag", f);
+        });
 
         Box box1 = Box.createHorizontalBox();
         box1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));

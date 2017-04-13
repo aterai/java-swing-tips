@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JTextArea area    = new JTextArea();
-    private final JButton runButton = new JButton("run");
-    //private transient SwingWorker<String, String> worker;
-    private final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
+public class MainPanel extends JPanel {
+    protected final JTextArea area    = new JTextArea();
+    protected final JButton runButton = new JButton("run");
+    //protected transient SwingWorker<String, String> worker;
+    protected final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
 
     public MainPanel() {
         super(new BorderLayout(5, 5));

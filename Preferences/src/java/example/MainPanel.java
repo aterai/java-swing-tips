@@ -8,31 +8,34 @@ import java.util.Optional;
 import java.util.prefs.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final transient WindowPreferencesHandler handler = new WindowPreferencesHandler();
+public class MainPanel extends JPanel {
+    protected final transient WindowPreferencesHandler handler = new WindowPreferencesHandler();
+
     public MainPanel() {
         super(new BorderLayout());
 
+        JButton clearButton = new JButton("Preferences#clear() and JFrame#dispose()");
+        clearButton.addActionListener(e -> {
+            try {
+                handler.prefs.clear();
+                handler.prefs.flush();
+            } catch (BackingStoreException ex) {
+                ex.printStackTrace();
+            }
+            Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
+        });
+
+        JButton exitButton = new JButton("exit");
+        exitButton.addActionListener(e -> {
+            handler.saveLocation();
+            Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try {
-                    handler.prefs.clear();
-                    handler.prefs.flush();
-                } catch (BackingStoreException ex) {
-                    ex.printStackTrace();
-                }
-                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
-            }
-        }));
+        box.add(clearButton);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("exit") {
-            @Override public void actionPerformed(ActionEvent e) {
-                handler.saveLocation();
-                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
-            }
-        }));
+        box.add(exitButton);
 
         add(new JLabel("TEST"));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

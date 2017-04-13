@@ -11,18 +11,19 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final CardLayout cardLayout = new CardLayout();
-    private final JPanel p = new JPanel(cardLayout);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         BufferedImage image;
         try {
-            image = ImageIO.read(getClass().getResource("screenshot.png"));
+            image = ImageIO.read(MainPanel.class.getResource("screenshot.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
             return;
         }
+
+        CardLayout cardLayout = new CardLayout();
+        JPanel p = new JPanel(cardLayout);
 
         int width  = image.getWidth(p);
         int height = image.getHeight(p);
@@ -59,11 +60,11 @@ public final class MainPanel extends JPanel {
 
         p.add(new JLabel(new ImageIcon(image)), "original");
         p.add(new JLabel(new ImageIcon(bi)), "rounded");
-        add(new JCheckBox(new AbstractAction("transparency at the rounded windows corners") {
-            @Override public void actionPerformed(ActionEvent e) {
-                cardLayout.show(p, ((JCheckBox) e.getSource()).isSelected() ? "rounded" : "original");
-            }
-        }), BorderLayout.NORTH);
+
+        JCheckBox check = new JCheckBox("transparency at the rounded windows corners");
+        check.addActionListener(e -> cardLayout.show(p, ((JCheckBox) e.getSource()).isSelected() ? "rounded" : "original"));
+
+        add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }

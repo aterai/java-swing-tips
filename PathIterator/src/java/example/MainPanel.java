@@ -80,14 +80,13 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private JComponent makeSVGPanel() {
+        JButton button = new JButton("set");
+        button.addActionListener(e -> initStar());
+
         JPanel sp = new JPanel(new BorderLayout(2, 2));
         sp.add(new JLabel("style:"), BorderLayout.WEST);
         sp.add(styleField);
-        sp.add(new JButton(new AbstractAction("set") {
-            @Override public void actionPerformed(ActionEvent e) {
-                initStar();
-            }
-        }), BorderLayout.EAST);
+        sp.add(button, BorderLayout.EAST);
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -138,7 +137,7 @@ public final class MainPanel extends JPanel {
 //             dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
 //         }
 //     }
-    private void initStar() {
+    protected void initStar() {
         int r1 = outer.getNumber().intValue();
         int r2 = inner.getNumber().intValue();
         int vc = vcModel.getNumber().intValue();

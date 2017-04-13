@@ -12,15 +12,15 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
-public final class MainPanel extends JPanel {
-    private final JProgressBar progress1 = new JProgressBar() {
+public class MainPanel extends JPanel {
+    protected final JProgressBar progress1 = new JProgressBar() {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
             setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
         }
     };
-    private final JProgressBar progress2 = new JProgressBar() {
+    protected final JProgressBar progress2 = new JProgressBar() {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
@@ -36,27 +36,29 @@ public final class MainPanel extends JPanel {
         JSlider slider = new JSlider();
         slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
         progress1.setModel(slider.getModel());
-        add(slider, BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                final JButton b = (JButton) e.getSource();
-                b.setEnabled(false);
-                SwingWorker<String, Void> worker = new Task() {
-                    @Override public void done() {
-                        if (b.isDisplayable()) {
-                            b.setEnabled(true);
-                        }
+
+        JButton button = new JButton("start");
+        button.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            b.setEnabled(false);
+            SwingWorker<String, Void> worker = new Task() {
+                @Override public void done() {
+                    if (b.isDisplayable()) {
+                        b.setEnabled(true);
                     }
-                };
-                worker.addPropertyChangeListener(new ProgressListener(progress2));
-                worker.execute();
-            }
-        }), BorderLayout.SOUTH);
+                }
+            };
+            worker.addPropertyChangeListener(new ProgressListener(progress2));
+            worker.execute();
+        });
 
         JPanel p = new JPanel(new GridLayout(1, 2));
         p.add(progress1);
         p.add(progress2);
+
+        add(slider, BorderLayout.NORTH);
         add(p);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {

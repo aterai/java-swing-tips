@@ -35,8 +35,8 @@ public class MainPanel extends JPanel {
         }
     };
 
-    private final JTextField field = new JTextField(2);
-    private final JLabel label = new JLabel("/ 1");
+    protected final JTextField field = new JTextField(2);
+    protected final JLabel label = new JLabel("/ 1");
 
     protected final int itemsPerPage;
     protected int maxPageIndex;

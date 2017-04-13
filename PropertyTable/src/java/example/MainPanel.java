@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
         {"Color",   Color.RED   }
     };
     private final JTable table = new JTable(data, columnNames) {
-        private Class<?> editingClass;
-        private Class<?> getClassAt(int row, int column) {
+        protected Class<?> editingClass;
+        protected Class<?> getClassAt(int row, int column) {
             int mc = convertColumnIndexToModel(column);
             int mr = convertRowIndexToModel(row);
             return getModel().getValueAt(mr, mc).getClass();
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
 
 class DateEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
-    private final JSpinner.DateEditor editor;
+    protected final JSpinner.DateEditor editor;
 
     protected DateEditor() {
         super(new SpinnerDateModel());
@@ -129,7 +129,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
         });
         setBorder(BorderFactory.createEmptyBorder());
     }
-    private void setArrowButtonEnabled(boolean flag) {
+    protected final void setArrowButtonEnabled(boolean flag) {
         for (Component c: getComponents()) {
             if (c instanceof JButton) {
                 ((JButton) c).setEnabled(flag);

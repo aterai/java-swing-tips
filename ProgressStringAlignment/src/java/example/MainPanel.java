@@ -6,21 +6,35 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public final class MainPanel extends JPanel implements HierarchyListener {
-    private final BoundedRangeModel model   = new DefaultBoundedRangeModel();
-    private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
-    private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-    private final List<JProgressBar> list   = Arrays.asList(progressBar1, progressBar2);
-    private SwingWorker<String, Void> worker;
+public class MainPanel extends JPanel implements HierarchyListener {
+    protected final BoundedRangeModel model = new DefaultBoundedRangeModel();
+    protected final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
+    protected final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
+    protected final JCheckBox check = new JCheckBox("setStringPainted");
+    protected final JButton button = new JButton("Test");
+    protected transient SwingWorker<String, Void> worker;
 
     public MainPanel() {
         super(new BorderLayout());
 
         progressBar2.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
+
+        check.addActionListener(e -> {
+            boolean b = ((JCheckBox) e.getSource()).isSelected();
+            Arrays.asList(progressBar1, progressBar2).forEach(bar -> bar.setStringPainted(b));
+        });
+
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = new Task();
+            worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+            worker.execute();
+        });
 
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
@@ -29,25 +43,9 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JCheckBox(new AbstractAction("setStringPainted") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                for (JProgressBar bar: list) {
-                    bar.setStringPainted(cb.isSelected());
-                }
-            }
-        }));
+        box.add(check);
         box.add(Box.createHorizontalStrut(5));
-        box.add(new JButton(new AbstractAction("Test") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                worker = new Task();
-                worker.addPropertyChangeListener(new ProgressListener(progressBar1));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(5));
 
         addHierarchyListener(this);

@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void initTextFieldBorder(JTextField textField) {
+    protected static void initTextFieldBorder(JTextField textField) {
         EventQueue.invokeLater(() -> {
             Border b = new StringBorder(textField, "%");
             //if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {

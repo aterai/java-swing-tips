@@ -10,14 +10,14 @@ import java.io.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private JFileChooser fileChooser;
+public class MainPanel extends JPanel {
+    protected transient JFileChooser fileChooser;
+
     public MainPanel() {
         super(new GridBagLayout());
-        JButton button = new JButton(new AbstractAction("Open JFileChooser") {
-            @Override public void actionPerformed(ActionEvent e) {
-                fileChooser.showOpenDialog(getRootPane());
-            }
+        JButton button = new JButton("Open JFileChooser");
+        button.addActionListener(e -> {
+            fileChooser.showOpenDialog(getRootPane());
         });
         add(button);
         setPreferredSize(new Dimension(320, 240));
