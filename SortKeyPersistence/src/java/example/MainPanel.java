@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -34,14 +35,16 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 try {
                     File file = File.createTempFile("output", ".xml");
-                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                    //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                         xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
                         xe.writeObject(table.getRowSorter().getSortKeys());
 
                         xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
                         xe.writeObject(table.getModel());
                     }
-                    try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                    //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                    try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                         textArea.read(r, "temp");
                     }
                 } catch (IOException ex) {

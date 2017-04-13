@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -44,13 +45,14 @@ public final class MainPanel extends JPanel {
 
         save.addActionListener(e -> {
             try {
-                //File file = new File("output.xml");
                 File file = File.createTempFile("output", ".xml");
-                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(new String[] {"label", "status"}));
                     xe.writeObject(tree.getModel());
                 }
-                try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                     textArea.read(r, "temp");
                 }
             } catch (IOException ex) {

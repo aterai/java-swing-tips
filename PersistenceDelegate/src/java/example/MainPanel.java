@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 //import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -33,7 +34,8 @@ public class MainPanel extends JPanel {
         encButton.addActionListener(e -> {
             try {
                 File file = File.createTempFile("output", ".xml");
-                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
 //                     xe.setExceptionListener(new ExceptionListener() {
 //                         @Override public void exceptionThrown(Exception ex) {
@@ -44,7 +46,8 @@ public class MainPanel extends JPanel {
                     //xe.flush();
                     //xe.close();
                 }
-                try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                     textArea.read(r, "temp");
                 }
             } catch (IOException ex) {
