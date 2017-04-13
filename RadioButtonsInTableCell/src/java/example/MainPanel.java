@@ -11,32 +11,31 @@ import javax.swing.table.*;
 
 //http://www2.gol.com/users/tame/swing/examples/JTableExamples2.html
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"Integer", "Answer"};
-    private final Object[][] data = {
-        {1, Answer.A}, {2, Answer.B}, {3, Answer.C},
-        {4, Answer.C}, {5, Answer.A}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"Integer", "Answer"};
+        Object[][] data = {
+            {1, Answer.A}, {2, Answer.B}, {3, Answer.C},
+            {4, Answer.C}, {5, Answer.A}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        if (System.getProperty("java.version").startsWith("1.6.0")) {
-            //1.6.0_xx bug? column header click -> edit cancel?
-            table.getTableHeader().addMouseListener(new MouseAdapter() {
-                @Override public void mousePressed(MouseEvent e) {
-                    if (table.isEditing()) {
-                        table.getCellEditor().stopCellEditing();
-                    }
-                }
-            });
-        }
+//         if (System.getProperty("java.version").startsWith("1.6.0")) {
+//             //1.6.0_xx bug? column header click -> edit cancel?
+//             table.getTableHeader().addMouseListener(new MouseAdapter() {
+//                 @Override public void mousePressed(MouseEvent e) {
+//                     if (table.isEditing()) {
+//                         table.getCellEditor().stopCellEditing();
+//                     }
+//                 }
+//             });
+//         }
 
 //         table.addMouseListener(new MouseAdapter() {
 //             @Override public void mouseReleased(MouseEvent e) {
@@ -144,13 +143,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
 
     protected RadioButtonsEditor() {
         super();
-        // PMD: False positive: ConstructorCallsOverridableMethod
-        // ActionListener al = e -> fireEditingStopped();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        };
+        ActionListener al = e -> fireEditingStopped();
         for (AbstractButton b: buttons) {
             b.addActionListener(al);
         }
@@ -160,7 +153,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         return this;
     }
     @Override public Object getCellEditorValue() {
-        return bg.getSelection().getActionCommand();
+        return Answer.valueOf(bg.getSelection().getActionCommand());
     }
 
     //Copied from AbstractCellEditor
@@ -188,7 +181,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
     public CellEditorListener[] getCellEditorListeners() {
         return listenerList.getListeners(CellEditorListener.class);
     }
-    protected void fireEditingStopped() {
+    protected final void fireEditingStopped() {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
