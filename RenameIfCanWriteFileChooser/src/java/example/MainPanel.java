@@ -12,53 +12,59 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-        p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-        p.add(new JButton(new AbstractAction("readOnly") {
-            @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-                JFileChooser fileChooser = new JFileChooser(".");
-                int retvalue = fileChooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("Rename only File#canWrite() == true") {
-            @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("FileChooser.readOnly", Boolean.FALSE);
-                JFileChooser fileChooser = new JFileChooser(".") {
-                    @Override protected void setUI(ComponentUI ui) {
-                        if (ui instanceof WindowsFileChooserUI) {
-                            super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
-                        } else {
-                            super.setUI(MetalCanWriteFileChooserUI.createUI(this));
-                        }
-                    }
-                };
-//         ActionMap am = fc.getActionMap();
-//         //WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
-//         final Action editFileNameAction = am.get("editFileName");
-//         am.put("editFileName", new AbstractAction("editFileName2") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 File file = fc.getSelectedFile();
-//                 if (file != null && file.canWrite()) {
-//                     editFileNameAction.actionPerformed(e);
-//                 }
-//             }
-//         });
-//                 Action newFolder = am.get("New Folder");
-//                 newFolder.setEnabled(false);
 
-                int retvalue = fileChooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                }
+        JTextArea log = new JTextArea();
+
+        JButton readOnlyButton = new JButton("readOnly");
+        readOnlyButton.addActionListener(e -> {
+            UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+            JFileChooser fileChooser = new JFileChooser();
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
-        }));
+        });
+
+        JButton canWriteButton = new JButton("Rename only File#canWrite() == true");
+        canWriteButton.addActionListener(e -> {
+            UIManager.put("FileChooser.readOnly", Boolean.FALSE);
+            JFileChooser fileChooser = new JFileChooser() {
+                @Override protected void setUI(ComponentUI ui) {
+                    if (ui instanceof WindowsFileChooserUI) {
+                        super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
+                    } else {
+                        super.setUI(MetalCanWriteFileChooserUI.createUI(this));
+                    }
+                }
+            };
+
+//             ActionMap am = fc.getActionMap();
+//             //WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
+//             Action editFileNameAction = am.get("editFileName");
+//             am.put("editFileName", new AbstractAction("editFileName2") {
+//                 @Override public void actionPerformed(ActionEvent e) {
+//                     File file = fc.getSelectedFile();
+//                     if (file != null && file.canWrite()) {
+//                         editFileNameAction.actionPerformed(e);
+//                     }
+//                 }
+//             });
+//
+//             Action newFolder = am.get("New Folder");
+//             newFolder.setEnabled(false);
+
+            int retvalue = fileChooser.showOpenDialog(getRootPane());
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+        p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
+        p.add(readOnlyButton);
+        p.add(canWriteButton);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));

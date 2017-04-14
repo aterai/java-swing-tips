@@ -7,11 +7,12 @@ import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final JDesktopPane desktop = new JDesktopPane();
-    private final JCheckBox check      = new JCheckBox("Icons should be relocated", true);
-    private final JButton button       = new JButton("relocate");
-    private final JButton addButton    = new JButton("add");
+public class MainPanel extends JPanel {
+    protected final JDesktopPane desktop = new JDesktopPane();
+    protected final JCheckBox check      = new JCheckBox("Icons should be relocated", true);
+    protected final JButton button       = new JButton("relocate");
+    protected final JButton addButton    = new JButton("add");
+
     public MainPanel() {
         super(new BorderLayout());
         desktop.setDesktopManager(new ReIconifyDesktopManager());
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static class ReIconifyDesktopManager extends DefaultDesktopManager {
+    protected static class ReIconifyDesktopManager extends DefaultDesktopManager {
         public void reIconifyFrame(JInternalFrame jif) {
             deiconifyFrame(jif);
             Rectangle r = getBoundsForIconOf(jif);
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
             jif.getDesktopIcon().setBounds(r);
         }
     }
-    private static void doReIconify(JDesktopPane desktopPane) {
+    protected static void doReIconify(JDesktopPane desktopPane) {
         DesktopManager dm = desktopPane.getDesktopManager();
         if (dm instanceof ReIconifyDesktopManager) {
             ReIconifyDesktopManager rdm = (ReIconifyDesktopManager) dm;
@@ -66,7 +67,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    private static JInternalFrame createFrame(String t, int x, int y) {
+    protected static JInternalFrame createFrame(String t, int x, int y) {
         //title, resizable, closable, maximizable, iconifiable
         JInternalFrame f = new JInternalFrame(t, false, true, true, true);
         f.setSize(200, 100);
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel {
         f.setVisible(true);
         return f;
     }
-    private void addIconifiedFrame(JInternalFrame f) {
+    protected final void addIconifiedFrame(JInternalFrame f) {
         desktop.add(f);
         try {
             f.setIcon(true);

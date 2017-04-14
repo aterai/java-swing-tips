@@ -9,12 +9,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(240, 255, 250);
     private final JCheckBox check1 = new JCheckBox("!comment.isEmpty()");
     private final JCheckBox check2 = new JCheckBox("idx % 2 == 0");
     private final TestModel model = new TestModel();
     private final transient TableRowSorter<? extends TestModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model) {
+        private final Color evenColor = new Color(240, 255, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if (isRowSelected(row)) {
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
+                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
             }
             return c;
         }

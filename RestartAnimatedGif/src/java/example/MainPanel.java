@@ -11,9 +11,9 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
         URL url = getClass().getResource("9-0.gif");
         BufferedImage bi = null;
         try {
@@ -22,8 +22,10 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
             return;
         }
-        final ImageIcon icon9 = new ImageIcon(bi);
-        final ImageIcon animatedIcon = new ImageIcon(url);
+        ImageIcon icon9 = new ImageIcon(bi);
+        ImageIcon animatedIcon = new ImageIcon(url);
+
+        JTextArea textArea = new JTextArea();
         JButton button = new JButton(icon9) {
             @Override protected void fireStateChanged() {
                 ButtonModel m = getModel();

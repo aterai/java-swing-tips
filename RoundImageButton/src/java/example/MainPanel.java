@@ -11,23 +11,12 @@ import javax.swing.*;
 //import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<? extends Enum> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
-    private final List<? extends JButton> buttons;
-    private final Box box = Box.createHorizontalBox();
-      // JDK 5
-      //new Box(BoxLayout.X_AXIS) {
-      //    @Override protected void paintComponent(Graphics g) {
-      //        if (Objects.nonNull(ui)) {
-      //            super.paintComponent(g);
-      //        } else if (isOpaque()) {
-      //            g.setColor(getBackground());
-      //            g.fillRect(0, 0, getWidth(), getHeight());
-      //        }
-      //    }
-      //};
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        buttons = Arrays.asList(
+
+        JComboBox<? extends Enum> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
+
+        List<? extends JButton> buttons = Arrays.asList(
             new RoundButton(new ImageIcon(getClass().getResource("005.png")), "005d.png", "005g.png"),
             new RoundButton(new ImageIcon(getClass().getResource("003.png")), "003d.png", "003g.png"),
             new RoundButton(new ImageIcon(getClass().getResource("001.png")), "001d.png", "001g.png"),
@@ -35,34 +24,44 @@ public final class MainPanel extends JPanel {
             new RoundButton(new ImageIcon(getClass().getResource("004.png")), "004d.png", "004g.png"));
         //TEST: buttons = makeButtonArray2(getClass()); //Set ButtonUI
 
+        Box box = Box.createHorizontalBox();
+        // JDK 5
+        //new Box(BoxLayout.X_AXIS) {
+        //    @Override protected void paintComponent(Graphics g) {
+        //        if (Objects.nonNull(ui)) {
+        //            super.paintComponent(g);
+        //        } else if (isOpaque()) {
+        //            g.setColor(getBackground());
+        //            g.fillRect(0, 0, getWidth(), getHeight());
+        //        }
+        //    }
+        //};
         box.setOpaque(true);
         box.setBackground(new Color(120, 120, 160));
         box.add(Box.createHorizontalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
-        for (JButton b: buttons) {
+        buttons.forEach(b -> {
             box.add(b);
             box.add(Box.createHorizontalStrut(5));
-        }
+        });
         box.add(Box.createHorizontalGlue());
         add(box, BorderLayout.NORTH);
 
-        JPanel p = new JPanel();
-        p.add(new JCheckBox(new AbstractAction("ButtonBorder Color") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                Color bgc = cb.isSelected() ? Color.WHITE : Color.BLACK;
-                for (JButton b: buttons) {
-                    b.setBackground(bgc);
-                }
-                box.repaint();
+        JCheckBox check = new JCheckBox("ButtonBorder Color");
+        check.addActionListener(e -> {
+            Color bgc = ((JCheckBox) e.getSource()).isSelected() ? Color.WHITE : Color.BLACK;
+            for (JButton b: buttons) {
+                b.setBackground(bgc);
             }
-        }));
+            box.repaint();
+        });
+
+        JPanel p = new JPanel();
+        p.add(check);
         alignmentsChoices.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 ButtonAlignments ba = (ButtonAlignments) alignmentsChoices.getSelectedItem();
-                for (JButton b: buttons) {
-                    b.setAlignmentY(ba.alingment);
-                }
+                buttons.forEach(b -> b.setAlignmentY(ba.alingment));
                 box.revalidate();
             }
         });

@@ -8,10 +8,10 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.MouseInputListener;
 
-public final class MainPanel extends JPanel {
-    private final JLayeredPane layeredPane = new JLayeredPane();
-    private final JToolBar toolbar = new JToolBar("Resizable Components");
-    private final Point pt = new Point();
+public class MainPanel extends JPanel {
+    protected final JLayeredPane layeredPane = new JLayeredPane();
+    protected final JToolBar toolbar = new JToolBar("Resizable Components");
+    protected final Point pt = new Point();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void createTree() {
+    protected void createTree() {
         JTree tree = new JTree();
         tree.setVisibleRowCount(8);
         Component c = new JScrollPane(tree);
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         layeredPane.add(resizer);
         layeredPane.moveToFront(resizer);
     }
-    private void createTable() {
+    protected void createTable() {
         JTable table = new JTable(12, 3);
         table.setPreferredScrollableViewportSize(new Dimension(160, 160));
         Component c = new JScrollPane(table);

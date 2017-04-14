@@ -9,9 +9,9 @@ import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree(makeModel()) {
-        private final Color rolloverRowColor = new Color(220, 240, 255);
-        private int rollOverRowIndex = -1;
-        private transient MouseMotionListener listener;
+        protected final Color rolloverRowColor = new Color(220, 240, 255);
+        protected int rollOverRowIndex = -1;
+        protected transient MouseMotionListener listener;
         @Override public void updateUI() {
             removeMouseMotionListener(listener);
             super.updateUI();

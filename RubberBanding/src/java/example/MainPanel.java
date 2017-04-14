@@ -111,12 +111,16 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
                      : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
+    protected Path2D getRubberBand() {
+        return rubberBand;
+    }
     private class RubberBandingListener extends MouseAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             JList l = (JList) e.getComponent();
             l.setFocusable(true);
             Point destPoint = e.getPoint();
+            Path2D rubberBand = getRubberBand();
             rubberBand.reset();
             rubberBand.moveTo(srcPoint.x,  srcPoint.y);
             rubberBand.lineTo(destPoint.x, srcPoint.y);
@@ -128,7 +132,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
-            rubberBand.reset();
+            getRubberBand().reset();
             Component c = e.getComponent();
             c.setFocusable(true);
             c.repaint();

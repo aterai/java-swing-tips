@@ -13,10 +13,11 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color BACKGROUND = Color.BLACK;
-    private static final Color FOREGROUND = Color.WHITE;
-    private static final Color SELECTIONFOREGROUND = Color.ORANGE;
-    private static final Color PANEL_BACKGROUND = Color.GRAY;
+    public static final Color BACKGROUND = Color.BLACK;
+    public static final Color FOREGROUND = Color.WHITE;
+    public static final Color SELECTIONFOREGROUND = Color.ORANGE;
+    public static final Color PANEL_BACKGROUND = Color.GRAY;
+
     private MainPanel() {
         super(new BorderLayout());
 

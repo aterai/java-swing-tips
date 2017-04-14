@@ -204,9 +204,9 @@ class CellButtonsMouseListener extends MouseAdapter {
 
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
-    private final RemoveButtonComboBox<E> comboBox;
-    private JList list;
-    private int index;
+    protected final RemoveButtonComboBox<E> comboBox;
+    protected JList list;
+    protected int index;
     public int rolloverIndex = -1;
     private final JLabel label = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton(new AbstractAction("x") {

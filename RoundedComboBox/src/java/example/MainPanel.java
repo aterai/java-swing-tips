@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -14,9 +13,10 @@ import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
-    private static final Color BACKGROUND = Color.BLACK; //RED;
-    private static final Color FOREGROUND = Color.WHITE; //YELLOW;
-    private static final Color SELECTIONFOREGROUND = Color.CYAN;
+    public static final Color BACKGROUND = Color.BLACK; //RED;
+    public static final Color FOREGROUND = Color.WHITE; //YELLOW;
+    public static final Color SELECTIONFOREGROUND = Color.CYAN;
+
     private MainPanel() {
         super(new BorderLayout());
 
@@ -104,17 +104,15 @@ public final class MainPanel extends JPanel {
         tabbedPane.add("Basic, Metal", createPanel(box1, null, BACKGROUND));
         tabbedPane.add("Windows", createPanel(box0, null, null));
 
+        JCheckBox check = new JCheckBox("editable");
+        check.addActionListener(e -> {
+            boolean flag = ((JCheckBox) e.getSource()).isSelected();
+            Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2).forEach(c -> c.setEditable(flag));
+            repaint();
+        });
+
         add(tabbedPane);
-        final List<JComboBox<String>> list = Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2);
-        add(new JCheckBox(new AbstractAction("editable") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox) e.getSource()).isSelected();
-                for (JComboBox c: list) {
-                    c.setEditable(flag);
-                }
-                repaint();
-            }
-        }), BorderLayout.SOUTH);
+        add(check, BorderLayout.SOUTH);
         //setOpaque(true);
         //setBackground(BACKGROUND);
         setPreferredSize(new Dimension(320, 240));
