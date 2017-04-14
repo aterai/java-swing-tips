@@ -10,11 +10,11 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final DefaultListModel<String> listModel = new DefaultListModel<>();
-    private final TestModel model = new TestModel(listModel);
-    private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        TestModel model = new TestModel(listModel);
         model.addTest(new Test("Name 1", "comment"));
         model.addTest(new Test("Name 2", "test"));
         model.addTest(new Test("Name d", "ee"));
@@ -24,9 +24,10 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "test aa"));
         model.addTest(new Test("Name 0", "gg"));
 
+        JTable table = new JTable(model);
         table.setCellSelectionEnabled(true);
 
-        final JTableHeader header = table.getTableHeader();
+        JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 if (table.isEditing()) {
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
         RowHeaderList<String> rowHeader = new RowHeaderList<>(listModel, table);
         rowHeader.setFixedCellWidth(50);
 
-        final JScrollPane scroll = new JScrollPane(table);
+        JScrollPane scroll = new JScrollPane(table);
         scroll.setRowHeaderView(rowHeader);
         scroll.getRowHeader().addChangeListener(e -> {
             JViewport viewport = (JViewport) e.getSource();
@@ -101,7 +102,7 @@ class RowHeaderList<E> extends JList<E> {
         tableSelection = table.getSelectionModel();
         rListSelection = getSelectionModel();
     }
-    class RowHeaderRenderer<E> extends JLabel implements ListCellRenderer<E> {
+    class RowHeaderRenderer<E2> extends JLabel implements ListCellRenderer<E2> {
         private final JTableHeader header; // = table.getTableHeader();
         protected RowHeaderRenderer(JTableHeader header) {
             super();
@@ -114,7 +115,7 @@ class RowHeaderList<E> extends JList<E> {
             this.setBackground(header.getBackground());
             this.setFont(header.getFont());
         }
-        @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        @Override public Component getListCellRendererComponent(JList<? extends E2> list, E2 value, int index, boolean isSelected, boolean cellHasFocus) {
             if (index == pressedRowIndex) {
                 setBackground(Color.GRAY);
             } else if (index == rollOverRowIndex) {
