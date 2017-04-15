@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void updateLabel(TreePath path) {
+    protected void updateLabel(TreePath path) {
         countLabel.setText("PathCount: " + path.getPathCount());
         Object o = path.getLastPathComponent();
         if (o instanceof DefaultMutableTreeNode) {
@@ -64,26 +64,22 @@ public final class MainPanel extends JPanel {
     class TreePopupMenu extends JPopupMenu {
         protected TreePopupMenu() {
             super();
-            add(new AbstractAction("path") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    JTree tree = (JTree) getInvoker();
-                    updateLabel(tree.getSelectionPath());
-                    JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
-                }
+            add("path").addActionListener(e -> {
+                JTree tree = (JTree) getInvoker();
+                updateLabel(tree.getSelectionPath());
+                JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
             });
-            add(new AbstractAction("add") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    JTree tree = (JTree) getInvoker();
-                    TreePath path = tree.getSelectionPath();
-                    if (path.getPathCount() < 3) {
-                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                        DefaultMutableTreeNode self  = (DefaultMutableTreeNode) path.getLastPathComponent();
-                        DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
-                        self.add(child);
-                        model.reload(self);
-                    } else {
-                        JOptionPane.showMessageDialog(tree, "ERROR: Maximum levels of 2 exceeded.", "add node", JOptionPane.ERROR_MESSAGE);
-                    }
+            add("add").addActionListener(e -> {
+                JTree tree = (JTree) getInvoker();
+                TreePath path = tree.getSelectionPath();
+                if (path.getPathCount() < 3) {
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                    DefaultMutableTreeNode self  = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
+                    self.add(child);
+                    model.reload(self);
+                } else {
+                    JOptionPane.showMessageDialog(tree, "ERROR: Maximum levels of 2 exceeded.", "add node", JOptionPane.ERROR_MESSAGE);
                 }
             });
         }

@@ -12,17 +12,18 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot())) {
-        @Override public void updateUI() {
-            super.updateUI();
-            setCellRenderer(new ProgressBarRenderer());
-            setRowHeight(-1);
-        }
-    };
-    private final JButton button = new JButton("start");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot())) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new ProgressBarRenderer());
+                setRowHeight(-1);
+            }
+        };
+
+        JButton button = new JButton("start");
         button.addActionListener(e -> {
             JButton b = (JButton) e.getSource();
             b.setEnabled(false);
@@ -151,8 +152,8 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
 }
 
 class ProgressBarRenderer extends DefaultTreeCellRenderer {
-    private int nodeWidth = 100;
-    private static int barHeight = 4;
+    protected int nodeWidth = 100;
+    protected static int barHeight = 4;
     private final JProgressBar b = new JProgressBar(0, 100) {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();

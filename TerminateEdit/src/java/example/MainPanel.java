@@ -7,18 +7,18 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final String[] columnNames = {"String", "Integer"};
-    private final Object[][] data = {
+public class MainPanel extends JPanel {
+    protected final String[] columnNames = {"String", "Integer"};
+    protected final Object[][] data = {
         {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
     };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
+    protected final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model) {
+    protected final JTable table = new JTable(model) {
+        private final Color evenColor = new Color(250, 250, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if (isRowSelected(row)) {
@@ -26,15 +26,15 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
             }
             return c;
         }
     };
-    private final JComboBox<? extends Enum> combobox = new JComboBox<>(AutoResizeMode.values());
-    private final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
-    private final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
-    private final JCheckBox teoflCheck  = new JCheckBox(new AbstractAction("terminateEditOnFocusLost") {
+    protected final JComboBox<? extends Enum> combobox = new JComboBox<>(AutoResizeMode.values());
+    protected final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
+    protected final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
+    protected final JCheckBox teoflCheck  = new JCheckBox(new AbstractAction("terminateEditOnFocusLost") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox) e.getSource();
             table.putClientProperty("terminateEditOnFocusLost", c.isSelected());

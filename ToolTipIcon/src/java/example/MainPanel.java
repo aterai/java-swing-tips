@@ -8,14 +8,15 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-    private final URL url = getClass().getResource("wi0124-48.png");
-    private final ImageIcon icon = new ImageIcon(url);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        URL url = getClass().getResource("wi0124-48.png");
+        ImageIcon icon = new ImageIcon(url);
         JLabel l1 = new JLabel("ToolTip icon using JLabel") {
             @Override public JToolTip createToolTip() {
-                final JLabel iconlabel = new JLabel(icon);
+                JLabel iconlabel = new JLabel(icon);
                 iconlabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
                 //LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
                 JToolTip tip = new JToolTip() {

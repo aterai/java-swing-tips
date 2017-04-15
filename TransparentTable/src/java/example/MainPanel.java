@@ -13,7 +13,7 @@ import javax.swing.border.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model) {
+    protected final JTable table = new JTable(model) {
         @Override public void updateUI() {
             // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
             // http://bugs.java.com/view_bug.do?bug_id=6788475
@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
             };
         }
     };
-    private final Color alphaZero = new Color(0x0, true);
+    protected final Color alphaZero = new Color(0x0, true);
+    protected final Color color = new Color(255, 0, 0, 50);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -84,19 +85,17 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setOpaque(false);
         scroll.getViewport().setBackground(alphaZero);
 
+        JCheckBox check = new JCheckBox("setBackground(new Color(255, 0, 0, 50))");
+        check.addActionListener(e -> table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
+
+        add(check, BorderLayout.NORTH);
         add(scroll);
-        add(new JCheckBox(new AbstractAction("setBackground(new Color(255, 0, 0, 50))") {
-            private final Color color = new Color(255, 0, 0, 50);
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero);
-            }
-        }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private TexturePaint makeImageTexture() {
+    protected static TexturePaint makeImageTexture() {
         BufferedImage bi = null;
         try {
-            bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
+            bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException(ex);

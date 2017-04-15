@@ -7,43 +7,45 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {null,  15, true}, {"", null, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final TableSorter sorter = new TableSorter(model);
-    private final JTable table = new JTable(sorter) {
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
-            }
-            return c;
-        }
-        @Override public void updateUI() {
-            sorter.setTableHeader(null);
-            super.updateUI();
-            EventQueue.invokeLater(() -> {
-                JTableHeader h = table.getTableHeader();
-                sorter.setTableHeader(h);
-                h.repaint();
-            });
-        }
-    };
     private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {null,  15, true}, {"", null, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        TableSorter sorter = new TableSorter(model);
+        JTable table = new JTable(sorter) {
+            private final Color evenColor = new Color(250, 250, 250);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+                }
+                return c;
+            }
+            @Override public void updateUI() {
+                sorter.setTableHeader(null);
+                super.updateUI();
+                EventQueue.invokeLater(() -> {
+                    JTableHeader h = getTableHeader();
+                    sorter.setTableHeader(h);
+                    h.repaint();
+                });
+            }
+        };
+
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }

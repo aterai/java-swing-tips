@@ -8,32 +8,20 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model) {
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
-            }
-            return c;
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         //table.setAutoCreateRowSorter(true);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(new TableRowSorter<>(model));
@@ -60,21 +48,22 @@ public final class MainPanel extends JPanel {
                 c.setResizable(false);
             }
         }
-        add(new JCheckBox(new AbstractAction("Sortable(1, false)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                RowSorter<? extends TableModel> rs = table.getRowSorter();
-                if (rs instanceof DefaultRowSorter) {
-                    JCheckBox cb = (JCheckBox) e.getSource();
-                    ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortable(1, !cb.isSelected());
-                    table.getTableHeader().repaint();
-                }
+
+        JCheckBox check = new JCheckBox("Sortable(1, false)");
+        check.addActionListener(e -> {
+            RowSorter<? extends TableModel> rs = table.getRowSorter();
+            if (rs instanceof DefaultRowSorter) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortable(1, !cb.isSelected());
+                table.getTableHeader().repaint();
             }
-        }), BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("clear SortKeys") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.getRowSorter().setSortKeys(null);
-            }
-        }), BorderLayout.SOUTH);
+        });
+
+        JButton button = new JButton("clear SortKeys");
+        button.addActionListener(e -> table.getRowSorter().setSortKeys(null));
+
+        add(check, BorderLayout.NORTH);
+        add(button, BorderLayout.SOUTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }

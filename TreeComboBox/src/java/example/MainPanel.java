@@ -148,14 +148,16 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
                 return c;
             }
         });
-        ActionMap am = getActionMap();
-        am.put("selectPrevious3", up);
-        am.put("selectNext3", down);
-        InputMap im = getInputMap();
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+        EventQueue.invokeLater(() -> {
+            ActionMap am = getActionMap();
+            am.put("selectPrevious3", up);
+            am.put("selectNext3", down);
+            InputMap im = getInputMap();
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+        });
     }
     @Override public void setPopupVisible(boolean v) {
         if (!v && isNotSelectableIndex) {

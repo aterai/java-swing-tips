@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
 }
 
 class TitledSeparator extends JLabel {
-    private final String title;
-    private final Color target;
-    private final int height;
-    private final int titlePosition;
+    protected final String title;
+    protected final Color target;
+    protected final int height;
+    protected final int titlePosition;
     protected TitledSeparator(String title, int height, int titlePosition) {
         this(title, null, height, titlePosition);
     }
@@ -77,9 +77,7 @@ class TitledSeparator extends JLabel {
             TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
     }
     @Override public Dimension getMaximumSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = Short.MAX_VALUE;
-        return d;
+        return new Dimension(Short.MAX_VALUE, super.getPreferredSize().height);
     }
     @Override public void updateUI() {
         super.updateUI();

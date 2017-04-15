@@ -88,7 +88,7 @@ class SelectedImageFilter extends RGBImageFilter {
 }
 
 class FileNameRenderer implements TableCellRenderer {
-    private final Dimension dim = new Dimension();
+    protected final Dimension dim = new Dimension();
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override public Dimension getPreferredSize() {
             return dim;
@@ -352,10 +352,14 @@ class FileListTable extends JTable {
         int idx = convertColumnIndexToView(0);
         super.setColumnSelectionInterval(idx, idx);
     }
+    protected Path2D getRubberBand() {
+        return rubberBand;
+    }
     private class RubberBandingListener extends MouseAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             Point destPoint = e.getPoint();
+            Path2D rubberBand = getRubberBand();
             rubberBand.reset();
             rubberBand.moveTo(srcPoint.x,  srcPoint.y);
             rubberBand.lineTo(destPoint.x, srcPoint.y);
@@ -372,7 +376,7 @@ class FileListTable extends JTable {
             repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
-            rubberBand.reset();
+            getRubberBand().reset();
             repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
@@ -391,7 +395,7 @@ class FileListTable extends JTable {
         }
     }
     //SwingUtilities2.pointOutsidePrefSize(...)
-    private static Rectangle getCellRect2(JTable table, int row, int col) {
+    protected static Rectangle getCellRect2(JTable table, int row, int col) {
         TableCellRenderer tcr = table.getCellRenderer(row, col);
         Object value = table.getValueAt(row, col);
         Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);

@@ -8,11 +8,12 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-    private final JTextArea textArea = new JTextArea();
-    private final TreeModel model = tree.getModel();
-    private final DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+public class MainPanel extends JPanel {
+    protected final JTree tree = new JTree();
+    protected final JTextArea textArea = new JTextArea();
+    protected final TreeModel model = tree.getModel();
+    protected final DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
     public MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane();

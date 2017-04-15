@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("vertical grid lines", true);
-    private final JTextPane textPane = new JTextPane() {
+    protected final JCheckBox check = new JCheckBox("vertical grid lines", true);
+    protected final JTextPane textPane = new JTextPane() {
         @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (check.isSelected()) {

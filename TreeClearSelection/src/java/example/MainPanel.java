@@ -7,26 +7,28 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-    private final transient MouseListener ml = new MouseAdapter() {
-        @Override public void mousePressed(MouseEvent e) {
-            JTree tree = (JTree) e.getComponent();
-            if (tree.getRowForLocation(e.getX(), e.getY()) < 0) {
-                tree.clearSelection();
-            }
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JCheckBox(new AbstractAction("JTree#clearSelection: when user clicks empty surface") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    tree.addMouseListener(ml);
-                } else {
-                    tree.removeMouseListener(ml);
+
+        JTree tree = new JTree();
+        MouseListener ml = new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                JTree tree = (JTree) e.getComponent();
+                if (tree.getRowForLocation(e.getX(), e.getY()) < 0) {
+                    tree.clearSelection();
                 }
             }
-        }), BorderLayout.NORTH);
+        };
+        JCheckBox check = new JCheckBox("JTree#clearSelection: when user clicks empty surface");
+        check.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                tree.addMouseListener(ml);
+            } else {
+                tree.removeMouseListener(ml);
+            }
+        });
+
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }

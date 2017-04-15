@@ -12,8 +12,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private static final TexturePaint TEXTURE = makeImageTexture();
+public class MainPanel extends JPanel {
+    public static final TexturePaint TEXTURE = makeImageTexture();
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model) {
+    protected final JTable table = new JTable(model) {
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
             Component c = super.prepareEditor(editor, row, column);
             if (c instanceof JComponent) {
