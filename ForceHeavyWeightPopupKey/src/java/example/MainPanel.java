@@ -21,10 +21,11 @@ public final class MainPanel extends JPanel {
                     Field field;
                     if (System.getProperty("java.version").startsWith("1.6.0")) {
                         // https://community.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
-                        Class clazz = Class.forName("javax.swing.PopupFactory");
-                        field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+                        //Class<?> clazz = Class.forName("javax.swing.PopupFactory"); //errorprone: LiteralClassName
+                        //field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+                        field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
                     } else { //JDK 1.7.0, 1.8.0
-                        Class clazz = Class.forName("javax.swing.ClientPropertyKey");
+                        Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
                         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                     }
                     field.setAccessible(true);
