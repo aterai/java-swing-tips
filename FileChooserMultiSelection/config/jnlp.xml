@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST FileChooserMultiSelection" />
+  <property name="jnlp.Name"     value="FileChooserMultiSelection" />
+  <property name="jnlp.name"     value="filechoosermultiselection" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/filechoosermultiselection/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FileChooserMultiSelection.html" />
+</project>
