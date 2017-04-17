@@ -171,7 +171,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI { //NOPMD This
     @Override protected LayoutManager createLayoutManager() {
         return new SearchBarLayout();
     }
-    private static Icon makeRolloverIcon(Icon srcIcon) {
+    protected static Icon makeRolloverIcon(Icon srcIcon) {
         RescaleOp op = new RescaleOp(
             new float[] {1.2f, 1.2f, 1.2f, 1f},
             new float[] {0f, 0f, 0f, 0f}, null);

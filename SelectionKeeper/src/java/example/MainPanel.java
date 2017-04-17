@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -18,8 +18,8 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final TableSorter sorter = new TableSorter(model);
-    private final JTable table = new JTable(sorter) {
+    protected final TableSorter sorter = new TableSorter(model);
+    protected final JTable table = new JTable(sorter) {
         @Override public void updateUI() {
             sorter.setTableHeader(null);
             super.updateUI();
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
             });
         }
     };
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

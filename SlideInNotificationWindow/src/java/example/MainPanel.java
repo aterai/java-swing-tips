@@ -68,11 +68,11 @@ public final class MainPanel extends JPanel {
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     private static final int DELAY = 5;
-    private final JWindow dialog = new JWindow((Frame) null);
-    private final Timer animator = new Timer(DELAY, null);
+    protected final JWindow dialog = new JWindow((Frame) null);
+    protected final Timer animator = new Timer(DELAY, null);
     private transient ActionListener listener;
-    private int dx;
-    private int dy;
+    protected int dx;
+    protected int dy;
 
     public void startSlideIn(final SlideInAnimation slideInAnimation) {
         if (animator.isRunning()) {

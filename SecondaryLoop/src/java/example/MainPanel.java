@@ -9,37 +9,36 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
-    private final DisableInputLayerUI<JComponent> layerUI = new DisableInputLayerUI<>();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        DisableInputLayerUI<JComponent> layerUI = new DisableInputLayerUI<>();
+        JButton button = new JButton("Stop 5sec");
+        button.addActionListener(e -> {
+            layerUI.setInputBlock(true);
+            SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+            Thread work = new Thread() {
+                @Override public void run() {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    layerUI.setInputBlock(false);
+                    loop.exit();
+                }
+            };
+            work.start();
+            loop.enter();
+        });
+
         JPanel p = new JPanel();
         p.add(new JCheckBox());
         p.add(new JTextField(10));
-        p.add(new JButton(new AbstractAction("Stop 5sec") {
-            @Override public void actionPerformed(ActionEvent e) {
-                layerUI.setInputBlock(true);
-                final SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-                Thread work = new Thread() {
-                    @Override public void run() {
-                        doInBackground();
-                        layerUI.setInputBlock(false);
-                        loop.exit();
-                    }
-                };
-                work.start();
-                loop.enter();
-            }
-        }));
+        p.add(button);
         add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private void doInBackground() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

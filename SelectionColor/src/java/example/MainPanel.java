@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.IOException;
@@ -20,20 +19,17 @@ public final class MainPanel extends JPanel {
     private static final Color SELECTION_COLOR = new Color(0xC86464FF, true);
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0x64FFFF32, true));
     private final JEditorPane area = new JEditorPane();
-    //private final JTextArea area = new JTextArea();
 
-    private final JCheckBox check = new JCheckBox(new AbstractAction("setSelectionColor(#C86464FF)") {
-        @Override public void actionPerformed(ActionEvent e) {
+    public MainPanel() {
+        super(new BorderLayout());
+
+        JCheckBox check = new JCheckBox("setSelectionColor(#C86464FF)", true);
+        check.addActionListener(e -> {
             JCheckBox c = (JCheckBox) e.getSource();
             //http://docs.oracle.com/javase/7/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor(java.awt.Color)
             //DOUBT?: Setting the color to null is the same as setting Color.white.
             area.setSelectionColor(c.isSelected() ? SELECTION_COLOR : null);
-        }
-    });
-
-    public MainPanel() {
-        super(new BorderLayout());
-        check.setSelected(true);
+        });
 
         //http://ateraimemo.com/Swing/StyleSheet.html
         StyleSheet styleSheet = new StyleSheet();
@@ -64,6 +60,16 @@ public final class MainPanel extends JPanel {
         //DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
         //dh.setDrawsLayeredHighlights(false);
 
+        JToggleButton button = new JToggleButton("highlight");
+        button.addActionListener(e -> {
+            JToggleButton t = (JToggleButton) e.getSource();
+            if (t.isSelected()) {
+                setHighlight(area, PATTERN);
+            } else {
+                area.getHighlighter().removeAllHighlights();
+            }
+        });
+
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
         JScrollPane scroll = new JScrollPane(area);
@@ -75,16 +81,7 @@ public final class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.add(check);
         box.add(Box.createHorizontalGlue());
-        box.add(new JToggleButton(new AbstractAction("highlight") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JToggleButton t = (JToggleButton) e.getSource();
-                if (t.isSelected()) {
-                    setHighlight(area, PATTERN);
-                } else {
-                    area.getHighlighter().removeAllHighlights();
-                }
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(2));
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

@@ -82,7 +82,6 @@ final class LookAndFeelUtil {
     private LookAndFeelUtil() { /* Singleton */ }
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
-        menu.setMnemonic('L');
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
         for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
@@ -104,7 +103,6 @@ final class LookAndFeelUtil {
         });
         lafItem.setText(lafName);
         lafItem.setActionCommand(lafClassName);
-        lafItem.setMnemonic(lafName.codePointAt(0));
         lookAndFeelRadioGroup.add(lafItem);
         return lafItem;
     }

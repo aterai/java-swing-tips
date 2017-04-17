@@ -8,13 +8,13 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel {
-    private final JTextPane textPane = new JTextPane();
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         HTMLEditorKit kit = new HTMLEditorKit();
         HTMLDocument doc = new HTMLDocument();
+        JTextPane textPane = new JTextPane();
         textPane.setEditorKit(kit);
         textPane.setDocument(doc);
         textPane.setEditable(false);
@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void insertBR(HTMLEditorKit kit, HTMLDocument doc) {
+    private static void insertBR(HTMLEditorKit kit, HTMLDocument doc) {
         try {
             kit.insertHTML(doc, doc.getLength(), "<br />", 0, 0, null);
         } catch (BadLocationException | IOException ex) {

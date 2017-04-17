@@ -7,16 +7,16 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private static final int START_HEIGHT = 4;
-    private static final int END_HEIGHT = 24;
-    private static final int DELAY = 10;
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
+public class MainPanel extends JPanel {
+    protected static final int START_HEIGHT = 4;
+    protected static final int END_HEIGHT = 24;
+    protected static final int DELAY = 10;
+    protected final String[] columnNames = {"String", "Integer", "Boolean"};
+    protected final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             // ArrayIndexOutOfBoundsException: 0 >= 0
             // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
@@ -34,13 +34,13 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    private final JTable table = new JTable(model);
-    private final Action createAction = new AbstractAction("add") {
+    protected final JTable table = new JTable(model);
+    protected final Action createAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
             createActionPerformed();
         }
     };
-    private final Action deleteAction = new AbstractAction("delete") {
+    protected final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             deleteActionPerformed();
         }

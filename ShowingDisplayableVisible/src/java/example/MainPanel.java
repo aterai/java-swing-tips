@@ -7,22 +7,22 @@ import java.awt.event.*;
 import java.util.Date;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private final Timer timer;
-    private final JButton button   = new JButton("JButton JButton");
-    private final JCheckBox vcheck = new JCheckBox(new AbstractAction("setVisible") {
+public class MainPanel extends JPanel {
+    protected final Timer timer;
+    protected final JButton button   = new JButton("JButton JButton");
+    protected final JCheckBox vcheck = new JCheckBox(new AbstractAction("setVisible") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox) e.getSource();
             button.setVisible(c.isSelected());
         }
     });
-    private final JCheckBox echeck = new JCheckBox(new AbstractAction("setEnabled") {
+    protected final JCheckBox echeck = new JCheckBox(new AbstractAction("setEnabled") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox) e.getSource();
             button.setEnabled(c.isSelected());
         }
     });
-    private final JCheckBox tcheck = new JCheckBox(new AbstractAction("start") {
+    protected final JCheckBox tcheck = new JCheckBox(new AbstractAction("start") {
         @Override public void actionPerformed(ActionEvent e) {
             if (tcheck.isSelected()) {
                 timer.start();
@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
             }
         }
     });
+
     public MainPanel() {
         super(new BorderLayout());
         vcheck.setSelected(true);
@@ -76,7 +77,7 @@ public final class MainPanel extends JPanel {
         timer.start();
         setPreferredSize(new Dimension(320, 240));
     }
-    private void printInfo(String str) {
+    protected void printInfo(String str) {
         System.out.println("JButton: " + str);
         System.out.println("  isDisplayable:" + button.isDisplayable());
         System.out.println("  isShowing:" + button.isShowing());

@@ -12,9 +12,9 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.text.*;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
-public final class MainPanel extends JPanel {
-    private static final String PATTERN = "Swing";
-    private static final String INITTXT =
+public class MainPanel extends JPanel {
+    protected static final String PATTERN = "Swing";
+    protected static final String INITTXT =
         "Trail: Creating a GUI with JFC/Swing\n"
       + "Lesson: Learning Swing by Example\n"
       + "This lesson explains the concepts you need to\n"
@@ -29,23 +29,24 @@ public final class MainPanel extends JPanel {
       + " so you can test yourself on what you've learned.\n"
       + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private final JTextArea textArea   = new JTextArea();
-    private final JScrollPane scroll   = new JScrollPane(textArea);
-    private final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
-//     private final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
+    protected final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    protected final JTextArea textArea   = new JTextArea();
+    protected final JScrollPane scroll   = new JScrollPane(textArea);
+    protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
+//     protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
 //         @Override public Dimension getPreferredSize() {
 //             Dimension d = super.getPreferredSize();
 //             d.width += 4; //getInsets().left;
 //             return d;
 //         }
 //     };
-    private final JCheckBox check = new JCheckBox(new AbstractAction("LineWrap") {
+    protected final JCheckBox check = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox) e.getSource();
             textArea.setLineWrap(c.isSelected());
         }
     });
+
     public MainPanel() {
         super(new BorderLayout());
         textArea.setEditable(false);

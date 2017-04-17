@@ -107,9 +107,9 @@ public class TableSorter extends AbstractTableModel {
 
     protected TableModel tableModel;
 
-    private final List<Row> viewToModel = new ArrayList<>();
-    private final List<Integer> modelToView = new ArrayList<>();
-    private final List<Directive> sortingColumns = new ArrayList<>();
+    protected final List<Row> viewToModel = new ArrayList<>();
+    protected final List<Integer> modelToView = new ArrayList<>();
+    protected final List<Directive> sortingColumns = new ArrayList<>();
 
     private JTableHeader tableHeader;
     private final transient Map<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
@@ -145,7 +145,7 @@ public class TableSorter extends AbstractTableModel {
         setTableModel(tableModel);
     }
 
-    private void clearSortingState() {
+    protected void clearSortingState() {
         viewToModel.clear();
         modelToView.clear();
     }
@@ -164,8 +164,12 @@ public class TableSorter extends AbstractTableModel {
             this.tableModel.addTableModelListener(tableModelListener);
         }
 
-        clearSortingState();
-        fireTableStructureChanged();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                clearSortingState();
+                fireTableStructureChanged();
+            }
+        });
     }
 
 //     public JTableHeader getTableHeader() {
@@ -231,7 +235,7 @@ public class TableSorter extends AbstractTableModel {
         return new Arrow(directive.direction == DESCENDING, size, sortingColumns.indexOf(directive));
     }
 
-    private void cancelSorting() {
+    protected void cancelSorting() {
         sortingColumns.clear();
         sortingStatusChanged();
     }
@@ -274,7 +278,7 @@ public class TableSorter extends AbstractTableModel {
         return getViewToModel().get(viewIndex).modelIndex;
     }
 
-    private List<Integer> getModelToView() {
+    protected List<Integer> getModelToView() {
         if (modelToView.isEmpty()) {
             int n = getViewToModel().size();
             for (int i = 0; i < n; i++) {
