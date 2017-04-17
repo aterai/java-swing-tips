@@ -365,13 +365,16 @@
   </target>
 
   <condition property="have.findbugs">
-    <and>
-      <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-      <available file="${env.FINDBUGS_HOME}" />
-    </and>
+    <available file="${env.FINDBUGS_HOME}" />
   </condition>
   <target name="findbugs" depends="compile" if="have.findbugs">
-    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+    <echo>${env.FINDBUGS_HOME}</echo>
+    <path id="findbugs.classpath">
+      <fileset dir="${env.FINDBUGS_HOME}/lib">
+        <include name="*-ant.jar" />
+      </fileset>
+    </path>
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.classpath" />
     <mkdir dir="${build.reports}" />
     <echo>userdir: ${user.dir}</echo>
     <echo>basedir: ${basedir}</echo>
