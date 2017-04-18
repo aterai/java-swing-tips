@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void browseCacheFile(URL url) {
+    protected static void browseCacheFile(URL url) {
         if (Desktop.isDesktopSupported()) {
             try (InputStream in = new BufferedInputStream(url.openStream())) {
                 Path path = Files.createTempFile("_tmp", ".html");

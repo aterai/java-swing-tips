@@ -10,11 +10,11 @@ import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private final WorkerModel model = new WorkerModel();
-    private final JTable table = new JTable(model);
-    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-    private final Set<Integer> deleteRowSet = new TreeSet<>();
+public class MainPanel extends JPanel {
+    protected final WorkerModel model = new WorkerModel();
+    protected final JTable table = new JTable(model);
+    protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    protected final Set<Integer> deleteRowSet = new TreeSet<>();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected void addActionPerformed() {
+    protected final void addActionPerformed() {
         final int key = model.getRowCount();
         int lengthOfTask = new Random().nextInt(100) + 100;
         SwingWorker<Integer, ProgressValue> worker = new Task(lengthOfTask) {

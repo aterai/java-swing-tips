@@ -11,8 +11,8 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 //import sun.awt.shell.ShellFolder;
 
-public final class MainPanel extends JPanel {
-    private final JLabel smallLabel = new JLabel() {
+public class MainPanel extends JPanel {
+    protected final JLabel smallLabel = new JLabel() {
         @Override public Dimension getPreferredSize() {
             return new Dimension(16 + 1, 16 + 1);
         }
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             return getPreferredSize();
         }
     };
-    private final JLabel largeLabel = new JLabel() {
+    protected final JLabel largeLabel = new JLabel() {
         @Override public Dimension getPreferredSize() {
             return new Dimension(32 + 1, 32 + 1);
         }

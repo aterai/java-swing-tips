@@ -8,23 +8,21 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel lbl1 = new JLabel("aaaaaaaaaa") {
-        @Override public Dimension getPreferredSize() {
-            return new Dimension(1200, 600);
-        }
-    };
-    private final JLabel lbl2 = new JLabel("bbbbbbbbbb") {
-        @Override public Dimension getPreferredSize() {
-            return new Dimension(600, 1200);
-        }
-    };
-    private final JScrollPane sp1 = new JScrollPane(lbl1);
-    private final JScrollPane sp2 = new JScrollPane(lbl2);
-    public MainPanel() {
-        super();
-        setLayout(new GridLayout(2, 1));
-        add(sp1);
-        add(sp2);
+    private MainPanel() {
+        super(new GridLayout(2, 1));
+        JLabel lbl1 = new JLabel("aaaaaaaaaa") {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(1200, 600);
+            }
+        };
+        JLabel lbl2 = new JLabel("bbbbbbbbbb") {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(600, 1200);
+            }
+        };
+
+        JScrollPane sp1 = new JScrollPane(lbl1);
+        JScrollPane sp2 = new JScrollPane(lbl2);
 
         ChangeListener cl = new ChangeListener() {
             private boolean adjflg;
@@ -73,9 +71,10 @@ public final class MainPanel extends JPanel {
 //             BoundedRangeModel m = sp1.getVerticalScrollBar().getModel();
 //             sp2.getVerticalScrollBar().setModel(m);
 //         }
+        add(sp1);
+        add(sp2);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

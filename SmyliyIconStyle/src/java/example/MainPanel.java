@@ -11,12 +11,13 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    //private static final String FACE = "\uD83D\uDE10";
-    private static final String FACE = ":)";
-    private final JTextPane textPane = new JTextPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        //String faceMark = "\uD83D\uDE10";
+        String faceMark = ":)";
+
+        JTextPane textPane = new JTextPane();
         textPane.setEditorKit(new StyledEditorKit());
 
         StyledDocument doc = textPane.getStyledDocument();
@@ -29,25 +30,25 @@ public final class MainPanel extends JPanel {
                 update((DefaultStyledDocument) e.getDocument(), e.getOffset());
             }
             private void update(DefaultStyledDocument doc, int offset) {
-                final Element elm = doc.getCharacterElement(offset);
+                Element elm = doc.getCharacterElement(offset);
                 EventQueue.invokeLater(() -> {
                     try {
                         int start = elm.getStartOffset();
                         int end = elm.getEndOffset();
                         System.out.format("start: %d, end: %d%n", start, end);
                         String text = doc.getText(start, end - start);
-//                         int pos = text.lastIndexOf(FACE);
+//                         int pos = text.lastIndexOf(faceMark);
 //                         while (pos > -1) {
-//                             Style face = doc.getStyle(FACE);
-//                             doc.replace(start + pos, FACE.length(), " ", face);
-//                             pos = text.lastIndexOf(FACE, pos - 1);
+//                             Style face = doc.getStyle(faceMark);
+//                             doc.replace(start + pos, faceMark.length(), " ", face);
+//                             pos = text.lastIndexOf(faceMark, pos - 1);
 //                             textPane.getInputAttributes().removeAttributes(face);
 //                         }
-                        int pos = text.indexOf(FACE);
+                        int pos = text.indexOf(faceMark);
                         while (pos > -1) {
-                            Style face = doc.getStyle(FACE);
-                            doc.setCharacterAttributes(start + pos, FACE.length(), face, false);
-                            pos = text.indexOf(FACE, pos + FACE.length());
+                            Style face = doc.getStyle(faceMark);
+                            doc.setCharacterAttributes(start + pos, faceMark.length(), face, false);
+                            pos = text.indexOf(faceMark, pos + faceMark.length());
                             //textPane.getInputAttributes().removeAttributes(face);
                         }
                     } catch (BadLocationException ex) {
@@ -58,7 +59,7 @@ public final class MainPanel extends JPanel {
                 });
             }
         });
-        Style face = doc.addStyle(FACE, doc.getStyle(StyleContext.DEFAULT_STYLE));
+        Style face = doc.addStyle(faceMark, doc.getStyle(StyleContext.DEFAULT_STYLE));
         StyleConstants.setIcon(face, new FaceIcon());
         //StyleConstants.setForeground(face, Color.RED);
 

@@ -7,8 +7,9 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
-    private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
+public class MainPanel extends JPanel {
+    protected static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
+
     public MainPanel() {
         super(new GridLayout(3, 1));
 

@@ -189,7 +189,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
 }
 
 class LocalDateTimeEditor extends JSpinner.DefaultEditor {
-    private final transient DateTimeFormatter dateTimeFormatter;
+    protected final transient DateTimeFormatter dateTimeFormatter;
     private final SpinnerLocalDateTimeModel model;
 
     protected LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
@@ -220,7 +220,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     }
 
     public SpinnerLocalDateTimeModel getModel() {
-        return (SpinnerLocalDateTimeModel) getSpinner().getModel();
+        return model; //(SpinnerLocalDateTimeModel) getSpinner().getModel();
     }
 
     class LocalDateTimeFormatter extends InternationalFormatter {
@@ -238,6 +238,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         }
         @Override public Object stringToValue(String text) throws ParseException {
             //System.out.println("stringToValue:" + text);
+            SpinnerLocalDateTimeModel model = getModel();
             try {
                 //LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
                 TemporalAccessor ta = dateTimeFormatter.parse(text);

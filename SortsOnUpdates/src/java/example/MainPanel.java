@@ -8,86 +8,59 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"Integer", "String", "Boolean"};
-    private final Object[][] data = {
-        {0, "", true}, {1, "", false},
-        {2, "", true}, {3, "", false}
-    };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            switch (column) {
-              case 0:
-                return Integer.class;
-              case 1:
-                return String.class;
-              case 2:
-                return Boolean.class;
-              default:
-                return super.getColumnClass(column);
-            }
-        }
-    };
-    private final JTable table = new JTable(model) {
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else if (convertRowIndexToModel(row) == getRowCount() - 1) {
-                c.setForeground(Color.WHITE);
-                c.setBackground(Color.RED);
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(getBackground());
-            }
-            return c;
-        }
-    };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"Integer", "String", "Boolean"};
+        Object[][] data = {
+            {0, "", true}, {1, "", false},
+            {2, "", true}, {3, "", false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                switch (column) {
+                  case 0:
+                    return Integer.class;
+                  case 1:
+                    return String.class;
+                  case 2:
+                    return Boolean.class;
+                  default:
+                    return super.getColumnClass(column);
+                }
+            }
+        };
+        JTable table = new JTable(model) {
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else if (convertRowIndexToModel(row) == getRowCount() - 1) {
+                    c.setForeground(Color.WHITE);
+                    c.setBackground(Color.RED);
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground(getBackground());
+                }
+                return c;
+            }
+        };
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
 
-        add(new JScrollPane(table));
-        add(new JCheckBox(new AbstractAction("DefaultRowSorter#setSortsOnUpdates") {
-            @Override public void actionPerformed(ActionEvent e) {
-                RowSorter<? extends TableModel> rs = table.getRowSorter();
-                if (rs instanceof DefaultRowSorter) {
-                    ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
-                }
+        JCheckBox check = new JCheckBox("DefaultRowSorter#setSortsOnUpdates");
+        check.addActionListener(e -> {
+            RowSorter<? extends TableModel> rs = table.getRowSorter();
+            if (rs instanceof DefaultRowSorter) {
+                ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
             }
-        }), BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
+        });
 
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int[] selection = table.getSelectedRows();
-                for (int i = selection.length - 1; i >= 0; i--) {
-                    model.removeRow(table.convertRowIndexToModel(selection[i]));
-                }
-            }
-        };
-        protected TablePopupMenu() {
-            super();
-            add(new AbstractAction("add") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    int i = model.getRowCount();
-                    model.addRow(new Object[] {i, "", i % 2 == 0});
-                    Rectangle r = table.getCellRect(table.convertRowIndexToView(i - 1), 0, true);
-                    table.scrollRectToVisible(r);
-                }
-            });
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
+        add(check, BorderLayout.NORTH);
+        add(new JScrollPane(table));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {
@@ -102,7 +75,7 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -111,5 +84,37 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add("add").addActionListener(e -> {
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int i = model.getRowCount();
+            model.addRow(new Object[] {i, "", i % 2 == 0});
+            Rectangle r = table.getCellRect(table.convertRowIndexToView(i - 1), 0, true);
+            table.scrollRectToVisible(r);
+        });
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTable) {
+            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            super.show(c, x, y);
+        }
     }
 }

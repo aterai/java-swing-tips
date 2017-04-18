@@ -8,25 +8,27 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     //<blockquote cite="FixedColumnExample.java">
     //@auther Nobuo Tamemasa
     private static final String ES = "";
-    private final Object[][] data = {
+    protected final Object[][] data = {
         {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
         {3, 33,  ES,  ES, "C"}, {4,  1, ES,  ES, ES},
         {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
     };
-    private final String[] columnNames = {"1", "2", "a", "b", "c"};
+    protected final String[] columnNames = {"1", "2", "a", "b", "c"};
     //</blockquote>
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return column < 2 ? Integer.class : Object.class;
         }
     };
-    private final JTable table;
+    protected final JTable table;
+
     public MainPanel() {
         super(new BorderLayout());
+
         JTable leftTable = makeTable(model);
         table = makeTable(model);
 
@@ -46,8 +48,9 @@ public final class MainPanel extends JPanel {
         //scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll1.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
             @Override public Dimension getPreferredSize() {
-                Dimension dim = super.getPreferredSize();
-                return new Dimension(0, dim.height);
+                Dimension d = super.getPreferredSize();
+                d.width = 0;
+                return d;
             }
         });
         JScrollPane scroll2 = new JScrollPane(table);
@@ -58,14 +61,15 @@ public final class MainPanel extends JPanel {
         //split.setDividerSize(0);
         split.setLeftComponent(scroll1);
         split.setRightComponent(scroll2);
-        add(split);
 
-        add(new JButton(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.getRowSorter().setSortKeys(null);
-                IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
-            }
-        }), BorderLayout.SOUTH);
+        JButton button = new JButton("add");
+        button.addActionListener(e -> {
+            table.getRowSorter().setSortKeys(null);
+            IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
+        });
+
+        add(split);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JTable makeTable(TableModel model) {
