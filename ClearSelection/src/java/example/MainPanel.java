@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
             return new JList<>(model);
         }
         JList<String> list = new JList<String>(model) {
-            protected transient MouseInputListener listener;
+            private transient MouseInputListener listener;
             @Override public void updateUI() {
                 removeMouseListener(listener);
                 removeMouseMotionListener(listener);
