@@ -80,7 +80,7 @@ class TooltipList<E> extends JList<E> {
 }
 
 class CellRendererTooltipList<E> extends JList<E> {
-    private final JLabel label = new JLabel();
+    protected final JLabel label = new JLabel();
     protected CellRendererTooltipList(ListModel<E> m) {
         super(m);
         //TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));

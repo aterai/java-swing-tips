@@ -13,11 +13,11 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final transient Logger logger = Logger.getLogger(TextAreaLogger.class.getName());
-    private final JTextArea textArea = new JTextArea();
-    private final JTextField textField = new JTextField("aaa");
 
     public MainPanel() {
         super(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
         //TEST: textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
         textArea.setEditable(false);
 
@@ -39,6 +39,10 @@ public final class MainPanel extends JPanel {
 
         logger.info("test, TEST");
 
+        JTextField textField = new JTextField("aaa");
+        JButton button = new JButton("Clear");
+        button.addActionListener(e -> textArea.setText(""));
+
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
@@ -46,11 +50,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(5));
         box.add(new JButton(new EnterAction(textField)));
         box.add(Box.createHorizontalStrut(5));
-        box.add(new JButton(new AbstractAction("Clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setText("");
-            }
-        }));
+        box.add(button);
 
         add(new JScrollPane(textArea));
         add(box, BorderLayout.SOUTH);

@@ -10,13 +10,14 @@ import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private final WorkerModel model = new WorkerModel();
-    private final JTable table = new JTable(model);
-    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-    private final Set<Integer> deleteRowSet = new TreeSet<>();
-    //TEST: private final transient ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-    //TEST: private final Executor executor = Executors.newFixedThreadPool(2);
+public class MainPanel extends JPanel {
+    protected final WorkerModel model = new WorkerModel();
+    protected final JTable table = new JTable(model);
+    protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    protected final Set<Integer> deleteRowSet = new TreeSet<>();
+    //TEST: protected final transient ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    //TEST: protected final Executor executor = Executors.newFixedThreadPool(2);
+
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(sorter);
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected void addActionPerformed() {
+    protected final void addActionPerformed() {
         final int key = model.getRowCount();
         SwingWorker<Integer, Integer> worker = new Task() {
             @Override protected void process(List<Integer> c) {

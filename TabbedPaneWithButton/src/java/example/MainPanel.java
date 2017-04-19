@@ -8,9 +8,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
-    private final JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
+    protected final JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
         protected transient MouseListener handler;
         @Override public void updateUI() {
             removeMouseListener(handler);
@@ -35,12 +35,11 @@ public final class MainPanel extends JPanel {
             return Component.TOP_ALIGNMENT;
         }
     };
-    private final ClippedTitleTabbedPane tabs;
 
     public MainPanel() {
         super(new BorderLayout());
 
-        tabs = new ClippedTitleTabbedPane() {
+        ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane() {
             @Override public void updateUI() {
                 UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
                 super.updateUI();
@@ -71,9 +70,7 @@ public final class MainPanel extends JPanel {
         tabs.addTab("title2", new JScrollPane(new JTree()));
         tabs.addTab("title3", new JLabel("67890"));
 
-        button.addActionListener(e -> {
-            tabs.addTab("title", new JLabel("JLabel"));
-        });
+        button.addActionListener(e -> tabs.addTab("title", new JLabel("JLabel")));
 
         JPanel p = new JPanel();
         p.setLayout(new OverlayLayout(p));
@@ -82,11 +79,7 @@ public final class MainPanel extends JPanel {
 
         JMenuBar menubar = new JMenuBar();
         JMenu m1 = new JMenu("Tab");
-        m1.add(new AbstractAction("removeAll") {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabs.removeAll();
-            }
-        });
+        m1.add("removeAll").addActionListener(e -> tabs.removeAll());
         menubar.add(m1);
 
         add(menubar, BorderLayout.NORTH);

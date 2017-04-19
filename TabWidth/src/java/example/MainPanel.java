@@ -9,17 +9,18 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-    private static final int MIN_TAB_WIDTH = 100;
-    private final JTabbedPane tabbedPane = new JTabbedPane();
-    public MainPanel() {
+    public static final int MIN_TAB_WIDTH = 100;
+
+    private MainPanel() {
         super(new GridLayout(2, 1, 0, 10));
 
-        for (JTabbedPane tab: Arrays.asList(new JTabbedPane(), tabbedPane)) {
+        JTabbedPane tabbedPane = new JTabbedPane();
+        Arrays.asList(new JTabbedPane(), tabbedPane).forEach(tab -> {
             tab.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));
             tab.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
             tab.addTab("c",               new JLabel("cccccccccc"));
             add(tab);
-        }
+        });
 
         if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new WindowsTabbedPaneUI() {
@@ -36,12 +37,10 @@ public final class MainPanel extends JPanel {
         }
         setPreferredSize(new Dimension(320, 240));
     }
-
 //     //TEST
 //     public String makeTitle(String title) {
 //         return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
 //     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

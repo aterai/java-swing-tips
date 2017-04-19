@@ -5,18 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final int HEADER_HEIGHT = 32;
-    private JTable makeTable() {
-        JTable table = new JTable(new DefaultTableModel(2, 20));
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        return table;
-    }
-    public MainPanel() {
+    public static final int HEADER_HEIGHT = 32;
+
+    private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(2, 1));
 
@@ -49,20 +44,25 @@ public final class MainPanel extends JPanel {
 //         });
         p.add(makeTitledPanel("Override getPreferredSize()", scroll));
 
-        final List<JTable> list = Arrays.asList(table1, table2);
+        JButton button = new JButton("addColumn");
+        button.addActionListener(e -> {
+            Arrays.asList(table1, table2).forEach(t -> {
+                t.getColumnModel().addColumn(new TableColumn());
+                JTableHeader h = t.getTableHeader();
+                Dimension d = h.getPreferredSize();
+                System.out.println(d);
+            });
+        });
+
         add(p);
-        add(new JButton(new AbstractAction("addColumn") {
-            @Override public void actionPerformed(ActionEvent e) {
-                for (JTable t: list) {
-                    t.getColumnModel().addColumn(new TableColumn());
-                    JTableHeader h = t.getTableHeader();
-                    Dimension d = h.getPreferredSize();
-                    System.out.println(d);
-                }
-            }
-        }), BorderLayout.SOUTH);
+        add(button, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static JTable makeTable() {
+        JTable table = new JTable(new DefaultTableModel(2, 20));
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        return table;
     }
     private static JComponent makeTitledPanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());

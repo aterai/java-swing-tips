@@ -47,8 +47,8 @@ class LabelWithToolBox extends JLabel {
     protected final Timer animator = new Timer(DELAY, null);
     protected transient ToolBoxHandler handler;
     protected boolean isHidden;
-    private int counter;
-    private int yy;
+    protected int counter;
+    protected int yy;
     private final JToolBar toolBox = new JToolBar() {
         protected transient MouseListener listener;
         @Override protected void paintComponent(Graphics g) {

@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void fireDocumentChangeEvent() {
+    protected void fireDocumentChangeEvent() {
         field.setBackground(Color.WHITE);
         String pattern = field.getText().trim();
         if (pattern.isEmpty()) {

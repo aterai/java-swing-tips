@@ -7,29 +7,28 @@ import javax.swing.*;
 
 // https://community.oracle.com/thread/1392495 JTabbedPane with non-tabbed text
 public final class MainPanel extends JPanel {
-    private static final String TEXT = "<--1234567890";
+    public static final String TEXT = "<--1234567890";
+
     private MainPanel() {
         super(new BorderLayout());
-        JTabbedPane tab = new JTabbedPane() {
+        JTabbedPane tabs = new JTabbedPane() {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                FontMetrics fm = getFontMetrics(getFont());
+                //FontMetrics fm = getFontMetrics(getFont());
+                FontMetrics fm = g.getFontMetrics();
                 int stringWidth = fm.stringWidth(TEXT) + 10;
                 int x = getSize().width - stringWidth;
                 Rectangle lastTab = getBoundsAt(getTabCount() - 1);
                 int tabEnd = lastTab.x + lastTab.width;
-                if (x < tabEnd) {
-                    x = tabEnd;
-                }
-                g.drawString(TEXT, x + 5, 18);
+                int xx = Math.max(x, tabEnd) + 5;
+                g.drawString(TEXT, xx, 18);
             }
         };
-        tab.addTab("title1", new JLabel("tab1"));
-        tab.addTab("title2", new JLabel("tab2"));
-        add(tab);
+        tabs.addTab("title1", new JLabel("tab1"));
+        tabs.addTab("title2", new JLabel("tab2"));
+        add(tabs);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
