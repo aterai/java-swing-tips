@@ -14,32 +14,37 @@ import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "<html>The vertical alignment of this text gets offset when the font changes.";
-    private final JCheckBox check1 = new JCheckBox(TEXT);
-    private final JCheckBox check2 = new JCheckBox(TEXT) {
-        @Override public void updateUI() {
-            super.updateUI();
-            if (getUI() instanceof WindowsCheckBoxUI) {
-                setUI(new WindowsVerticalAlignmentCheckBoxUI());
-            } else {
-                setUI(new BasicVerticalAlignmentCheckBoxUI());
+
+    private MainPanel() {
+        super(new BorderLayout());
+
+        JCheckBox check1 = new JCheckBox(TEXT);
+        check1.setVerticalTextPosition(SwingConstants.TOP);
+
+        JCheckBox check2 = new JCheckBox(TEXT) {
+            @Override public void updateUI() {
+                super.updateUI();
+                if (getUI() instanceof WindowsCheckBoxUI) {
+                    setUI(new WindowsVerticalAlignmentCheckBoxUI());
+                } else {
+                    setUI(new BasicVerticalAlignmentCheckBoxUI());
+                }
+                setVerticalTextPosition(SwingConstants.TOP);
             }
-            setVerticalTextPosition(SwingConstants.TOP);
-        }
-    };
-    private final List<? extends JComponent> list = Arrays.asList(check1, check2);
-    private final Font font0 = check1.getFont();
-    private final Font font1 = font0.deriveFont(20f);
-    private final JToggleButton button = new JToggleButton(new AbstractAction("setFont: 24pt") {
-        @Override public void actionPerformed(ActionEvent e) {
+        };
+
+        List<? extends JComponent> list = Arrays.asList(check1, check2);
+        Font font0 = check1.getFont();
+        Font font1 = font0.deriveFont(20f);
+
+        JToggleButton button = new JToggleButton("setFont: 24pt");
+        button.addActionListener(e -> {
             boolean flag = button.isSelected();
             for (JComponent c: list) {
                c.setFont(flag ? font1 : font0);
             }
-        }
-    });
-    private MainPanel() {
-        super(new BorderLayout());
-        check1.setVerticalTextPosition(SwingConstants.TOP);
+        });
+
         JPanel p = new JPanel(new GridLayout(1, 2, 2, 2));
         p.add(makeTitledPanel(check1, "SwingConstants.TOP"));
         p.add(makeTitledPanel(check2, "First line center"));

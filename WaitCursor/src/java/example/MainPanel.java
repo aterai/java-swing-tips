@@ -8,8 +8,7 @@ import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JButton button = new JButton("Stop 5sec");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         EventQueue.invokeLater(() -> {
             JComponent gp = new LockingGlassPane();
@@ -17,10 +16,12 @@ public final class MainPanel extends JPanel {
             getRootPane().setGlassPane(gp);
         });
 
+        JButton button = new JButton("Stop 5sec");
         button.addActionListener(e -> {
             //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
             getRootPane().getGlassPane().setVisible(true);
-            button.setEnabled(false);
+            JComponent c = (JComponent) e.getSource();
+            c.setEnabled(false);
             (new Task() {
                 @Override public void done() {
                     if (!isDisplayable()) {
@@ -29,7 +30,7 @@ public final class MainPanel extends JPanel {
                         return;
                     }
                     getRootPane().getGlassPane().setVisible(false);
-                    button.setEnabled(true);
+                    c.setEnabled(true);
                 }
             }).execute();
         });

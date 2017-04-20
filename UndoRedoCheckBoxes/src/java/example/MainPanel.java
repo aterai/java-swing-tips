@@ -9,12 +9,12 @@ import java.util.Collections;
 import javax.swing.*;
 import javax.swing.undo.*;
 
-public final class MainPanel extends JPanel {
-    private BigInteger status = new BigInteger("111000111", 2);
-    private static final int BIT_LENGTH = 50;
-    private static final String ONEPAD  = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
-    private static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
-    private final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
+public class MainPanel extends JPanel {
+    protected BigInteger status = new BigInteger("111000111", 2);
+    protected static final int BIT_LENGTH = 50;
+    protected static final String ONEPAD  = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
+    protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+    protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
     private final JLabel label = new JLabel(print(status));
     private final JPanel p = new JPanel();
     private final UndoManager um = new UndoManager();

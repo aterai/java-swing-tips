@@ -9,14 +9,18 @@ import java.awt.geom.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
     private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
     private static final Font FONT = new Font(Font.SERIF, Font.PLAIN, 300);
-    private final JTextField textField = new JTextField("\u2605", 20);
-    private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    private final JToggleButton button = new JToggleButton(new AbstractAction("show") {
-        protected transient JFrame frame;
-        @Override public void actionPerformed(ActionEvent e) {
+    protected final JTextField textField = new JTextField("\u2605", 20);
+    protected final JLabel label = new JLabel("", SwingConstants.CENTER);
+    protected transient JFrame frame;
+    protected final JToggleButton button = new JToggleButton("show");
+
+    public MainPanel() {
+        super();
+
+        button.addActionListener(e -> {
             AbstractButton button = (AbstractButton) e.getSource();
             if (Objects.isNull(frame)) {
                 frame = new JFrame();
@@ -55,11 +59,8 @@ public final class MainPanel extends JPanel {
             } else {
                 frame.setVisible(false);
             }
-        }
-    });
+        });
 
-    public MainPanel() {
-        super();
         add(textField);
         add(button);
         DragWindowListener dwl = new DragWindowListener();

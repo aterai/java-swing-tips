@@ -11,12 +11,12 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textarea = new JTextArea("JFrame Conditional Close Test");
-    private final JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
-    private final JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTextArea textarea = new JTextArea("JFrame Conditional Close Test");
+        JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
+        JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
 
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

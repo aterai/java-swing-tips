@@ -7,18 +7,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
     private MainPanel() {
         super(new BorderLayout());
+
+        JTree tree = new JTree();
         tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tree.setRootVisible(false);
 
-        add(new JCheckBox(new AbstractAction("JTree#setRootVisible(...)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                tree.setRootVisible(((JCheckBox) e.getSource()).isSelected());
-            }
-        }), BorderLayout.NORTH);
+        JCheckBox check = new JCheckBox("JTree#setRootVisible(...)");
+        check.addActionListener(e -> tree.setRootVisible(((JCheckBox) e.getSource()).isSelected()));
 
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }

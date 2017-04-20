@@ -8,23 +8,24 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel {
-    private final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
-    private final JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
+public class MainPanel extends JPanel {
+    protected final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
+    protected final JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
+    protected final String[] columnNames = {"String", "Integer", "Boolean"};
+    protected final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
+    protected final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model);
+    protected final JTable table = new JTable(model);
 
     public MainPanel() {
         super(new BorderLayout());
+
         ButtonGroup bg = new ButtonGroup();
         bg.add(check1);
         bg.add(check2);

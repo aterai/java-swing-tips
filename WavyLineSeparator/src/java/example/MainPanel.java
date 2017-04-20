@@ -56,9 +56,10 @@ public final class MainPanel extends JPanel {
 }
 
 class WavyLineSeparator extends JSeparator {
-    private static final int ICONWIDTH = 3;
-    private static final Icon WAVY_HLINE = new WavyLineIcon();
-    private static final Icon WAVY_VLINE = new WavyLineIcon(SwingConstants.VERTICAL);
+    protected static final int ICONWIDTH = 3;
+    protected static final Icon WAVY_HLINE = new WavyLineIcon();
+    protected static final Icon WAVY_VLINE = new WavyLineIcon(SwingConstants.VERTICAL);
+
     protected WavyLineSeparator() {
         this(SwingConstants.HORIZONTAL);
     }
@@ -95,7 +96,8 @@ class WavyLineSeparator extends JSeparator {
     }
     private static class WavyLineIcon implements Icon {
         private final Color sfc = UIManager.getColor("Separator.foreground");
-        private final int orientation;
+        protected final int orientation;
+
         protected WavyLineIcon() {
             this.orientation = SwingConstants.HORIZONTAL;
         }
@@ -119,10 +121,10 @@ class WavyLineSeparator extends JSeparator {
             g2.dispose();
         }
         @Override public int getIconWidth() {
-            return (orientation == SwingConstants.HORIZONTAL) ? ICONWIDTH * 2 : ICONWIDTH;
+            return orientation == SwingConstants.HORIZONTAL ? ICONWIDTH * 2 : ICONWIDTH;
         }
         @Override public int getIconHeight() {
-            return (orientation == SwingConstants.HORIZONTAL) ? ICONWIDTH : ICONWIDTH * 2;
+            return orientation == SwingConstants.HORIZONTAL ? ICONWIDTH : ICONWIDTH * 2;
         }
     }
 }

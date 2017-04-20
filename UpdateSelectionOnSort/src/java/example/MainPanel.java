@@ -8,23 +8,20 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
-    private final JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
 //         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
@@ -38,6 +35,10 @@ public final class MainPanel extends JPanel {
 //         table.setRowSorter(sorter);
         //table.setUpdateSelectionOnSort(false);
 
+        JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
+        check1.addActionListener(e -> table.setUpdateSelectionOnSort(((JCheckBox) e.getSource()).isSelected()));
+
+        JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 if (!check2.isSelected()) {
@@ -49,8 +50,6 @@ public final class MainPanel extends JPanel {
                 table.clearSelection();
             }
         });
-
-        check1.addActionListener(e -> table.setUpdateSelectionOnSort(check1.isSelected()));
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(check1);

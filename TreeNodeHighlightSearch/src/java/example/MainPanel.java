@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void fireDocumentChangeEvent() {
+    protected void fireDocumentChangeEvent() {
         String q = field.getText();
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);
