@@ -8,36 +8,36 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
-public class MainPanel extends JPanel {
-    //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
-    protected final JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
-        protected transient MouseListener handler;
-        @Override public void updateUI() {
-            removeMouseListener(handler);
-            super.updateUI();
-            setFocusable(false);
-            setContentAreaFilled(false);
-            setFocusPainted(false);
-            setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-            //setAlignmentX(Component.LEFT_ALIGNMENT);
-            //setAlignmentY(Component.TOP_ALIGNMENT); //???
-            handler = new MouseAdapter() {
-                @Override public void mouseEntered(MouseEvent e) {
-                    setContentAreaFilled(true);
-                }
-                @Override public void mouseExited(MouseEvent e) {
-                    setContentAreaFilled(false);
-                }
-            };
-            addMouseListener(handler);
-        }
-        @Override public float getAlignmentY() {
-            return Component.TOP_ALIGNMENT;
-        }
-    };
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
+        JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
+            private transient MouseListener handler;
+            @Override public void updateUI() {
+                removeMouseListener(handler);
+                super.updateUI();
+                setFocusable(false);
+                setContentAreaFilled(false);
+                setFocusPainted(false);
+                setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+                //setAlignmentX(Component.LEFT_ALIGNMENT);
+                //setAlignmentY(Component.TOP_ALIGNMENT); //???
+                handler = new MouseAdapter() {
+                    @Override public void mouseEntered(MouseEvent e) {
+                        setContentAreaFilled(true);
+                    }
+                    @Override public void mouseExited(MouseEvent e) {
+                        setContentAreaFilled(false);
+                    }
+                };
+                addMouseListener(handler);
+            }
+            @Override public float getAlignmentY() {
+                return Component.TOP_ALIGNMENT;
+            }
+        };
 
         ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane() {
             @Override public void updateUI() {
