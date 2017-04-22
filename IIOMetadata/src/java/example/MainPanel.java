@@ -151,7 +151,7 @@ class XMLTreeNode implements TreeNode {
 //         if (Objects.isNull(list)) {
 //             loadChildren();
 //         }
-//         return new ArrayList<XMLTreeNode>(list);
+//         return new ArrayList<>(list);
 //     }
     private void loadChildren() {
         NodeList cn = xmlNode.getChildNodes();
@@ -159,7 +159,7 @@ class XMLTreeNode implements TreeNode {
         list = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             Node c = cn.item(i);
-            if (c instanceof Text && c.getNodeValue().trim().isEmpty()) {
+            if (c instanceof Text && c.getNodeValue().isEmpty()) {
                 continue;
             }
             list.add(new XMLTreeNode(cn.item(i), this));

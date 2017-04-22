@@ -155,7 +155,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected static void addItem(JComboBox<String> dirCombo, String str, int max) {
-        if (Objects.isNull(str) || str.trim().isEmpty()) {
+        if (Objects.isNull(str) || str.isEmpty()) {
             return;
         }
         dirCombo.setVisible(false);
