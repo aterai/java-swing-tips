@@ -118,13 +118,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 
     protected ComboBoxCellEditor() {
         super();
-        // PMD: False positive: ConstructorCallsOverridableMethod
-        // comboBox.addActionListener(e -> fireEditingStopped());
-        comboBox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        });
+        comboBox.addActionListener(e -> fireEditingStopped());
         addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 fireEditingStopped();
@@ -174,7 +168,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
     public CellEditorListener[] getCellEditorListeners() {
         return listenerList.getListeners(CellEditorListener.class);
     }
-    protected void fireEditingStopped() {
+    protected final void fireEditingStopped() {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
