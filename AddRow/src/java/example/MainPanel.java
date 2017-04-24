@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final RowDataModel model = new RowDataModel();
     private final JTable table = new JTable(model) {
         private final Color evenColor = new Color(250, 250, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -32,13 +32,13 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
+        model.addRowData(new RowData("Name 1", "comment..."));
+        model.addRowData(new RowData("Name 2", "Test"));
+        model.addRowData(new RowData("Name d", "ee"));
+        model.addRowData(new RowData("Name c", "Test cc"));
+        model.addRowData(new RowData("Name b", "Test bb"));
+        model.addRowData(new RowData("Name a", "ff"));
+        model.addRowData(new RowData("Name 0", "Test aa"));
 
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
@@ -70,14 +70,14 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TestModel extends DefaultTableModel {
+class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
     private int number;
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);
         number++;
@@ -106,10 +106,10 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test {
+class RowData {
     private String name;
     private String comment;
-    protected Test(String name, String comment) {
+    protected RowData(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
@@ -131,8 +131,8 @@ class TablePopupMenu extends JPopupMenu {
     private final Action addAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
-            TestModel model = (TestModel) table.getModel();
-            model.addTest(new Test("New row", ""));
+            RowDataModel model = (RowDataModel) table.getModel();
+            model.addRowData(new RowData("New row", ""));
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }

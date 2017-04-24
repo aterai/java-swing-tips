@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         } finally {
             if (!tracker.isErrorID(IMAGE_ID)) {
-                model.addTest(new Test(file.getName(), path, img.getWidth(this), img.getHeight(this)));
+                model.addRowData(new RowData(file.getName(), path, img.getWidth(this), img.getHeight(this)));
             }
             tracker.removeImage(img);
         }
@@ -120,7 +120,7 @@ class FileModel extends DefaultTableModel {
         new ColumnContext("Height",    Integer.class, false)
     );
     private int number;
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {
             number, t.getName(), t.getComment(), t.getWidth(), t.getHeight()
         };
@@ -151,12 +151,12 @@ class FileModel extends DefaultTableModel {
     }
 }
 
-class Test {
+class RowData {
     private String name;
     private String comment;
     private int width;
     private int height;
-    protected Test(String name, String comment, int width, int height) {
+    protected RowData(String name, String comment, int width, int height) {
         this.name    = name;
         this.comment = comment;
         this.width   = width;

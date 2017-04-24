@@ -14,15 +14,15 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        TestModel model = new TestModel(listModel);
-        model.addTest(new Test("Name 1", "comment"));
-        model.addTest(new Test("Name 2", "test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "test cc"));
-        model.addTest(new Test("Name b", "test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "test aa"));
-        model.addTest(new Test("Name 0", "gg"));
+        RowDataModel model = new RowDataModel(listModel);
+        model.addRowData(new RowData("Name 1", "comment"));
+        model.addRowData(new RowData("Name 2", "test"));
+        model.addRowData(new RowData("Name d", "ee"));
+        model.addRowData(new RowData("Name c", "test cc"));
+        model.addRowData(new RowData("Name b", "test bb"));
+        model.addRowData(new RowData("Name a", "ff"));
+        model.addRowData(new RowData("Name 0", "test aa"));
+        model.addRowData(new RowData("Name 0", "gg"));
 
         JTable table = new JTable(model);
         table.setCellSelectionEnabled(true);
@@ -186,7 +186,7 @@ class RowHeaderList<E> extends JList<E> {
     }
 }
 
-class TestModel extends DefaultTableModel {
+class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         //new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  false),
@@ -194,11 +194,11 @@ class TestModel extends DefaultTableModel {
     };
     private int number;
     private final DefaultListModel<String> rowListModel;
-    protected TestModel(DefaultListModel<String> lm) {
+    protected RowDataModel(DefaultListModel<String> lm) {
         super();
         rowListModel = lm;
     }
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {t.getName(), t.getComment()};
         super.addRow(obj);
         rowListModel.addElement("row" + number);
@@ -232,10 +232,10 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test {
+class RowData {
     private String name;
     private String comment;
-    protected Test(String name, String comment) {
+    protected RowData(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
@@ -257,8 +257,8 @@ class TablePopupMenu extends JPopupMenu {
     private final Action addAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
-            TestModel model = (TestModel) table.getModel();
-            model.addTest(new Test("add row", ""));
+            RowDataModel model = (RowDataModel) table.getModel();
+            model.addRowData(new RowData("add row", ""));
             Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }

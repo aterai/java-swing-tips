@@ -13,13 +13,13 @@ public final class MainPanel extends JPanel {
     private final JComboBox<String> combo2 = new JComboBox<>(m);
     private final JComboBox<String> combo3 = new JComboBox<>(m);
 
-    private final ComboBoxModel<Site> model = new DefaultComboBoxModel<>(new Site[] {
-        new Site("a", new ColorIcon(Color.RED)),
-        new Site("b", new ColorIcon(Color.GREEN)),
-        new Site("c", new ColorIcon(Color.BLUE))});
-    private final JComboBox<Site> combo4 = new JComboBox<>(model);
-    private final JComboBox<Site> combo5 = new JComboBox<>(model);
-    private final JComboBox<Site> combo6 = new JComboBox<>();
+    private final ComboBoxModel<WebSite> model = new DefaultComboBoxModel<>(new WebSite[] {
+        new WebSite("a", new ColorIcon(Color.RED)),
+        new WebSite("b", new ColorIcon(Color.GREEN)),
+        new WebSite("c", new ColorIcon(Color.BLUE))});
+    private final JComboBox<WebSite> combo4 = new JComboBox<>(model);
+    private final JComboBox<WebSite> combo5 = new JComboBox<>(model);
+    private final JComboBox<WebSite> combo6 = new JComboBox<>();
 
     public MainPanel() {
         super();
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
 
         combo4.setRenderer(new SiteListCellRenderer<>());
         combo5.setRenderer(new SiteListCellRenderer<>());
-        combo5.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
+        combo5.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
         combo6.setRenderer(new SiteListCellRenderer<>());
-        combo6.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
+        combo6.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
 
         add(combo1);
         add(combo2);
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Site {
+class WebSite {
     public final Icon favicon;
     public final String title;
-    protected Site(String title, Icon favicon) {
+    protected WebSite(String title, Icon favicon) {
         this.title = title;
         this.favicon = favicon;
     }
@@ -114,7 +114,7 @@ class ColorIcon implements Icon {
     }
 }
 
-class SiteListCellRenderer<E extends Site> extends JLabel implements ListCellRenderer<E> {
+class SiteListCellRenderer<E extends WebSite> extends JLabel implements ListCellRenderer<E> {
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         setOpaque(index >= 0);
         setEnabled(list.isEnabled());

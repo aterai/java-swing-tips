@@ -540,6 +540,7 @@ class Directive implements Serializable {
     }
 }
 
+@SuppressWarnings("PMD.ShortClassName")
 class Row implements Serializable {
     private static final long serialVersionUID = 1L;
     public final int modelIndex;

@@ -14,21 +14,21 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        TestModel model = new TestModel();
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "gg"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "hh"));
-        model.addTest(new Test("Name 0", "Test aa"));
+        RowDataModel model = new RowDataModel();
+        model.addRowData(new RowData("Name 1", "comment..."));
+        model.addRowData(new RowData("Name 2", "Test"));
+        model.addRowData(new RowData("Name d", "ee"));
+        model.addRowData(new RowData("Name c", "Test cc"));
+        model.addRowData(new RowData("Name b", "Test bb"));
+        model.addRowData(new RowData("Name a", "ff"));
+        model.addRowData(new RowData("Name 0", "Test aa"));
+        model.addRowData(new RowData("Name 1", "comment..."));
+        model.addRowData(new RowData("Name 2", "Test"));
+        model.addRowData(new RowData("Name d", "gg"));
+        model.addRowData(new RowData("Name c", "Test cc"));
+        model.addRowData(new RowData("Name b", "Test bb"));
+        model.addRowData(new RowData("Name a", "hh"));
+        model.addRowData(new RowData("Name 0", "Test aa"));
 
         JTable table = new JTable(model) {
             private final Color evenColor = new Color(250, 250, 250);
@@ -86,16 +86,16 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TestModel extends DefaultTableModel {
+class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
-    private final List<Test> list = new ArrayList<>();
+    private final List<RowData> list = new ArrayList<>();
     private int number;
 
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);
         number++;
@@ -130,7 +130,7 @@ class TestModel extends DefaultTableModel {
             if (flg && i % 2 == 0) {
                 continue;
             }
-            Test t = list.get(i);
+            RowData t = list.get(i);
             addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
             //dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
         }
@@ -139,12 +139,12 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test implements Serializable {
+class RowData implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String comment;
 
-    protected Test(String name, String comment) {
+    protected RowData(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

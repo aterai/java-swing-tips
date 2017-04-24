@@ -15,13 +15,13 @@ public final class MainPanel extends JPanel {
 
         String[] m1 = {"Disabled", "Enabled", "Debug mode"};
         String[] m2 = {"Disabled", "Enabled"};
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Node("Plugins"));
-        root.add(new DefaultMutableTreeNode(new Node("Plugin 1", m1)));
-        root.add(new DefaultMutableTreeNode(new Node("Plugin 2", m1)));
-        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new Node("Plugin 3"));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new PluginNode("Plugins"));
+        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 1", m1)));
+        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 2", m1)));
+        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new PluginNode("Plugin 3"));
         root.add(leaf);
-        leaf.add(new DefaultMutableTreeNode(new Node("Plugin 3A", m2)));
-        leaf.add(new DefaultMutableTreeNode(new Node("Plugin 3B", m2)));
+        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3A", m2)));
+        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3B", m2)));
 
         JTree tree = new JTree(root);
         tree.setRowHeight(0);
@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
                 if (Objects.nonNull(children) && children.length == 1 && children[0] instanceof DefaultMutableTreeNode) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) children[0];
                     Object userObject = node.getUserObject();
-                    if (userObject instanceof Node) {
-                        Node uo = (Node) userObject;
+                    if (userObject instanceof PluginNode) {
+                        PluginNode uo = (PluginNode) userObject;
                         textArea.append(String.format("%s %s%n", uo, uo.plugins[uo.getSelectedPluginIndex()]));
                     }
                 }
@@ -74,12 +74,12 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Node {
+class PluginNode {
     protected final String name;
     protected final String[] plugins;
     private int selectedPluginIndex;
 
-    protected Node(String name, String... plugins) {
+    protected PluginNode(String name, String... plugins) {
         this.name = name;
         this.plugins = plugins;
     }
@@ -105,11 +105,11 @@ class PluginPanel extends JPanel {
         add(pluginName);
         add(comboBox);
     }
-    protected Node extractNode(Object value) {
+    protected PluginNode extractNode(Object value) {
         if (value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-            if (userObject instanceof Node) {
-                Node node = (Node) userObject;
+            if (userObject instanceof PluginNode) {
+                PluginNode node = (PluginNode) userObject;
                 pluginName.setText(node.toString());
                 DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
                 model.removeAllElements();
@@ -144,7 +144,7 @@ class PluginCellRenderer implements TreeCellRenderer {
 
 class PluginCellEditor extends DefaultCellEditor {
     private final PluginPanel panel;
-    private transient Node node;
+    private transient PluginNode node;
 
     protected PluginCellEditor(JComboBox<String> comboBox) {
         super(comboBox);
@@ -158,7 +158,7 @@ class PluginCellEditor extends DefaultCellEditor {
         Object o = super.getCellEditorValue();
         return Optional.ofNullable(node).map(node -> {
             DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
-            Node n = new Node(panel.pluginName.getText(), node.plugins);
+            PluginNode n = new PluginNode(panel.pluginName.getText(), node.plugins);
             n.setSelectedPluginIndex(m.getIndexOf(o));
             return (Object) n;
         }).orElse(o);

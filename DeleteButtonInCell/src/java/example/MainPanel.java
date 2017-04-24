@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        TestModel model = new TestModel();
+        RowDataModel model = new RowDataModel();
         //JTable table = new JTable(model) {
         //    @Override public int rowAtPoint(Point pt) {
         //        // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
@@ -34,14 +34,14 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        model.addTest(new Test("Name 1", "Comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", "gg"));
+        model.addRowData(new RowData("Name 1", "Comment..."));
+        model.addRowData(new RowData("Name 2", "Test"));
+        model.addRowData(new RowData("Name d", "ee"));
+        model.addRowData(new RowData("Name c", "Test cc"));
+        model.addRowData(new RowData("Name b", "Test bb"));
+        model.addRowData(new RowData("Name a", "ff"));
+        model.addRowData(new RowData("Name 0", "Test aa"));
+        model.addRowData(new RowData("Name 0", "gg"));
 
         //         table.addMouseListener(new MouseAdapter() {
         //             private int targetRow = -1;
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
 
         add(new JButton(new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
-                model.addTest(new Test("Test", "aaaaaaaaaaa"));
+                model.addRowData(new RowData("Test", "aaaaaaaaaaa"));
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
@@ -209,7 +209,7 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
     }
 }
 
-class TestModel extends DefaultTableModel {
+class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
@@ -217,7 +217,7 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("",        String.class,  true)
     };
     private int number;
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {number, t.getName(), t.getComment(), ""};
         super.addRow(obj);
         number++;
@@ -246,10 +246,10 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test {
+class RowData {
     private final String name;
     private final String comment;
-    protected Test(String name, String comment) {
+    protected RowData(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

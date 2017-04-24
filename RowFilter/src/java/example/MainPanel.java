@@ -11,8 +11,8 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final JCheckBox check1 = new JCheckBox("!comment.isEmpty()");
     private final JCheckBox check2 = new JCheckBox("idx % 2 == 0");
-    private final TestModel model = new TestModel();
-    private final transient TableRowSorter<? extends TestModel> sorter = new TableRowSorter<>(model);
+    private final RowDataModel model = new RowDataModel();
+    private final transient TableRowSorter<? extends RowDataModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model) {
         private final Color evenColor = new Color(240, 255, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -30,13 +30,13 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(sorter);
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", "ff"));
-        model.addTest(new Test("Name 0", "Test aa"));
+        model.addRowData(new RowData("Name 1", "comment..."));
+        model.addRowData(new RowData("Name 2", "Test"));
+        model.addRowData(new RowData("Name d", ""));
+        model.addRowData(new RowData("Name c", "Test cc"));
+        model.addRowData(new RowData("Name b", "Test bb"));
+        model.addRowData(new RowData("Name a", "ff"));
+        model.addRowData(new RowData("Name 0", "Test aa"));
         //table.setRowSorter(sorter); <- IndexOutOfBoundsException: Invalid range (add, delete, etc.)
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -50,16 +50,16 @@ public final class MainPanel extends JPanel {
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        Set<RowFilter<? super TestModel, ? super Integer>> filters = new HashSet<>(2);
-        RowFilter<TestModel, Integer> filter1 = new RowFilter<TestModel, Integer>() {
-            @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
-                TestModel model = entry.getModel();
-                Test t = model.getTest(entry.getIdentifier());
+        Set<RowFilter<? super RowDataModel, ? super Integer>> filters = new HashSet<>(2);
+        RowFilter<RowDataModel, Integer> filter1 = new RowFilter<RowDataModel, Integer>() {
+            @Override public boolean include(Entry<? extends RowDataModel, ? extends Integer> entry) {
+                RowDataModel model = entry.getModel();
+                RowData t = model.getRowData(entry.getIdentifier());
                 return !t.getComment().trim().isEmpty();
             }
         };
-        RowFilter<TestModel, Integer> filter2 = new RowFilter<TestModel, Integer>() {
-            @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
+        RowFilter<RowDataModel, Integer> filter2 = new RowFilter<RowDataModel, Integer>() {
+            @Override public boolean include(Entry<? extends RowDataModel, ? extends Integer> entry) {
                 return entry.getIdentifier() % 2 == 0;
             }
         };
@@ -98,8 +98,8 @@ public final class MainPanel extends JPanel {
         private final Action addAction = new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
                 JTable table = (JTable) getInvoker();
-                TestModel model = (TestModel) table.getModel();
-                model.addTest(new Test("example", ""));
+                RowDataModel model = (RowDataModel) table.getModel();
+                model.addRowData(new RowData("example", ""));
             }
         };
         private final Action deleteAction = new AbstractAction("delete") {
@@ -149,20 +149,20 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TestModel extends DefaultTableModel {
+class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
     private int number;
-    public void addTest(Test t) {
+    public void addRowData(RowData t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);
         number++;
     }
-    public Test getTest(int identifier) {
-        return new Test((String) getValueAt(identifier, 1), (String) getValueAt(identifier, 2));
+    public RowData getRowData(int identifier) {
+        return new RowData((String) getValueAt(identifier, 1), (String) getValueAt(identifier, 2));
     }
     @Override public boolean isCellEditable(int row, int col) {
         return COLUMN_ARRAY[col].isEditable;
@@ -188,10 +188,10 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test {
+class RowData {
     private String name;
     private String comment;
-    protected Test(String name, String comment) {
+    protected RowData(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
