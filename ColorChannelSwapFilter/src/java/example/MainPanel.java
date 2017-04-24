@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
-            worker = new Task();
+            worker = new BackgroundTask();
             worker.addPropertyChangeListener(new ProgressListener(progress01));
             worker.execute();
         });
@@ -140,7 +140,7 @@ class RedGreenChannelSwapFilter extends RGBImageFilter {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             getRootPane().getGlassPane().setVisible(true);
             JComponent c = (JComponent) e.getSource();
             c.setEnabled(false);
-            (new Task() {
+            (new BackgroundTask() {
                 @Override public void done() {
                     if (!isDisplayable()) {
                         System.out.println("done: DISPOSE_ON_CLOSE");
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         try {
             Thread.sleep(5000);

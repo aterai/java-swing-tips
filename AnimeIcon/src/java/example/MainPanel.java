@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
     protected final JButton runButton  = new JButton("run");
     protected final JButton canButton  = new JButton("cancel");
     protected final AnimatedLabel anil = new AnimatedLabel();
-    protected transient Task worker;
+    protected transient BackgroundTask worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         statusPanel.add(bar);
         statusPanel.revalidate();
         bar.setIndeterminate(true);
-        worker = new Task() {
+        worker = new BackgroundTask() {
             @Override protected void process(List<String> chunks) {
                 //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                 if (isCancelled()) {
@@ -126,7 +126,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, String> {
+class BackgroundTask extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         try {

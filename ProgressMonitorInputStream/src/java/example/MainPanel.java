@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
         return urlConnection;
     }
 
-    private class MonitorTask extends Task {
+    private class MonitorTask extends BackgroundTask {
         protected MonitorTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
             super(pmis, cs, length);
         }
@@ -180,11 +180,11 @@ class Chunk {
     }
 }
 
-class Task extends SwingWorker<String, Chunk> {
+class BackgroundTask extends SwingWorker<String, Chunk> {
     protected final ProgressMonitorInputStream pmis;
     protected final Charset cs;
     protected final int length;
-    protected Task(ProgressMonitorInputStream pmis, Charset cs, int length) {
+    protected BackgroundTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
         super();
         this.pmis = pmis;
         this.cs = cs;

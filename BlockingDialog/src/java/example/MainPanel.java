@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int color = check.isSelected() ? 0x22FF0000 : 0x01FF0000;
             dialog.setBackground(new Color(color, true));
-            (new Task() {
+            (new BackgroundTask() {
                 @Override public void done() {
                     if (!isDisplayable()) {
                         cancel(true);
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         try {
             Thread.sleep(5000);

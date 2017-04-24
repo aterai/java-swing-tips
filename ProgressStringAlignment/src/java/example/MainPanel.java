@@ -31,7 +31,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
-            worker = new Task();
+            worker = new BackgroundTask();
             worker.addPropertyChangeListener(new ProgressListener(progressBar1));
             worker.execute();
         });
@@ -114,7 +114,7 @@ class StringAlignmentProgressBar extends JProgressBar {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;

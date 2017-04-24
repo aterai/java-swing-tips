@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             monitor.setProgress(0);
-            SwingWorker<String, String> worker = new Task() {
+            SwingWorker<String, String> worker = new BackgroundTask() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     if (isCancelled()) {
@@ -91,7 +91,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, String> {
+class BackgroundTask extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;

@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
             File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
             int i1 = ((Integer) spinner1.getValue()).intValue();
             int i2 = ((Integer) spinner2.getValue()).intValue();
-            (new Task(file, i1, i2) {
+            (new BackgroundTask(file, i1, i2) {
                 @Override protected void process(List<Message> chunks) {
                     if (isCancelled()) {
                         return;
@@ -159,11 +159,11 @@ class Message {
     }
 }
 
-class Task extends SwingWorker<File, Message> {
+class BackgroundTask extends SwingWorker<File, Message> {
     private final File file;
     private final int intold;
     private final int intnew;
-    protected Task(File file, int intold, int intnew) {
+    protected BackgroundTask(File file, int intold, int intnew) {
         super();
         this.file = file;
         this.intold = intold;

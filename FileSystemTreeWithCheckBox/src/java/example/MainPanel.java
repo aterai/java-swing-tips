@@ -312,7 +312,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         final Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
 
         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        Task worker = new Task(fileSystemView, parent) {
+        BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 //if (isCancelled()) {
                 //    return;
@@ -333,10 +333,10 @@ class FolderSelectionListener implements TreeSelectionListener {
     }
 }
 
-class Task extends SwingWorker<String, File> {
+class BackgroundTask extends SwingWorker<String, File> {
     private final FileSystemView fileSystemView;
     private final File parent;
-    protected Task(FileSystemView fileSystemView, File parent) {
+    protected BackgroundTask(FileSystemView fileSystemView, File parent) {
         super();
         this.fileSystemView = fileSystemView;
         this.parent = parent;

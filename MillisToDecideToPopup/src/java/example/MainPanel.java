@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
         //System.out.println(monitor.getMillisToPopup());
 
         runButton.setEnabled(false);
-        SwingWorker<String, String> worker = new Task(lengthOfTask) {
+        SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
             @Override protected void process(List<String> chunks) {
                 if (isCancelled()) {
                     return;
@@ -130,9 +130,9 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, String> {
+class BackgroundTask extends SwingWorker<String, String> {
     private final int lengthOfTask;
-    protected Task(int lengthOfTask) {
+    protected BackgroundTask(int lengthOfTask) {
         super();
         this.lengthOfTask = lengthOfTask;
     }

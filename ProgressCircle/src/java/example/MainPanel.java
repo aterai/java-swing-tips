@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
         button.addActionListener(e -> {
             JButton b = (JButton) e.getSource();
             b.setEnabled(false);
-            SwingWorker<String, Void> worker = new Task() {
+            SwingWorker<String, Void> worker = new BackgroundTask() {
                 @Override public void done() {
                     if (b.isDisplayable()) {
                         b.setEnabled(true);
@@ -141,7 +141,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     private final Random rnd = new Random();
     @Override public String doInBackground() {
         int current = 0;

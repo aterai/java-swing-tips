@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
-            worker = new Task();
+            worker = new BackgroundTask();
             worker.addPropertyChangeListener(new ProgressListener(progressBar0));
             worker.addPropertyChangeListener(new ProgressListener(progressBar1));
             worker.addPropertyChangeListener(new ProgressListener(progressBar2));
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;

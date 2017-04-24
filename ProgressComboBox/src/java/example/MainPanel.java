@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class UITask extends Task {
+    class UITask extends BackgroundTask {
         @Override protected void process(List<Integer> chunks) {
             if (isCancelled()) {
                 return;
@@ -137,7 +137,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String[], Integer> {
+class BackgroundTask extends SwingWorker<String[], Integer> {
     private static final int MAX = 30;
     @Override public String[] doInBackground() {
         int current = 0;

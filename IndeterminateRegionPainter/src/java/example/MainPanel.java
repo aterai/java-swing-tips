@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
                 }
                 progressBar0.setIndeterminate(true);
                 progressBar1.setIndeterminate(true);
-                worker = new Task();
+                worker = new BackgroundTask();
                 worker.addPropertyChangeListener(new ProgressListener(progressBar0));
                 worker.addPropertyChangeListener(new ProgressListener(progressBar1));
                 worker.execute();
@@ -139,7 +139,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         try { // dummy task
             Thread.sleep(5000);

@@ -89,7 +89,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         }
 
         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        SwingWorker<String, File> worker = new Task(fileSystemView, parent) {
+        SwingWorker<String, File> worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if (isCancelled()) {
                     return;
@@ -110,10 +110,10 @@ class FolderSelectionListener implements TreeSelectionListener {
     }
 }
 
-class Task extends SwingWorker<String, File> {
+class BackgroundTask extends SwingWorker<String, File> {
     private final FileSystemView fileSystemView;
     private final File parent;
-    protected Task(FileSystemView fileSystemView, File parent) {
+    protected BackgroundTask(FileSystemView fileSystemView, File parent) {
         super();
         this.fileSystemView = fileSystemView;
         this.parent = parent;

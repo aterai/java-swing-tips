@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 final JButton b = (JButton) e.getSource();
                 b.setEnabled(false);
-                SwingWorker<Void, Void> worker = new Task() {
+                SwingWorker<Void, Void> worker = new BackgroundTask() {
                     @Override public void done() {
                         if (b.isDisplayable()) {
                             b.setEnabled(true);
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<Void, Void> {
+class BackgroundTask extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 100;

@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private class Task extends SwingWorker<String, String> {
+    private class BackgroundTask extends SwingWorker<String, String> {
         @Override public String doInBackground() {
             while (true) {
                 try {
@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
 //             thread.start();
 //         }
         if (Objects.isNull(worker)) {
-            worker = new Task() {
+            worker = new BackgroundTask() {
                 @Override public String doInBackground() {
                     while (true) {
                         try {

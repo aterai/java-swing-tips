@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         statusPanel.revalidate();
     }
 
-    class ProgressTask extends Task {
+    class ProgressTask extends BackgroundTask {
         @Override protected void process(List<Progress> chunks) {
             if (isCancelled()) {
                 return;
@@ -151,7 +151,7 @@ class Progress {
     }
 }
 
-class Task extends SwingWorker<String, Progress> {
+class BackgroundTask extends SwingWorker<String, Progress> {
     private final Random r = new Random();
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());

@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             splashScreen.setLocationRelativeTo(null);
             splashScreen.setVisible(true);
         });
-        SwingWorker<Void, Void> worker = new Task() {
+        SwingWorker<Void, Void> worker = new BackgroundTask() {
             @Override public void done() {
                 splashScreen.dispose();
             }
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<Void, Void> {
+class BackgroundTask extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 120;

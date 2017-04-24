@@ -39,7 +39,6 @@
     <exclude name="ReplaceVectorWithList" />
   </rule>
   <rule ref="rulesets/java/naming.xml">
-    <exclude name="ShortClassName" />
     <exclude name="ShortVariable" />
     <exclude name="LongVariable" />
   </rule>

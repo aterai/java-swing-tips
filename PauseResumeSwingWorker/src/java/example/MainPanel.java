@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     private final JButton pauseButton  = new JButton(PAUSE);
     private final JProgressBar bar1    = new JProgressBar();
     private final JProgressBar bar2    = new JProgressBar();
-    private transient Task worker;
+    private transient BackgroundTask worker;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private class ProgressTask extends Task {
+    private class ProgressTask extends BackgroundTask {
         @Override protected void process(List<Progress> chunks) {
             //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
@@ -209,7 +209,7 @@ class Progress {
     }
 }
 
-class Task extends SwingWorker<String, Progress> {
+class BackgroundTask extends SwingWorker<String, Progress> {
     private final Random r = new Random();
     public boolean isPaused;
 

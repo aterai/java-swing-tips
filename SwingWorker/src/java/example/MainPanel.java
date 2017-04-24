@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class UIUpdateTask extends Task {
+    class UIUpdateTask extends BackgroundTask {
         @Override protected void process(List<String> chunks) {
             //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, String> {
+class BackgroundTask extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         try {

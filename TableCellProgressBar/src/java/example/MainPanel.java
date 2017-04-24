@@ -47,7 +47,7 @@ public class MainPanel extends JPanel {
 
     protected final void addActionPerformed() {
         final int key = model.getRowCount();
-        SwingWorker<Integer, Integer> worker = new Task() {
+        SwingWorker<Integer, Integer> worker = new BackgroundTask() {
             @Override protected void process(List<Integer> c) {
                 if (isCancelled()) {
                     return;
@@ -172,7 +172,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<Integer, Integer> {
+class BackgroundTask extends SwingWorker<Integer, Integer> {
     private final int sleepDummy = new Random().nextInt(100) + 1;
     @Override protected Integer doInBackground() {
         int lengthOfTask = 120;

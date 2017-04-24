@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
             progressBar2.setIndeterminate(true);
             progressBar3.setIndeterminate(true);
             progressBar4.setIndeterminate(true);
-            worker = new Task();
+            worker = new BackgroundTask();
             worker.addPropertyChangeListener(new ProgressListener(progressBar0));
             worker.addPropertyChangeListener(new ProgressListener(progressBar1));
             worker.addPropertyChangeListener(new ProgressListener(progressBar2));
@@ -168,7 +168,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
     }
 }
 
-class Task extends SwingWorker<String, Void> {
+class BackgroundTask extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         try { // dummy task
             Thread.sleep(5000);

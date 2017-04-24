@@ -73,7 +73,7 @@ class ProgressJTabbedPane extends JTabbedPane {
         //bar.setString(title);
         //bar.setUI(new BasicProgressBarUI());
         setTabComponentAt(currentIndex, bar);
-        SwingWorker<String, Integer> worker = new Task() {
+        SwingWorker<String, Integer> worker = new BackgroundTask() {
             @Override protected void process(List<Integer> dummy) {
                 if (!isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
@@ -104,7 +104,7 @@ class ProgressJTabbedPane extends JTabbedPane {
     }
 }
 
-class Task extends SwingWorker<String, Integer> {
+class BackgroundTask extends SwingWorker<String, Integer> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 120;
