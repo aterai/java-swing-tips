@@ -93,6 +93,7 @@ class BottomInsetViewFactory implements ViewFactory {
                 return new LabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new ParagraphView(elem) {
+                    @SuppressWarnings("PMD.AvoidUsingShortType")
                     @Override protected short getBottomInset() {
                         return 5;
                     }

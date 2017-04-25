@@ -17,9 +17,8 @@
     <exclude name="OnlyOneReturn" />
     <exclude name="AvoidLiteralsInIfCondition" />
     <exclude name="NullAssignment" />
-    <!-- exclude name="AssignmentInOperand" / -->
     <exclude name="AtLeastOneConstructor" />
-    <exclude name="AvoidUsingShortType" />
+    <!--<exclude name="AvoidUsingShortType" />-->
   </rule>
   <rule ref="rulesets/java/coupling.xml">
     <exclude name="LawOfDemeter" />
