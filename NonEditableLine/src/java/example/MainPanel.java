@@ -8,18 +8,18 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
-
     private MainPanel() {
         super(new BorderLayout());
+        int maskRange = 2;
+        Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
         JTextArea textArea = new JTextArea();
         textArea.setText("aaaaaaaasdfasdfasdfasdf\nasdfasdfasdfasdfasdfasdf\n1234567890\naaaaaaaaaaaaaaaaaasdfasd");
-        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
+        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter(maskRange));
         try {
             Highlighter hilite = textArea.getHighlighter();
             Document doc = textArea.getDocument();
             Element root = doc.getDefaultRootElement();
-            for (int i = 0; i < 2; i++) { //root.getElementCount(); i++) {
+            for (int i = 0; i < maskRange; i++) { //root.getElementCount(); i++) {
                 Element elem = root.getElement(i);
                 hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
             }
@@ -53,6 +53,11 @@ public final class MainPanel extends JPanel {
 }
 
 class NonEditableLineDocumentFilter extends DocumentFilter {
+    private final int maskRange;
+    protected NonEditableLineDocumentFilter(int maskRange) {
+        super();
+        this.maskRange = maskRange;
+    }
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
         if (Objects.nonNull(text)) {
             replace(fb, offset, 0, text, attr);
@@ -63,7 +68,7 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         Document doc = fb.getDocument();
-        if (doc.getDefaultRootElement().getElementIndex(offset) >= 2) {
+        if (doc.getDefaultRootElement().getElementIndex(offset) >= maskRange) {
             fb.replace(offset, length, text, attrs);
         }
     }

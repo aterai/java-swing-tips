@@ -29,6 +29,7 @@ public final class MainPanel extends JPanel {
         };
 
         JComboBox<String> comboBox2 = new JComboBox<String>(model) {
+            private static final int MAX_HISTORY = 10;
             private static final String ENTER_PRESSED = "enterPressed";
             private transient PopupMenuListener handler;
             @Override public void updateUI() {
@@ -45,8 +46,8 @@ public final class MainPanel extends JPanel {
                         if (m.getIndexOf(str) < 0) {
                             m.removeElement(str);
                             m.insertElementAt(str, 0);
-                            if (m.getSize() > 10) {
-                                m.removeElementAt(10);
+                            if (m.getSize() > MAX_HISTORY) {
+                                m.removeElementAt(MAX_HISTORY);
                             }
                             setSelectedIndex(0);
                             setPopupVisible(isPopupVisible);

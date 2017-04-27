@@ -111,6 +111,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
+    private static final int MAX_TAB_WIDTH = 80;
     protected ClippedTitleTabbedPane() {
         super();
     }
@@ -160,8 +161,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             gap = areaWidth - tabWidth * tabCount;
             break;
         }
-        if (tabWidth > 80) {
-            tabWidth = 80;
+        if (tabWidth > MAX_TAB_WIDTH) {
+            tabWidth = MAX_TAB_WIDTH;
             gap = 0;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth

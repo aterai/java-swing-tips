@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 class RotateIcon implements Icon {
     private final Dimension d = new Dimension();
     private final Image image;
-    private AffineTransform trans;
+    private final AffineTransform trans;
     protected RotateIcon(Icon icon, int rotate) {
         if (rotate % 90 != 0) {
             throw new IllegalArgumentException(rotate + ": Rotate must be (rotate % 90 == 0)");
@@ -72,21 +72,39 @@ class RotateIcon implements Icon {
         g.dispose();
 
         int numquadrants = (rotate / 90) % 4;
-        if (numquadrants == 1 || numquadrants == -3) {
-            trans = AffineTransform.getTranslateInstance(d.height, 0);
-            int v = d.width;
-            d.width = d.height;
-            d.height = v;
-        } else if (numquadrants == -1 || numquadrants == 3) {
+        switch (numquadrants) {
+          case 3:
+          case -1:
             trans = AffineTransform.getTranslateInstance(0, d.width);
-            int v = d.width;
-            d.width = d.height;
-            d.height = v;
-        } else if (Math.abs(numquadrants) == 2) {
+            d.setSize(icon.getIconHeight(), icon.getIconWidth());
+            break;
+          case 1:
+          case -3:
+            trans = AffineTransform.getTranslateInstance(d.height, 0);
+            d.setSize(icon.getIconHeight(), icon.getIconWidth());
+            break;
+          case 2:
             trans = AffineTransform.getTranslateInstance(d.width, d.height);
-        } else {
+            break;
+          default:
             trans = AffineTransform.getTranslateInstance(0, 0);
+            break;
         }
+//         if (numquadrants == 1 || numquadrants == -3) {
+//             trans = AffineTransform.getTranslateInstance(d.height, 0);
+//             int v = d.width;
+//             d.width = d.height;
+//             d.height = v;
+//         } else if (numquadrants == -1 || numquadrants == 3) {
+//             trans = AffineTransform.getTranslateInstance(0, d.width);
+//             int v = d.width;
+//             d.width = d.height;
+//             d.height = v;
+//         } else if (Math.abs(numquadrants) == 2) {
+//             trans = AffineTransform.getTranslateInstance(d.width, d.height);
+//         } else {
+//             trans = AffineTransform.getTranslateInstance(0, 0);
+//         }
         trans.quadrantRotate(numquadrants);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

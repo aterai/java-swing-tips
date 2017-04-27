@@ -25,13 +25,14 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
+        private static final int LIST_ICON_COLUMN = 1;
         @Override public String getToolTipText(MouseEvent e) {
             Point pt = e.getPoint();
             int vrow = rowAtPoint(pt);
             int vcol = columnAtPoint(pt);
             //int mrow = convertRowIndexToModel(vrow);
             int mcol = convertColumnIndexToModel(vcol);
-            if (mcol == 1) {
+            if (mcol == LIST_ICON_COLUMN) {
                 TableCellRenderer tcr = getCellRenderer(vrow, vcol);
                 Component c = prepareRenderer(tcr, vrow, vcol); //Component c = tcr.getTableCellRendererComponent(this, getValueAt(vrow, vcol), false, false, vrow, vcol);
                 if (c instanceof JPanel) {
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
             setSelectionBackground(new ColorUIResource(Color.RED));
             super.updateUI();
             getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
-            getColumnModel().getColumn(1).setCellRenderer(new ListIconRenderer());
+            getColumnModel().getColumn(LIST_ICON_COLUMN).setCellRenderer(new ListIconRenderer());
             setRowHeight(40);
         }
     };

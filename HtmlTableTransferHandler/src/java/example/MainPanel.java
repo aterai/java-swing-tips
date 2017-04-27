@@ -63,6 +63,7 @@ public class MainPanel extends JPanel {
 }
 
 class PropertyTable extends JTable {
+    private static final int TARGET_COLUMN_INDEX = 1;
     private Class<?> editingClass;
     protected PropertyTable(TableModel model) {
         super(model);
@@ -87,14 +88,14 @@ class PropertyTable extends JTable {
         setDefaultEditor(Date.class,    new DateEditor());
     }
     @Override public TableCellRenderer getCellRenderer(int row, int column) {
-        if (convertColumnIndexToModel(column) == 1) {
+        if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
             return getDefaultRenderer(getClassAt(row, column));
         } else {
             return super.getCellRenderer(row, column);
         }
     }
     @Override public TableCellEditor getCellEditor(int row, int column) {
-        if (convertColumnIndexToModel(column) == 1) {
+        if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
             editingClass = getClassAt(row, column);
             return getDefaultEditor(editingClass);
         } else {
@@ -103,7 +104,7 @@ class PropertyTable extends JTable {
         }
     }
     @Override public Class<?> getColumnClass(int column) {
-        if (convertColumnIndexToModel(column) == 1) {
+        if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
             return editingClass;
         } else {
             return super.getColumnClass(column);
