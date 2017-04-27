@@ -166,9 +166,9 @@ public class TableSorter extends AbstractTableModel {
 
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-        clearSortingState();
-        fireTableStructureChanged();
-    }
+                clearSortingState();
+                fireTableStructureChanged();
+            }
         });
     }
 
@@ -291,11 +291,13 @@ public class TableSorter extends AbstractTableModel {
     // TableModel interface methods
 
     @Override public int getRowCount() {
-        return (tableModel == null) ? 0 : tableModel.getRowCount();
+        //return (tableModel == null) ? 0 : tableModel.getRowCount();
+        return Optional.ofNullable(tableModel).map(TableModel::getRowCount).orElse(0);
     }
 
     @Override public int getColumnCount() {
-        return (tableModel == null) ? 0 : tableModel.getColumnCount();
+        //return (tableModel == null) ? 0 : tableModel.getColumnCount();
+        return Optional.ofNullable(tableModel).map(TableModel::getColumnCount).orElse(0);
     }
 
     @Override public String getColumnName(int column) {
