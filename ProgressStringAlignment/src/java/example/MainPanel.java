@@ -70,11 +70,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
     public static void createAndShowGUI() {
         try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(laf.getName())) {
-                    UIManager.setLookAndFeel(laf.getClassName());
-                }
-            }
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

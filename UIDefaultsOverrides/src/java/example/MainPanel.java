@@ -107,11 +107,7 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(laf.getName())) {
-                    UIManager.setLookAndFeel(laf.getClassName());
-                }
-            }
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
