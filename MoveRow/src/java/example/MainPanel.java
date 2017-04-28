@@ -231,6 +231,7 @@ class InitAction extends AbstractAction {
         super(str);
         this.table = table;
     }
+    @SuppressWarnings("PMD.ReplaceVectorWithList")
     @Override public void actionPerformed(ActionEvent e) {
         if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();

@@ -30,7 +30,7 @@ class ColumnComparator implements Comparator, Serializable {
         this.index = index;
         this.ascending = ascending;
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
     @Override public int compare(Object one, Object two) {
         if (one instanceof Vector && two instanceof Vector) {
             Comparable o1 = (Comparable) ((Vector) one).get(index);

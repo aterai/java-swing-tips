@@ -260,6 +260,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE;
     }
+    @SuppressWarnings("PMD.ReplaceVectorWithList")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
         if (!canImport(info)) {
             return false;

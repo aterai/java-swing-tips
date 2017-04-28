@@ -131,6 +131,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
+    @SuppressWarnings("PMD.ReplaceVectorWithList")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
         if (!canImport(info)) {
             return false;
@@ -157,7 +158,7 @@ class TableRowTransferHandler extends TransferHandler {
             }
             for (int i = 0; i < values.length; i++) {
                 int idx = index++;
-                model.insertRow(idx, (Vector) values[i]);
+                model.insertRow(idx, (Vector<?>) values[i]);
                 target.getSelectionModel().addSelectionInterval(idx, idx);
             }
             return true;
