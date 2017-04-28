@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final int FIXED_COLUMN_RANGE = 2;
+    public static final int FIXED_COLUMN_RANGE = 2;
     //<blockquote cite="FixedColumnExample.java">
     //@auther Nobuo Tamemasa
     private static final String ES = "";
