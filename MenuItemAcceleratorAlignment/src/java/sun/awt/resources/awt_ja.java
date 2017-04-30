@@ -4,7 +4,9 @@ import java.util.ListResourceBundle;
 //cd target
 //"%JAVA_HOME%\bin\java" -Xbootclasspath/p:example.jar -jar example.jar
 //CHECKSTYLE:OFF
-public final class awt_ja extends ListResourceBundle { //NOPMD Class names should begin with an uppercase character
+
+@SuppressWarnings("PMD.ClassNamingConventions") // Class names should begin with an uppercase character
+public final class awt_ja extends ListResourceBundle {
 //CHECKSTYLE:ON
     @Override protected Object[][] getContents() {
         System.out.println("---- awt_ja ----");

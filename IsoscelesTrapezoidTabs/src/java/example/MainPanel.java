@@ -53,7 +53,8 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private final Color tabBackgroundColor = Color.LIGHT_GRAY;
     private final Color tabBorderColor = Color.GRAY;
 
-    @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) { //NOPMD The method paintTabArea() has an NPath complexity of 303
+    @SuppressWarnings("PMD.NPathComplexity") // The method paintTabArea() has an NPath complexity of 303
+    @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = tabPane.getTabCount();
 
         Rectangle iconRect = new Rectangle();

@@ -4,7 +4,7 @@
  * Copyright (c) 1997, 2013, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package example; // NOPMD
+package example;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Objects;
@@ -40,7 +40,8 @@ import javax.swing.plaf.basic.BasicHTML;
  * @author David Kloba
  * @author Amy Fowler
  */
-public class TitledBorder2 extends AbstractBorder { // NOPMD
+@SuppressWarnings("PMD")
+public class TitledBorder2 extends AbstractBorder {
     // @see javax/swing/border/TitledBorder.java
     protected String title;
     protected Border border;
@@ -207,7 +208,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
-    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) { // NOPMD
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
         if (Objects.nonNull(title) && !title.isEmpty()) {
@@ -224,7 +225,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             int labelY = y;
             int labelH = size.height;
             int position = getPosition();
-            switch (position) { // NOPMD
+            switch (position) {
               case ABOVE_TOP:
                 insets.left = 0;
                 insets.right = 0;
@@ -272,7 +273,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             if (labelW > size.width) {
                 labelW = size.width;
             }
-            switch (getJustification(c)) { // NOPMD
+            switch (getJustification(c)) {
               case LEFT:
                 labelX += insets.left;
                 break;
@@ -287,7 +288,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             }
 
             if (border != null) {
-                if (position != TOP && position != BOTTOM) { // NOPMD
+                if (position != TOP && position != BOTTOM) {
                     border.paintBorder(c, g, borderX, borderY, borderW, borderH);
                 } else {
                     Graphics g2 = g.create();
@@ -318,7 +319,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
-    @Override public Insets getBorderInsets(Component c, Insets insets) { // NOPMD
+    @Override public Insets getBorderInsets(Component c, Insets insets) {
         Border border = getBorder();
         insets = makeBorderInsets(border, c, insets);
 
@@ -328,7 +329,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
 
-            switch (getPosition()) { // NOPMD
+            switch (getPosition()) {
               case ABOVE_TOP:
                 insets.top += size.height - edge;
                 break;
@@ -512,7 +513,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             Dimension size = label.getPreferredSize();
 
             int position = getPosition();
-            if (position != ABOVE_TOP && position != BELOW_BOTTOM) { // NOPMD
+            if (position != ABOVE_TOP && position != BELOW_BOTTOM) {
                 minSize.width += size.width;
             } else if (minSize.width < size.width) {
                 minSize.width += size.width;
@@ -529,7 +530,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
-    @Override public int getBaseline(Component c, int width, int height) { // NOPMD
+    @Override public int getBaseline(Component c, int width, int height) {
         Objects.requireNonNull(c, "Must supply non-null component");
         if (width < 0) {
             throw new IllegalArgumentException("Width must be >= 0");
@@ -546,7 +547,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
             Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
             int baseline = label.getBaseline(size.width, size.height);
-            switch (getPosition()) { // NOPMD
+            switch (getPosition()) {
               case ABOVE_TOP:
                 return baseline;
               case TOP:
@@ -596,7 +597,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
         }
     }
 
-    private int getPosition() { // NOPMD
+    private int getPosition() {
         int position = getTitlePosition();
         if (position != DEFAULT_POSITION) {
             return position;
@@ -674,7 +675,7 @@ public class TitledBorder2 extends AbstractBorder { // NOPMD
     }
 
     //private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
-    private static Insets makeBorderInsets(Border border, Component c, Insets insets) { // NOPMD
+    private static Insets makeBorderInsets(Border border, Component c, Insets insets) {
         if (Objects.isNull(border)) {
             insets.set(0, 0, 0, 0);
         } else if (border instanceof AbstractBorder) {

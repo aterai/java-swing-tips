@@ -11,7 +11,8 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.plaf.ComponentUI;
 
-public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI { //NOPMD This class has too many methods, consider refactoring it.
+@SuppressWarnings("PMD.TooManyMethods") // This class has too many methods, consider refactoring it.
+public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     protected PopupMenuListener popupMenuListener;
     protected JButton loupeButton;
     protected Action loupeAction = new AbstractAction() {
