@@ -1,0 +1,87 @@
+package example;
+//-*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import java.util.Objects;
+import javax.swing.*;
+
+public final class MainPanel extends JPanel {
+    private MainPanel() {
+        super(new BorderLayout());
+
+        String[][] arrays = {
+            {"One-A", "One-B", "One-C", "One-D"},
+            {"Two-A", "Two-B", "Two-C", "Two-D"},
+            {"Three-A", "Three-B", "Three-C", "Three-D"},
+            {"Four-A", "Four-B", "Four-C", "Four-D"}
+        };
+        JComboBox<String> combo1 = new JComboBox<>(new String[] {"One", "Two", "Three", "Four"});
+        JComboBox<String> combo2 = new JComboBox<>();
+
+        combo1.setSelectedIndex(-1);
+        combo1.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                //XXX: String str = index < 0 ? "- Select Item -" : value.toString();
+                String str = Objects.toString(value, "- Select Item -");
+                super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
+                return this;
+            }
+        });
+        combo1.addActionListener(e -> {
+            int i = ((JComboBox) e.getSource()).getSelectedIndex();
+            if (i < 0) {
+                combo2.setModel(new DefaultComboBoxModel<>());
+            } else {
+                int prev = combo2.getSelectedIndex();
+                combo2.setModel(new DefaultComboBoxModel<>(arrays[i]));
+                combo2.setSelectedIndex(Math.max(prev, 0));
+            }
+        });
+
+        combo2.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                String str = Objects.toString(value, "- SubComboBox -");
+                super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
+                return this;
+            }
+        });
+
+        JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
+        setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+        p.add(new JLabel("Default JComboBox"));
+        p.add(combo1);
+        p.add(new JLabel("SearchBar JComboBox"));
+        p.add(combo2);
+
+        JButton button = new JButton("clear");
+        button.addActionListener(e -> combo1.setSelectedIndex(-1));
+
+        add(p, BorderLayout.NORTH);
+        add(button, BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    public static void main(String... args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("example.SearchBarComboBox", "SearchBarComboBoxUI");
+            UIManager.put("SearchBarComboBoxUI", "example.BasicSearchBarComboBoxUI");
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
