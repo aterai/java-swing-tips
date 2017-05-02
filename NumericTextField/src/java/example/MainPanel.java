@@ -186,8 +186,8 @@ class IntegerDocumentFilter extends DocumentFilter {
     }
 }
 
-//How to Use Formatted Text Fields
-//http://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
+// How to Use Formatted Text Fields (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
 class NumberFormatterFactory extends DefaultFormatterFactory {
     //private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
     //private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();

@@ -35,11 +35,11 @@ public final class MainPanel extends JPanel {
 //                     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
 //                 }
 
-                //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
-                //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-                //for (Object key: chooser.getActionMap().allKeys()) {
-                //    System.out.println(key);
-                //}
+                // java - How can I start the JFileChooser in the Details view? - Stack Overflow
+                // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+                // for (Object key: chooser.getActionMap().allKeys()) {
+                //     System.out.println(key);
+                // }
                 Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
                 if (Objects.nonNull(detailsAction)) {
                     detailsAction.actionPerformed(null);

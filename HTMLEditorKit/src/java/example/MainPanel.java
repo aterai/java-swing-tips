@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
             } else {
                 String str = textPane.getText();
                 textArea.setText(str);
-                ////Removing HTML from a Java String - Stack Overflow
-                ////http://stackoverflow.com/questions/240546/removing-html-from-a-java-string
+                //// Removing HTML from a Java String - Stack Overflow
+                //// https://stackoverflow.com/questions/240546/removing-html-from-a-java-string
                 ////Test>>>>
                 //ParserDelegator delegator = new ParserDelegator();
                 //final StringBuffer s = new StringBuffer();

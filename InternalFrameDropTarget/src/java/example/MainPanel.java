@@ -188,9 +188,11 @@ public class MainPanel extends JPanel {
 //     }
 // }
 
-//Demo - BasicDnD (Drag and Drop and Data Transfer) https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
-//Demo - DropDemo (Drag and Drop and Data Transfer) https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
-//@see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
+// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
+// Demo - DropDemo (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
+// @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private int[] indices;

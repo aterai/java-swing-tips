@@ -15,7 +15,7 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private static final String INIT_TXT =
         "Trail: Creating a GUI with JFC/Swing\n"
-      + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
+      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
       + "Lesson: Learning Swing by Example\n"
       + "This lesson explains the concepts you need to\n"
       + " use Swing components in building a user interface.\n"
@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
       + " as are layout management and accessibility.\n"
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
-      + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private final transient Highlighter.HighlightPainter currentPainter   = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);

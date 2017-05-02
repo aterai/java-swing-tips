@@ -55,9 +55,9 @@ public class MainPanel extends JPanel {
     }
     protected String getCharacterString() {
         int code = ((Integer) spinner.getValue()).intValue();
-        //char[] ca = Character.toChars(code);
-        //int len = Character.charCount(code);
-        //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
+        // char[] ca = Character.toChars(code);
+        // int len = Character.charCount(code);
+        // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
         return new String(Character.toChars(code)); //, 0, len);
 //         if (code < 0x10000) {
 //             str = Character.toString((char) code);

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
         JCheckBox check = new JCheckBox("swing.boldMetal");
         check.addActionListener(e -> {
-            //http://docs.oracle.com/javase/jp/6/api/javax/swing/plaf/metal/DefaultMetalTheme.html
+            // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/metal/DefaultMetalTheme.html
             JCheckBox c = (JCheckBox) e.getSource();
             UIManager.put("swing.boldMetal", c.isSelected());
             // re-install the Metal Look and Feel

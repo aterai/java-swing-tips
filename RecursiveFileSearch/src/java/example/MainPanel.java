@@ -324,7 +324,8 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         }
         return "Done";
     }
-    //http://docs.oracle.com/javase/tutorial/essential/io/walk.html
+    // Walking the File Tree (The Java™ Tutorials > Essential Classes > Basic I/O)
+    // https://docs.oracle.com/javase/tutorial/essential/io/walk.html
     private void recursiveSearch(Path dir, final List<Path> list) throws IOException {
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

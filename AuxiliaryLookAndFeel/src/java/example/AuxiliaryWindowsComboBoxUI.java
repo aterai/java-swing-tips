@@ -10,7 +10,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-// http://docs.oracle.com/javase/7/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
+// https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
 //???: Don't extend visual look and feels.
 public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
     public static ComponentUI createUI(JComponent c) {

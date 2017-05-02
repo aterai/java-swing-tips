@@ -112,7 +112,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
         addMouseMotionListener(renderer);
         putClientProperty("List.isFileList", Boolean.TRUE);
     }
-    //@see SwingUtilities2.pointOutsidePrefSize(...)
+    // @see SwingUtilities2.pointOutsidePrefSize(...)
     private boolean pointOutsidePrefSize(Point p) {
         int i = locationToIndex(p);
         DefaultListModel<E> m = (DefaultListModel<E>) getModel();

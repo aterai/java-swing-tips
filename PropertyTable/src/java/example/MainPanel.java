@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
                 return super.getCellEditor(row, column);
             }
         }
-        // http://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
+        // https://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
         // This method is also invoked by the editor when the value in the editor
         // component is saved in the TableModel. The class was saved when the
         // editor was invoked so the proper class can be created.
@@ -223,7 +223,7 @@ class ColorRenderer extends DefaultTableCellRenderer {
     }
 }
 
-//http://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
+// https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
 class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     protected static final String EDIT = "edit";
     private final JButton button = new JButton();

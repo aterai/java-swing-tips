@@ -8,9 +8,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-// How to Use Internal Frames
-// http://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
-// https://community.oracle.com/thread/1392111 Lock JInternalPane
+// How to Use Internal Frames (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// https://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
+// Lock JInternalPane
+// https://community.oracle.com/thread/1392111
 public class MainPanel extends JPanel {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = 30;

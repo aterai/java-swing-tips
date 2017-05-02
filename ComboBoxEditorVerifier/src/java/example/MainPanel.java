@@ -52,12 +52,12 @@ public final class MainPanel extends JPanel {
         comboBox.setInputVerifier(new LengthInputVerifier());
         comboBox.setEditor(new BasicComboBoxEditor() {
             private Component editorComponent;
-            ////@see javax/swing/plaf/synth/SynthComboBoxUI.java
-            //@Override public JTextField createEditorComponent() {
-            //    JTextField f = new JTextField("", 9);
-            //    f.setName("ComboBox.textField");
-            //    return f;
-            //}
+            // // @see javax/swing/plaf/synth/SynthComboBoxUI.java
+            // @Override public JTextField createEditorComponent() {
+            //     JTextField f = new JTextField("", 9);
+            //     f.setName("ComboBox.textField");
+            //     return f;
+            // }
             @Override public Component getEditorComponent() {
 //                 if (Objects.isNull(editorComponent)) {
 //                     JTextComponent tc = (JTextComponent) super.getEditorComponent();
@@ -111,7 +111,7 @@ class SelectItemMenuListener implements PopupMenuListener {
     @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
 }
 
-//@see http://docs.oracle.com/javase/tutorial/uiswing/examples/misc/FieldValidatorProject/src/FieldValidator.java
+// @see https://docs.oracle.com/javase/tutorial/uiswing/examples/misc/FieldValidatorProject/src/FieldValidator.java
 class ValidationLayerUI<V extends JTextComponent> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);

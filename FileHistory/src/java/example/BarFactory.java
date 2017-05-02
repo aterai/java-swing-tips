@@ -221,7 +221,7 @@ public final class BarFactory {
 //    }
 }
 
-//http://docs.oracle.com/javase/jp/8/docs/api/java/util/ResourceBundle.Control.html
+// https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html
 class UTF8ResourceBundleControl extends ResourceBundle.Control {
     @Override public List<String> getFormats(String baseName) {
         Objects.requireNonNull(baseName, "baseName must not be null");

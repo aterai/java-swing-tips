@@ -75,12 +75,12 @@ class SilentDeleteTextAction extends TextAction {
             int dot  = caret.getDot();
             int mark = caret.getMark();
             if (DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
-                //@see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
+                // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
                 if (dot == 0 && mark == 0) {
                     return;
                 }
             } else {
-                //@see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
+                // @see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
                 Document doc = target.getDocument();
                 if (dot == mark && doc.getLength() == dot) {
                     return;
@@ -114,10 +114,9 @@ class SizeFilter extends DocumentFilter {
     }
 }
 
-// //http://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
-// //Text Component Features (The Java? Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
-// //http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/TextComponentDemoProject/src/components/DocumentSizeFilter.java
-// //DocumentSizeFilter.java]
+// // https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
+// // Text Component Features (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TextComponentDemoProject/src/components/DocumentSizeFilter.java
 // class DocumentSizeFilter extends DocumentFilter {
 //     int maxCharacters;
 //     protected DocumentSizeFilter(int maxChars) {

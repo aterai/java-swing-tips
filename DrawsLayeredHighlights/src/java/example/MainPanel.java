@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
       + " as are layout management and accessibility.\n"
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
-      + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JCheckBox check    = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);

@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     public static final String TD2 = "<td style='background-color:white;border-right:1px solid green;border-bottom:1px solid blue'>aaaaaaaaaaaaaaa</td>";
     public static final String TABLE_STYLE2 = "style='border-left:1px solid red;border-top:1px solid red;background-color:yellow' cellspacing='0px' cellpadding='5px'";
 
-    //http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
+    // https://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
     public static final String TD3 = "<td style='background-color:white'>aaaaaaaaaaaaaaa</td>";
     public static final String TABLE_STYLE3 = "style='border:0px;background-color:red' cellspacing='1px' cellpadding='5px'";
 

@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         SingleSelectionModel ssm = tabbedPane.getModel();
         check.addActionListener(e -> {
             if (((JCheckBox) e.getSource()).isSelected()) {
-                //http://stackoverflow.com/questions/34315657/java-swing-jtextfield-setinputverifier-keep-focus-on-textfield
+                // https://stackoverflow.com/questions/34315657/java-swing-jtextfield-setinputverifier-keep-focus-on-textfield
                 tabbedPane.setModel(new DefaultSingleSelectionModel() {
                     @Override public void setSelectedIndex(int index) {
                         InputVerifier verifier = p.getInputVerifier();

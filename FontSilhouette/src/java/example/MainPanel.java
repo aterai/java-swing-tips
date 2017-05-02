@@ -73,7 +73,7 @@ class SilhouetteIcon implements Icon, Serializable {
         this.size = size;
     }
     // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
-    // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
+    // https://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
     private static Area getOuterShape(Shape shape) {
         Area area = new Area();
         Path2D path = new Path2D.Double();

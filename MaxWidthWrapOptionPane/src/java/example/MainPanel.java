@@ -10,7 +10,7 @@ import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    //http://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
+    // https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
     protected final JTextArea textArea = new JTextArea(1, 1) {
         @Override public void updateUI() {
             super.updateUI();
@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
 //                 System.out.format("Columns: %d%n", cc);
 
                 setColumns(50);
-                // http://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-
+                // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-
                 // i.e. layout cannot be computed until the component has been sized.
                 // The component does not have to be visible or painted.
                 setSize(super.getPreferredSize()); //setSize: looks like ugly hack...

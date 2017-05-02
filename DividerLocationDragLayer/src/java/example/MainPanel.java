@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
-    //@see http://stackoverflow.com/questions/37462651/jsplitpane-small-border-but-big-grab-hitbox
+    // @see https://stackoverflow.com/questions/37462651/jsplitpane-small-border-but-big-grab-hitbox
     private int dividerLocation;
     private final Point startPt = new Point();
     @Override public void installUI(JComponent c) {

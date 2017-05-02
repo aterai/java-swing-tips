@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         JTable table2 = new JTable(model);
         table2.setAutoCreateRowSorter(true);
 
-        //http://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/_nimbusDefaults.html
+        // https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/_nimbusDefaults.html
         UIDefaults d = new UIDefaults();
         d.put("TextArea.borderPainter", new Painter<JComponent>() {
             @Override public void paint(Graphics2D g, JComponent c, int w, int h) { /* Empty painter */ }

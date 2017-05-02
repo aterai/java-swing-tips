@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 // ArrayIndexOutOfBoundsException: 0 >= 0
-                // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
-                // http://bugs.java.com/view_bug.do?bug_id=6967479
-                //return getValueAt(0, column).getClass();
+                // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+                // https://bugs.openjdk.java.net/browse/JDK-6967479
+                // return getValueAt(0, column).getClass();
                 switch (column) {
                   case 0:
                     return String.class;
@@ -95,9 +95,11 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//Demo - BasicDnD (Drag and Drop and Data Transfer) https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
-//Demo - DropDemo (Drag and Drop and Data Transfer) https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
-//@see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
+// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
+// Demo - DropDemo (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
+// @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private int[] indices;

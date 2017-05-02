@@ -10,8 +10,8 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final JTable table = new JTable(100, 3) {
-        //http://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
-        //http://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
+        // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
+        // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
         @Override public void doLayout() {
             Optional.ofNullable(getTableHeader()).ifPresent(header -> {
                 if (Objects.isNull(header.getResizingColumn()) && getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {

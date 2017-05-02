@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
         JTree tree = new JTree(treeModel);
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         tree.setRootVisible(false);
-        //http://stackoverflow.com/questions/6182110/file-browser-gui
-        //java - File Browser GUI - Stack Overflow]
+        // java - File Browser GUI - Stack Overflow
+        // https://stackoverflow.com/questions/6182110/file-browser-gui
         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
         tree.expandRow(0);

@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     private final MyComboBox combo = new MyComboBox();
 
 //*
-    //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html
+    // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/EventListenerList.html
     private final EventListenerList listenerList = new EventListenerList();
     //FontChangeEvent fontChangeEvent = null;
     public void addFontChangeListener(FontChangeListener l) {

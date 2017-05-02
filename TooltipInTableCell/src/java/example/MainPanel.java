@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
                 if (c instanceof JPanel) {
                     Rectangle r = getCellRect(vrow, vcol, true);
                     c.setBounds(r);
-                    //@see http://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
+                    //@see https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
                     c.doLayout();
                     pt.translate(-r.x, -r.y);
                     Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);

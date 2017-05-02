@@ -111,7 +111,7 @@ class HeaderRenderer implements TableCellRenderer {
 //         l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>Check All", selected, indeterminate));
 //         System.out.println(l.getText());
 
-        //http://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
+        // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
         for (Component c: l.getComponents()) {
             updateCheckBox(((Container) c).getComponent(0), value);
         }

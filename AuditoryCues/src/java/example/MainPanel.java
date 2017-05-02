@@ -10,8 +10,8 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 
 // Swing Changes and New Features
-// http://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
-// http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
+// https://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
+// https://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
 // Magic with Merlin: Swinging audio
 // http://www.ibm.com/developerworks/java/library/j-mer0730/
 // http://www.ibm.com/developerworks/jp/java/library/j-mer0730/

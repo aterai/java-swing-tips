@@ -80,7 +80,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
         super(slider);
     }
 //     // JSlider question: Position after leftclick - Stack Overflow
-//     // http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
+//     // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
 //     //TEST:
 //     protected void scrollDueToClickInTrack(int direction) {
 //         int value = slider.getValue();

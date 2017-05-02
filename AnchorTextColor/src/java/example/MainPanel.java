@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(3, 1));
         add(makePanel("Default", HREF));
 
-        //[Customize detault html link color in java swing - Stack Overflow]
-        //http://stackoverflow.com/questions/26749495/customize-detault-html-link-color-in-java-swing
+        // Customize detault html link color in java swing - Stack Overflow
+        // https://stackoverflow.com/questions/26749495/customize-detault-html-link-color-in-java-swing
         HTMLEditorKit kit = new HTMLEditorKit();
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule("a{color:#FF0000;}");

@@ -86,7 +86,7 @@ class FocusCaret extends DefaultCaret {
     }
     @Override public void focusGained(FocusEvent e) {
         super.focusGained(e);
-        //http://stackoverflow.com/questions/18237317/how-to-retain-selected-text-in-jtextfield-when-focus-lost
+        // https://stackoverflow.com/questions/18237317/how-to-retain-selected-text-in-jtextfield-when-focus-lost
         setSelectionVisible(false); //removeHighlight
         setSelectionVisible(true); //addHighlight
         //TEST

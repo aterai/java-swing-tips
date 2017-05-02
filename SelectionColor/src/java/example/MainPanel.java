@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("setSelectionColor(#C86464FF)", true);
         check.addActionListener(e -> {
             JCheckBox c = (JCheckBox) e.getSource();
-            //http://docs.oracle.com/javase/7/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor(java.awt.Color)
-            //DOUBT?: Setting the color to null is the same as setting Color.white.
+            // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor-java.awt.Color-
+            // DOUBT?: Setting the color to null is the same as setting Color.white.
             area.setSelectionColor(c.isSelected() ? SELECTION_COLOR : null);
         });
 

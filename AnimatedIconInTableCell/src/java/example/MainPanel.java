@@ -34,15 +34,15 @@ public final class MainPanel extends JPanel {
     }
     private static ImageIcon makeImageIcon(URL url, final JTable table, final int row, final int col) {
         ImageIcon icon = new ImageIcon(url);
-        //Wastefulness: icon.setImageObserver((ImageObserver) table);
+        // Wastefulness: icon.setImageObserver((ImageObserver) table);
         icon.setImageObserver(new ImageObserver() {
-            //@see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
+            // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
                 if (!table.isShowing()) {
-                    return false; //@see javax.swing.JLabel#imageUpdate(...)
+                    return false; // @see javax.swing.JLabel#imageUpdate(...)
                 }
-                if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) { //@see java.awt.Component#imageUpdate(...)
-                    int vr = table.convertRowIndexToView(row); //JDK 1.6.0
+                if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) { // @see java.awt.Component#imageUpdate(...)
+                    int vr = table.convertRowIndexToView(row); // JDK 1.6.0
                     int vc = table.convertColumnIndexToView(col);
                     table.repaint(table.getCellRect(vr, vc, false));
                 }

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         return polygon;
     }
     // http://java-sl.com/tip_flatteningpathiterator_moving_shape.html
-    // via: http://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
+    // via: https://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
     public static Polygon convertShape2Polygon(Shape s) {
         PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1d);
         Polygon polygon = new Polygon();

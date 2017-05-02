@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
             int extent  = m.getExtent();
             int maximum = m.getMaximum();
             int value   = m.getValue();
-            //http://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
-            //System.out.println("2. Value: " + (value + extent) + " Max: " + maximum);
-            //http://ateraimemo.com/Swing/ScrollBarAsSlider.html
+            // https://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
+            // System.out.println("2. Value: " + (value + extent) + " Max: " + maximum);
+            // http://ateraimemo.com/Swing/ScrollBarAsSlider.html
             if (value + extent >= maximum) {
                 check.setEnabled(true);
             }

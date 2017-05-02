@@ -305,7 +305,7 @@ class ColorRenderer extends DefaultTableCellRenderer {
     }
 }
 
-//http://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
+// https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
 class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     protected static final String EDIT = "edit";
     protected final JButton button = new JButton();

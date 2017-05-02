@@ -171,20 +171,20 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     protected boolean isRolloverCell(JTable table, int row, int column) {
         return !table.isEditing() && this.row == row && this.col == column && this.isRollover;
     }
-    //@see SwingUtilities2.pointOutsidePrefSize(...)
-    //private static boolean pointInsidePrefSize(JTable table, Point p) {
-    //    int row = table.rowAtPoint(p);
-    //    int col = table.columnAtPoint(p);
-    //    TableCellRenderer tcr = table.getCellRenderer(row, col);
-    //    Object value = table.getValueAt(row, col);
-    //    Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
-    //    Dimension itemSize = cell.getPreferredSize();
-    //    Insets i = ((JComponent) cell).getInsets();
-    //    Rectangle cellBounds = table.getCellRect(row, col, false);
-    //    cellBounds.width = itemSize.width-i.right-i.left;
-    //    cellBounds.translate(i.left, i.top);
-    //    return cellBounds.contains(p);
-    //}
+    // @see SwingUtilities2.pointOutsidePrefSize(...)
+    // private static boolean pointInsidePrefSize(JTable table, Point p) {
+    //     int row = table.rowAtPoint(p);
+    //     int col = table.columnAtPoint(p);
+    //     TableCellRenderer tcr = table.getCellRenderer(row, col);
+    //     Object value = table.getValueAt(row, col);
+    //     Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
+    //     Dimension itemSize = cell.getPreferredSize();
+    //     Insets i = ((JComponent) cell).getInsets();
+    //     Rectangle cellBounds = table.getCellRect(row, col, false);
+    //     cellBounds.width = itemSize.width-i.right-i.left;
+    //     cellBounds.translate(i.left, i.top);
+    //     return cellBounds.contains(p);
+    // }
     private static boolean isURLColumn(JTable table, int column) {
         return column >= 0 && table.getColumnClass(column).equals(URL.class);
     }

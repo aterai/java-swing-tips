@@ -60,8 +60,8 @@ public final class MainPanel extends JPanel {
 }
 
 class Tile1 extends JComponent implements HierarchyListener {
-    //java - javax.swing.Timer slowdown in Java7u40 - Stack Overflow
-    //http://stackoverflow.com/questions/18933986/javax-swing-timer-slowdown-in-java7u40
+    // java - javax.swing.Timer slowdown in Java7u40 - Stack Overflow
+    // https://stackoverflow.com/questions/18933986/javax-swing-timer-slowdown-in-java7u40
     protected int red;
     protected final Timer timer;
 

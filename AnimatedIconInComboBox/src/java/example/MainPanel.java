@@ -28,9 +28,9 @@ public final class MainPanel extends JPanel {
     }
     private static Icon makeImageIcon(URL url, final JComboBox combo, final int row) {
         ImageIcon icon = new ImageIcon(url);
-        //Wastefulness: icon.setImageObserver(combo);
+        // Wastefulness: icon.setImageObserver(combo);
         icon.setImageObserver(new ImageObserver() {
-            //@see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
+            // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
                 if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
                     if (combo.getSelectedIndex() == row) {

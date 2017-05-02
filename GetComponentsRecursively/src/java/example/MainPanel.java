@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         JButton button2 = new JButton("Details View");
         button2.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
-            //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
-            //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+            // java - How can I start the JFileChooser in the Details view? - Stack Overflow
+            // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
             Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
             if (Objects.nonNull(detailsAction)) {
                 detailsAction.actionPerformed(null);

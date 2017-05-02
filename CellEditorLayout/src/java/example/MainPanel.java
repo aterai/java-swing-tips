@@ -60,7 +60,7 @@ class CustomCellEditor extends DefaultCellEditor {
         });
     }
     @Override public Component getComponent() {
-        //@see JTable#updateUI()
+        // @see JTable#updateUI()
         SwingUtilities.updateComponentTreeUI(button);
         return super.getComponent();
     }
