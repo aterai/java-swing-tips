@@ -95,18 +95,20 @@ public final class MainPanel extends JPanel {
 
 class SymbolIcon implements Icon {
     private static final int ICON_SIZE = 32;
-    private static Font font = new Font(Font.SANS_SERIF, Font.BOLD, ICON_SIZE);
-    private static FontRenderContext frc = new FontRenderContext(null, true, true);
-    private final Shape symbol;
+    private final Font font = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
+    private final String str;
 
     protected SymbolIcon(String str) {
-         symbol = new TextLayout(str, font, frc).getOutline(null);
+        this.str = str;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
         g2.setPaint(c.isEnabled() ? Color.BLACK : Color.GRAY);
+
+        FontRenderContext frc = g2.getFontRenderContext();
+        Shape symbol = new TextLayout(str, font, frc).getOutline(null);
         Rectangle2D b = symbol.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getIconWidth() / 2d - b.getCenterX(), getIconHeight() / 2d - b.getCenterY());
         g2.fill(toCenterAT.createTransformedShape(symbol));

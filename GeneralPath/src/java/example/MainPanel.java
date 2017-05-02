@@ -92,16 +92,12 @@ class StarPanel2 extends JPanel {
 
 class StarPanel3 extends JPanel {
     private static final int FONTSIZE = 80;
-    private final Shape shape;
-    protected StarPanel3() {
-        super();
-        FontRenderContext frc = new FontRenderContext(null, true, true);
-        Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
-        shape = new TextLayout("\u2605", font, frc).getOutline(null);
-    }
+    private final Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(0, FONTSIZE);
+        FontRenderContext frc = g2.getFontRenderContext();
+        Shape shape = new TextLayout("\u2605", font, frc).getOutline(null);
         g2.setPaint(Color.YELLOW);
         g2.fill(shape);
         g2.setPaint(Color.BLACK);

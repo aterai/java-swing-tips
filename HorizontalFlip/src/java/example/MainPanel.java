@@ -11,18 +11,18 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         Font font = new Font(Font.MONOSPACED, Font.BOLD, 200);
-        FontRenderContext frc = new FontRenderContext(null, true, true);
-        Shape copyright = new TextLayout("\u00a9", font, frc).getOutline(null);
         AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
-        //Rectangle r = copyright.getBounds()
-        //at.translate(r.getWidth(), r.getHeight());
-        //AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
-        final Shape copyleft = at.createTransformedShape(copyright);
         add(new JComponent() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setPaint(Color.BLACK);
+                FontRenderContext frc = g2.getFontRenderContext();
+                Shape copyright = new TextLayout("\u00a9", font, frc).getOutline(null);
+                //Rectangle r = copyright.getBounds()
+                //at.translate(r.getWidth(), r.getHeight());
+                //AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
+                Shape copyleft = at.createTransformedShape(copyright);
                 Rectangle2D b = copyleft.getBounds2D();
                 AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
                 g2.fill(toCenterAT.createTransformedShape(copyleft));

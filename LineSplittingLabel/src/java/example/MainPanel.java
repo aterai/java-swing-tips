@@ -38,12 +38,12 @@ public final class MainPanel extends JPanel {
 }
 
 class TricoloreLabel extends JComponent {
-    private final GlyphVector gv;
+    private final Font font = new Font(Font.SERIF, Font.PLAIN, 64);
+    private final String text;
+
     protected TricoloreLabel(String str) {
         super();
-        Font font = new Font(Font.SERIF, Font.PLAIN, 64);
-        FontRenderContext frc = new FontRenderContext(null, true, true);
-        gv = font.createGlyphVector(frc, str);
+        this.text = str;
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -54,6 +54,9 @@ class TricoloreLabel extends JComponent {
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        FontRenderContext frc = g2.getFontRenderContext();
+        GlyphVector gv = font.createGlyphVector(frc, text);
         Rectangle2D b = gv.getVisualBounds();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
@@ -80,12 +83,12 @@ class TricoloreLabel extends JComponent {
 }
 
 class LineSplittingLabel extends JComponent {
-    private final Shape shape;
+    private final Font font = new Font(Font.SERIF, Font.PLAIN, 64);
+    private final String text;
+
     protected LineSplittingLabel(String str) {
         super();
-        Font font = new Font(Font.SERIF, Font.PLAIN, 64);
-        FontRenderContext frc = new FontRenderContext(null, true, true);
-        shape = new TextLayout(str, font, frc).getOutline(null);
+        this.text = str;
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -96,6 +99,9 @@ class LineSplittingLabel extends JComponent {
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        FontRenderContext frc = g2.getFontRenderContext();
+        Shape shape = new TextLayout(text, font, frc).getOutline(null);
         Rectangle2D b = shape.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 

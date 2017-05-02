@@ -62,8 +62,8 @@ class DragHereIcon implements Icon {
         ICON_SIZE - 2 * BORDER_WIDTH - 1, ICON_SIZE - 2 * BORDER_WIDTH - 1,
         ARC_SIZE, ARC_SIZE);
     private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
-    private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
-    private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); //DOWNWARDS WHITE ARROW
+    //private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+    //private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); //DOWNWARDS WHITE ARROW
     //private static final Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW
     private static final Color LINE_COLOR = Color.GRAY;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -94,10 +94,12 @@ class DragHereIcon implements Icon {
         //g2.drawLine(0 * v, 2 * v, 4 * v, 2 * v);
         //g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
 
+        FontRenderContext frc = g2.getFontRenderContext();
+        Shape arrow = new TextLayout("\u21E9", FONT, frc).getOutline(null); //DOWNWARDS WHITE ARROW
         g2.setPaint(LINE_COLOR);
-        Rectangle2D b = ARROW.getBounds2D();
+        Rectangle2D b = arrow.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - b.getCenterX(), ICON_SIZE / 2d - b.getCenterY());
-        g2.fill(toCenterAT.createTransformedShape(ARROW));
+        g2.fill(toCenterAT.createTransformedShape(arrow));
         g2.dispose();
     }
     @Override public int getIconWidth() {
