@@ -242,7 +242,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
         String text = "Done";
         if (i < 0) {
             text = "Canceled";
-        } else if (i < 100) {
+        } else if (i < b.getMaximum()) { // < 100
             b.setValue(i);
             p.add(b);
             p.setOpaque(false);

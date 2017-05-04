@@ -124,7 +124,7 @@ class LightboxGlassPane extends JPanel {
         } else if (w < image.getIconWidth() + BW + BW) {
             h  = image.getIconHeight() + BW + BW;
             w += image.getIconWidth() / 16;
-        } else if (alpha < 1f) {
+        } else if (1f - alpha > 0) {
             w  = image.getIconWidth() + BW + BW;
             alpha = alpha + .1f;
         } else {

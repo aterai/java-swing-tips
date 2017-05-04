@@ -108,7 +108,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if (getSelectedIndices().length > 1) {
+        if (getSelectedIndices().length - 1 != 0) {
             return;
         }
         draggedIndex = locationToIndex(e.getDragOrigin());

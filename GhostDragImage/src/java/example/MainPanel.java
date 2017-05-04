@@ -221,7 +221,6 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
             return null;
         }
         int[] selectedIndices = source.getSelectedIndices();
-        int length = selectedIndices.length;
         BufferedImage br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
         Graphics2D g2 = br.createGraphics();
         ListCellRenderer renderer = source.getCellRenderer();
@@ -231,8 +230,9 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
         Rectangle rect = source.getCellBounds(idx, idx);
         SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
-        if (length > 1) {
-            LABEL.setText(String.valueOf(length));
+        int len = selectedIndices.length;
+        if (len - 1 > 0) {
+            LABEL.setText(String.valueOf(len));
             Dimension d = LABEL.getPreferredSize();
             SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
         }
