@@ -77,7 +77,7 @@ class StrokeMatteBorder extends EmptyBorder {
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         float size = stroke.getLineWidth();
-        if (size > 0f) {
+        if (size > 0) {
             Insets insets = getBorderInsets(c);
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setStroke(this.stroke);

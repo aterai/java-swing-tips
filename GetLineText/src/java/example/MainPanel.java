@@ -11,10 +11,9 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
-    private final JScrollPane scroll = new JScrollPane(textArea);
+    public static final char SHARP = '#';
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         StringBuilder sb = new StringBuilder();
         String dummy   = "aaaaaaaaaaaaa\n";
@@ -25,6 +24,9 @@ public final class MainPanel extends JPanel {
                 sb.append(comment);
             }
         });
+
+        JTextArea textArea = new JTextArea();
+        JScrollPane scroll = new JScrollPane(textArea);
         textArea.setText(sb.toString());
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
@@ -35,15 +37,15 @@ public final class MainPanel extends JPanel {
             int count = 0;
             StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
             while (st.hasMoreTokens()) {
-                //if (st.nextToken().startsWith("#")) {
-                //if (st.nextToken().charAt(0) == '#') {
-                if (st.nextToken().codePointAt(0) == '#') {
+                //if (st.nextToken().startsWith(SHARP)) {
+                //if (st.nextToken().charAt(0) == SHARP) {
+                if (st.nextToken().codePointAt(0) == SHARP) {
                     count++;
                 }
             }
 //             //String#split >>>>
 //             for (String line: textArea.getText().split("\\n")) {
-//                 if (!line.isEmpty() && line.codePointAt(0) == '#') {
+//                 if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
 //                     count++;
 //                 }
 //             }
@@ -53,7 +55,7 @@ public final class MainPanel extends JPanel {
 //             try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
 //                 String line = null;
 //                 while ((line = lnr.readLine()) != null) {
-//                     if (!line.isEmpty() && line.codePointAt(0) == '#') {
+//                     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
 //                         count++;
 //                     }
 //                 }
@@ -69,7 +71,7 @@ public final class MainPanel extends JPanel {
 //                 for (int i = 0; i < root.getElementCount(); i++) {
 //                     Element elem = root.getElement(i);
 //                     String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
-//                     if (line.codePointAt(0) == '#') {
+//                     if (line.codePointAt(0) == SHARP) {
 //                         count++;
 //                     }
 //                 }

@@ -12,6 +12,8 @@ import javax.imageio.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    public static final String FORMAT_NAME_GIF = "gif";
+    public static final String NATIVE_IMAGE_METADATA_FORMAT_NAME = "javax_imageio_gif_image_1.0";
     public MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
@@ -40,12 +42,12 @@ public final class MainPanel extends JPanel {
         while (readers.hasNext()) {
             reader = readers.next();
             String metaFormat = reader.getOriginatingProvider().getNativeImageMetadataFormatName();
-            if ("gif".equalsIgnoreCase(reader.getFormatName()) && "javax_imageio_gif_image_1.0".equals(metaFormat)) {
+            if (FORMAT_NAME_GIF.equalsIgnoreCase(reader.getFormatName()) && NATIVE_IMAGE_METADATA_FORMAT_NAME.equals(metaFormat)) {
                 break;
             }
         }
         reader = Objects.requireNonNull(reader, "Can not read image format!");
-        boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");
+        boolean isGif = FORMAT_NAME_GIF.equalsIgnoreCase(reader.getFormatName());
         reader.setInput(imageStream, false, !isGif);
         List<BufferedImage> list = new ArrayList<>();
         for (int i = 0; i < reader.getNumImages(true); i++) {
