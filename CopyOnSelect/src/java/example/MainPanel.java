@@ -6,7 +6,7 @@ import java.awt.*;
 // import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -103,13 +103,12 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
             int m = caret.getMark();
             //logger.info(m + " / " + d);
             if (d != m && (dot != d || mark != m)) {
-                String str = tc.getSelectedText();
-                if (Objects.nonNull(str)) {
+                Optional.ofNullable(tc.getSelectedText()).ifPresent(str -> {
                     logger.info(str);
                     //StringSelection data = new StringSelection(str);
                     //Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
                     tc.copy();
-                }
+                });
             }
             dot = d;
             mark = m;
