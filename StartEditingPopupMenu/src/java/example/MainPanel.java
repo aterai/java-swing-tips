@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
 //                 return false;
 //             }
 //             @Override protected boolean canEditImmediately(EventObject e) {
-//                 //((MouseEvent) e).getClickCount() > 2
+//                 //((MouseEvent) e).getClickCount() - 2 >= 0
 //                 return !(e instanceof MouseEvent) && super.canEditImmediately(e);
 //             }
             @Override public boolean isCellEditable(EventObject e) {

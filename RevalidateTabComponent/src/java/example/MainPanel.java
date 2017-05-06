@@ -231,7 +231,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     }
 //     @Override public void mouseClicked(MouseEvent e) {
 //         Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-//         if (Objects.nonNull(rect) && rect.contains(e.getPoint()) && e.getClickCount() == 2) {
+//         if (Objects.nonNull(rect) && rect.contains(e.getPoint()) && e.getClickCount() - 2 >= 0) {
 //             startEditing();
 //         } else {
 //             renameTabTitle();

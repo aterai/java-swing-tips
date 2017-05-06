@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         setFocusable(true);
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() - 2 >= 0) {
                     toggleFullScreenWindow();
                 }
             }

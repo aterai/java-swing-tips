@@ -100,7 +100,7 @@ class EditableTabbedPane extends JTabbedPane {
 
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() - 2 >= 0) {
                     startEditing.actionPerformed(null);
                 }
             }
