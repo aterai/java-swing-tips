@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST AdjustPopupLocation" />
+  <property name="jnlp.Name"     value="AdjustPopupLocation" />
+  <property name="jnlp.name"     value="adjustpopuplocation" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/adjustpopuplocation/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AdjustPopupLocation.html" />
+</project>
