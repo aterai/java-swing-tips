@@ -198,12 +198,18 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         return closeit;
     }
     public Point getHeaderViewPosition() {
-        for (Component c: getComponents()) {
-            if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
-                return ((JViewport) c).getViewPosition();
-            }
-        }
-        return new Point();
+        return Arrays.stream(getComponents())
+          .filter(JViewport.class::isInstance)
+          .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))
+          .findFirst()
+          .map(c -> ((JViewport) c).getViewPosition())
+          .orElseGet(Point::new);
+//         for (Component c: getComponents()) {
+//             if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
+//                 return ((JViewport) c).getViewPosition();
+//             }
+//         }
+//         return new Point();
     }
 }
 

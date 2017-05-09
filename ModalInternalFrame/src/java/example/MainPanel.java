@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 //import java.lang.reflect.*;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
@@ -189,12 +190,19 @@ public final class MainPanel extends JPanel {
     protected static void removeSystemMenuListener(JInternalFrame modal) {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
         JComponent titleBar = (JComponent) ui.getNorthPane();
-        for (Component c: titleBar.getComponents()) {
-            if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
-                for (MouseListener ml: c.getMouseListeners()) {
-                    ((JComponent) c).removeMouseListener(ml);
-                }
-            }
+        Stream.of(titleBar.getComponents())
+          .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
+          .forEach(MainPanel::removeComponentMouseListener);
+//         for (Component c: titleBar.getComponents()) {
+//             if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
+//                 removeComponentMouseListener(c)
+//             }
+//         }
+    }
+
+    protected static void removeComponentMouseListener(Component c) {
+        for (MouseListener ml: c.getMouseListeners()) {
+            ((JComponent) c).removeMouseListener(ml);
         }
     }
 
