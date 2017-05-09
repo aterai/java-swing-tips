@@ -203,9 +203,10 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
         super.uninstallUI(c);
     }
     private void update(MouseEvent e, JLayer<? extends V> l) {
-        int id = e.getID();
         Shape s = null;
-        if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
+        switch (e.getID()) {
+          case MouseEvent.MOUSE_ENTERED:
+          case MouseEvent.MOUSE_MOVED:
             Component c = e.getComponent();
             if (c instanceof AbstractButton) {
                 AbstractButton b = (AbstractButton) c;
@@ -216,6 +217,9 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
                     s = at.createTransformedShape(icon.getShape());
                 }
             }
+            break;
+          default:
+            break;
         }
         if (!Objects.equals(s, shape)) {
             shape = s;
