@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -87,14 +88,17 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 listener = event -> {
                     int i = atomicDown.decrementAndGet();
                     l.setText(String.format("Closing in %d seconds", i));
-                    if (i <= 0) {
-                        Container c = l.getTopLevelAncestor();
-                        if (c instanceof Window && timer.isRunning()) {
-                            //logger.info("Timer: timer.stop()\n");
-                            timer.stop();
-                            //logger.info("window.dispose()\n");
-                            ((Window) c).dispose();
-                        }
+                    if (i <= 0 && timer.isRunning()) {
+                        //logger.info("Timer: timer.stop()\n");
+                        timer.stop();
+                        Optional.ofNullable(l.getTopLevelAncestor())
+                          .filter(Window.class::isInstance).map(Window.class::cast)
+                          .ifPresent(Window::dispose);
+//                         Container c = l.getTopLevelAncestor();
+//                         if (c instanceof Window) {
+//                             //logger.info("window.dispose()\n");
+//                             ((Window) c).dispose();
+//                         }
                     }
                 };
                 timer.addActionListener(listener);
