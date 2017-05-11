@@ -114,7 +114,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
         }
         for (;;) {
             h /= 3;
-            if (h < 1) {
+            if (h - 1 < 0) {
                 break;
             }
             for (i = h; i < n; i++) {
