@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
             Point pt = e.getPoint();
             int vrow = rowAtPoint(pt);
             int vcol = columnAtPoint(pt);
-            //int mrow = convertRowIndexToModel(vrow);
+            // int mrow = convertRowIndexToModel(vrow);
             int mcol = convertColumnIndexToModel(vcol);
             if (mcol == LIST_ICON_COLUMN) {
                 TableCellRenderer tcr = getCellRenderer(vrow, vcol);
@@ -38,14 +38,18 @@ public final class MainPanel extends JPanel {
                 if (c instanceof JPanel) {
                     Rectangle r = getCellRect(vrow, vcol, true);
                     c.setBounds(r);
-                    //@see https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
+                    // @see https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
                     c.doLayout();
                     pt.translate(-r.x, -r.y);
-                    Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-                    if (l instanceof JLabel) {
-                        ImageIcon icon = (ImageIcon) ((JLabel) l).getIcon();
-                        return icon.getDescription();
-                    }
+                    return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
+                      .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+                      .map(l -> ((ImageIcon) l.getIcon()).getDescription())
+                      .orElseGet(() -> super.getToolTipText(e));
+//                     Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
+//                     if (l instanceof JLabel) {
+//                         ImageIcon icon = (ImageIcon) ((JLabel) l).getIcon();
+//                         return icon.getDescription();
+//                     }
                 }
             }
             return super.getToolTipText(e);
@@ -104,7 +108,7 @@ class ListIconRenderer implements TableCellRenderer {
             p.setBackground(table.getSelectionBackground());
         } else {
             p.setOpaque(false);
-            //p.setBackground(table.getBackground());
+            // p.setBackground(table.getBackground());
         }
         if (value instanceof List<?>) {
             for (Object o: (List<?>) value) {

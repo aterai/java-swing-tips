@@ -35,15 +35,16 @@ public class MainPanel extends JPanel {
 
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
             @Override public void toggleSortOrder(int column) {
-                //if (column >= 0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
-                if (check2.isSelected() && column >= 0 && column < getModelWrapper().getColumnCount() && isSortable(column)) {
-                    List<SortKey> keys = new ArrayList<>(getSortKeys());
-                    if (!keys.isEmpty()) {
-                        SortKey sortKey = keys.get(0);
-                        if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-                            setSortKeys(null);
-                            return;
-                        }
+                if (!check2.isSelected() || !isSortable(column)) {
+                    super.toggleSortOrder(column);
+                    return;
+                }
+                List<SortKey> keys = new ArrayList<>(getSortKeys());
+                if (!keys.isEmpty()) {
+                    SortKey sortKey = keys.get(0);
+                    if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+                        setSortKeys(null);
+                        return;
                     }
                 }
                 super.toggleSortOrder(column);

@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -136,15 +136,11 @@ class TreePopupMenu extends JPopupMenu {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
                 JTree tree = (JTree) getInvoker();
-                int result = JOptionPane.showConfirmDialog(tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    String str = textField.getText();
-                    if (!str.trim().isEmpty()) {
-                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                        model.valueForPathChanged(path, str);
-                        //leaf.setUserObject(str);
-                        //model.nodeChanged(leaf);
-                    }
+                int ret = JOptionPane.showConfirmDialog(tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (ret == JOptionPane.OK_OPTION) {
+                    Optional.ofNullable(textField.getText())
+                      .filter(str -> !str.trim().isEmpty())
+                      .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
                 }
             }
         }

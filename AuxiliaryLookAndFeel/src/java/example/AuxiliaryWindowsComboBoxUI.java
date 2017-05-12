@@ -71,24 +71,25 @@ class BasicComboPopup2 extends BasicComboPopup {
     }
     private class Handler2 extends MouseAdapter {
         @Override public void mouseReleased(MouseEvent e) {
-            if (Objects.equals(e.getSource(), list)) {
-                if (list.getModel().getSize() > 0) {
-                    // <ins>
-                    if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
-                        return;
-                    }
-                    // </ins>
-                    // JList mouse listener
-                    if (comboBox.getSelectedIndex() == list.getSelectedIndex()) {
-                        comboBox.getEditor().setItem(list.getSelectedValue());
-                    }
-                    comboBox.setSelectedIndex(list.getSelectedIndex());
+            if (!Objects.equals(e.getSource(), list)) {
+                return;
+            }
+            if (list.getModel().getSize() > 0) {
+                // <ins>
+                if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
+                    return;
                 }
-                comboBox.setPopupVisible(false);
-                // workaround for cancelling an edited item (bug 4530953)
-                if (comboBox.isEditable() && Objects.nonNull(comboBox.getEditor())) {
-                    comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
+                // </ins>
+                // JList mouse listener
+                if (comboBox.getSelectedIndex() == list.getSelectedIndex()) {
+                    comboBox.getEditor().setItem(list.getSelectedValue());
                 }
+                comboBox.setSelectedIndex(list.getSelectedIndex());
+            }
+            comboBox.setPopupVisible(false);
+            // workaround for cancelling an edited item (bug 4530953)
+            if (comboBox.isEditable() && Objects.nonNull(comboBox.getEditor())) {
+                comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
             }
         }
     }
