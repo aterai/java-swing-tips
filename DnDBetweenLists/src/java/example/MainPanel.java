@@ -141,6 +141,7 @@ class ListItemTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         cleanup(c, action == TransferHandler.MOVE);
     }
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void cleanup(JComponent c, boolean remove) {
         if (remove && indices != null) {
             //If we are moving items around in the same list, we

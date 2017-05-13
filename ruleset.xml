@@ -26,7 +26,7 @@
   </rule>
   <rule ref="rulesets/java/design.xml">
     <exclude name="AvoidSynchronizedAtMethodLevel" />
-    <exclude name="AvoidDeeplyNestedIfStmts" />
+    <!-- exclude name="AvoidDeeplyNestedIfStmts" / -->
   </rule>
   <rule ref="rulesets/java/empty.xml" />
   <rule ref="rulesets/java/finalizers.xml" />

@@ -122,6 +122,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             setBackgroundSelectionColor(new Color(0x0, true));
         }
     }
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if (value instanceof DefaultMutableTreeNode) {
