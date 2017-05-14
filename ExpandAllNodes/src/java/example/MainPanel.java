@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -65,16 +66,22 @@ public final class MainPanel extends JPanel {
 //         return new DefaultTreeModel(root);
 //     }
 
+    public static Stream<TreeNode> children(TreeNode node) {
+        return Collections.list((Enumeration<?>) node.children())
+          .stream().filter(TreeNode.class::isInstance).map(TreeNode.class::cast);
+    }
+
     //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
     //http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
-            }
-        }
+        children(node).forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+//         if (!node.isLeaf() && node.getChildCount() >= 0) {
+//             Enumeration<?> e = node.children();
+//             while (e.hasMoreElements()) {
+//                 visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
+//             }
+//         }
         if (expand) {
             tree.expandPath(parent);
         } else {
