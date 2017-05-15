@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -14,42 +14,47 @@ public final class MainPanel extends JPanel {
         JTextArea log = new JTextArea();
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-        p.add(new JButton(new AbstractAction("List View(Default)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                int retvalue = chooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(chooser.getSelectedFile().getAbsolutePath());
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("Details View") {
-            private JFileChooser chooser;
-            @Override public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-//                 sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
-//                 filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
 
-//                 if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
-//                     Dimension d = chooser.getPreferredSize();
-//                     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
-//                 }
-
-                // java - How can I start the JFileChooser in the Details view? - Stack Overflow
-                // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-                // for (Object key: chooser.getActionMap().allKeys()) {
-                //     System.out.println(key);
-                // }
-                Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-                if (Objects.nonNull(detailsAction)) {
-                    detailsAction.actionPerformed(null);
-                }
-                int retvalue = chooser.showOpenDialog(p);
-                if (retvalue == JFileChooser.APPROVE_OPTION) {
-                    log.setText(chooser.getSelectedFile().getAbsolutePath());
-                }
+        JButton listView = new JButton("List View(Default)");
+        listView.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            int retvalue = chooser.showOpenDialog(p);
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(chooser.getSelectedFile().getAbsolutePath());
             }
-        }));
+        });
+
+        JButton detailsView = new JButton("Details View");
+        detailsView.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+//             sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
+//             filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
+
+//             if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
+//                 Dimension d = chooser.getPreferredSize();
+//                 chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
+//             }
+
+            // java - How can I start the JFileChooser in the Details view? - Stack Overflow
+            // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+            // for (Object key: chooser.getActionMap().allKeys()) {
+            //     System.out.println(key);
+            // }
+
+            Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
+                    .ifPresent(a -> a.actionPerformed(null));
+//             Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
+//             if (Objects.nonNull(detailsAction)) {
+//                 detailsAction.actionPerformed(null);
+//             }
+            int retvalue = chooser.showOpenDialog(p);
+            if (retvalue == JFileChooser.APPROVE_OPTION) {
+                log.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
+        p.add(listView);
+        p.add(detailsView);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
