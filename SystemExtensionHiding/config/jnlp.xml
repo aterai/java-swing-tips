@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SystemExtensionHiding" />
+  <property name="jnlp.Name"     value="SystemExtensionHiding" />
+  <property name="jnlp.name"     value="systemextensionhiding" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/systemextensionhiding/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SystemExtensionHiding.html" />
+</project>
