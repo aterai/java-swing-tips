@@ -117,12 +117,16 @@ class LabelTransferHandler extends TransferHandler {
         DragPanel p = (DragPanel) c;
         JLabel l = p.draggingLabel;
         DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
-        String text = l.getText();
-        if (Objects.nonNull(text)) {
-            return new LabelTransferable(dh, localObjectFlavor, text);
-        } else {
-            return dh;
-        }
+        return Optional.ofNullable(l.getText())
+          // .map(text -> (Transferable) new LabelTransferable(dh, localObjectFlavor, text))
+          .<Transferable>map(text -> new LabelTransferable(dh, localObjectFlavor, text))
+          .orElse(dh);
+//         String text = l.getText();
+//         if (Objects.nonNull(text)) {
+//             return new LabelTransferable(dh, localObjectFlavor, text);
+//         } else {
+//             return dh;
+//         }
     }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         return support.isDrop() && support.isDataFlavorSupported(localObjectFlavor);
