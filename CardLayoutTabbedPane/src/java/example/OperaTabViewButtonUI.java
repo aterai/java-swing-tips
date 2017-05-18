@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -77,9 +77,10 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             textRect.x += 4;
             paintText(g, b, textRect, text);
         }
-        if (Objects.nonNull(icon)) {
-            icon.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2);
-        }
+        Optional.ofNullable(icon).ifPresent(ic -> ic.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2));
+//         if (Objects.nonNull(icon)) {
+//             icon.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2);
+//         }
 
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {
