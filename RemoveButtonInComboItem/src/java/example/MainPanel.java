@@ -212,7 +212,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private final JButton deleteButton = new JButton(new AbstractAction("x") {
         @Override public void actionPerformed(ActionEvent e) {
             MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-            if (m.getSize() > 1) {
+            if (m.getSize() - 1 > 0) {
                 m.removeElementAt(index);
                 comboBox.showPopup();
             }

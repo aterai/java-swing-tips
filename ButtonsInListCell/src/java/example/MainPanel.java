@@ -162,7 +162,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected final JTextArea textArea = new JTextArea();
     protected final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            if (model.getSize() > 1) {
+            if (model.getSize() - 1 > 0) {
                 model.remove(index);
             }
         }
