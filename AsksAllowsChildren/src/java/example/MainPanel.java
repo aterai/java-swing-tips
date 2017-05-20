@@ -167,13 +167,13 @@ class TreePopupMenu extends JPopupMenu {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
             path = tree.getPathForLocation(x, y);
-            if (Objects.nonNull(path)) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            Optional.ofNullable(path).ifPresent(treePath -> {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
                 boolean flag = node.getAllowsChildren();
                 addFolderAction.setEnabled(flag);
                 addItemAction.setEnabled(flag);
                 super.show(c, x, y);
-            }
+            });
         }
     }
 }
