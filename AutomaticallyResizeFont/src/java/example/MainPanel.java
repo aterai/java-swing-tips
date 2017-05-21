@@ -21,7 +21,8 @@ public final class MainPanel extends JPanel {
             @Override public void doLayout() {
                 Insets i = getInsets();
                 float f = .08f * (getWidth() - i.left - i.right);
-                if (Math.abs(fontSize - f) > 1.0e-1) {
+                boolean fontSizeShouldChange = Math.abs(fontSize - f) > 1.0e-1;
+                if (fontSizeShouldChange) {
                     setFont(font.deriveFont(f));
                     fontSize = f;
                 }

@@ -81,7 +81,8 @@ class RippleBorder extends EmptyBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.WHITE);
         float a = 1f / count;
-        if (.12f - a > 1.0e-2) {
+        boolean shouldBeHidden = .12f - a > 1.0e-2;
+        if (shouldBeHidden) {
             a = 0f;
         }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
