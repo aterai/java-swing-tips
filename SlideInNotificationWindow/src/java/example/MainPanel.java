@@ -176,15 +176,17 @@ final class AnimationUtil {
     }
     public static double easeInOut(double t) {
 /*/
-        if (t < .5) {
+        boolean isFirstHalf = t < .5;
+        if (isFirstHalf) {
             return .5 * Math.pow(t * 2d, N);
         } else {
-            return .5 *(Math.pow(t * 2d - 2d, N) + 2d);
+            return .5 * (Math.pow(t * 2d - 2d, N) + 2d);
         }
     }
 /*/
         double ret;
-        if (t < .5) {
+        boolean isFirstHalf = t < .5;
+        if (isFirstHalf) {
             ret = .5 * intpow(t * 2d, N);
         } else {
             ret = .5 * (intpow(t * 2d - 2d, N) + 2d);

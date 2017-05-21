@@ -211,10 +211,10 @@ class DnDTabbedPane extends JTabbedPane {
         String str    = getTitleAt(dragIndex);
         Icon icon     = getIconAt(dragIndex);
         String tip    = getToolTipTextAt(dragIndex);
-        boolean flg   = isEnabledAt(dragIndex);
+        boolean isEnabled = isEnabledAt(dragIndex);
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
-        target.setEnabledAt(targetIndex, flg);
+        target.setEnabledAt(targetIndex, isEnabled);
 
         ////ButtonTabComponent
         //if (tab instanceof ButtonTabComponent) {
@@ -237,14 +237,14 @@ class DnDTabbedPane extends JTabbedPane {
         String str    = getTitleAt(prev);
         Icon icon     = getIconAt(prev);
         String tip    = getToolTipTextAt(prev);
-        boolean flg   = isEnabledAt(prev);
+        boolean isEnabled = isEnabledAt(prev);
         int tgtindex  = prev > next ? next : next - 1;
         remove(prev);
         insertTab(str, icon, cmp, tip, tgtindex);
-        setEnabledAt(tgtindex, flg);
+        setEnabledAt(tgtindex, isEnabled);
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
-        if (flg) {
+        if (isEnabled) {
             setSelectedIndex(tgtindex);
         }
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
@@ -315,7 +315,8 @@ class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
-            if (src.getTabCount() <= 1) {
+            boolean isOnlyOneTab = src.getTabCount() <= 1;
+            if (isOnlyOneTab) {
                 startPt = null;
                 return;
             }
@@ -576,17 +577,17 @@ class GhostGlassPane extends JComponent {
 // How to Use Tabbed Panes (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-    private final JTabbedPane pane;
+    protected final JTabbedPane tabbedPane;
 
-    protected ButtonTabComponent(final JTabbedPane pane) {
+    protected ButtonTabComponent(final JTabbedPane tabbedPane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.pane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+        this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
         JLabel label = new JLabel() {
             @Override public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
-                    return pane.getTitleAt(i);
+                    return tabbedPane.getTitleAt(i);
                 }
                 return null;
             }
@@ -602,9 +603,9 @@ class ButtonTabComponent extends JPanel {
     }
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
-                pane.remove(i);
+                tabbedPane.remove(i);
             }
         }
         @Override public void mouseEntered(MouseEvent e) {

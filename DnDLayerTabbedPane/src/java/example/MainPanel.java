@@ -234,10 +234,10 @@ class DnDTabbedPane extends JTabbedPane {
         String str    = getTitleAt(dragIndex);
         Icon icon     = getIconAt(dragIndex);
         String tip    = getToolTipTextAt(dragIndex);
-        boolean flg   = isEnabledAt(dragIndex);
+        boolean isEnabled = isEnabledAt(dragIndex);
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
-        target.setEnabledAt(targetIndex, flg);
+        target.setEnabledAt(targetIndex, isEnabled);
 
         //ButtonTabComponent
         if (tab instanceof ButtonTabComponent) {
@@ -260,14 +260,14 @@ class DnDTabbedPane extends JTabbedPane {
         String str    = getTitleAt(prev);
         Icon icon     = getIconAt(prev);
         String tip    = getToolTipTextAt(prev);
-        boolean flg   = isEnabledAt(prev);
+        boolean isEnabled = isEnabledAt(prev);
         int tgtindex  = prev > next ? next : next - 1;
         remove(prev);
         insertTab(str, icon, cmp, tip, tgtindex);
-        setEnabledAt(tgtindex, flg);
+        setEnabledAt(tgtindex, isEnabled);
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
-        if (flg) {
+        if (isEnabled) {
             setSelectedIndex(tgtindex);
         }
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
@@ -311,7 +311,8 @@ class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
-            if (src.getTabCount() <= 1) {
+            boolean isOnlyOneTab = src.getTabCount() <= 1;
+            if (isOnlyOneTab) {
                 startPt = null;
                 return;
             }

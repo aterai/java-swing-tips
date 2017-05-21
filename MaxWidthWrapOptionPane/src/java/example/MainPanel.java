@@ -41,7 +41,8 @@ public class MainPanel extends JPanel {
                 setRows(rc);
                 System.out.format("Rows: %d%n", rc);
                 System.out.println(super.getPreferredSize());
-                if (rc == 1) {
+                boolean isOnlyOneColumn = rc == 1;
+                if (isOnlyOneColumn) {
                     setSize(getPreferredSize());
                     setColumns(1);
                 }

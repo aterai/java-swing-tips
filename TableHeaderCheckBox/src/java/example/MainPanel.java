@@ -170,7 +170,8 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
               .map(v -> (Boolean) ((Vector<?>) v).get(targetColumnIndex))
               .distinct()
               .collect(Collectors.toList());
-            if (l.size() == 1) {
+            boolean isOnlyOneSelected = l.size() == 1;
+            if (isOnlyOneSelected) {
                 column.setHeaderValue(l.get(0) ? Status.SELECTED : Status.DESELECTED);
                 return true;
             } else {

@@ -15,10 +15,8 @@
   <rule ref="rulesets/java/controversial.xml">
     <exclude name="DataflowAnomalyAnalysis" />
     <exclude name="OnlyOneReturn" />
-    <exclude name="AvoidLiteralsInIfCondition" />
     <exclude name="NullAssignment" />
     <exclude name="AtLeastOneConstructor" />
-    <!--<exclude name="AvoidUsingShortType" />-->
   </rule>
   <rule ref="rulesets/java/coupling.xml">
     <exclude name="LawOfDemeter" />
@@ -26,7 +24,6 @@
   </rule>
   <rule ref="rulesets/java/design.xml">
     <exclude name="AvoidSynchronizedAtMethodLevel" />
-    <!-- exclude name="AvoidDeeplyNestedIfStmts" / -->
   </rule>
   <rule ref="rulesets/java/empty.xml" />
   <rule ref="rulesets/java/finalizers.xml" />

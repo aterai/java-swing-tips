@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < GridPanel.cols * GridPanel.rows; i++) {
             gp.add(i % 2 == 0 ? new JButton("aa" + i) : new JScrollPane(new JTree()));
         }
-        final JScrollPane scrollPane = new JScrollPane(gp);
+        JScrollPane scrollPane = new JScrollPane(gp);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 //         scrollPane.getVerticalScrollBar().setEnabled(false);
@@ -126,7 +126,8 @@ class ScrollAction extends AbstractAction {
     }
     protected static double easeInOut(double t) {
         //range: 0.0 <= t <= 1.0
-        if (t < .5) {
+        boolean isFirstHalf = t < .5;
+        if (isFirstHalf) {
             return .5 * pow3(t * 2d);
         } else {
             return .5 * (pow3(t * 2d - 2d) + 2d);

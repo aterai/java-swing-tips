@@ -124,10 +124,11 @@ class CellIconTransferHandler extends TransferHandler {
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JTable table = (JTable) c;
-        if (table.getSelectedColumn() != 1) {
-            return null;
+        int idx = table.getSelectedColumn();
+        if (Icon.class.isAssignableFrom(table.getColumnClass(idx))) {
+            return new DataHandler(table, localObjectFlavor.getMimeType());
         }
-        return new DataHandler(table, localObjectFlavor.getMimeType());
+        return null;
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return false;
