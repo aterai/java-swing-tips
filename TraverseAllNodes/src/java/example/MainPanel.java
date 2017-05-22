@@ -8,67 +8,70 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
-    protected final JTree tree = new JTree();
-    protected final JTextArea textArea = new JTextArea();
-    protected final TreeModel model = tree.getModel();
-    protected final DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTree tree = new JTree();
+        JTextArea textArea = new JTextArea();
+        TreeModel model = tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
+        JButton depthFirst = new JButton("<html>depthFirst<br>postorder");
+        depthFirst.addActionListener(ev -> {
+            textArea.setText("");
+            Enumeration<?> e = root.depthFirstEnumeration();
+            while (e.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                textArea.append(node.toString() + "\n");
+            }
+        });
+
+//         JButton postorder = new JButton("postorder");
+//         postorder.addActionListener(ev -> {
+//             textArea.setText("");
+//             Enumeration<?> e = root.postorderEnumeration();
+//             while (e.hasMoreElements()) {
+//                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+//                 textArea.append(node.toString() + "\n");
+//             }
+//         });
+
+        JButton breadthFirst = new JButton("breadthFirst");
+        breadthFirst.addActionListener(ev -> {
+            textArea.setText("");
+            Enumeration<?> e = root.breadthFirstEnumeration();
+            while (e.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                textArea.append(node.toString() + "\n");
+            }
+        });
+
+        JButton preorder = new JButton("preorder");
+        preorder.addActionListener(ev -> {
+            textArea.setText("");
+            Enumeration<?> e = root.preorderEnumeration();
+            while (e.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                textArea.append(node.toString() + "\n");
+            }
+        });
+
+        JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
+        p.add(depthFirst);
+        p.add(breadthFirst);
+        p.add(preorder);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.add(p, BorderLayout.NORTH);
+
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(new JScrollPane(tree));
         sp.setRightComponent(new JScrollPane(textArea));
         add(sp);
-        add(makeButtonPanel(), BorderLayout.EAST);
+        add(panel, BorderLayout.EAST);
         setPreferredSize(new Dimension(320, 240));
-    }
-    private JPanel makeButtonPanel() {
-        JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
-        p.add(new JButton(new AbstractAction("<html>depthFirst<br>postorder") {
-            @Override public void actionPerformed(ActionEvent ev) {
-                textArea.setText("");
-                Enumeration<?> e = root.depthFirstEnumeration();
-                while (e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                    textArea.append(node.toString() + "\n");
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("breadthFirst") {
-            @Override public void actionPerformed(ActionEvent ev) {
-                textArea.setText("");
-                Enumeration<?> e = root.breadthFirstEnumeration();
-                while (e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                    textArea.append(node.toString() + "\n");
-                }
-            }
-        }));
-//         p.add(new JButton(new AbstractAction("postorder") {
-//             @Override public void actionPerformed(ActionEvent ev) {
-//                 textArea.setText("");
-//                 Enumeration<?> e = root.postorderEnumeration();
-//                 while (e.hasMoreElements()) {
-//                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-//                     textArea.append(node.toString() + "\n");
-//                 }
-//             }
-//         }));
-        p.add(new JButton(new AbstractAction("preorder") {
-            @Override public void actionPerformed(ActionEvent ev) {
-                textArea.setText("");
-                Enumeration<?> e = root.preorderEnumeration();
-                while (e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                    textArea.append(node.toString() + "\n");
-                }
-            }
-        }));
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panel.add(p, BorderLayout.NORTH);
-        return panel;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
