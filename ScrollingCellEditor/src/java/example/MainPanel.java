@@ -98,7 +98,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
     }
     @Override public boolean isCellEditable(final EventObject e) {
         if (e instanceof MouseEvent) {
-            return ((MouseEvent) e).getClickCount() - 2 >= 0;
+            return ((MouseEvent) e).getClickCount() >= 2;
         }
         System.out.println("isCellEditable");
         EventQueue.invokeLater(() -> {

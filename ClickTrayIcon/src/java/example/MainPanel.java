@@ -12,7 +12,8 @@ public final class MainPanel extends JPanel {
     private static final String TEXT =
       "icon.addMouseListener(new MouseAdapter() {\n"
     + "  public void mouseClicked(MouseEvent e) {\n"
-    + "    if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() - 2 >= 0) {\n"
+    + "    boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;\n"
+    + "    if (isDoubleClick) {\n"
     + "      frame.setVisible(true);\n"
     + "    } else if (frame.isVisible()) {\n"
     + "      frame.setExtendedState(Frame.NORMAL);\n"
@@ -52,7 +53,8 @@ public final class MainPanel extends JPanel {
         TrayIcon icon = new TrayIcon(image, "Click Test", popup);
         icon.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() - 2 >= 0) {
+                boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;
+                if (isDoubleClick) {
                     frame.setVisible(true);
                 } else if (frame.isVisible()) {
                     frame.setExtendedState(Frame.NORMAL);

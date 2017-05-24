@@ -215,7 +215,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
         R2.setBounds(r.x, r.y + ht2, r.width, ht2);
         if (R1.contains(pt)) {
             prevRect.setBounds(R1);
-            return i - 1 > 0 ? i : 0;
+            return i > 1 ? i : 0;
         } else if (R2.contains(pt)) {
             prevRect.setBounds(R2);
             return i;

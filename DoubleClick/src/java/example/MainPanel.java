@@ -27,7 +27,8 @@ public final class MainPanel extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 JTable t = (JTable) e.getComponent();
-                if (e.getClickCount() - 2 >= 0) {
+                boolean isDoubleClick = e.getClickCount() >= 2;
+                if (isDoubleClick) {
                     TableModel m = t.getModel();
                     Point pt = e.getPoint();
                     int i = t.rowAtPoint(pt);

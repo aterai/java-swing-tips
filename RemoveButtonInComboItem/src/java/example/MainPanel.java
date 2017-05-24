@@ -247,16 +247,17 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
             label.setForeground(list.getForeground());
         }
         MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-        if (index < 0 || m.getSize() - 1 <= 0) {
-            setOpaque(false);
-            deleteButton.setVisible(false);
-            label.setForeground(list.getForeground());
-        } else {
+        boolean showDeleteButton = index >= 0 && m.getSize() > 1;
+        if (showDeleteButton) {
             boolean f = index == rolloverIndex;
             setOpaque(true);
             deleteButton.setVisible(true);
             deleteButton.getModel().setRollover(f);
             deleteButton.setForeground(f ? Color.WHITE : list.getForeground());
+        } else {
+            setOpaque(false);
+            deleteButton.setVisible(false);
+            label.setForeground(list.getForeground());
         }
         return this;
     }

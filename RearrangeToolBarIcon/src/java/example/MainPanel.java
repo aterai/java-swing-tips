@@ -119,7 +119,7 @@ class DragHandler extends MouseAdapter {
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
             Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
             if (r1.contains(pt)) {
-                swapComponentLocation(parent, gap, gap, i - 1 > 0 ? i : 0);
+                swapComponentLocation(parent, gap, gap, i > 1 ? i : 0);
                 return;
             } else if (r2.contains(pt)) {
                 swapComponentLocation(parent, gap, gap, i);
@@ -148,7 +148,7 @@ class DragHandler extends MouseAdapter {
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
             Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
             if (r1.contains(pt)) {
-                swapComponentLocation(parent, gap, cmp, i - 1 > 0 ? i : 0);
+                swapComponentLocation(parent, gap, cmp, i > 1 ? i : 0);
                 return;
             } else if (r2.contains(pt)) {
                 swapComponentLocation(parent, gap, cmp, i);
