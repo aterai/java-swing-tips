@@ -10,23 +10,17 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
-        final ZoomImage zoom = new ZoomImage(icon.getImage());
+        ZoomImage zoom = new ZoomImage(icon.getImage());
 
-        JButton button1 = new JButton(new AbstractAction("Zoom In") {
-            @Override public void actionPerformed(ActionEvent e) {
-                zoom.changeScale(-5);
-            }
-        });
-        JButton button2 = new JButton(new AbstractAction("Zoom Out") {
-            @Override public void actionPerformed(ActionEvent e) {
-                zoom.changeScale(5);
-            }
-        });
-        JButton button3 = new JButton(new AbstractAction("Original size") {
-            @Override public void actionPerformed(ActionEvent e) {
-                zoom.initScale();
-            }
-        });
+        JButton button1 = new JButton("Zoom In");
+        button1.addActionListener(e -> zoom.changeScale(-5));
+
+        JButton button2 = new JButton("Zoom Out");
+        button2.addActionListener(e -> zoom.changeScale(5));
+
+        JButton button3 = new JButton("Original size");
+        button3.addActionListener(e -> zoom.initScale());
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(button1);
