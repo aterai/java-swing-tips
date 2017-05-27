@@ -129,7 +129,8 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 
         DefaultMutableTreeNode node;
         CheckBoxNode c; // = (CheckBoxNode) node.getUserObject();
-        if (Objects.nonNull(children) && children.length == 1) {
+        boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children) && children.length == 1;
+        if (isNotRootAndOnlyOneNodeChanged) {
             node = (DefaultMutableTreeNode) children[0];
             c = (CheckBoxNode) node.getUserObject();
             TreePath parent = e.getTreePath();
@@ -144,7 +145,9 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
                 }
             }
             model.nodeChanged(n);
-        } else {
+        } else { // if (Objects.isNull(children)) {
+            // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
+            // To indicate the root has changed, childIndices and children will be null.
             node = (DefaultMutableTreeNode) model.getRoot();
             c = (CheckBoxNode) node.getUserObject();
         }

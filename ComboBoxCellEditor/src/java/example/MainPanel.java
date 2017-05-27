@@ -34,7 +34,8 @@ public final class MainPanel extends JPanel {
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override public void treeNodesChanged(TreeModelEvent e) {
                 Object[] children = e.getChildren();
-                if (Objects.nonNull(children) && children.length == 1 && children[0] instanceof DefaultMutableTreeNode) {
+                boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children) && children.length == 1 && children[0] instanceof DefaultMutableTreeNode;
+                if (isNotRootAndOnlyOneNodeChanged) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) children[0];
                     Object userObject = node.getUserObject();
                     if (userObject instanceof PluginNode) {
