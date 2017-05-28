@@ -28,13 +28,14 @@ public final class MainPanel extends JPanel {
     private static JLabel initLabel(JLabel l, int i) {
         l.setFont(FONT);
         l.setOpaque(true);
-        boolean f = i % 2 == 0;
-        if (i < 6 ? !f : f) {
-            l.setForeground(Color.WHITE);
-            l.setBackground(Color.BLACK);
-        } else {
+        boolean isFirstHalf = i < 6;
+        boolean isEven = i % 2 == 0;
+        if (isFirstHalf ? isEven : !isEven) {
             l.setForeground(Color.BLACK);
             l.setBackground(Color.WHITE);
+        } else {
+            l.setForeground(Color.WHITE);
+            l.setBackground(Color.BLACK);
         }
         return l;
     }

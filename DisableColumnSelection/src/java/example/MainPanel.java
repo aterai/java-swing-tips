@@ -21,18 +21,20 @@ public class MainPanel extends JPanel {
             return column != 0;
         }
     };
+    protected static final int TARGET_COLUMN_INDEX = 0;
+
     public MainPanel() {
         super(new BorderLayout());
 
         JTable table1 = new JTable(model) {
             @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (convertColumnIndexToModel(columnIndex) != 0) {
+                if (convertColumnIndexToModel(columnIndex) != TARGET_COLUMN_INDEX) {
                     return;
                 }
                 super.changeSelection(rowIndex, columnIndex, toggle, extend);
             }
             @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                if (convertColumnIndexToModel(column) != 0) {
+                if (convertColumnIndexToModel(column) != TARGET_COLUMN_INDEX) {
                     return renderer.getTableCellRendererComponent(this, getValueAt(row, column), false, false, row, column);
                 }
                 return super.prepareRenderer(renderer, row, column);
@@ -41,7 +43,7 @@ public class MainPanel extends JPanel {
 
         JTable table2 = new JTable(model) {
             @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (convertColumnIndexToModel(columnIndex) != 0) {
+                if (convertColumnIndexToModel(columnIndex) != TARGET_COLUMN_INDEX) {
                     return;
                 }
                 super.changeSelection(rowIndex, columnIndex, toggle, extend);
@@ -50,7 +52,7 @@ public class MainPanel extends JPanel {
         table2.setCellSelectionEnabled(true);
         table2.getColumnModel().setSelectionModel(new DefaultListSelectionModel() {
             @Override public boolean isSelectedIndex(int index) {
-                return table2.convertColumnIndexToModel(index) == 0;
+                return table2.convertColumnIndexToModel(index) == TARGET_COLUMN_INDEX;
             }
         });
 

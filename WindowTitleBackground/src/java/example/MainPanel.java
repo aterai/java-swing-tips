@@ -11,6 +11,8 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
+    protected final int KEY_COLUMN_INDEX = 0;
+    protected final int COLOR_COLUMN_INDEX = 1;
     private final String[] columnNames = {"Key", "Color"};
     private final Object[][] data = {
         {"activeCaption",         UIManager.getColor("activeCaption")},
@@ -44,7 +46,7 @@ public final class MainPanel extends JPanel {
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
-            return column == 1;
+            return column == COLOR_COLUMN_INDEX;
         }
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
@@ -59,14 +61,12 @@ public final class MainPanel extends JPanel {
         table.setDefaultEditor(Color.class,   new ColorEditor());
 
         model.addTableModelListener(e -> {
-            if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 1) {
+            if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COLUMN_INDEX) {
                 int row = e.getFirstRow();
-                String key = (String) model.getValueAt(row, 0);
-                Color color = (Color) model.getValueAt(row, 1);
+                String key = (String) model.getValueAt(row, KEY_COLUMN_INDEX);
+                Color color = (Color) model.getValueAt(row, COLOR_COLUMN_INDEX);
                 UIManager.put(key, new ColorUIResource(color));
-                EventQueue.invokeLater(() -> {
-                    Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI);
-                });
+                EventQueue.invokeLater(() -> Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI));
             }
         });
 

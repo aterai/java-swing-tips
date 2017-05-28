@@ -185,7 +185,8 @@ class DnDTabbedPane extends JTabbedPane {
     }
 
     protected void initTargetLine(int next) {
-        if (next < 0 || dragTabIndex == next || next - dragTabIndex == 1) {
+        boolean isLeftOrRightNeighbor = next < 0 || dragTabIndex == next || next - dragTabIndex == 1;
+        if (isLeftOrRightNeighbor) {
             glassPane.setTargetRect(0, 0, 0, 0);
             return;
         }
