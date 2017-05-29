@@ -43,12 +43,12 @@ public final class MainPanel extends JPanel {
         setBackground(new Color(1f, 1f, 1f, .01f));
         //<<<
     }
-//     private ButtonGroup lookAndFeelRadioGroup;
+//     private ButtonGroup lafRadioGroup;
 //     private String lookAndFeel;
 //     protected JMenu createLookAndFeelMenu() {
 //         JMenu menu = new JMenu("LookAndFeel");
 //         lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-//         lookAndFeelRadioGroup = new ButtonGroup();
+//         lafRadioGroup = new ButtonGroup();
 //         for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
 //             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
 //         }
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 //         lafItem.setHideActionText(true);
 //         lafItem.setAction(new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {
-//                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
+//                 ButtonModel m = lafRadioGroup.getSelection();
 //                 try {
 //                     setLookAndFeel(m.getActionCommand());
 //                 } catch (ClassNotFoundException | InstantiationException
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 //         });
 //         lafItem.setText(lafName);
 //         lafItem.setActionCommand(lafClassName);
-//         lookAndFeelRadioGroup.add(lafItem);
+//         lafRadioGroup.add(lafItem);
 //         return lafItem;
 //     }
 //     public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
@@ -183,18 +183,18 @@ final class LookAndFeelUtil {
     private LookAndFeelUtil() { /* Singleton */ }
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
-        ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
+        ButtonGroup lafRadioGroup = new ButtonGroup();
         for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
-            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
+            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafRadioGroup));
         }
         return menu;
     }
-    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lookAndFeelRadioGroup) {
+    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafRadioGroup) {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
         lafItem.setSelected(lafClassName.equals(lookAndFeel));
         lafItem.setHideActionText(true);
         lafItem.addActionListener(e -> {
-            ButtonModel m = lookAndFeelRadioGroup.getSelection();
+            ButtonModel m = lafRadioGroup.getSelection();
             try {
                 setLookAndFeel(m.getActionCommand());
             } catch (ClassNotFoundException | InstantiationException
@@ -204,7 +204,7 @@ final class LookAndFeelUtil {
         });
         lafItem.setText(lafName);
         lafItem.setActionCommand(lafClassName);
-        lookAndFeelRadioGroup.add(lafItem);
+        lafRadioGroup.add(lafItem);
         return lafItem;
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
