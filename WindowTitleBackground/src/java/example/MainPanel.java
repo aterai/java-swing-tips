@@ -11,8 +11,8 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    protected final int KEY_COLUMN_INDEX = 0;
-    protected final int COLOR_COLUMN_INDEX = 1;
+    public static final int KEY_COLUMN_INDEX = 0;
+    public static final int COLOR_COLUMN_INDEX = 1;
     private final String[] columnNames = {"Key", "Color"};
     private final Object[][] data = {
         {"activeCaption",         UIManager.getColor("activeCaption")},
