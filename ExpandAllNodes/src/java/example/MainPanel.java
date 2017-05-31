@@ -16,30 +16,28 @@ public final class MainPanel extends JPanel {
         JTree tree = new JTree();
         //tree.setModel(makeModel());
 
+        JButton button1 = new JButton("expand A");
+        button1.addActionListener(e -> expandAll(tree));
+
+        JButton button2 = new JButton("collapse A");
+        button2.addActionListener(e -> collapseAll(tree));
+
+        JButton button3 = new JButton("expand B");
+        button3.addActionListener(e -> {
+            TreeNode root = (TreeNode) tree.getModel().getRoot();
+            visitAll(tree, new TreePath(root), true);
+            //expandAPath(new TreePath(root));
+        });
+
+        JButton button4 = new JButton("collapse B");
+        button4.addActionListener(e -> {
+            TreeNode root = (TreeNode) tree.getModel().getRoot();
+            visitAll(tree, new TreePath(root), false);
+        });
+
         JPanel p = new JPanel(new GridLayout(0, 1, 2, 2));
-        p.add(new JButton(new AbstractAction("expand A") {
-            @Override public void actionPerformed(ActionEvent e) {
-                expandAll(tree);
-            }
-        }));
-        p.add(new JButton(new AbstractAction("collapse A") {
-            @Override public void actionPerformed(ActionEvent e) {
-                collapseAll(tree);
-            }
-        }));
-        p.add(new JButton(new AbstractAction("expand B") {
-            @Override public void actionPerformed(ActionEvent e) {
-                TreeNode root = (TreeNode) tree.getModel().getRoot();
-                visitAll(tree, new TreePath(root), true);
-                //expandAPath(new TreePath(root));
-            }
-        }));
-        p.add(new JButton(new AbstractAction("collapse B") {
-            @Override public void actionPerformed(ActionEvent e) {
-                TreeNode root = (TreeNode) tree.getModel().getRoot();
-                visitAll(tree, new TreePath(root), false);
-            }
-        }));
+        Arrays.asList(button1, button2, button3, button4).forEach(p::add);
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(p, BorderLayout.NORTH);
         add(panel, BorderLayout.EAST);
