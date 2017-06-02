@@ -52,17 +52,18 @@ public class MainPanel extends JPanel {
         label.addMouseListener(handler);
         label.addMouseMotionListener(handler);
 
+        JToggleButton button = new JToggleButton("highlight");
+        button.addActionListener(e -> {
+            highlighter.clear();
+            if (((JToggleButton) e.getSource()).isSelected()) {
+                updateHighlighter();
+            }
+            label.getRootPane().repaint();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JToggleButton(new AbstractAction("highlight") {
-            @Override public void actionPerformed(ActionEvent e) {
-                highlighter.clear();
-                if (((JToggleButton) e.getSource()).isSelected()) {
-                    updateHighlighter();
-                }
-                label.getRootPane().repaint();
-            }
-        }));
+        box.add(button);
         add(scroll);
         add(label, BorderLayout.EAST);
         add(box, BorderLayout.SOUTH);
@@ -83,7 +84,7 @@ public class MainPanel extends JPanel {
         int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
         m.setValue(iv);
     }
-    protected void updateHighlighter() {
+    protected final void updateHighlighter() {
         for (int i = 0; i < table.getRowCount(); i++) {
             if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
                 highlighter.add(i);

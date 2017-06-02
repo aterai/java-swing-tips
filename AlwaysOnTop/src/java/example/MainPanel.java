@@ -9,19 +9,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JCheckBox checkbox = new JCheckBox(new AbstractAction("Always On Top") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                Container w = c.getTopLevelAncestor();
-                if (w instanceof Window) {
-                    ((Window) w).setAlwaysOnTop(c.isSelected());
-                }
+        JCheckBox check = new JCheckBox("Always On Top");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            Container w = c.getTopLevelAncestor();
+            if (w instanceof Window) {
+                ((Window) w).setAlwaysOnTop(c.isSelected());
             }
         });
-        checkbox.setSelected(true);
+        check.setSelected(true);
 
         JPanel p = new JPanel();
-        p.add(checkbox);
+        p.add(check);
         p.setBorder(BorderFactory.createTitledBorder("JFrame#setAlwaysOnTop(boolean)"));
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

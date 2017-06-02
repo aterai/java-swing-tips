@@ -71,24 +71,26 @@ public class MainPanel extends JPanel {
         box.add(toggle);
         box.add(extend);
 
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        p.add(new JButton(new AbstractAction("changeSelection") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int row = Integer.parseInt(rowField.getValue().toString());
-                int col = Integer.parseInt(colField.getValue().toString());
+        JButton changeSelection = new JButton("changeSelection");
+        changeSelection.addActionListener(e -> {
+            int row = Integer.parseInt(rowField.getValue().toString());
+            int col = Integer.parseInt(colField.getValue().toString());
 
-                table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
-                //table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
-                table.requestFocusInWindow();
-                table.repaint();
-            }
-        }));
-        p.add(new JButton(new AbstractAction("clear(Esc)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.clearSelection();
-                requestFocusInWindow();
-            }
-        }));
+            table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
+            //table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
+            table.requestFocusInWindow();
+            table.repaint();
+        });
+
+        JButton clear = new JButton("clear(Esc)");
+        clear.addActionListener(e -> {
+            table.clearSelection();
+            requestFocusInWindow();
+        });
+
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        p.add(changeSelection);
+        p.add(clear);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("JTable#changeSelection(int, int, boolean, boolean)"));
