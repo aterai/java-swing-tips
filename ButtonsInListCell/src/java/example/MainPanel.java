@@ -160,19 +160,8 @@ class CellButtonsMouseListener extends MouseInputAdapter {
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected static final Color EVEN_COLOR = new Color(230, 255, 230);
     protected final JTextArea textArea = new JTextArea();
-    protected final JButton deleteButton = new JButton(new AbstractAction("delete") {
-        @Override public void actionPerformed(ActionEvent e) {
-            boolean isMoreThanOneItem = model.getSize() > 1;
-            if (isMoreThanOneItem) {
-                model.remove(index);
-            }
-        }
-    });
-    protected final JButton copyButton = new JButton(new AbstractAction("copy") {
-        @Override public void actionPerformed(ActionEvent e) {
-            model.add(index, model.get(index));
-        }
-    });
+    protected final JButton deleteButton = new JButton("delete");
+    protected final JButton copyButton = new JButton("copy");
     protected final DefaultListModel<E> model;
     protected int index;
     public int pressedIndex  = -1;
@@ -187,6 +176,14 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         textArea.setLineWrap(true);
         textArea.setOpaque(false);
         add(textArea);
+
+        deleteButton.addActionListener(e -> {
+            boolean isMoreThanOneItem = model.getSize() > 1;
+            if (isMoreThanOneItem) {
+                model.remove(index);
+            }
+        });
+        copyButton.addActionListener(e -> model.add(index, model.get(index)));
 
         Box box = Box.createHorizontalBox();
         for (JButton b: Arrays.asList(deleteButton, copyButton)) {

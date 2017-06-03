@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
         box.add(buttons);
         box.add(Box.createVerticalStrut(5));
 
+        JButton clear = new JButton("clear selection");
+        clear.addActionListener(e -> {
+            bg1.clearSelection();
+            bg2.clearSelection();
+        });
+
         Box b = Box.createHorizontalBox();
         b.add(Box.createHorizontalGlue());
-        b.add(new JButton(new AbstractAction("clear selection") {
-            @Override public void actionPerformed(ActionEvent e) {
-                bg1.clearSelection();
-                bg2.clearSelection();
-            }
-        }));
+        b.add(clear);
         box.add(b);
-
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }

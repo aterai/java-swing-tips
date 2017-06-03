@@ -29,21 +29,23 @@ public final class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        final List<? extends JTabbedPane> list = Arrays.asList(
+        List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTab(new JTabbedPane()),
             makeTestTab(tabbedPane));
         JPanel p = new JPanel(new GridLayout(2, 1));
         for (JTabbedPane t: list) {
             p.add(t);
         }
-        add(new JCheckBox(new AbstractAction("LEFT") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                for (JTabbedPane t: list) {
-                    t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
-                }
+
+        JCheckBox check = new JCheckBox("LEFT");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            for (JTabbedPane t: list) {
+                t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
             }
-        }), BorderLayout.NORTH);
+        });
+
+        add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
