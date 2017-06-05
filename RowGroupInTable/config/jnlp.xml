@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RowGroupInTable" />
+  <property name="jnlp.Name"     value="RowGroupInTable" />
+  <property name="jnlp.name"     value="rowgroupintable" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowgroupintable/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowGroupInTable.html" />
+</project>
