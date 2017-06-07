@@ -22,9 +22,7 @@
     <exclude name="LawOfDemeter" />
     <exclude name="LoosePackageCoupling" />
   </rule>
-  <rule ref="rulesets/java/design.xml">
-    <exclude name="AvoidSynchronizedAtMethodLevel" />
-  </rule>
+  <rule ref="rulesets/java/design.xml" />
   <rule ref="rulesets/java/empty.xml" />
   <rule ref="rulesets/java/finalizers.xml" />
   <rule ref="rulesets/java/imports.xml" />

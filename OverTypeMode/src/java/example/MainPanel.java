@@ -147,15 +147,17 @@ class OvertypeTextArea extends JTextArea {
          * (The damaged area is the area the caret is painted in. We must
          * consider the area for the default caret and this caret)
          */
-        @Override protected synchronized void damage(Rectangle r) {
+        @Override protected void damage(Rectangle r) {
             if (Objects.nonNull(r)) {
-                JTextComponent component = getComponent();
-                x = r.x;
-                y = r.y;
-                //width = component.getFontMetrics(component.getFont()).charWidth('w');
-                width = component.getFontMetrics(component.getFont()).charWidth('\u3042');
-                height = r.height;
-                repaint();
+                JTextComponent c = getComponent();
+                synchronized (c) {
+                    x = r.x;
+                    y = r.y;
+                    //width = component.getFontMetrics(c.getFont()).charWidth('w');
+                    width = component.getFontMetrics(c.getFont()).charWidth('\u3042');
+                    height = r.height;
+                    c.repaint();
+                }
             }
         }
     }

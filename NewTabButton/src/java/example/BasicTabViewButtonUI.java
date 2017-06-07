@@ -46,7 +46,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 //     }
 //     @Override public void installDefaults() {}
 
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {
             return;
         }

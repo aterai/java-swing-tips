@@ -166,7 +166,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         iconRect = new Rectangle();
         textRect = new Rectangle();
     }
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {
             return;
         }

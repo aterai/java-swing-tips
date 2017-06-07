@@ -189,7 +189,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     @Override public Icon getDefaultIcon() {
         return null;
     }
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         //AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);

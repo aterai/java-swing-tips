@@ -109,7 +109,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
     private final Rectangle viewRect = new Rectangle();
     private final Rectangle iconRect = new Rectangle();
     private final Rectangle textRect = new Rectangle();
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {
             return;
         }
@@ -170,7 +170,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
     private final Rectangle viewRect = new Rectangle();
     private final Rectangle iconRect = new Rectangle();
     private final Rectangle textRect = new Rectangle();
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {
             return;
         }

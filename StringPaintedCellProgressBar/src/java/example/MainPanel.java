@@ -206,7 +206,7 @@ class WorkerModel extends DefaultTableModel {
         }
         number++;
     }
-    public synchronized SwingWorker getSwingWorker(int identifier) {
+    public SwingWorker getSwingWorker(int identifier) {
         Integer key = (Integer) getValueAt(identifier, 0);
         return swmap.get(key);
     }

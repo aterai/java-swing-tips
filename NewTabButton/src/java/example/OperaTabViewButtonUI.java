@@ -36,7 +36,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             tabViewButton.setSelectedTextColor(Color.WHITE);
         }
     }
-    @Override public synchronized void paint(Graphics g, JComponent c) {
+    @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {
             return;
         }
