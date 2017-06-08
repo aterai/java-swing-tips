@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.tree.*;
@@ -22,7 +23,7 @@ public final class MainPanel extends JPanel {
         tree0.setCellRenderer(new DefaultTreeCellRenderer() {
             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                if (value.equals(tree.getModel().getRoot())) {
+                if (Objects.equals(value, tree.getModel().getRoot())) {
                     l.setIcon(icon0);
                 }
                 return l;
@@ -39,7 +40,7 @@ public final class MainPanel extends JPanel {
         tree.setCellRenderer(new DefaultTreeCellRenderer() {
             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                if (value.equals(tree.getModel().getRoot())) {
+                if (Objects.equals(value, tree.getModel().getRoot())) {
                     l.setIcon(icon1);
                     l.setIconTextGap(2 + (iw - icon1.getIconWidth()) / 2);
                 }
