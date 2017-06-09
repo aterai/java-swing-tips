@@ -56,16 +56,16 @@ class HighlightCursorTextArea extends JTextArea {
         super.updateUI();
         setOpaque(false);
         Caret caret = new DefaultCaret() {
-            @Override protected void damage(Rectangle r) {
+            // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
+            @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+            @Override protected synchronized void damage(Rectangle r) {
                 if (Objects.nonNull(r)) {
                     JTextComponent c = getComponent();
-                    synchronized (c) {
-                        x = 0;
-                        y = r.y;
-                        width  = c.getSize().width;
-                        height = r.height;
-                        c.repaint();
-                    }
+                    x = 0;
+                    y = r.y;
+                    width  = c.getSize().width;
+                    height = r.height;
+                    c.repaint();
                 }
             }
         };

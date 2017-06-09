@@ -189,7 +189,9 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     @Override public Icon getDefaultIcon() {
         return null;
     }
-    @Override public void paint(Graphics g, JComponent c) {
+    // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
+    @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+    @Override public synchronized void paint(Graphics g, JComponent c) {
         //AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
