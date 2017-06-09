@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
         p.add(Box.createVerticalStrut(20));
         p.add(new JLabel("CheckedComboBox:"));
         p.add(new CheckedComboBox<>(new DefaultComboBoxModel<>(m)));
+        // p.add(new CheckedComboBox<>(new CheckableComboBoxModel<>(m)));
 
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -57,6 +58,15 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+// class CheckableComboBoxModel<E> extends DefaultComboBoxModel<E> {
+//     protected CheckableComboBoxModel(E[] items) {
+//         super(items);
+//     }
+//     public void fireContentsChanged(int index) {
+//         super.fireContentsChanged(this, index, index);
+//     }
+// }
 
 class CheckableItem {
     public final String text;
@@ -145,8 +155,13 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         if (isPopupVisible()) {
             E item = getItemAt(index);
             item.selected ^= true;
-            removeItemAt(index);
-            insertItemAt(item, index);
+//             ComboBoxModel m = getModel();
+//             if (m instanceof CheckableComboBoxModel) {
+//                 ((CheckableComboBoxModel) m).fireContentsChanged(index);
+//             }
+            // removeItemAt(index);
+            // insertItemAt(item, index);
+            setSelectedIndex(-1);
             setSelectedItem(item);
         }
     }
