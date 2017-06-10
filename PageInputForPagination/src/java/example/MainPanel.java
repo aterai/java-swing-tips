@@ -65,9 +65,8 @@ public class MainPanel extends JPanel {
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        ActionListener jumpActionListener = this::updateCurrentPageIndex;
         for (JButton b: Arrays.asList(first, prev, next, last)) {
-            b.addActionListener(jumpActionListener);
+            b.addActionListener(this::updateCurrentPageIndex);
         }
 
         new TableUpdateTask(2016, itemsPerPage).execute();
