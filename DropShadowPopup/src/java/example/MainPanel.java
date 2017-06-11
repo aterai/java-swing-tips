@@ -33,27 +33,21 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void initPopupMenu(JPopupMenu p) {
-        for (JComponent c: Arrays.asList(
-            new JMenuItem("Open(dummy)"),
-            new JMenuItem("Save(dummy)"),
-            new JMenuItem("Close(dummy)"),
-            new JSeparator(),
-            new JMenuItem(new AbstractAction("Exit") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    JMenuItem m = (JMenuItem) e.getSource();
-                    JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
-                    Component w = SwingUtilities.getRoot(pop.getInvoker());
-                    if (w instanceof Window) {
-                        ((Window) w).dispose();
-                    }
-                }
-            }))) {
-            c.setOpaque(true);
-            p.add(c);
+        for (String s: Arrays.asList("Open", "Save", "Close")) {
+            p.add(s + "(dummy)");
         }
         // Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
         // http://bugs.java.com/view_bug.do?bug_id=6595814
-        //p.addSeparator();
+        // Fixed 6u10: p.add(new JSeparator());
+        p.addSeparator();
+        p.add("Exit").addActionListener(e -> {
+            JMenuItem m = (JMenuItem) e.getSource();
+            JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
+            Component w = SwingUtilities.getRoot(pop.getInvoker());
+            if (w instanceof Window) {
+                ((Window) w).dispose();
+            }
+        });
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
