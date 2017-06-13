@@ -3,37 +3,36 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new BorderLayout());
+        super(new GridLayout(2, 1, 5, 5));
 
-        final JFrame frame = new JFrame("Test - JFrame");
+        JFrame frame = new JFrame("Test - JFrame");
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.setSize(240, 240);
 
-        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-        p.add(makePanel("in center of screen", new JButton(new AbstractAction("frame.setLocationRelativeTo(null)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (frame.isVisible()) {
-                    return;
-                }
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+        JButton center = new JButton("frame.setLocationRelativeTo(null)");
+        center.addActionListener(e -> {
+            if (frame.isVisible()) {
+                return;
             }
-        })));
-        p.add(makePanel("relative to this button", new JButton(new AbstractAction("frame.setLocationRelativeTo(button)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (frame.isVisible()) {
-                    return;
-                }
-                frame.setLocationRelativeTo((Component) e.getSource());
-                frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        JButton relative = new JButton("frame.setLocationRelativeTo(button)");
+        relative.addActionListener(e -> {
+            if (frame.isVisible()) {
+                return;
             }
-        })));
-        add(p);
+            frame.setLocationRelativeTo((Component) e.getSource());
+            frame.setVisible(true);
+        });
+
+        add(makePanel("in center of screen", center));
+        add(makePanel("relative to this button", relative));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
