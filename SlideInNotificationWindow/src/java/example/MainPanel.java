@@ -22,22 +22,19 @@ public final class MainPanel extends JPanel {
 //         dialog.getContentPane().add(optionPane);
 //         dialog.pack();
 
+        JButton easeIn = new JButton("easeIn");
+        easeIn.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN));
+
+        JButton easeOut = new JButton("easeOut");
+        easeOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_OUT));
+
+        JButton easeInOut = new JButton("easeInOut");
+        easeInOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN_OUT));
+
         JPanel p = new JPanel();
-        p.add(new JButton(new AbstractAction("easeIn") {
-            @Override public void actionPerformed(ActionEvent e) {
-                handler.startSlideIn(SlideInAnimation.EASE_IN);
-            }
-        }));
-        p.add(new JButton(new AbstractAction("easeOut") {
-            @Override public void actionPerformed(ActionEvent e) {
-                handler.startSlideIn(SlideInAnimation.EASE_OUT);
-            }
-        }));
-        p.add(new JButton(new AbstractAction("easeInOut") {
-            @Override public void actionPerformed(ActionEvent e) {
-                handler.startSlideIn(SlideInAnimation.EASE_IN_OUT);
-            }
-        }));
+        p.add(easeIn);
+        p.add(easeOut);
+        p.add(easeInOut);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
@@ -67,7 +64,8 @@ public final class MainPanel extends JPanel {
 }
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
-    private static final int DELAY = 5;
+    public static final int DELAY = 5;
+    public static final int STEP  = 3;
     protected final JWindow dialog = new JWindow((Frame) null);
     protected final Timer animator = new Timer(DELAY, null);
     private transient ActionListener listener;
@@ -102,19 +100,20 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
 
         animator.removeActionListener(listener);
         listener = new ActionListener() {
-            private int count;
+            private int counter;
             @Override public void actionPerformed(ActionEvent e) {
+                counter += STEP;
                 double a = 1d;
                 switch (slideInAnimation) {
                   case EASE_IN:
-                    a = AnimationUtil.easeIn(count++ / (double) d.height);
+                    a = AnimationUtil.easeIn(counter / (double) d.height);
                     break;
                   case EASE_OUT:
-                    a = AnimationUtil.easeOut(count++ / (double) d.height);
+                    a = AnimationUtil.easeOut(counter / (double) d.height);
                     break;
                   case EASE_IN_OUT:
                   default:
-                    a = AnimationUtil.easeInOut(count++ / (double) d.height);
+                    a = AnimationUtil.easeInOut(counter / (double) d.height);
                     break;
                 }
                 int visibleHeight = (int) (.5 + a * d.height);
