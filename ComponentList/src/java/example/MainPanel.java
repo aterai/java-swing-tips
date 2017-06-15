@@ -34,24 +34,21 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> comp.scrollRectToVisible(comp.getBounds()));
     }
     private JToolBar makeToolBar() {
+        JButton addLabel = new JButton("add JLabel");
+        addLabel.addActionListener(e -> addComp(MakeComponentUtil.makeLabel()));
+
+        JButton addButton = new JButton("add JButton");
+        addButton.addActionListener(e -> addComp(MakeComponentUtil.makeButton()));
+
+        JButton addCheckBox = new JButton("add JCheckBox");
+        addCheckBox.addActionListener(e -> addComp(MakeComponentUtil.makeCheckBox()));
+
         JToolBar bar = new JToolBar();
-        bar.add(new AbstractAction("add JLabel") {
-            @Override public void actionPerformed(ActionEvent e) {
-                addComp(MakeComponentUtil.makeLabel());
-            }
-        });
+        bar.add(addLabel);
         bar.addSeparator();
-        bar.add(new AbstractAction("add JButton") {
-            @Override public void actionPerformed(ActionEvent e) {
-                addComp(MakeComponentUtil.makeButton());
-            }
-        });
+        bar.add(addButton);
         bar.addSeparator();
-        bar.add(new AbstractAction("add JCheckBox") {
-            @Override public void actionPerformed(ActionEvent e) {
-                addComp(MakeComponentUtil.makeCheckBox());
-            }
-        });
+        bar.add(addCheckBox);
         return bar;
     }
     public static void main(String... args) {
