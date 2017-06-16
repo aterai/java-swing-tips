@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
 class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     private static final String CMD_BLOCKING = "lock";
     private static final boolean DEBUG_POPUP_BLOCK = false;
-    private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
-    private final transient KeyListener dummyKeyListener = new KeyAdapter() { /* Dummy listener */ };
+    private final transient MouseListener dmyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient KeyListener dmyKeyListener = new KeyAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
 
     @Override public void installUI(JComponent c) {
@@ -100,8 +100,8 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
         if (c instanceof JLayer) {
             JLayer jlayer = (JLayer) c;
             if (DEBUG_POPUP_BLOCK) {
-                jlayer.getGlassPane().addMouseListener(dummyMouseListener);
-                jlayer.getGlassPane().addKeyListener(dummyKeyListener);
+                jlayer.getGlassPane().addMouseListener(dmyMouseListener);
+                jlayer.getGlassPane().addKeyListener(dmyKeyListener);
             }
             jlayer.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
                                    | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
@@ -113,8 +113,8 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
             JLayer jlayer = (JLayer) c;
             jlayer.setLayerEventMask(0);
             if (DEBUG_POPUP_BLOCK) {
-                jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
-                jlayer.getGlassPane().removeKeyListener(dummyKeyListener);
+                jlayer.getGlassPane().removeMouseListener(dmyMouseListener);
+                jlayer.getGlassPane().removeKeyListener(dmyKeyListener);
             }
         }
         super.uninstallUI(c);

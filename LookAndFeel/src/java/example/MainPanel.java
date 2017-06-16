@@ -100,7 +100,7 @@ final class LookAndFeelUtil {
     private static final String NIMBUS  = "javax.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.7.0
 
     // The current Look & Feel
-    private static String currentLookAndFeel = METAL;
+    private static String currentLaf = METAL;
 
     private LookAndFeelUtil() { /* Singleton */ }
 
@@ -143,17 +143,17 @@ final class LookAndFeelUtil {
         }
     }
     public static void setLookAndFeel(String laf) {
-        if (currentLookAndFeel.equals(laf)) {
+        if (currentLaf.equals(laf)) {
             return;
         }
-        currentLookAndFeel = laf;
+        currentLaf = laf;
         try {
-            UIManager.setLookAndFeel(currentLookAndFeel);
+            UIManager.setLookAndFeel(currentLaf);
             updateLookAndFeel();
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
-            System.out.println("Failed loading L&F: " + currentLookAndFeel);
+            System.out.println("Failed loading L&F: " + currentLaf);
         }
     }
     private static void updateLookAndFeel() {

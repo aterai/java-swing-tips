@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 
 class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
     private static final String CMD_REPAINT = "lock";
-    private final transient MouseListener dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient MouseListener dmyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
 
     public void setLocked(boolean flag) {
@@ -91,7 +91,7 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
         super.installUI(c);
         if (c instanceof JLayer) {
             JLayer jlayer = (JLayer) c;
-            jlayer.getGlassPane().addMouseListener(dummyMouseListener);
+            jlayer.getGlassPane().addMouseListener(dmyMouseListener);
             jlayer.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
                                    | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
         }
@@ -100,7 +100,7 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
         if (c instanceof JLayer) {
             JLayer jlayer = (JLayer) c;
             jlayer.setLayerEventMask(0);
-            jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
+            jlayer.getGlassPane().removeMouseListener(dmyMouseListener);
         }
         super.uninstallUI(c);
     }
