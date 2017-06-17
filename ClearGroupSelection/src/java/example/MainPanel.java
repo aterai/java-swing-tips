@@ -32,12 +32,11 @@ public final class MainPanel extends JPanel {
         }
         t2.setSelected(true);
 
+        JButton clear = new JButton("clearSelection");
+        clear.addActionListener(e -> bg.clearSelection());
+
         add(p, BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("clearSelection") {
-            @Override public void actionPerformed(ActionEvent e) {
-                bg.clearSelection();
-            }
-        }), BorderLayout.SOUTH);
+        add(clear, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
