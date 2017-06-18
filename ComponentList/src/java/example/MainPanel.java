@@ -87,11 +87,9 @@ final class MakeComponentUtil {
         return label;
     }
     public static JComponent makeButton() {
-        return new JButton(new AbstractAction("Beep Test") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
+        JButton b = new JButton("Beep Test");
+        b.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
+        return b;
     }
     public static JComponent makeCheckBox() {
         return new JCheckBox("bbbbbbbbbbbbbbbbbbbb", true);

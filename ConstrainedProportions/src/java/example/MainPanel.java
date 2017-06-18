@@ -9,15 +9,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final int MW = 300;
     private static final int MH = 200;
-    private final JCheckBox checkbox = new JCheckBox(new AbstractAction("Fixed aspect ratio, Minimum size: " + MW + "*" + MH) {
-        @Override public void actionPerformed(ActionEvent e) {
-            Container c = getTopLevelAncestor();
-            if (c instanceof JFrame) {
-                initFrameSize((JFrame) c);
-            }
-        }
-    });
-    public MainPanel() {
+    private final JCheckBox checkbox = new JCheckBox("Fixed aspect ratio, Minimum size: " + MW + "*" + MH);
+
+    private MainPanel() {
         super(new BorderLayout());
         EventQueue.invokeLater(() -> {
             Container c = getTopLevelAncestor();
@@ -29,6 +23,13 @@ public final class MainPanel extends JPanel {
                         initFrameSize(frame);
                     }
                 });
+            }
+        });
+
+        checkbox.addActionListener(e -> {
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                initFrameSize((JFrame) c);
             }
         });
         //checkbox.setSelected(true);

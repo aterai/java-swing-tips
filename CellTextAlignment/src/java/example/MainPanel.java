@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public final class MainPanel extends JPanel implements ActionListener {
+public final class MainPanel extends JPanel {
 //     private final JTable table = new JTable(model) {
 //         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //             Component c = super.prepareRenderer(tcr, row, column);
@@ -57,16 +57,12 @@ public final class MainPanel extends JPanel implements ActionListener {
         for (JRadioButton r: Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
             bg.add(r);
             p.add(r);
-            r.addActionListener(this);
+            r.addActionListener(e -> table.repaint());
         }
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    @Override public void actionPerformed(ActionEvent e) {
-        repaint();
     }
 
     private class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
