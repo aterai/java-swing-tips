@@ -3,68 +3,21 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final JPanel p = new JPanel();
-    protected final JButton b1 = new JButton("button");
-    protected final JButton b2 = new JButton();
-    protected final List<JButton> list = Arrays.asList(b1, b2);
-    protected final List<JCheckBox> clist = Arrays.asList(
-        new JCheckBox(new AbstractAction("setFocusPainted") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b: list) {
-                    b.setFocusPainted(flg);
-                }
-                p.revalidate();
-            }
-        }),
-        new JCheckBox(new AbstractAction("setBorderPainted") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b: list) {
-                    b.setBorderPainted(flg);
-                }
-                p.revalidate();
-            }
-        }),
-        new JCheckBox(new AbstractAction("setContentAreaFilled") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b: list) {
-                    b.setContentAreaFilled(flg);
-                }
-                p.revalidate();
-            }
-        }),
-        new JCheckBox(new AbstractAction("setRolloverEnabled") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b: list) {
-                    b.setRolloverEnabled(flg);
-                }
-                p.revalidate();
-            }
-        })
-        //new JCheckBox(new AbstractAction("setBorder(null:BorderFactory.createLineBorder)") {
-        //    @Override public void actionPerformed(ActionEvent e) {
-        //        boolean flg = ((JCheckBox) e.getSource()).isSelected();
-        //        Border border = flg ? BorderFactory.createLineBorder(Color.RED, 5) : null;
-        //        for (JButton b: list) b.setBorder(border);
-        //        p.revalidate();
-        //    }
-        //}),
-        );
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
-        ImageIcon rss = new ImageIcon(MainPanel.class.getResource("feed-icon-14x14.png")); //http://feedicons.com/
+        JPanel p = new JPanel();
+        JButton b1 = new JButton("button");
+        JButton b2 = new JButton();
+        List<JButton> list = Arrays.asList(b1, b2);
+
+        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
         b2.setIcon(rss);
         b2.setRolloverIcon(makeRolloverIcon(rss));
 
@@ -72,11 +25,44 @@ public class MainPanel extends JPanel {
         p.add(b2);
         p.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
+        JCheckBox focusPainted = new JCheckBox("setFocusPainted", true);
+        focusPainted.addActionListener(e -> {
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            for (JButton b: list) {
+                b.setFocusPainted(flg);
+            }
+            p.revalidate();
+        });
+
+        JCheckBox borderPainted = new JCheckBox("setBorderPainted", true);
+        borderPainted.addActionListener(e -> {
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            for (JButton b: list) {
+                b.setBorderPainted(flg);
+            }
+            p.revalidate();
+        });
+
+        JCheckBox contentAreaFilled = new JCheckBox("setContentAreaFilled", true);
+        contentAreaFilled.addActionListener(e -> {
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            for (JButton b: list) {
+                b.setContentAreaFilled(flg);
+            }
+            p.revalidate();
+        });
+
+        JCheckBox rolloverEnabled = new JCheckBox("setRolloverEnabled", true);
+        rolloverEnabled.addActionListener(e -> {
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            for (JButton b: list) {
+                b.setRolloverEnabled(flg);
+            }
+            p.revalidate();
+        });
+
         Box box = Box.createVerticalBox();
-        for (JCheckBox c: clist) {
-            c.setSelected(true);
-            box.add(c);
-        }
+        Arrays.asList(focusPainted, borderPainted, contentAreaFilled, rolloverEnabled).forEach(box::add);
         add(box, BorderLayout.NORTH);
         add(p);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
