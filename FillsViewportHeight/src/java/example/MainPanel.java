@@ -68,19 +68,16 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent makeToolBox(final JTable table) {
+    private static JComponent makeToolBox(JTable table) {
+        JCheckBox check = new JCheckBox("FillsViewportHeight");
+        check.addActionListener(e -> table.setFillsViewportHeight(((JCheckBox) e.getSource()).isSelected()));
+
+        JButton button = new JButton("clearSelection");
+        button.addActionListener(e -> table.clearSelection());
+
         Box box = Box.createHorizontalBox();
-        box.add(new JCheckBox(new AbstractAction("FillsViewportHeight") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                table.setFillsViewportHeight(cb.isSelected());
-            }
-        }));
-        box.add(new JButton(new AbstractAction("clearSelection") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.clearSelection();
-            }
-        }));
+        box.add(check);
+        box.add(button);
         return box;
     }
 
