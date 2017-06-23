@@ -85,8 +85,10 @@ public final class MainPanel extends JPanel {
 }
 
 class TablePopupMenu extends JPopupMenu {
-    private final Action addAction = new AbstractAction("add") {
-        @Override public void actionPerformed(ActionEvent e) {
+    private final JMenuItem delete;
+    protected TablePopupMenu() {
+        super();
+        add("add").addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             //if (MainPanel.DEBUG && model.getRowCount() == 0) {
@@ -97,10 +99,10 @@ class TablePopupMenu extends JPopupMenu {
             model.addRow(new Object[] {"", model.getRowCount(), false});
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
-        }
-    };
-    private final Action deleteAction = new AbstractAction("delete") {
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+        addSeparator();
+        delete = add("delete");
+        delete.addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             int[] selection = table.getSelectedRows();
@@ -111,18 +113,11 @@ class TablePopupMenu extends JPopupMenu {
             //    table.setRowSorter(null);
             //    table.getTableHeader().repaint();
             //}
-        }
-    };
-    protected TablePopupMenu() {
-        super();
-        add(addAction);
-        //add(new ClearAction("clearSelection"));
-        addSeparator();
-        add(deleteAction);
+        });
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
-            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }

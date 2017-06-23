@@ -118,20 +118,19 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
 }
 
 class TablePopupMenu extends JPopupMenu {
-    private final JMenuItem deleteMenuItem;
-
+    private final JMenuItem delete;
     protected TablePopupMenu() {
         super();
         add("add").addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.addRow(new Object[] {"New Name", 0, Boolean.FALSE});
-            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(rect);
+            model.addRow(new Object[] {"New row", model.getRowCount(), false});
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
         });
         addSeparator();
-        deleteMenuItem = add("delete");
-        deleteMenuItem.addActionListener(e -> {
+        delete = add("delete");
+        delete.addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             int[] selection = table.getSelectedRows();
@@ -142,7 +141,7 @@ class TablePopupMenu extends JPopupMenu {
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
-            deleteMenuItem.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }

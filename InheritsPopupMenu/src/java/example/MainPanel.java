@@ -66,26 +66,21 @@ public class MainPanel extends JPanel {
     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent e) {
+        private final JMenuItem delete;
+        protected TablePopupMenu() {
+            super();
+            add("add").addActionListener(e -> model.addRow(new Object[] {"example", 0, false}));
+            addSeparator();
+            delete = add("delete");
+            delete.addActionListener(e -> {
                 int[] selection = table.getSelectedRows();
                 for (int i = selection.length - 1; i >= 0; i--) {
                     model.removeRow(table.convertRowIndexToModel(selection[i]));
                 }
-            }
-        };
-        protected TablePopupMenu() {
-            super();
-            add(new AbstractAction("add") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    model.addRow(new Object[] {"example", 0, false});
-                }
             });
-            addSeparator();
-            add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
+            delete.setEnabled(table.getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }

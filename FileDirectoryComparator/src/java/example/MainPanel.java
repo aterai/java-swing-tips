@@ -298,23 +298,22 @@ class FileGroupComparator extends DefaultFileComparator {
 // }
 
 class TablePopupMenu extends JPopupMenu {
-    private final Action deleteAction = new AbstractAction("delete") {
-        @Override public void actionPerformed(ActionEvent e) {
+    private final JMenuItem delete;
+    protected TablePopupMenu() {
+        super();
+        delete = add("delete");
+        delete.addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             int[] selection = table.getSelectedRows();
             for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
-        }
-    };
-    protected TablePopupMenu() {
-        super();
-        add(deleteAction);
+        });
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
-            deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+            delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }
