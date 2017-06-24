@@ -75,11 +75,10 @@ public final class MainPanel extends JPanel {
         column.setMaxWidth(20);
         column.setResizable(false);
 
-        add(new JButton(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                model.addRowData(new RowData("Test", "aaaaaaaaaaa"));
-            }
-        }), BorderLayout.SOUTH);
+        JButton button = new JButton("add");
+        button.addActionListener(e -> model.addRowData(new RowData("Test", "aaaaaaaaaaa")));
+
+        add(button, BorderLayout.SOUTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
