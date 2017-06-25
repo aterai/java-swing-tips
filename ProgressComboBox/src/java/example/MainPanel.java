@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     protected final JComboBox<String> combo;
-    protected final JButton button;
+    protected final JButton button = new JButton("load");
     protected transient SwingWorker<String[], Integer> worker;
     protected int counter;
 
@@ -19,14 +19,12 @@ public class MainPanel extends JPanel {
         super(new BorderLayout(5, 5));
         combo = new JComboBox<>();
         combo.setRenderer(new ProgressCellRenderer());
-        button = new JButton(new AbstractAction("load") {
-            @Override public void actionPerformed(ActionEvent e) {
-                button.setEnabled(false);
-                combo.setEnabled(false);
-                //combo.removeAllItems();
-                worker = new UITask();
-                worker.execute();
-            }
+        button.addActionListener(e -> {
+            button.setEnabled(false);
+            combo.setEnabled(false);
+            //combo.removeAllItems();
+            worker = new UITask();
+            worker.execute();
         });
         add(createPanel(combo, button, "ProgressComboBox: "), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
