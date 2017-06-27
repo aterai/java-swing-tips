@@ -72,10 +72,8 @@ class BigDecimalSpinnerModel extends SpinnerNumberModel {
         return incrValue(+1);
     }
     private Number incrValue(int dir) {
-        Double v = (Double) getNumber();
-        BigDecimal value    = BigDecimal.valueOf(v);
+        BigDecimal value    = BigDecimal.valueOf((Double) getNumber());
         BigDecimal stepSize = BigDecimal.valueOf((Double) getStepSize());
-
         BigDecimal newValue = dir > 0 ? value.add(stepSize) : value.subtract(stepSize);
 
         BigDecimal maximum = BigDecimal.valueOf((Double) getMaximum());
