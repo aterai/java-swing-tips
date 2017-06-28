@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton r0 = new JRadioButton("0.0");
+    private final JRadioButton r0 = new JRadioButton("0.0", true);
     private final JRadioButton r1 = new JRadioButton("0.5");
     private final JRadioButton r2 = new JRadioButton("1.0");
     private final String[] columnNames = {"String", "Integer", "Boolean"};
@@ -42,7 +42,6 @@ public final class MainPanel extends JPanel {
             bg.add(r);
             p.add(r);
         }
-        r0.setSelected(true);
         add(p, BorderLayout.NORTH);
         add(sp);
         setPreferredSize(new Dimension(320, 240));

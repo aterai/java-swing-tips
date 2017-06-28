@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-");
+        JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-", true);
         JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
 
         String[] columnNames = {"String", "Integer", "Boolean"};
@@ -83,7 +83,6 @@ public final class MainPanel extends JPanel {
 //             im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");
 //         }
 
-        check.setSelected(true);
         textarea.setEditable(false);
 
         JPanel p = new JPanel(new BorderLayout());

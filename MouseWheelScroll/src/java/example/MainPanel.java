@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
             return new Dimension(dim.width, 0);
         }
     };
-    protected final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling");
+    protected final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling", true);
     protected final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
     protected final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
 
@@ -86,7 +86,6 @@ public class MainPanel extends JPanel {
         p.add(r0);
         p.add(b);
 
-        r0.setSelected(true);
         scroll.setVerticalScrollBar(vsb);
         scroll.setHorizontalScrollBar(hsb);
 

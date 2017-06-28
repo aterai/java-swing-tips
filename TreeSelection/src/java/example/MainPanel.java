@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION");
+    private final JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION", true);
     private final JRadioButton r1 = new JRadioButton("SINGLE_TREE_SELECTION");
     private final JRadioButton r2 = new JRadioButton("CONTIGUOUS_TREE_SELECTION");
     private final ButtonGroup bg = new ButtonGroup();
@@ -27,7 +27,6 @@ public final class MainPanel extends JPanel {
                 tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             }
         };
-        r0.setSelected(true);
         Box p = Box.createVerticalBox();
         for (AbstractButton b: Arrays.asList(r0, r1, r2)) {
             b.addActionListener(al);

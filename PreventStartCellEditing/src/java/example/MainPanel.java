@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JRadioButton r0 = new JRadioButton("default");
+        JRadioButton r0 = new JRadioButton("default", true);
         JRadioButton r1 = new JRadioButton("prevent KeyStroke autoStartsEdit");
         JRadioButton r2 = new JRadioButton("prevent mouse from starting edit");
         JRadioButton r3 = new JRadioButton("start cell editing only F2");
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
             table.putClientProperty("JTable.autoStartsEdit", !rb.equals(r1) && !rb.equals(r3));
             ce.setClickCountToStart(rb.equals(r2) || rb.equals(r3) ? Integer.MAX_VALUE : 2);
         };
-        r0.setSelected(true);
+
         Box p = Box.createVerticalBox();
         ButtonGroup bg = new ButtonGroup();
         for (AbstractButton b: Arrays.asList(r0, r1, r2, r3, r4)) {

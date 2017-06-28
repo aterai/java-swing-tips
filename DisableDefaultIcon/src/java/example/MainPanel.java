@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         final JRadioButton r1 = new JRadioButton("img=null");
         final JRadioButton r2 = new JRadioButton("img=new ImageIcon(\"\").getImage()");
         final JRadioButton r3 = new JRadioButton("img=new BufferedImage(1, 1, TYPE_INT_ARGB)");
-        final JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)");
+        final JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)", true);
 
         ActionListener al = e -> {
             AbstractButton b = (AbstractButton) e.getSource();
@@ -36,7 +36,6 @@ public final class MainPanel extends JPanel {
                 ((JFrame) c).setIconImage(image);
             }
         };
-        r4.setSelected(true);
         EventQueue.invokeLater(() -> {
             Image image = Toolkit.getDefaultToolkit().createImage(url);
             Container c = getTopLevelAncestor();

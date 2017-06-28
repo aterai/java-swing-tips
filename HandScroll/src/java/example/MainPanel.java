@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
-        JRadioButton r1    = new JRadioButton("scrollRectToVisible");
+        JRadioButton r1    = new JRadioButton("scrollRectToVisible", true);
         JRadioButton r2    = new JRadioButton("setViewPosition");
 
         JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
@@ -52,7 +52,6 @@ public final class MainPanel extends JPanel {
             bg.add(b);
             b.addActionListener(al);
         });
-        r1.setSelected(true);
 
 //         // TEST:
 //         MouseAdapter hsl2 = new DragScrollListener();

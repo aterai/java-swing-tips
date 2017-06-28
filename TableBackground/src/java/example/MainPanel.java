@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private final JCheckBox check = new JCheckBox("viewport setOpaque");
+    private final JCheckBox check = new JCheckBox("viewport setOpaque", true);
     private final JButton button = new JButton("Choose background color");
 
     public MainPanel() {
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
         scroll.getViewport().setOpaque(true);
         //scroll.getViewport().setBackground(Color.WHITE);
-        check.setSelected(true);
+
         check.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 scroll.getViewport().setOpaque(true);

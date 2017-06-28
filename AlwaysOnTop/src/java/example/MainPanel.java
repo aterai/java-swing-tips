@@ -9,7 +9,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JCheckBox check = new JCheckBox("Always On Top");
+
+        JCheckBox check = new JCheckBox("Always On Top", true);
         check.addActionListener(e -> {
             JCheckBox c = (JCheckBox) e.getSource();
             Container w = c.getTopLevelAncestor();
@@ -17,7 +18,6 @@ public final class MainPanel extends JPanel {
                 ((Window) w).setAlwaysOnTop(c.isSelected());
             }
         });
-        check.setSelected(true);
 
         JPanel p = new JPanel();
         p.add(check);

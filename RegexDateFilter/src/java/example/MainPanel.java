@@ -68,10 +68,9 @@ public final class MainPanel extends JPanel {
 
         JTextField field = new JTextField("(?i)12");
 
-        JRadioButton r0 = new JRadioButton("null");
+        JRadioButton r0 = new JRadioButton("null", true);
         JRadioButton r1 = new JRadioButton("RowFilter.regexFilter");
         JRadioButton r2 = new JRadioButton("new RowFilter()");
-        r0.setSelected(true);
 
         ActionListener al = e -> {
             Object o = e.getSource();

@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     private final JButton clearButton = new JButton("clear SortKeys");
 
     private Box makeRadioPane() {
-        JRadioButton r0 = new JRadioButton("Default");
+        JRadioButton r0 = new JRadioButton("Default", true);
         JRadioButton r1 = new JRadioButton("Empty");
         JRadioButton r2 = new JRadioButton("Cumstom");
         ActionListener al = e -> {
@@ -62,7 +62,6 @@ public final class MainPanel extends JPanel {
             rb.addActionListener(al);
         }
         box1.add(Box.createHorizontalGlue());
-        r0.setSelected(true);
         return box1;
     }
 
