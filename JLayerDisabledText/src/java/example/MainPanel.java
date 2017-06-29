@@ -18,18 +18,14 @@ public final class MainPanel extends JPanel {
         final JButton button3 = makeButton("JLayer");
 
         DisableInputLayerUI<AbstractButton> layerUI = new DisableInputLayerUI<>();
-        JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
-            @Override public void actionPerformed(ActionEvent e) {
-                boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
-                button1.setEnabled(isSelected);
-
-                button2.setEnabled(isSelected);
-                button2.setForeground(isSelected ? Color.BLACK : Color.RED);
-
-                layerUI.setLocked(!isSelected);
-            }
+        JCheckBox check = new JCheckBox("setEnabled", true);
+        check.addActionListener(e -> {
+            boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
+            button1.setEnabled(isSelected);
+            button2.setEnabled(isSelected);
+            button2.setForeground(isSelected ? Color.BLACK : Color.RED);
+            layerUI.setLocked(!isSelected);
         });
-        check.setSelected(true);
 
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("setEnabled"));

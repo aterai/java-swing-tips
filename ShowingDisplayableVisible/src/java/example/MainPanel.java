@@ -8,35 +8,26 @@ import java.util.Date;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected final Timer timer;
-    protected final JButton button   = new JButton("JButton JButton");
-    protected final JCheckBox vcheck = new JCheckBox(new AbstractAction("setVisible") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox) e.getSource();
-            button.setVisible(c.isSelected());
-        }
-    });
-    protected final JCheckBox echeck = new JCheckBox(new AbstractAction("setEnabled") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox) e.getSource();
-            button.setEnabled(c.isSelected());
-        }
-    });
-    protected final JCheckBox tcheck = new JCheckBox(new AbstractAction("start") {
-        @Override public void actionPerformed(ActionEvent e) {
-            if (tcheck.isSelected()) {
+    protected final Timer timer = new Timer(4000, e -> printInfo(new Date().toString()));
+    protected final JButton button = new JButton("JButton JButton");
+
+    public MainPanel() {
+        super(new BorderLayout());
+
+        JCheckBox vcheck = new JCheckBox("setVisible", true);
+        vcheck.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));
+
+        JCheckBox echeck = new JCheckBox("setEnabled", true);
+        echeck.addActionListener(e -> button.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+
+        JCheckBox tcheck = new JCheckBox("start", true);
+        tcheck.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
                 timer.start();
             } else {
                 timer.stop();
             }
-        }
-    });
-
-    public MainPanel() {
-        super(new BorderLayout());
-        vcheck.setSelected(true);
-        echeck.setSelected(true);
-        tcheck.setSelected(true);
+        });
 
         JTabbedPane tab = new JTabbedPane();
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -73,7 +64,7 @@ public class MainPanel extends JPanel {
         p.add(p2);
         add(p, BorderLayout.NORTH);
         add(tab);
-        timer = new Timer(4000, e -> printInfo(new Date().toString()));
+
         timer.start();
         setPreferredSize(new Dimension(320, 240));
     }

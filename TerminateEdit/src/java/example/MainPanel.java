@@ -34,12 +34,7 @@ public class MainPanel extends JPanel {
     protected final JComboBox<? extends Enum> combobox = new JComboBox<>(AutoResizeMode.values());
     protected final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
     protected final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
-    protected final JCheckBox teoflCheck  = new JCheckBox(new AbstractAction("terminateEditOnFocusLost") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox) e.getSource();
-            table.putClientProperty("terminateEditOnFocusLost", c.isSelected());
-        }
-    });
+    protected final JCheckBox teoflCheck  = new JCheckBox("terminateEditOnFocusLost", true);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -100,14 +95,15 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 
-        teoflCheck.setSelected(true);
-
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         combobox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 table.setAutoResizeMode(((AutoResizeMode) e.getItem()).mode);
             }
         });
+
+        teoflCheck.addActionListener(e -> table.putClientProperty("terminateEditOnFocusLost", ((JCheckBox) e.getSource()).isSelected()));
 
         JPanel box = new JPanel(new GridLayout(4, 0));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -23,17 +23,15 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        final InputMap im     = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        final KeyStroke tab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-        final KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-        final Object orgTabAction = im.get(tab);
-        JCheckBox checkBox = new JCheckBox(new AbstractAction("selectNextRow: VK_TAB") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                im.put(tab, cb.isSelected() ? im.get(enter) : orgTabAction);
-            }
+        InputMap im     = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        KeyStroke tab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        Object orgTabAction = im.get(tab);
+        JCheckBox checkBox = new JCheckBox("selectNextRow: VK_TAB", true);
+        checkBox.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            im.put(tab, cb.isSelected() ? im.get(enter) : orgTabAction);
         });
-        checkBox.setSelected(true);
         im.put(tab, im.get(enter));
 
         KeyStroke stab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
