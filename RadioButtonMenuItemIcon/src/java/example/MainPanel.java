@@ -16,18 +16,15 @@ public final class MainPanel extends JPanel {
     public JMenuBar createMenuBar() {
         JMenu menu = new JMenu("RadioButtonMenuItem-Test");
 
-        JRadioButtonMenuItem rbmi = new JRadioButtonMenuItem("default");
-        rbmi.setSelected(true);
+        JRadioButtonMenuItem rbmi = new JRadioButtonMenuItem("default", true);
         menu.add(rbmi);
 
         UIManager.put("RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon1());
-        rbmi = new JRadioButtonMenuItem("ANTIALIASING");
-        rbmi.setSelected(true);
+        rbmi = new JRadioButtonMenuItem("ANTIALIASING", true);
         menu.add(rbmi);
 
         UIManager.put("RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon2());
-        rbmi = new JRadioButtonMenuItem("fillOval");
-        rbmi.setSelected(true);
+        rbmi = new JRadioButtonMenuItem("fillOval", true);
         menu.add(rbmi);
 
         JMenuBar menuBar = new JMenuBar();

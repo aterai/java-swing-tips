@@ -58,7 +58,8 @@ public class MainPanel extends JPanel {
 
         for (int i = 0; i < BIT_LENGTH; i++) {
             BigInteger l = BigInteger.ONE.shiftLeft(i);
-            JCheckBox c = new JCheckBox(Integer.toString(i + 1));
+            JCheckBox c = new JCheckBox(Integer.toString(i + 1), !status.and(l).equals(BigInteger.ZERO));
+            // c.setSelected(!status.and(l).equals(BigInteger.ZERO));
             c.addActionListener(e -> {
                 JCheckBox cb = (JCheckBox) e.getSource();
                 BigInteger newValue = cb.isSelected() ? status.or(l) : status.xor(l);
@@ -66,7 +67,6 @@ public class MainPanel extends JPanel {
                 status = newValue;
                 label.setText(print(status));
             });
-            c.setSelected(!status.and(l).equals(BigInteger.ZERO));
             p.add(c);
         }
         add(label, BorderLayout.NORTH);

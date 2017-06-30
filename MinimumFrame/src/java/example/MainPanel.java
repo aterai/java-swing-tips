@@ -21,18 +21,16 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        JCheckBox checkbox1 = new JCheckBox("the minimum size of this window: " + MW + "x" + MH1);
+        JCheckBox checkbox1 = new JCheckBox("the minimum size of this window: " + MW + "x" + MH1, true);
         checkbox1.addActionListener(e -> {
             if (!((JCheckBox) e.getSource()).isSelected()) {
                 return;
             }
             initFrameSize(frame);
         });
-        checkbox1.setSelected(true);
 
-        JCheckBox checkbox2 = new JCheckBox("the minimum size of this window(since 1.6): " + MW + "x" + MH2);
+        JCheckBox checkbox2 = new JCheckBox("the minimum size of this window(since 1.6): " + MW + "x" + MH2, true);
         checkbox2.addActionListener(e -> frame.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null));
-        checkbox2.setSelected(true);
 
         frame.setMinimumSize(new Dimension(MW, MH2));
         frame.addComponentListener(new ComponentAdapter() {
