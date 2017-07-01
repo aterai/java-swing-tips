@@ -49,14 +49,11 @@ public class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
         box.add(new JLabel("Flip: "));
         for (Flip f: Flip.values()) {
-            JRadioButton rb = new JRadioButton(f.toString());
+            JRadioButton rb = new JRadioButton(f.toString(), f == Flip.NONE);
             rb.addActionListener(e -> {
                 mode = f;
                 repaint();
             });
-            if (f == Flip.NONE) {
-                rb.setSelected(true);
-            }
             box.add(rb);
             bg.add(rb);
             box.add(Box.createHorizontalStrut(5));

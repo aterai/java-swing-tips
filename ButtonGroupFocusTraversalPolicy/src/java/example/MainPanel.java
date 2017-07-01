@@ -55,14 +55,11 @@ public final class MainPanel extends JPanel {
     }
     private static JPanel makeButtonGroupPanel(String title, ButtonGroup bg) {
         JPanel p = new JPanel();
-        for (String s: Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee")) {
-            JRadioButton rb = new JRadioButton(s);
+        Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee").forEach(s -> {
+            JRadioButton rb = new JRadioButton(s, "ccc".equals(s));
             bg.add(rb);
             p.add(rb);
-            if ("ccc".equals(s)) {
-                rb.setSelected(true);
-            }
-        }
+        });
         p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }

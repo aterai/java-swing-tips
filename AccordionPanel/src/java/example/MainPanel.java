@@ -50,40 +50,34 @@ public final class MainPanel extends JPanel {
         return Arrays.asList(
             new AbstractExpansionPanel("System Tasks") {
                 @Override public JPanel makePanel() {
-                    JPanel pnl = new JPanel(new GridLayout(0, 1));
-                    JCheckBox c1 = new JCheckBox("aaaa");
-                    JCheckBox c2 = new JCheckBox("aaaaaaa");
-                    c1.setOpaque(false);
-                    c2.setOpaque(false);
-                    pnl.add(c1);
-                    pnl.add(c2);
-                    return pnl;
+                    JPanel p = new JPanel(new GridLayout(0, 1));
+                    Arrays.asList("aaaa", "aaaaaaa").forEach(s -> {
+                        JCheckBox b = new JCheckBox(s);
+                        b.setOpaque(false);
+                        p.add(b);
+                    });
+                    return p;
                 }
             },
             new AbstractExpansionPanel("Other Places") {
                 @Override public JPanel makePanel() {
-                    JPanel pnl = new JPanel(new GridLayout(0, 1));
-                    pnl.add(new JLabel("Desktop"));
-                    pnl.add(new JLabel("My Network Places"));
-                    pnl.add(new JLabel("My Documents"));
-                    pnl.add(new JLabel("Shared Documents"));
-                    return pnl;
+                    JPanel p = new JPanel(new GridLayout(0, 1));
+                    Arrays.asList("Desktop", "My Network Places", "My Documents", "Shared Documents")
+                          .forEach(s -> p.add(new JLabel(s)));
+                    return p;
                 }
             },
             new AbstractExpansionPanel("Details") {
                 @Override public JPanel makePanel() {
-                    JPanel pnl = new JPanel(new GridLayout(0, 1));
+                    JPanel p = new JPanel(new GridLayout(0, 1));
                     ButtonGroup bg = new ButtonGroup();
                     Arrays.asList("aaa", "bbb", "ccc", "ddd").forEach(s -> {
-                        JRadioButton b = new JRadioButton(s);
-                        if (pnl.getComponentCount() == 0) {
-                            b.setSelected(true);
-                        }
+                        JRadioButton b = new JRadioButton(s, p.getComponentCount() == 0);
                         b.setOpaque(false);
-                        pnl.add(b);
+                        p.add(b);
                         bg.add(b);
                     });
-                    return pnl;
+                    return p;
                 }
             }
         );

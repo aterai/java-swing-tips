@@ -4,10 +4,10 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 // import javax.swing.event.*;
 import javax.swing.table.*;
-// import java.util.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
@@ -83,19 +83,15 @@ public final class MainPanel extends JPanel {
 
     private static JComponent makeColorBox(final JTable table) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        final JRadioButton r1 = new JRadioButton("WHITE");
-        final JRadioButton r2 = new JRadioButton("BLUE");
-        ButtonGroup bg = new ButtonGroup();
-        ActionListener al = e -> table.setBackground(r1.isSelected() ? Color.WHITE : Color.BLUE);
         p.add(new JLabel("table.setBackground: "));
-        bg.add(r1);
-        p.add(r1);
-        r1.addActionListener(al);
-
-        bg.add(r2);
-        p.add(r2);
-        r2.addActionListener(al);
-        r1.setSelected(true);
+        JRadioButton r1 = new JRadioButton("WHITE", true);
+        JRadioButton r2 = new JRadioButton("BLUE");
+        ButtonGroup bg = new ButtonGroup();
+        for (JRadioButton r: Arrays.asList(r1, r2)) {
+            r.addActionListener(e -> table.setBackground(r1.isSelected() ? Color.WHITE : Color.BLUE));
+            bg.add(r);
+            p.add(r);
+        }
         return p;
     }
 

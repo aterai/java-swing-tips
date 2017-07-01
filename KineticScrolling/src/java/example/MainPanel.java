@@ -4,12 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
     protected static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     protected final JScrollPane scroll = new JScrollPane();
-    protected final JRadioButton r1 = new JRadioButton("scrollRectToVisible");
+    protected final JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
     protected final JRadioButton r2 = new JRadioButton("setViewPosition");
 
     public MainPanel() {
@@ -62,15 +63,12 @@ public class MainPanel extends JPanel {
         };
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
-        box.add(r1);
-        bg.add(r1);
-        r1.addActionListener(al);
+        for (JRadioButton r: Arrays.asList(r1, r2)) {
+            box.add(r);
+            bg.add(r);
+            r.addActionListener(al);
+        }
 
-        box.add(r2);
-        bg.add(r2);
-        r2.addActionListener(al);
-
-        r1.setSelected(true);
         viewport.addMouseMotionListener(l1);
         viewport.addMouseListener(l1);
         viewport.addHierarchyListener(l1);

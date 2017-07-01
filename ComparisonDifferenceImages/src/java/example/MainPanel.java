@@ -11,7 +11,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton ra = new JRadioButton("a.png");
+    private final JRadioButton ra = new JRadioButton("a.png", true);
     private final JRadioButton rb = new JRadioButton("b.png");
     private final JRadioButton rr = new JRadioButton("diff");
     private final ImageIcon iia = new ImageIcon(getClass().getResource("a.png"));
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             bg.add(r);
             p.add(r);
         }
-        ra.setSelected(true);
+
         add(label);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
