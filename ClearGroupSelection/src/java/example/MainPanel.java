@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         ImageIcon sicon  = new ImageIcon(createImage(ip));
         JToggleButton t1 = new JToggleButton(nicon);
-        JToggleButton t2 = new JToggleButton(nicon);
+        JToggleButton t2 = new JToggleButton(nicon, true);
         t1.setSelectedIcon(sicon);
         t2.setSelectedIcon(sicon);
         List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
@@ -30,7 +30,6 @@ public final class MainPanel extends JPanel {
             bg.add(b);
             p.add(b);
         }
-        t2.setSelected(true);
 
         JButton clear = new JButton("clearSelection");
         clear.addActionListener(e -> bg.clearSelection());

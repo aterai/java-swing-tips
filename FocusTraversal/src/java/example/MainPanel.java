@@ -52,9 +52,7 @@ public final class MainPanel extends JPanel {
           new JRadioButton(new FocusTraversalPolicyChangeAction("Layout",  policy2)));
         ButtonGroup bg = new ButtonGroup();
         box.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
-        //boolean flag = true;
         for (JRadioButton rb: rl) {
-            //if (flag) {rb.setSelected(true); flag = false;}
             bg.add(rb);
             box.add(rb);
             box.add(Box.createHorizontalStrut(3));
