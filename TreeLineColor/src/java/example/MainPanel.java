@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 UIManager.put("Tree.lineTypeDashed", Boolean.FALSE);
-                setUI(new MetalTreeUI() {
+                setUI(new BasicTreeUI() {
                     private final Stroke horizontalLine = new BasicStroke(2f);
                     private final Stroke verticalLine = new BasicStroke(5f);
                     @Override public Color getHashColor() {
