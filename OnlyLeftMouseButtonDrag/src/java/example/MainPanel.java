@@ -86,8 +86,8 @@ final class LookAndFeelUtil {
         return menu;
     }
     private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafRadioGroup) {
-        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
-        lafItem.setSelected(lafClassName.equals(lookAndFeel));
+        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+        lafItem.setActionCommand(lafClassName);
         lafItem.setHideActionText(true);
         lafItem.addActionListener(e -> {
             ButtonModel m = lafRadioGroup.getSelection();
@@ -98,8 +98,6 @@ final class LookAndFeelUtil {
                 ex.printStackTrace();
             }
         });
-        lafItem.setText(lafName);
-        lafItem.setActionCommand(lafClassName);
         lafRadioGroup.add(lafItem);
         return lafItem;
     }

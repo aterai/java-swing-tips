@@ -55,22 +55,18 @@ public final class MainPanel extends JPanel {
 //         return menu;
 //     }
 //     protected JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
-//         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
-//         lafItem.setSelected(lafClassName.equals(lookAndFeel));
+//         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+//         lafItem.setActionCommand(lafClassName);
 //         lafItem.setHideActionText(true);
-//         lafItem.setAction(new AbstractAction() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 ButtonModel m = lafRadioGroup.getSelection();
-//                 try {
-//                     setLookAndFeel(m.getActionCommand());
-//                 } catch (ClassNotFoundException | InstantiationException
-//                        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//                     ex.printStackTrace();
-//                 }
+//         lafItem.addActionListener(e -> {
+//             ButtonModel m = lafRadioGroup.getSelection();
+//             try {
+//                 setLookAndFeel(m.getActionCommand());
+//             } catch (ClassNotFoundException | InstantiationException
+//                    | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//                 ex.printStackTrace();
 //             }
 //         });
-//         lafItem.setText(lafName);
-//         lafItem.setActionCommand(lafClassName);
 //         lafRadioGroup.add(lafItem);
 //         return lafItem;
 //     }
@@ -190,8 +186,8 @@ final class LookAndFeelUtil {
         return menu;
     }
     private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafRadioGroup) {
-        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
-        lafItem.setSelected(lafClassName.equals(lookAndFeel));
+        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+        lafItem.setActionCommand(lafClassName);
         lafItem.setHideActionText(true);
         lafItem.addActionListener(e -> {
             ButtonModel m = lafRadioGroup.getSelection();
@@ -202,8 +198,6 @@ final class LookAndFeelUtil {
                 ex.printStackTrace();
             }
         });
-        lafItem.setText(lafName);
-        lafItem.setActionCommand(lafClassName);
         lafRadioGroup.add(lafItem);
         return lafItem;
     }

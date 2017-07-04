@@ -79,8 +79,7 @@ final class SizeVariantUtil {
         return menu;
     }
     private static JRadioButtonMenuItem createSizeVariantItem(String key, ButtonGroup sizeVariantRadioGroup) {
-        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(key);
-        menuItem.setSelected("regular".equals(key));
+        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(key, "regular".equals(key));
         menuItem.addActionListener(e -> setSizeVariant(sizeVariantRadioGroup.getSelection().getActionCommand()));
         menuItem.setActionCommand(key);
         sizeVariantRadioGroup.add(menuItem);
