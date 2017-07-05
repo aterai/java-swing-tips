@@ -3,23 +3,24 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
+// import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        add(new JButton(new AbstractAction("show frame title") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-                //Container c = ((JComponent) e.getSource()).getTopLevelAncestor();
-                //Frame f = JOptionPane.getFrameForComponent((Component) e.getSource());
-                if (w instanceof JFrame) {
-                    JFrame frame = (JFrame) w;
-                    JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
-                }
+
+        JButton button = new JButton("show frame title");
+        button.addActionListener(e -> {
+            Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
+            // Container c = ((JComponent) e.getSource()).getTopLevelAncestor();
+            // Frame f = JOptionPane.getFrameForComponent((Component) e.getSource());
+            if (w instanceof JFrame) {
+                JFrame frame = (JFrame) w;
+                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
             }
-        }));
+        });
+        add(button);
         setPreferredSize(new Dimension(320, 100));
     }
 
