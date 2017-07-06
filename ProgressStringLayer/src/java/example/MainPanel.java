@@ -149,26 +149,33 @@ class ProgressListener implements PropertyChangeListener {
 
 class TextLabelProgressBar extends JProgressBar {
     private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
-    private transient ChangeListener changeListener;
+//     private transient ChangeListener changeListener;
 
     protected TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
     @Override public void updateUI() {
         removeAll();
-        removeChangeListener(changeListener);
+//         removeChangeListener(changeListener);
         super.updateUI();
         setLayout(new BorderLayout());
-        changeListener = e -> {
-            int iv = (int) (100 * getPercentComplete());
-            label.setText(String.format("%03d/100", iv));
-            //label.setText(getString());
-        };
-        addChangeListener(changeListener);
+//         changeListener = e -> {
+//             int iv = (int) (100 * getPercentComplete());
+//             label.setText(String.format("%03d/100", iv));
+//             //label.setText(getString());
+//         };
+//         addChangeListener(changeListener);
         EventQueue.invokeLater(() -> {
             add(label);
             label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         });
+    }
+    @Override protected ChangeListener createChangeListener() {
+        return e -> {
+            int iv = (int) (100 * getPercentComplete());
+            label.setText(String.format("%03d/100", iv));
+            //label.setText(getString());
+        };
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();

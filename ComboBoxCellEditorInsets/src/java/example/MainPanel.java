@@ -201,19 +201,20 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 }
 
 class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
-    private final JTextField editor;
+    //private final JTextField editor;
     //private JButton button;
     protected ComboCellRenderer() {
         super();
         setEditable(true);
         //setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), getBorder()));
-        editor = (JTextField) getEditor().getEditorComponent();
+        JComponent editor = (JComponent) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
+        JComponent editor = (JComponent) getEditor().getEditorComponent();
         if (isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());

@@ -154,9 +154,9 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class TranslucentTreeCellRenderer extends TransparentTreeCellRenderer {
-    private final Color backgroundSelectionColor = new Color(100, 100, 255, 100);
+    private final Color translucentBsc = new Color(100, 100, 255, 100);
     @Override public Color getBackgroundSelectionColor() {
-        return backgroundSelectionColor;
+        return translucentBsc;
     }
 }
 

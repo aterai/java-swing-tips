@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.EventListenerList;
+// import javax.swing.event.EventListenerList;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
 }
 
 abstract class AbstractExpansionPanel extends JPanel {
-    private final EventListenerList listenerList = new EventListenerList();
+    // OvershadowingSubclassFields: JComponent: private final EventListenerList listenerList = new EventListenerList();
     private ExpansionEvent expansionEvent;
     private final JScrollPane scroll;
     private boolean openFlag;
