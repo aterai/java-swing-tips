@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.EventListenerList;
+//import javax.swing.event.EventListenerList;
 
 public final class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
