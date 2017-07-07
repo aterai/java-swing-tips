@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.function.Function;
+//import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.swing.*;
 //import javax.swing.event.*;
@@ -72,9 +72,14 @@ public final class MainPanel extends JPanel {
             fileChooser.setSelectedFile(new File(field.getText().trim()));
             if (r2.isSelected()) {
                 EventQueue.invokeLater(() -> {
-                    findFileNameTextField(fileChooser).ifPresent(c -> {
-                        ((JTextField) c).selectAll();
-                        c.requestFocusInWindow();
+//                     findFileNameTextField(fileChooser).ifPresent(c -> {
+//                         ((JTextField) c).selectAll();
+//                         c.requestFocusInWindow();
+//                     });
+                    Class<JTextField> clz = JTextField.class;
+                    stream(fileChooser).filter(clz::isInstance).map(clz::cast).findFirst().ifPresent(tf -> {
+                        tf.selectAll();
+                        tf.requestFocusInWindow();
                     });
                 });
             }
@@ -105,21 +110,22 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
-        return Arrays.stream(fileChooser.getComponents())
-                     .flatMap(new Function<Component, Stream<Component>>() {
-                         @Override public Stream<Component> apply(Component c) {
-                             if (c instanceof Container) {
-                                 Component[] sub = ((Container) c).getComponents();
-                                 return sub.length == 0 ? Stream.of(c)
-                                                        : Arrays.stream(sub).flatMap(cc -> apply(cc));
-                             } else {
-                                 return Stream.of(c);
-                             }
-                         }
-                     })
-                     .filter(c -> c instanceof JTextField)
-                     .findFirst();
+//     private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
+//         return Arrays.stream(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
+//             @Override public Stream<Component> apply(Component c) {
+//                 if (c instanceof Container) {
+//                     Component[] sub = ((Container) c).getComponents();
+//                     return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
+//                 } else {
+//                     return Stream.of(c);
+//                 }
+//             }
+//         }).filter(c -> c instanceof JTextField).findFirst();
+//     }
+    public static Stream<Component> stream(Container parent) {
+        return Arrays.stream(parent.getComponents())
+            .filter(Container.class::isInstance).map(Container.class::cast)
+            .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
