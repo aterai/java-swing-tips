@@ -187,5 +187,5 @@ class TablePopupMenu extends JPopupMenu {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.addRow(new Object[] {isSelected, 0, ""});
         table.scrollRectToVisible(table.getCellRect(model.getRowCount() - 1, 0, true));
-   }
+    }
 }

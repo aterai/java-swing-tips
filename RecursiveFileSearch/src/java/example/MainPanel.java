@@ -329,18 +329,18 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     private void recursiveSearch(Path dir, final List<Path> list) throws IOException {
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                 if (Thread.interrupted()) {
-                     throw new IOException();
-                 }
-                 if (attrs.isRegularFile()) {
-                     scount++;
-                     if (scount % 100 == 0) {
-                         publish(new Message("Results:" + scount + "\n", false));
-                     }
-                     list.add(file);
-                 }
-                 return FileVisitResult.CONTINUE;
-             }
+                if (Thread.interrupted()) {
+                    throw new IOException();
+                }
+                if (attrs.isRegularFile()) {
+                    scount++;
+                    if (scount % 100 == 0) {
+                        publish(new Message("Results:" + scount + "\n", false));
+                    }
+                    list.add(file);
+                }
+                return FileVisitResult.CONTINUE;
+            }
         });
     }
 }

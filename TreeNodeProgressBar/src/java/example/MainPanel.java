@@ -30,18 +30,18 @@ public final class MainPanel extends JPanel {
             ExecutorService executor = Executors.newCachedThreadPool();
             (new SwingWorker<Boolean, Void>() {
                 @Override protected Boolean doInBackground() throws InterruptedException {
-                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-                     Enumeration<?> e = root.breadthFirstEnumeration();
-                     while (e.hasMoreElements()) {
-                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                         if (!root.equals(node) && !model.isLeaf(node)) {
-                             executor.execute(new NodeProgressWorker(tree, node));
-                         }
-                     }
-                     executor.shutdown();
-                     return executor.awaitTermination(1, TimeUnit.MINUTES);
-                 }
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+                    Enumeration<?> e = root.breadthFirstEnumeration();
+                    while (e.hasMoreElements()) {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                        if (!root.equals(node) && !model.isLeaf(node)) {
+                            executor.execute(new NodeProgressWorker(tree, node));
+                        }
+                    }
+                    executor.shutdown();
+                    return executor.awaitTermination(1, TimeUnit.MINUTES);
+                }
                 @Override protected void done() {
                     b.setEnabled(true);
                 }

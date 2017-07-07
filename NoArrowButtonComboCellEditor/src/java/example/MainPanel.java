@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
-      }
+        }
     };
     private final JTable table = new JTable(model);
     public MainPanel() {

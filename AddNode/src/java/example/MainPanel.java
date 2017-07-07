@@ -90,13 +90,13 @@ class TreePopupMenu extends JPopupMenu {
             int ret = JOptionPane.showConfirmDialog(tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (ret == JOptionPane.OK_OPTION) {
                 Optional.ofNullable(textField.getText())
-                  .filter(str -> !str.trim().isEmpty())
-                  .ifPresent(str -> {
-                      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                      model.valueForPathChanged(path, str);
-                      //leaf.setUserObject(str);
-                      //model.nodeChanged(leaf);
-                  });
+                    .filter(str -> !str.trim().isEmpty())
+                    .ifPresent(str -> {
+                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                        model.valueForPathChanged(path, str);
+                        //leaf.setUserObject(str);
+                        //model.nodeChanged(leaf);
+                    });
             }
         }
     };
