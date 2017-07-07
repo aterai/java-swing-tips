@@ -41,14 +41,14 @@ public final class MainPanel extends JPanel {
                 int min = slider.getMinimum();
                 int max = slider.getMaximum();
                 int trackLength = trackRect.width;
-                double valueRange = (double) max - (double) min;
-                double pixelsPerValue = (double) trackLength / valueRange;
+                float valueRange = (float) max - (float) min;
+                float pixelsPerValue = (float) trackLength / valueRange;
                 int trackLeft = trackRect.x;
                 int trackRight = trackRect.x + trackRect.width - 1;
                 int xPosition;
 
                 xPosition = trackLeft;
-                xPosition += Math.round(pixelsPerValue * ((double) value - min));
+                xPosition += Math.round(pixelsPerValue * ((float) value - min));
 
                 xPosition = Math.max(trackLeft, xPosition);
                 xPosition = Math.min(trackRight, xPosition);
