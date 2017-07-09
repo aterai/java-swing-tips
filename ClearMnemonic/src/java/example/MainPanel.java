@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
         JButton button = new JButton("Button");
         button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
 
-        JButton setMnemonicButton = new JButton("setMnemonic(...)");
-        setMnemonicButton.addActionListener(e -> {
+        JButton btnSetMnemonic = new JButton("setMnemonic(...)");
+        btnSetMnemonic.addActionListener(e -> {
             String str = textField.getText().trim();
             if (str.isEmpty()) {
                 str = button.getText();
@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
             //button.setMnemonic(str.charAt(0));
             button.setMnemonic(str.codePointAt(0));
         });
-        JButton clearMnemonicButton = new JButton("clear Mnemonic");
-        clearMnemonicButton.addActionListener(e -> {
+        JButton btnClearMnemonic = new JButton("clear Mnemonic");
+        btnClearMnemonic.addActionListener(e -> {
             button.setMnemonic(0);
             //button.setMnemonic('\u0000');
             //button.setMnemonic('\0');
@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("setMnemonic"));
         p.add(textField);
-        p.add(setMnemonicButton);
-        p.add(clearMnemonicButton);
+        p.add(btnSetMnemonic);
+        p.add(btnClearMnemonic);
 
         add(button);
         add(p);

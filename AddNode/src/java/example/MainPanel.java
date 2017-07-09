@@ -52,7 +52,7 @@ class TreePopupMenu extends JPopupMenu {
             tree.scrollPathToVisible(new TreePath(child.getPath())); //http://ateraimemo.com/Swing/ScrollRectToVisible.html
         }
     };
-    private final Action addReloadNodeAction = new AbstractAction("add & reload") {
+    private final Action addReloadAction = new AbstractAction("add & reload") {
         @Override public void actionPerformed(ActionEvent e) {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
@@ -113,7 +113,7 @@ class TreePopupMenu extends JPopupMenu {
     protected TreePopupMenu() {
         super();
         add(addNodeAction);
-        add(addReloadNodeAction);
+        add(addReloadAction);
         add(editNodeAction);
         addSeparator();
         add(removeNodeAction);

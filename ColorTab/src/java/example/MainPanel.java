@@ -63,18 +63,18 @@ class TabChangeListener implements ChangeListener {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-    private static final String MENUITEM_NEWTAB    = "New tab";
-    private static final String MENUITEM_CLOSEPAGE = "Close";
-    private static final String MENUITEM_CLOSEALL  = "Close all";
-    private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
+    private static final String NEWTAB    = "New tab";
+    private static final String CLOSEPAGE = "Close";
+    private static final String CLOSEALL  = "Close all";
+    private static final String CLOSEALLBUTACTIVE = "Close all bat active";
     protected transient int count;
-    private final Action closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
-    private final Action closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
-    private final Action closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
+    private final Action closePageAction = new ClosePageAction(CLOSEPAGE);
+    private final Action closeAllAction  = new CloseAllAction(CLOSEALL);
+    private final Action closeAllButActiveAction = new CloseAllButActiveAction(CLOSEALLBUTACTIVE);
 
     protected TabbedPanePopupMenu() {
         super();
-        add(new NewTabAction(MENUITEM_NEWTAB));
+        add(new NewTabAction(NEWTAB));
         addSeparator();
         add(closePageAction);
         addSeparator();

@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    private final List<List<Integer>> rowAndCellHeightList = new ArrayList<>();
+    private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
 
     //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
     @Override public void updateUI() {
@@ -141,15 +141,15 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         //doLayout();
 
         int preferredHeight = getPreferredSize().height;
-        while (rowAndCellHeightList.size() <= row) {
-            rowAndCellHeightList.add(new ArrayList<>(column));
+        while (rowAndCellHeights.size() <= row) {
+            rowAndCellHeights.add(new ArrayList<>(column));
         }
-        List<Integer> cellHeightList = rowAndCellHeightList.get(row);
-        while (cellHeightList.size() <= column) {
-            cellHeightList.add(0);
+        List<Integer> list = rowAndCellHeights.get(row);
+        while (list.size() <= column) {
+            list.add(0);
         }
-        cellHeightList.set(column, preferredHeight);
-        int max = cellHeightList.stream().max(Integer::compare).get();
+        list.set(column, preferredHeight);
+        int max = list.stream().max(Integer::compare).get();
         if (table.getRowHeight(row) != max) {
             table.setRowHeight(row, max);
         }

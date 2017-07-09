@@ -146,8 +146,8 @@ class WhitespaceLabelView extends LabelView {
         String text = getText(getStartOffset(), getEndOffset()).toString();
         for (int i = 0; i < text.length(); i++) {
             String s = text.substring(i, i + 1);
-            int previousStringWidth = fontMetrics.stringWidth(text.substring(0, i)) + sumOfTabs;
-            int sx = alloc.x + previousStringWidth;
+            int prevStrWidth = fontMetrics.stringWidth(text.substring(0, i)) + sumOfTabs;
+            int sx = alloc.x + prevStrWidth;
             int sy = alloc.y + alloc.height - fontMetrics.getDescent();
             if (IDEOGRAPHIC_SPACE.equals(s)) {
                 g2.setStroke(DASHED);
