@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+// import java.io.*;
+// import java.sql.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -178,6 +180,9 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         this.itemsPerPage = itemsPerPage;
     }
     @Override public String doInBackground() {
+        // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default/places.sqlite");
+        // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
+        // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
         int current = 1;
         int c = max / itemsPerPage;
         int i = 0;
@@ -189,12 +194,18 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
                 return "Interrupted";
             }
             current = makeRowListAndPublish(current, itemsPerPage);
+            // current = load(stat, current, itemsPerPage);
             i++;
         }
-        int m = max % itemsPerPage;
-        if (m > 0) {
-            makeRowListAndPublish(current, m);
+        int surplus = max % itemsPerPage;
+        if (surplus > 0) {
+            makeRowListAndPublish(current, surplus);
+            // load(stat, current, surplus);
         }
+        // } catch (SQLException ex) {
+        //     //ex.printStackTrace();
+        //     return "Error";
+        // }
         return "Done";
     }
     private int makeRowListAndPublish(int current, int size) {
@@ -204,14 +215,16 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         publish(result);
         return current + result.size();
     }
-//     private int makeRowListAndPublish(int current, int size) {
-//         List<Object[]> result = new ArrayList<>(size);
-//         int j = current;
-//         while (j < current + size) {
-//             result.add(new Object[] {j, "Test: " + j, j % 2 == 0 ? "" : "comment..."});
-//             j++;
+//     private int load(Statement stat, int current, int limit) throws SQLException {
+//         List<Object[]> result = new ArrayList<>(limit);
+//         String q = String.format("select * from moz_bookmarks limit %d offset %d", limit, current - 1);
+//         ResultSet rs = stat.executeQuery(q);
+//         int i = current;
+//         while (rs.next() && !isCancelled()) {
+//             result.add(new Object[] {i, rs.getInt("id"), rs.getString("title")});
+//             i++;
 //         }
 //         publish(result);
-//         return j;
+//         return current + result.size();
 //     }
 }
