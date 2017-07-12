@@ -41,18 +41,19 @@ public class MainPanel extends JPanel implements HierarchyListener {
         p.add(progressBar1);
         p.add(progressBar2);
 
+        JButton button = new JButton("Test start");
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            worker = new BackgroundTask();
+            worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+            worker.execute();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Test start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                worker = new BackgroundTask();
-                worker.addPropertyChangeListener(new ProgressListener(progressBar1));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(5));
 
         addHierarchyListener(this);

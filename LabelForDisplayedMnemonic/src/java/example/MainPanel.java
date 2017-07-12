@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
         JLabel label4 = new JLabel("ComboBox:", SwingConstants.RIGHT);
         label4.setDisplayedMnemonic('C');
-        final JComponent comboBox = new JComboBox();
+        JComponent comboBox = new JComboBox();
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -34,11 +34,10 @@ public final class MainPanel extends JPanel {
         addRow(label3, textField3, p, c);
         addRow(label4, comboBox,   p, c);
 
-        add(new JButton(new AbstractAction("JComboBox#requestFocusInWindow() Test") {
-            @Override public void actionPerformed(ActionEvent e) {
-                comboBox.requestFocusInWindow();
-            }
-        }), BorderLayout.SOUTH);
+        JButton button = new JButton("JComboBox#requestFocusInWindow() Test");
+        button.addActionListener(e -> comboBox.requestFocusInWindow());
+
+        add(button, BorderLayout.SOUTH);
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
