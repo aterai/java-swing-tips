@@ -40,19 +40,11 @@ public class MainPanel extends JPanel {
 //             return d;
 //         }
 //     };
-    protected final JCheckBox check = new JCheckBox(new AbstractAction("LineWrap") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox) e.getSource();
-            textArea.setLineWrap(c.isSelected());
-        }
-    });
 
     public MainPanel() {
         super(new BorderLayout());
         textArea.setEditable(false);
         textArea.setText(INITTXT + INITTXT + INITTXT);
-
-        scrollbar.setUnitIncrement(10);
 
         if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
@@ -60,6 +52,7 @@ public class MainPanel extends JPanel {
             scrollbar.setUI(new MetalHighlightScrollBarUI(textArea));
         }
 
+        scrollbar.setUnitIncrement(10);
         scroll.setVerticalScrollBar(scrollbar);
         JLabel label = new JLabel(new HighlightIcon(textArea, scrollbar));
         //label.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -79,24 +72,28 @@ public class MainPanel extends JPanel {
         vp.setView(new JLabel(new HighlightIcon(textArea, scrollbar)));
         scroll.setRowHeader(vp);
         */
-        add(scroll);
+
+        JCheckBox check = new JCheckBox("LineWrap");
+        check.addActionListener(e -> textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected()));
+
+        JButton highlight = new JButton("highlight");
+        highlight.addActionListener(e -> setHighlight(textArea, PATTERN));
+
+        JButton clear = new JButton("clear");
+        clear.addActionListener(e -> {
+            textArea.getHighlighter().removeAllHighlights();
+            scroll.repaint();
+        });
 
         Box box = Box.createHorizontalBox();
         box.add(check);
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("highlight") {
-            @Override public void actionPerformed(ActionEvent e) {
-                setHighlight(textArea, PATTERN);
-            }
-        }));
+        box.add(highlight);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.getHighlighter().removeAllHighlights();
-                scroll.repaint();
-            }
-        }));
+        box.add(clear);
+
         add(box, BorderLayout.SOUTH);
+        add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
     public void setHighlight(JTextComponent jtc, String pattern) {
