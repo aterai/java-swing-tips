@@ -11,36 +11,37 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        final Icon emptyIcon = new EmptyIcon();
+        Icon emptyIcon = new EmptyIcon();
         UIManager.put("Tree.expandedIcon",  new IconUIResource(emptyIcon));
         UIManager.put("Tree.collapsedIcon", new IconUIResource(emptyIcon));
 
-        final JTree tree = new JTree();
+        JTree tree = new JTree();
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
 
-        add(new JCheckBox(new AbstractAction("JTree: paint expanded, collapsed Icon") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Icon ei;
-                Icon ci;
-                if (((JCheckBox) e.getSource()).isSelected()) {
-                    UIDefaults lnfdef = UIManager.getLookAndFeelDefaults();
-                    ei = lnfdef.getIcon("Tree.expandedIcon");
-                    ci = lnfdef.getIcon("Tree.collapsedIcon");
-                } else {
-                    ei = emptyIcon;
-                    ci = emptyIcon;
-                }
-                UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
-                UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
-                SwingUtilities.updateComponentTreeUI(tree);
+        JCheckBox check = new JCheckBox("JTree: paint expanded, collapsed Icon");
+        check.addActionListener(e -> {
+            Icon ei;
+            Icon ci;
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                UIDefaults lnfdef = UIManager.getLookAndFeelDefaults();
+                ei = lnfdef.getIcon("Tree.expandedIcon");
+                ci = lnfdef.getIcon("Tree.collapsedIcon");
+            } else {
+                ei = emptyIcon;
+                ci = emptyIcon;
             }
-        }), BorderLayout.NORTH);
+            UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
+            UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
+            SwingUtilities.updateComponentTreeUI(tree);
+        });
 
         JPanel p = new JPanel(new GridLayout(1, 2));
         p.add(new JScrollPane(tree));
         p.add(new JScrollPane(new JTree()));
+
+        add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
