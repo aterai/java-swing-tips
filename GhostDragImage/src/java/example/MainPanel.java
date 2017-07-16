@@ -28,23 +28,22 @@ public final class MainPanel extends JPanel {
         model.addElement(new ListItem("t467467est", "wi0122-32.png"));
         model.addElement(new ListItem("test123",    "wi0124-32.png"));
         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
-
         ReorderbleList<ListItem> list = new ReorderbleList<>(model);
-        add(new JCheckBox(new AbstractAction("Compact drag image mode") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                if (c.isSelected()) {
-                    list.setTransferHandler(new CompactListItemTransferHandler());
-                } else {
-                    list.setTransferHandler(new ListItemTransferHandler());
-                }
-            }
-        }) {
+
+        JCheckBox check = new JCheckBox("Compact drag image mode") {
             @Override public void updateUI() {
                 super.updateUI();
                 setSelected(false);
             }
-        }, BorderLayout.NORTH);
+        };
+        check.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                list.setTransferHandler(new CompactListItemTransferHandler());
+            } else {
+                list.setTransferHandler(new ListItemTransferHandler());
+            }
+        });
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(list));
         setPreferredSize(new Dimension(320, 240));
     }

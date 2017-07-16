@@ -34,6 +34,7 @@
   <rule ref="rulesets/java/migrating.xml" />
   <rule ref="rulesets/java/naming.xml">
     <exclude name="ShortVariable" />
+    <exclude name="LongVariable" />
   </rule>
   <rule ref="rulesets/java/optimizations.xml">
     <exclude name="AvoidInstantiatingObjectsInLoops" />
