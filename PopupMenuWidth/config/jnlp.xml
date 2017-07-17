@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST PopupMenuWidth" />
+  <property name="jnlp.Name"     value="PopupMenuWidth" />
+  <property name="jnlp.name"     value="popupmenuwidth" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/popupmenuwidth/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PopupMenuWidth.html" />
+</project>
