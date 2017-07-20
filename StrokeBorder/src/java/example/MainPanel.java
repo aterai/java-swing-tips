@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final float[] DEFAULT_DASH_ARRAY = {1f};
+    private static final float[] DEFAULT_DASHARRAY = {1f};
     private final JComboBox<? extends Enum> joinCombo   = new JComboBox<>(JoinStyle.values());
     private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private float[] getDashArray() {
         String[] slist = field.getText().split(",");
         if (slist.length == 0) {
-            return DEFAULT_DASH_ARRAY;
+            return DEFAULT_DASHARRAY;
         }
         float[] list = new float[slist.length];
         int i = 0;
@@ -33,9 +33,9 @@ public final class MainPanel extends JPanel {
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             });
-            return DEFAULT_DASH_ARRAY;
+            return DEFAULT_DASHARRAY;
         }
-        return i == 0 ? DEFAULT_DASH_ARRAY : list;
+        return i == 0 ? DEFAULT_DASHARRAY : list;
     }
 
     public MainPanel() {

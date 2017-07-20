@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public static final int FIXED_COLUMN_RANGE = 2;
+    public static final int FIXED_COLUMNRANGE = 2;
     //<blockquote cite="FixedColumnExample.java">
     //@auther Nobuo Tamemasa
     private static final String ES = "";
@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
     //</blockquote>
     protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return column < FIXED_COLUMN_RANGE ? Integer.class : Object.class;
+            return column < FIXED_COLUMNRANGE ? Integer.class : Object.class;
         }
     };
     protected final JTable table;
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         leftTable.setSelectionModel(table.getSelectionModel());
 
         for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-            if (i < FIXED_COLUMN_RANGE) {
+            if (i < FIXED_COLUMNRANGE) {
                 table.removeColumn(table.getColumnModel().getColumn(i));
                 leftTable.getColumnModel().getColumn(i).setResizable(false);
             } else {
