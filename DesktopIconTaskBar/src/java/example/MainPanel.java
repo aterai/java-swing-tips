@@ -9,21 +9,24 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
+
         JDesktopPane desktop = new JDesktopPane();
         desktop.add(createFrame(0));
         desktop.add(createFrame(1));
         desktop.add(createFrame(2));
-        add(desktop);
-        add(new JToggleButton(new AbstractAction("InternalFrame.useTaskBar") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Object c = e.getSource();
-                if (c instanceof AbstractButton) {
-                    AbstractButton b = (AbstractButton) c;
-                    UIManager.put("InternalFrame.useTaskBar", b.isSelected());
-                    SwingUtilities.updateComponentTreeUI(getRootPane());
-                }
+
+        JToggleButton button = new JToggleButton("InternalFrame.useTaskBar");
+        button.addActionListener(e -> {
+            Object c = e.getSource();
+            if (c instanceof AbstractButton) {
+                AbstractButton b = (AbstractButton) c;
+                UIManager.put("InternalFrame.useTaskBar", b.isSelected());
+                SwingUtilities.updateComponentTreeUI(getRootPane());
             }
-        }), BorderLayout.NORTH);
+        });
+
+        add(desktop);
+        add(button, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private JInternalFrame createFrame(int i) {
