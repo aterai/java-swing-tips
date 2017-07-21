@@ -222,6 +222,8 @@ public final class BarFactory {
 }
 
 // https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html
+// [JDK-8027607] (rb) Provide UTF-8 based properties resource bundles - Java Bug System
+// https://bugs.openjdk.java.net/browse/JDK-8027607
 class UTF8ResourceBundleControl extends ResourceBundle.Control {
     @Override public List<String> getFormats(String baseName) {
         Objects.requireNonNull(baseName, "baseName must not be null");
