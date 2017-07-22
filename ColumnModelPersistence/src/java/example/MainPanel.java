@@ -135,28 +135,10 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
 }
 
 class TableHeaderPopupMenu extends JPopupMenu {
-    protected final JTextField textField = new JTextField();
-    protected final JMenuItem editItem = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JTableHeader header = (JTableHeader) getInvoker();
-            TableColumn column = header.getColumnModel().getColumn(index);
-            String name = column.getHeaderValue().toString();
-            textField.setText(name);
-            int result = JOptionPane.showConfirmDialog(
-                header.getTable(), textField, getValue(Action.NAME).toString(),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (result == JOptionPane.OK_OPTION) {
-                String str = textField.getText().trim();
-                if (!str.equals(name)) {
-                    column.setHeaderValue(str);
-                    header.repaint(header.getHeaderRect(index));
-                }
-            }
-        }
-    });
     protected int index = -1;
     protected TableHeaderPopupMenu() {
         super();
+        JTextField textField = new JTextField();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
@@ -164,7 +146,20 @@ class TableHeaderPopupMenu extends JPopupMenu {
             @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
-        add(editItem);
+        add("Edit: setHeaderValue").addActionListener(e -> {
+            JTableHeader header = (JTableHeader) getInvoker();
+            TableColumn column = header.getColumnModel().getColumn(index);
+            String name = column.getHeaderValue().toString();
+            textField.setText(name);
+            int result = JOptionPane.showConfirmDialog(header.getTable(), textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
+                String str = textField.getText().trim();
+                if (!str.equals(name)) {
+                    column.setHeaderValue(str);
+                    header.repaint(header.getHeaderRect(index));
+                }
+            }
+        });
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTableHeader) {
