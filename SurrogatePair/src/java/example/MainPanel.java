@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         JEditorPane editor1 = new JEditorPane();
         editor1.setEditorKit(htmlEditorKit);
 
-        final URL url = getClass().getResource("SurrogatePair.html");
+        URL url = getClass().getResource("SurrogatePair.html");
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
             editor1.read(reader, "html");
         } catch (IOException ex) {
@@ -39,23 +39,11 @@ public final class MainPanel extends JPanel {
         p.add(makeTitledPane(editor1, "Numeric character reference"));
         p.add(makeTitledPane(editor2, "Unicode escapes"));
 
-        add(new JButton(new AbstractAction("browse: SurrogatePair.html") {
-            @Override public void actionPerformed(ActionEvent e) {
-//                 BasicService bs = null;
-//                 try {
-//                     bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-//                 } catch (UnavailableServiceException ex) {
-//                     bs = null;
-//                 }
-//                 if (Objects.nonNull(bs)) {
-//                     bs.showDocument(url);
-//                 } else {
-//                     browseCacheFile(url);
-//                 }
-                browseCacheFile(url);
-            }
-        }), BorderLayout.SOUTH);
+        JButton button = new JButton("browse: SurrogatePair.html");
+        button.addActionListener(e -> browseCacheFile(url));
+
         add(p);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     protected static void browseCacheFile(URL url) {
