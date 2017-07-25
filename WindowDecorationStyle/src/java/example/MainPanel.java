@@ -13,17 +13,18 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
+        JButton button = new JButton("close");
+        button.addActionListener(e -> {
+            Container c = getTopLevelAncestor();
+            if (c instanceof Window) {
+                Window w = (Window) c;
+                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JScrollPane(new JTree()));
-        p.add(new JButton(new AbstractAction("close") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Container c = getTopLevelAncestor();
-                if (c instanceof Window) {
-                    Window w = (Window) c;
-                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-                }
-            }
-        }), BorderLayout.SOUTH);
+        p.add(button, BorderLayout.SOUTH);
 
         JMenuBar mb = new JMenuBar();
         mb.add(LookAndFeelUtil.createLookAndFeelMenu());
