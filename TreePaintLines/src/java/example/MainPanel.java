@@ -11,26 +11,22 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         UIManager.put("Tree.paintLines", Boolean.FALSE);
 
-        final JTree tree = new JTree();
+        JTree tree = new JTree();
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
 
-        add(new JCheckBox(new AbstractAction("Tree.paintLines") {
-            @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("Tree.paintLines", ((JCheckBox) e.getSource()).isSelected());
-//                 if (((JCheckBox) e.getSource()).isSelected()) {
-//                     UIManager.put("Tree.paintLines", Boolean.TRUE);
-//                 } else {
-//                     UIManager.put("Tree.paintLines", Boolean.FALSE);
-//                 }
-                SwingUtilities.updateComponentTreeUI(tree);
-            }
-        }), BorderLayout.NORTH);
+        JCheckBox check = new JCheckBox("Tree.paintLines");
+        check.addActionListener(e -> {
+            UIManager.put("Tree.paintLines", ((JCheckBox) e.getSource()).isSelected());
+            SwingUtilities.updateComponentTreeUI(tree);
+        });
 
         JPanel p = new JPanel(new GridLayout(1, 2));
         p.add(new JScrollPane(tree));
         p.add(new JScrollPane(new JTree()));
+
+        add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }

@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
             }
         };
 
-        final Color alphaZero = new Color(0x0, true);
+        Color alphaZero = new Color(0x0, true);
         table.setOpaque(false);
         table.setBackground(alphaZero);
         //table.setGridColor(alphaZero);
@@ -99,6 +99,7 @@ public class MainPanel extends JPanel {
         table.getTableHeader().setBackground(alphaZero);
 
         scroll.setOpaque(false);
+        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         scroll.setBackground(alphaZero);
         scroll.getViewport().setOpaque(false);
         scroll.getViewport().setBackground(alphaZero);
@@ -106,15 +107,12 @@ public class MainPanel extends JPanel {
         scroll.getColumnHeader().setOpaque(false);
         scroll.getColumnHeader().setBackground(alphaZero);
 
-        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        Color color = new Color(255, 0, 0, 50);
+        JCheckBox check = new JCheckBox("setBackground(new Color(255, 0, 0, 50))");
+        check.addActionListener(e ->  table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
 
+        add(check, BorderLayout.NORTH);
         add(scroll);
-        add(new JCheckBox(new AbstractAction("setBackground(new Color(255, 0, 0, 50))") {
-            private final Color color = new Color(255, 0, 0, 50);
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero);
-            }
-        }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
