@@ -45,15 +45,13 @@ public final class MainPanel extends JPanel {
             }
         });
 
+        Toolkit.getDefaultToolkit().setDynamicLayout(false);
+        JCheckBox check = new JCheckBox("Toolkit.getDefaultToolkit().setDynamicLayout: ");
+        check.addActionListener(e -> Toolkit.getDefaultToolkit().setDynamicLayout(((JCheckBox) e.getSource()).isSelected()));
+
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(checkbox);
-        Toolkit.getDefaultToolkit().setDynamicLayout(false);
-        p.add(new JCheckBox(new AbstractAction("Toolkit.getDefaultToolkit().setDynamicLayout: ") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                Toolkit.getDefaultToolkit().setDynamicLayout(cb.isSelected());
-            }
-        }));
+        p.add(check);
         add(p, BorderLayout.NORTH);
         add(label);
         setPreferredSize(new Dimension(320, 240));
