@@ -69,16 +69,29 @@ public final class MainPanel extends JPanel {
 class TreePopupMenu extends JPopupMenu {
     protected TreePath path;
     protected final JTextField textField = new JTextField();
-    private final Action editAction = new AbstractAction("Edit") {
-        @Override public void actionPerformed(ActionEvent e) {
+    protected final JMenuItem editItem;
+    protected final JMenuItem editDialogItem;
+
+    protected TreePopupMenu() {
+        super();
+        textField.addAncestorListener(new AncestorListener() {
+            @Override public void ancestorAdded(AncestorEvent e) {
+                textField.requestFocusInWindow();
+            }
+            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+        });
+
+        editItem = add("Edit");
+        editItem.addActionListener(e -> {
             if (Objects.nonNull(path)) {
                 JTree tree = (JTree) getInvoker();
                 tree.startEditingAtPath(path);
             }
-        }
-    };
-    private final Action editDialogAction = new AbstractAction("Edit Dialog") {
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+
+        editDialogItem = add("Edit Dialog");
+        editDialogItem.addActionListener(e -> {
             if (Objects.isNull(path)) {
                 return;
             }
@@ -98,20 +111,9 @@ class TreePopupMenu extends JPopupMenu {
 //                     }
                 }
             }
-        }
-    };
-    protected TreePopupMenu() {
-        super();
-        textField.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent e) {
-                textField.requestFocusInWindow();
-            }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
-            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
-        add(editAction);
-        add(editDialogAction);
-        add(new JMenuItem("dummy"));
+
+        add("dummy");
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
@@ -125,8 +127,8 @@ class TreePopupMenu extends JPopupMenu {
             path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
             boolean isEditable = tsp.length == 1 && tsp[0].equals(path);
             //Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
-            editAction.setEnabled(isEditable);
-            editDialogAction.setEnabled(isEditable);
+            editItem.setEnabled(isEditable);
+            editDialogItem.setEnabled(isEditable);
             super.show(c, x, y);
         }
     }
