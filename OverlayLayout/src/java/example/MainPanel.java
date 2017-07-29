@@ -14,16 +14,13 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeOverlayLayoutButton() {
-        JButton b1 = new JButton();
+        JButton b1 = new JButton("OverlayLayoutButton");
         b1.setLayout(new OverlayLayout(b1));
+        b1.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
         Insets i = b1.getBorder().getBorderInsets(b1);
         b1.setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, 4));
-        b1.setAction(new AbstractAction("OverlayLayoutButton") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
-        JButton b2 = new JButton() {
+
+        JButton b2 = new JButton("\u25BC") {
             private final Dimension dim = new Dimension(120, 24);
             @Override public Dimension getPreferredSize() {
                 return dim;
@@ -35,13 +32,10 @@ public final class MainPanel extends JPanel {
                 return getPreferredSize();
             }
         };
-        b2.setAction(new AbstractAction("\u25BC") {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("sub");
-            }
-        });
+        b2.addActionListener(e -> System.out.println("sub"));
         b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         b2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+
         b1.add(b2);
         return b1;
     }
