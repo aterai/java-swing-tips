@@ -41,16 +41,19 @@ public class MainPanel {
         label.setForeground(Color.WHITE);
         label.setBackground(Color.BLUE);
         label.setBorder(BorderFactory.createEmptyBorder(5, 16 + 5, 5, 2));
+
+        JButton button = new JButton("Exit");
+        button.addActionListener(e -> {
+            //frame.dispose();
+            //System.exit(0);
+            //frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Exit") {
-            @Override public void actionPerformed(ActionEvent e) {
-                //frame.dispose();
-                //System.exit(0);
-                //frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-            }
-        }));
+        box.add(button);
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(label, BorderLayout.NORTH);
         p.add(box, BorderLayout.SOUTH);
