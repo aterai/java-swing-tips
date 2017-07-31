@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ScrollBarOnHover" />
+  <property name="jnlp.Name"     value="ScrollBarOnHover" />
+  <property name="jnlp.name"     value="scrollbaronhover" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollbaronhover/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollBarOnHover.html" />
+</project>
