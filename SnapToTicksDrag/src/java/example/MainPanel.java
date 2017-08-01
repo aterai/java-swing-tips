@@ -13,24 +13,28 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        final List<JSlider> list = Arrays.asList(
+
+        List<JSlider> list = Arrays.asList(
             makeSilder("Default SnapToTicks"),
             makeSilder("Custom SnapToTicks"));
+
+        JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
+        check.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            for (JSlider slider: list) {
+                slider.setMinorTickSpacing(cb.isSelected() ? 5 : 0);
+            }
+        });
+
         Box b = Box.createVerticalBox();
         b.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         for (JSlider slider: list) {
             b.add(slider);
             b.add(Box.createVerticalStrut(10));
         }
-        b.add(new JCheckBox(new AbstractAction("JSlider.setMinorTickSpacing(5)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                for (JSlider slider: list) {
-                    slider.setMinorTickSpacing(cb.isSelected() ? 5 : 0);
-                }
-            }
-        }));
+        b.add(check);
         b.add(Box.createVerticalGlue());
+
         add(b);
         setPreferredSize(new Dimension(320, 240));
     }
