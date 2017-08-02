@@ -16,29 +16,32 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
+
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new LeftAlignmentWindowsTabbedPaneUI());
         } else {
             tabbedPane.setUI(new LeftAlignmentTabbedPaneUI());
         }
-        final List<? extends JTabbedPane> list = Arrays.asList(
+
+        List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTabbedPane(new JTabbedPane(JTabbedPane.LEFT)),
             makeTestTabbedPane(tabbedPane),
             makeTestTabbedPane(new ClippedTitleTabbedPane(JTabbedPane.LEFT)));
+
+        JCheckBox check = new JCheckBox("TOP");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            for (JTabbedPane t: list) {
+                t.setTabPlacement(c.isSelected() ? JTabbedPane.TOP : JTabbedPane.LEFT);
+            }
+        });
 
         JPanel p = new JPanel(new GridLayout(list.size(), 1));
         for (JTabbedPane t: list) {
             p.add(t);
         }
-        add(new JCheckBox(new AbstractAction("TOP") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                for (JTabbedPane t: list) {
-                    t.setTabPlacement(c.isSelected() ? JTabbedPane.TOP : JTabbedPane.LEFT);
-                }
-            }
-        }), BorderLayout.NORTH);
+        add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
