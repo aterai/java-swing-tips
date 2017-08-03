@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("JTextArea", new JScrollPane(textArea));
         tabbedPane.addChangeListener(e -> {
             JTabbedPane t = (JTabbedPane) e.getSource();
-            int i = t.getSelectedIndex();
-            if (i == 0) {
+            boolean isHtmlMode = t.getSelectedIndex() == 0;
+            if (isHtmlMode) {
                 textPane.setText(textArea.getText());
                 //textPane.setText("");
                 //HTMLEditorKit hek = (HTMLEditorKit) textPane.getEditorKit();
@@ -88,39 +88,33 @@ class HTMLColorPopupMenu extends JPopupMenu {
         MutableAttributeSet blue = new SimpleAttributeSet();
         StyleConstants.setForeground(blue, Color.BLUE);
 
-        add(new AbstractAction("Red") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane) getInvoker();
-                StyledDocument doc = t.getStyledDocument();
-                int start = t.getSelectionStart();
-                int end   = t.getSelectionEnd();
-                doc.setCharacterAttributes(start, end - start, red, false);
-            }
+        add("Red").addActionListener(e -> {
+            JTextPane t = (JTextPane) getInvoker();
+            StyledDocument doc = t.getStyledDocument();
+            int start = t.getSelectionStart();
+            int end = t.getSelectionEnd();
+            doc.setCharacterAttributes(start, end - start, red, false);
         });
-        add(new AbstractAction("Green") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane) getInvoker();
-                StyledDocument doc = t.getStyledDocument();
-                int start = t.getSelectionStart();
-                int end   = t.getSelectionEnd();
-                doc.setCharacterAttributes(start, end - start, green, false);
-            }
+        add("Green").addActionListener(e -> {
+            JTextPane t = (JTextPane) getInvoker();
+            StyledDocument doc = t.getStyledDocument();
+            int start = t.getSelectionStart();
+            int end = t.getSelectionEnd();
+            doc.setCharacterAttributes(start, end - start, green, false);
         });
-        add(new AbstractAction("Blue") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane) getInvoker();
-                StyledDocument doc = t.getStyledDocument();
-                int start = t.getSelectionStart();
-                int end   = t.getSelectionEnd();
-                doc.setCharacterAttributes(start, end - start, blue, false);
-            }
+        add("Blue").addActionListener(e -> {
+            JTextPane t = (JTextPane) getInvoker();
+            StyledDocument doc = t.getStyledDocument();
+            int start = t.getSelectionStart();
+            int end = t.getSelectionEnd();
+            doc.setCharacterAttributes(start, end - start, blue, false);
         });
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTextPane) {
             JTextPane t = (JTextPane) c;
             int start = t.getSelectionStart();
-            int end   = t.getSelectionEnd();
+            int end = t.getSelectionEnd();
             boolean flag = end - start > 0;
             for (MenuElement me: getSubElements()) {
                 me.getComponent().setEnabled(flag);
