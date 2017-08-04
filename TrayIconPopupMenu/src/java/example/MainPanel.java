@@ -70,22 +70,22 @@ public final class MainPanel extends JPanel {
         popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
         popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
         popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem aaaaaaaaaaa"));
-        popup.add("OPEN").addActionListener(e -> {
+        popup.add("Open").addActionListener(e -> {
             frame.setExtendedState(Frame.NORMAL);
             frame.setVisible(true);
         });
-//         popup.add("EXIT").addActionListener(e -> {
-//             SystemTray tray = SystemTray.getSystemTray();
-//             for (TrayIcon ti: tray.getTrayIcons()) {
-//                 tray.remove(ti);
-//             }
-//             for (Frame f: Frame.getFrames()) {
-//                 f.dispose();
-//             }
-//             //tray.remove(icon);
-//             //frame.dispose();
-//             //dummy.dispose();
-//         });
+        popup.add("Exit").addActionListener(e -> {
+            SystemTray tray = SystemTray.getSystemTray();
+            for (TrayIcon ti: tray.getTrayIcons()) {
+                tray.remove(ti);
+            }
+            for (Frame f: Frame.getFrames()) {
+                f.dispose();
+            }
+            //tray.remove(icon);
+            //frame.dispose();
+            //dummy.dispose();
+        });
     }
 
     public static void main(String... args) {
