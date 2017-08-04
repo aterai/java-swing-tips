@@ -82,24 +82,17 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action cutAction = new DefaultEditorKit.CutAction();
     private final Action copyAction = new DefaultEditorKit.CopyAction();
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
-    private final Action deleteAction = new AbstractAction("delete") {
-        @Override public void actionPerformed(ActionEvent e) {
-            ((JTextComponent) getInvoker()).replaceSelection(null);
-        }
-    };
+    private final JMenuItem deleteItem;
     protected TextComponentPopupMenu() {
         super();
         add(cutAction);
         add(copyAction);
         add(pasteAction);
         addSeparator();
-        add(deleteAction);
+        deleteItem = add("delete");
+        deleteItem.addActionListener(e -> ((JTextComponent) getInvoker()).replaceSelection(null));
         addSeparator();
-        add(new AbstractAction("select all") {
-            @Override public void actionPerformed(ActionEvent e) {
-                ((JTextComponent) getInvoker()).selectAll();
-            }
-        });
+        add("select all").addActionListener(e -> ((JTextComponent) getInvoker()).selectAll());
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTextComponent) {
@@ -107,7 +100,7 @@ class TextComponentPopupMenu extends JPopupMenu {
             boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
             cutAction.setEnabled(flg);
             copyAction.setEnabled(flg);
-            deleteAction.setEnabled(flg);
+            deleteItem.setEnabled(flg);
             super.show(c, x, y);
         }
     }
