@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Locale;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -16,22 +16,22 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
+        JToggleButton tgb12 = new JToggleButton("12");
+        tgb12.addActionListener(e -> updateFont(FONT12));
+
+        JToggleButton tgb24 = new JToggleButton("24");
+        tgb24.addActionListener(e -> updateFont(FONT24));
+
+        JToggleButton tgb32 = new JToggleButton("32");
+        tgb32.addActionListener(e -> updateFont(FONT32));
+
         JToolBar toolbar = new JToolBar();
-        toolbar.add(new AbstractAction("12") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT12);
-            }
-        });
-        toolbar.add(new AbstractAction("24") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT24);
-            }
-        });
-        toolbar.add(new AbstractAction("32") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT32);
-            }
-        });
+        ButtonGroup bg = new ButtonGroup();
+        for (AbstractButton b: Arrays.asList(tgb12, tgb24, tgb32)) {
+            b.setFocusPainted(false);
+            bg.add(b);
+            toolbar.add(b);
+        }
 
         JLabel label = new JLabel("Test:");
         JComboBox<String> combo = new JComboBox<>(new String[] {"Test"});
