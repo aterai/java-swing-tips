@@ -118,9 +118,9 @@ class LabelTransferHandler extends TransferHandler {
         JLabel l = p.draggingLabel;
         DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
         return Optional.ofNullable(l.getText())
-          // .map(text -> (Transferable) new LabelTransferable(dh, localObjectFlavor, text))
-          .<Transferable>map(text -> new LabelTransferable(dh, localObjectFlavor, text))
-          .orElse(dh);
+            // .map(text -> (Transferable) new LabelTransferable(dh, localObjectFlavor, text))
+            .<Transferable>map(text -> new LabelTransferable(dh, localObjectFlavor, text))
+            .orElse(dh);
 //         String text = l.getText();
 //         if (Objects.nonNull(text)) {
 //             return new LabelTransferable(dh, localObjectFlavor, text);

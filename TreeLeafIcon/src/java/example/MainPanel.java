@@ -83,8 +83,8 @@ public final class MainPanel extends JPanel {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-          .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
-          .forEach(model::nodeChanged);
+            .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
+            .forEach(model::nodeChanged);
 //         Enumeration<?> e = root.preorderEnumeration();
 //         while (e.hasMoreElements()) {
 //             model.nodeChanged((TreeNode) e.nextElement());

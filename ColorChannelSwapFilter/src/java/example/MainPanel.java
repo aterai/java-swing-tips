@@ -115,8 +115,9 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         if (isPreventing && c instanceof JLayer) {
             Dimension d = ((JLayer) c).getView().getSize();
-            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-                          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+            buf = Optional.ofNullable(buf)
+                .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+                .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
 
             Graphics2D g2 = buf.createGraphics();
             super.paint(g2, c);

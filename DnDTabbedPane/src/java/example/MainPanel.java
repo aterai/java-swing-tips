@@ -318,20 +318,20 @@ class TabDragSourceListener implements DragSourceListener {
 class TabDragGestureListener implements DragGestureListener {
     @Override public void dragGestureRecognized(DragGestureEvent e) {
         Optional.ofNullable(e.getComponent())
-                .filter(c -> c instanceof DnDTabbedPane).map(c -> (DnDTabbedPane) c)
-                .filter(tabbedPane -> tabbedPane.getTabCount() > 1)
-                .ifPresent(tabbedPane -> {
-                    Point tabPt = e.getDragOrigin();
-                    tabbedPane.dragTabIndex = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
-                    if (tabbedPane.dragTabIndex >= 0 && tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
-                        tabbedPane.initGlassPane(tabPt);
-                        try {
-                            e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabbedPane), new TabDragSourceListener());
-                        } catch (InvalidDnDOperationException ex) {
-                            ex.printStackTrace();
-                        }
+            .filter(c -> c instanceof DnDTabbedPane).map(c -> (DnDTabbedPane) c)
+            .filter(tabbedPane -> tabbedPane.getTabCount() > 1)
+            .ifPresent(tabbedPane -> {
+                Point tabPt = e.getDragOrigin();
+                tabbedPane.dragTabIndex = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
+                if (tabbedPane.dragTabIndex >= 0 && tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
+                    tabbedPane.initGlassPane(tabPt);
+                    try {
+                        e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabbedPane), new TabDragSourceListener());
+                    } catch (InvalidDnDOperationException ex) {
+                        ex.printStackTrace();
                     }
-                });
+                }
+            });
     }
 }
 

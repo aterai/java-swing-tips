@@ -209,7 +209,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
 
     @Override public Dimension getPreferredSize(JComponent c) {
         long width = Collections.list(header.getColumnModel().getColumns()).stream()
-                                .mapToLong(TableColumn::getPreferredWidth).sum();
+            .mapToLong(TableColumn::getPreferredWidth).sum();
 //         long width = 0;
 //         Enumeration<TableColumn> enumeration = header.getColumnModel().getColumns();
 //         while (enumeration.hasMoreElements()) {

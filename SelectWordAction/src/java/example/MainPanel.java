@@ -74,7 +74,7 @@ final class TextUtilties {
     //@see javax.swint.text.Utilities.getWordStart(...)
     public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
         Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
-                               .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
+            .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
         Document doc = c.getDocument();
         int lineStart = line.getStartOffset();
         int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
@@ -107,7 +107,7 @@ final class TextUtilties {
     //@see javax.swint.text.Utilities.getWordEnd(...)
     public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
         Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
-                               .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
+            .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
         Document doc = c.getDocument();
         int lineStart = line.getStartOffset();
         int lineEnd = Math.min(line.getEndOffset(), doc.getLength());

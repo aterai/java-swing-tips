@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             }
         };
         Arrays.asList(verticalAlignmentChoices, verticalTextPositionChoices, horizontalAlignmentChoices, horizontalTextPositionChoices)
-          .forEach(c -> c.addItemListener(listener));
+            .forEach(c -> c.addItemListener(listener));
 
         JPanel p1 = new JPanel(new BorderLayout());
         p1.setBorder(BorderFactory.createTitledBorder("JLabel Test"));

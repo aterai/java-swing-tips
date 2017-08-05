@@ -94,7 +94,7 @@ class ToolTipHeaderRenderer implements TableCellRenderer {
 //                 .ifPresent(sorter -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
 
         Optional.ofNullable(l.getIcon())
-                .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
+            .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
 
         FontMetrics fm = l.getFontMetrics(l.getFont());
         String str = Objects.toString(value, "");

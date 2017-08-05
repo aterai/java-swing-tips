@@ -99,8 +99,8 @@ class LockingGlassPane extends JPanel {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         Optional.ofNullable(getRootPane())
-                .filter(rootPane -> isVisible() != oldVisible)
-                .ifPresent(rootPane -> rootPane.getLayeredPane().setVisible(!isVisible));
+            .filter(rootPane -> isVisible() != oldVisible)
+            .ifPresent(rootPane -> rootPane.getLayeredPane().setVisible(!isVisible));
 //         JRootPane rootPane = getRootPane();
 //         if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
 //             rootPane.getLayeredPane().setVisible(!isVisible);

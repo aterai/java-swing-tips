@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
                 @Override public JPanel makePanel() {
                     JPanel p = new JPanel(new GridLayout(0, 1));
                     Arrays.asList("Desktop", "My Network Places", "My Documents", "Shared Documents")
-                          .forEach(s -> p.add(new JLabel(s)));
+                        .forEach(s -> p.add(new JLabel(s)));
                     return p;
                 }
             },

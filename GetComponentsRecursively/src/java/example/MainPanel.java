@@ -39,9 +39,9 @@ public final class MainPanel extends JPanel {
 
             //TEST4:
             stream(chooser)
-              .filter(JTable.class::isInstance).map(JTable.class::cast)
-              .findFirst()
-              .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+                .filter(JTable.class::isInstance).map(JTable.class::cast)
+                .findFirst()
+                .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
             int retvalue = chooser.showOpenDialog(getRootPane());
             if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -107,8 +107,8 @@ public final class MainPanel extends JPanel {
     //TEST4
     public static Stream<Component> stream(Container parent) {
         return Arrays.stream(parent.getComponents())
-          .filter(Container.class::isInstance).map(c -> stream(Container.class.cast(c)))
-          .reduce(Stream.of(parent), Stream::concat);
+            .filter(Container.class::isInstance).map(c -> stream(Container.class.cast(c)))
+            .reduce(Stream.of(parent), Stream::concat);
     }
 
     public static void main(String... args) {

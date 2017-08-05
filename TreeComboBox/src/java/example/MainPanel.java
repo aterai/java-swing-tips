@@ -43,9 +43,9 @@ public final class MainPanel extends JPanel {
         }
         if (!node.isLeaf() && node.getChildCount() > 0) {
             Collections.list((Enumeration<?>) node.children()).stream()
-              .filter(DefaultMutableTreeNode.class::isInstance)
-              .map(DefaultMutableTreeNode.class::cast)
-              .forEach(n -> makeComboBoxModel(model, n));
+                .filter(DefaultMutableTreeNode.class::isInstance)
+                .map(DefaultMutableTreeNode.class::cast)
+                .forEach(n -> makeComboBoxModel(model, n));
         }
     }
     private static TreeModel makeModel() {

@@ -42,9 +42,9 @@ public final class MainPanel extends JPanel {
                     c.doLayout();
                     pt.translate(-r.x, -r.y);
                     return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-                      .filter(JLabel.class::isInstance).map(JLabel.class::cast)
-                      .map(l -> ((ImageIcon) l.getIcon()).getDescription())
-                      .orElseGet(() -> super.getToolTipText(e));
+                        .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+                        .map(l -> ((ImageIcon) l.getIcon()).getDescription())
+                        .orElseGet(() -> super.getToolTipText(e));
 //                     Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
 //                     if (l instanceof JLabel) {
 //                         ImageIcon icon = (ImageIcon) ((JLabel) l).getIcon();

@@ -113,8 +113,8 @@ class CustomTooltipEditorPane extends JEditorPane {
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editor.getToolTipText();
                     Optional.ofNullable(e.getSourceElement())
-                            .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
-                            .ifPresent(attr -> editor.setToolTipText((String) attr.getAttribute(HTML.Attribute.TITLE)));
+                        .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
+                        .ifPresent(attr -> editor.setToolTipText((String) attr.getAttribute(HTML.Attribute.TITLE)));
 //                     Element elem = e.getSourceElement();
 //                     if (Objects.nonNull(elem)) {
 //                         AttributeSet attr = elem.getAttributes();

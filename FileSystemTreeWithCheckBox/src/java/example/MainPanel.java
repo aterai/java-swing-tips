@@ -16,19 +16,19 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+        FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        final DefaultTreeModel treeModel = new DefaultTreeModel(root);
+        DefaultTreeModel treeModel = new DefaultTreeModel(root);
         for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
-                  .filter(File::isDirectory)
-                  .forEach(file -> node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED))));
+                .filter(File::isDirectory)
+                .forEach(file -> node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED))));
         }
         treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
-        final JTree tree = new JTree(treeModel) {
+        JTree tree = new JTree(treeModel) {
             @Override public void updateUI() {
                 setCellRenderer(null);
                 setCellEditor(null);
@@ -343,8 +343,8 @@ class BackgroundTask extends SwingWorker<String, File> {
     }
     @Override public String doInBackground() {
         Arrays.stream(fileSystemView.getFiles(parent, true))
-              .filter(File::isDirectory)
-              .forEach(file -> publish(file));
+            .filter(File::isDirectory)
+            .forEach(file -> publish(file));
         return "done";
     }
 }

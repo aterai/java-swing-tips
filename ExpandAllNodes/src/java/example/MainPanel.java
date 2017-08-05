@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
 
     public static Stream<TreeNode> children(TreeNode node) {
         return Collections.list((Enumeration<?>) node.children())
-          .stream().filter(TreeNode.class::isInstance).map(TreeNode.class::cast);
+            .stream().filter(TreeNode.class::isInstance).map(TreeNode.class::cast);
     }
 
     //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)

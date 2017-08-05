@@ -33,11 +33,10 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
     @SuppressWarnings("PMD.ReplaceVectorWithList")
     private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
         if (Status.INDETERMINATE.equals(status)) {
-            List<Boolean> l = ((Vector<?>) m.getDataVector())
-              .stream()
-              .map(v -> (Boolean) ((Vector<?>) v).get(targetColumnIndex))
-              .distinct()
-              .collect(Collectors.toList());
+            List<Boolean> l = ((Vector<?>) m.getDataVector()).stream()
+                .map(v -> (Boolean) ((Vector<?>) v).get(targetColumnIndex))
+                .distinct()
+                .collect(Collectors.toList());
             boolean isOnlyOneSelected = l.size() == 1;
             if (isOnlyOneSelected) {
                 column.setHeaderValue(l.get(0) ? Status.SELECTED : Status.DESELECTED);

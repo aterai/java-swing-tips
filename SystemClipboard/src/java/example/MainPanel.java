@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> {
             try {
                 Transferable t = csOp.map(ClipboardService::getContents)
-                                     .orElse(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null));
+                    .orElse(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null));
                 if (Objects.isNull(t)) {
                     Toolkit.getDefaultToolkit().beep();
                     return;

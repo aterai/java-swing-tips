@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY);
                     Transferable transferable = dtde.getTransferable();
                     ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
-                      .stream().filter(File.class::isInstance).map(File.class::cast)
-                      .forEach(MainPanel.this::addImageFile);
+                        .stream().filter(File.class::isInstance).map(File.class::cast)
+                        .forEach(MainPanel.this::addImageFile);
                     dtde.dropComplete(true);
                     return;
                 }

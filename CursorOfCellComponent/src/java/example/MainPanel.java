@@ -70,8 +70,8 @@ class LinkCellList<E> extends JList<E> {
         prevIndex = i;
         pt.translate(-r.x, -r.y);
         setCursor(Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-                          .map(Component::getCursor)
-                          .orElse(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)));
+            .map(Component::getCursor)
+            .orElse(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)));
     }
 }
 

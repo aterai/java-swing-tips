@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
     }
     protected static void repaintWindowAncestor(JComponent c) {
         Optional.ofNullable(c.getRootPane())
-          .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
+            .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
 
     }
 //     protected void repaintWindowAncestor(Component c) {

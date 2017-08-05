@@ -158,9 +158,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private void clickArrowButton(String actionKey) {
        Optional.ofNullable(getActionMap())
-               .map(am -> am.get(actionKey))
-               .filter(Action::isEnabled)
-               .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+           .map(am -> am.get(actionKey))
+           .filter(Action::isEnabled)
+           .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
 //         ActionMap map = getActionMap();
 //         if (Objects.nonNull(map)) {
 //             Action action = map.get(actionKey);
@@ -537,15 +537,15 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             JLayer layer = (JLayer) c;
             DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
             Optional.ofNullable(tabbedPane.getDropLocation())
-                    .filter(loc -> loc.isDropable() && loc.getIndex() >= 0)
-                    .ifPresent(loc -> {
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-                        g2.setPaint(Color.RED);
-                        initLineRect(tabbedPane, loc);
-                        g2.fill(LINE_RECT);
-                        g2.dispose();
-                    });
+                .filter(loc -> loc.isDropable() && loc.getIndex() >= 0)
+                .ifPresent(loc -> {
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+                    g2.setPaint(Color.RED);
+                    initLineRect(tabbedPane, loc);
+                    g2.fill(LINE_RECT);
+                    g2.dispose();
+                });
 //             DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
 //             if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
 //                 Graphics2D g2 = (Graphics2D) g.create();

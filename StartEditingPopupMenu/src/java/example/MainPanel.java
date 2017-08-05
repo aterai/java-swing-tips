@@ -103,8 +103,8 @@ class TreePopupMenu extends JPopupMenu {
                 int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     Optional.ofNullable(textField.getText().trim())
-                      .filter(str -> !str.isEmpty())
-                      .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
+                        .filter(str -> !str.isEmpty())
+                        .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
 //                     String str = textField.getText().trim();
 //                     if (!str.isEmpty()) {
 //                         ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);

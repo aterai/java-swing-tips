@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
             // }
 
             Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-                    .ifPresent(a -> a.actionPerformed(null));
+                .ifPresent(a -> a.actionPerformed(null));
 //             Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
 //             if (Objects.nonNull(detailsAction)) {
 //                 detailsAction.actionPerformed(null);

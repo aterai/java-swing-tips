@@ -117,7 +117,7 @@ final class TreeUtil {
 
     //JDK 1.8.0
     private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
-                                                                      .thenComparing(n -> n.getUserObject().toString());
+        .thenComparing(n -> n.getUserObject().toString());
 
     private TreeUtil() { /* Singleton */ }
 

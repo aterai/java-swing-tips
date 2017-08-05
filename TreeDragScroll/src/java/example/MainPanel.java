@@ -28,9 +28,9 @@ public final class MainPanel extends JPanel {
     private static void expandTree(JTree tree) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-          .filter(DefaultMutableTreeNode.class::isInstance)
-          .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
-          .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
+            .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
     }
     private static JComponent makeTitledComponent(JComponent c, String title) {
         JScrollPane scroll = new JScrollPane(c);
@@ -80,8 +80,8 @@ class DragScrollListener extends MouseAdapter {
         Component c = e.getComponent();
         c.setCursor(hndCursor);
         Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
-          .filter(JViewport.class::isInstance).map(JViewport.class::cast)
-          .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
+            .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+            .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
     }
     @Override public void mouseReleased(MouseEvent e) {
         e.getComponent().setCursor(defCursor);

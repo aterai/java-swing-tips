@@ -19,8 +19,8 @@ public class MainPanel extends JPanel {
         Point pt = new Point();
         Toolkit tk = Toolkit.getDefaultToolkit();
         Cursor[] list = Stream.of("00", "01", "02")
-          .map(s -> tk.createCustomCursor(tk.createImage(MainPanel.class.getResource(s + ".png")), pt, s))
-          .toArray(Cursor[]::new);
+            .map(s -> tk.createCustomCursor(tk.createImage(MainPanel.class.getResource(s + ".png")), pt, s))
+            .toArray(Cursor[]::new);
 
         Timer animator = new Timer(100, null);
         JButton button = new JButton("Start");

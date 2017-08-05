@@ -191,8 +191,8 @@ public final class MainPanel extends JPanel {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
         JComponent titleBar = (JComponent) ui.getNorthPane();
         Stream.of(titleBar.getComponents())
-          .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
-          .forEach(MainPanel::removeComponentMouseListener);
+            .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
+            .forEach(MainPanel::removeComponentMouseListener);
 //         for (Component c: titleBar.getComponents()) {
 //             if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
 //                 removeComponentMouseListener(c)

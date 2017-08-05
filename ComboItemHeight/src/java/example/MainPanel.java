@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 //Dimension d = super.getPreferredSize();
                 //cheight = index < 0 ? d.height : 32;
                 cheight = Optional.ofNullable(super.getPreferredSize())
-                  .filter(d -> index < 0).map(d -> d.height).orElse(32);
+                    .filter(d -> index < 0).map(d -> d.height).orElse(32);
                 return this;
             }
             @Override public Dimension getPreferredSize() {

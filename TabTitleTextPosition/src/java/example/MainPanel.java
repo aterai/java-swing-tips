@@ -114,7 +114,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         for (int i = 0; i < tabCount; i++) {
             int w = i < gap ? tabWidth + 1 : tabWidth;
             Optional.ofNullable((JComponent) getTabComponentAt(i))
-              .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
+                .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
         }
         super.doLayout();
     }

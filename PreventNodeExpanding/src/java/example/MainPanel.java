@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
-                  .filter(File::isDirectory)
-                  .forEach(file -> node.add(new DefaultMutableTreeNode(file)));
+                .filter(File::isDirectory)
+                .forEach(file -> node.add(new DefaultMutableTreeNode(file)));
         }
 
         JTree tree = new JTree(treeModel);
@@ -127,8 +127,8 @@ class BackgroundTask extends SwingWorker<String, File> {
     }
     @Override public String doInBackground() {
         Arrays.stream(fileSystemView.getFiles(parent, true))
-              .filter(File::isDirectory)
-              .forEach(file -> publish(file));
+            .filter(File::isDirectory)
+            .forEach(this::publish);
         return "done";
     }
 }

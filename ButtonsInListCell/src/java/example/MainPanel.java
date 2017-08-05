@@ -153,7 +153,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
 //             return null;
 //         }
         return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-                       .filter(JButton.class::isInstance).map(JButton.class::cast).orElse(null);
+            .filter(JButton.class::isInstance).map(JButton.class::cast).orElse(null);
     }
 }
 

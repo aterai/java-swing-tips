@@ -210,8 +210,8 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     }
     private int makeRowListAndPublish(int current, int size) {
         List<Object[]> result = IntStream.range(current, current + size)
-          .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
-          .collect(Collectors.toList());
+            .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
+            .collect(Collectors.toList());
         publish(result);
         return current + result.size();
     }

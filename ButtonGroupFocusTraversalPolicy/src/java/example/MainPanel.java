@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
 //                 }
 //                 return super.getDefaultComponent(focusCycleRoot);
                 return Stream.of(focusCycleRoot.getComponents())
-                             .filter(c -> ((JRadioButton) c).getModel().equals(selection))
-                             .findFirst().orElse(super.getDefaultComponent(focusCycleRoot));
+                    .filter(c -> ((JRadioButton) c).getModel().equals(selection))
+                    .findFirst().orElse(super.getDefaultComponent(focusCycleRoot));
             }
         });
         box.add(buttons);

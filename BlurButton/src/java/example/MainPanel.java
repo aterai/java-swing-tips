@@ -117,8 +117,9 @@ class BlurJButton extends JButton {
 //                 ih = getHeight();
 //                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
 //             }
-            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
-                          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
+            buf = Optional.ofNullable(buf)
+                .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
+                .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();
@@ -142,8 +143,9 @@ class BlurButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
-                          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
+            buf = Optional.ofNullable(buf)
+                .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
+                .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();

@@ -151,14 +151,14 @@ public final class BarFactory {
         String mitext = getResourceString(key + LABEL_SUFFIX);
         JMenu menu = new JMenu(mitext);
         Optional.ofNullable(getResourceString(key + MNE_SUFFIX))
-                .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
-                .filter(txt -> !txt.isEmpty())
-                .ifPresent(txt -> {
-                    if (mitext.indexOf(txt) < 0) {
-                        menu.setText(String.format("%s (%s)", mitext, txt));
-                    }
-                    menu.setMnemonic(txt.codePointAt(0));
-                });
+            .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
+            .filter(txt -> !txt.isEmpty())
+            .ifPresent(txt -> {
+                if (mitext.indexOf(txt) < 0) {
+                    menu.setText(String.format("%s (%s)", mitext, txt));
+                }
+                menu.setMnemonic(txt.codePointAt(0));
+            });
         for (String m: tokenize(getResourceString(key))) {
             if ("-".equals(m)) {
                 menu.addSeparator();
@@ -178,14 +178,14 @@ public final class BarFactory {
             mi.setIcon(new ImageIcon(url));
         });
         Optional.ofNullable(getResourceString(cmd + MNE_SUFFIX))
-                .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
-                .filter(txt -> !txt.isEmpty())
-                .ifPresent(txt -> {
-                    if (mitext.indexOf(txt) < 0) {
-                        mi.setText(String.format("%s (%s)", mitext, txt));
-                    }
-                    mi.setMnemonic(txt.codePointAt(0));
-                });
+            .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
+            .filter(txt -> !txt.isEmpty())
+            .ifPresent(txt -> {
+                if (mitext.indexOf(txt) < 0) {
+                    mi.setText(String.format("%s (%s)", mitext, txt));
+                }
+                mi.setMnemonic(txt.codePointAt(0));
+            });
         String acmd = Optional.ofNullable(getResourceString(cmd + ACTION_SUFFIX)).orElse(cmd);
         mi.setActionCommand(acmd);
         Action a = getAction(acmd);

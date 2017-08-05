@@ -135,9 +135,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private void clickArrowButton(String actionKey) {
        Optional.ofNullable(getActionMap())
-               .map(am -> am.get(actionKey))
-               .filter(Action::isEnabled)
-               .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+           .map(am -> am.get(actionKey))
+           .filter(Action::isEnabled)
+           .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
 //         ActionMap map = getActionMap();
 //         if (Objects.nonNull(map)) {
 //             Action action = map.get(actionKey);
@@ -253,9 +253,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public Optional<Rectangle> getDropLineRect() {
         int index = Optional.ofNullable(getDropLocation())
-                            .filter(DropLocation::isDropable)
-                            .map(DropLocation::getIndex)
-                            .orElse(-1);
+            .filter(DropLocation::isDropable)
+            .map(DropLocation::getIndex)
+            .orElse(-1);
         if (index < 0) {
             RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();

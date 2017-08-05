@@ -75,8 +75,8 @@ class ChapterNumberingTreeCellRenderer extends DefaultTreeCellRenderer {
         if (value instanceof DefaultMutableTreeNode) {
             TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
             String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
-              .mapToObj(i -> String.valueOf(1 + tn[i - 1].getIndex(tn[i])))
-              .collect(Collectors.joining("."));
+                .mapToObj(i -> String.valueOf(1 + tn[i - 1].getIndex(tn[i])))
+                .collect(Collectors.joining("."));
             l.setText(String.format("%s%s %s", MARK, s, value));
         }
         return l;
