@@ -387,6 +387,28 @@
     </findbugs>
   </target>
 
+  <condition property="have.spotbugs">
+    <available file="${env.SPOTBUGS_HOME}" />
+  </condition>
+  <target name="spotbugs" depends="compile" if="have.spotbugs">
+    <echo>${env.SPOTBUGS_HOME}</echo>
+    <path id="spotbugs.classpath">
+      <fileset dir="${env.SPOTBUGS_HOME}/lib">
+        <include name="*-ant.jar" />
+      </fileset>
+    </path>
+    <taskdef name="spotbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="spotbugs.classpath" />
+    <mkdir dir="${build.reports}" />
+    <echo>userdir: ${user.dir}</echo>
+    <echo>basedir: ${basedir}</echo>
+    <spotbugs home="${env.SPOTBUGS_HOME}" effort="max" reportLevel="low"
+            excludeFilter="${sca.dir}/excludefilter.xml"
+            output="xml:withMessages" outputFile="${build.reports}/spotbugs.xml">
+      <sourcePath path="${src.dir}" />
+      <class location="${build.dest}" />
+    </spotbugs>
+  </target>
+
   <condition property="have.pmd">
     <available file="${env.PMD_HOME}" />
   </condition>
