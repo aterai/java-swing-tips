@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeUI() {
-        final JInternalFrame internal = new JInternalFrame("@title@");
+        JInternalFrame internal = new JInternalFrame("@title@");
         BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
         Component title = ui.getNorthPane();
         for (MouseMotionListener l: title.getListeners(MouseMotionListener.class)) {
@@ -26,18 +26,20 @@ public final class MainPanel extends JPanel {
         DragWindowListener dwl = new DragWindowListener();
         title.addMouseListener(dwl);
         title.addMouseMotionListener(dwl);
+
+        JButton closeButton = new JButton("close");
+        closeButton.addActionListener(e -> {
+            Component c = SwingUtilities.getRoot((Component) e.getSource());
+            if (c instanceof Window) {
+                Window w = (Window) c;
+                //w.dispose();
+                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JScrollPane(new JTree()));
-        p.add(new JButton(new AbstractAction("close") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Component c = SwingUtilities.getRoot((Component) e.getSource());
-                if (c instanceof Window) {
-                    Window w = (Window) c;
-                    //w.dispose();
-                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-                }
-            }
-        }), BorderLayout.SOUTH);
+        p.add(closeButton, BorderLayout.SOUTH);
         internal.getContentPane().add(p);
         internal.setVisible(true);
 
