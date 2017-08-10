@@ -54,8 +54,8 @@ public class MainPanel extends JPanel {
         JMenu menu = new JMenu("Edit");
         menu.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu);
-        menu.add(new JMenuItem(selectAllAction));
-        menu.add(new JMenuItem(copyAction));
+        menu.add(selectAllAction);
+        menu.add(copyAction);
         return menuBar;
     }
 

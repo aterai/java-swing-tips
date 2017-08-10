@@ -24,13 +24,13 @@ public final class MainPanel extends JPanel {
 //     }
     private static JPopupMenu makePopupMenu() {
         JPopupMenu popup = new TranslucentPopupMenu();
-        popup.add(new JMenuItem("Undo"));
-        popup.add(new JMenuItem("Redo"));
+        popup.add("Undo");
+        popup.add("Redo");
         popup.addSeparator();
-        popup.add(new JMenuItem("Cut"));
-        popup.add(new JMenuItem("Copy"));
-        popup.add(new JMenuItem("Paste"));
-        popup.add(new JMenuItem("Delete"));
+        popup.add("Cut");
+        popup.add("Copy");
+        popup.add("Paste");
+        popup.add("Delete");
         return popup;
     }
     public static void main(String... args) {

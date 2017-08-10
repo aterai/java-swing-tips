@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     }
     private static JButton makeButton(String title) {
         JPopupMenu pop = new JPopupMenu();
-        pop.add(new JMenuItem(title));
+        pop.add(title);
         JButton button = new JButton(title);
         if (title.length() > 0) {
             button.setMnemonic(title.codePointAt(0));

@@ -127,8 +127,8 @@ final class ImageUtil {
         menu.setForeground(new Color(200, 200, 200));
         menu.setOpaque(false); // Motif lnf
         JMenu sub = new TransparentMenu("Submenu");
-        sub.add(new JMenuItem("JMenuItem"));
-        sub.add(new JMenuItem("Looooooooooooooooooooong"));
+        sub.add("JMenuItem");
+        sub.add("Looooooooooooooooooooong");
         menu.add(sub);
         menu.add("dummy1");
         menu.add("dummy2");

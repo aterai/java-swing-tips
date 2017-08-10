@@ -18,15 +18,15 @@ public final class MainPanel extends JPanel {
     }
     private static JPopupMenu makePopupMenu() {
         JMenu menu = new TransparentMenu("Test");
-        menu.add(new JMenuItem("Undo"));
-        menu.add(new JMenuItem("Redo"));
+        menu.add("Undo");
+        menu.add("Redo");
         JPopupMenu popup = new TranslucentPopupMenu();
         popup.add(menu);
         popup.addSeparator();
-        popup.add(new JMenuItem("Cut"));
-        popup.add(new JMenuItem("Copy"));
-        popup.add(new JMenuItem("Paste"));
-        popup.add(new JMenuItem("Delete"));
+        popup.add("Cut");
+        popup.add("Copy");
+        popup.add("Paste");
+        popup.add("Delete");
         return popup;
     }
     private JMenuBar createMenuBar() {
@@ -43,8 +43,8 @@ public final class MainPanel extends JPanel {
         //menu.setForeground(new Color(200, 200, 200));
         menu.setOpaque(false); // Motif lnf
         JMenu sub = new TransparentMenu("Submenu");
-        sub.add(new JMenuItem("JMenuItem"));
-        sub.add(new JMenuItem("Looooooooooooooooooooong"));
+        sub.add("JMenuItem");
+        sub.add("Looooooooooooooooooooong");
         menu.add(sub);
         menu.add("dummy1");
         menu.add("dummy2");

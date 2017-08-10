@@ -31,14 +31,14 @@ public final class MainPanel extends JPanel {
         tabs.addTab("JButton",    new JButton("button"));
 
         JMenu menu = new JMenu("Sub");
-        menu.add(new JMenuItem("Item 1"));
-        menu.add(new JMenuItem("Item 2"));
+        menu.add("Item 1");
+        menu.add("Item 2");
 
         JPopupMenu popup = new JPopupMenu();
         popup.add(menu);
-        popup.add(new JMenuItem("Table Item 1"));
-        popup.add(new JMenuItem("Table Item 2"));
-        popup.add(new JMenuItem("Table Item 3"));
+        popup.add("Table Item 1");
+        popup.add("Table Item 2");
+        popup.add("Table Item 3");
 
         table.setComponentPopupMenu(popup);
 
