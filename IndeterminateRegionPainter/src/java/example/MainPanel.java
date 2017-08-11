@@ -71,21 +71,22 @@ public class MainPanel extends JPanel {
         p.add(makeTitlePanel("Default", progressBar0));
         p.add(makeTitlePanel("ProgressBar[Indeterminate].foregroundPainter", progressBar1));
 
+        JButton button = new JButton("Test start");
+        button.addActionListener(e -> {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
+                worker.cancel(true);
+            }
+            progressBar0.setIndeterminate(true);
+            progressBar1.setIndeterminate(true);
+            worker = new BackgroundTask();
+            worker.addPropertyChangeListener(new ProgressListener(progressBar0));
+            worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+            worker.execute();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Test start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (Objects.nonNull(worker) && !worker.isDone()) {
-                    worker.cancel(true);
-                }
-                progressBar0.setIndeterminate(true);
-                progressBar1.setIndeterminate(true);
-                worker = new BackgroundTask();
-                worker.addPropertyChangeListener(new ProgressListener(progressBar0));
-                worker.addPropertyChangeListener(new ProgressListener(progressBar1));
-                worker.execute();
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(5));
 
         addHierarchyListener(e -> {
@@ -207,17 +208,17 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     }
     private Path2D decodePath1() {
         path.reset();
-        path.moveTo(decodeX(.6f), decodeY(.12666667f));
-        path.curveTo(decodeAnchorX(.6000000238418579f, -2f), decodeAnchorY(.12666666507720947f, 0f), decodeAnchorX(.12666666507720947f, 0f), decodeAnchorY(.6000000238418579f,  -2f), decodeX(.12666667f), decodeY(.6f));
-        path.curveTo(decodeAnchorX(.12666666507720947f, 0f), decodeAnchorY(.6000000238418579f,  2f), decodeAnchorX(.12666666507720947f, 0f), decodeAnchorY(2.4000000953674316f, -2f), decodeX(.12666667f), decodeY(2.4f));
-        path.curveTo(decodeAnchorX(.12666666507720947f, 0f), decodeAnchorY(2.4000000953674316f, 2f), decodeAnchorX(.6000000238418579f, -2f), decodeAnchorY(2.8933334350585938f,  0f), decodeX(.6f),        decodeY(2.8933334f));
-        path.curveTo(decodeAnchorX(.6000000238418579f,  2f), decodeAnchorY(2.8933334350585938f, 0f), decodeAnchorX(3f,                  0f), decodeAnchorY(2.8933334350585938f,  0f), decodeX(3f),         decodeY(2.8933334f));
-        path.lineTo(decodeX(3f),  decodeY(2.6f));
-        path.lineTo(decodeX(.4f), decodeY(2.6f));
-        path.lineTo(decodeX(.4f), decodeY(.4f));
-        path.lineTo(decodeX(3f),  decodeY(.4f));
-        path.lineTo(decodeX(3f),  decodeY(.120000005f));
-        path.curveTo(decodeAnchorX(3f, 0f), decodeAnchorY(.12000000476837158f, 0f), decodeAnchorX(.6000000238418579f, 2f), decodeAnchorY(.12666666507720947f, 0f), decodeX(.6f), decodeY(.12666667f));
+        path.moveTo(decodeX(1f), decodeY(.21111111f));
+        path.curveTo(decodeAnchorX(1f, -2f), decodeAnchorY(.21111111f, 0f), decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, -2f), decodeX(.21111111f), decodeY(1f));
+        path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, 2f), decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, -2f), decodeX(.21111111f), decodeY(2f));
+        path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, 2f), decodeAnchorX(1f, -2f), decodeAnchorY(2.8222225f, 0f), decodeX(1f), decodeY(2.8222225f));
+        path.curveTo(decodeAnchorX(1f, 2f), decodeAnchorY(2.8222225f, 0f), decodeAnchorX(3f, 0f), decodeAnchorY(2.8222225f, 0f), decodeX(3f), decodeY(2.8222225f));
+        path.lineTo(decodeX(3f), decodeY(2.3333333f));
+        path.lineTo(decodeX(.6666667f), decodeY(2.3333333f));
+        path.lineTo(decodeX(.6666667f), decodeY(.6666667f));
+        path.lineTo(decodeX(3f), decodeY(.6666667f));
+        path.lineTo(decodeX(3f), decodeY(.2f));
+        path.curveTo(decodeAnchorX(3f, 0f), decodeAnchorY(.2f, 0f), decodeAnchorX(1f, 2f), decodeAnchorY(.21111111f, 0f), decodeX(1f), decodeY(.21111111f));
         path.closePath();
         return path;
     }
@@ -245,7 +246,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
             .5f * w + x, 0f * h + y, .5f * w + x, 1f * h + y,
             new float[] {
                 .038709678f, .05483871f, .07096774f, .28064516f, .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
-              },
+            },
             new Color[] {
                 color18,
                 decodeColor(color18, color19, .5f),
@@ -256,7 +257,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
                 color21,
                 decodeColor(color21, color22, .5f),
                 color22
-              });
+            });
     }
     private Paint decodeGradient6(Shape s) {
         Rectangle2D bounds = s.getBounds2D();
@@ -268,7 +269,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
             .5f * w + x, 0f * h + y, .5f * w + x, 1f * h + y,
             new float[] {
                 .038709678f, .061290324f, .08387097f, .27258065f, .46129033f, .4903226f, .5193548f, .71774197f, .91612905f, .92419356f, .93225807f
-              },
+            },
             new Color[] {
                 color23,
                 decodeColor(color23, color24, .5f),
@@ -281,6 +282,6 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
                 color27,
                 decodeColor(color27, color28, .5f),
                 color28
-              });
+            });
     }
 }
