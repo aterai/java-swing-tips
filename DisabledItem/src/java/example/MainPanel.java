@@ -41,16 +41,17 @@ public class MainPanel extends JPanel {
             }
         });
 
+        JButton button = new JButton("init");
+        button.addActionListener(e -> {
+            initDisableIndex(disableIndexSet);
+            list.repaint();
+        });
+
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("Disabled Item Index:"));
         box.add(field);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent e) {
-                initDisableIndex(disableIndexSet);
-                list.repaint();
-            }
-        }));
+        box.add(button);
 
         add(new JScrollPane(list));
         add(box, BorderLayout.NORTH);
