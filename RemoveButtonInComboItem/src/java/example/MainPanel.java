@@ -11,27 +11,30 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(2, 1));
-        final JComboBox<String> c0 = makeComboBox(true,  false);
-        final JComboBox<String> c1 = makeComboBox(false, false);
-        final JComboBox<String> c2 = makeComboBox(true,  true);
-        final JComboBox<String> c3 = makeComboBox(false, true);
 
+        JComboBox<String> c0 = makeComboBox(true,  false);
+        JComboBox<String> c1 = makeComboBox(false, false);
+        JComboBox<String> c2 = makeComboBox(true,  true);
+        JComboBox<String> c3 = makeComboBox(false, true);
+
+        JButton button = new JButton("add");
+        button.addActionListener(e -> {
+            String str = new Date().toString();
+            for (JComboBox<String> c: Arrays.asList(c0, c1, c2, c3)) {
+                MutableComboBoxModel<String> m = (MutableComboBoxModel<String>) c.getModel();
+                m.insertElementAt(str, m.getSize());
+            }
+        });
+
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(makeTitlePanel("setEditable(false)", Arrays.asList(c0, c1)));
         p.add(makeTitlePanel("setEditable(true)",  Arrays.asList(c2, c3)));
-        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
         add(p, BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String str = new Date().toString();
-                for (JComboBox<String> c: Arrays.asList(c0, c1, c2, c3)) {
-                    MutableComboBoxModel<String> m = (MutableComboBoxModel<String>) c.getModel();
-                    m.insertElementAt(str, m.getSize());
-                }
-            }
-        }), BorderLayout.SOUTH);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox(boolean isDefault, boolean isEditable) {
