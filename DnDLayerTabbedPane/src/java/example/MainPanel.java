@@ -143,10 +143,10 @@ class DnDTabbedPane extends JTabbedPane {
         public int getIndex() {
             return index;
         }
-        public void setDropable(boolean flag) {
+        public void setDroppable(boolean flag) {
             dropable = flag;
         }
-        public boolean isDropable() {
+        public boolean isDroppable() {
             return dropable;
         }
 //         @Override public String toString() {
@@ -430,24 +430,24 @@ class TabTransferHandler extends TransferHandler {
 //             }
 //         }
 
-        boolean isDropable = false;
+        boolean isDroppable = false;
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
         if (target.equals(source)) {
             //System.out.println("target == source");
-            isDropable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+            isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            isDropable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
+            isDroppable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
         }
 
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         // http://bugs.java.com/view_bug.do?bug_id=6700748
-        target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        target.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
-        support.setShowDropLocation(isDropable);
-        dl.setDropable(isDropable);
-        target.setDropLocation(dl, null, isDropable);
-        return isDropable;
+        support.setShowDropLocation(isDroppable);
+        dl.setDroppable(isDroppable);
+        target.setDropLocation(dl, null, isDroppable);
+        return isDroppable;
     }
 //     private static boolean isWebStart() {
 //         try {
@@ -537,7 +537,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             JLayer layer = (JLayer) c;
             DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
             Optional.ofNullable(tabbedPane.getDropLocation())
-                .filter(loc -> loc.isDropable() && loc.getIndex() >= 0)
+                .filter(loc -> loc.isDroppable() && loc.getIndex() >= 0)
                 .ifPresent(loc -> {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
@@ -547,7 +547,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
                     g2.dispose();
                 });
 //             DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-//             if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
+//             if (Objects.nonNull(loc) && loc.isDroppable() && loc.getIndex() >= 0) {
 //                 Graphics2D g2 = (Graphics2D) g.create();
 //                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
 //                 g2.setPaint(Color.RED);

@@ -125,10 +125,10 @@ class TableRowTransferHandler extends TransferHandler {
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         JTable table = (JTable) info.getComponent();
-        boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+        boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         //XXX bug?
-        table.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-        return isDropable;
+        table.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;

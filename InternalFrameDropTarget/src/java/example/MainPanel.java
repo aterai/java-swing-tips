@@ -225,7 +225,7 @@ class TableRowTransferHandler extends TransferHandler {
         }
         return null;
     }
-    private boolean isDropableTableIntersection(TransferHandler.TransferSupport info) {
+    private boolean isDroppableTableIntersection(TransferHandler.TransferSupport info) {
         Component c = info.getComponent();
         if (!(c instanceof JTable)) {
             return false;
@@ -255,9 +255,9 @@ class TableRowTransferHandler extends TransferHandler {
         return true;
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
-        boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor) && isDropableTableIntersection(info);
-        info.getComponent().setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-        return isDropable;
+        boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor) && isDroppableTableIntersection(info);
+        info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE;

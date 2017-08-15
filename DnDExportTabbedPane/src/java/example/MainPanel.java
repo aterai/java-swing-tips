@@ -120,10 +120,10 @@ class DnDTabbedPane extends JTabbedPane {
         public int getIndex() {
             return index;
         }
-        public void setDropable(boolean flag) {
+        public void setDroppable(boolean flag) {
             dropable = flag;
         }
-        public boolean isDropable() {
+        public boolean isDroppable() {
             return dropable;
         }
 //         @Override public String toString() {
@@ -253,7 +253,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public Optional<Rectangle> getDropLineRect() {
         int index = Optional.ofNullable(getDropLocation())
-            .filter(DropLocation::isDropable)
+            .filter(DropLocation::isDroppable)
             .map(DropLocation::getIndex)
             .orElse(-1);
         if (index < 0) {
@@ -412,27 +412,27 @@ class TabTransferHandler extends TransferHandler {
 //             }
 //         }
 
-        boolean isDropable = false;
+        boolean isDroppable = false;
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
         if (target.equals(source)) {
             //System.out.println("target == source");
-            isDropable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+            isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            isDropable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
+            isDroppable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
         }
 
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         // http://bugs.java.com/view_bug.do?bug_id=6700748
-        Cursor cursor = isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
+        Cursor cursor = isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
         Component glassPane = target.getRootPane().getGlassPane();
         glassPane.setCursor(cursor);
         target.setCursor(cursor);
 
-        support.setShowDropLocation(isDropable);
-        dl.setDropable(isDropable);
-        target.setDropLocation(dl, null, isDropable);
-        return isDropable;
+        support.setShowDropLocation(isDroppable);
+        dl.setDroppable(isDroppable);
+        target.setDropLocation(dl, null, isDroppable);
+        return isDroppable;
     }
 //     private static boolean isWebStart() {
 //         try {
@@ -535,7 +535,7 @@ class GhostGlassPane extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
             Rectangle rect = tabbedPane.getDropLineRect();
-            if (Objects.nonNull(rect) && dl.isDropable()) {
+            if (Objects.nonNull(rect) && dl.isDroppable()) {
                 Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
                 g2.setPaint(Color.RED);
                 g2.fill(r);
