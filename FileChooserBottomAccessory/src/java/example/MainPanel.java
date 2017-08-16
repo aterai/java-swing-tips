@@ -21,6 +21,7 @@ public final class MainPanel extends JPanel {
                 @Override public void updateUI() {
                     super.updateUI();
                     setUI(new EncodingFileChooserUI(this));
+                    resetChoosableFileFilters();
                 }
             };
             int retvalue = fileChooser.showSaveDialog(getRootPane());
@@ -47,6 +48,7 @@ public final class MainPanel extends JPanel {
                                 });
                         }
                     });
+                    resetChoosableFileFilters();
                 }
             };
             int retvalue = fileChooser.showSaveDialog(getRootPane());
