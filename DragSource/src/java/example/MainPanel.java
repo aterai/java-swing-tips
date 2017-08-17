@@ -28,24 +28,24 @@ public final class MainPanel extends JPanel {
         label.setBorder(BorderFactory.createTitledBorder("Drag Source JLabel"));
         clearFile();
 
-//*     //JDK 1.5.0
-        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
-            @Override public void dragGestureRecognized(DragGestureEvent dge) {
-                File tmpfile = getFile();
-                if (Objects.isNull(tmpfile)) {
-                    return;
-                }
-                DragSourceAdapter dsa = new DragSourceAdapter() {
-                    @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-                        if (dsde.getDropSuccess()) {
-                            clearFile();
-                        }
-                    }
-                };
-                dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
-            }
-        });
-/*/     //JDK 1.6.0
+//         //JDK 1.5.0
+//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
+//             @Override public void dragGestureRecognized(DragGestureEvent dge) {
+//                 File tmpfile = getFile();
+//                 if (Objects.isNull(tmpfile)) {
+//                     return;
+//                 }
+//                 DragSourceAdapter dsa = new DragSourceAdapter() {
+//                     @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+//                         if (dsde.getDropSuccess()) {
+//                             clearFile();
+//                         }
+//                     }
+//                 };
+//                 dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
+//             }
+//         });
+
         label.setTransferHandler(new TransferHandler() {
             @Override public int getSourceActions(JComponent c) {
                 return TransferHandler.COPY_OR_MOVE;
@@ -75,31 +75,33 @@ public final class MainPanel extends JPanel {
                 c.getTransferHandler().exportAsDrag(c, e, TransferHandler.COPY);
             }
         });
-//*/
-        final Box box = Box.createHorizontalBox();
+
+        JButton button = new JButton("Create Temp File");
+        button.addActionListener(e -> {
+            File outfile;
+            try {
+                outfile = File.createTempFile("test", ".tmp");
+                outfile.deleteOnExit();
+            } catch (IOException ex) {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(getRootPane(), "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            setFile(outfile);
+        });
+
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(e -> {
+            clearFile();
+            repaint();
+        });
+
+        Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("Create Temp File") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File outfile;
-                try {
-                    outfile = File.createTempFile("test", ".tmp");
-                    outfile.deleteOnExit();
-                } catch (IOException ex) {
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(box, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                setFile(outfile);
-            }
-        }));
+        box.add(button);
         box.add(Box.createHorizontalStrut(2));
-        box.add(new JButton(new AbstractAction("Clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                clearFile();
-                repaint();
-            }
-        }));
+        box.add(clearButton);
         add(label);
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
