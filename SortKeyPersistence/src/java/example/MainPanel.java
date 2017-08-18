@@ -30,49 +30,50 @@ public final class MainPanel extends JPanel {
         sp.setTopComponent(new JScrollPane(table));
         sp.setBottomComponent(new JScrollPane(textArea));
 
-        JPanel p = new JPanel();
-        p.add(new JButton(new AbstractAction("XMLEncoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                try {
-                    File file = File.createTempFile("output", ".xml");
-                    //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-                        xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
-                        xe.writeObject(table.getRowSorter().getSortKeys());
+        JButton encodeButton = new JButton("XMLEncoder");
+        encodeButton.addActionListener(e -> {
+            try {
+                File file = File.createTempFile("output", ".xml");
+                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
+                    xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
+                    xe.writeObject(table.getRowSorter().getSortKeys());
 
-                        xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
-                        xe.writeObject(table.getModel());
-                    }
-                    //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-                    try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
-                        textArea.read(r, "temp");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                    xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+                    xe.writeObject(table.getModel());
                 }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("XMLDecoder") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String text = textArea.getText();
-                if (text.isEmpty()) {
-                    return;
+                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+                    textArea.read(r, "temp");
                 }
-                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
-                    @SuppressWarnings("unchecked")
-                    List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
-                    DefaultTableModel model = (DefaultTableModel) xd.readObject();
-                    table.setModel(model);
-                    table.setAutoCreateRowSorter(true);
-                    table.getRowSorter().setSortKeys(keys);
-                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        }));
-        p.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setModel(new DefaultTableModel());
+        });
+
+        JButton decodeButton = new JButton("XMLDecoder");
+        decodeButton.addActionListener(e -> {
+            String text = textArea.getText();
+            if (text.isEmpty()) {
+                return;
             }
-        }));
+            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+                @SuppressWarnings("unchecked")
+                List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+                DefaultTableModel model = (DefaultTableModel) xd.readObject();
+                table.setModel(model);
+                table.setAutoCreateRowSorter(true);
+                table.getRowSorter().setSortKeys(keys);
+            }
+        });
+
+        JButton clearButton = new JButton("clear");
+        clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
+
+        JPanel p = new JPanel();
+        p.add(encodeButton);
+        p.add(decodeButton);
+        p.add(clearButton);
         add(sp);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
