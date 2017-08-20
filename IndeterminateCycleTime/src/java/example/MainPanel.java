@@ -10,27 +10,28 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        final JProgressBar progressBar = new JProgressBar();
+        JProgressBar progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         JPanel p = new JPanel(new GridBagLayout());
         p.add(progressBar);
 
         int cycleTime = UIManager.getInt("ProgressBar.cycleTime");
-        final JSpinner cycleTimeSpinner = new JSpinner(new SpinnerNumberModel(cycleTime, 1000, 10000, 100));
+        JSpinner cycleTimeSpinner = new JSpinner(new SpinnerNumberModel(cycleTime, 1000, 10000, 100));
 
         int repaintInterval = UIManager.getInt("ProgressBar.repaintInterval");
-        final JSpinner repaintIntervalSpinner = new JSpinner(new SpinnerNumberModel(repaintInterval, 10, 100, 10));
+        JSpinner repaintIntervalSpinner = new JSpinner(new SpinnerNumberModel(repaintInterval, 10, 100, 10));
+
+        JButton button = new JButton("UIManager.put");
+        button.addActionListener(e -> {
+            progressBar.setIndeterminate(false);
+            UIManager.put("ProgressBar.repaintInterval", (Integer) repaintIntervalSpinner.getValue());
+            UIManager.put("ProgressBar.cycleTime", (Integer) cycleTimeSpinner.getValue());
+            progressBar.setIndeterminate(true);
+        });
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("UIManager.put") {
-            @Override public void actionPerformed(ActionEvent e) {
-                progressBar.setIndeterminate(false);
-                UIManager.put("ProgressBar.repaintInterval", (Integer) repaintIntervalSpinner.getValue());
-                UIManager.put("ProgressBar.cycleTime", (Integer) cycleTimeSpinner.getValue());
-                progressBar.setIndeterminate(true);
-            }
-        }));
+        box.add(button);
 
         JPanel sp = new JPanel(new GridLayout(3, 2, 5, 5));
         sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
