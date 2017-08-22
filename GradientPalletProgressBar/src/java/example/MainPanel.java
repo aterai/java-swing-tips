@@ -22,14 +22,27 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeUI() {
-        //final JProgressBar progressBar = new JProgressBar(SwingConstants.VERTICAL);
-        final JProgressBar progressBar = new JProgressBar();
+        JProgressBar progressBar = new JProgressBar();
         progressBar.setOpaque(false);
         progressBar.setUI(new GradientPalletProgressBarUI());
 
+        JButton button = new JButton("Start");
+        button.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            b.setEnabled(false);
+            SwingWorker<Void, Void> worker = new BackgroundTask() {
+                @Override public void done() {
+                    if (b.isDisplayable()) {
+                        b.setEnabled(true);
+                    }
+                }
+            };
+            worker.addPropertyChangeListener(new ProgressListener(progressBar));
+            worker.execute();
+        });
+
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createEmptyBorder(32, 8, 0, 8));
-
         GridBagConstraints c = new GridBagConstraints();
 
         c.insets = new Insets(0, 0, 0, 4);
@@ -38,21 +51,7 @@ public final class MainPanel extends JPanel {
         p.add(progressBar, c);
 
         c.weightx = 0d;
-        p.add(new JButton(new AbstractAction("Start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                final JButton b = (JButton) e.getSource();
-                b.setEnabled(false);
-                SwingWorker<Void, Void> worker = new BackgroundTask() {
-                    @Override public void done() {
-                        if (b.isDisplayable()) {
-                            b.setEnabled(true);
-                        }
-                    }
-                };
-                worker.addPropertyChangeListener(new ProgressListener(progressBar));
-                worker.execute();
-            }
-        }), c);
+        p.add(button, c);
         return p;
     }
 
