@@ -57,14 +57,13 @@ public final class MainPanel extends JPanel {
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JPanel makeStarRatingPanel(String title, final LevelBar label) {
+    private JPanel makeStarRatingPanel(String title, LevelBar label) {
+        JButton button = new JButton("clear");
+        button.addActionListener(e -> label.clear());
+
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                label.clear();
-            }
-        }));
+        p.add(button);
         p.add(label);
         return p;
     }
