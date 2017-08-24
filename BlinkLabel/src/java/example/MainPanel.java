@@ -6,27 +6,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
-    protected final JLabel label2 = new JLabel("", SwingConstants.CENTER);
-    protected final Timer timer1 = new Timer(600, new ActionListener() {
-        protected boolean flg = true;
-        @Override public void actionPerformed(ActionEvent e) {
-            flg ^= true;
-            label1.setText(flg ? "\u25CB" : "\u25CF");
-        }
-    });
-    protected final Timer timer2 = new Timer(300, new ActionListener() {
-        protected boolean flg = true;
-        @Override public void actionPerformed(ActionEvent e) {
-            flg ^= true;
-            label2.setText(flg ? "!!!Warning!!!" : "");
-        }
-    });
+public final class MainPanel extends JPanel {
+    private static final String BLACK_CIRCLE = "\u25CF";
+    private static final String WHITE_CIRCLE = "\u25CB";
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JLabel label1 = new JLabel(BLACK_CIRCLE, SwingConstants.CENTER);
+        JLabel label2 = new JLabel("", SwingConstants.CENTER);
+
+        Timer timer1 = new Timer(600, e -> label1.setText(BLACK_CIRCLE.equals(label1.getText()) ? WHITE_CIRCLE : BLACK_CIRCLE));
+        Timer timer2 = new Timer(300, e -> label2.setText("".equals(label2.getText()) ? "!!!Warning!!!" : ""));
         addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
                 if (e.getComponent().isDisplayable()) {
@@ -38,6 +29,7 @@ public class MainPanel extends JPanel {
                 }
             }
         });
+
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.add(makePanel("\u25CB<->\u25CF", label1));
         p.add(makePanel("!!!Warning!!!<->Empty", label2));
