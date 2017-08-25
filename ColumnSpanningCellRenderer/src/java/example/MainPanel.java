@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
-    private static final int TARGET_COLUMN_INDEX = 0;
+    private static final int TARGET_COLIDX = 0;
     private final JTextArea textArea = new JTextArea(2, 999999);
     private final JLabel label = new JLabel();
     private final JLabel iconLabel = new JLabel();
@@ -126,7 +126,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
 
         Rectangle cr = table.getCellRect(row, column, false);
 /*/ //Flickering on first visible row ?
-        if (column == TARGET_COLUMN_INDEX) {
+        if (column == TARGET_COLIDX) {
             cr.x = 0;
             cr.width -= iconLabel.getPreferredSize().width;
         } else {
@@ -134,7 +134,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         }
         textArea.scrollRectToVisible(cr);
 /*/
-        if (column != TARGET_COLUMN_INDEX) {
+        if (column != TARGET_COLIDX) {
             cr.x -= iconLabel.getPreferredSize().width;
         }
         scroll.getViewport().setViewPosition(cr.getLocation());

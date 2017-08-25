@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         {"Color",   Color.RED   }
     };
     private final JTable table = new JTable(data, columnNames) {
-        private static final int TARGET_COLUMN_INDEX = 1;
+        private static final int TARGET_COLIDX = 1;
         protected Class<?> editingClass;
         protected Class<?> getClassAt(int row, int column) {
             int mc = convertColumnIndexToModel(column);
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public TableCellRenderer getCellRenderer(int row, int column) {
             //editingClass = null;
-            if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
+            if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
                 //System.out.println("getCellRenderer");
                 return getDefaultRenderer(getClassAt(row, column));
             } else {
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
             }
         }
         @Override public TableCellEditor getCellEditor(int row, int column) {
-            if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
+            if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
                 //System.out.println("getCellEditor");
                 editingClass = getClassAt(row, column);
                 return getDefaultEditor(editingClass);
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         // editor was invoked so the proper class can be created.
         @Override public Class<?> getColumnClass(int column) {
             //return Objects.nonNull(editingClass) ? editingClass : super.getColumnClass(column);
-            if (convertColumnIndexToModel(column) == TARGET_COLUMN_INDEX) {
+            if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
                 //System.out.println("getColumnClass");
                 return editingClass;
             } else {

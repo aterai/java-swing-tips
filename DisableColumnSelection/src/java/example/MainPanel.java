@@ -21,20 +21,20 @@ public class MainPanel extends JPanel {
             return column != 0;
         }
     };
-    protected static final int TARGET_COLUMN_INDEX = 0;
+    protected static final int TARGET_COLIDX = 0;
 
     public MainPanel() {
         super(new BorderLayout());
 
         JTable table1 = new JTable(model) {
             @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (convertColumnIndexToModel(columnIndex) != TARGET_COLUMN_INDEX) {
+                if (convertColumnIndexToModel(columnIndex) != TARGET_COLIDX) {
                     return;
                 }
                 super.changeSelection(rowIndex, columnIndex, toggle, extend);
             }
             @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                if (convertColumnIndexToModel(column) != TARGET_COLUMN_INDEX) {
+                if (convertColumnIndexToModel(column) != TARGET_COLIDX) {
                     return renderer.getTableCellRendererComponent(this, getValueAt(row, column), false, false, row, column);
                 }
                 return super.prepareRenderer(renderer, row, column);
@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
 
         JTable table2 = new JTable(model) {
             @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (convertColumnIndexToModel(columnIndex) != TARGET_COLUMN_INDEX) {
+                if (convertColumnIndexToModel(columnIndex) != TARGET_COLIDX) {
                     return;
                 }
                 super.changeSelection(rowIndex, columnIndex, toggle, extend);
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
         table2.setCellSelectionEnabled(true);
         table2.getColumnModel().setSelectionModel(new DefaultListSelectionModel() {
             @Override public boolean isSelectedIndex(int index) {
-                return table2.convertColumnIndexToModel(index) == TARGET_COLUMN_INDEX;
+                return table2.convertColumnIndexToModel(index) == TARGET_COLIDX;
             }
         });
 

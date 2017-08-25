@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        protected static final int MODEL_COLUMN_INDEX = 0;
+        protected static final int MODEL_COLIDX = 0;
         protected transient HeaderCheckBoxHandler handler;
         @Override public void updateUI() {
             // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
@@ -48,11 +48,11 @@ public final class MainPanel extends JPanel {
                     SwingUtilities.updateComponentTreeUI((Component) r);
                 }
             }
-            TableColumn column = getColumnModel().getColumn(MODEL_COLUMN_INDEX);
+            TableColumn column = getColumnModel().getColumn(MODEL_COLIDX);
             column.setHeaderRenderer(new HeaderRenderer());
             column.setHeaderValue(Status.INDETERMINATE);
 
-            handler = new HeaderCheckBoxHandler(this, MODEL_COLUMN_INDEX);
+            handler = new HeaderCheckBoxHandler(this, MODEL_COLIDX);
             m.addTableModelListener(handler);
             getTableHeader().addMouseListener(handler);
         }
