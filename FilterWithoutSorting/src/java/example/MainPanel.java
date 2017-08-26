@@ -8,21 +8,22 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static String[] columnNames = {"String", "Integer", "Boolean"};
-    private static Object[][] data = {
-        {"AAA", 0, true}, {"BBB", 1, false},
-        {"CCC", 2, true}, {"DDD", 3, true},
-        {"EEE", 4, true}, {"FFF", 5, false},
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final JTable table = new JTable(model);
-        final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"AAA", 0, true}, {"BBB", 1, false},
+            {"CCC", 2, true}, {"DDD", 3, true},
+            {"EEE", 4, true}, {"FFF", 5, false},
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
             @Override public boolean isSortable(int column) {
                 return false;
             }
@@ -32,12 +33,14 @@ public final class MainPanel extends JPanel {
                 return entry.getIdentifier() % 2 == 0;
             }
         });
-        add(new JCheckBox(new AbstractAction("filter: idx%2==0") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                table.setRowSorter(c.isSelected() ? sorter : null);
-            }
-        }), BorderLayout.NORTH);
+
+        JCheckBox check = new JCheckBox("filter: idx%2==0");
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            table.setRowSorter(c.isSelected() ? sorter : null);
+        });
+
+        add(check, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
