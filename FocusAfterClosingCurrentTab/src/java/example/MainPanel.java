@@ -53,21 +53,23 @@ public final class MainPanel extends JPanel {
             }
         });
 
+        JButton button1 = new JButton("add tab");
+        button1.addActionListener(e -> {
+            String title = new Date().toString();
+            tabbedPane.addTab(title, new JLabel(title));
+        });
+
+        JButton button2 = new JButton("add tab with focus");
+        button2.addActionListener(e -> {
+            String title = new Date().toString();
+            tabbedPane.addTab(title, new JLabel(title));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        });
+
         add(tabbedPane);
         JPanel p = new JPanel(new GridLayout(1, 2, 2, 2));
-        p.add(new JButton(new AbstractAction("add tab") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String title = new Date().toString();
-                tabbedPane.addTab(title, new JLabel(title));
-            }
-        }));
-        p.add(new JButton(new AbstractAction("add tab with focus") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String title = new Date().toString();
-                tabbedPane.addTab(title, new JLabel(title));
-                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-            }
-        }));
+        p.add(button1);
+        p.add(button2);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
