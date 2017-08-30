@@ -14,14 +14,14 @@ public final class MainPanel extends JPanel {
         field1.addFocusListener(new GhostFocusListener(field1));
         JTextField field2 = new WatermarkTextField();
 
-        Action a = new AbstractAction("xxx") {
+        String amKey = "clearGlobalFocus";
+        field2.getActionMap().put(amKey, new AbstractAction(amKey) {
             @Override public void actionPerformed(ActionEvent e) {
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
             }
-        };
-        field2.getActionMap().put("xxx", a);
+        });
         InputMap im = field2.getInputMap(JComponent.WHEN_FOCUSED);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), "xxx");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), amKey);
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
