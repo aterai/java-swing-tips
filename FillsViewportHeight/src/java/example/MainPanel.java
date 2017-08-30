@@ -84,11 +84,23 @@ public final class MainPanel extends JPanel {
     private static JComponent makeColorBox(final JTable table) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(new JLabel("table.setBackground: "));
+
         JRadioButton r1 = new JRadioButton("WHITE", true);
+        r1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                table.setBackground(Color.WHITE);
+            }
+        });
+
         JRadioButton r2 = new JRadioButton("BLUE");
+        r2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                table.setBackground(Color.BLUE);
+            }
+        });
+
         ButtonGroup bg = new ButtonGroup();
         for (JRadioButton r: Arrays.asList(r1, r2)) {
-            r.addActionListener(e -> table.setBackground(r1.isSelected() ? Color.WHITE : Color.BLUE));
             bg.add(r);
             p.add(r);
         }
