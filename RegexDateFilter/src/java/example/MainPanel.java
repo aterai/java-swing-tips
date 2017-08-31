@@ -69,20 +69,25 @@ public final class MainPanel extends JPanel {
         JTextField field = new JTextField("(?i)12");
 
         JRadioButton r0 = new JRadioButton("null", true);
-        JRadioButton r1 = new JRadioButton("RowFilter.regexFilter");
-        JRadioButton r2 = new JRadioButton("new RowFilter()");
-
-        ActionListener al = e -> {
-            Object o = e.getSource();
-            String txt = field.getText();
-            if (r1.equals(o)) {
-                sorter.setRowFilter(RowFilter.regexFilter(txt));
-            } else if (r2.equals(o)) {
-                sorter.setRowFilter(new RegexDateFilter(Pattern.compile(txt)));
-            } else {
+        r0.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 sorter.setRowFilter(null);
             }
-        };
+        });
+
+        JRadioButton r1 = new JRadioButton("RowFilter.regexFilter");
+        r1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                sorter.setRowFilter(RowFilter.regexFilter(field.getText()));
+            }
+        });
+
+        JRadioButton r2 = new JRadioButton("new RowFilter()");
+        r2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                sorter.setRowFilter(new RegexDateFilter(Pattern.compile(field.getText())));
+            }
+        });
 
         Box box = Box.createVerticalBox(); //new JPanel(new GridLayout(2, 1, 5, 5));
         box.setBorder(BorderFactory.createEmptyBorder(5, 2, 5, 2));
@@ -94,7 +99,6 @@ public final class MainPanel extends JPanel {
         JPanel p2 = new JPanel();
         ButtonGroup bg = new ButtonGroup();
         for (JRadioButton rb: Arrays.asList(r0, r1, r2)) {
-            rb.addActionListener(al);
             bg.add(rb);
             p2.add(rb);
         }
