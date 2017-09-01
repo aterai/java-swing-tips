@@ -7,19 +7,16 @@ import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
-    protected final JScrollPane scroll = new JScrollPane();
-    protected final JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
-    protected final JRadioButton r2 = new JRadioButton("setViewPosition");
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JScrollPane scroll = new JScrollPane();
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        //JDK 1.7.0
         JViewport viewport = new JViewport() {
+            private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
             private boolean flag;
             @Override public void revalidate() {
                 if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
@@ -38,21 +35,28 @@ public class MainPanel extends JPanel {
             }
         };
         scroll.setViewport(viewport);
+        // JViewport viewport = scroll.getViewport(); // JDK 1.6.0
 
         JLabel label = new JLabel(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         viewport.add(label);
         KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
         KineticScrollingListener2 l2 = new KineticScrollingListener2(label);
 
-        ActionListener al = e -> {
-            if (e.getSource() == r1) {
+        JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
+        r1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 viewport.removeMouseListener(l2);
                 viewport.removeMouseMotionListener(l2);
                 viewport.removeHierarchyListener(l2);
                 viewport.addMouseMotionListener(l1);
                 viewport.addMouseListener(l1);
                 viewport.addHierarchyListener(l1);
-            } else {
+            }
+        });
+
+        JRadioButton r2 = new JRadioButton("setViewPosition");
+        r2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 viewport.removeMouseListener(l1);
                 viewport.removeMouseMotionListener(l1);
                 viewport.removeHierarchyListener(l1);
@@ -60,13 +64,13 @@ public class MainPanel extends JPanel {
                 viewport.addMouseListener(l2);
                 viewport.addHierarchyListener(l2);
             }
-        };
+        });
+
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
         for (JRadioButton r: Arrays.asList(r1, r2)) {
             box.add(r);
             bg.add(r);
-            r.addActionListener(al);
         }
 
         viewport.addMouseMotionListener(l1);
