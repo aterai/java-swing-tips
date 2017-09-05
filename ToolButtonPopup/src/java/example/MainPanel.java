@@ -99,7 +99,7 @@ class MenuToggleButton extends JToggleButton {
     }
     protected MenuToggleButton(String text, Icon icon) {
         super();
-        Action a = new AbstractAction(text) {
+        Action action = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent e) {
                 Component b = (Component) e.getSource();
                 if (Objects.nonNull(pop)) {
@@ -107,8 +107,8 @@ class MenuToggleButton extends JToggleButton {
                 }
             }
         };
-        a.putValue(Action.SMALL_ICON, icon);
-        setAction(a);
+        action.putValue(Action.SMALL_ICON, icon);
+        setAction(action);
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
