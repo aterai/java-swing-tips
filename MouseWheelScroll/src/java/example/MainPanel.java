@@ -11,9 +11,9 @@ public class MainPanel extends JPanel {
     protected boolean isPressed;
     protected final JLabel label = new JLabel();
     protected final JScrollPane scroll = new JScrollPane(label);
-    protected final JScrollBar vBar = scroll.getVerticalScrollBar();
-    protected final JScrollBar hBar = scroll.getHorizontalScrollBar();
-    protected final JScrollBar vsb = new JScrollBar(Adjustable.VERTICAL) {
+    protected final JScrollBar defaultVerticalBar = scroll.getVerticalScrollBar();
+    protected final JScrollBar defaultHorizontalBar = scroll.getHorizontalScrollBar();
+    protected final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
         @Override public boolean isVisible() {
             if (isPressed) {
                 return false;
@@ -22,14 +22,16 @@ public class MainPanel extends JPanel {
             }
         }
         @Override public Dimension getPreferredSize() {
-            Dimension dim = super.getPreferredSize();
-            return new Dimension(0, dim.height);
+            Dimension d = super.getPreferredSize();
+            d.width = 0;
+            return d;
         }
     };
-    protected final JScrollBar hsb = new JScrollBar(Adjustable.HORIZONTAL) {
+    protected final JScrollBar zeroHorizontalBar = new JScrollBar(Adjustable.HORIZONTAL) {
         @Override public Dimension getPreferredSize() {
-            Dimension dim = super.getPreferredSize();
-            return new Dimension(dim.width, 0);
+            Dimension d = super.getPreferredSize();
+            d.height = 0;
+            return d;
         }
     };
     protected final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling", true);
@@ -43,7 +45,7 @@ public class MainPanel extends JPanel {
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
-        for (JScrollBar sb: Arrays.asList(vsb, hsb, vBar, hBar)) {
+        for (JScrollBar sb: Arrays.asList(zeroVerticalBar, zeroHorizontalBar, defaultVerticalBar, defaultHorizontalBar)) {
             sb.setUnitIncrement(25);
         }
 
@@ -62,20 +64,33 @@ public class MainPanel extends JPanel {
             }
         });
 
-        ActionListener al = e -> {
-            if (r2.isSelected()) {
-                scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-                scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-            } else {
+        r0.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                scroll.setVerticalScrollBar(r0.isSelected() ? vsb : vBar);
-                scroll.setHorizontalScrollBar(r0.isSelected() ? hsb : hBar);
+                scroll.setVerticalScrollBar(zeroVerticalBar);
+                scroll.setHorizontalScrollBar(zeroHorizontalBar);
             }
-        };
+        });
+
+        r1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                scroll.setVerticalScrollBar(defaultVerticalBar);
+                scroll.setHorizontalScrollBar(defaultHorizontalBar);
+            }
+        });
+
+        r2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+                scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            }
+        });
+
         ButtonGroup bg = new ButtonGroup();
         for (AbstractButton b: Arrays.asList(r0, r1, r2)) {
-            b.addActionListener(al);
             bg.add(b);
         }
 
@@ -86,8 +101,8 @@ public class MainPanel extends JPanel {
         p.add(r0);
         p.add(b);
 
-        scroll.setVerticalScrollBar(vsb);
-        scroll.setHorizontalScrollBar(hsb);
+        scroll.setVerticalScrollBar(zeroVerticalBar);
+        scroll.setHorizontalScrollBar(zeroHorizontalBar);
 
         //JScrollBar vsb = scroll.getVerticalScrollBar();
         //vsb.setPreferredSize(new Dimension(0, vsb.getPreferredSize().height));
