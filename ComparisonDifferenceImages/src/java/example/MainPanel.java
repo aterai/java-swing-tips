@@ -11,9 +11,6 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton ra = new JRadioButton("a.png", true);
-    private final JRadioButton rb = new JRadioButton("b.png");
-    private final JRadioButton rr = new JRadioButton("diff");
     private final ImageIcon iia = new ImageIcon(getClass().getResource("a.png"));
     private final ImageIcon iib = new ImageIcon(getClass().getResource("b.png"));
     private final JLabel label = new JLabel(iia);
@@ -32,20 +29,30 @@ public final class MainPanel extends JPanel {
             }
         }
 
-        ActionListener al = e -> {
-            JComponent c = (JComponent) e.getSource();
-            if (ra.equals(c)) {
+        JRadioButton ra = new JRadioButton("a.png", true);
+        ra.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 label.setIcon(iia);
-            } else if (rb.equals(c)) {
+            }
+        });
+
+        JRadioButton rb = new JRadioButton("b.png");
+        rb.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 label.setIcon(iib);
-            } else {
+            }
+        });
+
+        JRadioButton rr = new JRadioButton("diff");
+        rr.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 label.setIcon(new ImageIcon(createImage(source)));
             }
-        };
+        });
+
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
         for (JRadioButton r: Arrays.asList(ra, rb, rr)) {
-            r.addActionListener(al);
             bg.add(r);
             p.add(r);
         }
