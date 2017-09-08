@@ -12,16 +12,15 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         BufferedImage i1 = makeImage(getClass().getResource("test.png"));
         BufferedImage i2 = makeImage(getClass().getResource("test.jpg"));
-        final RandomDissolve randomDissolve = new RandomDissolve(i1, i2);
-        JButton button = new JButton(new AbstractAction("change") {
-            @Override public void actionPerformed(ActionEvent e) {
-                randomDissolve.animationStart();
-            }
-        });
+
+        RandomDissolve randomDissolve = new RandomDissolve(i1, i2);
+        JButton button = new JButton("change");
+        button.addActionListener(e -> randomDissolve.animationStart());
+
         add(randomDissolve);
         add(button, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
