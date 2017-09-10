@@ -53,16 +53,12 @@ public class MainPanel extends JPanel {
 
     protected final Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent ev) {
                 if (Objects.nonNull(animator) && animator.isRunning()) {
                     return;
                 }
                 isHidden = controls.getHeight() == 0;
-                animator = new Timer(5, new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        controls.revalidate();
-                    }
-                });
+                animator = new Timer(5, e -> controls.revalidate());
                 animator.start();
             }
         };
@@ -74,7 +70,16 @@ public class MainPanel extends JPanel {
         controls.add(new JLabel("Find what:"), BorderLayout.WEST);
         controls.add(field);
         controls.add(button, BorderLayout.EAST);
-        Action act = makeShowHideAction();
+        Action act = new AbstractAction("Show/Hide Search Box") {
+            @Override public void actionPerformed(ActionEvent ev) {
+                if (Objects.nonNull(animator) && animator.isRunning()) {
+                    return;
+                }
+                isHidden = controls.getHeight() == 0;
+                animator = new Timer(5, e -> controls.revalidate());
+                animator.start();
+            }
+        };
         showHideButton.setAction(act);
         showHideButton.setFocusable(false);
         JPanel p = new JPanel(new BorderLayout());
