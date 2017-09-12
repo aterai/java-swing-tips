@@ -146,9 +146,7 @@ final class ManuBarUtil {
     private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key);
         for (String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
-            JMenuItem m = new JMenuItem(k);
-            m.setEnabled(false);
-            menu.add(m);
+            menu.add(k).setEnabled(false);
         }
         return menu;
     }
