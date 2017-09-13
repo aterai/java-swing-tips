@@ -8,59 +8,28 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton check1 = new JRadioButton("Default", true);
-    private final JRadioButton check2 = new JRadioButton("Directory < File", false);
-    private final JRadioButton check3 = new JRadioButton("Group Sorting", false);
-    private final String[] columnNames = {"Name", "Size", "Full Path"};
-    private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return File.class;
-//             switch (column) {
-//               case 0:  return File.class;
-//               case 1:  return Long.class;
-//               case 2:  return String.class;
-//               default: return Object.class;
-//             }
-        }
-    };
-    //private final FileTableModel model = new FileTableModel();
-    private final JTable table = new JTable(model);
-    private final ButtonGroup bg = new ButtonGroup();
-    private final JPanel p = new JPanel();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        ActionListener al = e -> {
-            RowSorter<? extends TableModel> rs = table.getRowSorter();
-            if (rs instanceof TableRowSorter) {
-                TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
-                Object source = e.getSource();
-                if (source.equals(check2)) {
-                    sorter.setComparator(0, new FileComparator(0));
-                    sorter.setComparator(1, new FileComparator(1));
-                    sorter.setComparator(2, new FileComparator(2));
-                } else if (source.equals(check3)) {
-                    sorter.setComparator(0, new FileGroupComparator(table, 0));
-                    sorter.setComparator(1, new FileGroupComparator(table, 1));
-                    sorter.setComparator(2, new FileGroupComparator(table, 2));
-                } else {
-                    sorter.setComparator(0, new DefaultFileComparator(0));
-                    sorter.setComparator(1, new DefaultFileComparator(1));
-                    sorter.setComparator(2, new DefaultFileComparator(2));
-                }
+        String[] columnNames = {"Name", "Size", "Full Path"};
+        DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return File.class;
+                // switch (column) {
+                //   case 0:  return File.class;
+                //   case 1:  return Long.class;
+                //   case 2:  return String.class;
+                //   default: return Object.class;
+                // }
             }
         };
-        for (JRadioButton rb: Arrays.asList(check1, check2, check3)) {
-            rb.addActionListener(al);
-            bg.add(rb);
-            p.add(rb);
-        }
+        JTable table = new JTable(model);
         table.putClientProperty("Table.isFileList", Boolean.TRUE);
         table.setCellSelectionEnabled(true);
         table.setIntercellSpacing(new Dimension());
@@ -68,19 +37,41 @@ public final class MainPanel extends JPanel {
         table.setShowGrid(false);
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
-        RowSorter<? extends TableModel> rs = table.getRowSorter();
-        if (rs instanceof TableRowSorter) {
-            TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
-            sorter.setComparator(0, new DefaultFileComparator(0));
-            sorter.setComparator(1, new DefaultFileComparator(1));
-            sorter.setComparator(2, new DefaultFileComparator(2));
-        }
-        FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-        table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(fileSystemView));
-
         table.setDropMode(DropMode.INSERT_ROWS);
         table.setTransferHandler(new FileTransferHandler());
+        table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(FileSystemView.getFileSystemView()));
 
+        TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) table.getRowSorter();
+//         RowSorter<? extends TableModel> rs = table.getRowSorter();
+//         if (rs instanceof TableRowSorter) {
+//             TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
+        IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new DefaultFileComparator(i)));
+
+        JRadioButton check1 = new JRadioButton("Default", true);
+        check1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new DefaultFileComparator(i)));
+            }
+        });
+        JRadioButton check2 = new JRadioButton("Directory < File", false);
+        check2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new FileComparator(i)));
+            }
+        });
+        JRadioButton check3 = new JRadioButton("Group Sorting", false);
+        check3.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new FileGroupComparator(table, i)));
+            }
+        });
+
+        JPanel p = new JPanel();
+        ButtonGroup bg = new ButtonGroup();
+        for (JRadioButton rb: Arrays.asList(check1, check2, check3)) {
+            bg.add(rb);
+            p.add(rb);
+        }
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
