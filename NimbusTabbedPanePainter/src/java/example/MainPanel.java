@@ -28,6 +28,7 @@ public final class MainPanel extends JPanel {
         try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            NimbusTabbedPanePainter.configureUI();
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -93,8 +94,8 @@ final class NimbusTabbedPanePainter {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             int w = width - r - 1;
             int h = height + r;
+            g2.setPaint(new Color(0, 0, 0, 20));
             for (int i = 0; i < x; i++) {
-                g2.setColor(new Color(0, 0, 0, 20));
                 g2.fill(new RoundRectangle2D.Double(x - i, y - i, w + i + i, h, r, r));
             }
             g2.setColor(color);
