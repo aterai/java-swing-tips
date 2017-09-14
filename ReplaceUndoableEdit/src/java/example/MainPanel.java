@@ -53,17 +53,18 @@ public class MainPanel extends JPanel {
             doc.setDocumentFilter(undoManager2.getDocumentFilter());
         }
 
+        JButton button = new JButton("setText(new Date())");
+        button.addActionListener(e -> {
+            String str = new Date().toString();
+            for (JTextField tf: Arrays.asList(textField0, textField1, textField2)) {
+                tf.setText(str);
+            }
+        }):
+
         JPanel p = new JPanel();
         p.add(new JButton(undoAction));
         p.add(new JButton(redoAction));
-        p.add(new JButton(new AbstractAction("setText(new Date())") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String str = new Date().toString();
-                for (JTextField tf: Arrays.asList(textField0, textField1, textField2)) {
-                    tf.setText(str);
-                }
-            }
-        }));
+        p.add(button);
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
