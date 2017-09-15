@@ -56,16 +56,17 @@ public final class MainPanel extends JPanel {
     }
 
     private JMenuBar createMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Frame");
         menu.setMnemonic(KeyEvent.VK_D);
-        menuBar.add(menu);
-        JMenuItem menuItem = new JMenuItem("New Frame");
+
+        JMenuItem menuItem = menu.add("New Frame");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
         menuItem.addActionListener(e -> createFrame(null));
-        menu.add(menuItem);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(menu);
         return menuBar;
     }
 
