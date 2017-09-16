@@ -37,8 +37,9 @@ public final class MainPanel extends JPanel {
         for (JComponent c: Arrays.asList(s0, s1, s2, s3)) {
             c.setEnabled(true);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
-            int h = c.getPreferredSize().height;
-            c.setMaximumSize(new Dimension(Integer.MAX_VALUE, h));
+            Dimension d = c.getPreferredSize();
+            d.width = Integer.MAX_VALUE;
+            c.setMaximumSize(d);
             box.add(c);
             box.add(Box.createVerticalStrut(5));
         }
