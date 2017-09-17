@@ -26,12 +26,12 @@ public final class MainPanel extends JPanel {
             southBox.removeAll();
             boolean insertSouth = false;
             for (AbstractExpansionPanel exp: panelList) {
-                if (source.equals(exp) && exp.isSelected()) {
+                if (source.equals(exp) && exp.isExpanded()) {
                     centerBox.add(exp);
                     insertSouth = true;
                     continue;
                 }
-                exp.setSelected(false);
+                exp.setExpanded(false);
                 if (insertSouth) {
                     southBox.add(exp);
                 } else {
@@ -125,11 +125,10 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     protected AbstractExpansionPanel(String title) {
         super(new BorderLayout());
-        JButton button = new JButton(new AbstractAction(title) {
-            @Override public void actionPerformed(ActionEvent e) {
-                setSelected(!isSelected());
-                fireExpansionEvent();
-            }
+        JButton button = new JButton(title);
+        button.addActionListener(e -> {
+            setExpanded(!isExpanded());
+            fireExpansionEvent();
         });
         scroll = new JScrollPane(makePanel());
         scroll.getVerticalScrollBar().setUnitIncrement(25);
@@ -138,11 +137,11 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     public abstract Container makePanel();
 
-    public boolean isSelected() {
+    public boolean isExpanded() {
         return openFlag;
     }
 
-    public void setSelected(boolean flg) {
+    public void setExpanded(boolean flg) {
         openFlag = flg;
         if (openFlag) {
             add(scroll);
