@@ -9,27 +9,35 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION", true);
-    private final JRadioButton r1 = new JRadioButton("SINGLE_TREE_SELECTION");
-    private final JRadioButton r2 = new JRadioButton("CONTIGUOUS_TREE_SELECTION");
-    private final ButtonGroup bg = new ButtonGroup();
-    private final JTree tree = new JTree();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        ActionListener al = e -> {
-            JRadioButton rb = (JRadioButton) e.getSource();
-            if (rb.equals(r2)) {
-                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-            } else if (rb.equals(r1)) {
-                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-            } else {
+        JTree tree = new JTree();
+
+        JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION", true);
+        r0.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             }
-        };
+        });
+
+        JRadioButton r1 = new JRadioButton("SINGLE_TREE_SELECTION");
+        r1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+            }
+        });
+
+        JRadioButton r2 = new JRadioButton("CONTIGUOUS_TREE_SELECTION");
+        r2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+            }
+        });
+
         Box p = Box.createVerticalBox();
+        ButtonGroup bg = new ButtonGroup();
         for (AbstractButton b: Arrays.asList(r0, r1, r2)) {
-            b.addActionListener(al);
             bg.add(b);
             p.add(b);
         }
