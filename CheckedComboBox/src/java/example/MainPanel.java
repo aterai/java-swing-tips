@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.accessibility.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -144,8 +144,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         getActionMap().put("checkbox-select", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
-                if (a instanceof BasicComboPopup) {
-                    BasicComboPopup pop = (BasicComboPopup) a;
+                if (a instanceof ComboPopup) {
+                    ComboPopup pop = (ComboPopup) a;
                     updateItem(pop.getList().getSelectedIndex());
                 }
             }
