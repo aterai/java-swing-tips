@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
             for (JTextField tf: Arrays.asList(textField0, textField1, textField2)) {
                 tf.setText(str);
             }
-        }):
+        });
 
         JPanel p = new JPanel();
         p.add(new JButton(undoAction));
