@@ -55,20 +55,17 @@ public final class MainPanel extends JPanel {
 
         menu.addSeparator();
 
-        menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
+        menuItem = menu.add(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
         menuItem.setMnemonic(KeyEvent.VK_1);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
-        menu.add(menuItem);
 
-        menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
+        menuItem = menu.add(new ModalInternalFrameAction2("InternalMessageDialog"));
         menuItem.setMnemonic(KeyEvent.VK_2);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
-        menu.add(menuItem);
 
-        menuItem = new JMenuItem(new ModalInternalFrameAction3("InternalMessageDialog(Print)"));
+        menuItem = menu.add(new ModalInternalFrameAction3("InternalMessageDialog(Print)"));
         menuItem.setMnemonic(KeyEvent.VK_3);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
-        menu.add(menuItem);
 
 //         JButton b = new JButton(new AbstractAction("dummy button") {
 //             @Override public void actionPerformed(ActionEvent e) {
