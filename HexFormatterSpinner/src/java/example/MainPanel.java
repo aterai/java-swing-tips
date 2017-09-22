@@ -13,16 +13,12 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private final JRadioButton exMi = new JRadioButton(FontPaint.IPAexMincho.toString());
-    private final JRadioButton mjMi = new JRadioButton(FontPaint.IPAmjMincho.toString());
-    private final JRadioButton both = new JRadioButton("Both", true);
-    private final JSpinner spinner  = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));
+    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));
+    private final JPanel fontPanel = new GlyphPaintPanel();
     protected EnumSet<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
     public MainPanel() {
         super(new BorderLayout());
-
-        JPanel fontPanel = new GlyphPaintPanel();
 
         spinner.addChangeListener(e -> fontPanel.repaint());
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
@@ -30,28 +26,42 @@ public class MainPanel extends JPanel {
         ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
         ftf.setFormatterFactory(makeFFactory());
 
+        JRadioButton exMi = new JRadioButton(FontPaint.IPAexMincho.toString());
+        exMi.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                setFontPaintFlag(EnumSet.of(FontPaint.IPAexMincho));
+            }
+        });
+
+        JRadioButton mjMi = new JRadioButton(FontPaint.IPAmjMincho.toString());
+        mjMi.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                setFontPaintFlag(EnumSet.of(FontPaint.IPAmjMincho));
+            }
+        });
+
+        JRadioButton both = new JRadioButton("Both", true);
+        both.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                setFontPaintFlag(EnumSet.allOf(FontPaint.class));
+            }
+        });
+
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        ActionListener al = e -> {
-            if (exMi.isSelected()) {
-                fontPaintFlag = EnumSet.of(FontPaint.IPAexMincho);
-            } else if (mjMi.isSelected()) {
-                fontPaintFlag = EnumSet.of(FontPaint.IPAmjMincho);
-            } else { //if (both.isSelected()) {
-                fontPaintFlag = EnumSet.allOf(FontPaint.class);
-            }
-            fontPanel.repaint();
-        };
         Arrays.asList(exMi, mjMi, both).forEach(b -> {
             p.add(b);
             bg.add(b);
-            b.addActionListener(al);
         });
 
         add(spinner, BorderLayout.NORTH);
         add(fontPanel);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    protected void setFontPaintFlag(EnumSet<FontPaint> fp) {
+        fontPaintFlag = fp;
+        fontPanel.repaint();
     }
     protected String getCharacterString() {
         int code = ((Integer) spinner.getValue()).intValue();
