@@ -46,9 +46,7 @@ public class MainPanel extends JPanel {
         JMenu menu = new JMenu(title);
         menu.setMnemonic(title.codePointAt(0));
         for (String s: list) {
-            JMenuItem m = new JMenuItem(s);
-            m.setMnemonic(s.codePointAt(0));
-            menu.add(m);
+            menu.add(s).setMnemonic(s.codePointAt(0));
         }
         return menu;
     }
