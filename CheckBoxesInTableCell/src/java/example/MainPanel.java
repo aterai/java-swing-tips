@@ -96,13 +96,14 @@ class CheckBoxesPanel extends JPanel {
         initButtons();
     }
     private void initButtons() {
+        Color bgc = new Color(0x0, true);
         buttons = new JCheckBox[TITLES.length];
         for (int i = 0; i < buttons.length; i++) {
             JCheckBox b = new JCheckBox(TITLES[i]);
             b.setOpaque(false);
             b.setFocusable(false);
             b.setRolloverEnabled(false);
-            b.setBackground(new Color(0x0, true));
+            b.setBackground(bgc);
             buttons[i] = b;
             add(b);
             add(Box.createHorizontalStrut(5));
