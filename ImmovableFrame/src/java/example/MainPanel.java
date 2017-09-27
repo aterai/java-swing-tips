@@ -47,11 +47,10 @@ public class MainPanel extends JPanel {
     }
 
     protected final JMenuBar createMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Window");
         menu.setMnemonic(KeyEvent.VK_W);
-        menuBar.add(menu);
-        JMenuItem menuItem = new JMenuItem("New");
+
+        JMenuItem menuItem = menu.add("New");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
@@ -61,7 +60,9 @@ public class MainPanel extends JPanel {
             frame.setVisible(true);
             //desktop.getDesktopManager().activateFrame(frame);
         });
-        menu.add(menuItem);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(menu);
         return menuBar;
     }
 
