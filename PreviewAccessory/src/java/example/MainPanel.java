@@ -73,9 +73,11 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
         }
         ImageIcon tmpIcon = new ImageIcon(file.getPath());
         if (tmpIcon.getIconWidth() > PREVIEW_WIDTH) {
-            //Image img = tmpIcon.getImage().getScaledInstance(PREVIEW_WIDTH, -1, Image.SCALE_DEFAULT);
-            //The Perils of Image.getScaledInstance() | Java.net
-            //http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
+            // Image img = tmpIcon.getImage().getScaledInstance(PREVIEW_WIDTH, -1, Image.SCALE_DEFAULT);
+            // The Perils of Image.getScaledInstance() | Java.net
+            // <del>http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html</del>
+            // The Perils of Image.getScaledInstance() Blog | Oracle Community
+            // https://community.oracle.com/docs/DOC-983611
             float scale = PREVIEW_WIDTH / (float) tmpIcon.getIconWidth();
             int newW = (int) (tmpIcon.getIconWidth()  * scale);
             int newH = (int) (tmpIcon.getIconHeight() * scale);
