@@ -65,7 +65,6 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         g2.dispose();
     }
     @Override public void mouseDragged(MouseEvent e) {
-        Point pt = e.getPoint();
         double xDelta = e.getX() - startPoint.getX();
         double yDelta = e.getY() - startPoint.getY();
         double delta = Math.max(Math.abs(xDelta), Math.abs(yDelta));
@@ -74,18 +73,19 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         double yIncrement = yDelta / delta;
         double xStart = startPoint.x;
         double yStart = startPoint.y;
+        Point pt = new Point();
         for (int i = 0; i < delta; i++) {
-            Point p = new Point((int) xStart, (int) yStart);
-            //if (p.x < 0 || p.y < 0 || p.x >= r.width || p.y >= r.height) {
-            if (!r.contains(p)) {
+            pt.setLocation((int) xStart, (int) yStart);
+            //if (pt.x < 0 || pt.y < 0 || pt.x >= r.width || pt.y >= r.height) {
+            if (!r.contains(pt)) {
                 break;
             }
-            paintStamp(pixels, p, penc);
-            //source.newPixels(p.x - 2, p.y - 2, 4, 4);
+            paintStamp(pixels, pt, penc);
+            //source.newPixels(pt.x - 2, pt.y - 2, 4, 4);
             xStart += xIncrement;
             yStart += yIncrement;
         }
-        startPoint = pt;
+        startPoint = e.getPoint();
     }
     private void paintStamp(int[] pixels, Point p, int penc) {
         //1x1:
