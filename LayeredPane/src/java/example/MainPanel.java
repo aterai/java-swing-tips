@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         menu.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu);
 
-        JMenuItem menuItem = new JMenuItem("New");
+        JMenuItem menuItem = menu.add("New");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         });
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Quit");
+        menuItem = menu.add("Quit");
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("quit");
