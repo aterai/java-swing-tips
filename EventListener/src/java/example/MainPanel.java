@@ -71,17 +71,13 @@ public final class MainPanel extends JPanel {
         //addFontChangeListener(combo);
         addFontChangeListener(label);
 
-        JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("Font");
         menu.setToolTipText("Select font size");
-        JMenuItem font32 = new JMenuItem("32pt");
-        JMenuItem font12 = new JMenuItem("12pt");
-        menu.add(font12);
-        menu.add(font32);
-        menubar.add(menu);
+        menu.add("32pt").addActionListener(e -> fireFontChangeEvent("font32", FONT32));
+        menu.add("12pt").addActionListener(e -> fireFontChangeEvent("font12", FONT12));
 
-        font12.addActionListener(e -> fireFontChangeEvent("font12", FONT12));
-        font32.addActionListener(e -> fireFontChangeEvent("font32", FONT32));
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(menu);
 
         label.setFont(FONT12);
         combo.setFont(FONT12);
