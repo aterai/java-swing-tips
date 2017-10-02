@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     }
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-        DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new TableOfContents("1. Introductiion", 1));
+        DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new TableOfContents("1. Introduction", 1));
         DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new TableOfContents("2. Chapter", 1));
         s1.add(new DefaultMutableTreeNode(new TableOfContents("2.1. Section", 2)));
         s1.add(new DefaultMutableTreeNode(new TableOfContents("2.2. Section", 4)));
