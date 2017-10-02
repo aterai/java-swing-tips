@@ -25,6 +25,7 @@ public final class MainPanel extends JPanel {
         TreeModel model = makeModel();
         CardLayout cardLayout = new CardLayout();
         JPanel p = new JPanel(cardLayout);
+        // http://ateraimemo.com/Swing/TraverseAllNodes.html
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         Enumeration en = root.postorderEnumeration();
         while (en.hasMoreElements()) {
@@ -37,7 +38,7 @@ public final class MainPanel extends JPanel {
         tree.setModel(model);
         tree.setRowHeight(32);
         tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        // http://ateraimemo.com/Swing/TraverseAllNodes.html
+        // http://ateraimemo.com/Swing/ExpandAllNodes.html
         int row = 0;
         while (row < tree.getRowCount()) {
             tree.expandRow(row++);
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.addTreeSelectionListener(e -> {
             // http://ateraimemo.com/Swing/CardLayoutTabbedPane.html
-            Object o = tree.getLastSelectedPathComponent();
+            Object o = e.getNewLeadSelectionPath().getLastPathComponent(); // tree.getLastSelectedPathComponent();
             if (o instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
                 String title = Objects.toString(node.getUserObject());
