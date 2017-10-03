@@ -9,21 +9,21 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
-    protected static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
-    private final JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
-        @Override public void actionPerformed(ActionEvent e) {
-            Boolean b = ((JCheckBox) e.getSource()).isSelected();
-            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
-        }
-    });
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super();
-        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
-        System.out.println(DISABLED_ARE_NAVIGABLE + ": " + b);
-        disabledAreNavigableCheck.setSelected(b);
-        add(disabledAreNavigableCheck);
+        String disabledAreNavigable = "MenuItem.disabledAreNavigable";
+
+        Boolean b = UIManager.getBoolean(disabledAreNavigable);
+        System.out.println(disabledAreNavigable + ": " + b);
+        JCheckBox disabledAreNavigableCheck = new JCheckBox(disabledAreNavigable, b) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setSelected(UIManager.getLookAndFeelDefaults().getBoolean(disabledAreNavigable));
+                UIManager.put(disabledAreNavigable, isSelected());
+            }
+        };
+        disabledAreNavigableCheck.addActionListener(e -> UIManager.put(disabledAreNavigable, ((JCheckBox) e.getSource()).isSelected()));
 
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
 //                                 if (o instanceof JRadioButtonMenuItem) {
 //                                     JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
 //                                     if (rbmi.isSelected()) {
-//                                         Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+//                                         Boolean b = UIManager.getBoolean(disabledAreNavigable);
 //                                         System.out.println(rbmi.getText() + ": " + b);
 //                                         disabledAreNavigableCheck.setSelected(b);
 //                                     }
@@ -55,14 +55,8 @@ public class MainPanel extends JPanel {
         JPopupMenu popup = new JPopupMenu();
         ManuBarUtil.initMenu(popup);
         setComponentPopupMenu(popup);
+        add(disabledAreNavigableCheck);
         setPreferredSize(new Dimension(320, 240));
-    }
-    @Override public void updateUI() {
-        super.updateUI();
-        if (Objects.nonNull(disabledAreNavigableCheck)) {
-            Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
-            disabledAreNavigableCheck.setSelected(b);
-        }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
