@@ -4,8 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -51,19 +52,21 @@ public final class MainPanel extends JPanel {
             new AbstractExpansionPanel("System Tasks") {
                 @Override public JPanel makePanel() {
                     JPanel p = new JPanel(new GridLayout(0, 1));
-                    Arrays.asList("aaaa", "aaaaaaa").forEach(s -> {
-                        JCheckBox b = new JCheckBox(s);
-                        b.setOpaque(false);
-                        p.add(b);
-                    });
+                    Stream.of("aaaa", "aaaaaaa")
+                        .map(JCheckBox::new)
+                        .forEach(b -> {
+                            b.setOpaque(false);
+                            p.add(b);
+                        });
                     return p;
                 }
             },
             new AbstractExpansionPanel("Other Places") {
                 @Override public JPanel makePanel() {
                     JPanel p = new JPanel(new GridLayout(0, 1));
-                    Arrays.asList("Desktop", "My Network Places", "My Documents", "Shared Documents")
-                        .forEach(s -> p.add(new JLabel(s)));
+                    Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
+                        .map(JLabel::new)
+                        .forEach(p::add);
                     return p;
                 }
             },
@@ -71,12 +74,14 @@ public final class MainPanel extends JPanel {
                 @Override public JPanel makePanel() {
                     JPanel p = new JPanel(new GridLayout(0, 1));
                     ButtonGroup bg = new ButtonGroup();
-                    Arrays.asList("aaa", "bbb", "ccc", "ddd").forEach(s -> {
-                        JRadioButton b = new JRadioButton(s, p.getComponentCount() == 0);
-                        b.setOpaque(false);
-                        p.add(b);
-                        bg.add(b);
-                    });
+                    Stream.of("aaa", "bbb", "ccc", "ddd")
+                        .map(JRadioButton::new)
+                        .forEach(b -> {
+                            b.setSelected(p.getComponentCount() == 0);
+                            b.setOpaque(false);
+                            p.add(b);
+                            bg.add(b);
+                        });
                     return p;
                 }
             }
