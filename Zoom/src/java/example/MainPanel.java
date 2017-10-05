@@ -70,11 +70,12 @@ class ZoomImage extends JPanel {
     @Override public void updateUI() {
         removeMouseWheelListener(handler);
         super.updateUI();
-        handler = new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                changeScale(e.getWheelRotation());
-            }
-        };
+//         handler = new MouseWheelListener() {
+//             @Override public void mouseWheelMoved(MouseWheelEvent e) {
+//                 changeScale(e.getWheelRotation());
+//             }
+//         };
+        handler = e -> changeScale(e.getWheelRotation());
         addMouseWheelListener(handler);
     }
     @Override protected void paintComponent(Graphics g) {
