@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
                     if (combo.getSelectedIndex() == row) {
                         combo.repaint();
                     }
-                    BasicComboPopup p = (BasicComboPopup) combo.getAccessibleContext().getAccessibleChild(0);
+                    ComboPopup p = (ComboPopup) combo.getAccessibleContext().getAccessibleChild(0);
                     JList list = p.getList();
                     if (list.isShowing()) {
                         list.repaint(list.getCellBounds(row, row));
