@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         table.setTransferHandler(new CellIconTransferHandler(FLAVOR));
         table.setDragEnabled(true);
         table.setFillsViewportHeight(true);
-        final TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
 
         //Disable row Cut, Copy, Paste
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
-        final DefaultListModel<Icon> model = new DefaultListModel<>();
+        DefaultListModel<Icon> model = new DefaultListModel<>();
         JList<Icon> list = new JList<>(model);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(0);
@@ -64,24 +64,26 @@ public final class MainPanel extends JPanel {
         list.setCellRenderer(new IconListCellRenderer<>());
         list.setTransferHandler(new TableCellTransferHandler(FLAVOR));
 
+        JButton clearButton = new JButton("clear");
+        clearButton.addActionListener(e -> {
+            model.clear();
+            sorter.setRowFilter(null);
+        });
+
+        JButton filterButton = new JButton("filter");
+        filterButton.addActionListener(e -> {
+            sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+                @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                    Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
+                    System.out.println(model.contains(o));
+                    return model.isEmpty() || model.contains(o);
+                }
+            });
+        });
+
         Box box = Box.createHorizontalBox();
-        box.add(new JButton(new AbstractAction("clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                model.clear();
-                sorter.setRowFilter(null);
-            }
-        }));
-        box.add(new JButton(new AbstractAction("filter") {
-            @Override public void actionPerformed(ActionEvent e) {
-                sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
-                    @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-                        Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
-                        System.out.println(model.contains(o));
-                        return model.isEmpty() || model.contains(o);
-                    }
-                });
-            }
-        }));
+        box.add(clearButton);
+        box.add(filterButton);
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
