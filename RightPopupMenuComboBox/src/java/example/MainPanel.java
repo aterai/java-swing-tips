@@ -74,8 +74,8 @@ class RightPopupMenuListener implements PopupMenuListener {
             JComboBox combo = (JComboBox) e.getSource();
             Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
             //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-            if (a instanceof BasicComboPopup) {
-                BasicComboPopup pop = (BasicComboPopup) a;
+            if (a instanceof ComboPopup) {
+                ComboPopup pop = (ComboPopup) a;
                 Point p = new Point(combo.getSize().width, 0);
                 SwingUtilities.convertPointToScreen(p, combo);
                 pop.setLocation(p);
