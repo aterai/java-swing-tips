@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SudokuTableBorder" />
+  <property name="jnlp.Name"     value="SudokuTableBorder" />
+  <property name="jnlp.name"     value="sudokutableborder" />
+  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sudokutableborder/" />
+  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SudokuTableBorder.html" />
+</project>
