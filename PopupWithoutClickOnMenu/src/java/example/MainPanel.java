@@ -39,29 +39,29 @@ public final class MainPanel extends JPanel {
         JMenuBar bar = new JMenuBar();
 
         JMenu menu = new JMenu("File");
-        menu.add(makeMenuItem("Open"));
-        menu.add(makeMenuItem("Save"));
-        menu.add(makeMenuItem("Exit"));
+        menu.add("Open");
+        menu.add("Save");
+        menu.add("Exit");
         bar.add(menu);
 
         menu = new JMenu("Edit");
-        menu.add(makeMenuItem("Undo"));
-        menu.add(makeMenuItem("Redo"));
+        menu.add("Undo");
+        menu.add("Redo");
         menu.addSeparator();
-        menu.add(makeMenuItem("Cut"));
-        menu.add(makeMenuItem("Copy"));
-        menu.add(makeMenuItem("Paste"));
-        menu.add(makeMenuItem("Delete"));
+        menu.add("Cut");
+        menu.add("Copy");
+        menu.add("Paste");
+        menu.add("Delete");
         bar.add(menu);
 
         menu = new JMenu("Test");
-        menu.add(makeMenuItem("JMenuItem1"));
-        menu.add(makeMenuItem("JMenuItem2"));
+        menu.add("JMenuItem1");
+        menu.add("JMenuItem2");
         JMenu sub = new JMenu("JMenu");
-        sub.add(makeMenuItem("JMenuItem4"));
-        sub.add(makeMenuItem("JMenuItem5"));
+        sub.add("JMenuItem4");
+        sub.add("JMenuItem5");
         menu.add(sub);
-        menu.add(makeMenuItem("JMenuItem3"));
+        menu.add("JMenuItem3");
         bar.add(menu);
         return bar;
     }
@@ -80,11 +80,6 @@ public final class MainPanel extends JPanel {
 //                 }
 //             }
         }
-    }
-    private static JMenuItem makeMenuItem(String str) {
-        JMenuItem item = new JMenuItem(str);
-        item.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
-        return item;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
