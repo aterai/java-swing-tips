@@ -147,8 +147,8 @@ class HeavyWeightContainerListener implements PopupMenuListener {
             @Override public void run() {
                 JComboBox combo = (JComboBox) e.getSource();
                 Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-                if (a instanceof BasicComboPopup) {
-                    BasicComboPopup pop = (BasicComboPopup) a;
+                if (a instanceof JPopupMenu) {
+                    JPopupMenu pop = (JPopupMenu) a;
                     Container top = pop.getTopLevelAncestor();
                     if (top instanceof JWindow) {
                         //http://ateraimemo.com/Swing/DropShadowPopup.html
