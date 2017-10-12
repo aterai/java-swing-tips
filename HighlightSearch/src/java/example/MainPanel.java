@@ -70,12 +70,7 @@ public class MainPanel extends JPanel {
         sp.add(bp, BorderLayout.EAST);
         sp.add(cp, BorderLayout.SOUTH);
 
-        //EventQueue.invokeLater(() -> changeHighlight()); //NOPMD: Overridable method 'changeHighlight' called during object construction
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                changeHighlight();
-            }
-        });
+        EventQueue.invokeLater(this::changeHighlight);
 
         add(sp, BorderLayout.NORTH);
         add(new JScrollPane(textArea));

@@ -141,6 +141,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         this.renderer = renderer;
         this.fileSystemView = fileSystemView;
     }
+    @SuppressWarnings("PMD.SimplifyStartsWith")
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if (selected) {
@@ -159,7 +160,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
                 c.setIcon(fileSystemView.getSystemIcon(file));
                 c.setText(fileSystemView.getSystemDisplayName(file));
                 c.setToolTipText(file.getPath());
-                c.setEnabled(!file.getName().startsWith(".")); //NOPMD SimplifyStartsWith
+                c.setEnabled(!file.getName().startsWith("."));
                 //StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
                 //String name = file.getName();
                 //c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');

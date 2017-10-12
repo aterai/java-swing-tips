@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-public class ResizeMouseListener extends MouseInputAdapter { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
+public class ResizeMouseListener extends MouseInputAdapter {
     private static final Dimension MIN = new Dimension(50, 50);
     private static final Dimension MAX = new Dimension(500, 500);
     private int cursor;
@@ -82,7 +82,8 @@ public class ResizeMouseListener extends MouseInputAdapter { //NOPMD Cyclomatic 
         return deltaY;
     }
     //@see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
-    @Override public void mouseDragged(MouseEvent e) { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"}) // Cyclomatic Complexity, Standard Cyclomatic Complexity
+    @Override public void mouseDragged(MouseEvent e) {
         if (startPos == null || startingBounds == null) {
             return;
         }
