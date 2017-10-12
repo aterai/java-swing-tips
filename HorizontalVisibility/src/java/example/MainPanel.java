@@ -11,6 +11,9 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     protected static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
+    protected final JCheckBox check = new JCheckBox("add EmptyThumbHandler");
+    protected final JButton caretButton = new JButton("setCaretPosition: 0");
+    protected final JButton offsetButton = new JButton("setScrollOffset: 0");
     protected final JTextField textField1 = new JTextField(TEXT);
     protected final JTextField textField2 = new JTextField(TEXT);
     protected final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
@@ -32,6 +35,32 @@ public class MainPanel extends JPanel {
         scroller1.setModel(textField1.getHorizontalVisibility());
         scroller2.setModel(textField2.getHorizontalVisibility());
 
+        check.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                textField1.addComponentListener(handler);
+                textField1.getDocument().addDocumentListener(handler);
+            } else {
+                textField1.removeComponentListener(handler);
+                textField1.getDocument().removeDocumentListener(handler);
+            }
+        });
+
+        caretButton.addActionListener(e -> {
+            textField1.requestFocusInWindow();
+            textField1.setCaretPosition(0);
+            scroller1.revalidate();
+            textField2.requestFocusInWindow();
+            textField2.setCaretPosition(0);
+            scroller2.revalidate();
+        });
+
+        offsetButton.addActionListener(e -> {
+            textField1.setScrollOffset(0);
+            scroller1.revalidate();
+            textField2.setScrollOffset(0);
+            scroller2.revalidate();
+        });
+
         Box p = Box.createVerticalBox();
         JScrollPane scroll = new JScrollPane(new JTextField(TEXT));
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -44,18 +73,7 @@ public class MainPanel extends JPanel {
         p.add(Box.createVerticalStrut(2));
         p.add(scroller1);
         p.add(Box.createVerticalStrut(2));
-        p.add(new JCheckBox(new AbstractAction("add EmptyThumbHandler") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                if (c.isSelected()) {
-                    textField1.addComponentListener(handler);
-                    textField1.getDocument().addDocumentListener(handler);
-                } else {
-                    textField1.removeComponentListener(handler);
-                    textField1.getDocument().removeDocumentListener(handler);
-                }
-            }
-        }));
+        p.add(check);
         p.add(Box.createVerticalStrut(5));
         p.add(new JLabel("BoundedRangeModel+textField.ArrowButtonlessScrollBarUI"));
         p.add(textField2);
@@ -65,25 +83,9 @@ public class MainPanel extends JPanel {
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("setCaretPosition: 0") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textField1.requestFocusInWindow();
-                textField1.setCaretPosition(0);
-                scroller1.revalidate();
-                textField2.requestFocusInWindow();
-                textField2.setCaretPosition(0);
-                scroller2.revalidate();
-            }
-        }));
+        box.add(caretButton);
         box.add(Box.createHorizontalStrut(5));
-        box.add(new JButton(new AbstractAction("setScrollOffset: 0") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textField1.setScrollOffset(0);
-                scroller1.revalidate();
-                textField2.setScrollOffset(0);
-                scroller2.revalidate();
-            }
-        }));
+        box.add(offsetButton);
 
         add(p, BorderLayout.NORTH);
         add(box, BorderLayout.SOUTH);
