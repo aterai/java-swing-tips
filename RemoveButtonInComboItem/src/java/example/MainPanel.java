@@ -106,8 +106,8 @@ class RemoveButtonComboBox<E> extends JComboBox<E> {
     }
     protected Optional<? extends JList> getList() {
         Accessible a = getAccessibleContext().getAccessibleChild(0);
-        if (a instanceof BasicComboPopup) {
-            return Optional.of(((BasicComboPopup) a).getList());
+        if (a instanceof ComboPopup) {
+            return Optional.of(((ComboPopup) a).getList());
         }
         return Optional.empty();
     }
