@@ -40,7 +40,7 @@ import javax.swing.plaf.basic.BasicHTML;
  * @author David Kloba
  * @author Amy Fowler
  */
-@SuppressWarnings("PMD")
+@SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
 public class TitledBorder2 extends AbstractBorder {
     // @see javax/swing/border/TitledBorder.java
     protected String title;
@@ -208,6 +208,7 @@ public class TitledBorder2 extends AbstractBorder {
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.ModifiedCyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary"})
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
@@ -319,6 +320,7 @@ public class TitledBorder2 extends AbstractBorder {
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
+    @SuppressWarnings("PMD.AvoidReassigningParameters")
     @Override public Insets getBorderInsets(Component c, Insets insets) {
         Border border = getBorder();
         insets = makeBorderInsets(border, c, insets);
@@ -504,6 +506,7 @@ public class TitledBorder2 extends AbstractBorder {
      * @param c the component where this border will be drawn
      * @return the {@code Dimension} object
      */
+    @SuppressWarnings("PMD.ConfusingTernary")
     public Dimension getMinimumSize(Component c) {
         Insets insets = getBorderInsets(c);
         Dimension minSize = new Dimension(insets.right + insets.left, insets.top + insets.bottom);
@@ -530,6 +533,7 @@ public class TitledBorder2 extends AbstractBorder {
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
+    @SuppressWarnings("PMD.NPathComplexity")
     @Override public int getBaseline(Component c, int width, int height) {
         Objects.requireNonNull(c, "Must supply non-null component");
         if (width < 0) {
@@ -597,6 +601,7 @@ public class TitledBorder2 extends AbstractBorder {
         }
     }
 
+    @SuppressWarnings("PMD.ModifiedCyclomaticComplexity")
     private int getPosition() {
         int position = getTitlePosition();
         if (position != DEFAULT_POSITION) {
@@ -675,6 +680,7 @@ public class TitledBorder2 extends AbstractBorder {
     }
 
     //private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
+    @SuppressWarnings("PMD.AvoidReassigningParameters")
     private static Insets makeBorderInsets(Border border, Component c, Insets insets) {
         if (Objects.isNull(border)) {
             insets.set(0, 0, 0, 0);
