@@ -212,22 +212,21 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected int index;
     public int rolloverIndex = -1;
     private final JLabel label = new DefaultListCellRenderer();
-    private final JButton deleteButton = new JButton(new AbstractAction("x") {
-        @Override public void actionPerformed(ActionEvent e) {
-            MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-            boolean isMoreThanOneItem = m.getSize() > 1;
-            if (isMoreThanOneItem) {
-                m.removeElementAt(index);
-                comboBox.showPopup();
-            }
-        }
-    }) {
+    private final JButton deleteButton = new JButton("x") {
         @Override public Dimension getPreferredSize() {
             return new Dimension(16, 16);
         }
     };
     protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
         super(new BorderLayout());
+        deleteButton.addActionListener(e -> {
+            MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
+            boolean isMoreThanOneItem = m.getSize() > 1;
+            if (isMoreThanOneItem) {
+                m.removeElementAt(index);
+                comboBox.showPopup();
+            }
+        });
         this.comboBox = comboBox;
         label.setOpaque(false);
         setOpaque(true);
