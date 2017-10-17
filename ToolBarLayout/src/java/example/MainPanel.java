@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -18,6 +19,13 @@ public final class MainPanel extends JPanel {
         URL url1 = getClass().getResource(PATH + "Copy24.gif");
         URL url2 = getClass().getResource(PATH + "Cut24.gif");
         URL url3 = getClass().getResource(PATH + "Help24.gif");
+
+        // When jlfgr-1_0.jar does not exist in the classpath
+        if (Objects.isNull(url1)) {
+            url1 = getClass().getResource("Copy24.gif");
+            url2 = getClass().getResource("Cut24.gif");
+            url3 = getClass().getResource("Help24.gif");
+        }
 
         toolbar1.add(new JButton(new ImageIcon(url1)));
         toolbar1.add(new JButton(new ImageIcon(url2)));
