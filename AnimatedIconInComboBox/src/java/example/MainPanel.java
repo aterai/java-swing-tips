@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.net.*;
+import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -26,26 +27,31 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Icon makeImageIcon(URL url, final JComboBox combo, final int row) {
+    private static Icon makeImageIcon(URL url, JComboBox combo, int row) {
         ImageIcon icon = new ImageIcon(url);
         // Wastefulness: icon.setImageObserver(combo);
         icon.setImageObserver(new ImageObserver() {
             // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
                 if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-                    if (combo.getSelectedIndex() == row) {
-                        combo.repaint();
-                    }
-                    ComboPopup p = (ComboPopup) combo.getAccessibleContext().getAccessibleChild(0);
-                    JList list = p.getList();
-                    if (list.isShowing()) {
-                        list.repaint(list.getCellBounds(row, row));
-                    }
+                    repaintComboBox(combo, row);
                 }
                 return (infoflags & (ALLBITS | ABORT)) == 0;
             }
         });
         return icon;
+    }
+    protected static void repaintComboBox(JComboBox<?> combo, int row) {
+        if (combo.getSelectedIndex() == row) {
+            combo.repaint();
+        }
+        Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
+        if (a instanceof ComboPopup) {
+            JList<?> list = ((ComboPopup) a).getList();
+            if (list.isShowing()) {
+                list.repaint(list.getCellBounds(row, row));
+            }
+        }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
