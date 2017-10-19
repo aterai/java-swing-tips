@@ -96,6 +96,7 @@ import javax.swing.table.*;
  * @author Parwinder Sekhon
  * @version 2.0 02/27/04
  */
+@SuppressWarnings("PMD.GodClass")
 public class TableSorter extends AbstractTableModel {
     public static final int DESCENDING = -1;
     public static final int NOT_SORTED = 0;
