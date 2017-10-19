@@ -27,9 +27,7 @@
       <!-- compiled classes directory -->
       <pathelement location="${build.dest}" />
       <!-- all jars in jar directory -->
-      <fileset dir="${lib.dir}">
-        <include name="*.jar" />
-      </fileset>
+      <fileset dir="${lib.dir}" includes="*.jar" />
       <!-- system property, environment classpath -->
       <pathelement path="${java.class.path}" />
     </path>
@@ -300,15 +298,11 @@
         <pathelement path="${java.class.path}" />
       </classpath>
       <batchtest fork="yes" todir="${build.reports}">
-        <fileset dir="${src.dir}">
-          <include name="**/*Test.java" />
-        </fileset>
+        <fileset dir="${src.dir}" includes="**/*Test.java" />
       </batchtest>
     </junit>
     <junitreport todir="${build.reports}">
-      <fileset dir="${build.reports}">
-        <include name="TEST-*.xml" />
-      </fileset>
+      <fileset dir="${build.reports}" includes="TEST-*.xml" />
       <report format="frames" todir="${build.correctreports}" />
     </junitreport>
   </target>
@@ -341,13 +335,6 @@
   <property name="sca.dir" value="${user.dir}" />
 
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
-    <path id="errorprone.classpath">
-      <fileset dir="${env.ERRORPRONE_HOME}">
-        <include name="*.jar" />
-      </fileset>
-    </path>
-    <componentdef name="errorprone" classname="com.google.errorprone.ErrorProneExternalCompilerAdapter"
-                  classpathref="errorprone.classpath" />
     <javac srcdir="${build.src}"
            includes="**/*.java"
            destdir="${build.dest}"
@@ -355,10 +342,12 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
-           includeAntRuntime="no"
-           fork="true"
+           compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+           includeAntRuntime="false"
            classpathref="project.class.path">
-      <errorprone />
+      <compilerclasspath>
+        <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+      </compilerclasspath>
       <compilerarg value="-Xlint:unchecked" />
       <compilerarg value="-Xep:MultipleTopLevelClasses:OFF" />
     </javac>
@@ -370,9 +359,7 @@
   <target name="findbugs" depends="compile" if="have.findbugs">
     <echo>${env.FINDBUGS_HOME}</echo>
     <path id="findbugs.classpath">
-      <fileset dir="${env.FINDBUGS_HOME}/lib">
-        <include name="*-ant.jar" />
-      </fileset>
+      <fileset dir="${env.FINDBUGS_HOME}/lib" includes="*-ant.jar" />
     </path>
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.classpath" />
     <mkdir dir="${build.reports}" />
@@ -393,9 +380,7 @@
   <target name="spotbugs" depends="compile" if="have.spotbugs">
     <echo>${env.SPOTBUGS_HOME}</echo>
     <path id="spotbugs.classpath">
-      <fileset dir="${env.SPOTBUGS_HOME}/lib">
-        <include name="*-ant.jar" />
-      </fileset>
+      <fileset dir="${env.SPOTBUGS_HOME}/lib" includes="*-ant.jar" />
     </path>
     <taskdef name="spotbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="spotbugs.classpath" />
     <mkdir dir="${build.reports}" />
@@ -415,9 +400,7 @@
   <target name="pmd" if="have.pmd">
     <echo>${env.PMD_HOME}</echo>
     <path id="pmd.classpath">
-      <fileset dir="${env.PMD_HOME}/lib">
-        <include name="*.jar" />
-      </fileset>
+      <fileset dir="${env.PMD_HOME}/lib" includes="*.jar" />
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
@@ -426,9 +409,7 @@
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
-      <fileset dir="${src.dir}">
-        <include name="**/*.java" />
-      </fileset>
+      <fileset dir="${src.dir}" includes="**/*.java" />
     </pmd>
   </target>
 
@@ -446,9 +427,7 @@
     <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
-      <fileset dir="${src.dir}">
-        <include name="**/*.java" />
-      </fileset>
+      <fileset dir="${src.dir}" includes="**/*.java" />
     </checkstyle>
   </target>
 
