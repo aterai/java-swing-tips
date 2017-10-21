@@ -164,9 +164,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         getActionMap().put("checkbox-select", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
-                if (a instanceof BasicComboPopup) {
-                    BasicComboPopup pop = (BasicComboPopup) a;
-                    updateItem(pop.getList().getSelectedIndex());
+                if (a instanceof ComboPopup) {
+                    updateItem(((ComboPopup) a).getList().getSelectedIndex());
                 }
             }
         });
@@ -211,9 +210,8 @@ class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
             item.selected ^= true;
             repaint();
             Accessible a = getAccessibleContext().getAccessibleChild(0);
-            if (a instanceof BasicComboPopup) {
-                BasicComboPopup pop = (BasicComboPopup) a;
-                pop.getList().repaint();
+            if (a instanceof ComboPopup) {
+                ((ComboPopup) a).getList().repaint();
             }
         }
     }
