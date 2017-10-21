@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
+        // CheckableItem displayValue = new CheckableItem("MMMMMMMMMM", false);
         CheckableItem[] m = {
             new CheckableItem("aaa",     false),
             new CheckableItem("bbbbb",   true),
@@ -24,6 +25,12 @@ public final class MainPanel extends JPanel {
             new CheckableItem("2222",    true),
             new CheckableItem("ccccccc", false)
         };
+
+        JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo1 = new CheckedComboBox1<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
 
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
@@ -37,9 +44,7 @@ public final class MainPanel extends JPanel {
         c.gridx = 0;
         c.weightx = 0.0;
         c.anchor = GridBagConstraints.WEST;
-        for (String s: Arrays.asList(
-            "setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():",
-            "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")) {
+        for (String s: Arrays.asList("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():", "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")) {
             p.add(new JLabel(s), c);
             c.gridy += 1;
         }
@@ -48,19 +53,11 @@ public final class MainPanel extends JPanel {
         c.gridx = 1;
         c.weightx = 1.0;
         c.fill = GridBagConstraints.HORIZONTAL;
-        p.add(new CheckedComboBox<>(new DefaultComboBoxModel<>(m)), c);
-
-        c.gridy = 1;
-        p.add(new CheckedComboBox1<>(new DefaultComboBoxModel<>(m)), c);
-
-        c.gridy = 2;
-        p.add(new CheckedComboBox2<>(new DefaultComboBoxModel<>(m)), c);
-
-        c.gridy = 3;
-        p.add(new CheckedComboBox3<>(new DefaultComboBoxModel<>(m)), c);
-
-        c.gridy = 4;
-        p.add(new CheckedComboBox4<>(new CheckableComboBoxModel<>(m)), c);
+        for (JComboBox<CheckableItem> combo: Arrays.asList(combo0, combo1, combo2, combo3, combo4)) {
+            // combo.setPrototypeDisplayValue(displayValue);
+            p.add(combo, c);
+            c.gridy += 1;
+        }
 
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -128,7 +125,11 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
                 sl.add(o.toString());
             }
         }
-        return sl.stream().sorted().collect(Collectors.joining(", "));
+        if (sl.isEmpty()) {
+            return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
+        } else {
+            return sl.stream().sorted().collect(Collectors.joining(", "));
+        }
     }
 }
 
