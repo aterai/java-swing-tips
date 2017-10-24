@@ -30,8 +30,14 @@ public final class MainPanel extends JPanel {
 
         JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + INIT_TXT);
         textArea2.setMargin(new Insets(0, 0, 0, 1));
-        JScrollPane scroll2 = new JScrollPane(textArea2);
-        scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
+        JScrollPane scroll2 = new JScrollPane(textArea2) {
+            @Override public void updateUI() {
+                //setViewportBorder(null);
+                super.updateUI();
+                EventQueue.invokeLater(() -> setViewportBorder(BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5)));
+            }
+        };
+        // scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
 
         JSplitPane splitPane = new JSplitPane();
         splitPane.setResizeWeight(.5);
