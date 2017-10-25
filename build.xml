@@ -382,13 +382,11 @@
     <path id="spotbugs.classpath">
       <fileset dir="${env.SPOTBUGS_HOME}/lib" includes="*-ant.jar" />
     </path>
-    <taskdef name="spotbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="spotbugs.classpath" />
+    <taskdef resource="edu/umd/cs/findbugs/anttask/tasks.properties" classpathref="spotbugs.classpath" />
     <mkdir dir="${build.reports}" />
-    <echo>userdir: ${user.dir}</echo>
-    <echo>basedir: ${basedir}</echo>
     <spotbugs home="${env.SPOTBUGS_HOME}" effort="max" reportLevel="low"
             excludeFilter="${sca.dir}/excludefilter.xml"
-            output="xml:withMessages" outputFile="${build.reports}/spotbugs.xml">
+            output="xml" outputFile="${build.reports}/spotbugs.xml">
       <sourcePath path="${src.dir}" />
       <class location="${build.dest}" />
     </spotbugs>
