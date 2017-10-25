@@ -65,14 +65,12 @@ class Tile1 extends JComponent implements HierarchyListener {
     protected int red;
     protected final Timer timer;
 
-    protected Tile1(final Random rnd) {
+    protected Tile1(Random rnd) {
         super();
         addHierarchyListener(this);
-        timer = new Timer(16, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                red = rnd.nextInt(255);
-                repaint();
-            }
+        timer = new Timer(16, e -> {
+            red = rnd.nextInt(255);
+            repaint();
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
@@ -104,13 +102,11 @@ class Tile1 extends JComponent implements HierarchyListener {
 class Tile2 extends JComponent {
     protected int red;
 
-    protected Tile2(final Random rnd, Timer timer) {
+    protected Tile2(Random rnd, Timer timer) {
         super();
-        timer.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                red = rnd.nextInt(255);
-                repaint();
-            }
+        timer.addActionListener(e -> {
+            red = rnd.nextInt(255);
+            repaint();
         });
     }
     @Override public Dimension getPreferredSize() {
