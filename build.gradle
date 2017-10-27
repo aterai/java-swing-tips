@@ -1,0 +1,68 @@
+description 'Java Swing Tips'
+
+allprojects {
+  apply {
+    plugin 'java'
+    plugin 'application'
+  }
+
+  def defaultEncoding = 'UTF-8'
+  [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+  repositories {
+    jcenter()
+  }
+}
+
+subprojects {
+  sourceSets {
+    main {
+      java { srcDir 'src/java' }
+      resources { srcDir 'src/java' }
+    }
+  }
+
+  def config = new ConfigSlurper().parse(new File("${project.projectDir}/config.gradle").toURL())
+
+  mainClassName = config.main.class
+
+  // In this section you declare where to find the dependencies of your project
+  repositories {
+    flatDir { dirs "${project.projectDir}/lib" }
+  }
+
+  // In this section you declare the dependencies for your production and test code
+  dependencies {
+    compile fileTree(dir: "${project.projectDir}/lib", include: '*.jar')
+  }
+
+  version = config.version
+  jar {
+    manifest {
+      attributes 'Implementation-Version': config.version,
+                 'Implementation-Vendor': config.vendor,
+                 'Main-Class': config.main.class,
+                 'Class-Path': config.runtime.classpath
+    }
+  }
+
+  apply {
+    plugin 'pmd'
+    plugin 'checkstyle'
+    plugin 'findbugs'
+  }
+  pmd {
+    ignoreFailures = true
+    consoleOutput = true
+    ruleSetFiles = files("${rootProject.projectDir}/ruleset.xml")
+    ruleSets = []
+  }
+  checkstyle {
+    ignoreFailures true
+    configFile file("$rootDir/checks.xml")
+  }
+  findbugs {
+    ignoreFailures = true
+    excludeFilter = file("${rootProject.projectDir}/excludefilter.xml")
+  }
+}
