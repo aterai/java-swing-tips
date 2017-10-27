@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckBoxesInTableCell" />
   <property name="jnlp.Name"     value="CheckBoxesInTableCell" />
   <property name="jnlp.name"     value="checkboxesintablecell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkboxesintablecell/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckBoxesInTableCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkboxesintablecell/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckBoxesInTableCell.html" />
 </project>

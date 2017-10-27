@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AlwaysOnTop" />
   <property name="jnlp.Name"     value="AlwaysOnTop" />
   <property name="jnlp.name"     value="alwaysontop" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/alwaysontop/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AlwaysOnTop.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/alwaysontop/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AlwaysOnTop.html" />
 </project>

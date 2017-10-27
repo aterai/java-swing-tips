@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MidiSystem" />
   <property name="jnlp.Name"     value="MidiSystem" />
   <property name="jnlp.name"     value="midisystem" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/midisystem/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MidiSystem.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/midisystem/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MidiSystem.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ButtonInComboEditor" />
   <property name="jnlp.Name"     value="ButtonInComboEditor" />
   <property name="jnlp.name"     value="buttonincomboeditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/buttonincomboeditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ButtonInComboEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/buttonincomboeditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ButtonInComboEditor.html" />
 </project>

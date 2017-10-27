@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BackgroundImage" />
   <property name="jnlp.Name"     value="BackgroundImage" />
   <property name="jnlp.name"     value="backgroundimage" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/backgroundimage/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BackgroundImage.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/backgroundimage/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BackgroundImage.html" />
 </project>

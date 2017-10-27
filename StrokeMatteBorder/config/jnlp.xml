@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StrokeMatteBorder" />
   <property name="jnlp.Name"     value="StrokeMatteBorder" />
   <property name="jnlp.name"     value="strokematteborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/strokematteborder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StrokeMatteBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/strokematteborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StrokeMatteBorder.html" />
 </project>

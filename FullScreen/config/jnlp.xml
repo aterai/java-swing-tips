@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FullScreen" />
   <property name="jnlp.Name"     value="FullScreen" />
   <property name="jnlp.name"     value="fullscreen" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fullscreen/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FullScreen.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fullscreen/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FullScreen.html" />
 </project>

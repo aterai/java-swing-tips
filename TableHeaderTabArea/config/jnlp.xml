@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableHeaderTabArea" />
   <property name="jnlp.Name"     value="TableHeaderTabArea" />
   <property name="jnlp.name"     value="tableheadertabarea" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tableheadertabarea/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableHeaderTabArea.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tableheadertabarea/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableHeaderTabArea.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RotatedIcon" />
   <property name="jnlp.Name"     value="RotatedIcon" />
   <property name="jnlp.name"     value="rotatedicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rotatedicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RotatedIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rotatedicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RotatedIcon.html" />
 </project>

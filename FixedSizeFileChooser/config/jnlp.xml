@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FixedSizeFileChooser" />
   <property name="jnlp.Name"     value="FixedSizeFileChooser" />
   <property name="jnlp.name"     value="fixedsizefilechooser" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fixedsizefilechooser/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FixedSizeFileChooser.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fixedsizefilechooser/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FixedSizeFileChooser.html" />
 </project>

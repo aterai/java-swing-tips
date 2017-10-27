@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UndoManager" />
   <property name="jnlp.Name"     value="UndoManager" />
   <property name="jnlp.name"     value="undomanager" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/undomanager/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UndoManager.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/undomanager/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UndoManager.html" />
 </project>

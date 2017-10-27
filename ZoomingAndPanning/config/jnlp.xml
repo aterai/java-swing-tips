@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ZoomingAndPanning" />
   <property name="jnlp.Name"     value="ZoomingAndPanning" />
   <property name="jnlp.name"     value="zoomingandpanning" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/zoomingandpanning/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ZoomingAndPanning.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/zoomingandpanning/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ZoomingAndPanning.html" />
 </project>

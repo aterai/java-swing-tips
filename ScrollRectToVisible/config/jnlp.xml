@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollRectToVisible" />
   <property name="jnlp.Name"     value="ScrollRectToVisible" />
   <property name="jnlp.name"     value="scrollrecttovisible" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollrecttovisible/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollRectToVisible.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollrecttovisible/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollRectToVisible.html" />
 </project>

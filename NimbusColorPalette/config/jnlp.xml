@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NimbusColorPalette" />
   <property name="jnlp.Name"     value="NimbusColorPalette" />
   <property name="jnlp.name"     value="nimbuscolorpalette" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nimbuscolorpalette/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NimbusColorPalette.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nimbuscolorpalette/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NimbusColorPalette.html" />
 </project>

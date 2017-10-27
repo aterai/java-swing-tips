@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 // @see http://www.jroller.com/santhosh/entry/component_titled_border
-// @see http://ateraimemo.com/Swing/ComponentTitledBorder.html
+// @see https://ateraimemo.com/Swing/ComponentTitledBorder.html
 class ComponentTitledBorder implements Border, SwingConstants {
     protected static final int OFFSET = 10;
     protected final Component comp;

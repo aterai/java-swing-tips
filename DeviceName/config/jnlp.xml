@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DeviceName" />
   <property name="jnlp.Name"     value="DeviceName" />
   <property name="jnlp.name"     value="devicename" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/devicename/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DeviceName.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/devicename/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DeviceName.html" />
 </project>

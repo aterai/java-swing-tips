@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeExpandedIcon" />
   <property name="jnlp.Name"     value="TreeExpandedIcon" />
   <property name="jnlp.name"     value="treeexpandedicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treeexpandedicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeExpandedIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treeexpandedicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeExpandedIcon.html" />
 </project>

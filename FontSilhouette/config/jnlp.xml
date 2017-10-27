@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FontSilhouette" />
   <property name="jnlp.Name"     value="FontSilhouette" />
   <property name="jnlp.name"     value="fontsilhouette" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fontsilhouette/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FontSilhouette.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fontsilhouette/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FontSilhouette.html" />
 </project>

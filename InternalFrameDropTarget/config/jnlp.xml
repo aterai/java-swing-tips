@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InternalFrameDropTarget" />
   <property name="jnlp.Name"     value="InternalFrameDropTarget" />
   <property name="jnlp.name"     value="internalframedroptarget" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/internalframedroptarget" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InternalFrameDropTarget.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/internalframedroptarget" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InternalFrameDropTarget.html" />
 </project>

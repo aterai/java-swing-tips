@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DragLimitedSlider" />
   <property name="jnlp.Name"     value="DragLimitedSlider" />
   <property name="jnlp.name"     value="draglimitedslider" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/draglimitedslider/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DragLimitedSlider.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/draglimitedslider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DragLimitedSlider.html" />
 </project>

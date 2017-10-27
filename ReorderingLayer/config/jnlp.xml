@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ReorderingLayer" />
   <property name="jnlp.Name"     value="ReorderingLayer" />
   <property name="jnlp.name"     value="reorderinglayer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/reorderinglayer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ReorderingLayer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/reorderinglayer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ReorderingLayer.html" />
 </project>

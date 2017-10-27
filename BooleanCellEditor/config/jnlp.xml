@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BooleanCellEditor" />
   <property name="jnlp.Name"     value="BooleanCellEditor" />
   <property name="jnlp.name"     value="booleancelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/booleancelleditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BooleanCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/booleancelleditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BooleanCellEditor.html" />
 </project>

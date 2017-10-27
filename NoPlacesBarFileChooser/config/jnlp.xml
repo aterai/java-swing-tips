@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NoPlacesBarFileChooser" />
   <property name="jnlp.Name"     value="NoPlacesBarFileChooser" />
   <property name="jnlp.name"     value="noplacesbarfilechooser" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/noplacesbarfilechooser/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NoPlacesBarFileChooser.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/noplacesbarfilechooser/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NoPlacesBarFileChooser.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MoveNonRectangularImage" />
   <property name="jnlp.Name"     value="MoveNonRectangularImage" />
   <property name="jnlp.name"     value="movenonrectangularimage" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/movenonrectangularimage" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MoveNonRectangularImage.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/movenonrectangularimage" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MoveNonRectangularImage.html" />
 </project>

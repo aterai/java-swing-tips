@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextFieldActionListener" />
   <property name="jnlp.Name"     value="TextFieldActionListener" />
   <property name="jnlp.name"     value="textfieldactionlistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textfieldactionlistener/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextFieldActionListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textfieldactionlistener/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextFieldActionListener.html" />
 </project>

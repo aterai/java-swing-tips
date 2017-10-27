@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableItemComboBox" />
   <property name="jnlp.Name"     value="DisableItemComboBox" />
   <property name="jnlp.name"     value="disableitemcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disableitemcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableItemComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disableitemcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableItemComboBox.html" />
 </project>

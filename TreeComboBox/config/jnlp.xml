@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeComboBox" />
   <property name="jnlp.Name"     value="TreeComboBox" />
   <property name="jnlp.name"     value="treecombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treecombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treecombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeComboBox.html" />
 </project>

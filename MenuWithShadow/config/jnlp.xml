@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MenuWithShadow" />
   <property name="jnlp.Name"     value="MenuWithShadow" />
   <property name="jnlp.name"     value="menuwithshadow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/menuwithshadow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MenuWithShadow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/menuwithshadow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MenuWithShadow.html" />
 </project>

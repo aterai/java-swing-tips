@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutoScrollOnFocus" />
   <property name="jnlp.Name"     value="AutoScrollOnFocus" />
   <property name="jnlp.name"     value="autoscrollonfocus" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/autoscrollonfocus/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutoScrollOnFocus.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/autoscrollonfocus/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutoScrollOnFocus.html" />
 </project>

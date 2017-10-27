@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RootPaneBackground" />
   <property name="jnlp.Name"     value="RootPaneBackground" />
   <property name="jnlp.name"     value="rootpanebackground" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rootpanebackground/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RootPaneBackground.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rootpanebackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RootPaneBackground.html" />
 </project>

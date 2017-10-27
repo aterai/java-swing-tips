@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClearMnemonic" />
   <property name="jnlp.Name"     value="ClearMnemonic" />
   <property name="jnlp.name"     value="clearmnemonic" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clearmnemonic/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClearMnemonic.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clearmnemonic/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClearMnemonic.html" />
 </project>

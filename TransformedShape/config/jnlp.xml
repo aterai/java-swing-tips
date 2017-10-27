@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TransformedShape" />
   <property name="jnlp.Name"     value="TransformedShape" />
   <property name="jnlp.name"     value="transformedshape" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/transformedshape/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TransformedShape.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/transformedshape/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TransformedShape.html" />
 </project>

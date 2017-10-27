@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LookAndFeel" />
   <property name="jnlp.Name"     value="LookAndFeel" />
   <property name="jnlp.name"     value="lookandfeel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lookandfeel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LookAndFeel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/lookandfeel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LookAndFeel.html" />
 </project>

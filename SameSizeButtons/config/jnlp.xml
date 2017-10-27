@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SameSizeButtons" />
   <property name="jnlp.Name"     value="SameSizeButtons" />
   <property name="jnlp.name"     value="samesizebuttons" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/samesizebuttons/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SameSizeButtons.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/samesizebuttons/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SameSizeButtons.html" />
 </project>

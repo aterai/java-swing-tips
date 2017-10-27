@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PlaceholderForEmptyTable" />
   <property name="jnlp.Name"     value="PlaceholderForEmptyTable" />
   <property name="jnlp.name"     value="placeholderforemptytable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/placeholderforemptytable" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PlaceholderForEmptyTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/placeholderforemptytable" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PlaceholderForEmptyTable.html" />
 </project>

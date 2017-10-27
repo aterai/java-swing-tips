@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ProgressMonitor" />
   <property name="jnlp.Name"     value="ProgressMonitor" />
   <property name="jnlp.name"     value="progressmonitor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/progressmonitor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ProgressMonitor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/progressmonitor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ProgressMonitor.html" />
 </project>

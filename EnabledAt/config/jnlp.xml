@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EnabledAt" />
   <property name="jnlp.Name"     value="EnabledAt" />
   <property name="jnlp.name"     value="enabledat" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/enabledat/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EnabledAt.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/enabledat/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EnabledAt.html" />
 </project>

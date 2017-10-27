@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ResizableComponents" />
   <property name="jnlp.Name"     value="ResizableComponents" />
   <property name="jnlp.name"     value="resizablecomponents" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/resizablecomponents/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ResizableComponents.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/resizablecomponents/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ResizableComponents.html" />
 </project>

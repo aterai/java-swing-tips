@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MnemonicToolTip" />
   <property name="jnlp.Name"     value="MnemonicToolTip" />
   <property name="jnlp.name"     value="mnemonictooltip" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/mnemonictooltip/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MnemonicToolTip.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/mnemonictooltip/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MnemonicToolTip.html" />
 </project>

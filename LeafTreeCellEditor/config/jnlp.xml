@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LeafTreeCellEditor" />
   <property name="jnlp.Name"     value="LeafTreeCellEditor" />
   <property name="jnlp.name"     value="leaftreecelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/leaftreecelleditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LeafTreeCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/leaftreecelleditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LeafTreeCellEditor.html" />
 </project>

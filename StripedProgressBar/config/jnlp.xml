@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StripedProgressBar" />
   <property name="jnlp.Name"     value="StripedProgressBar" />
   <property name="jnlp.name"     value="stripedprogressbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/stripedprogressbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StripedProgressBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stripedprogressbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StripedProgressBar.html" />
 </project>

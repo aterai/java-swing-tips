@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MultisortHeaderRenderer" />
   <property name="jnlp.Name"     value="MultisortHeaderRenderer" />
   <property name="jnlp.name"     value="multisortheaderrenderer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/multisortheaderrenderer" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MultisortHeaderRenderer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/multisortheaderrenderer" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MultisortHeaderRenderer.html" />
 </project>

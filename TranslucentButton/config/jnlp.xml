@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TranslucentButton" />
   <property name="jnlp.Name"     value="TranslucentButton" />
   <property name="jnlp.name"     value="translucentbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/translucentbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TranslucentButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentButton.html" />
 </project>

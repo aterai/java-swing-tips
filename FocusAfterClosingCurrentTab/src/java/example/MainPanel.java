@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// http://ateraimemo.com/Swing/ClippedTabLabel.html
+// https://ateraimemo.com/Swing/ClippedTabLabel.html
 class ClippedTitleTabbedPane extends JTabbedPane {
     private static final int MAX_TAB_WIDTH = 200;
     private static final int MIN_TAB_WIDTH = 50;

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Highlighter" />
   <property name="jnlp.Name"     value="Highlighter" />
   <property name="jnlp.name"     value="highlighter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/highlighter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Highlighter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/highlighter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Highlighter.html" />
 </project>

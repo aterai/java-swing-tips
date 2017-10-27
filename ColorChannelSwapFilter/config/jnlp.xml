@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColorChannelSwapFilter" />
   <property name="jnlp.Name"     value="ColorChannelSwapFilter" />
   <property name="jnlp.name"     value="colorchannelswapfilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/colorchannelswapfilter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColorChannelSwapFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/colorchannelswapfilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColorChannelSwapFilter.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WaitCursor" />
   <property name="jnlp.Name"     value="WaitCursor" />
   <property name="jnlp.name"     value="waitcursor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/waitcursor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WaitCursor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/waitcursor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WaitCursor.html" />
 </project>

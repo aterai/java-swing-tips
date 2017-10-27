@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CursorOfCellComponent" />
   <property name="jnlp.Name"     value="CursorOfCellComponent" />
   <property name="jnlp.name"     value="cursorofcellcomponent" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/cursorofcellcomponent/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CursorOfCellComponent.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/cursorofcellcomponent/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CursorOfCellComponent.html" />
 </project>

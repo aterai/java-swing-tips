@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckedComboBox" />
   <property name="jnlp.Name"     value="CheckedComboBox" />
   <property name="jnlp.name"     value="checkedcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkedcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckedComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkedcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckedComboBox.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeToolTips" />
   <property name="jnlp.Name"     value="TreeToolTips" />
   <property name="jnlp.name"     value="treetooltips" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treetooltips/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeToolTips.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treetooltips/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeToolTips.html" />
 </project>

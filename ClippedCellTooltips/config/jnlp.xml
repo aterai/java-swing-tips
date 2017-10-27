@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClippedCellTooltips" />
   <property name="jnlp.Name"     value="ClippedCellTooltips" />
   <property name="jnlp.name"     value="clippedcelltooltips" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clippedcelltooltips/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClippedCellTooltips.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clippedcelltooltips/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClippedCellTooltips.html" />
 </project>

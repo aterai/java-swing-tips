@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UninstallListeners" />
   <property name="jnlp.Name"     value="UninstallListeners" />
   <property name="jnlp.name"     value="uninstalllisteners" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/uninstalllisteners/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UninstallListeners.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/uninstalllisteners/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UninstallListeners.html" />
 </project>

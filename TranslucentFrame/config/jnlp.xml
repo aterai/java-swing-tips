@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TranslucentFrame" />
   <property name="jnlp.Name"     value="TranslucentFrame" />
   <property name="jnlp.name"     value="translucentframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/translucentframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TranslucentFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentFrame.html" />
 </project>

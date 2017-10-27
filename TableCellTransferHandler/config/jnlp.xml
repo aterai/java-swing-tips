@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableCellTransferHandler" />
   <property name="jnlp.Name"     value="TableCellTransferHandler" />
   <property name="jnlp.name"     value="tablecelltransferhandler" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablecelltransferhandler" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableCellTransferHandler.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablecelltransferhandler" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableCellTransferHandler.html" />
 </project>

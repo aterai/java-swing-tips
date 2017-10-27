@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HTMLAttributeID" />
   <property name="jnlp.Name"     value="HTMLAttributeID" />
   <property name="jnlp.name"     value="htmlattributeid" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmlattributeid/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HTMLAttributeID.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmlattributeid/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HTMLAttributeID.html" />
 </project>

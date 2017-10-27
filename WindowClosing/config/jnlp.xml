@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WindowClosing" />
   <property name="jnlp.Name"     value="WindowClosing" />
   <property name="jnlp.name"     value="windowclosing" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/windowclosing/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WindowClosing.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/windowclosing/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WindowClosing.html" />
 </project>

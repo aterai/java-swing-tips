@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BasicComboPopup" />
   <property name="jnlp.Name"     value="BasicComboPopup" />
   <property name="jnlp.name"     value="basiccombopopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/basiccombopopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BasicComboPopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/basiccombopopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BasicComboPopup.html" />
 </project>

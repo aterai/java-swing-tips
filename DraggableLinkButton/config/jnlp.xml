@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DraggableLinkButton" />
   <property name="jnlp.Name"     value="DraggableLinkButton" />
   <property name="jnlp.name"     value="draggablelinkbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/draggablelinkbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DraggableLinkButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/draggablelinkbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DraggableLinkButton.html" />
 </project>

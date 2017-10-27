@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GridBagLayout" />
   <property name="jnlp.Name"     value="GridBagLayout" />
   <property name="jnlp.name"     value="gridbaglayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/gridbaglayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GridBagLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gridbaglayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GridBagLayout.html" />
 </project>

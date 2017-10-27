@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeNodeMaxLevel" />
   <property name="jnlp.Name"     value="TreeNodeMaxLevel" />
   <property name="jnlp.name"     value="treenodemaxlevel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treenodemaxlevel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeNodeMaxLevel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treenodemaxlevel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeNodeMaxLevel.html" />
 </project>

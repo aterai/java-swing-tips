@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabTitleTextPosition" />
   <property name="jnlp.Name"     value="TabTitleTextPosition" />
   <property name="jnlp.name"     value="tabtitletextposition" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabtitletextposition/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabTitleTextPosition.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabtitletextposition/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabTitleTextPosition.html" />
 </project>

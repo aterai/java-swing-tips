@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST VerticalIconAlignMultilineText" />
   <property name="jnlp.Name"     value="VerticalIconAlignMultilineText" />
   <property name="jnlp.name"     value="verticaliconalignmultilinetext" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/verticaliconalignmultilinetext" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/VerticalIconAlignMultilineText.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/verticaliconalignmultilinetext" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/VerticalIconAlignMultilineText.html" />
 </project>

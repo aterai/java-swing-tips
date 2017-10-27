@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeDragScroll" />
   <property name="jnlp.Name"     value="TreeDragScroll" />
   <property name="jnlp.name"     value="treedragscroll" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treedragscroll/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeDragScroll.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treedragscroll/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeDragScroll.html" />
 </project>

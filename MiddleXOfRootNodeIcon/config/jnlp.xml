@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MiddleXOfRootNodeIcon" />
   <property name="jnlp.Name"     value="MiddleXOfRootNodeIcon" />
   <property name="jnlp.name"     value="middlexofrootnodeicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/middlexofrootnodeicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MiddleXOfRootNodeIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/middlexofrootnodeicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MiddleXOfRootNodeIcon.html" />
 </project>

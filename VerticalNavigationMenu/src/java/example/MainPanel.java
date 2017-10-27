@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         TreeModel model = makeModel();
         CardLayout cardLayout = new CardLayout();
         JPanel p = new JPanel(cardLayout);
-        // http://ateraimemo.com/Swing/TraverseAllNodes.html
+        // https://ateraimemo.com/Swing/TraverseAllNodes.html
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         Enumeration en = root.postorderEnumeration();
         while (en.hasMoreElements()) {
@@ -38,14 +38,14 @@ public final class MainPanel extends JPanel {
         tree.setModel(model);
         tree.setRowHeight(32);
         tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        // http://ateraimemo.com/Swing/ExpandAllNodes.html
+        // https://ateraimemo.com/Swing/ExpandAllNodes.html
         int row = 0;
         while (row < tree.getRowCount()) {
             tree.expandRow(row++);
         }
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.addTreeSelectionListener(e -> {
-            // http://ateraimemo.com/Swing/CardLayoutTabbedPane.html
+            // https://ateraimemo.com/Swing/CardLayoutTabbedPane.html
             Object o = e.getNewLeadSelectionPath().getLastPathComponent(); // tree.getLastSelectedPathComponent();
             if (o instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// http://ateraimemo.com/Swing/TreeRowSelection.html
+// https://ateraimemo.com/Swing/TreeRowSelection.html
 class RowSelectionTree extends JTree {
     public static final Color SELC = new Color(100, 150, 200);
     private transient TreeWillExpandListener listener;
@@ -151,7 +151,7 @@ class RowSelectionTree extends JTree {
         setCellRenderer(new Handler());
         setOpaque(false);
         setRootVisible(false);
-        // http://ateraimemo.com/Swing/TreeNodeCollapseVeto.html
+        // https://ateraimemo.com/Swing/TreeNodeCollapseVeto.html
         listener = new TreeWillExpandListener() {
             @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
                  //throw new ExpandVetoException(e, "Tree expansion cancelled");

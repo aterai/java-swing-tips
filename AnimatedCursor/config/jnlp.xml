@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AnimatedCursor" />
   <property name="jnlp.Name"     value="AnimatedCursor" />
   <property name="jnlp.name"     value="animatedcursor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/animatedcursor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AnimatedCursor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/animatedcursor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AnimatedCursor.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ParticularyNonEditableSpinner" />
   <property name="jnlp.Name"     value="ParticularyNonEditableSpinner" />
   <property name="jnlp.name"     value="particularynoneditablespinner" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/particularynoneditablespinner" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ParticularyNonEditableSpinner.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/particularynoneditablespinner" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ParticularyNonEditableSpinner.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Sound" />
   <property name="jnlp.Name"     value="Sound" />
   <property name="jnlp.name"     value="sound" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sound/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Sound.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sound/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Sound.html" />
 </project>

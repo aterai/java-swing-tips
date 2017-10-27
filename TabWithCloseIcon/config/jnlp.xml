@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabWithCloseIcon" />
   <property name="jnlp.Name"     value="TabWithCloseIcon" />
   <property name="jnlp.name"     value="tabwithcloseicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabwithcloseicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabWithCloseIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabwithcloseicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabWithCloseIcon.html" />
 </project>

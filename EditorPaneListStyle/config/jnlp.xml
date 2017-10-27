@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EditorPaneListStyle" />
   <property name="jnlp.Name"     value="EditorPaneListStyle" />
   <property name="jnlp.name"     value="editorpaneliststyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/editorpaneliststyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EditorPaneListStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/editorpaneliststyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EditorPaneListStyle.html" />
 </project>

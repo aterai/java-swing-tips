@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColorComboBox" />
   <property name="jnlp.Name"     value="ColorComboBox" />
   <property name="jnlp.name"     value="colorcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/colorcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColorComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/colorcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColorComboBox.html" />
 </project>

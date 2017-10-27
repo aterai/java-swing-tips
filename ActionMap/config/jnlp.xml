@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ActionMap" />
   <property name="jnlp.Name"     value="ActionMap" />
   <property name="jnlp.name"     value="actionmap" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/actionmap/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ActionMap.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/actionmap/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ActionMap.html" />
 </project>

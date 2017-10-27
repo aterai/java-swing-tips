@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisablePrefixMatchSelection" />
   <property name="jnlp.Name"     value="DisablePrefixMatchSelection" />
   <property name="jnlp.name"     value="disableprefixmatchselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disableprefixmatchselection" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisablePrefixMatchSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disableprefixmatchselection" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisablePrefixMatchSelection.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectNextRow" />
   <property name="jnlp.Name"     value="SelectNextRow" />
   <property name="jnlp.name"     value="selectnextrow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectnextrow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectNextRow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectnextrow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectNextRow.html" />
 </project>

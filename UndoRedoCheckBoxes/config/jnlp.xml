@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UndoRedoCheckBoxes" />
   <property name="jnlp.Name"     value="UndoRedoCheckBoxes" />
   <property name="jnlp.name"     value="undoredocheckboxes" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/undoredocheckboxes/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UndoRedoCheckBoxes.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/undoredocheckboxes/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UndoRedoCheckBoxes.html" />
 </project>

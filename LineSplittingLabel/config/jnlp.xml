@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineSplittingLabel" />
   <property name="jnlp.Name"     value="LineSplittingLabel" />
   <property name="jnlp.name"     value="linesplittinglabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linesplittinglabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineSplittingLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linesplittinglabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineSplittingLabel.html" />
 </project>

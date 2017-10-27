@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckedRowColor" />
   <property name="jnlp.Name"     value="CheckedRowColor" />
   <property name="jnlp.name"     value="checkedrowcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkedrowcolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckedRowColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkedrowcolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckedRowColor.html" />
 </project>

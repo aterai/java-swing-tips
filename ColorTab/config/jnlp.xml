@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColorTab" />
   <property name="jnlp.Name"     value="ColorTab" />
   <property name="jnlp.name"     value="colortab" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/colortab/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColorTab.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/colortab/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColorTab.html" />
 </project>

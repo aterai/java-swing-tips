@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RemoveTableHeader" />
   <property name="jnlp.Name"     value="RemoveTableHeader" />
   <property name="jnlp.name"     value="removetableheader" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/removetableheader/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RemoveTableHeader.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/removetableheader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RemoveTableHeader.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HideActionText" />
   <property name="jnlp.Name"     value="HideActionText" />
   <property name="jnlp.name"     value="hideactiontext" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hideactiontext/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HideActionText.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hideactiontext/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HideActionText.html" />
 </project>

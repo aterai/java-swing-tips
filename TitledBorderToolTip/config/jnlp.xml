@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TitledBorderToolTip" />
   <property name="jnlp.Name"     value="TitledBorderToolTip" />
   <property name="jnlp.name"     value="titledbordertooltip" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/titledbordertooltip/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TitledBorderToolTip.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/titledbordertooltip/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TitledBorderToolTip.html" />
 </project>

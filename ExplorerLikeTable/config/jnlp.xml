@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ExplorerLikeTable" />
   <property name="jnlp.Name"     value="ExplorerLikeTable" />
   <property name="jnlp.name"     value="explorerliketable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/explorerliketable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExplorerLikeTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/explorerliketable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ExplorerLikeTable.html" />
 </project>

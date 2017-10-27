@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InvertedSlider" />
   <property name="jnlp.Name"     value="InvertedSlider" />
   <property name="jnlp.name"     value="invertedslider" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/invertedslider/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InvertedSlider.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/invertedslider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InvertedSlider.html" />
 </project>

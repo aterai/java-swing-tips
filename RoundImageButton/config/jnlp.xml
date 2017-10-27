@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RoundImageButton" />
   <property name="jnlp.Name"     value="RoundImageButton" />
   <property name="jnlp.name"     value="roundimagebutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/roundimagebutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RoundImageButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/roundimagebutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RoundImageButton.html" />
 </project>

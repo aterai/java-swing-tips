@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BlurButton" />
   <property name="jnlp.Name"     value="BlurButton" />
   <property name="jnlp.name"     value="blurbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/blurbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BlurButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/blurbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BlurButton.html" />
 </project>

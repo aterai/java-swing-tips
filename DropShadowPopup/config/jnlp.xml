@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DropShadowPopup" />
   <property name="jnlp.Name"     value="DropShadowPopup" />
   <property name="jnlp.name"     value="dropshadowpopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dropshadowpopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DropShadowPopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dropshadowpopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DropShadowPopup.html" />
 </project>

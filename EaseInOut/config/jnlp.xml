@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EaseInOut" />
   <property name="jnlp.Name"     value="EaseInOut" />
   <property name="jnlp.name"     value="easeinout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/easeinout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EaseInOut.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/easeinout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EaseInOut.html" />
 </project>

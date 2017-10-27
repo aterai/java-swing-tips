@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ResourceMenuBar" />
   <property name="jnlp.Name"     value="ResourceMenuBar" />
   <property name="jnlp.name"     value="resourcemenubar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/resourcemenubar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ResourceMenuBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/resourcemenubar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ResourceMenuBar.html" />
 </project>

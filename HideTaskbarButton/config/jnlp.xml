@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HideTaskbarButton" />
   <property name="jnlp.Name"     value="HideTaskbarButton" />
   <property name="jnlp.name"     value="hidetaskbarbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hidetaskbarbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HideTaskbarButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hidetaskbarbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HideTaskbarButton.html" />
 </project>

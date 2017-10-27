@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HexFormatterSpinner" />
   <property name="jnlp.Name"     value="HexFormatterSpinner" />
   <property name="jnlp.name"     value="hexformatterspinner" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hexformatterspinner/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HexFormatterSpinner.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hexformatterspinner/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HexFormatterSpinner.html" />
 </project>

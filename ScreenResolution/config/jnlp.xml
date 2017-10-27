@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScreenResolution" />
   <property name="jnlp.Name"     value="ScreenResolution" />
   <property name="jnlp.name"     value="screenresolution" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/screenresolution/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScreenResolution.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/screenresolution/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScreenResolution.html" />
 </project>

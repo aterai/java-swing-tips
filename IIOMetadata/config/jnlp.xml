@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST IIOMetadata" />
   <property name="jnlp.Name"     value="IIOMetadata" />
   <property name="jnlp.name"     value="iiometadata" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/iiometadata/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IIOMetadata.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/iiometadata/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/IIOMetadata.html" />
 </project>

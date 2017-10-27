@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NoWrapTextPane" />
   <property name="jnlp.Name"     value="NoWrapTextPane" />
   <property name="jnlp.name"     value="nowraptextpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nowraptextpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NoWrapTextPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nowraptextpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NoWrapTextPane.html" />
 </project>

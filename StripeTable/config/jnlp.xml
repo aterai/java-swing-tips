@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StripeTable" />
   <property name="jnlp.Name"     value="StripeTable" />
   <property name="jnlp.name"     value="stripetable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/stripetable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StripeTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stripetable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StripeTable.html" />
 </project>

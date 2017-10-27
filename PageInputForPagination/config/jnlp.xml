@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PageInputForPagination" />
   <property name="jnlp.Name"     value="PageInputForPagination" />
   <property name="jnlp.name"     value="pageinputforpagination" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pageinputforpagination/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PageInputForPagination.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/pageinputforpagination/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PageInputForPagination.html" />
 </project>

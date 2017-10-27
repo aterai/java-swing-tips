@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineHighlighter" />
   <property name="jnlp.Name"     value="LineHighlighter" />
   <property name="jnlp.name"     value="linehighlighter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linehighlighter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineHighlighter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linehighlighter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineHighlighter.html" />
 </project>

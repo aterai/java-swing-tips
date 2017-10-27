@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DnDBetweenTrees" />
   <property name="jnlp.Name"     value="DnDBetweenTrees" />
   <property name="jnlp.name"     value="dndbetweentrees" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndbetweentrees/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDBetweenTrees.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dndbetweentrees/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DnDBetweenTrees.html" />
 </project>

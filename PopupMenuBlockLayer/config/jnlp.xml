@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PopupMenuBlockLayer" />
   <property name="jnlp.Name"     value="PopupMenuBlockLayer" />
   <property name="jnlp.name"     value="popupmenublocklayer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/popupmenublocklayer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PopupMenuBlockLayer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/popupmenublocklayer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PopupMenuBlockLayer.html" />
 </project>

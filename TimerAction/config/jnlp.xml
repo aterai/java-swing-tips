@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TimerAction" />
   <property name="jnlp.Name"     value="TimerAction" />
   <property name="jnlp.name"     value="timeraction" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/timeraction/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TimerAction.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/timeraction/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TimerAction.html" />
 </project>

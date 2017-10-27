@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BoundedRangeModel" />
   <property name="jnlp.Name"     value="BoundedRangeModel" />
   <property name="jnlp.name"     value="boundedrangemodel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/boundedrangemodel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BoundedRangeModel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/boundedrangemodel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BoundedRangeModel.html" />
 </project>

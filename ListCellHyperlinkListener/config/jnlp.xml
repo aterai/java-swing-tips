@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ListCellHyperlinkListener" />
   <property name="jnlp.Name"     value="ListCellHyperlinkListener" />
   <property name="jnlp.name"     value="listcellhyperlinklistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/listcellhyperlinklistener" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ListCellHyperlinkListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/listcellhyperlinklistener" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ListCellHyperlinkListener.html" />
 </project>

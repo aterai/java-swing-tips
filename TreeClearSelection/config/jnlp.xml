@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeClearSelection" />
   <property name="jnlp.Name"     value="TreeClearSelection" />
   <property name="jnlp.name"     value="treeclearselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treeclearselection/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeClearSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treeclearselection/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeClearSelection.html" />
 </project>

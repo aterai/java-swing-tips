@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FileChooserCurrentDirectory" />
   <property name="jnlp.Name"     value="FileChooserCurrentDirectory" />
   <property name="jnlp.name"     value="filechoosercurrentdirectory" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/filechoosercurrentdirectory" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FileChooserCurrentDirectory.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filechoosercurrentdirectory" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FileChooserCurrentDirectory.html" />
 </project>

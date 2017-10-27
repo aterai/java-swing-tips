@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InvertedProgressBar" />
   <property name="jnlp.Name"     value="InvertedProgressBar" />
   <property name="jnlp.name"     value="invertedprogressbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/invertedprogressbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InvertedProgressBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/invertedprogressbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InvertedProgressBar.html" />
 </project>

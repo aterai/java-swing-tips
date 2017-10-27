@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ReplaceUndoableEdit" />
   <property name="jnlp.Name"     value="ReplaceUndoableEdit" />
   <property name="jnlp.name"     value="replaceundoableedit" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/replaceundoableedit/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ReplaceUndoableEdit.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/replaceundoableedit/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ReplaceUndoableEdit.html" />
 </project>

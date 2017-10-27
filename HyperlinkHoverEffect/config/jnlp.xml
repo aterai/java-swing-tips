@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HyperlinkHoverEffect" />
   <property name="jnlp.Name"     value="HyperlinkHoverEffect" />
   <property name="jnlp.name"     value="hyperlinkhovereffect" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hyperlinkhovereffect/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HyperlinkHoverEffect.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hyperlinkhovereffect/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HyperlinkHoverEffect.html" />
 </project>

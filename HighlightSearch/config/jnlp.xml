@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HighlightSearch" />
   <property name="jnlp.Name"     value="HighlightSearch" />
   <property name="jnlp.name"     value="highlightsearch" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/highlightsearch/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HighlightSearch.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/highlightsearch/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HighlightSearch.html" />
 </project>

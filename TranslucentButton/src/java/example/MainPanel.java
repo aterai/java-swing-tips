@@ -244,7 +244,7 @@ class TranslucentButtonIcon implements Icon {
 }
 
 // https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
-// http://ateraimemo.com/Swing/CentredBackgroundBorder.html
+// https://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
     private final BufferedImage image;
     protected CentredBackgroundBorder(BufferedImage image) {

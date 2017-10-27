@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST VolumeSlider" />
   <property name="jnlp.Name"     value="VolumeSlider" />
   <property name="jnlp.name"     value="volumeslider" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/volumeslider/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/VolumeSlider.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/volumeslider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/VolumeSlider.html" />
 </project>

@@ -10,7 +10,7 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
-    private static final String S = "http://ateraimemo.com/";
+    private static final String S = "https://ateraimemo.com/";
     private static final String S0 = "<a href='%s' color='%s'>%s</a><br>";
     private final String s1 = String.format(S0 + "aaaaaaaaaaaaaa<br>", S, "blue", S);
     private final String s2 = String.format(S0 + "cccc", S, "#0000FF", "bbbbbbbbbbb");

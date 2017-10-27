@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Preferences" />
   <property name="jnlp.Name"     value="Preferences" />
   <property name="jnlp.name"     value="preferences" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/preferences/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Preferences.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/preferences/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Preferences.html" />
 </project>

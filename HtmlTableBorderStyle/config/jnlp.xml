@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HtmlTableBorderStyle" />
   <property name="jnlp.Name"     value="HtmlTableBorderStyle" />
   <property name="jnlp.name"     value="htmltableborderstyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmltableborderstyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HtmlTableBorderStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmltableborderstyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HtmlTableBorderStyle.html" />
 </project>

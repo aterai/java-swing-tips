@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UpdateSelectionOnSort" />
   <property name="jnlp.Name"     value="UpdateSelectionOnSort" />
   <property name="jnlp.name"     value="updateselectiononsort" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/updateselectiononsort/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UpdateSelectionOnSort.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/updateselectiononsort/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UpdateSelectionOnSort.html" />
 </project>

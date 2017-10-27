@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CopyOnSelect" />
   <property name="jnlp.Name"     value="CopyOnSelect" />
   <property name="jnlp.name"     value="copyonselect" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/copyonselect/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CopyOnSelect.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/copyonselect/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CopyOnSelect.html" />
 </project>

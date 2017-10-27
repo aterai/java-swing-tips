@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Zoom" />
   <property name="jnlp.Name"     value="Zoom" />
   <property name="jnlp.name"     value="zoom" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/zoom/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Zoom.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/zoom/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Zoom.html" />
 </project>

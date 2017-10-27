@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MatteBorder" />
   <property name="jnlp.Name"     value="MatteBorder" />
   <property name="jnlp.name"     value="matteborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/matteborder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MatteBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/matteborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MatteBorder.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NonDetachableToolBar" />
   <property name="jnlp.Name"     value="NonDetachableToolBar" />
   <property name="jnlp.name"     value="nondetachabletoolbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nondetachabletoolbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NonDetachableToolBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nondetachabletoolbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NonDetachableToolBar.html" />
 </project>

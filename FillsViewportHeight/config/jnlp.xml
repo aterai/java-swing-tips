@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FillsViewportHeight" />
   <property name="jnlp.Name"     value="FillsViewportHeight" />
   <property name="jnlp.name"     value="fillsviewportheight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fillsviewportheight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FillsViewportHeight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fillsviewportheight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FillsViewportHeight.html" />
 </project>

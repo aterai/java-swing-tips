@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST VerifyInputWhenFocusTarget" />
   <property name="jnlp.Name"     value="VerifyInputWhenFocusTarget" />
   <property name="jnlp.name"     value="verifyinputwhenfocustarget" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/verifyinputwhenfocustarget" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/VerifyInputWhenFocusTarget.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/verifyinputwhenfocustarget" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/VerifyInputWhenFocusTarget.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComputeTitleWidth" />
   <property name="jnlp.Name"     value="ComputeTitleWidth" />
   <property name="jnlp.name"     value="computetitlewidth" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/computetitlewidth/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComputeTitleWidth.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/computetitlewidth/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComputeTitleWidth.html" />
 </project>

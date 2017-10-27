@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AnimatedIconInComboBox" />
   <property name="jnlp.Name"     value="AnimatedIconInComboBox" />
   <property name="jnlp.name"     value="animatediconincombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/animatediconincombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AnimatedIconInComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/animatediconincombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AnimatedIconInComboBox.html" />
 </project>

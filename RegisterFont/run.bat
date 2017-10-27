@@ -5,15 +5,7 @@ echo -------------------
 
 if "%JAVA_HOME%" == "" goto :error
 set MAIN_CLASS=example.MainPanel
-set CLASSPATH=.\target\classes
-for %%i in (.\lib\*.jar) do call :setpath %%i
-goto :endsubs
-
-:setpath
-set CLASSPATH=%CLASSPATH%;%1
-goto :EOF
-
-:endsubs
+set CLASSPATH=target\classes;lib\*
 
 echo Running with classpath "%CLASSPATH%"
 echo Starting...

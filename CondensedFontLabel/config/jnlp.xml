@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CondensedFontLabel" />
   <property name="jnlp.Name"     value="CondensedFontLabel" />
   <property name="jnlp.name"     value="condensedfontlabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/condensedfontlabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CondensedFontLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/condensedfontlabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CondensedFontLabel.html" />
 </project>

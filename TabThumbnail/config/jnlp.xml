@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabThumbnail" />
   <property name="jnlp.Name"     value="TabThumbnail" />
   <property name="jnlp.name"     value="tabthumbnail" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabthumbnail/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabThumbnail.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabthumbnail/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabThumbnail.html" />
 </project>

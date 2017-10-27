@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HorizontalMouseWheel" />
   <property name="jnlp.Name"     value="HorizontalMouseWheel" />
   <property name="jnlp.name"     value="horizontalmousewheel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/horizontalmousewheel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HorizontalMouseWheel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/horizontalmousewheel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HorizontalMouseWheel.html" />
 </project>

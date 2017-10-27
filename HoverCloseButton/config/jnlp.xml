@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HoverCloseButton" />
   <property name="jnlp.Name"     value="HoverCloseButton" />
   <property name="jnlp.name"     value="hoverclosebutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hoverclosebutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HoverCloseButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hoverclosebutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HoverCloseButton.html" />
 </project>

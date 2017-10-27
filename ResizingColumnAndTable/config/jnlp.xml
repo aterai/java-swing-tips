@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ResizingColumnAndTable" />
   <property name="jnlp.Name"     value="ResizingColumnAndTable" />
   <property name="jnlp.name"     value="resizingcolumnandtable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/resizingcolumnandtable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ResizingColumnAndTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/resizingcolumnandtable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ResizingColumnAndTable.html" />
 </project>

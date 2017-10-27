@@ -1,9 +1,9 @@
 java-swing-tips
 ===============
-[日本語](http://ateraimemo.com/Swing.html): `Java Swing`の`GUI`プログラムを、 **小さなソースコード付きサンプル** を使って紹介しています。  
-[English](http://java-swing-tips.blogspot.com/): Introduce the `GUI` program of `Java Swing` using **small source code examples**.
+[日本語](https://ateraimemo.com/Swing.html): `Java Swing`の`GUI`プログラムを、 **小さなソースコード付きサンプル** を使って紹介しています。  
+[English](https://java-swing-tips.blogspot.com/): Introduce the `GUI` program of `Java Swing` using **small source code examples**.
 
-<img src="http://lh3.ggpht.com/_9Z4BYR88imo/TQslJy3MxYI/AAAAAAAAAts/xrxOCvbp-0A/s800/screenshots.png" />
+<img src="https://lh3.ggpht.com/_9Z4BYR88imo/TQslJy3MxYI/AAAAAAAAAts/xrxOCvbp-0A/s800/screenshots.png" />
 
 Swingとは
 ---------------

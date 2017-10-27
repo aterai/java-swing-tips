@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RearrangeOrderOfPanels" />
   <property name="jnlp.Name"     value="RearrangeOrderOfPanels" />
   <property name="jnlp.name"     value="rearrangeorderofpanels" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rearrangeorderofpanels/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RearrangeOrderOfPanels.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rearrangeorderofpanels/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RearrangeOrderOfPanels.html" />
 </project>

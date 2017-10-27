@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Locale" />
   <property name="jnlp.Name"     value="Locale" />
   <property name="jnlp.name"     value="locale" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/locale/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Locale.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/locale/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Locale.html" />
 </project>

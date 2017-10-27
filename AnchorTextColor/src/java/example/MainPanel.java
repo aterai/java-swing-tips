@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MYSITE = "http://ateraimemo.com/";
+    private static final String MYSITE = "https://ateraimemo.com/";
     private static final String HREF = String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE);
 
     private MainPanel() {

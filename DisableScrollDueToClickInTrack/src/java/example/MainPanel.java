@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         };
         slider1.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
 
-        // http://ateraimemo.com/Swing/OnlyLeftMouseButtonDrag.html
+        // https://ateraimemo.com/Swing/OnlyLeftMouseButtonDrag.html
         UIManager.put("Slider.onlyLeftMouseButtonDrag", false);
         JSlider slider2 = new JSlider();
         slider2.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);

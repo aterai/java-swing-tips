@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RadioButtonsInTableCell" />
   <property name="jnlp.Name"     value="RadioButtonsInTableCell" />
   <property name="jnlp.name"     value="radiobuttonsintablecell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/radiobuttonsintablecell" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RadioButtonsInTableCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/radiobuttonsintablecell" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RadioButtonsInTableCell.html" />
 </project>

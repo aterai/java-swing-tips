@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SearchBox" />
   <property name="jnlp.Name"     value="SearchBox" />
   <property name="jnlp.name"     value="searchbox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/searchbox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SearchBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/searchbox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SearchBox.html" />
 </project>

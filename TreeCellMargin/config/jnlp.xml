@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeCellMargin" />
   <property name="jnlp.Name"     value="TreeCellMargin" />
   <property name="jnlp.name"     value="treecellmargin" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treecellmargin/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeCellMargin.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treecellmargin/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeCellMargin.html" />
 </project>

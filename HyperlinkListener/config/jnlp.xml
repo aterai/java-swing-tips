@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HyperlinkListener" />
   <property name="jnlp.Name"     value="HyperlinkListener" />
   <property name="jnlp.name"     value="hyperlinklistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hyperlinklistener/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HyperlinkListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hyperlinklistener/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HyperlinkListener.html" />
 </project>

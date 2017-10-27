@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AffineTransformOp" />
   <property name="jnlp.Name"     value="AffineTransformOp" />
   <property name="jnlp.name"     value="affinetransformop" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/affinetransformop/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AffineTransformOp.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/affinetransformop/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AffineTransformOp.html" />
 </project>

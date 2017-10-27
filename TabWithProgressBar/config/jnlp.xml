@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabWithProgressBar" />
   <property name="jnlp.Name"     value="TabWithProgressBar" />
   <property name="jnlp.name"     value="tabwithprogressbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabwithprogressbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabWithProgressBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabwithprogressbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabWithProgressBar.html" />
 </project>

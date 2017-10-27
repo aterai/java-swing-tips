@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST KeepHiddenDivider" />
   <property name="jnlp.Name"     value="KeepHiddenDivider" />
   <property name="jnlp.name"     value="keephiddendivider" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/keephiddendivider/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/KeepHiddenDivider.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/keephiddendivider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/KeepHiddenDivider.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutoChapterNumberingTreeNode" />
   <property name="jnlp.Name"     value="AutoChapterNumberingTreeNode" />
   <property name="jnlp.name"     value="autochapternumberingtreenode" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/autochapternumberingtreenode/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutoChapterNumberingTreeNode.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/autochapternumberingtreenode/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutoChapterNumberingTreeNode.html" />
 </project>

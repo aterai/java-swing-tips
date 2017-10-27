@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboCellRenderer" />
   <property name="jnlp.Name"     value="ComboCellRenderer" />
   <property name="jnlp.name"     value="combocellrenderer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/combocellrenderer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboCellRenderer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/combocellrenderer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboCellRenderer.html" />
 </project>

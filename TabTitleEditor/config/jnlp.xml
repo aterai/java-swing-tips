@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabTitleEditor" />
   <property name="jnlp.Name"     value="TabTitleEditor" />
   <property name="jnlp.name"     value="tabtitleeditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabtitleeditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabTitleEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabtitleeditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabTitleEditor.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComponentPopupMenu" />
   <property name="jnlp.Name"     value="ComponentPopupMenu" />
   <property name="jnlp.name"     value="componentpopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/componentpopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComponentPopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/componentpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComponentPopupMenu.html" />
 </project>

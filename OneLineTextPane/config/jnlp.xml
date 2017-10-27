@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST OneLineTextPane" />
   <property name="jnlp.Name"     value="OneLineTextPane" />
   <property name="jnlp.name"     value="onelinetextpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/onelinetextpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OneLineTextPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/onelinetextpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/OneLineTextPane.html" />
 </project>

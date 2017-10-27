@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PersistenceService" />
   <property name="jnlp.Name"     value="PersistenceService" />
   <property name="jnlp.name"     value="persistenceservice" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/persistenceservice/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PersistenceService.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/persistenceservice/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PersistenceService.html" />
 </project>

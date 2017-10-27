@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TwoRowsCellRenderer" />
   <property name="jnlp.Name"     value="TwoRowsCellRenderer" />
   <property name="jnlp.name"     value="tworowscellrenderer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tworowscellrenderer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TwoRowsCellRenderer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tworowscellrenderer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TwoRowsCellRenderer.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RowGroupInTable" />
   <property name="jnlp.Name"     value="RowGroupInTable" />
   <property name="jnlp.name"     value="rowgroupintable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowgroupintable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowGroupInTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rowgroupintable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RowGroupInTable.html" />
 </project>

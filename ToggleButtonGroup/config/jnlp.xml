@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToggleButtonGroup" />
   <property name="jnlp.Name"     value="ToggleButtonGroup" />
   <property name="jnlp.name"     value="togglebuttongroup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/togglebuttongroup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToggleButtonGroup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/togglebuttongroup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToggleButtonGroup.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EventListener" />
   <property name="jnlp.Name"     value="EventListener" />
   <property name="jnlp.name"     value="eventlistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/eventlistener/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EventListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/eventlistener/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EventListener.html" />
 </project>

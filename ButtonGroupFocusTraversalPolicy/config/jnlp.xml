@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ButtonGroupFocusTraversalPolicy" />
   <property name="jnlp.Name"     value="ButtonGroupFocusTraversalPolicy" />
   <property name="jnlp.name"     value="buttongroupfocustraversalpolicy" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/buttongroupfocustraversalpolicy" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ButtonGroupFocusTraversalPolicy.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/buttongroupfocustraversalpolicy" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ButtonGroupFocusTraversalPolicy.html" />
 </project>

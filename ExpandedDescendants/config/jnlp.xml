@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ExpandedDescendants" />
   <property name="jnlp.Name"     value="ExpandedDescendants" />
   <property name="jnlp.name"     value="expandeddescendants" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/expandeddescendants/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExpandedDescendants.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/expandeddescendants/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ExpandedDescendants.html" />
 </project>

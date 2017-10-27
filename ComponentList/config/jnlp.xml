@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComponentList" />
   <property name="jnlp.Name"     value="ComponentList" />
   <property name="jnlp.name"     value="componentlist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/componentlist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComponentList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/componentlist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComponentList.html" />
 </project>

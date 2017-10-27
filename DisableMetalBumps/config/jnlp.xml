@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableMetalBumps" />
   <property name="jnlp.Name"     value="DisableMetalBumps" />
   <property name="jnlp.name"     value="disablemetalbumps" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disablemetalbumps/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableMetalBumps.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disablemetalbumps/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableMetalBumps.html" />
 </project>

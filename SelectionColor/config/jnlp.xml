@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectionColor" />
   <property name="jnlp.Name"     value="SelectionColor" />
   <property name="jnlp.name"     value="selectioncolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectioncolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectionColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectioncolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectionColor.html" />
 </project>

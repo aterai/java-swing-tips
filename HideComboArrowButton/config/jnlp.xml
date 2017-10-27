@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HideComboArrowButton" />
   <property name="jnlp.Name"     value="HideComboArrowButton" />
   <property name="jnlp.name"     value="hidecomboarrowbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hidecomboarrowbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HideComboArrowButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hidecomboarrowbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HideComboArrowButton.html" />
 </project>

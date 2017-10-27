@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TranslucentTabbedPane" />
   <property name="jnlp.Name"     value="TranslucentTabbedPane" />
   <property name="jnlp.name"     value="translucenttabbedpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/translucenttabbedpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TranslucentTabbedPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucenttabbedpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentTabbedPane.html" />
 </project>

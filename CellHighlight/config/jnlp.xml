@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CellHighlight" />
   <property name="jnlp.Name"     value="CellHighlight" />
   <property name="jnlp.name"     value="cellhighlight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/cellhighlight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CellHighlight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/cellhighlight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CellHighlight.html" />
 </project>

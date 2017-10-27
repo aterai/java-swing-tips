@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CellEditorTogglePopup" />
   <property name="jnlp.Name"     value="CellEditorTogglePopup" />
   <property name="jnlp.name"     value="celleditortogglepopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/celleditortogglepopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CellEditorTogglePopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/celleditortogglepopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CellEditorTogglePopup.html" />
 </project>

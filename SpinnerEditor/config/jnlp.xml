@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SpinnerEditor" />
   <property name="jnlp.Name"     value="SpinnerEditor" />
   <property name="jnlp.name"     value="spinnereditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/spinnereditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SpinnerEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/spinnereditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SpinnerEditor.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabTitleHighlight" />
   <property name="jnlp.Name"     value="TabTitleHighlight" />
   <property name="jnlp.name"     value="tabtitlehighlight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabtitlehighlight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabTitleHighlight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabtitlehighlight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabTitleHighlight.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RowSelection" />
   <property name="jnlp.Name"     value="RowSelection" />
   <property name="jnlp.name"     value="rowselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowselection/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rowselection/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RowSelection.html" />
 </project>

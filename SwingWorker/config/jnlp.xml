@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SwingWorker" />
   <property name="jnlp.Name"     value="SwingWorker" />
   <property name="jnlp.name"     value="swingworker" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/swingworker/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SwingWorker.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/swingworker/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SwingWorker.html" />
 </project>

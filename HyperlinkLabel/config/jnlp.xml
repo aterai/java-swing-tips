@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HyperlinkLabel" />
   <property name="jnlp.Name"     value="HyperlinkLabel" />
   <property name="jnlp.name"     value="hyperlinklabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/hyperlinklabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HyperlinkLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/hyperlinklabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HyperlinkLabel.html" />
 </project>

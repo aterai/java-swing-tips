@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ProgressComboBox" />
   <property name="jnlp.Name"     value="ProgressComboBox" />
   <property name="jnlp.name"     value="progresscombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/progresscombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ProgressComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/progresscombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ProgressComboBox.html" />
 </project>

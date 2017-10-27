@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableRightClick" />
   <property name="jnlp.Name"     value="DisableRightClick" />
   <property name="jnlp.name"     value="disablerightclick" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disablerightclick/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableRightClick.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disablerightclick/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableRightClick.html" />
 </project>

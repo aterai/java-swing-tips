@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToolTipLocation" />
   <property name="jnlp.Name"     value="ToolTipLocation" />
   <property name="jnlp.name"     value="tooltiplocation" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tooltiplocation/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolTipLocation.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tooltiplocation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolTipLocation.html" />
 </project>

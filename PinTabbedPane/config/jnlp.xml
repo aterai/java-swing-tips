@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PinTabbedPane" />
   <property name="jnlp.Name"     value="PinTabbedPane" />
   <property name="jnlp.name"     value="pintabbedpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pintabbedpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PinTabbedPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/pintabbedpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PinTabbedPane.html" />
 </project>

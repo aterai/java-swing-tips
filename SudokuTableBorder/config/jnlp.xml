@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SudokuTableBorder" />
   <property name="jnlp.Name"     value="SudokuTableBorder" />
   <property name="jnlp.name"     value="sudokutableborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sudokutableborder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SudokuTableBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sudokutableborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SudokuTableBorder.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RowHeaderStyle" />
   <property name="jnlp.Name"     value="RowHeaderStyle" />
   <property name="jnlp.name"     value="rowheaderstyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowheaderstyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowHeaderStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rowheaderstyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RowHeaderStyle.html" />
 </project>

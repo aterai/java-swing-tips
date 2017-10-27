@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SpinCalendarField" />
   <property name="jnlp.Name"     value="SpinCalendarField" />
   <property name="jnlp.name"     value="spincalendarfield" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/spincalendarfield/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SpinCalendarField.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/spincalendarfield/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SpinCalendarField.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ListMouseSelection" />
   <property name="jnlp.Name"     value="ListMouseSelection" />
   <property name="jnlp.name"     value="listmouseselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/listmouseselection/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ListMouseSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/listmouseselection/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ListMouseSelection.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NimbusFilledSlider" />
   <property name="jnlp.Name"     value="NimbusFilledSlider" />
   <property name="jnlp.name"     value="nimbusfilledslider" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nimbusfilledslider/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NimbusFilledSlider.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nimbusfilledslider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NimbusFilledSlider.html" />
 </project>

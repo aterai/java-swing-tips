@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WindowTitleBackground" />
   <property name="jnlp.Name"     value="WindowTitleBackground" />
   <property name="jnlp.name"     value="windowtitlebackground" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/windowtitlebackground/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WindowTitleBackground.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/windowtitlebackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WindowTitleBackground.html" />
 </project>

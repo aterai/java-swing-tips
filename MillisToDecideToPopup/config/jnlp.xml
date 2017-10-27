@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MillisToDecideToPopup" />
   <property name="jnlp.Name"     value="MillisToDecideToPopup" />
   <property name="jnlp.name"     value="millistodecidetopopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/millistodecidetopopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MillisToDecideToPopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/millistodecidetopopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MillisToDecideToPopup.html" />
 </project>

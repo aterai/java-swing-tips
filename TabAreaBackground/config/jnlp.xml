@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabAreaBackground" />
   <property name="jnlp.Name"     value="TabAreaBackground" />
   <property name="jnlp.name"     value="tabareabackground" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabareabackground/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabAreaBackground.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabareabackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabAreaBackground.html" />
 </project>

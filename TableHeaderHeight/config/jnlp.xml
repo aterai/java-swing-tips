@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableHeaderHeight" />
   <property name="jnlp.Name"     value="TableHeaderHeight" />
   <property name="jnlp.name"     value="tableheaderheight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tableheaderheight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableHeaderHeight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tableheaderheight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableHeaderHeight.html" />
 </project>

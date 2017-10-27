@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StyleSheet" />
   <property name="jnlp.Name"     value="StyleSheet" />
   <property name="jnlp.name"     value="stylesheet" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/stylesheet/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StyleSheet.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stylesheet/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StyleSheet.html" />
 </project>

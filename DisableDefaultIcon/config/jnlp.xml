@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableDefaultIcon" />
   <property name="jnlp.Name"     value="DisableDefaultIcon" />
   <property name="jnlp.name"     value="disabledefaulticon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disabledefaulticon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableDefaultIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disabledefaulticon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableDefaultIcon.html" />
 </project>

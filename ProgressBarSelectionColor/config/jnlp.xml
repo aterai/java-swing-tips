@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ProgressBarSelectionColor" />
   <property name="jnlp.Name"     value="ProgressBarSelectionColor" />
   <property name="jnlp.name"     value="progressbarselectioncolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/progressbarselectioncolor" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ProgressBarSelectionColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/progressbarselectioncolor" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ProgressBarSelectionColor.html" />
 </project>

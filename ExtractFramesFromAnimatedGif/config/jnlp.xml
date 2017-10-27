@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ExtractFramesFromAnimatedGif" />
   <property name="jnlp.Name"     value="ExtractFramesFromAnimatedGif" />
   <property name="jnlp.name"     value="extractframesfromanimatedgif" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/extractframesfromanimatedgif" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExtractFramesFromAnimatedGif.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/extractframesfromanimatedgif" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ExtractFramesFromAnimatedGif.html" />
 </project>

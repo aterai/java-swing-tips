@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RolloverModeToolBar" />
   <property name="jnlp.Name"     value="RolloverModeToolBar" />
   <property name="jnlp.name"     value="rollovermodetoolbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rollovermodetoolbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RolloverModeToolBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rollovermodetoolbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RolloverModeToolBar.html" />
 </project>

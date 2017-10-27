@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToolButtonPopup" />
   <property name="jnlp.Name"     value="ToolButtonPopup" />
   <property name="jnlp.name"     value="toolbuttonpopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/toolbuttonpopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolButtonPopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/toolbuttonpopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolButtonPopup.html" />
 </project>

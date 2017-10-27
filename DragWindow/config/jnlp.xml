@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DragWindow" />
   <property name="jnlp.Name"     value="DragWindow" />
   <property name="jnlp.name"     value="dragwindow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dragwindow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DragWindow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dragwindow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DragWindow.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RoundedDropDownList" />
   <property name="jnlp.Name"     value="RoundedDropDownList" />
   <property name="jnlp.name"     value="roundeddropdownlist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/roundeddropdownlist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RoundedDropDownList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/roundeddropdownlist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RoundedDropDownList.html" />
 </project>

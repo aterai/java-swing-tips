@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RightAlignComponentBorder" />
   <property name="jnlp.Name"     value="RightAlignComponentBorder" />
   <property name="jnlp.name"     value="rightaligncomponentborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rightaligncomponentborder" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RightAlignComponentBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rightaligncomponentborder" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RightAlignComponentBorder.html" />
 </project>

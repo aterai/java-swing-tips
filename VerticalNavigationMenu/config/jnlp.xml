@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST VerticalNavigationMenu" />
   <property name="jnlp.Name"     value="VerticalNavigationMenu" />
   <property name="jnlp.name"     value="verticalnavigationmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/verticalnavigationmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/VerticalNavigationMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/verticalnavigationmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/VerticalNavigationMenu.html" />
 </project>

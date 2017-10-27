@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DragRowsAnotherTable" />
   <property name="jnlp.Name"     value="DragRowsAnotherTable" />
   <property name="jnlp.name"     value="dragrowsanothertable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dragrowsanothertable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DragRowsAnotherTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dragrowsanothertable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DragRowsAnotherTable.html" />
 </project>

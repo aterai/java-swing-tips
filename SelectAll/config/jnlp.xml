@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectAll" />
   <property name="jnlp.Name"     value="SelectAll" />
   <property name="jnlp.name"     value="selectall" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectall/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectAll.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectall/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectAll.html" />
 </project>

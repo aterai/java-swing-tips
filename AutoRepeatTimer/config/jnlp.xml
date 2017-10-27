@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutoRepeatTimer" />
   <property name="jnlp.Name"     value="AutoRepeatTimer" />
   <property name="jnlp.name"     value="autorepeattimer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/autorepeattimer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutoRepeatTimer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/autorepeattimer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutoRepeatTimer.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST OverTypeMode" />
   <property name="jnlp.Name"     value="OverTypeMode" />
   <property name="jnlp.name"     value="overtypemode" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/overtypemode/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OverTypeMode.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/overtypemode/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/OverTypeMode.html" />
 </project>

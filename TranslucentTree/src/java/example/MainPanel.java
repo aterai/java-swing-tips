@@ -75,7 +75,7 @@ class TranslucentTree extends JTree {
 }
 
 class TransparentTree extends JTree {
-    //http://ateraimemo.com/Swing/TreeRowSelection.html
+    // https://ateraimemo.com/Swing/TreeRowSelection.html
     public static final Color SELC = new Color(100, 100, 255, 100);
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -103,7 +103,7 @@ class TransparentTree extends JTree {
     }
 }
 
-//http://ateraimemo.com/Swing/RootPaneBackground.html
+// https://ateraimemo.com/Swing/RootPaneBackground.html
 class TransparentRootPane extends JRootPane {
     private static final TexturePaint TEXTURE = makeCheckerTexture();
     private static TexturePaint makeCheckerTexture() {
@@ -137,7 +137,7 @@ class TransparentRootPane extends JRootPane {
     }
 }
 
-// http://ateraimemo.com/Swing/TreeBackgroundSelectionColor.html
+// https://ateraimemo.com/Swing/TreeBackgroundSelectionColor.html
 class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color ALPHA_OF_ZERO = new Color(0x0, true);
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -160,7 +160,7 @@ class TranslucentTreeCellRenderer extends TransparentTreeCellRenderer {
     }
 }
 
-//http://ateraimemo.com/Swing/NimbusColorPalette.html
+// https://ateraimemo.com/Swing/NimbusColorPalette.html
 // // JDK 1.7.0
 // class TransparentTreeCellPainter extends AbstractRegionPainter {
 //     //private PaintContext ctx = null;

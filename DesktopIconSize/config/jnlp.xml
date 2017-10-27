@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DesktopIconSize" />
   <property name="jnlp.Name"     value="DesktopIconSize" />
   <property name="jnlp.name"     value="desktopiconsize" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/desktopiconsize/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DesktopIconSize.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/desktopiconsize/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DesktopIconSize.html" />
 </project>

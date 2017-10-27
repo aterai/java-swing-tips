@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ImplicitDownCycleTraversal" />
   <property name="jnlp.Name"     value="ImplicitDownCycleTraversal" />
   <property name="jnlp.name"     value="implicitdowncycletraversal" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/implicitdowncycletraversal" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ImplicitDownCycleTraversal.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/implicitdowncycletraversal" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ImplicitDownCycleTraversal.html" />
 </project>

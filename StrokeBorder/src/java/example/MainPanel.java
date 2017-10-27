@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
-    public  final JButton button = new JButton("Change");
+    private final JButton button = new JButton("Change");
     private float[] getDashArray() {
         String[] slist = field.getText().split(",");
         if (slist.length == 0) {
@@ -66,6 +66,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
 
         button.doClick();
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -81,11 +82,9 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        MainPanel p = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(p);
-        frame.getRootPane().setDefaultButton(p.button);
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

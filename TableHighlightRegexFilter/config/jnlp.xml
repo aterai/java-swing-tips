@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableHighlightRegexFilter" />
   <property name="jnlp.Name"     value="TableHighlightRegexFilter" />
   <property name="jnlp.name"     value="tablehighlightregexfilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablehighlightregexfilter" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableHighlightRegexFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablehighlightregexfilter" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableHighlightRegexFilter.html" />
 </project>

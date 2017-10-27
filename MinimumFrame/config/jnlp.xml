@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MinimumFrame" />
   <property name="jnlp.Name"     value="MinimumFrame" />
   <property name="jnlp.name"     value="minimumframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/minimumframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MinimumFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/minimumframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MinimumFrame.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TwoProgressBars" />
   <property name="jnlp.Name"     value="TwoProgressBars" />
   <property name="jnlp.name"     value="twoprogressbars" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/twoprogressbars/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TwoProgressBars.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/twoprogressbars/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TwoProgressBars.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PreviewAccessory" />
   <property name="jnlp.Name"     value="PreviewAccessory" />
   <property name="jnlp.name"     value="previewaccessory" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/previewaccessory/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PreviewAccessory.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/previewaccessory/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PreviewAccessory.html" />
 </project>

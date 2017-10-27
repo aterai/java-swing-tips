@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineNumber" />
   <property name="jnlp.Name"     value="LineNumber" />
   <property name="jnlp.name"     value="linenumber" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linenumber/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineNumber.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linenumber/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineNumber.html" />
 </project>

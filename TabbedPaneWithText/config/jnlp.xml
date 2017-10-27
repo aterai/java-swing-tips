@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabbedPaneWithText" />
   <property name="jnlp.Name"     value="TabbedPaneWithText" />
   <property name="jnlp.name"     value="tabbedpanewithtext" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabbedpanewithtext/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabbedPaneWithText.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabbedpanewithtext/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabbedPaneWithText.html" />
 </project>

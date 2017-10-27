@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DefaultEditorKit" />
   <property name="jnlp.Name"     value="DefaultEditorKit" />
   <property name="jnlp.name"     value="defaulteditorkit" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/defaulteditorkit/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DefaultEditorKit.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/defaulteditorkit/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DefaultEditorKit.html" />
 </project>

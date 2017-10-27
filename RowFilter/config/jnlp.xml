@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RowFilter" />
   <property name="jnlp.Name"     value="RowFilter" />
   <property name="jnlp.name"     value="rowfilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rowfilter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RowFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rowfilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RowFilter.html" />
 </project>

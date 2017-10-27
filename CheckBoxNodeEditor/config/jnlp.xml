@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckBoxNodeEditor" />
   <property name="jnlp.Name"     value="CheckBoxNodeEditor" />
   <property name="jnlp.name"     value="checkboxnodeeditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkboxnodeeditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckBoxNodeEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkboxnodeeditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckBoxNodeEditor.html" />
 </project>

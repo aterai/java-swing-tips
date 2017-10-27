@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST OptionPaneDefaultFocus" />
   <property name="jnlp.Name"     value="OptionPaneDefaultFocus" />
   <property name="jnlp.name"     value="optionpanedefaultfocus" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/optionpanedefaultfocus/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OptionPaneDefaultFocus.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/optionpanedefaultfocus/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/OptionPaneDefaultFocus.html" />
 </project>

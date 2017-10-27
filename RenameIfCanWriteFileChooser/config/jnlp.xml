@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RenameIfCanWriteFileChooser" />
   <property name="jnlp.Name"     value="RenameIfCanWriteFileChooser" />
   <property name="jnlp.name"     value="renameifcanwritefilechooser" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/renameifcanwritefilechooser" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RenameIfCanWriteFileChooser.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/renameifcanwritefilechooser" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RenameIfCanWriteFileChooser.html" />
 </project>

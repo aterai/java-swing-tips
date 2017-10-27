@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollBarSearchHighlighter" />
   <property name="jnlp.Name"     value="ScrollBarSearchHighlighter" />
   <property name="jnlp.name"     value="scrollbarsearchhighlighter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollbarsearchhighlighter" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollBarSearchHighlighter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollbarsearchhighlighter" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollBarSearchHighlighter.html" />
 </project>

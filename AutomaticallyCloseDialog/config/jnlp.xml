@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutomaticallyCloseDialog" />
   <property name="jnlp.Name"     value="AutomaticallyCloseDialog" />
   <property name="jnlp.name"     value="automaticallyclosedialog" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/automaticallyclosedialog" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutomaticallyCloseDialog.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/automaticallyclosedialog" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutomaticallyCloseDialog.html" />
 </project>

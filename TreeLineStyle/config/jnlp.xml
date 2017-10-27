@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeLineStyle" />
   <property name="jnlp.Name"     value="TreeLineStyle" />
   <property name="jnlp.name"     value="treelinestyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treelinestyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeLineStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treelinestyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeLineStyle.html" />
 </project>

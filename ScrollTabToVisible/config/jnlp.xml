@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollTabToVisible" />
   <property name="jnlp.Name"     value="ScrollTabToVisible" />
   <property name="jnlp.name"     value="scrolltabtovisible" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrolltabtovisible/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollTabToVisible.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrolltabtovisible/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollTabToVisible.html" />
 </project>

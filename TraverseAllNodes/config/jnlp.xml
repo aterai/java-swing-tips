@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TraverseAllNodes" />
   <property name="jnlp.Name"     value="TraverseAllNodes" />
   <property name="jnlp.name"     value="traverseallnodes" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/traverseallnodes/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TraverseAllNodes.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/traverseallnodes/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TraverseAllNodes.html" />
 </project>

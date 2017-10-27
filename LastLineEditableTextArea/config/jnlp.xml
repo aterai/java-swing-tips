@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LastLineEditableTextArea" />
   <property name="jnlp.Name"     value="LastLineEditableTextArea" />
   <property name="jnlp.name"     value="lastlineeditabletextarea" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lastlineeditabletextarea" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LastLineEditableTextArea.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/lastlineeditabletextarea" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LastLineEditableTextArea.html" />
 </project>

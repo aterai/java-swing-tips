@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextPositionAndAlignment" />
   <property name="jnlp.Name"     value="TextPositionAndAlignment" />
   <property name="jnlp.name"     value="textpositionandalignment" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textpositionandalignment" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextPositionAndAlignment.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textpositionandalignment" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextPositionAndAlignment.html" />
 </project>

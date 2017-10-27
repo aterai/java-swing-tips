@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST OverlayLayout" />
   <property name="jnlp.Name"     value="OverlayLayout" />
   <property name="jnlp.name"     value="overlaylayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/overlaylayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OverlayLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/overlaylayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/OverlayLayout.html" />
 </project>

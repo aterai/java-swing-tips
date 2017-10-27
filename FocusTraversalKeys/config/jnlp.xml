@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FocusTraversalKeys" />
   <property name="jnlp.Name"     value="FocusTraversalKeys" />
   <property name="jnlp.name"     value="focustraversalkeys" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/focustraversalkeys/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FocusTraversalKeys.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/focustraversalkeys/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FocusTraversalKeys.html" />
 </project>

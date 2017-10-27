@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ButtonInTableHeader" />
   <property name="jnlp.Name"     value="ButtonInTableHeader" />
   <property name="jnlp.name"     value="buttonintableheader" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/buttonintableheader/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ButtonInTableHeader.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/buttonintableheader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ButtonInTableHeader.html" />
 </project>

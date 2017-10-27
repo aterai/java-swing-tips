@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RelocatedIcon" />
   <property name="jnlp.Name"     value="RelocatedIcon" />
   <property name="jnlp.name"     value="relocatedicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/relocatedicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RelocatedIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/relocatedicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RelocatedIcon.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HorizontalAlignmentHeaderRenderer" />
   <property name="jnlp.Name"     value="HorizontalAlignmentHeaderRenderer" />
   <property name="jnlp.name"     value="horizontalalignmentheaderrenderer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/horizontalalignmentheaderrenderer" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HorizontalAlignmentHeaderRenderer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/horizontalalignmentheaderrenderer" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HorizontalAlignmentHeaderRenderer.html" />
 </project>

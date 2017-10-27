@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FileSystemTreeWithCheckBox" />
   <property name="jnlp.Name"     value="FileSystemTreeWithCheckBox" />
   <property name="jnlp.name"     value="filesystemtreewithcheckbox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/filesystemtreewithcheckbox" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FileSystemTreeWithCheckBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filesystemtreewithcheckbox" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FileSystemTreeWithCheckBox.html" />
 </project>

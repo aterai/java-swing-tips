@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PasswordView" />
   <property name="jnlp.Name"     value="PasswordView" />
   <property name="jnlp.name"     value="passwordview" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/passwordview/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PasswordView.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/passwordview/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PasswordView.html" />
 </project>

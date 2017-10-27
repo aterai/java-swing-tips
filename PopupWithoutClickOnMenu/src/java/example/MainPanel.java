@@ -25,12 +25,13 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        EventQueue.invokeLater(() -> {
-            Component c = SwingUtilities.getRoot(this);
-            if (c instanceof JFrame) {
-                ((JFrame) c).setJMenuBar(bar);
-            }
-        });
+//         EventQueue.invokeLater(() -> {
+//             Component c = SwingUtilities.getRoot(this);
+//             if (c instanceof JFrame) {
+//                 ((JFrame) c).setJMenuBar(bar);
+//             }
+//         });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(bar));
 
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

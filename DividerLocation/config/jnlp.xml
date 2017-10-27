@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DividerLocation" />
   <property name="jnlp.Name"     value="DividerLocation" />
   <property name="jnlp.name"     value="dividerlocation" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dividerlocation/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DividerLocation.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dividerlocation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DividerLocation.html" />
 </project>

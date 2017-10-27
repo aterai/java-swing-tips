@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DnDList" />
   <property name="jnlp.Name"     value="DnDList" />
   <property name="jnlp.name"     value="dndlist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndlist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dndlist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DnDList.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EditColumnName" />
   <property name="jnlp.Name"     value="EditColumnName" />
   <property name="jnlp.name"     value="editcolumnname" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/editcolumnname/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EditColumnName.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/editcolumnname/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EditColumnName.html" />
 </project>

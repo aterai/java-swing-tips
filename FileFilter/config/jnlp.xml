@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FileFilter" />
   <property name="jnlp.Name"     value="FileFilter" />
   <property name="jnlp.name"     value="filefilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/filefilter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FileFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filefilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FileFilter.html" />
 </project>

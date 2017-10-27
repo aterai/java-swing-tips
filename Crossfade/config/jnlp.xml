@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Crossfade" />
   <property name="jnlp.Name"     value="Crossfade" />
   <property name="jnlp.name"     value="crossfade" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/crossfade/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Crossfade.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/crossfade/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Crossfade.html" />
 </project>

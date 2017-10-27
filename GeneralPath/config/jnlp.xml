@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GeneralPath" />
   <property name="jnlp.Name"     value="GeneralPath" />
   <property name="jnlp.name"     value="generalpath" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/generalpath/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GeneralPath.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/generalpath/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GeneralPath.html" />
 </project>

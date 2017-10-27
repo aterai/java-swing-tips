@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FocusColor" />
   <property name="jnlp.Name"     value="FocusColor" />
   <property name="jnlp.name"     value="focuscolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/focuscolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FocusColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/focuscolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FocusColor.html" />
 </project>

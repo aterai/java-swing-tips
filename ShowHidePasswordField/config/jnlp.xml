@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ShowHidePasswordField" />
   <property name="jnlp.Name"     value="ShowHidePasswordField" />
   <property name="jnlp.name"     value="showhidepasswordfield" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/showhidepasswordfield/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ShowHidePasswordField.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/showhidepasswordfield/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ShowHidePasswordField.html" />
 </project>

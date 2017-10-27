@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MoveRow" />
   <property name="jnlp.Name"     value="MoveRow" />
   <property name="jnlp.name"     value="moverow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/moverow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MoveRow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/moverow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MoveRow.html" />
 </project>

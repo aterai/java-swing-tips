@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GroupableTableHeader" />
   <property name="jnlp.Name"     value="GroupableTableHeader" />
   <property name="jnlp.name"     value="groupabletableheader" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/groupabletableheader/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GroupableTableHeader.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/groupabletableheader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GroupableTableHeader.html" />
 </project>

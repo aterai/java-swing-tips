@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ListCellAnimation" />
   <property name="jnlp.Name"     value="ListCellAnimation" />
   <property name="jnlp.name"     value="listcellanimation" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/listcellanimation/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ListCellAnimation.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/listcellanimation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ListCellAnimation.html" />
 </project>

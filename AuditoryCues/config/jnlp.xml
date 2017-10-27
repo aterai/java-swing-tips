@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AuditoryCues" />
   <property name="jnlp.Name"     value="AuditoryCues" />
   <property name="jnlp.name"     value="auditorycues" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/auditorycues/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AuditoryCues.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/auditorycues/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AuditoryCues.html" />
 </project>

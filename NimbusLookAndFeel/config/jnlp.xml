@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NimbusLookAndFeel" />
   <property name="jnlp.Name"     value="NimbusLookAndFeel" />
   <property name="jnlp.name"     value="nimbuslookandfeel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nimbuslookandfeel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NimbusLookAndFeel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nimbuslookandfeel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NimbusLookAndFeel.html" />
 </project>

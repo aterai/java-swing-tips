@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ContinuousLayout" />
   <property name="jnlp.Name"     value="ContinuousLayout" />
   <property name="jnlp.name"     value="continuouslayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/continuouslayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ContinuousLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/continuouslayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ContinuousLayout.html" />
 </project>

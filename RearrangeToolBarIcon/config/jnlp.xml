@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RearrangeToolBarIcon" />
   <property name="jnlp.Name"     value="RearrangeToolBarIcon" />
   <property name="jnlp.name"     value="rearrangetoolbaricon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rearrangetoolbaricon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RearrangeToolBarIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rearrangetoolbaricon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RearrangeToolBarIcon.html" />
 </project>

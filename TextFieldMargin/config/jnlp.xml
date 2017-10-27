@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextFieldMargin" />
   <property name="jnlp.Name"     value="TextFieldMargin" />
   <property name="jnlp.name"     value="textfieldmargin" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textfieldmargin/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextFieldMargin.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textfieldmargin/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextFieldMargin.html" />
 </project>

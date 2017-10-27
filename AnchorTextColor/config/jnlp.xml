@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AnchorTextColor" />
   <property name="jnlp.Name"     value="AnchorTextColor" />
   <property name="jnlp.name"     value="anchortextcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/anchortextcolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AnchorTextColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/anchortextcolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AnchorTextColor.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PixelGrabber" />
   <property name="jnlp.Name"     value="PixelGrabber" />
   <property name="jnlp.name"     value="pixelgrabber" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pixelgrabber/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PixelGrabber.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/pixelgrabber/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PixelGrabber.html" />
 </project>

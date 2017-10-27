@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DragSelectDropReordering" />
   <property name="jnlp.Name"     value="DragSelectDropReordering" />
   <property name="jnlp.name"     value="dragselectdropreordering" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dragselectdropreordering" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DragSelectDropReordering.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dragselectdropreordering" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DragSelectDropReordering.html" />
 </project>

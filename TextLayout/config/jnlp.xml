@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextLayout" />
   <property name="jnlp.Name"     value="TextLayout" />
   <property name="jnlp.name"     value="textlayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textlayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textlayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextLayout.html" />
 </project>

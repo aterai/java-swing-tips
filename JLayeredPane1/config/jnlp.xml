@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST JLayeredPane1" />
   <property name="jnlp.Name"     value="JLayeredPane1" />
   <property name="jnlp.name"     value="jlayeredpane1" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/jlayeredpane1/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/JLayeredPane1.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/jlayeredpane1/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/JLayeredPane1.html" />
 </project>

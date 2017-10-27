@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InsertComponentBaseline" />
   <property name="jnlp.Name"     value="InsertComponentBaseline" />
   <property name="jnlp.name"     value="insertcomponentbaseline" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/insertcomponentbaseline" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InsertComponentBaseline.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/insertcomponentbaseline" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InsertComponentBaseline.html" />
 </project>

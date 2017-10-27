@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PopupWithoutClickOnMenu" />
   <property name="jnlp.Name"     value="PopupWithoutClickOnMenu" />
   <property name="jnlp.name"     value="popupwithoutclickonmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/popupwithoutclickonmenu" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PopupWithoutClickOnMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/popupwithoutclickonmenu" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PopupWithoutClickOnMenu.html" />
 </project>

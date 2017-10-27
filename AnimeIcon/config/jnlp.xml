@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AnimeIcon" />
   <property name="jnlp.Name"     value="AnimeIcon" />
   <property name="jnlp.name"     value="animeicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/animeicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AnimeIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/animeicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AnimeIcon.html" />
 </project>

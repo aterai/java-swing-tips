@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableModelEvent" />
   <property name="jnlp.Name"     value="TableModelEvent" />
   <property name="jnlp.name"     value="tablemodelevent" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablemodelevent/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableModelEvent.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablemodelevent/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableModelEvent.html" />
 </project>

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridBagLayout());
 
-        String siteLink = "http://ateraimemo.com/";
+        String siteLink = "https://ateraimemo.com/";
 
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", siteLink, siteLink));
         editor.setOpaque(false); //editor.setBackground(getBackground());

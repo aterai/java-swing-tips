@@ -185,7 +185,7 @@ class TranslucentTexturePanel extends JPanel {
 }
 
 // https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
-// http://ateraimemo.com/Swing/CentredBackgroundBorder.html
+// https://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
     private final BufferedImage image;
     protected CentredBackgroundBorder(BufferedImage image) {
@@ -207,7 +207,7 @@ class CentredBackgroundBorder implements Border {
     }
 }
 
-//http://ateraimemo.com/Swing/TranslucentPopupMenu.html
+// https://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
     private static final Color POPUP_BACK = new Color(250, 250, 250, 100);
     private static final Color POPUP_LEFT = new Color(230, 230, 230, 100);

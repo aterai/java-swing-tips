@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<SiteItem> m = new DefaultListModel<>();
-        m.addElement(new SiteItem("aterai", Arrays.asList("http://ateraimemo.com", "https://github.com/aterai")));
+        m.addElement(new SiteItem("aterai", Arrays.asList("https://ateraimemo.com", "https://github.com/aterai")));
         m.addElement(new SiteItem("example", Arrays.asList("http://www.example.com", "https://www.example.com")));
 
         JList<SiteItem> list = new JList<>(m);

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxSelectionBackground" />
   <property name="jnlp.Name"     value="ComboBoxSelectionBackground" />
   <property name="jnlp.name"     value="comboboxselectionbackground" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxselectionbackground/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxSelectionBackground.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxselectionbackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxSelectionBackground.html" />
 </project>

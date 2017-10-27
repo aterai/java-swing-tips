@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RandomDissolve" />
   <property name="jnlp.Name"     value="RandomDissolve" />
   <property name="jnlp.name"     value="randomdissolve" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/randomdissolve/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RandomDissolve.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/randomdissolve/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RandomDissolve.html" />
 </project>

@@ -146,7 +146,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    //@see http://ateraimemo.com/Swing/ButtonWidth.html
+    //@see https://ateraimemo.com/Swing/ButtonWidth.html
     private static JComponent createRightAlignButtonBox4(List<JComponent> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {

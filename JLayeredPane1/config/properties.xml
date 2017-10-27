@@ -3,7 +3,7 @@
 <!-- project -->
 <property name="Name"    value="Example" />
 <property name="name"    value="example" />
-<property name="vendor"  value="Taka - http://ateraimemo.com/Taka.html" />
+<property name="vendor"  value="Taka - https://ateraimemo.com/Taka.html" />
 <property name="version" value="1.0.0" />
 <property name="year"    value="2005" />
 

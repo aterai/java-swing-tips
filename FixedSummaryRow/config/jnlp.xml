@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FixedSummaryRow" />
   <property name="jnlp.Name"     value="FixedSummaryRow" />
   <property name="jnlp.name"     value="fixedsummaryrow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fixedsummaryrow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FixedSummaryRow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fixedsummaryrow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FixedSummaryRow.html" />
 </project>

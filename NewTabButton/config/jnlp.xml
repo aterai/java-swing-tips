@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NewTabButton" />
   <property name="jnlp.Name"     value="NewTabButton" />
   <property name="jnlp.name"     value="newtabbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/newtabbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NewTabButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/newtabbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NewTabButton.html" />
 </project>

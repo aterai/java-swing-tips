@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextShiftOffset" />
   <property name="jnlp.Name"     value="TextShiftOffset" />
   <property name="jnlp.name"     value="textshiftoffset" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textshiftoffset/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextShiftOffset.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textshiftoffset/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextShiftOffset.html" />
 </project>

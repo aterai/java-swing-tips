@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DetailsViewFileChooser" />
   <property name="jnlp.Name"     value="DetailsViewFileChooser" />
   <property name="jnlp.name"     value="detailsviewfilechooser" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/detailsviewfilechooser/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DetailsViewFileChooser.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/detailsviewfilechooser/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DetailsViewFileChooser.html" />
 </project>

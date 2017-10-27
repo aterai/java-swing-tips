@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableColumnHeaderIcon" />
   <property name="jnlp.Name"     value="TableColumnHeaderIcon" />
   <property name="jnlp.name"     value="tablecolumnheadericon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablecolumnheadericon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableColumnHeaderIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablecolumnheadericon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableColumnHeaderIcon.html" />
 </project>

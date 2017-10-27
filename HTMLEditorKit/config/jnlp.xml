@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HTMLEditorKit" />
   <property name="jnlp.Name"     value="HTMLEditorKit" />
   <property name="jnlp.name"     value="htmleditorkit" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmleditorkit/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HTMLEditorKit.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmleditorkit/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HTMLEditorKit.html" />
 </project>

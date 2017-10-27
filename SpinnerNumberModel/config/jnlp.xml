@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SpinnerNumberModel" />
   <property name="jnlp.Name"     value="SpinnerNumberModel" />
   <property name="jnlp.name"     value="spinnernumbermodel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/spinnernumbermodel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SpinnerNumberModel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/spinnernumbermodel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SpinnerNumberModel.html" />
 </project>

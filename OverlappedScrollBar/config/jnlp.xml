@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST OverlappedScrollBar" />
   <property name="jnlp.Name"     value="OverlappedScrollBar" />
   <property name="jnlp.name"     value="overlappedscrollbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/overlappedscrollbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/OverlappedScrollBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/overlappedscrollbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/OverlappedScrollBar.html" />
 </project>

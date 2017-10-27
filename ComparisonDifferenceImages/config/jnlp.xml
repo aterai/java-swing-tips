@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComparisonDifferenceImages" />
   <property name="jnlp.Name"     value="ComparisonDifferenceImages" />
   <property name="jnlp.name"     value="comparisondifferenceimages" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comparisondifferenceimages" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComparisonDifferenceImages.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comparisondifferenceimages" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComparisonDifferenceImages.html" />
 </project>

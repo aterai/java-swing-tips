@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LoopComboBox" />
   <property name="jnlp.Name"     value="LoopComboBox" />
   <property name="jnlp.name"     value="loopcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/loopcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LoopComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/loopcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LoopComboBox.html" />
 </project>

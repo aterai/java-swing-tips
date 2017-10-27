@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableInputLayer" />
   <property name="jnlp.Name"     value="DisableInputLayer" />
   <property name="jnlp.name"     value="disableinputlayer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disableinputlayer/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableInputLayer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disableinputlayer/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableInputLayer.html" />
 </project>

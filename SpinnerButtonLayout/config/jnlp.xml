@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SpinnerButtonLayout" />
   <property name="jnlp.Name"     value="SpinnerButtonLayout" />
   <property name="jnlp.name"     value="spinnerbuttonlayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/spinnerbuttonlayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SpinnerButtonLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/spinnerbuttonlayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SpinnerButtonLayout.html" />
 </project>

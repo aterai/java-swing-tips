@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CustomDecoratedFrame" />
   <property name="jnlp.Name"     value="CustomDecoratedFrame" />
   <property name="jnlp.name"     value="customdecoratedframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/customdecoratedframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CustomDecoratedFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/customdecoratedframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CustomDecoratedFrame.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST JustifiedLabel" />
   <property name="jnlp.Name"     value="JustifiedLabel" />
   <property name="jnlp.name"     value="justifiedlabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/justifiedlabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/JustifiedLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/justifiedlabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/JustifiedLabel.html" />
 </project>

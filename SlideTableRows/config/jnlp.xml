@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SlideTableRows" />
   <property name="jnlp.Name"     value="SlideTableRows" />
   <property name="jnlp.name"     value="slidetablerows" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/slidetablerows/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SlideTableRows.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/slidetablerows/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SlideTableRows.html" />
 </project>

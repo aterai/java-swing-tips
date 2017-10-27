@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClippedLRComboBox" />
   <property name="jnlp.Name"     value="ClippedLRComboBox" />
   <property name="jnlp.name"     value="clippedlrcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clippedlrcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClippedLRComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clippedlrcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClippedLRComboBox.html" />
 </project>

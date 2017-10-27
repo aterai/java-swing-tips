@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SingleInstanceService" />
   <property name="jnlp.Name"     value="SingleInstanceService" />
   <property name="jnlp.name"     value="singleinstanceservice" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/singleinstanceservice/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SingleInstanceService.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/singleinstanceservice/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SingleInstanceService.html" />
 </project>

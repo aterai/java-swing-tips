@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollingMessage" />
   <property name="jnlp.Name"     value="ScrollingMessage" />
   <property name="jnlp.name"     value="scrollingmessage" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollingmessage/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollingMessage.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollingmessage/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollingMessage.html" />
 </project>

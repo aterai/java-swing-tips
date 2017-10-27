@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeLineColor" />
   <property name="jnlp.Name"     value="TreeLineColor" />
   <property name="jnlp.name"     value="treelinecolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treelinecolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeLineColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treelinecolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeLineColor.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InputHintPasswordField" />
   <property name="jnlp.Name"     value="InputHintPasswordField" />
   <property name="jnlp.name"     value="inputhintpasswordfield" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inputhintpasswordfield/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InputHintPasswordField.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/inputhintpasswordfield/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InputHintPasswordField.html" />
 </project>

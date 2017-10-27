@@ -151,7 +151,7 @@ class HeavyWeightContainerListener implements PopupMenuListener {
                     JPopupMenu pop = (JPopupMenu) a;
                     Container top = pop.getTopLevelAncestor();
                     if (top instanceof JWindow) {
-                        //http://ateraimemo.com/Swing/DropShadowPopup.html
+                        // https://ateraimemo.com/Swing/DropShadowPopup.html
                         System.out.println("HeavyWeightContainer");
                         ((JWindow) top).setBackground(new Color(0x0, true));
                     }
@@ -255,7 +255,7 @@ class RoundedCornerBorder extends AbstractBorder {
 }
 
 class TopRoundedCornerBorder extends RoundedCornerBorder {
-    //http://ateraimemo.com/Swing/RoundedComboBox.html
+    // https://ateraimemo.com/Swing/RoundedComboBox.html
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

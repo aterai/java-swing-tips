@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BackgroundButtonIcon" />
   <property name="jnlp.Name"     value="BackgroundButtonIcon" />
   <property name="jnlp.name"     value="backgroundbuttonicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/backgroundbuttonicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BackgroundButtonIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/backgroundbuttonicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BackgroundButtonIcon.html" />
 </project>

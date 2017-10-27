@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FixedDividerSplitPane" />
   <property name="jnlp.Name"     value="FixedDividerSplitPane" />
   <property name="jnlp.name"     value="fixeddividersplitpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fixeddividersplitpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FixedDividerSplitPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fixeddividersplitpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FixedDividerSplitPane.html" />
 </project>

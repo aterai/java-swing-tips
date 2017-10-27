@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DrawsTreeFocus" />
   <property name="jnlp.Name"     value="DrawsTreeFocus" />
   <property name="jnlp.name"     value="drawstreefocus" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/drawstreefocus/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DrawsTreeFocus.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/drawstreefocus/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DrawsTreeFocus.html" />
 </project>

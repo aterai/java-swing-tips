@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TerminateEdit" />
   <property name="jnlp.Name"     value="TerminateEdit" />
   <property name="jnlp.name"     value="terminateedit" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/terminateedit/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TerminateEdit.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/terminateedit/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TerminateEdit.html" />
 </project>

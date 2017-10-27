@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SystemColor" />
   <property name="jnlp.Name"     value="SystemColor" />
   <property name="jnlp.name"     value="systemcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/systemcolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SystemColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/systemcolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SystemColor.html" />
 </project>

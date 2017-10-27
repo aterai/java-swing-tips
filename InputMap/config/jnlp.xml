@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InputMap" />
   <property name="jnlp.Name"     value="InputMap" />
   <property name="jnlp.name"     value="inputmap" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inputmap/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InputMap.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/inputmap/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InputMap.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ResetRowFilter" />
   <property name="jnlp.Name"     value="ResetRowFilter" />
   <property name="jnlp.name"     value="resetrowfilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/resetrowfilter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ResetRowFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/resetrowfilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ResetRowFilter.html" />
 </project>

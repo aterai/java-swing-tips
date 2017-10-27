@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PaletteInternalFrame" />
   <property name="jnlp.Name"     value="PaletteInternalFrame" />
   <property name="jnlp.name"     value="paletteinternalframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/paletteinternalframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PaletteInternalFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/paletteinternalframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PaletteInternalFrame.html" />
 </project>

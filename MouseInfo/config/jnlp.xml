@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MouseInfo" />
   <property name="jnlp.Name"     value="MouseInfo" />
   <property name="jnlp.name"     value="mouseinfo" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/mouseinfo/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MouseInfo.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/mouseinfo/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MouseInfo.html" />
 </project>

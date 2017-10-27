@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GradientPalletProgressBar" />
   <property name="jnlp.Name"     value="GradientPalletProgressBar" />
   <property name="jnlp.name"     value="gradientpalletprogressbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/gradientpalletprogressbar" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GradientPalletProgressBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gradientpalletprogressbar" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GradientPalletProgressBar.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CellEditorLayout" />
   <property name="jnlp.Name"     value="CellEditorLayout" />
   <property name="jnlp.name"     value="celleditorlayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/celleditorlayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CellEditorLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/celleditorlayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CellEditorLayout.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GroupLayout" />
   <property name="jnlp.Name"     value="GroupLayout" />
   <property name="jnlp.name"     value="grouplayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/grouplayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GroupLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/grouplayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GroupLayout.html" />
 </project>

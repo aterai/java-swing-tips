@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClassLoader" />
   <property name="jnlp.Name"     value="ClassLoader" />
   <property name="jnlp.name"     value="classloader" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/classloader/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClassLoader.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/classloader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClassLoader.html" />
 </project>

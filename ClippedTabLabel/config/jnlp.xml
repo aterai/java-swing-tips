@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClippedTabLabel" />
   <property name="jnlp.Name"     value="ClippedTabLabel" />
   <property name="jnlp.name"     value="clippedtablabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clippedtablabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClippedTabLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clippedtablabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClippedTabLabel.html" />
 </project>

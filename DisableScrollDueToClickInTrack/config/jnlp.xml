@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableScrollDueToClickInTrack" />
   <property name="jnlp.Name"     value="DisableScrollDueToClickInTrack" />
   <property name="jnlp.name"     value="disablescrollduetoclickintrack" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disablescrollduetoclickintrack" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableScrollDueToClickInTrack.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disablescrollduetoclickintrack" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableScrollDueToClickInTrack.html" />
 </project>

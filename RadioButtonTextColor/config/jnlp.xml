@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RadioButtonTextColor" />
   <property name="jnlp.Name"     value="RadioButtonTextColor" />
   <property name="jnlp.name"     value="radiobuttontextcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/radiobuttontextcolor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RadioButtonTextColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/radiobuttontextcolor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RadioButtonTextColor.html" />
 </project>

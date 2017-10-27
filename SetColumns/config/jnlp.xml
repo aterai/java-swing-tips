@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SetColumns" />
   <property name="jnlp.Name"     value="SetColumns" />
   <property name="jnlp.name"     value="setcolumns" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/setcolumns/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SetColumns.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/setcolumns/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SetColumns.html" />
 </project>

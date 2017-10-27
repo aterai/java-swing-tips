@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HTMLColorCodes" />
   <property name="jnlp.Name"     value="HTMLColorCodes" />
   <property name="jnlp.name"     value="htmlcolorcodes" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmlcolorcodes/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HTMLColorCodes.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmlcolorcodes/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HTMLColorCodes.html" />
 </project>

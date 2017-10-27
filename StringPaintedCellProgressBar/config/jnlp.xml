@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StringPaintedCellProgressBar" />
   <property name="jnlp.Name"     value="StringPaintedCellProgressBar" />
   <property name="jnlp.name"     value="stringpaintedcellprogressbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/stringpaintedcellprogressbar" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StringPaintedCellProgressBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stringpaintedcellprogressbar" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StringPaintedCellProgressBar.html" />
 </project>

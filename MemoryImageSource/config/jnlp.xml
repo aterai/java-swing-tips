@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MemoryImageSource" />
   <property name="jnlp.Name"     value="MemoryImageSource" />
   <property name="jnlp.name"     value="memoryimagesource" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/memoryimagesource/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MemoryImageSource.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/memoryimagesource/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MemoryImageSource.html" />
 </project>

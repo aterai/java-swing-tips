@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToggleButtonBar" />
   <property name="jnlp.Name"     value="ToggleButtonBar" />
   <property name="jnlp.name"     value="togglebuttonbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/togglebuttonbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToggleButtonBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/togglebuttonbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToggleButtonBar.html" />
 </project>

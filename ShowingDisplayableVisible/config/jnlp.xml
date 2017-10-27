@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ShowingDisplayableVisible" />
   <property name="jnlp.Name"     value="ShowingDisplayableVisible" />
   <property name="jnlp.name"     value="showingdisplayablevisible" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/showingdisplayablevisible" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ShowingDisplayableVisible.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/showingdisplayablevisible" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ShowingDisplayableVisible.html" />
 </project>

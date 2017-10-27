@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ParagraphMark" />
   <property name="jnlp.Name"     value="ParagraphMark" />
   <property name="jnlp.name"     value="paragraphmark" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/paragraphmark/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ParagraphMark.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/paragraphmark/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ParagraphMark.html" />
 </project>

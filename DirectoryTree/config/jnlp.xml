@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DirectoryTree" />
   <property name="jnlp.Name"     value="DirectoryTree" />
   <property name="jnlp.name"     value="directorytree" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/directorytree/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DirectoryTree.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/directorytree/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DirectoryTree.html" />
 </project>

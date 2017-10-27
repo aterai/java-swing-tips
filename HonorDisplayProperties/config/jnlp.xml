@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HonorDisplayProperties" />
   <property name="jnlp.Name"     value="HonorDisplayProperties" />
   <property name="jnlp.name"     value="honordisplayproperties" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/honordisplayproperties/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HonorDisplayProperties.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/honordisplayproperties/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HonorDisplayProperties.html" />
 </project>

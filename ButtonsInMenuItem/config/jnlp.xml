@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ButtonsInMenuItem" />
   <property name="jnlp.Name"     value="ButtonsInMenuItem" />
   <property name="jnlp.name"     value="buttonsinmenuitem" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/buttonsinmenuitem/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ButtonsInMenuItem.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/buttonsinmenuitem/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ButtonsInMenuItem.html" />
 </project>

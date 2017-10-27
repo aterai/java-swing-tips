@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToolTipInComboBox" />
   <property name="jnlp.Name"     value="ToolTipInComboBox" />
   <property name="jnlp.name"     value="tooltipincombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tooltipincombobox" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolTipInComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tooltipincombobox" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolTipInComboBox.html" />
 </project>

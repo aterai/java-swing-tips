@@ -49,7 +49,7 @@ class TreePopupMenu extends JPopupMenu {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
             model.insertNodeInto(child, parent, parent.getChildCount());
-            tree.scrollPathToVisible(new TreePath(child.getPath())); //http://ateraimemo.com/Swing/ScrollRectToVisible.html
+            tree.scrollPathToVisible(new TreePath(child.getPath())); //https://ateraimemo.com/Swing/ScrollRectToVisible.html
         }
     };
     private final Action addReloadAction = new AbstractAction("add & reload") {

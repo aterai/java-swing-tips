@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HtmlDisable" />
   <property name="jnlp.Name"     value="HtmlDisable" />
   <property name="jnlp.name"     value="htmldisable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmldisable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HtmlDisable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmldisable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HtmlDisable.html" />
 </project>

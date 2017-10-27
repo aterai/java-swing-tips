@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HtmlTableTransferHandler" />
   <property name="jnlp.Name"     value="HtmlTableTransferHandler" />
   <property name="jnlp.name"     value="htmltabletransferhandler" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmltabletransferhandler" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HtmlTableTransferHandler.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmltabletransferhandler" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HtmlTableTransferHandler.html" />
 </project>

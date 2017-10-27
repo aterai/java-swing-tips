@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckBoxCellList" />
   <property name="jnlp.Name"     value="CheckBoxCellList" />
   <property name="jnlp.name"     value="checkboxcelllist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkboxcelllist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckBoxCellList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkboxcelllist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckBoxCellList.html" />
 </project>

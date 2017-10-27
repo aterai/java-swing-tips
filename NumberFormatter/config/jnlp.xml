@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NumberFormatter" />
   <property name="jnlp.Name"     value="NumberFormatter" />
   <property name="jnlp.name"     value="numberformatter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/numberformatter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NumberFormatter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/numberformatter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NumberFormatter.html" />
 </project>

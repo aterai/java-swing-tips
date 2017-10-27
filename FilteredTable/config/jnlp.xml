@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FilteredTable" />
   <property name="jnlp.Name"     value="FilteredTable" />
   <property name="jnlp.name"     value="filteredtable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/filteredtable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FilteredTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filteredtable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FilteredTable.html" />
 </project>

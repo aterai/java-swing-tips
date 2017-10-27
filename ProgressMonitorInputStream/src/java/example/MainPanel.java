@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         String path = String.format("https://docs.oracle.com/javase/8/docs/api/index-files/index-%d.html", index);
         //String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
         //String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
-        //String path = "http://ateraimemo.com/";
+        //String path = "https://ateraimemo.com/";
         System.out.println(path);
 
         URLConnection urlConnection = null;

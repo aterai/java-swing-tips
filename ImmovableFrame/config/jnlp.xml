@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ImmovableFrame" />
   <property name="jnlp.Name"     value="ImmovableFrame" />
   <property name="jnlp.name"     value="immovableframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/immovableframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ImmovableFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/immovableframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ImmovableFrame.html" />
 </project>

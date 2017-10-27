@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TranslucentPopupMenu" />
   <property name="jnlp.Name"     value="TranslucentPopupMenu" />
   <property name="jnlp.name"     value="translucentpopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/translucentpopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TranslucentPopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentPopupMenu.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CaretSelectionHighlight" />
   <property name="jnlp.Name"     value="CaretSelectionHighlight" />
   <property name="jnlp.name"     value="caretselectionhighlight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/caretselectionhighlight" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CaretSelectionHighlight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/caretselectionhighlight" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CaretSelectionHighlight.html" />
 </project>

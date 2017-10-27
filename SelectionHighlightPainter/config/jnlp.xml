@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectionHighlightPainter" />
   <property name="jnlp.Name"     value="SelectionHighlightPainter" />
   <property name="jnlp.name"     value="selectionhighlightpainter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectionhighlightpainter" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectionHighlightPainter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectionhighlightpainter" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectionHighlightPainter.html" />
 </project>

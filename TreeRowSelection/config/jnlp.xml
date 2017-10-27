@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeRowSelection" />
   <property name="jnlp.Name"     value="TreeRowSelection" />
   <property name="jnlp.name"     value="treerowselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treerowselection/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeRowSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treerowselection/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeRowSelection.html" />
 </project>

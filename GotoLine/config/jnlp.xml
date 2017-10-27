@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GotoLine" />
   <property name="jnlp.Name"     value="GotoLine" />
   <property name="jnlp.name"     value="gotoline" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/gotoline/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GotoLine.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gotoline/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GotoLine.html" />
 </project>

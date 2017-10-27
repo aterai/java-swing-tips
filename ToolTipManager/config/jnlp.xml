@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToolTipManager" />
   <property name="jnlp.Name"     value="ToolTipManager" />
   <property name="jnlp.name"     value="tooltipmanager" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tooltipmanager/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolTipManager.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tooltipmanager/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolTipManager.html" />
 </project>

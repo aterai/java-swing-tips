@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MultiLineTree" />
   <property name="jnlp.Name"     value="MultiLineTree" />
   <property name="jnlp.name"     value="multilinetree" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/multilinetree/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MultiLineTree.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/multilinetree/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MultiLineTree.html" />
 </project>

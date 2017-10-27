@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxCellEditorInsets" />
   <property name="jnlp.Name"     value="ComboBoxCellEditorInsets" />
   <property name="jnlp.name"     value="comboboxcelleditorinsets" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxcelleditorinsets" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxCellEditorInsets.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxcelleditorinsets" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxCellEditorInsets.html" />
 </project>

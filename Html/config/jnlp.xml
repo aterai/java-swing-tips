@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Html" />
   <property name="jnlp.Name"     value="Html" />
   <property name="jnlp.name"     value="html" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/html/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Html.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/html/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Html.html" />
 </project>

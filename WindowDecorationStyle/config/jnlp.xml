@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WindowDecorationStyle" />
   <property name="jnlp.Name"     value="WindowDecorationStyle" />
   <property name="jnlp.name"     value="windowdecorationstyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/windowdecorationstyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WindowDecorationStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/windowdecorationstyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WindowDecorationStyle.html" />
 </project>

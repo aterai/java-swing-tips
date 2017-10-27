@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST IconComboBox" />
   <property name="jnlp.Name"     value="IconComboBox" />
   <property name="jnlp.name"     value="iconcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/iconcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/IconComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/iconcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/IconComboBox.html" />
 </project>

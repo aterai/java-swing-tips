@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DeleteButtonInCell" />
   <property name="jnlp.Name"     value="DeleteButtonInCell" />
   <property name="jnlp.name"     value="deletebuttonincell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/deletebuttonincell/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DeleteButtonInCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/deletebuttonincell/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DeleteButtonInCell.html" />
 </project>

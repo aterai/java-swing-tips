@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SliderInTableCell" />
   <property name="jnlp.Name"     value="SliderInTableCell" />
   <property name="jnlp.name"     value="sliderintablecell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sliderintablecell/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SliderInTableCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sliderintablecell/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SliderInTableCell.html" />
 </project>

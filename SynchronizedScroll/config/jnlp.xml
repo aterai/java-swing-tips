@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SynchronizedScroll" />
   <property name="jnlp.Name"     value="SynchronizedScroll" />
   <property name="jnlp.name"     value="synchronizedscroll" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/synchronizedscroll/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SynchronizedScroll.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/synchronizedscroll/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SynchronizedScroll.html" />
 </project>

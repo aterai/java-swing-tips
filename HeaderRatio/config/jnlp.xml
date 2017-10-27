@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HeaderRatio" />
   <property name="jnlp.Name"     value="HeaderRatio" />
   <property name="jnlp.name"     value="headerratio" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/headerratio/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HeaderRatio.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/headerratio/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HeaderRatio.html" />
 </project>

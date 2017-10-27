@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://ateraimemo.com/Swing/ToggleButtonBar.html
+// https://ateraimemo.com/Swing/ToggleButtonBar.html
 class ArrowToggleButtonBarCellIcon implements Icon {
     public static final int TH = 10; //The height of a triangle
     private static final int HEIGHT = TH * 2 + 1;

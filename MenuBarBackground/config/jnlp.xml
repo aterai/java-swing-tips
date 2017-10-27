@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MenuBarBackground" />
   <property name="jnlp.Name"     value="MenuBarBackground" />
   <property name="jnlp.name"     value="menubarbackground" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/menubarbackground/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MenuBarBackground.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/menubarbackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MenuBarBackground.html" />
 </project>

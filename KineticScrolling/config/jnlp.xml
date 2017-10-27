@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST KineticScrolling" />
   <property name="jnlp.Name"     value="KineticScrolling" />
   <property name="jnlp.name"     value="kineticscrolling" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/kineticscrolling/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/KineticScrolling.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/kineticscrolling/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/KineticScrolling.html" />
 </project>

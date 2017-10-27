@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MinimumThumbSize" />
   <property name="jnlp.Name"     value="MinimumThumbSize" />
   <property name="jnlp.name"     value="minimumthumbsize" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/minimumthumbsize/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MinimumThumbSize.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/minimumthumbsize/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MinimumThumbSize.html" />
 </project>

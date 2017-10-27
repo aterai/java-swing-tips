@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InvokesStopCellEditing" />
   <property name="jnlp.Name"     value="InvokesStopCellEditing" />
   <property name="jnlp.name"     value="invokesstopcellediting" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/invokesstopcellediting/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InvokesStopCellEditing.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/invokesstopcellediting/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InvokesStopCellEditing.html" />
 </project>

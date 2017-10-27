@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PropertyTable" />
   <property name="jnlp.Name"     value="PropertyTable" />
   <property name="jnlp.name"     value="propertytable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/propertytable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PropertyTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/propertytable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PropertyTable.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CentredBackgroundBorder" />
   <property name="jnlp.Name"     value="CentredBackgroundBorder" />
   <property name="jnlp.name"     value="centredbackgroundborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/centredbackgroundborder" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CentredBackgroundBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/centredbackgroundborder" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CentredBackgroundBorder.html" />
 </project>

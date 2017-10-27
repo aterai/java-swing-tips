@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableNextMatchKeyHandler" />
   <property name="jnlp.Name"     value="TableNextMatchKeyHandler" />
   <property name="jnlp.name"     value="tablenextmatchkeyhandler" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablenextmatchkeyhandler" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableNextMatchKeyHandler.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablenextmatchkeyhandler" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableNextMatchKeyHandler.html" />
 </project>

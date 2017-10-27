@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST KeyBinding" />
   <property name="jnlp.Name"     value="KeyBinding" />
   <property name="jnlp.name"     value="keybinding" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/keybinding/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/KeyBinding.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/keybinding/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/KeyBinding.html" />
 </project>

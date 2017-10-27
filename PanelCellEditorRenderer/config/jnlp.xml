@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PanelCellEditorRenderer" />
   <property name="jnlp.Name"     value="PanelCellEditorRenderer" />
   <property name="jnlp.name"     value="panelcelleditorrenderer" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/panelcelleditorrenderer" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PanelCellEditorRenderer.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/panelcelleditorrenderer" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PanelCellEditorRenderer.html" />
 </project>

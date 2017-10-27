@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SortTree" />
   <property name="jnlp.Name"     value="SortTree" />
   <property name="jnlp.name"     value="sorttree" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sorttree/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SortTree.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sorttree/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SortTree.html" />
 </project>

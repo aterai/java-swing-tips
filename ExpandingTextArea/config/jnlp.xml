@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ExpandingTextArea" />
   <property name="jnlp.Name"     value="ExpandingTextArea" />
   <property name="jnlp.name"     value="expandingtextarea" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/expandingtextarea/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExpandingTextArea.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/expandingtextarea/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ExpandingTextArea.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MultiLineLabel" />
   <property name="jnlp.Name"     value="MultiLineLabel" />
   <property name="jnlp.name"     value="multilinelabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/multilinelabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MultiLineLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/multilinelabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MultiLineLabel.html" />
 </project>

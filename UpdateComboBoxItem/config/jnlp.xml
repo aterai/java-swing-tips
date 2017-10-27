@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UpdateComboBoxItem" />
   <property name="jnlp.Name"     value="UpdateComboBoxItem" />
   <property name="jnlp.name"     value="updatecomboboxitem" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/updatecomboboxitem/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UpdateComboBoxItem.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/updatecomboboxitem/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UpdateComboBoxItem.html" />
 </project>

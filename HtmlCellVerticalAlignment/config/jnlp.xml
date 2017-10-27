@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HtmlCellVerticalAlignment" />
   <property name="jnlp.Name"     value="HtmlCellVerticalAlignment" />
   <property name="jnlp.name"     value="htmlcellverticalalignment" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/htmlcellverticalalignment" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HtmlCellVerticalAlignment.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/htmlcellverticalalignment" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HtmlCellVerticalAlignment.html" />
 </project>

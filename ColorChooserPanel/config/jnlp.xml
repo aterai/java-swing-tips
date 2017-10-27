@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColorChooserPanel" />
   <property name="jnlp.Name"     value="ColorChooserPanel" />
   <property name="jnlp.name"     value="colorchooserpanel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/colorchooserpanel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColorChooserPanel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/colorchooserpanel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColorChooserPanel.html" />
 </project>

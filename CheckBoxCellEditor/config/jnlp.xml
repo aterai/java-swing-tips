@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckBoxCellEditor" />
   <property name="jnlp.Name"     value="CheckBoxCellEditor" />
   <property name="jnlp.name"     value="checkboxcelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkboxcelleditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckBoxCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkboxcelleditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckBoxCellEditor.html" />
 </project>

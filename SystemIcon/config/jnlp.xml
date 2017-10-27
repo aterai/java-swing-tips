@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SystemIcon" />
   <property name="jnlp.Name"     value="SystemIcon" />
   <property name="jnlp.name"     value="systemicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/systemicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SystemIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/systemicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SystemIcon.html" />
 </project>

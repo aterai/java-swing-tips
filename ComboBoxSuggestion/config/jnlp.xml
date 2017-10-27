@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxSuggestion" />
   <property name="jnlp.Name"     value="ComboBoxSuggestion" />
   <property name="jnlp.name"     value="comboboxsuggestion" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxsuggestion/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxSuggestion.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxsuggestion/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxSuggestion.html" />
 </project>

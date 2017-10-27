@@ -21,10 +21,7 @@ else
   PS=":"
 fi
 
-LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}./target/classes
-for i in ./lib/*; do
-  LOCALCLASSPATH=$LOCALCLASSPATH${PS}$i
-done
+LOCALCLASSPATH=target/classes${PS}lib/*
 
 echo Running with classpath $LOCALCLASSPATH
 echo Starting...

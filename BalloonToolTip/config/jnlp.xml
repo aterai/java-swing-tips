@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BalloonToolTip" />
   <property name="jnlp.Name"     value="BalloonToolTip" />
   <property name="jnlp.name"     value="balloontooltip" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/balloontooltip/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BalloonToolTip.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/balloontooltip/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BalloonToolTip.html" />
 </project>

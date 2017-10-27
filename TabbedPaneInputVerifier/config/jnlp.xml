@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabbedPaneInputVerifier" />
   <property name="jnlp.Name"     value="TabbedPaneInputVerifier" />
   <property name="jnlp.name"     value="tabbedpaneinputverifier" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabbedpaneinputverifier" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabbedPaneInputVerifier.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabbedpaneinputverifier" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabbedPaneInputVerifier.html" />
 </project>

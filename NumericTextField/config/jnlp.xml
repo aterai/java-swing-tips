@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NumericTextField" />
   <property name="jnlp.Name"     value="NumericTextField" />
   <property name="jnlp.name"     value="numerictextfield" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/numerictextfield/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NumericTextField.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/numerictextfield/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NumericTextField.html" />
 </project>

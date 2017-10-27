@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutoWrapTableCell" />
   <property name="jnlp.Name"     value="AutoWrapTableCell" />
   <property name="jnlp.name"     value="autowraptablecell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/autowraptablecell/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutoWrapTableCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/autowraptablecell/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutoWrapTableCell.html" />
 </project>

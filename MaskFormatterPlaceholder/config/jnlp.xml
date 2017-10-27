@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MaskFormatterPlaceholder" />
   <property name="jnlp.Name"     value="MaskFormatterPlaceholder" />
   <property name="jnlp.name"     value="maskformatterplaceholder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/maskformatterplaceholder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MaskFormatterPlaceholder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/maskformatterplaceholder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MaskFormatterPlaceholder.html" />
 </project>

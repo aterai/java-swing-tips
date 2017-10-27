@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST EmptySelectionList" />
   <property name="jnlp.Name"     value="EmptySelectionList" />
   <property name="jnlp.name"     value="emptyselectionlist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/emptyselectionlist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/EmptySelectionList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/emptyselectionlist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/EmptySelectionList.html" />
 </project>

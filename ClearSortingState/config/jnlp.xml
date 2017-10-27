@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClearSortingState" />
   <property name="jnlp.Name"     value="ClearSortingState" />
   <property name="jnlp.name"     value="clearsortingstate" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clearsortingstate/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClearSortingState.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clearsortingstate/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClearSortingState.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BigDecimalSpinnerModel" />
   <property name="jnlp.Name"     value="BigDecimalSpinnerModel" />
   <property name="jnlp.name"     value="bigdecimalspinnermodel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/bigdecimalspinnermodel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BigDecimalSpinnerModel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/bigdecimalspinnermodel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BigDecimalSpinnerModel.html" />
 </project>

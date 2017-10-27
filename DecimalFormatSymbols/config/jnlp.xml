@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DecimalFormatSymbols" />
   <property name="jnlp.Name"     value="DecimalFormatSymbols" />
   <property name="jnlp.name"     value="decimalformatsymbols" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/decimalformatsymbols/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DecimalFormatSymbols.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/decimalformatsymbols/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DecimalFormatSymbols.html" />
 </project>

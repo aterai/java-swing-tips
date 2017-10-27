@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GetComponentsRecursively" />
   <property name="jnlp.Name"     value="GetComponentsRecursively" />
   <property name="jnlp.name"     value="getcomponentsrecursively" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/getcomponentsrecursively/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GetComponentsRecursively.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/getcomponentsrecursively/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GetComponentsRecursively.html" />
 </project>

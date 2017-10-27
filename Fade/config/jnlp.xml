@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST Fade" />
   <property name="jnlp.Name"     value="Fade" />
   <property name="jnlp.name"     value="fade" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fade/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/Fade.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fade/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Fade.html" />
 </project>

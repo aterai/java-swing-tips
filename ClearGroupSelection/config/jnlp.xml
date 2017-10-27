@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClearGroupSelection" />
   <property name="jnlp.Name"     value="ClearGroupSelection" />
   <property name="jnlp.name"     value="cleargroupselection" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/cleargroupselection/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClearGroupSelection.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/cleargroupselection/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClearGroupSelection.html" />
 </project>

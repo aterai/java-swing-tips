@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TitledSeparator" />
   <property name="jnlp.Name"     value="TitledSeparator" />
   <property name="jnlp.name"     value="titledseparator" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/titledseparator/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TitledSeparator.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/titledseparator/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TitledSeparator.html" />
 </project>

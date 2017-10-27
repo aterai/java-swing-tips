@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CellTextAlignment" />
   <property name="jnlp.Name"     value="CellTextAlignment" />
   <property name="jnlp.name"     value="celltextalignment" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/celltextalignment/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CellTextAlignment.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/celltextalignment/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CellTextAlignment.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AddRow" />
   <property name="jnlp.Name"     value="AddRow" />
   <property name="jnlp.name"     value="addrow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/addrow/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AddRow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/addrow/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AddRow.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BlinkRate" />
   <property name="jnlp.Name"     value="BlinkRate" />
   <property name="jnlp.name"     value="blinkrate" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/blinkrate/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BlinkRate.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/blinkrate/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BlinkRate.html" />
 </project>

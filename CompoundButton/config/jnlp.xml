@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CompoundButton" />
   <property name="jnlp.Name"     value="CompoundButton" />
   <property name="jnlp.name"     value="compoundbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/compoundbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CompoundButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/compoundbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CompoundButton.html" />
 </project>

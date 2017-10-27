@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RadioButtonMenuItemIcon" />
   <property name="jnlp.Name"     value="RadioButtonMenuItemIcon" />
   <property name="jnlp.name"     value="radiobuttonmenuitemicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/radiobuttonmenuitemicon" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RadioButtonMenuItemIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/radiobuttonmenuitemicon" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RadioButtonMenuItemIcon.html" />
 </project>

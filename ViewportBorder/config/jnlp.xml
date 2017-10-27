@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ViewportBorder" />
   <property name="jnlp.Name"     value="ViewportBorder" />
   <property name="jnlp.name"     value="viewportborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/viewportborder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ViewportBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/viewportborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ViewportBorder.html" />
 </project>

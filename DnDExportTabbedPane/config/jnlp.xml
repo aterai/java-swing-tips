@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DnDExportTabbedPane" />
   <property name="jnlp.Name"     value="DnDExportTabbedPane" />
   <property name="jnlp.name"     value="dndexporttabbedpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndexporttabbedpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDExportTabbedPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dndexporttabbedpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DnDExportTabbedPane.html" />
 </project>

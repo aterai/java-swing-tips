@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollIncrement" />
   <property name="jnlp.Name"     value="ScrollIncrement" />
   <property name="jnlp.name"     value="scrollincrement" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollincrement/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollIncrement.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollincrement/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollIncrement.html" />
 </project>

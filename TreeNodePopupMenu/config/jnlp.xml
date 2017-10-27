@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeNodePopupMenu" />
   <property name="jnlp.Name"     value="TreeNodePopupMenu" />
   <property name="jnlp.name"     value="treenodepopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treenodepopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeNodePopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treenodepopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeNodePopupMenu.html" />
 </project>

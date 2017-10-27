@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FrameIcon" />
   <property name="jnlp.Name"     value="FrameIcon" />
   <property name="jnlp.name"     value="frameicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/frameicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FrameIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/frameicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FrameIcon.html" />
 </project>

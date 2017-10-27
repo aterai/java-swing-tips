@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ScrollingCellEditor" />
   <property name="jnlp.Name"     value="ScrollingCellEditor" />
   <property name="jnlp.name"     value="scrollingcelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/scrollingcelleditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ScrollingCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollingcelleditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollingCellEditor.html" />
 </project>

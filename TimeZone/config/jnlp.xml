@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TimeZone" />
   <property name="jnlp.Name"     value="TimeZone" />
   <property name="jnlp.name"     value="timezone" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/timezone/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TimeZone.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/timezone/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TimeZone.html" />
 </project>

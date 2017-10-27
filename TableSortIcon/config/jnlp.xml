@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableSortIcon" />
   <property name="jnlp.Name"     value="TableSortIcon" />
   <property name="jnlp.name"     value="tablesorticon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tablesorticon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableSortIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablesorticon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableSortIcon.html" />
 </project>

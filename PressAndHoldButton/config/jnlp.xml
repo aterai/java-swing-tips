@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PressAndHoldButton" />
   <property name="jnlp.Name"     value="PressAndHoldButton" />
   <property name="jnlp.name"     value="pressandholdbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pressandholdbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PressAndHoldButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/pressandholdbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PressAndHoldButton.html" />
 </project>

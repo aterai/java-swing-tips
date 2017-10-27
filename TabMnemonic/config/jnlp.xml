@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabMnemonic" />
   <property name="jnlp.Name"     value="TabMnemonic" />
   <property name="jnlp.name"     value="tabmnemonic" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabmnemonic/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabMnemonic.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabmnemonic/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabMnemonic.html" />
 </project>

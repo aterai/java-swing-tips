@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FocusAfterClosingCurrentTab" />
   <property name="jnlp.Name"     value="FocusAfterClosingCurrentTab" />
   <property name="jnlp.name"     value="focusafterclosingcurrenttab" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/focusafterclosingcurrenttab" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FocusAfterClosingCurrentTab.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/focusafterclosingcurrenttab" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FocusAfterClosingCurrentTab.html" />
 </project>

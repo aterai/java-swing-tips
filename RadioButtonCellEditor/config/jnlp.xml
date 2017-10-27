@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RadioButtonCellEditor" />
   <property name="jnlp.Name"     value="RadioButtonCellEditor" />
   <property name="jnlp.name"     value="radiobuttoncelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/radiobuttoncelleditor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RadioButtonCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/radiobuttoncelleditor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RadioButtonCellEditor.html" />
 </project>

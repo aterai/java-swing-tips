@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TextFieldOnReadOnlyTextPane" />
   <property name="jnlp.Name"     value="TextFieldOnReadOnlyTextPane" />
   <property name="jnlp.name"     value="textfieldonreadonlytextpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/textfieldonreadonlytextpane" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TextFieldOnReadOnlyTextPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/textfieldonreadonlytextpane" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TextFieldOnReadOnlyTextPane.html" />
 </project>

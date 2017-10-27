@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST UIDefaultsOverrides" />
   <property name="jnlp.Name"     value="UIDefaultsOverrides" />
   <property name="jnlp.name"     value="uidefaultsoverrides" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/uidefaultsoverrides/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/UIDefaultsOverrides.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/uidefaultsoverrides/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/UIDefaultsOverrides.html" />
 </project>

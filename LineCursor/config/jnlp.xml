@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineCursor" />
   <property name="jnlp.Name"     value="LineCursor" />
   <property name="jnlp.name"     value="linecursor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linecursor/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineCursor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linecursor/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineCursor.html" />
 </project>

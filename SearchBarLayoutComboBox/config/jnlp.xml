@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SearchBarLayoutComboBox" />
   <property name="jnlp.Name"     value="SearchBarLayoutComboBox" />
   <property name="jnlp.name"     value="searchbarlayoutcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/searchbarlayoutcombobox" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SearchBarLayoutComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/searchbarlayoutcombobox" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SearchBarLayoutComboBox.html" />
 </project>

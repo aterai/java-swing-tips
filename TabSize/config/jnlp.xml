@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabSize" />
   <property name="jnlp.Name"     value="TabSize" />
   <property name="jnlp.name"     value="tabsize" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabsize/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabSize.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabsize/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabSize.html" />
 </project>

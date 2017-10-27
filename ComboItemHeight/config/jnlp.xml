@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboItemHeight" />
   <property name="jnlp.Name"     value="ComboItemHeight" />
   <property name="jnlp.name"     value="comboitemheight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboitemheight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboItemHeight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboitemheight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboItemHeight.html" />
 </project>

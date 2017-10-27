@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeNodeFilter" />
   <property name="jnlp.Name"     value="TreeNodeFilter" />
   <property name="jnlp.name"     value="treenodefilter" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treenodefilter/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeNodeFilter.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treenodefilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeNodeFilter.html" />
 </project>

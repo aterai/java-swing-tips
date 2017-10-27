@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FlatteningPathIterator" />
   <property name="jnlp.Name"     value="FlatteningPathIterator" />
   <property name="jnlp.name"     value="flatteningpathiterator" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/flatteningpathiterator/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FlatteningPathIterator.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/flatteningpathiterator/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FlatteningPathIterator.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TrayIconPopupMenu" />
   <property name="jnlp.Name"     value="TrayIconPopupMenu" />
   <property name="jnlp.name"     value="trayiconpopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/trayiconpopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TrayIconPopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/trayiconpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TrayIconPopupMenu.html" />
 </project>

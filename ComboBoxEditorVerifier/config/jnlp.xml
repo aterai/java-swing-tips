@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxEditorVerifier" />
   <property name="jnlp.Name"     value="ComboBoxEditorVerifier" />
   <property name="jnlp.name"     value="comboboxeditorverifier" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxeditorverifier/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxEditorVerifier.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxeditorverifier/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxEditorVerifier.html" />
 </project>

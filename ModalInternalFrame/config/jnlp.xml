@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ModalInternalFrame" />
   <property name="jnlp.Name"     value="ModalInternalFrame" />
   <property name="jnlp.name"     value="modalinternalframe" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/modalinternalframe/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ModalInternalFrame.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/modalinternalframe/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ModalInternalFrame.html" />
 </project>

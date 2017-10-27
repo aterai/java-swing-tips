@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DoubleClick" />
   <property name="jnlp.Name"     value="DoubleClick" />
   <property name="jnlp.name"     value="doubleclick" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/doubleclick/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DoubleClick.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/doubleclick/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DoubleClick.html" />
 </project>

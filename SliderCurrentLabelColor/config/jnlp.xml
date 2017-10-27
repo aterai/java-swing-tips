@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SliderCurrentLabelColor" />
   <property name="jnlp.Name"     value="SliderCurrentLabelColor" />
   <property name="jnlp.name"     value="slidercurrentlabelcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/slidercurrentlabelcolor" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SliderCurrentLabelColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/slidercurrentlabelcolor" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SliderCurrentLabelColor.html" />
 </project>

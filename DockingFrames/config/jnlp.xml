@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DockingFrames" />
   <property name="jnlp.Name"     value="DockingFrames" />
   <property name="jnlp.name"     value="dockingframes" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dockingframes/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DockingFrames.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dockingframes/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DockingFrames.html" />
 </project>

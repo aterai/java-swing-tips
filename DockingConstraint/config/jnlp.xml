@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DockingConstraint" />
   <property name="jnlp.Name"     value="DockingConstraint" />
   <property name="jnlp.name"     value="dockingconstraint" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dockingconstraint/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DockingConstraint.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dockingconstraint/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DockingConstraint.html" />
 </project>

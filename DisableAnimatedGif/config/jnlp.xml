@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisableAnimatedGif" />
   <property name="jnlp.Name"     value="DisableAnimatedGif" />
   <property name="jnlp.name"     value="disableanimatedgif" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disableanimatedgif/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisableAnimatedGif.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disableanimatedgif/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisableAnimatedGif.html" />
 </project>

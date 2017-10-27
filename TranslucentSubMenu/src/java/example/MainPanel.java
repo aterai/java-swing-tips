@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://ateraimemo.com/Swing/TranslucentPopupMenu.html
+// https://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
     private static final Color ALPHA_ZERO = new Color(0x0, true);
     private static final Color POPUP_BACK = new Color(250, 250, 250, 200);

@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MYSITE = "http://ateraimemo.com/";
+    private static final String MYSITE = "https://ateraimemo.com/";
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());

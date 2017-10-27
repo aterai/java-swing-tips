@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxEnterSelectablePopup" />
   <property name="jnlp.Name"     value="ComboBoxEnterSelectablePopup" />
   <property name="jnlp.name"     value="comboboxenterselectablepopup" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxenterselectablepopup/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxEnterSelectablePopup.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxenterselectablepopup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxEnterSelectablePopup.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectionKeeper" />
   <property name="jnlp.Name"     value="SelectionKeeper" />
   <property name="jnlp.name"     value="selectionkeeper" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectionkeeper/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectionKeeper.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectionkeeper/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectionKeeper.html" />
 </project>

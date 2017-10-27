@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineFocusTable" />
   <property name="jnlp.Name"     value="LineFocusTable" />
   <property name="jnlp.name"     value="linefocustable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linefocustable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineFocusTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linefocustable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineFocusTable.html" />
 </project>

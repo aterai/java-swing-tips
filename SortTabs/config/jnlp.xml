@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SortTabs" />
   <property name="jnlp.Name"     value="SortTabs" />
   <property name="jnlp.name"     value="sorttabs" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sorttabs/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SortTabs.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sorttabs/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SortTabs.html" />
 </project>

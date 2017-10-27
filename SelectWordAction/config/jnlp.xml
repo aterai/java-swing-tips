@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectWordAction" />
   <property name="jnlp.Name"     value="SelectWordAction" />
   <property name="jnlp.name"     value="selectwordaction" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectwordaction/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectWordAction.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectwordaction/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectWordAction.html" />
 </project>

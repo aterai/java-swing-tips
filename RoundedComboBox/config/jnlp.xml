@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RoundedComboBox" />
   <property name="jnlp.Name"     value="RoundedComboBox" />
   <property name="jnlp.name"     value="roundedcombobox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/roundedcombobox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RoundedComboBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/roundedcombobox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RoundedComboBox.html" />
 </project>

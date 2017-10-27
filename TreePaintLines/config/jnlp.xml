@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreePaintLines" />
   <property name="jnlp.Name"     value="TreePaintLines" />
   <property name="jnlp.name"     value="treepaintlines" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treepaintlines/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreePaintLines.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treepaintlines/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreePaintLines.html" />
 </project>

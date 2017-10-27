@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RegisterFont" />
   <property name="jnlp.Name"     value="RegisterFont" />
   <property name="jnlp.name"     value="registerfont" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/registerfont/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RegisterFont.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/registerfont/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RegisterFont.html" />
 </project>

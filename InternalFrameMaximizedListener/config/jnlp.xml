@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InternalFrameMaximizedListener" />
   <property name="jnlp.Name"     value="InternalFrameMaximizedListener" />
   <property name="jnlp.name"     value="internalframemaximizedlistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/internalframemaximizedlistener" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InternalFrameMaximizedListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/internalframemaximizedlistener" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InternalFrameMaximizedListener.html" />
 </project>

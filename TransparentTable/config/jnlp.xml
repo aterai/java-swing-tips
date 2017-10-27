@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TransparentTable" />
   <property name="jnlp.Name"     value="TransparentTable" />
   <property name="jnlp.name"     value="transparenttable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/transparenttable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TransparentTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/transparenttable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TransparentTable.html" />
 </project>

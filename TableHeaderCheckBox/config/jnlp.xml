@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TableHeaderCheckBox" />
   <property name="jnlp.Name"     value="TableHeaderCheckBox" />
   <property name="jnlp.name"     value="tableheadercheckbox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tableheadercheckbox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TableHeaderCheckBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tableheadercheckbox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableHeaderCheckBox.html" />
 </project>

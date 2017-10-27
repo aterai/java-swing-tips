@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ClipboardService" />
   <property name="jnlp.Name"     value="ClipboardService" />
   <property name="jnlp.name"     value="clipboardservice" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/clipboardservice/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ClipboardService.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/clipboardservice/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ClipboardService.html" />
 </project>

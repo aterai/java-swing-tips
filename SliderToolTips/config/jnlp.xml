@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SliderToolTips" />
   <property name="jnlp.Name"     value="SliderToolTips" />
   <property name="jnlp.name"     value="slidertooltips" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/slidertooltips/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SliderToolTips.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/slidertooltips/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SliderToolTips.html" />
 </project>

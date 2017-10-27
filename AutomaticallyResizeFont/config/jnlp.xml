@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AutomaticallyResizeFont" />
   <property name="jnlp.Name"     value="AutomaticallyResizeFont" />
   <property name="jnlp.name"     value="automaticallyresizefont" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/automaticallyresizefont" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AutomaticallyResizeFont.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/automaticallyresizefont" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AutomaticallyResizeFont.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SizeLayoutManager" />
   <property name="jnlp.Name"     value="SizeLayoutManager" />
   <property name="jnlp.name"     value="sizelayoutmanager" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sizelayoutmanager/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SizeLayoutManager.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sizelayoutmanager/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SizeLayoutManager.html" />
 </project>

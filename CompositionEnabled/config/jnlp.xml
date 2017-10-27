@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CompositionEnabled" />
   <property name="jnlp.Name"     value="CompositionEnabled" />
   <property name="jnlp.name"     value="compositionenabled" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/compositionenabled/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CompositionEnabled.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/compositionenabled/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CompositionEnabled.html" />
 </project>

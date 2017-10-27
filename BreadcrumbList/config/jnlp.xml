@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BreadcrumbList" />
   <property name="jnlp.Name"     value="BreadcrumbList" />
   <property name="jnlp.name"     value="breadcrumblist" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/breadcrumblist/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BreadcrumbList.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/breadcrumblist/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BreadcrumbList.html" />
 </project>

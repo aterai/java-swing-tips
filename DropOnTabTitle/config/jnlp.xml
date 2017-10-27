@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DropOnTabTitle" />
   <property name="jnlp.Name"     value="DropOnTabTitle" />
   <property name="jnlp.name"     value="dropontabtitle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dropontabtitle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DropOnTabTitle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dropontabtitle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DropOnTabTitle.html" />
 </project>

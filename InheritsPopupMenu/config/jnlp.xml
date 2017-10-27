@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InheritsPopupMenu" />
   <property name="jnlp.Name"     value="InheritsPopupMenu" />
   <property name="jnlp.name"     value="inheritspopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inheritspopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InheritsPopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/inheritspopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InheritsPopupMenu.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BoldMetal" />
   <property name="jnlp.Name"     value="BoldMetal" />
   <property name="jnlp.name"     value="boldmetal" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/boldmetal/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BoldMetal.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/boldmetal/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BoldMetal.html" />
 </project>

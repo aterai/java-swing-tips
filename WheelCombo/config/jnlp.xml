@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WheelCombo" />
   <property name="jnlp.Name"     value="WheelCombo" />
   <property name="jnlp.name"     value="wheelcombo" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/wheelcombo/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WheelCombo.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/wheelcombo/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WheelCombo.html" />
 </project>

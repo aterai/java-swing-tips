@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GridScrollAnimation" />
   <property name="jnlp.Name"     value="GridScrollAnimation" />
   <property name="jnlp.name"     value="gridscrollanimation" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/gridscrollanimation/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GridScrollAnimation.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gridscrollanimation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GridScrollAnimation.html" />
 </project>

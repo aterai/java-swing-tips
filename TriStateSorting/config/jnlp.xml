@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TriStateSorting" />
   <property name="jnlp.Name"     value="TriStateSorting" />
   <property name="jnlp.name"     value="tristatesorting" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tristatesorting/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TriStateSorting.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tristatesorting/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TriStateSorting.html" />
 </project>

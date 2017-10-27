@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SelectAllButton" />
   <property name="jnlp.Name"     value="SelectAllButton" />
   <property name="jnlp.name"     value="selectallbutton" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/selectallbutton/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SelectAllButton.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectallbutton/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectAllButton.html" />
 </project>

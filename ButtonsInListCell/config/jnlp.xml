@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ButtonsInListCell" />
   <property name="jnlp.Name"     value="ButtonsInListCell" />
   <property name="jnlp.name"     value="buttonsinlistcell" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/buttonsinlistcell/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ButtonsInListCell.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/buttonsinlistcell/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ButtonsInListCell.html" />
 </project>

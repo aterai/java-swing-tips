@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PersistenceDelegate" />
   <property name="jnlp.Name"     value="PersistenceDelegate" />
   <property name="jnlp.name"     value="persistencedelegate" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/persistencedelegate/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PersistenceDelegate.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/persistencedelegate/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PersistenceDelegate.html" />
 </project>

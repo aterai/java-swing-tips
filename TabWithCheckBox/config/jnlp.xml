@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TabWithCheckBox" />
   <property name="jnlp.Name"     value="TabWithCheckBox" />
   <property name="jnlp.name"     value="tabwithcheckbox" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/tabwithcheckbox/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TabWithCheckBox.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabwithcheckbox/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabWithCheckBox.html" />
 </project>

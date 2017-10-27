@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AnimatedTreeNode" />
   <property name="jnlp.Name"     value="AnimatedTreeNode" />
   <property name="jnlp.name"     value="animatedtreenode" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/animatedtreenode/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AnimatedTreeNode.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/animatedtreenode/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AnimatedTreeNode.html" />
 </project>

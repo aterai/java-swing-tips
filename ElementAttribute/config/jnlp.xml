@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ElementAttribute" />
   <property name="jnlp.Name"     value="ElementAttribute" />
   <property name="jnlp.name"     value="elementattribute" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/elementattribute/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ElementAttribute.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/elementattribute/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ElementAttribute.html" />
 </project>

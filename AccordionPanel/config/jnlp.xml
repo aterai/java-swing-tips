@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST AccordionPanel" />
   <property name="jnlp.Name"     value="AccordionPanel" />
   <property name="jnlp.name"     value="accordionpanel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/accordionpanel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/AccordionPanel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/accordionpanel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AccordionPanel.html" />
 </project>

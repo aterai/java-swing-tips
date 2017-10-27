@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeNodeCollapseVeto" />
   <property name="jnlp.Name"     value="TreeNodeCollapseVeto" />
   <property name="jnlp.name"     value="treenodecollapseveto" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treenodecollapseveto/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeNodeCollapseVeto.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treenodecollapseveto/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeNodeCollapseVeto.html" />
 </project>

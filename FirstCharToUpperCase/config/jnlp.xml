@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FirstCharToUpperCase" />
   <property name="jnlp.Name"     value="FirstCharToUpperCase" />
   <property name="jnlp.name"     value="firstchartouppercase" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/firstchartouppercase/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FirstCharToUpperCase.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/firstchartouppercase/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FirstCharToUpperCase.html" />
 </project>

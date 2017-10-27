@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeBackgroundSelectionColor" />
   <property name="jnlp.Name"     value="TreeBackgroundSelectionColor" />
   <property name="jnlp.name"     value="treebackgroundselectioncolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treebackgroundselectioncolor" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeBackgroundSelectionColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treebackgroundselectioncolor" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeBackgroundSelectionColor.html" />
 </project>

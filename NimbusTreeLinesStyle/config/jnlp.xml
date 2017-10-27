@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NimbusTreeLinesStyle" />
   <property name="jnlp.Name"     value="NimbusTreeLinesStyle" />
   <property name="jnlp.name"     value="nimbustreelinesstyle" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/nimbustreelinesstyle/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NimbusTreeLinesStyle.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/nimbustreelinesstyle/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NimbusTreeLinesStyle.html" />
 </project>

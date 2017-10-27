@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CheckBoxNodeTree" />
   <property name="jnlp.Name"     value="CheckBoxNodeTree" />
   <property name="jnlp.name"     value="checkboxnodetree" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/checkboxnodetree/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CheckBoxNodeTree.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkboxnodetree/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckBoxNodeTree.html" />
 </project>

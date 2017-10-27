@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SystemTray" />
   <property name="jnlp.Name"     value="SystemTray" />
   <property name="jnlp.name"     value="systemtray" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/systemtray/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SystemTray.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/systemtray/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SystemTray.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColumnHeaderHighlight" />
   <property name="jnlp.Name"     value="ColumnHeaderHighlight" />
   <property name="jnlp.name"     value="columnheaderhighlight" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/columnheaderhighlight/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColumnHeaderHighlight.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/columnheaderhighlight/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColumnHeaderHighlight.html" />
 </project>

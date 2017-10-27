@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LookAndFeelChangeListener" />
   <property name="jnlp.Name"     value="LookAndFeelChangeListener" />
   <property name="jnlp.name"     value="lookandfeelchangelistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lookandfeelchangelistener" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LookAndFeelChangeListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/lookandfeelchangelistener" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LookAndFeelChangeListener.html" />
 </project>

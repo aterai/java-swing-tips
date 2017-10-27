@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ToolBarLayout" />
   <property name="jnlp.Name"     value="ToolBarLayout" />
   <property name="jnlp.name"     value="toolbarlayout" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/toolbarlayout/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ToolBarLayout.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/toolbarlayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolBarLayout.html" />
 </project>

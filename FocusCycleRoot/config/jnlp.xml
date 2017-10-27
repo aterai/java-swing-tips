@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FocusCycleRoot" />
   <property name="jnlp.Name"     value="FocusCycleRoot" />
   <property name="jnlp.name"     value="focuscycleroot" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/focuscycleroot/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FocusCycleRoot.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/focuscycleroot/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FocusCycleRoot.html" />
 </project>

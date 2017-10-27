@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BoxLayoutAlignment" />
   <property name="jnlp.Name"     value="BoxLayoutAlignment" />
   <property name="jnlp.name"     value="boxlayoutalignment" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/boxlayoutalignment/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BoxLayoutAlignment.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/boxlayoutalignment/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BoxLayoutAlignment.html" />
 </project>

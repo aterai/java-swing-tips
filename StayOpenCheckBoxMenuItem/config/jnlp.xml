@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StayOpenCheckBoxMenuItem" />
   <property name="jnlp.Name"     value="StayOpenCheckBoxMenuItem" />
   <property name="jnlp.name"     value="stayopencheckboxmenuitem" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/stayopencheckboxmenuitem" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StayOpenCheckBoxMenuItem.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stayopencheckboxmenuitem" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StayOpenCheckBoxMenuItem.html" />
 </project>

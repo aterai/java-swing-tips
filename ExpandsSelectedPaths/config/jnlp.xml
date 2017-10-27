@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ExpandsSelectedPaths" />
   <property name="jnlp.Name"     value="ExpandsSelectedPaths" />
   <property name="jnlp.name"     value="expandsselectedpaths" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/expandsselectedpaths/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ExpandsSelectedPaths.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/expandsselectedpaths/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ExpandsSelectedPaths.html" />
 </project>

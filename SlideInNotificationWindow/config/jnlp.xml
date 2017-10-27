@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SlideInNotificationWindow" />
   <property name="jnlp.Name"     value="SlideInNotificationWindow" />
   <property name="jnlp.name"     value="slideinnotificationwindow" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/slideinnotificationwindow" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SlideInNotificationWindow.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/slideinnotificationwindow" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SlideInNotificationWindow.html" />
 </project>

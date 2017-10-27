@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CardLayoutTabbedPane" />
   <property name="jnlp.Name"     value="CardLayoutTabbedPane" />
   <property name="jnlp.name"     value="cardlayouttabbedpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/cardlayouttabbedpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CardLayoutTabbedPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/cardlayouttabbedpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CardLayoutTabbedPane.html" />
 </project>

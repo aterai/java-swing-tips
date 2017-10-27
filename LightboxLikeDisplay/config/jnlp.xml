@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LightboxLikeDisplay" />
   <property name="jnlp.Name"     value="LightboxLikeDisplay" />
   <property name="jnlp.name"     value="lightboxlikedisplay" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/lightboxlikedisplay/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LightboxLikeDisplay.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/lightboxlikedisplay/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LightboxLikeDisplay.html" />
 </project>

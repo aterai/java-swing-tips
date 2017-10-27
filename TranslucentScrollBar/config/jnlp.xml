@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TranslucentScrollBar" />
   <property name="jnlp.Name"     value="TranslucentScrollBar" />
   <property name="jnlp.name"     value="translucentscrollbar" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/translucentscrollbar/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TranslucentScrollBar.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentscrollbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentScrollBar.html" />
 </project>

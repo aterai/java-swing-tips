@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DnDReorderTable" />
   <property name="jnlp.Name"     value="DnDReorderTable" />
   <property name="jnlp.name"     value="dndreordertable" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndreordertable/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDReorderTable.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dndreordertable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DnDReorderTable.html" />
 </project>

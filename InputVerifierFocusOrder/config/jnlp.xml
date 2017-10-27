@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST InputVerifierFocusOrder" />
   <property name="jnlp.Name"     value="InputVerifierFocusOrder" />
   <property name="jnlp.name"     value="inputverifierfocusorder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/inputverifierfocusorder" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/InputVerifierFocusOrder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/inputverifierfocusorder" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InputVerifierFocusOrder.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SurrendersFocusOnKeystroke" />
   <property name="jnlp.Name"     value="SurrendersFocusOnKeystroke" />
   <property name="jnlp.name"     value="surrendersfocusonkeystroke" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/surrendersfocusonkeystroke" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SurrendersFocusOnKeystroke.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/surrendersfocusonkeystroke" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SurrendersFocusOnKeystroke.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST LineSpacing" />
   <property name="jnlp.Name"     value="LineSpacing" />
   <property name="jnlp.name"     value="linespacing" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/linespacing/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/LineSpacing.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/linespacing/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LineSpacing.html" />
 </project>

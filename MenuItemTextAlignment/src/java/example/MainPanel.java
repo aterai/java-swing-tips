@@ -48,7 +48,8 @@ public final class MainPanel extends JPanel {
         menuBar.add(makeMenu("Test1", item1));
         menuBar.add(makeMenu("Test2", item2));
         menuBar.add(makeMenu("Test3", item3));
-        EventQueue.invokeLater(() -> ((JFrame) SwingUtilities.getWindowAncestor(this)).setJMenuBar(menuBar));
+        // EventQueue.invokeLater(() -> ((JFrame) SwingUtilities.getWindowAncestor(this)).setJMenuBar(menuBar));
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));

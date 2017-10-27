@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST HeaderFont" />
   <property name="jnlp.Name"     value="HeaderFont" />
   <property name="jnlp.name"     value="headerfont" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/headerfont/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/HeaderFont.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/headerfont/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/HeaderFont.html" />
 </project>

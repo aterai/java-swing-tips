@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CompoundBorder" />
   <property name="jnlp.Name"     value="CompoundBorder" />
   <property name="jnlp.name"     value="compoundborder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/compoundborder/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CompoundBorder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/compoundborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CompoundBorder.html" />
 </project>

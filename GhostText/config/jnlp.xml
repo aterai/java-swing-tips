@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST GhostText" />
   <property name="jnlp.Name"     value="GhostText" />
   <property name="jnlp.name"     value="ghosttext" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/ghosttext/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/GhostText.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/ghosttext/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GhostText.html" />
 </project>

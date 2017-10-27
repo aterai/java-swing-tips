@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DragHereIcon" />
   <property name="jnlp.Name"     value="DragHereIcon" />
   <property name="jnlp.name"     value="draghereicon" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/draghereicon/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DragHereIcon.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/draghereicon/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DragHereIcon.html" />
 </project>

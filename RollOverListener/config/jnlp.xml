@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RollOverListener" />
   <property name="jnlp.Name"     value="RollOverListener" />
   <property name="jnlp.name"     value="rolloverlistener" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/rolloverlistener/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RollOverListener.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rolloverlistener/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RollOverListener.html" />
 </project>

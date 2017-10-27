@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxPlaceholder" />
   <property name="jnlp.Name"     value="ComboBoxPlaceholder" />
   <property name="jnlp.name"     value="comboboxplaceholder" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxplaceholder" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxPlaceholder.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxplaceholder" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxPlaceholder.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DisabledHeader" />
   <property name="jnlp.Name"     value="DisabledHeader" />
   <property name="jnlp.name"     value="disabledheader" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/disabledheader/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DisabledHeader.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/disabledheader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DisabledHeader.html" />
 </project>

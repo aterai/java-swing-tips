@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST WheelOverNestedScrollPane" />
   <property name="jnlp.Name"     value="WheelOverNestedScrollPane" />
   <property name="jnlp.name"     value="wheelovernestedscrollpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/wheelovernestedscrollpane" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/WheelOverNestedScrollPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/wheelovernestedscrollpane" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WheelOverNestedScrollPane.html" />
 </project>

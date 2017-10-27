@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DnDLayerTabbedPane" />
   <property name="jnlp.Name"     value="DnDLayerTabbedPane" />
   <property name="jnlp.name"     value="dndlayertabbedpane" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/dndlayertabbedpane/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/DnDLayerTabbedPane.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dndlayertabbedpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DnDLayerTabbedPane.html" />
 </project>

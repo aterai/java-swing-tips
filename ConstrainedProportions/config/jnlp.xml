@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ConstrainedProportions" />
   <property name="jnlp.Name"     value="ConstrainedProportions" />
   <property name="jnlp.name"     value="constrainedproportions" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/constrainedproportions/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ConstrainedProportions.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/constrainedproportions/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ConstrainedProportions.html" />
 </project>

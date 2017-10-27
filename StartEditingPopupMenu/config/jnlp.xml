@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST StartEditingPopupMenu" />
   <property name="jnlp.Name"     value="StartEditingPopupMenu" />
   <property name="jnlp.name"     value="starteditingpopupmenu" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/starteditingpopupmenu/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/StartEditingPopupMenu.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/starteditingpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StartEditingPopupMenu.html" />
 </project>

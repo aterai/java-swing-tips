@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 //             });
 //         }
 
-        //http://ateraimemo.com/Swing/TerminateEdit.html
+        //https://ateraimemo.com/Swing/TerminateEdit.html
         //table.getTableHeader().setReorderingAllowed(false);
         //frame.setResizeable(false);
         //or

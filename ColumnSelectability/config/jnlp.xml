@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ColumnSelectability" />
   <property name="jnlp.Name"     value="ColumnSelectability" />
   <property name="jnlp.name"     value="columnselectability" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/columnselectability/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ColumnSelectability.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/columnselectability/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColumnSelectability.html" />
 </project>

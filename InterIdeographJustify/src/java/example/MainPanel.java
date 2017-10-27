@@ -123,7 +123,7 @@ class JustifiedLabel extends JLabel {
     }
 }
 
-// // http://ateraimemo.com/Swing/JustifiedLabel.html
+// // https://ateraimemo.com/Swing/JustifiedLabel.html
 // class JustifiedLabel extends JLabel {
 //     private GlyphVector gvtext;
 //     private int prevWidth = -1;

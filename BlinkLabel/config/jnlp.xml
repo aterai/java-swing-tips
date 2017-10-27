@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BlinkLabel" />
   <property name="jnlp.Name"     value="BlinkLabel" />
   <property name="jnlp.name"     value="blinklabel" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/blinklabel/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BlinkLabel.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/blinklabel/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BlinkLabel.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ProgressStringAlignment" />
   <property name="jnlp.Name"     value="ProgressStringAlignment" />
   <property name="jnlp.name"     value="progressstringalignment" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/progressstringalignment" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ProgressStringAlignment.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/progressstringalignment" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ProgressStringAlignment.html" />
 </project>

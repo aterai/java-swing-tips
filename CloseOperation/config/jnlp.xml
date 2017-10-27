@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST CloseOperation" />
   <property name="jnlp.Name"     value="CloseOperation" />
   <property name="jnlp.name"     value="closeoperation" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/closeoperation/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/CloseOperation.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/closeoperation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CloseOperation.html" />
 </project>

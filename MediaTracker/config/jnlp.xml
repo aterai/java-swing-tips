@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST MediaTracker" />
   <property name="jnlp.Name"     value="MediaTracker" />
   <property name="jnlp.name"     value="mediatracker" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/mediatracker/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/MediaTracker.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/mediatracker/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MediaTracker.html" />
 </project>

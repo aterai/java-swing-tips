@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST NoArrowButtonComboCellEditor" />
   <property name="jnlp.Name"     value="NoArrowButtonComboCellEditor" />
   <property name="jnlp.name"     value="noarrowbuttoncombocelleditor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/noarrowbuttoncombocelleditor" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/NoArrowButtonComboCellEditor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/noarrowbuttoncombocelleditor" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NoArrowButtonComboCellEditor.html" />
 </project>

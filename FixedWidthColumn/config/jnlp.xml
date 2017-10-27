@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST FixedWidthColumn" />
   <property name="jnlp.Name"     value="FixedWidthColumn" />
   <property name="jnlp.name"     value="fixedwidthcolumn" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/fixedwidthcolumn/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/FixedWidthColumn.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/fixedwidthcolumn/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FixedWidthColumn.html" />
 </project>

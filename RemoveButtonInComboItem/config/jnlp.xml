@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST RemoveButtonInComboItem" />
   <property name="jnlp.Name"     value="RemoveButtonInComboItem" />
   <property name="jnlp.name"     value="removebuttonincomboitem" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/removebuttonincomboitem" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/RemoveButtonInComboItem.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/removebuttonincomboitem" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RemoveButtonInComboItem.html" />
 </project>

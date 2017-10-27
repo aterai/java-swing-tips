@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST SortKeyPersistence" />
   <property name="jnlp.Name"     value="SortKeyPersistence" />
   <property name="jnlp.name"     value="sortkeypersistence" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/sortkeypersistence/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/SortKeyPersistence.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sortkeypersistence/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SortKeyPersistence.html" />
 </project>

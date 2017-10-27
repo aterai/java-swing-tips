@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST BorderSeparator" />
   <property name="jnlp.Name"     value="BorderSeparator" />
   <property name="jnlp.name"     value="borderseparator" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/borderseparator/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/BorderSeparator.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/borderseparator/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/BorderSeparator.html" />
 </project>

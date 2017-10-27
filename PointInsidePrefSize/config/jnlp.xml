@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST PointInsidePrefSize" />
   <property name="jnlp.Name"     value="PointInsidePrefSize" />
   <property name="jnlp.name"     value="pointinsideprefsize" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/pointinsideprefsize/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/PointInsidePrefSize.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/pointinsideprefsize/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PointInsidePrefSize.html" />
 </project>

@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST ComboBoxForegroundColor" />
   <property name="jnlp.Name"     value="ComboBoxForegroundColor" />
   <property name="jnlp.name"     value="comboboxforegroundcolor" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/comboboxforegroundcolor" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/ComboBoxForegroundColor.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxforegroundcolor" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxForegroundColor.html" />
 </project>

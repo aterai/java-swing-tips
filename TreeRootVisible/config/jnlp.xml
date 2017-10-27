@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST TreeRootVisible" />
   <property name="jnlp.Name"     value="TreeRootVisible" />
   <property name="jnlp.name"     value="treerootvisible" />
-  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/treerootvisible/" />
-  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/TreeRootVisible.html" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/treerootvisible/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TreeRootVisible.html" />
 </project>
