@@ -15,18 +15,6 @@ public class MainPanel extends JPanel {
     protected final Timer animator = new Timer(25, null);
     protected int alpha = 10;
     protected transient BufferedImage icon;
-    protected final JButton button1 = new JButton(new AbstractAction("Fade In") {
-        @Override public void actionPerformed(ActionEvent e) {
-            mode = Fade.In;
-            animator.start();
-        }
-    });
-    protected final JButton button2 = new JButton(new AbstractAction("Fade Out") {
-        @Override public void actionPerformed(ActionEvent e) {
-            mode = Fade.Out;
-            animator.start();
-        }
-    });
 
     public MainPanel() {
         super(new BorderLayout());
@@ -58,6 +46,18 @@ public class MainPanel extends JPanel {
                 }
                 fade.repaint();
             }
+        });
+
+        JButton button1 = new JButton("Fade In");
+        button1.addActionListener(e -> {
+            mode = Fade.In;
+            animator.start();
+        });
+
+        JButton button2 = new JButton("Fade Out");
+        button2.addActionListener(e -> {
+            mode = Fade.Out;
+            animator.start();
         });
 
         add(fade);
