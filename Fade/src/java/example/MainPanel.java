@@ -35,17 +35,15 @@ public class MainPanel extends JPanel {
             }
         };
 
-        animator.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (mode == Fade.In && alpha < 10) {
-                    alpha += 1;
-                } else if (mode == Fade.Out && alpha > 0) {
-                    alpha -= 1;
-                } else {
-                    animator.stop();
-                }
-                fade.repaint();
+        animator.addActionListener(e -> {
+            if (mode == Fade.In && alpha < 10) {
+                alpha += 1;
+            } else if (mode == Fade.Out && alpha > 0) {
+                alpha -= 1;
+            } else {
+                animator.stop();
             }
+            fade.repaint();
         });
 
         JButton button1 = new JButton("Fade In");
