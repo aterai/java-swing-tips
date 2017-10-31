@@ -171,8 +171,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
-        int tabPlacement = getTabPlacement();
-        if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        //int tabPlacement = getTabPlacement();
+        //if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        if (isTopBottomTabPlacement(getTabPlacement())) {
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
         } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
@@ -274,26 +275,55 @@ class DnDTabbedPane extends JTabbedPane {
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
+//     public Rectangle getTabAreaBounds() {
+//         Rectangle tabbedRect = getBounds();
+//         Component c = getSelectedComponent();
+//         if (Objects.isNull(c)) {
+//             return tabbedRect;
+//         }
+//         int xx = tabbedRect.x;
+//         int yy = tabbedRect.y;
+//         Rectangle compRect = getSelectedComponent().getBounds();
+//         int tabPlacement = getTabPlacement();
+//         if (tabPlacement == TOP) {
+//             tabbedRect.height = tabbedRect.height - compRect.height;
+//         } else if (tabPlacement == BOTTOM) {
+//             tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
+//             tabbedRect.height = tabbedRect.height - compRect.height;
+//         } else if (tabPlacement == LEFT) {
+//             tabbedRect.width = tabbedRect.width - compRect.width;
+//         } else { // if (tabPlacement == RIGHT) {
+//             tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
+//             tabbedRect.width = tabbedRect.width - compRect.width;
+//         }
+//         tabbedRect.translate(-xx, -yy);
+//         //tabbedRect.grow(2, 2);
+//         return tabbedRect;
+//     }
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
         int xx = tabbedRect.x;
         int yy = tabbedRect.y;
         Rectangle compRect = Optional.ofNullable(getSelectedComponent()).map(Component::getBounds).orElseGet(Rectangle::new);
         int tabPlacement = getTabPlacement();
-        if (tabPlacement == TOP) {
+        if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
-        } else if (tabPlacement == BOTTOM) {
-            tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
-            tabbedRect.height = tabbedRect.height - compRect.height;
-        } else if (tabPlacement == LEFT) {
+            if (tabPlacement == BOTTOM) {
+                tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
+            }
+        } else {
             tabbedRect.width = tabbedRect.width - compRect.width;
-        } else { // if (tabPlacement == RIGHT) {
-            tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
-            tabbedRect.width = tabbedRect.width - compRect.width;
+            if (tabPlacement == RIGHT) {
+                tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
+            }
         }
         tabbedRect.translate(-xx, -yy);
         //tabbedRect.grow(2, 2);
         return tabbedRect;
+    }
+
+    public static boolean isTopBottomTabPlacement(int tabPlacement) {
+        return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
     }
 
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
@@ -561,7 +591,8 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
         int index = loc.getIndex();
         int a = Math.min(index, 1); //index == 0 ? 0 : 1;
         Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
-        if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
+        //if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
+        if (DnDTabbedPane.isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
             LINE_RECT.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
             LINE_RECT.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
