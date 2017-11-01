@@ -9,7 +9,7 @@
 
 <!-- class -->
 <property name="main.class"        value="example.MainPanel" />
-<property name="runtime.classpath" value="." />
+<property name="runtime.classpath" value=". swing-worker-1.2.jar" />
 
 <!-- compile -->
 <property name="compile.debug"       value="on" />
