@@ -29,6 +29,7 @@
       <formatter type="xml" toFile="pmd.xml" />
       <fileset dir="${basedir}">
         <exclude name="**/target/**" />
+        <exclude name="**/module-info.java" />
         <include name="**/*.java" />
       </fileset>
     </pmd>
@@ -49,6 +50,7 @@
       <formatter type="xml" toFile="checkstyle-result.xml" />
       <fileset dir="${basedir}">
         <exclude name="**/target/**" />
+        <exclude name="**/module-info.java" />
         <include name="**/*.java" />
       </fileset>
     </checkstyle>
