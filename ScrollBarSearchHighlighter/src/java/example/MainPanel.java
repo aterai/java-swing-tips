@@ -59,8 +59,8 @@ public class MainPanel extends JPanel {
         scroll.setRowHeaderView(label);
 
         /*
-        // Bug ID: JDK-6826074 JScrollPane does not revalidate the component hierarchy after scrolling
-        // http://bugs.java.com/view_bug.do?bug_id=6826074
+        // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6826074
         // Affected Versions: 6u12, 6u16, 7
         // Fixed Versions: 7 (b134)
         JViewport vp = new JViewport() {

@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
         for (String s: Arrays.asList("Open", "Save", "Close")) {
             p.add(s + "(dummy)");
         }
-        // Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
-        // http://bugs.java.com/view_bug.do?bug_id=6595814
+        // [JDK-6595814] Nimbus LAF: Renderers, MenuSeparators, colors rollup bug - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6595814
         // Fixed 6u10: p.add(new JSeparator());
         p.addSeparator();
         p.add("Exit").addActionListener(e -> {

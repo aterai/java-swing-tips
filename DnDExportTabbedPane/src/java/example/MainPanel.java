@@ -449,12 +449,12 @@ class TabTransferHandler extends TransferHandler {
             //System.out.println("target == source");
             isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
-            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
+            // System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
             isDroppable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
         }
 
-        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        // http://bugs.java.com/view_bug.do?bug_id=6700748
+        // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6700748
         Cursor cursor = isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
         Component glassPane = target.getRootPane().getGlassPane();
         glassPane.setCursor(cursor);
@@ -547,11 +547,11 @@ class GhostGlassPane extends JPanel {
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
-        //System.out.println("new GhostGlassPane");
+        // System.out.println("new GhostGlassPane");
         setOpaque(false);
-        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        // http://bugs.java.com/view_bug.do?bug_id=6700748
-        //setCursor(null); //XXX
+        // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6700748
+        // setCursor(null); //XXX
     }
     public void setImage(BufferedImage draggingGhost) {
         this.draggingGhost = draggingGhost;

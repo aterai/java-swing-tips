@@ -470,8 +470,8 @@ class TabTransferHandler extends TransferHandler {
             isDroppable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
         }
 
-        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        // http://bugs.java.com/view_bug.do?bug_id=6700748
+        // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6700748
         target.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
         support.setShowDropLocation(isDroppable);

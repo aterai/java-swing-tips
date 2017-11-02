@@ -14,10 +14,11 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4403182
-        //JTabbedPane tabbedPane0 = makeTestTabbedPane();
-        //TEST: tabbedPane0.setVerifyInputWhenFocusTarget(true);
-        //TEST: tabbedPane0.setFocusCycleRoot(false);
+        // [JDK-4403182] InputVerifier failed on JTabbedPane & JMenuBar - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-4403182
+        // JTabbedPane tabbedPane0 = makeTestTabbedPane();
+        // TEST: tabbedPane0.setVerifyInputWhenFocusTarget(true);
+        // TEST: tabbedPane0.setFocusCycleRoot(false);
 
         JTextField field0 = new JTextField("---");
         JTextField field1 = new JTextField("100");

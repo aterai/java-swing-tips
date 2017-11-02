@@ -40,8 +40,8 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
 
-//         // Bug ID: 4330950 Lost newly entered data in the cell when resizing column width
-//         // http://bugs.java.com/view_bug.do?bug_id=4330950
+//         // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
+//         // https://bugs.openjdk.java.net/browse/JDK-4330950
 //         frame.addWindowListener(new WindowAdapter() {
 //             @Override public void windowClosing(WindowEvent e) {
 // //                 if (table.isEditing()) {
@@ -84,8 +84,8 @@ public class MainPanel extends JPanel {
             }
         });
 
-//         // Bug ID: 4330950 Lost newly entered data in the cell when resizing column width
-//         // http://bugs.java.com/view_bug.do?bug_id=4330950
+//         // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
+//         // https://bugs.openjdk.java.net/browse/JDK-4330950
 //         table.getTableHeader().addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 System.out.println("componentResized");

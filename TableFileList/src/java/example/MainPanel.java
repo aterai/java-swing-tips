@@ -304,8 +304,8 @@ class FileListTable extends JTable {
         super(model);
     }
     @Override public void updateUI() {
-        // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // http://bugs.java.com/view_bug.do?bug_id=6788475
+        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6788475
         // XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));

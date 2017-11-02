@@ -18,8 +18,8 @@ public final class MainPanel extends JPanel {
         RowDataModel model = new RowDataModel();
         //JTable table = new JTable(model) {
         //    @Override public int rowAtPoint(Point pt) {
-        //        // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
-        //        // http://bugs.java.com/view_bug.do?bug_id=6291631
+        //        // [JDK-6291631] JTable: rowAtPoint returns 0 for negative y - Java Bug System
+        //        // https://bugs.openjdk.java.net/browse/JDK-6291631
         //        return pt.y < 0 ? -1 : super.rowAtPoint(pt);
         //    }
         //};

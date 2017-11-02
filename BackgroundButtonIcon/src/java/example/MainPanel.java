@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     }
 
     private static AbstractButton makeButton(String title, Color color, boolean first) {
-        //https://java-swing-tips.blogspot.jp/2008/11/rounded-corner-jbutton.html
+        // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
         AbstractButton b = new JToggleButton(title) {
             private final transient ArrowToggleButtonBarCellIcon icon = new ArrowToggleButtonBarCellIcon();
             @Override public boolean contains(int x, int y) {
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     }
 
     private static JPanel makePanel(int overlap) {
-        //https://java-swing-tips.blogspot.com/2013/12/breadcrumb-navigation-with-jradiobutton.html
+        // https://java-swing-tips.blogspot.com/2013/12/breadcrumb-navigation-with-jradiobutton.html
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0)) {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false;
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//https://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
+// https://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
 class ArrowToggleButtonBarCellIcon implements Icon {
     public static final int TH = 10; //The height of a triangle
     private static final int HEIGHT = TH * 2 + 1;

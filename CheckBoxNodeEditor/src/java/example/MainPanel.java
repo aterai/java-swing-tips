@@ -426,8 +426,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //             Dimension d = getPreferredSize();
 //             r.setSize(new Dimension(d.width, r.height));
 //             if (r.contains(me.getX(), me.getY())) {
-//                 //Fixed: Bug ID: JDK-8023474 First mousepress doesn't start editing in JTree
-//                 //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
+//                 //Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//                 //       https://bugs.openjdk.java.net/browse/JDK-8023474
 //                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
 //                 //    setBounds(new Rectangle(d.width, r.height));
@@ -615,8 +615,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //             Dimension d = check.getPreferredSize();
 //             r.setSize(new Dimension(d.width, r.height));
 //             if (r.contains(me.getPoint())) {
-//                 //Fixed: Bug ID: JDK-8023474 First mousepress doesn't start editing in JTree
-//                 //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
+//                 //Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//                 //       https://bugs.openjdk.java.net/browse/JDK-8023474
 //                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
 //                 //    check.setBounds(new Rectangle(d.width, r.height));

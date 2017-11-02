@@ -254,8 +254,8 @@ class TransparentMenu extends JMenu {
     protected TransparentMenu(String title) {
         super(title);
     }
-    // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
-    // http://bugs.java.com/view_bug.do?bug_id=4688783
+    // [JDK-4688783] JPopupMenu hardcoded i JMenu - Java Bug System
+    // https://bugs.openjdk.java.net/browse/JDK-4688783
     private void ensurePopupMenuCreated() {
         if (Objects.isNull(popupMenu)) {
             this.popupMenu = new TranslucentPopupMenu();
