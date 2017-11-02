@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
                     availableWidth -= insets.left + insets.right;
                 }
                 String cellText = Objects.toString(value, "");
-                //<blockquote cite="http://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
+                //<blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
                 //@title Left Dot Renderer
                 //@auther Rob Camick
                 //FontMetrics fm = getFontMetrics(getFont());
@@ -94,9 +94,9 @@ public final class MainPanel extends JPanel {
                     String dots = "...";
                     int textWidth = fm.stringWidth(dots);
                     int len = cellText.length();
-                    //@see Unicode surrogate programming with the Java language
-                    //http://www.ibm.com/developerworks/library/j-unicode/index.html)
-                    //http://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
+                    // @see Unicode surrogate programming with the Java language
+                    // https://www.ibm.com/developerworks/library/j-unicode/index.html
+                    // https://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
                     int[] acp = new int[cellText.codePointCount(0, len)];
                     int j = acp.length;
                     for (int i = len; i > 0; i = cellText.offsetByCodePoints(i, -1)) {

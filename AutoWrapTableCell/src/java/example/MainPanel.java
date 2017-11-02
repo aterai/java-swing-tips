@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 //                     setRowHeight(row, maximum_height);
 //                 }
 //             }
-//             //http://tips4java.wordpress.com/2008/10/26/text-utilities/
+//             // https://tips4java.wordpress.com/2008/10/26/text-utilities/
 //             private int getPreferredHeight(JTextComponent c) {
 //                 Insets insets = c.getInsets();
 //                 //Insets margin = c.getMargin();

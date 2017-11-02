@@ -89,9 +89,9 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
 //             }
 //         }
 
-//         //@see Unicode surrogate programming with the Java language
-//         //http://www.ibm.com/developerworks/library/j-unicode/index.html)
-//         //http://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
+//         // @see Unicode surrogate programming with the Java language
+//         // https://www.ibm.com/developerworks/library/j-unicode/index.html
+//         // https://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
 //         char[] ach = text.toCharArray();
 //         int len = ach.length;
 //         int[] acp = new int[Character.codePointCount(ach, 0, len)];

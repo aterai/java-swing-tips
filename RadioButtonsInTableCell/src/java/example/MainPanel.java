@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
 //                 int col  = t.columnAtPoint(pt);
 //                 if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
 //                     TableCellEditor ce = t.getCellEditor(row, col);
-//                     //http://tips4java.wordpress.com/2009/07/12/table-button-column/
+//                     // https://tips4java.wordpress.com/2009/07/12/table-button-column/
 //                     ce.stopCellEditing();
 //                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //                     Point p = SwingUtilities.convertPoint(t, pt, c);

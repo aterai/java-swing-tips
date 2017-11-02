@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         initTextFieldBorder(editor2.getTextField());
 
 //         // Component Border - Java Tips Weblog
-//         // http://tips4java.wordpress.com/2009/09/27/component-border/
+//         // https://tips4java.wordpress.com/2009/09/27/component-border/
 //         JLabel label = new JLabel("%");
 //         label.setBorder(BorderFactory.createEmptyBorder());
 //         label.setOpaque(true);

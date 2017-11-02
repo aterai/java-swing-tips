@@ -62,9 +62,9 @@ public final class MainPanel extends JPanel {
                     return new Dimension(targetWidth, height);
                 }
             }
-//             //http://tips4java.wordpress.com/2008/11/06/wrap-layout/
-//             //WrapLayout.java
-//             //Rob Camick on November 6, 2008
+//             // https://tips4java.wordpress.com/2008/11/06/wrap-layout/
+//             // WrapLayout.java
+//             // Rob Camick on November 6, 2008
 //             private Dimension preferredLayoutSize;
 //             @Override public void layoutContainer(Container target) {
 //                 Dimension size = preferredLayoutSize(target);

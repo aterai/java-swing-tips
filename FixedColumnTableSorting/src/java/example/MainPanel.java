@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
         scroll.getRowHeader().setBackground(Color.WHITE);
 
-        //<blockquote cite="http://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
+        //<blockquote cite="https://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
         //@auther Rob Camick
         scroll.getRowHeader().addChangeListener(e -> {
             JViewport viewport = (JViewport) e.getSource();

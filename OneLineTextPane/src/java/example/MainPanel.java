@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK));
         textPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 
-        //// @see http://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
+        //// @see https://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
         // textPane.addCaretListener(new VisibleCaretListener());
 
         JScrollPane scrollPane = new JScrollPane(

@@ -11,10 +11,8 @@ import javax.swing.*;
 
 // Swing Changes and New Features
 // https://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
-// https://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
 // Magic with Merlin: Swinging audio
-// http://www.ibm.com/developerworks/java/library/j-mer0730/
-// http://www.ibm.com/developerworks/jp/java/library/j-mer0730/
+// https://www.ibm.com/developerworks/java/library/j-mer0730/
 public class MainPanel extends JPanel {
     private static final String[] OPTION_PANE_AUDITORY_CUES = {
         "OptionPane.errorSound", "OptionPane.informationSound",

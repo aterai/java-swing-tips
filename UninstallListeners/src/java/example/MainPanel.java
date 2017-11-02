@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
                 @Override public Void run() {
                     try {
-                        // https://community.oracle.com/threads/1360123
+                        // https://community.oracle.com/thread/1360123
                         Class<BasicSliderUI> uiClass = BasicSliderUI.class;
                         Method uninstallListeners = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
                         uninstallListeners.setAccessible(true);
