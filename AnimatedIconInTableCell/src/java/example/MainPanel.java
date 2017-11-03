@@ -9,15 +9,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "ImageIcon"};
-    private final JTable table = new JTable();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTable table = new JTable();
         URL url = getClass().getResource("restore_to_background_color.gif");
         Object[][] data = {
             {"Default ImageIcon", new ImageIcon(url)},
             {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
         };
+        String[] columnNames = {"String", "ImageIcon"};
         table.setModel(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static ImageIcon makeImageIcon(URL url, final JTable table, final int row, final int col) {
+    private static ImageIcon makeImageIcon(URL url, JTable table, int row, int col) {
         ImageIcon icon = new ImageIcon(url);
         // Wastefulness: icon.setImageObserver((ImageObserver) table);
         icon.setImageObserver(new ImageObserver() {
