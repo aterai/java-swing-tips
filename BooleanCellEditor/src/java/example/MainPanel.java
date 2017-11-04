@@ -9,18 +9,18 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table0 = new JTable(model);
         table0.setAutoCreateRowSorter(true);
         table0.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
             }
         };
     }
-    protected static JCheckBox makeBooleanEditor(final JTable table) {
+    protected static JCheckBox makeBooleanEditor(JTable table) {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setHorizontalAlignment(SwingConstants.CENTER);
         checkBox.setBorderPainted(true);
