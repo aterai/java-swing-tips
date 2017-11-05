@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 class TablePopupMenu extends JPopupMenu {
     protected final String[] columnNames;
     protected final JTextField textField = new JTextField();
-    protected final JMenuItem editItem1 = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
+    protected final Action editAction1 = new AbstractAction("Edit: setHeaderValue") {
         @Override public void actionPerformed(ActionEvent e) {
             JTableHeader header = (JTableHeader) getInvoker();
             TableColumn column = header.getColumnModel().getColumn(index);
@@ -74,12 +74,12 @@ class TablePopupMenu extends JPopupMenu {
                 }
             }
         }
-    });
-    protected final JMenuItem editItem2 = new JMenuItem(new AbstractAction("Edit: setColumnIdentifiers") {
+    };
+    protected final Action editAction2 = new AbstractAction("Edit: setColumnIdentifiers") {
         @Override public void actionPerformed(ActionEvent e) {
-            final JTableHeader header = (JTableHeader) getInvoker();
-            final JTable table = header.getTable();
-            final DefaultTableModel model = (DefaultTableModel) table.getModel();
+            JTableHeader header = (JTableHeader) getInvoker();
+            JTable table = header.getTable();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             String name = table.getColumnName(index);
             textField.setText(name);
             int result = JOptionPane.showConfirmDialog(table, textField, getValue(Action.NAME).toString(),
@@ -94,7 +94,7 @@ class TablePopupMenu extends JPopupMenu {
                 }
             }
         }
-    });
+    };
     protected int index = -1;
     protected TablePopupMenu(String... arrays) {
         super();
@@ -107,8 +107,8 @@ class TablePopupMenu extends JPopupMenu {
             @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
-        add(editItem1);
-        add(editItem2);
+        add(editAction1);
+        add(editAction2);
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTableHeader) {
