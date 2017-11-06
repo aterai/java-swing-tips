@@ -63,14 +63,14 @@ public final class MainPanel extends JPanel {
         textField2.setComponentPopupMenu(popup2);
         textField2.setName("textField2");
 
-        JComboBox<String> combo3 = new JComboBox<>(new String[] {"JPopupMenu does not open???", "bbb", "ccc"});
+        JComboBox<String> combo3 = new JComboBox<>(new String[] {"JPopupMenu does not open???", "111", "222"});
         combo3.setEditable(true);
         // NOT work: combo3.setComponentPopupMenu(popup2);
         JTextField textField3 = (JTextField) combo3.getEditor().getEditorComponent();
         textField3.setComponentPopupMenu(popup2);
         textField3.setName("textField3");
 
-        JComboBox<String> combo4 = new JComboBox<>(new String[] {"aaa", "bbb", "ccc"});
+        JComboBox<String> combo4 = new JComboBox<>(new String[] {"addMouseListener", "111", "222"});
         combo4.setEditable(true);
         JTextField textField4 = (JTextField) combo4.getEditor().getEditorComponent();
         textField4.setComponentPopupMenu(popup2);
@@ -78,6 +78,7 @@ public final class MainPanel extends JPanel {
         textField4.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 System.out.println("Close all JPopUpMenu");
+                // https://ateraimemo.com/Swing/GetAllPopupMenus
                 for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
                     if (m instanceof JPopupMenu) {
                         ((JPopupMenu) m).setVisible(false);
@@ -96,17 +97,17 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 
-        Box box1 = Box.createVerticalBox();
+        Box box = Box.createVerticalBox();
         for (JComponent c: Arrays.asList(textField1, textField2, combo3, combo4)) {
-            box1.add(c);
-            box1.add(Box.createVerticalStrut(5));
+            box.add(c);
+            box.add(Box.createVerticalStrut(5));
         }
 
         JTextArea textArea = new JTextArea("dummy");
         textArea.setComponentPopupMenu(popup2);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        add(box1, BorderLayout.NORTH);
+        add(box, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
