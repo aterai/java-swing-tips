@@ -74,7 +74,6 @@ class TabbedPanePopupMenu extends JPopupMenu {
             tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             count++;
-            System.out.println(getComponent().getClass().getName());
         });
         addSeparator();
         closePage = add("Close");
