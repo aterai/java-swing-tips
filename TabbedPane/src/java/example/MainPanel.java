@@ -39,76 +39,48 @@ public final class MainPanel extends JPanel {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-    private static final String NEWTAB    = "New tab";
-    private static final String CLOSEPAGE = "Close";
-    private static final String CLOSEALL  = "Close all";
-    private static final String CLOSEALLBUTACTIVE = "Close all bat active";
     protected transient int count;
-    private final Action closePageAction = new ClosePageAction(CLOSEPAGE);
-    private final Action closeAllAction  = new CloseAllAction(CLOSEALL);
-    private final Action closeAllButActiveAction = new CloseAllButActiveAction(CLOSEALLBUTACTIVE);
-
+    private final JMenuItem closePage;
+    private final JMenuItem closeAll;
+    private final JMenuItem closeAllButActive;
     protected TabbedPanePopupMenu() {
         super();
-        add(new NewTabAction(NEWTAB));
-        addSeparator();
-        add(closePageAction);
-        addSeparator();
-        add(closeAllAction);
-        add(closeAllButActiveAction);
-    }
-    @Override public void show(Component c, int x, int y) {
-        if (c instanceof JTabbedPane) {
-            JTabbedPane tabbedPane = (JTabbedPane) c;
-            //JDK 1.3 tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
-            closePageAction.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
-            closeAllAction.setEnabled(tabbedPane.getTabCount() > 0);
-            closeAllButActiveAction.setEnabled(tabbedPane.getTabCount() > 0);
-            super.show(c, x, y);
-        }
-    }
-    class NewTabAction extends AbstractAction {
-        protected NewTabAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        add("New tab").addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             count++;
-
-            System.out.println(getComponent().getClass().getName());
-        }
-    }
-    class ClosePageAction extends AbstractAction {
-        protected ClosePageAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+        addSeparator();
+        closePage = add("Close");
+        closePage.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.remove(tabbedPane.getSelectedIndex());
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+        addSeparator();
+        closeAll = add("Close all");
+        closeAll.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.removeAll();
-        }
-    }
-    class CloseAllButActiveAction extends AbstractAction {
-        protected CloseAllButActiveAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
+        });
+        closeAllButActive = add("Close all bat active");
+        closeAllButActive.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             int tabidx = tabbedPane.getSelectedIndex();
             String title = tabbedPane.getTitleAt(tabidx);
             Component cmp = tabbedPane.getComponentAt(tabidx);
             tabbedPane.removeAll();
             tabbedPane.addTab(title, cmp);
+        });
+    }
+    @Override public void show(Component c, int x, int y) {
+        if (c instanceof JTabbedPane) {
+            JTabbedPane tabbedPane = (JTabbedPane) c;
+            //JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+            closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
+            closeAll.setEnabled(tabbedPane.getTabCount() > 0);
+            closeAllButActive.setEnabled(tabbedPane.getTabCount() > 0);
+            super.show(c, x, y);
         }
     }
 }

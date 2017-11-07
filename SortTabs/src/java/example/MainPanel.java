@@ -161,12 +161,11 @@ class EditableTabbedPane extends JTabbedPane {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-    private final JMenuItem sortMenu;
-    private final JMenuItem closePageMenu;
-    private final JMenuItem closeAllMenu;
-    private final JMenuItem closeAllButActiveMenu;
-    protected int count;
-
+    protected transient int count;
+    private final JMenuItem sortTabs;
+    private final JMenuItem closePage;
+    private final JMenuItem closeAll;
+    private final JMenuItem closeAllButActive;
     protected TabbedPanePopupMenu() {
         super();
         add("New tab").addActionListener(e -> {
@@ -175,8 +174,8 @@ class TabbedPanePopupMenu extends JPopupMenu {
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             count++;
         });
-        sortMenu = add("Sort");
-        sortMenu.addActionListener(e -> {
+        sortTabs = add("Sort");
+        sortTabs.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
                 .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
@@ -185,19 +184,19 @@ class TabbedPanePopupMenu extends JPopupMenu {
             list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
         });
         addSeparator();
-        closePageMenu = add("Close");
-        closePageMenu.addActionListener(e -> {
+        closePage = add("Close");
+        closePage.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.remove(tabbedPane.getSelectedIndex());
         });
         addSeparator();
-        closeAllMenu = add("Close all");
-        closeAllMenu.addActionListener(e -> {
+        closeAll = add("Close all");
+        closeAll.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             tabbedPane.removeAll();
         });
-        closeAllButActiveMenu = add("Close all bat active");
-        closeAllButActiveMenu.addActionListener(e -> {
+        closeAllButActive = add("Close all bat active");
+        closeAllButActive.addActionListener(e -> {
             JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
             int tabidx = tabbedPane.getSelectedIndex();
             String title = tabbedPane.getTitleAt(tabidx);
@@ -209,10 +208,11 @@ class TabbedPanePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTabbedPane) {
             JTabbedPane tabbedPane = (JTabbedPane) c;
-            sortMenu.setEnabled(tabbedPane.getTabCount() > 1);
-            closePageMenu.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
-            closeAllMenu.setEnabled(tabbedPane.getTabCount() > 0);
-            closeAllButActiveMenu.setEnabled(tabbedPane.getTabCount() > 0);
+            //JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+            sortTabs.setEnabled(tabbedPane.getTabCount() > 1);
+            closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
+            closeAll.setEnabled(tabbedPane.getTabCount() > 0);
+            closeAllButActive.setEnabled(tabbedPane.getTabCount() > 0);
             super.show(c, x, y);
         }
     }
