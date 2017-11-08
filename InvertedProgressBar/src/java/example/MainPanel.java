@@ -32,7 +32,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
 
         JPanel p1 = new JPanel(new GridLayout(2, 2, 10, 10));
         p1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        for (JComponent c: Arrays.asList(progress0, progress1, progress2, progress3)) {
+        for (Component c: Arrays.asList(progress0, progress1, progress2, progress3)) {
             p1.add(c);
         }
 
@@ -67,7 +67,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         Box p2 = Box.createHorizontalBox();
         p2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         p2.add(Box.createHorizontalGlue());
-        for (JComponent c: Arrays.asList(progress4, progress5, progress6, progress7, layer)) {
+        for (Component c: Arrays.asList(progress4, progress5, progress6, progress7, layer)) {
             p2.add(c);
             p2.add(Box.createHorizontalStrut(25));
         }

@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
 //         });
 
         Box box = Box.createVerticalBox();
-        for (JComponent c: Arrays.asList(textField1, textField2, combo3, combo4)) {
+        for (Component c: Arrays.asList(textField1, textField2, combo3, combo4)) {
             box.add(c);
             box.add(Box.createVerticalStrut(5));
         }

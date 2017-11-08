@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 //         if (font.isTransformed()) {
 //             font = font.deriveFont(AffineTransform.getScaleInstance(.9, 1d));
 //         }
-        for (JComponent c: Arrays.asList(textArea, lbl1, lbl2)) {
+        for (Component c: Arrays.asList(textArea, lbl1, lbl2)) {
             c.setFont(font);
             add(c);
         }

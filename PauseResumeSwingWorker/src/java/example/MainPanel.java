@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
             pauseButton.setEnabled(false);
         });
 
-        JComponent box = createRightAlignButtonBox4(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
+        Component box = createRightAlignButtonBox4(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
@@ -147,7 +147,7 @@ public final class MainPanel extends JPanel {
         }
     }
     //@see https://ateraimemo.com/Swing/ButtonWidth.html
-    private static JComponent createRightAlignButtonBox4(List<JComponent> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox4(List<? extends Component> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
@@ -159,7 +159,7 @@ public final class MainPanel extends JPanel {
         Spring y = Spring.constant(gap);
         Spring g = Spring.minus(Spring.constant(gap));
         Spring w = Spring.constant(buttonWidth);
-        for (JComponent b: list) {
+        for (Component b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
             x = Spring.sum(x, g);
             constraints.setConstraint(SpringLayout.EAST, x);
@@ -198,12 +198,12 @@ public final class MainPanel extends JPanel {
     }
 }
 
-enum Component { TOTAL, FILE, LOG, PAUSE }
+enum ProgressType { TOTAL, FILE, LOG, PAUSE }
 
 class Progress {
     public final Object value;
-    public final Component component;
-    protected Progress(Component component, Object value) {
+    public final ProgressType component;
+    protected Progress(ProgressType component, Object value) {
         this.component = component;
         this.value = value;
     }
@@ -217,11 +217,11 @@ class BackgroundTask extends SwingWorker<String, Progress> {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
         int lengthOfTask = 12; //filelist.size();
-        publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
-        publish(new Progress(Component.LOG, "\n------------------------------\n"));
+        publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
+        publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
         while (current < lengthOfTask && !isCancelled()) {
-            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
-            publish(new Progress(Component.LOG, "*"));
+            publish(new Progress(ProgressType.TOTAL, 100 * current / lengthOfTask));
+            publish(new Progress(ProgressType.LOG, "*"));
             try {
                 convertFileToSomething();
             } catch (InterruptedException ex) {
@@ -229,7 +229,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
             }
             current++;
         }
-        publish(new Progress(Component.LOG, "\n"));
+        publish(new Progress(ProgressType.LOG, "\n"));
         return "Done";
     }
     private void convertFileToSomething() throws InterruptedException {
@@ -243,13 +243,13 @@ class BackgroundTask extends SwingWorker<String, Progress> {
                 } catch (InterruptedException ex) {
                     return;
                 }
-                publish(new Progress(Component.PAUSE, blinking));
+                publish(new Progress(ProgressType.PAUSE, blinking));
                 blinking ^= true;
                 continue;
             }
             int iv = 100 * current / lengthOfTask;
             Thread.sleep(20); // dummy
-            publish(new Progress(Component.FILE, iv + 1));
+            publish(new Progress(ProgressType.FILE, iv + 1));
             current++;
         }
     }
@@ -283,8 +283,8 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //         }
 //         @Override public void actionPerformed(ActionEvent e) {
 //             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-//             final JProgressBar bar1 = new JProgressBar(0, 100);
-//             final JProgressBar bar2 = new JProgressBar(0, 100);
+//             final JProgressBar bar1 = new JProgressBar();
+//             final JProgressBar bar2 = new JProgressBar();
 //             runButton.setEnabled(false);
 //             cancelButton.setEnabled(true);
 //             statusPanel.removeAll();

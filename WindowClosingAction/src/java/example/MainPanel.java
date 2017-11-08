@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void initMenu(JComponent p) {
-        for (JComponent c: Arrays.asList(
+        for (Component c: Arrays.asList(
                 new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
                 new JSeparator(), new JMenuItem(new ExitAction()))) {
             p.add(c);

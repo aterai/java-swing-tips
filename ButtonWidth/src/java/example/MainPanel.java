@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         JComponent box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"),    new JButton("gap:2")),  120, 2);
 
         Box box = Box.createVerticalBox();
-        for (JComponent c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
+        for (Component c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
             box.add(new JSeparator());
             box.add(c);
         }

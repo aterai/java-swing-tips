@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static JComponent makeTitlePanel(String title, List<? extends Component> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
@@ -79,7 +79,7 @@ public class MainPanel extends JPanel {
         c.insets  = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         c.gridx   = GridBagConstraints.REMAINDER;
-        for (JComponent cmp: list) {
+        for (Component cmp: list) {
             p.add(cmp, c);
         }
         return p;

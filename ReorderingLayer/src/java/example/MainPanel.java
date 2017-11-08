@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createMatteBorder(10, 8, 5, 1, Color.RED));
         int idx = 0;
-        for (JComponent c : Arrays.asList(
+        for (Component c: Arrays.asList(
             new JLabel("<html>111<br>11<br>11"),
             new JButton("2"), new JCheckBox("3"), new JTextField(14))) {
             box.add(createToolBarButton(idx++, c));
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createToolBarButton(int i, JComponent c) {
+    private static JComponent createToolBarButton(int i, Component c) {
         JLabel l = new JLabel(String.format(" %04d ", i));
         l.setOpaque(true);
         l.setBackground(Color.RED);

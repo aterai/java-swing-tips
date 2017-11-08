@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         box.addMouseMotionListener(dh);
 
         int idx = 0;
-        for (JComponent c: Arrays.asList(
+        for (Component c: Arrays.asList(
             new JLabel("<html>1<br>11<br>111"),
             new JButton("22"),
             new JCheckBox("333"),
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JComponent createSortablePanel(int i, JComponent c) {
+    private JComponent createSortablePanel(int i, Component c) {
         JLabel l = new JLabel(String.format(" %04d ", i));
         l.setOpaque(true);
         l.setBackground(Color.RED);
