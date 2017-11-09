@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         IntStream.range(0, 1000).forEach(i -> buf.append(i + LF));
 
         JSplitPane sp = new JSplitPane();

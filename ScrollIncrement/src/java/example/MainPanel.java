@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private static final String LF = "\n";
     private MainPanel() {
         super(new BorderLayout());
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         IntStream.range(0, 100).forEach(i -> buf.append(i + LF));
 
         JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));

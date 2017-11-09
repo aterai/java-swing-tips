@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
                 //// https://stackoverflow.com/questions/240546/removing-html-from-a-java-string
                 ////Test>>>>
                 //ParserDelegator delegator = new ParserDelegator();
-                //final StringBuffer s = new StringBuffer();
+                //StringBuilder s = new StringBuilder();
                 //delegator.parse(new StringReader(str), new HTMLEditorKit.ParserCallback() {
                 //    @Override public void handleText(char[] text, int pos) {
                 //        s.append(text);

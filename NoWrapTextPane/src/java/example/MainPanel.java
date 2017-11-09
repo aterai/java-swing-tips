@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     }
     private static void initLongLineStringInBackground(ExecutorService threadPool, int length) {
         threadPool.execute(() -> {
-            StringBuffer sb = new StringBuffer(length);
+            StringBuilder sb = new StringBuilder(length);
             for (int i = 0; i < length - 2; i++) {
                 sb.append('a');
             }

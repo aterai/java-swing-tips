@@ -41,7 +41,7 @@ public class HtmlTableTransferHandler extends TransferHandler {
         }
         return cols;
     }
-    protected void appendTag(StringBuffer htmlBuf, Object obj) {
+    protected void appendTag(StringBuilder htmlBuf, Object obj) {
         if (obj instanceof Date) {
             String v = Objects.toString((Date) obj, "");
             htmlBuf.append("  <td><time>" + v + "</time></td>\n");
@@ -62,8 +62,8 @@ public class HtmlTableTransferHandler extends TransferHandler {
                 return null;
             }
 
-            StringBuffer plainBuf = new StringBuffer();
-            StringBuffer htmlBuf = new StringBuffer(64);
+            StringBuilder plainBuf = new StringBuilder();
+            StringBuilder htmlBuf = new StringBuilder(64);
             htmlBuf.append("<html>\n<body>\n<table border='1'>\n");
             for (int row = 0; row < rows.length; row++) {
                 htmlBuf.append("<tr>\n");
