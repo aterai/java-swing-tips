@@ -11,21 +11,26 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(5, 5));
 
-        final JSlider slider1 = makeSlider();
+        JSlider slider1 = makeSlider();
         setCurrentLabelListener(slider1);
 
+        @SuppressWarnings("JdkObsolete")
         Dictionary<Integer, Component> labelTable = new Hashtable<>();
+        // @SuppressWarnings("PMD.ReplaceHashtableWithMap")
+        // Hashtable labelTable = slider2.createStandardLabels(1);
         int c = 0;
         for (String s: Arrays.asList("A", "B", "C", "D", "E")) {
             labelTable.put(c++, new JLabel(s));
+            // ((JLabel) labelTable.get(c++)).setText(s);
         }
         JSlider slider2 = new JSlider(0, 4, 0);
+        setCurrentLabelListener(slider2);
+        slider2.setLabelTable(labelTable);
         slider2.setSnapToTicks(true);
         slider2.setPaintTicks(true);
-        slider2.setLabelTable(labelTable);
         slider2.setPaintLabels(true);
         //slider2.setMajorTickSpacing(1);
-        setCurrentLabelListener(slider2);
+        ((Component) labelTable.get(0)).setForeground(Color.RED);
 
         Box box = Box.createVerticalBox();
         box.add(Box.createVerticalStrut(5));
@@ -44,7 +49,7 @@ public final class MainPanel extends JPanel {
         });
     }
     private static JSlider makeSlider() {
-        final JSlider slider = new JSlider(0, 100);
+        JSlider slider = new JSlider(0, 100);
         slider.setMajorTickSpacing(10);
         //slider.setMinorTickSpacing(5);
         slider.setPaintLabels(true);
@@ -52,7 +57,7 @@ public final class MainPanel extends JPanel {
         slider.setPaintTicks(true);
         return slider;
     }
-    private static void setCurrentLabelListener(final JSlider slider) {
+    private static void setCurrentLabelListener(JSlider slider) {
         slider.getModel().addChangeListener(new ChangeListener() {
             private int prev = -1;
             private void resetForeground(Object o, Color c) {
