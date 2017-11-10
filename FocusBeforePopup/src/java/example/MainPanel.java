@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
         textField4.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 System.out.println("Close all JPopUpMenu");
-                // https://ateraimemo.com/Swing/GetAllPopupMenus
+                // https://ateraimemo.com/Swing/GetAllPopupMenus.html
                 for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
                     if (m instanceof JPopupMenu) {
                         ((JPopupMenu) m).setVisible(false);
