@@ -22,17 +22,20 @@ public final class MainPanel extends JPanel {
         tree.setComponentPopupMenu(new TreePopupMenu());
         //model.setAsksAllowsChildren(true);
 
-        JPanel p = makeTitledPanel("setAsksAllowsChildren", new JScrollPane(tree));
         JCheckBox check = new JCheckBox("setAsksAllowsChildren");
         check.addActionListener(e -> {
             model.setAsksAllowsChildren(((JCheckBox) e.getSource()).isSelected());
             tree.repaint();
         });
+
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JScrollPane(tree));
         p.add(check, BorderLayout.SOUTH);
-        add(p);
+
+        add(makeTitledPanel("setAsksAllowsChildren", p));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

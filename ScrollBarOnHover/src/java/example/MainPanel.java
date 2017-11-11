@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         return scroll;
     }
 
-    private static JPanel makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

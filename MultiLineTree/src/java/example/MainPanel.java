@@ -10,7 +10,7 @@ import javax.swing.text.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 2));
 
         JTree tree = makeTree(getDefaultTreeModel2());
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(makeTitledPanel("TextAreaRenderer", tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JScrollPane(c));

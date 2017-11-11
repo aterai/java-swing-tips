@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         return table;
     }
-    private static JComponent makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
         p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

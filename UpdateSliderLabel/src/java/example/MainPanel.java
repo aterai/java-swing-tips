@@ -7,7 +7,7 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
 
         JSlider slider = makeSlider();
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         return slider;
     }
 
-    private JComponent makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

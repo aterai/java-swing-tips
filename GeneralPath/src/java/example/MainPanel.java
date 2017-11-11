@@ -15,10 +15,10 @@ public final class MainPanel extends JPanel {
         add(makeTitledPanel("Font(Outline)", new StarPanel3()));
         add(makeTitledPanel("Icon",          new JLabel(new StarIcon0())));
         add(makeTitledPanel("Icon(R=40)",    new JLabel(new StarIcon1())));
-        add(makeTitledPanel("Icon(R=20, 40)", new JLabel(new StarIcon2())));
+        add(makeTitledPanel("Icon(R=20,40)", new JLabel(new StarIcon2())));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.add(c);
         p.setBorder(BorderFactory.createTitledBorder(title));
