@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 3));
 
         JTree tree0 = new JTree();
@@ -18,15 +18,15 @@ public final class MainPanel extends JPanel {
         JTree tree2 = new JTree();
         tree2.putClientProperty("JTree.lineStyle", "None");
 
-        add(makeTitledPanel("Angled(default)", tree0));
-        add(makeTitledPanel("Horizontal",      tree1));
-        add(makeTitledPanel("None",            tree2));
+        add(makeTitledPanel("Angled(default)", new JScrollPane(tree0)));
+        add(makeTitledPanel("Horizontal", new JScrollPane(tree1)));
+        add(makeTitledPanel("None", new JScrollPane(tree2)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JTree tree) {
+    private static JComponent makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

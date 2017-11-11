@@ -44,18 +44,18 @@ public final class MainPanel extends JPanel {
             root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
         }
         list3.setModel(new DefaultTreeModel(root));
-        p.add(makeTitledPanel("Box",   list1));
-        p.add(makeTitledPanel("JList", list2));
-        p.add(makeTitledPanel("JTree", list3));
+        p.add(makeTitledPanel("Box", new JScrollPane(list1)));
+        p.add(makeTitledPanel("JList", new JScrollPane(list2)));
+        p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
         add(new JLabel("JCheckBox in ", SwingConstants.CENTER), BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(String title, JComponent tree) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

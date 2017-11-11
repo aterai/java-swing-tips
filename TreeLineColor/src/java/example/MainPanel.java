@@ -8,7 +8,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 3));
 
         UIManager.put("Tree.paintLines", Boolean.TRUE);
@@ -49,15 +49,15 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitledPanel("lineTypeDashed", tree0));
-        add(makeTitledPanel("lineStyle",      tree1));
-        add(makeTitledPanel("BasicTreeUI",    tree2));
+        add(makeTitledPanel("lineTypeDashed", new JScrollPane(tree0)));
+        add(makeTitledPanel("lineStyle", new JScrollPane(tree1)));
+        add(makeTitledPanel("BasicTreeUI", new JScrollPane(tree2)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JTree tree) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

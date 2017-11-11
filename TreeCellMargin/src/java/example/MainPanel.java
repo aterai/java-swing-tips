@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 3));
         JTree tree1 = new JTree() {
             @Override public void updateUI() {
@@ -30,15 +30,15 @@ public final class MainPanel extends JPanel {
         };
         //tree2.setCellRenderer(new CompoundTreeCellRenderer());
 
-        add(makeTitledPanel("Default", new JTree()));
-        add(makeTitledPanel("Margin", tree1));
-        add(makeTitledPanel("Label",  tree2));
+        add(makeTitledPanel("Default", new JScrollPane(new JTree())));
+        add(makeTitledPanel("Margin", new JScrollPane(tree1)));
+        add(makeTitledPanel("Label", new JScrollPane(tree2)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JTree tree) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

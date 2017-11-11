@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 2));
         JTree tree1 = new JTree();
         tree1.setEditable(true);
@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
         tree2.setCellEditor(makeLeafTreeCellEditor(tree2));
         tree2.setEditable(true);
 
-        add(makeTitledPanel("DefaultTreeCellEditor", tree1));
-        add(makeTitledPanel("LeafTreeCellEditor",    tree2));
+        add(makeTitledPanel("DefaultTreeCellEditor", new JScrollPane(tree1)));
+        add(makeTitledPanel("LeafTreeCellEditor", new JScrollPane(tree2)));
         setPreferredSize(new Dimension(320, 240));
     }
     private static TreeCellEditor makeLeafTreeCellEditor(JTree tree) {
@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
             }
         };
     }
-    private JComponent makeTitledPanel(String title, JTree tree) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

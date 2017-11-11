@@ -10,8 +10,8 @@ import javax.swing.event.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(1, 2));
-        add(makeTitledPanel("Default", makeList(true)));
-        add(makeTitledPanel("clearSelection", makeList(false)));
+        add(makeTitledPanel("Default", new JScrollPane(makeList(true))));
+        add(makeTitledPanel("clearSelection", new JScrollPane(makeList(false))));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JList<String> makeList(boolean def) {
@@ -46,11 +46,10 @@ public final class MainPanel extends JPanel {
 //     list.setVisibleRowCount(0);
         return list;
     }
-
-    private static JComponent makeTitledPanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(c));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

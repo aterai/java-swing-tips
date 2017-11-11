@@ -9,12 +9,13 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
-    private final JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
-    private final JSlider slider2 = new JSlider(0, 1000, 500);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
         setSilderUI(slider1);
+
+        JSlider slider2 = new JSlider(0, 1000, 500);
         setSilderUI(slider2);
 
         Box box1 = Box.createHorizontalBox();
@@ -46,11 +47,11 @@ public final class MainPanel extends JPanel {
 //         slider.setPaintTicks(true);
 //         slider.setPaintLabels(true);
     }
-    private static JComponent makeTitledPanel(String title, JComponent c) {
-        //JPanel p = new JPanel(new BorderLayout());
-        c.setBorder(BorderFactory.createTitledBorder(title));
-        //p.add(c, BorderLayout.NORTH);
-        return c;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
