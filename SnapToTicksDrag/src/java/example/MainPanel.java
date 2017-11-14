@@ -65,11 +65,10 @@ public final class MainPanel extends JPanel {
         });
         slider.addMouseWheelListener(e -> {
             JSlider s = (JSlider) e.getComponent();
-            int intValue = s.getValue() - e.getWheelRotation() * s.getMajorTickSpacing();
-            BoundedRangeModel model = s.getModel();
-            if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
-                s.setValue(intValue);
-            }
+            int tickSpacing = s.getMinorTickSpacing() == 0 ? s.getMajorTickSpacing() : slider.getMinorTickSpacing();
+            int v = s.getValue() - e.getWheelRotation() * tickSpacing;
+            BoundedRangeModel m = s.getModel();
+            s.setValue(Math.min(m.getMaximum(), Math.max(v, m.getMinimum())));
         });
         if (slider.getUI() instanceof WindowsSliderUI) {
             slider.setUI(new WindowsSnapToTicksDragSliderUI(slider));
@@ -131,22 +130,22 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                     // the calculated drag-positions are wrong.
                     // Fixed by bobndrew:
                     int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
-                    int tickSpacing = (slider.getMinorTickSpacing() == 0)
-                                    ? slider.getMajorTickSpacing()
-                                    : slider.getMinorTickSpacing();
+                    int tickSpacing = slider.getMinorTickSpacing() == 0 ? slider.getMajorTickSpacing() : slider.getMinorTickSpacing();
                     float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
                     xPos -= trackLeft;
                     snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
                     offset = 0;
                     //System.out.println(snappedPos);
                 }
-                MouseEvent me = new MouseEvent(
-                    e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                    snappedPos, e.getY(),
-                    e.getXOnScreen(), e.getYOnScreen(),
-                    e.getClickCount(), e.isPopupTrigger(), e.getButton());
-                e.consume();
-                super.mouseDragged(me);
+                e.translatePoint(snappedPos - e.getX(), 0);
+                super.mouseDragged(e);
+//                 MouseEvent me = new MouseEvent(
+//                     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+//                     snappedPos, e.getY(),
+//                     e.getXOnScreen(), e.getYOnScreen(),
+//                     e.getClickCount(), e.isPopupTrigger(), e.getButton());
+//                 e.consume();
+//                 super.mouseDragged(me);
             }
         };
     }
@@ -188,12 +187,14 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                     offset = 0;
                     //System.out.println(snappedPos);
                 }
-                MouseEvent me = new MouseEvent(
-                    e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                    snappedPos, e.getY(),
-                    e.getXOnScreen(), e.getYOnScreen(),
-                    e.getClickCount(), e.isPopupTrigger(), e.getButton());
-                super.mouseDragged(me);
+                e.translatePoint(snappedPos - e.getX(), 0);
+                super.mouseDragged(e);
+//                 MouseEvent me = new MouseEvent(
+//                     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+//                     snappedPos, e.getY(),
+//                     e.getXOnScreen(), e.getYOnScreen(),
+//                     e.getClickCount(), e.isPopupTrigger(), e.getButton());
+//                 super.mouseDragged(me);
             }
         };
     }

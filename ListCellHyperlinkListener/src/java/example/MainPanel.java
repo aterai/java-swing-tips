@@ -32,9 +32,12 @@ public final class MainPanel extends JPanel {
                     if (c instanceof JEditorPane) {
                         Rectangle r = list.getCellBounds(index, index);
                         c.setBounds(r);
-                        //TEST: c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
-                        pt.translate(-r.x, -r.y);
-                        c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(), pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
+                        MouseEvent me = SwingUtilities.convertMouseEvent(list, e, c);
+                        me.translatePoint(pt.x - r.x - me.getX(), pt.y - r.y - me.getY());
+                        c.dispatchEvent(me);
+                        // TEST1: c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
+                        // TEST2: pt.translate(-r.x, -r.y);
+                        // TEST2: c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(), pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
                     }
                 }
             }

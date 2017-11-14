@@ -63,17 +63,9 @@ public final class MainPanel extends JPanel {
                     int thumbLeft = e.getX() - offset;
                     int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
                     if (thumbLeft > maxPos) {
-                        int x = maxPos + offset;
-                        MouseEvent me = new MouseEvent(
-                            e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                            x, e.getY(),
-                            e.getXOnScreen(), e.getYOnScreen(),
-                            e.getClickCount(), e.isPopupTrigger(), e.getButton());
-                        e.consume();
-                        super.mouseDragged(me);
-                    } else {
-                        super.mouseDragged(e);
+                        e.translatePoint(maxPos + offset - e.getX(), 0);
                     }
+                    super.mouseDragged(e);
                 }
             };
         }
@@ -87,17 +79,9 @@ public final class MainPanel extends JPanel {
                     int thumbLeft = e.getX() - offset;
                     int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
                     if (thumbLeft > maxPos) {
-                        int x = maxPos + offset;
-                        MouseEvent me = new MouseEvent(
-                            e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                            x, e.getY(),
-                            e.getXOnScreen(), e.getYOnScreen(),
-                            e.getClickCount(), e.isPopupTrigger(), e.getButton());
-                        e.consume();
-                        super.mouseDragged(me);
-                    } else {
-                        super.mouseDragged(e);
+                        e.translatePoint(maxPos + offset - e.getX(), 0);
                     }
+                    super.mouseDragged(e);
                 }
             };
         }
