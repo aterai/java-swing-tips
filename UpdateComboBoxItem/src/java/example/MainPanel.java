@@ -154,7 +154,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         removeActionListener(listener);
         super.updateUI();
         listener = e -> {
-            if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+            if ((e.getModifiers() & InputEvent.MOUSE_EVENT_MASK) != 0) {
                 updateItem(getSelectedIndex());
                 keepOpen = true;
             }
