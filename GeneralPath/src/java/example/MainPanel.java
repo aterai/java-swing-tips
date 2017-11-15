@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 3));
         add(makeTitledPanel("GeneralPath",   new StarPanel1()));
         add(makeTitledPanel("Polygon",       new StarPanel2()));
