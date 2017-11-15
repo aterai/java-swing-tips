@@ -166,7 +166,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
             //loupeButton.removeMouseMotionListener(popup.getMouseMotionListener());
         }
     }
-    @Override protected ListCellRenderer createRenderer() {
+    @Override protected ListCellRenderer<Object> createRenderer() {
         return new SearchEngineListCellRenderer();
     }
     @Override protected LayoutManager createLayoutManager() {
