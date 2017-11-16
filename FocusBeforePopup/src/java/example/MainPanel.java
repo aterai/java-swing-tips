@@ -69,6 +69,7 @@ public final class MainPanel extends JPanel {
         JTextField textField3 = (JTextField) combo3.getEditor().getEditorComponent();
         textField3.setComponentPopupMenu(popup2);
         textField3.setName("textField3");
+        // TEST: textField3.putClientProperty("doNotCancelPopup", null);
 
         JComboBox<String> combo4 = new JComboBox<>(new String[] {"addMouseListener", "111", "222"});
         combo4.setEditable(true);
@@ -77,10 +78,12 @@ public final class MainPanel extends JPanel {
         textField4.setName("textField4");
         textField4.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                System.out.println("Close all JPopUpMenu");
+                System.out.println("Close all JPopupMenu(excludes dropdown list of own JComboBox)");
                 // https://ateraimemo.com/Swing/GetAllPopupMenus.html
                 for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
-                    if (m instanceof JPopupMenu) {
+                    if (combo4.isPopupVisible()) { // m instanceof ComboPopup
+                        continue;
+                    } else if (m instanceof JPopupMenu) {
                         ((JPopupMenu) m).setVisible(false);
                     }
                 }
