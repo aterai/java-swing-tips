@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.*;
-import javax.activation.*;
+// import javax.activation.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<ListItem> model = new DefaultListModel<>();
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
         model.addElement(new ListItem("12345",      "wi0054-32.png"));
         model.addElement(new ListItem("ADFFDF.asd", "wi0062-32.png"));
@@ -28,6 +28,7 @@ public final class MainPanel extends JPanel {
         model.addElement(new ListItem("t467467est", "wi0122-32.png"));
         model.addElement(new ListItem("test123",    "wi0124-32.png"));
         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
+
         ReorderbleList<ListItem> list = new ReorderbleList<>(model);
 
         JCheckBox check = new JCheckBox("Compact drag image mode") {
@@ -71,11 +72,13 @@ public final class MainPanel extends JPanel {
     }
 }
 
+// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
+    protected final DataFlavor localObjectFlavor;
+    protected int[] indices;
+    protected int addIndex = -1; // Location where items were added
+    protected int addCount; // Number of items added.
     protected static final JLabel LABEL = new JLabel() {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
@@ -86,7 +89,9 @@ class ListItemTransferHandler extends TransferHandler {
 
     protected ListItemTransferHandler() {
         super();
-        localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+
         LABEL.setOpaque(true);
         LABEL.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         LABEL.setHorizontalAlignment(SwingConstants.CENTER);
@@ -97,10 +102,25 @@ class ListItemTransferHandler extends TransferHandler {
         JList<?> source = (JList<?>) c;
         indices = source.getSelectedIndices();
         Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
-        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return transferedObjects;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
-        //Cursor flickering? return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+        // Cursor flickering? return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
             info.setDropAction(TransferHandler.MOVE);
             return true;
@@ -115,10 +135,10 @@ class ListItemTransferHandler extends TransferHandler {
         if (c instanceof JList) {
             JList source = (JList) c;
             setDragImage(createDragImage(source));
-            //Point pt = c.getMousePosition();
-            //if (Objects.nonNull(pt)) {
-            //    setDragImageOffset(pt);
-            //}
+            // Point pt = c.getMousePosition();
+            // if (Objects.nonNull(pt)) {
+            //     setDragImageOffset(pt);
+            // }
             Optional.ofNullable(c.getMousePosition()).ifPresent(this::setDragImageOffset);
             return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
         }

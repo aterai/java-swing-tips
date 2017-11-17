@@ -8,11 +8,11 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
-//import java.util.List;
+// import java.util.List;
 import java.util.stream.*;
-import javax.activation.*;
+// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<ListItem> model = new DefaultListModel<>();
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
         model.addElement(new ListItem("12345",      "wi0054-32.png"));
         model.addElement(new ListItem("ADFFDF.asd", "wi0062-32.png"));
@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ListItem {
+class ListItem implements Serializable {
+    private static final long serialVersionUID = 1L;
     public final ImageIcon nicon;
     public final ImageIcon sicon;
     public final String title;
@@ -79,7 +80,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private transient MouseInputListener rbl;
     private Color rubberBandColor;
-    private final Path2D rubberBand = new Path2D.Double();
+    protected final Path2D rubberBand = new Path2D.Double();
 
     protected ReorderbleList(ListModel<E> model) {
         super(model);
@@ -150,7 +151,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
             rubberBand.lineTo(destPoint.x, destPoint.y);
             rubberBand.lineTo(srcPoint.x,  destPoint.y);
             rubberBand.closePath();
-            //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+            // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
@@ -286,21 +287,39 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     }
 }
 
+// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
+    protected final DataFlavor localObjectFlavor;
+    protected int[] indices;
+    protected int addIndex = -1; // Location where items were added
+    protected int addCount; // Number of items added.
 
     protected ListItemTransferHandler() {
         super();
-        localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JList<?> source = (JList<?>) c;
         indices = source.getSelectedIndices();
         Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
-        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return transferedObjects;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
@@ -316,8 +335,8 @@ class ListItemTransferHandler extends TransferHandler {
         System.out.println("getSourceActions");
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
-        //glassPane.setVisible(true);
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        // glassPane.setVisible(true);
+        return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferHandler.TransferSupport info) {

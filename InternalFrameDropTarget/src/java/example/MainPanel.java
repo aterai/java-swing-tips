@@ -194,15 +194,16 @@ public class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
-    private JComponent source;
+    protected final DataFlavor localObjectFlavor;
+    protected int[] indices;
+    protected int addIndex = -1; //Location where items were added
+    protected int addCount; //Number of items added.
+    protected JComponent source;
 
     protected TableRowTransferHandler() {
         super();
-        localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         source = c;
@@ -216,7 +217,22 @@ class TableRowTransferHandler extends TransferHandler {
 //         Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
         Object[] transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).toArray();
-        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return transferedObjects;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     private JInternalFrame getInternalFrame(JComponent c) {
         Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
@@ -249,8 +265,8 @@ class TableRowTransferHandler extends TransferHandler {
             if (rect.contains(pt)) {
                 return false;
             }
-            //tf.moveToFront();
-            //tf.getParent().repaint();
+            // tf.moveToFront();
+            // tf.getParent().repaint();
         }
         return true;
     }
@@ -275,7 +291,7 @@ class TableRowTransferHandler extends TransferHandler {
         JTable target = (JTable) info.getComponent();
         DefaultTableModel model = (DefaultTableModel) target.getModel();
         int index = dl.getRow();
-        //boolean insert = dl.isInsert();
+        // boolean insert = dl.isInsert();
         int max = model.getRowCount();
         if (index < 0 || index > max) {
             index = max;
@@ -301,10 +317,9 @@ class TableRowTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         cleanup(c, action == TransferHandler.MOVE);
     }
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void cleanup(JComponent c, boolean remove) {
+        c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         if (remove && Objects.nonNull(indices)) {
-            c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {

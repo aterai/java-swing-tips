@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import javax.activation.*;
+// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -52,15 +52,15 @@ public final class MainPanel extends JPanel {
         table.setDropMode(DropMode.INSERT_ROWS);
         table.setDragEnabled(true);
         table.setFillsViewportHeight(true);
-        //table.setAutoCreateRowSorter(true); //XXX
+        // table.setAutoCreateRowSorter(true); // XXX
 
-        //Disable row Cut, Copy, Paste
+        // Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
         Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         JPanel p = new JPanel(new BorderLayout());
@@ -100,14 +100,15 @@ public final class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
+    protected final DataFlavor localObjectFlavor;
+    protected int[] indices;
+    protected int addIndex = -1; // Location where items were added
+    protected int addCount; // Number of items added.
 
     protected TableRowTransferHandler() {
         super();
-        localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JTable table = (JTable) c;
@@ -118,17 +119,31 @@ class TableRowTransferHandler extends TransferHandler {
             list.add(model.getDataVector().get(i));
         }
         Object[] transferedObjects = list.toArray();
-        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return transferedObjects;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
-        JTable table = (JTable) info.getComponent();
         boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
-        //XXX bug?
-        table.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        // XXX bug? The cursor flickering
+        info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("PMD.ReplaceVectorWithList")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
@@ -143,7 +158,7 @@ class TableRowTransferHandler extends TransferHandler {
         JTable target = (JTable) info.getComponent();
         DefaultTableModel model = (DefaultTableModel) target.getModel();
         int index = dl.getRow();
-        //boolean insert = dl.isInsert();
+        // boolean insert = dl.isInsert();
         int max = model.getRowCount();
         if (index < 0 || index > max) {
             index = max;
@@ -169,8 +184,8 @@ class TableRowTransferHandler extends TransferHandler {
     }
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void cleanup(JComponent c, boolean remove) {
+        // c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         if (remove && indices != null) {
-            c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {

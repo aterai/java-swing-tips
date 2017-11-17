@@ -6,10 +6,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.MouseInputAdapter;
 
 public class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
@@ -69,7 +71,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
     protected Path2D getRubberBand() {
         return rubberBand;
     }
-    private class RubberBandingListener extends MouseAdapter {
+    private class RubberBandingListener extends MouseInputAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             JList l = (JList) e.getComponent();
@@ -86,7 +88,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             rubberBand.lineTo(destPoint.x, destPoint.y);
             rubberBand.lineTo(srcPoint.x,  destPoint.y);
             rubberBand.closePath();
-            //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+            // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
@@ -138,6 +140,19 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         //    }
         //    return il;
         //}
+    }
+}
+
+class SelectedImageFilter extends RGBImageFilter {
+    //public SelectedImageFilter() {
+    //    canFilterIndexColorModel = false;
+    //}
+    @Override public int filterRGB(int x, int y, int argb) {
+        //Color color = new Color(argb, true);
+        //float[] array = new float[4];
+        //color.getComponents(array);
+        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
+        return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 
@@ -209,7 +224,8 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     }
 }
 
-class ListItem {
+class ListItem implements Serializable {
+    private static final long serialVersionUID = 1L;
     public final ImageIcon nicon;
     public final ImageIcon sicon;
     public final String title;
@@ -218,18 +234,5 @@ class ListItem {
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
         this.title = title;
-    }
-}
-
-class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
-    @Override public int filterRGB(int x, int y, int argb) {
-        //Color color = new Color(argb, true);
-        //float[] array = new float[4];
-        //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
-        return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }

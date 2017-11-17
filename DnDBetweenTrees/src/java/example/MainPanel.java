@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.IOException;
-import javax.activation.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         tree.setDropMode(DropMode.INSERT);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        //Disable node Cut action
+        // Disable node Cut action
         tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         });
@@ -64,8 +64,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TreeTransferHandler extends TransferHandler {
-    private static final DataFlavor FLAVOR = new ActivationDataFlavor(DefaultMutableTreeNode[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of DefaultMutableTreeNode");
-    private JTree source;
+    // protected static final DataFlavor FLAVOR = new ActivationDataFlavor(DefaultMutableTreeNode[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of DefaultMutableTreeNode");
+    protected static final DataFlavor FLAVOR = new DataFlavor(DefaultMutableTreeNode[].class, "Array of DefaultMutableTreeNode");
+    protected JTree source;
 
     @Override protected Transferable createTransferable(JComponent c) {
         source = (JTree) c;
@@ -74,9 +75,23 @@ class TreeTransferHandler extends TransferHandler {
         for (int i = 0; i < paths.length; i++) {
             nodes[i] = (DefaultMutableTreeNode) paths[i].getLastPathComponent();
         }
-        return new DataHandler(nodes, FLAVOR.getMimeType());
+        // return new DataHandler(nodes, FLAVOR.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {FLAVOR};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(FLAVOR, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return nodes;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
-
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE;
     }
@@ -112,10 +127,10 @@ class TreeTransferHandler extends TransferHandler {
             JTree tree = (JTree) support.getComponent();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             int idx = childIndex < 0 ? parent.getChildCount() : childIndex;
-            //DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
+            // DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
             for (DefaultMutableTreeNode node: nodes) {
-                //sm.removeNodeFromParent(node);
-                //model.insertNodeInto(node, parent, idx++);
+                // sm.removeNodeFromParent(node);
+                // model.insertNodeInto(node, parent, idx++);
                 DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
                 model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx++);
             }

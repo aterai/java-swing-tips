@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import javax.activation.*;
+import java.util.Objects;
+// import javax.activation.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -82,21 +83,37 @@ public final class MainPanel extends JPanel {
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private JList<?> source;
-    private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
+    protected final DataFlavor localObjectFlavor;
+    protected JList<?> source;
+    protected int[] indices;
+    protected int addIndex = -1; // Location where items were added
+    protected int addCount; // Number of items added.
 
     protected ListItemTransferHandler() {
         super();
-        localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         source = (JList<?>) c;
         indices = source.getSelectedIndices();
         Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
-        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return transferedObjects;
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
@@ -117,7 +134,7 @@ class ListItemTransferHandler extends TransferHandler {
         JList target = (JList) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         int index = dl.getIndex();
-        //boolean insert = dl.isInsert();
+        // boolean insert = dl.isInsert();
         int max = listModel.getSize();
         if (index < 0 || index > max) {
             index = max;
@@ -144,9 +161,9 @@ class ListItemTransferHandler extends TransferHandler {
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void cleanup(JComponent c, boolean remove) {
         if (remove && indices != null) {
-            //If we are moving items around in the same list, we
-            //need to adjust the indices accordingly, since those
-            //after the insertion point have moved.
+            // If we are moving items around in the same list, we
+            // need to adjust the indices accordingly, since those
+            // after the insertion point have moved.
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {
                     if (indices[i] >= addIndex) {
