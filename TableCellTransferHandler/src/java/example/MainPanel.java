@@ -7,23 +7,27 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
-import javax.activation.*;
+import java.util.Objects;
+// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final DataFlavor FLAVOR = new ActivationDataFlavor(JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
-    private final String[] columnNames = {"String", "Icon", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", new ColorIcon(Color.RED),    true},
-        {"bbb", new ColorIcon(Color.GREEN),  false},
-        {"ccc", new ColorIcon(Color.BLUE),   true},
-        {"ddd", new ColorIcon(Color.ORANGE), true},
-        {"eee", new ColorIcon(Color.PINK),   false},
-        {"fff", new ColorIcon(Color.CYAN),   true},
-    };
-    public MainPanel() {
+    // private static final DataFlavor FLAVOR = new ActivationDataFlavor(JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
+    private MainPanel() {
         super(new BorderLayout());
+
+        CellIconTransferHandler handler = new CellIconTransferHandler();
+
+        String[] columnNames = {"String", "Icon", "Boolean"};
+        Object[][] data = {
+            {"aaa", new ColorIcon(Color.RED),    true},
+            {"bbb", new ColorIcon(Color.GREEN),  false},
+            {"ccc", new ColorIcon(Color.BLUE),   true},
+            {"ddd", new ColorIcon(Color.ORANGE), true},
+            {"eee", new ColorIcon(Color.PINK),   false},
+            {"fff", new ColorIcon(Color.CYAN),   true},
+        };
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 switch (column) {
@@ -40,19 +44,19 @@ public final class MainPanel extends JPanel {
         });
         table.setCellSelectionEnabled(true);
         table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setTransferHandler(new CellIconTransferHandler(FLAVOR));
+        table.setTransferHandler(handler);
         table.setDragEnabled(true);
         table.setFillsViewportHeight(true);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
 
-        //Disable row Cut, Copy, Paste
+        // Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
         Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         DefaultListModel<Icon> model = new DefaultListModel<>();
@@ -62,7 +66,7 @@ public final class MainPanel extends JPanel {
         list.setFixedCellWidth(16);
         list.setFixedCellHeight(16);
         list.setCellRenderer(new IconListCellRenderer<>());
-        list.setTransferHandler(new TableCellTransferHandler(FLAVOR));
+        list.setTransferHandler(handler);
 
         JButton clearButton = new JButton("clear");
         clearButton.addActionListener(e -> {
@@ -94,7 +98,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -119,32 +122,32 @@ public final class MainPanel extends JPanel {
 }
 
 class CellIconTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    protected CellIconTransferHandler(DataFlavor flavor) {
-        super();
-        localObjectFlavor = flavor;
-    }
+    protected final DataFlavor localObjectFlavor = new DataFlavor(Icon.class, "Icon");
     @Override protected Transferable createTransferable(JComponent c) {
-        JTable table = (JTable) c;
-        int idx = table.getSelectedColumn();
-        if (Icon.class.isAssignableFrom(table.getColumnClass(idx))) {
-            return new DataHandler(table, localObjectFlavor.getMimeType());
+        if (c instanceof JTable) {
+            JTable table = (JTable) c;
+            int row = table.getSelectedRow();
+            int col = table.getSelectedColumn();
+            if (Icon.class.isAssignableFrom(table.getColumnClass(col))) {
+                // return new DataHandler(table, localObjectFlavor.getMimeType());
+                return new Transferable() {
+                    @Override public DataFlavor[] getTransferDataFlavors() {
+                        return new DataFlavor[] {localObjectFlavor};
+                    }
+                    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                        return Objects.equals(localObjectFlavor, flavor);
+                    }
+                    @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                         if (isDataFlavorSupported(flavor)) {
+                             return table.getValueAt(row, col);
+                         } else {
+                             throw new UnsupportedFlavorException(flavor);
+                         }
+                     }
+                };
+            }
         }
         return null;
-    }
-    @Override public boolean canImport(TransferHandler.TransferSupport info) {
-        return false;
-    }
-    @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.COPY;
-    }
-}
-
-class TableCellTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    protected TableCellTransferHandler(DataFlavor flavor) {
-        super();
-        localObjectFlavor = flavor;
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         Component c = info.getComponent();
@@ -164,10 +167,8 @@ class TableCellTransferHandler extends TransferHandler {
         JList l = (JList) info.getComponent();
         try {
             Object o = info.getTransferable().getTransferData(localObjectFlavor);
-            if (o instanceof JTable) {
-                JTable t = (JTable) o;
-                Object obj = t.getValueAt(t.getSelectedRow(), t.getSelectedColumn());
-                ((DefaultListModel) l.getModel()).addElement(obj);
+            if (o instanceof Icon) {
+                ((DefaultListModel) l.getModel()).addElement(o);
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {
