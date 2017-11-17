@@ -14,7 +14,7 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private final TransferHandler handler = new TableRowTransferHandler();
-    //private final TransferHandler handler2 = new TableColumnTransferHandler();
+    // private final TransferHandler handler2 = new TableColumnTransferHandler();
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -47,12 +47,12 @@ public class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
 
         table.getTableHeader().setReorderingAllowed(false);
-        //table.getTableHeader().setTransferHandler(handler2);
-        //Handler h = new Handler();
-        //table.getTableHeader().addMouseListener(h);
-        //table.getTableHeader().addMouseMotionListener(h);
+        // table.getTableHeader().setTransferHandler(handler2);
+        // Handler h = new Handler();
+        // table.getTableHeader().addMouseListener(h);
+        // table.getTableHeader().addMouseMotionListener(h);
 
-        //Disable row Cut, Copy, Paste
+        // Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
         Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -196,8 +196,8 @@ public class MainPanel extends JPanel {
 class TableRowTransferHandler extends TransferHandler {
     protected final DataFlavor localObjectFlavor;
     protected int[] indices;
-    protected int addIndex = -1; //Location where items were added
-    protected int addCount; //Number of items added.
+    protected int addIndex = -1; // Location where items were added
+    protected int addCount; // Number of items added.
     protected JComponent source;
 
     protected TableRowTransferHandler() {

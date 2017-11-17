@@ -182,10 +182,9 @@ class TableRowTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         cleanup(c, action == TransferHandler.MOVE);
     }
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void cleanup(JComponent c, boolean remove) {
         // c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        if (remove && indices != null) {
+        if (remove && Objects.nonNull(indices)) {
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {

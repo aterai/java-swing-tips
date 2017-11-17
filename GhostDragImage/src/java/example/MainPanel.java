@@ -140,7 +140,7 @@ class ListItemTransferHandler extends TransferHandler {
             //     setDragImageOffset(pt);
             // }
             Optional.ofNullable(c.getMousePosition()).ifPresent(this::setDragImageOffset);
-            return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+            return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
         }
         return TransferHandler.NONE;
     }
@@ -169,7 +169,7 @@ class ListItemTransferHandler extends TransferHandler {
         JList target = (JList) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         int index = dl.getIndex();
-        //boolean insert = dl.isInsert();
+        // boolean insert = dl.isInsert();
         int max = listModel.getSize();
         if (index < 0 || index > max) {
             index = max;
@@ -192,15 +192,15 @@ class ListItemTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
         Component glassPane = c.getRootPane().getGlassPane();
-        //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         glassPane.setVisible(false);
         cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && Objects.nonNull(indices)) {
-            //If we are moving items around in the same list, we
-            //need to adjust the indices accordingly, since those
-            //after the insertion point have moved.
+            // If we are moving items around in the same list, we
+            // need to adjust the indices accordingly, since those
+            // after the insertion point have moved.
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {
                     if (indices[i] >= addIndex) {
@@ -230,10 +230,10 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         }
         JList source = (JList) c;
         int w = source.getFixedCellWidth();
-        int h = source.getFixedCellHeight() - 20; //TODO
+        int h = source.getFixedCellHeight() - 20; // TODO
         setDragImage(createCompactDragImage(source, w, h));
         setDragImageOffset(new Point(w / 2, h));
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
     private static BufferedImage createCompactDragImage(JList source, int w, int h) {
         if (w <= 0 || h <= 0) {

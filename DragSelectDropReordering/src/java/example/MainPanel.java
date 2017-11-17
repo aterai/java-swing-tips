@@ -86,8 +86,8 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         super(model);
     }
     @Override public void updateUI() {
-        setSelectionForeground(null); //Nimbus
-        setSelectionBackground(null); //Nimbus
+        setSelectionForeground(null); // Nimbus
+        setSelectionBackground(null); // Nimbus
         setCellRenderer(null);
         setTransferHandler(null);
         removeMouseListener(rbl);
@@ -158,10 +158,10 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         @Override public void mouseReleased(MouseEvent e) {
             JList l = (JList) e.getComponent();
             l.setFocusable(true);
-            //if (Objects.isNull(srcPoint) || !getDragEnabled()) {
-            //    Component glassPane = l.getRootPane().getGlassPane();
-            //    glassPane.setVisible(false);
-            //}
+            // if (Objects.isNull(srcPoint) || !getDragEnabled()) {
+            //     Component glassPane = l.getRootPane().getGlassPane();
+            //     glassPane.setVisible(false);
+            // }
             getRubberBand().reset();
             l.setDragEnabled(l.getSelectedIndices().length > 0);
             l.repaint();
@@ -175,7 +175,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
                 if (l.getDragEnabled()) {
                     return;
                 }
-                //System.out.println("ccc:" + startSelectedIndex);
+                // System.out.println("ccc:" + startSelectedIndex);
                 l.setSelectedIndex(index);
             } else {
                 l.clearSelection();
@@ -187,34 +187,34 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
             srcPoint.setLocation(e.getPoint());
             l.repaint();
         }
-        ////JDK 1.7.0
-        //private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-        //    ListModel model = l.getModel();
-        //    List<Integer> ll = new ArrayList<>(model.getSize());
-        //    for (int i = 0; i < model.getSize(); i++) {
-        //        if (rect.intersects(l.getCellBounds(i, i))) {
-        //            ll.add(i);
-        //        }
-        //    }
-        //    //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
-        //    int[] il = new int[ll.size()];
-        //    for (int i = 0; i < ll.size(); i++) {
-        //        il[i] = ll.get(i);
-        //    }
-        //    return il;
-        //}
+//         // JDK 1.7.0
+//         private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+//             ListModel model = l.getModel();
+//             List<Integer> ll = new ArrayList<>(model.getSize());
+//             for (int i = 0; i < model.getSize(); i++) {
+//                 if (rect.intersects(l.getCellBounds(i, i))) {
+//                     ll.add(i);
+//                 }
+//             }
+//             // JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
+//             int[] il = new int[ll.size()];
+//             for (int i = 0; i < ll.size(); i++) {
+//                 il[i] = ll.get(i);
+//             }
+//             return il;
+//         }
     }
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
-        //Color color = new Color(argb, true);
-        //float[] array = new float[4];
-        //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
+        // Color color = new Color(argb, true);
+        // float[] array = new float[4];
+        // color.getComponents(array);
+        // return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
         return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
@@ -233,28 +233,28 @@ class SelectedImageFilter extends RGBImageFilter {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.translate(x, y);
 //         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
-//         //new Color(200, 150, 150));
-//         //g2.setStroke(dashed);
-//         //g2.drawRect(0, 0, w - 1, h - 1);
+//         // new Color(200, 150, 150));
+//         // g2.setStroke(dashed);
+//         // g2.drawRect(0, 0, w - 1, h - 1);
 //         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //         g2.dispose();
 //     }
-//     //@Override public Insets getBorderInsets(Component c)
-//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+//     // @Override public Insets getBorderInsets(Component c)
+//     // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    //private final Border dotBorder = new DotBorder(2, 2, 2, 2);
-    //private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    // private final Border dotBorder = new DotBorder(2, 2, 2, 2);
+    // private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
     protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
+        if (Objects.isNull(b)) { // Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
@@ -270,7 +270,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
-        //label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        // label.setBorder(cellHasFocus ? dotBorder : empBorder);
         label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
         if (isSelected) {
             icon.setIcon(value.sicon);
@@ -348,7 +348,7 @@ class ListItemTransferHandler extends TransferHandler {
         JList target = (JList) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         int index = dl.getIndex();
-        //boolean insert = dl.isInsert();
+        // boolean insert = dl.isInsert();
         int max = listModel.getSize();
         if (index < 0 || index > max) {
             index = max;
@@ -371,15 +371,15 @@ class ListItemTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
         Component glassPane = c.getRootPane().getGlassPane();
-        //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         glassPane.setVisible(false);
         cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && Objects.nonNull(indices)) {
-            //If we are moving items around in the same list, we
-            //need to adjust the indices accordingly, since those
-            //after the insertion point have moved.
+            // If we are moving items around in the same list, we
+            // need to adjust the indices accordingly, since those
+            // after the insertion point have moved.
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {
                     if (indices[i] >= addIndex) {
