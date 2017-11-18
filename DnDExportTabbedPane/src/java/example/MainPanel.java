@@ -10,10 +10,11 @@ import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
 import java.util.*;
-import javax.activation.*;
+// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+@SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
     public MainPanel() {
@@ -148,8 +149,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
-        int tabPlacement = getTabPlacement();
-        if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        // int tabPlacement = getTabPlacement();
+        // if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        if (isTopBottomTabPlacement(getTabPlacement())) {
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
         } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
@@ -216,10 +218,10 @@ class DnDTabbedPane extends JTabbedPane {
         target.insertTab(str, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, isEnabled);
 
-        ////ButtonTabComponent
-        //if (tab instanceof ButtonTabComponent) {
-        //    tab = new ButtonTabComponent(target);
-        //}
+        // // ButtonTabComponent
+        // if (tab instanceof ButtonTabComponent) {
+        //     tab = new ButtonTabComponent(target);
+        // }
 
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
@@ -404,21 +406,44 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 //     }
 }
 
+class DnDTabData {
+    public final DnDTabbedPane tabbedPane;
+    protected DnDTabData(DnDTabbedPane tabbedPane) {
+        this.tabbedPane = tabbedPane;
+    }
+}
+
 class TabTransferHandler extends TransferHandler {
-    private final DataFlavor localObjectFlavor;
-    private DnDTabbedPane source;
+    protected final DataFlavor localObjectFlavor;
+    protected DnDTabbedPane source;
 
     protected TabTransferHandler() {
         super();
         System.out.println("TabTransferHandler");
-        localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
+        // localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
+        localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         System.out.println("createTransferable");
         if (c instanceof DnDTabbedPane) {
             source = (DnDTabbedPane) c;
         }
-        return new DataHandler(c, localObjectFlavor.getMimeType());
+        // return new DataHandler(c, localObjectFlavor.getMimeType());
+        return new Transferable() {
+            @Override public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {localObjectFlavor};
+            }
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return Objects.equals(localObjectFlavor, flavor);
+            }
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                 if (isDataFlavorSupported(flavor)) {
+                     return new DnDTabData(source);
+                 } else {
+                     throw new UnsupportedFlavorException(flavor);
+                 }
+             }
+        };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         //System.out.println("canImport");
@@ -446,7 +471,7 @@ class TabTransferHandler extends TransferHandler {
         boolean isDroppable = false;
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
         if (target.equals(source)) {
-            //System.out.println("target == source");
+            // System.out.println("target == source");
             isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             // System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
@@ -517,10 +542,11 @@ class TabTransferHandler extends TransferHandler {
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
         try {
-            DnDTabbedPane source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
-            int index = dl.getIndex(); //boolean insert = dl.isInsert();
+            DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(localObjectFlavor);
+            DnDTabbedPane source = data.tabbedPane;
+            int index = dl.getIndex(); // boolean insert = dl.isInsert();
             if (target.equals(source)) {
-                source.convertTab(source.dragTabIndex, index); //getTargetTabIndex(e.getLocation()));
+                source.convertTab(source.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
             } else {
                 source.exportTab(source.dragTabIndex, target, index);
             }
@@ -674,7 +700,7 @@ class TabButton extends JButton {
         return new Dimension(SIZE, SIZE);
     }
     @Override public void updateUI() {
-        //we don't want to update UI for this button
+        // we don't want to update UI for this button
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
