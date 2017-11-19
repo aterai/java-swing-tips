@@ -178,14 +178,15 @@ class BasicComboPopup3 extends BasicComboPopup {
                     // Fix for 4234053. Filter out the Control Key from the list.
                     // ie., don't allow CTRL key deselection.
                     Toolkit toolkit = Toolkit.getDefaultToolkit();
-                    ev = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(),
-                                        //e.getModifiers() ^ InputEvent.CTRL_MASK,
-                                        e.getModifiers() ^ toolkit.getMenuShortcutKeyMask(),
-                                        e.getX(), e.getY(),
-                                        e.getXOnScreen(), e.getYOnScreen(),
-                                        e.getClickCount(),
-                                        e.isPopupTrigger(),
-                                        MouseEvent.NOBUTTON);
+                    ev = new MouseEvent(
+                        e.getComponent(), e.getID(), e.getWhen(),
+                        //e.getModifiers() ^ InputEvent.CTRL_MASK,
+                        e.getModifiersEx() ^ toolkit.getMenuShortcutKeyMask(),
+                        e.getX(), e.getY(),
+                        e.getXOnScreen(), e.getYOnScreen(),
+                        e.getClickCount(),
+                        e.isPopupTrigger(),
+                        MouseEvent.NOBUTTON);
                 }
                 super.processMouseEvent(ev);
             }

@@ -131,7 +131,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     @Override protected void processMouseMotionEvent(MouseEvent e) {
         if (pointOutsidePrefSize(e.getPoint())) {
             MouseEvent ev = new MouseEvent(e.getComponent(), MouseEvent.MOUSE_EXITED, e.getWhen(),
-                                           e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
+                                           e.getModifiersEx(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
                                            e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
             super.processMouseEvent(ev);
         } else {

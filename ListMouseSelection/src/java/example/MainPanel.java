@@ -87,7 +87,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
             //e.getModifiers() | InputEvent.CTRL_MASK,
             //select multiple objects in OS X: Command + click
             //pointed out by nsby
-            e.getModifiers() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
+            e.getModifiersEx() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
             e.getX(), e.getY(),
             e.getXOnScreen(), e.getYOnScreen(),
             e.getClickCount(),

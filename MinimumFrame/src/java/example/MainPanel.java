@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
 //                 Point loc   = frame.getLocationOnScreen();
 //                 Point mouse = MouseInfo.getPointerInfo().getLocation();
 //                 if (Objects.nonNull(r2) && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
-//                     r2.mouseRelease(InputEvent.BUTTON1_MASK);
+//                     r2.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 //                     frame.setSize(Math.min(MAX, frame.getWidth()),
 //                                   Math.min(MAX, frame.getHeight()));
 //                 }

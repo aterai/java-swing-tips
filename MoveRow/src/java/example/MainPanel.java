@@ -180,7 +180,7 @@ class UpAction extends AbstractAction {
             return;
         }
         RowDataModel model = (RowDataModel) table.getModel();
-        if ((e.getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+        if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
             if (pos[0] == 0) {
                 return;
             }
@@ -210,7 +210,7 @@ class DownAction extends AbstractAction {
             return;
         }
         RowDataModel model = (RowDataModel) table.getModel();
-        if ((e.getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+        if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
             if (pos[pos.length - 1] == model.getRowCount() - 1) {
                 return;
             }
