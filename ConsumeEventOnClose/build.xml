@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="example" default="compile" basedir=".">
+  <!-- all properties are in build.properties -->
+  <!--property file="build.properties" /-->
+  <property environment="env" />
+  <property name="config.dir" value="config" />
+  <import file="${basedir}/${config.dir}/properties.xml" />
+  <import file="${basedir}/${config.dir}/jnlp.xml" />
+
+  <condition property="have.resources">
+    <available file="${res.dir}" />
+  </condition>
+
+  <!-- =================================================================== -->
+  <!-- classpath to use within project                                     -->
+  <!-- =================================================================== -->
+  <condition property="have.library">
+    <available file="${lib.dir}" />
+  </condition>
+  <path id="project.class.path">
+    <pathelement location="${build.dest}" />
+    <pathelement location="${java.home}/lib/javaws.jar" />
+    <pathelement path="${java.class.path}" />
+  </path>
+  <target name="init" if="have.library">
+    <path id="project.class.path">
+      <!-- compiled classes directory -->
+      <pathelement location="${build.dest}" />
+      <!-- all jars in jar directory -->
+      <fileset dir="${lib.dir}" includes="*.jar" />
+      <!-- system property, environment classpath -->
+      <pathelement path="${java.class.path}" />
+    </path>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message="" />
+    <echo message="" />
+    <echo message="${Name} Build file" />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message=" available targets are:" />
+    <echo message="" />
+    <echo message="   compile  - compiles the source code (default)" />
+    <echo message="   run      - execute the exsample" />
+    <echo message="   package  - generates the ${name}.jar file" />
+    <echo message="   javadoc  - generates the API documentation" />
+    <echo message="   clean    - cleans up the directory" />
+    <echo message="" />
+    <echo message=" See the comments inside the build.xml file for more details." />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message="" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <echo message="----------- ${Name} ${version} [${year}] ------------" />
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${build.dest}" />
+    <!--chmod file="${basedir}/run.sh" perm="700"/-->
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the resource                                               -->
+  <!-- =================================================================== -->
+  <target name="prepare-resource" depends="prepare" if="have.resources">
+    <!--target name="prepare-resource" depends="prepare,check-cond" if="cond-is-true"-->
+    <mkdir dir="${build.res}" />
+    <!--native2ascii encoding="UTF-8" src="${res.dir}" dest="${build.res}" includes="**/*.properties.utf8" ext="" /-->
+    <copy todir="${build.res}">
+      <fileset dir="${res.dir}" excludes="**/*.properties.*, **/*.bak" />
+    </copy>
+  </target>
+  <!--target name="check-cond">
+    <condition property="cond-is-true">
+      <isset property="build.res" />
+    </condition>
+  </target-->
+
+  <!-- =================================================================== -->
+  <!-- Prepares the source code                                            -->
+  <!-- =================================================================== -->
+  <target name="prepare-src" depends="prepare">
+    <mkdir dir="${build.src}" />
+    <filter token="title"    value="${jnlp.title}" />
+    <filter token="homepage" value="${jnlp.homepage}" />
+    <copy todir="${build.src}" filtering="yes"
+          encoding="${compile.encoding}"
+          outputencoding="${compile.encoding}">
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </copy>
+    <copy todir="${build.src}">
+      <fileset dir="${src.dir}" excludes="**/*.java, **/*.bak" />
+    </copy>
+    <!--native2ascii encoding="UTF-8" src="${src.dir}" dest="${build.dest}" includes="**/*.properties.utf8" ext="" /-->
+    <copy todir="${build.dest}">
+      <fileset dir="${src.dir}" excludes="**/*.java, **/*.bak, **/*.utf8" />
+    </copy>
+  </target>
+
+  <condition property="have.web">
+    <available file="${web.dir}" />
+  </condition>
+  <target name="prepare-web" depends="prepare" if="have.web">
+    <filter token="codebase"       value="${jnlp.codebase}" />
+    <filter token="title"          value="${jnlp.title}" />
+    <filter token="homepage"       value="${jnlp.homepage}" />
+    <filter token="vendor"         value="${vendor}" />
+    <filter token="main.class"     value="${main.class}" />
+    <filter token="compile.source" value="${compile.source}" />
+    <copy todir="${build.dir}" filtering="yes"
+          encoding="${compile.encoding}"
+          outputencoding="${compile.encoding}">
+      <fileset dir="${web.dir}" includes="**/*.jnlp **/*.html" />
+    </copy>
+    <copy todir="${build.dir}" filtering="no">
+      <fileset dir="${web.dir}" excludes="**/*.jnlp **/*.html **/*.bak" />
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare-src, prepare-resource, prepare-web">
+    <javac srcdir="${build.src}"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           includeAntRuntime="no"
+           fork="true"
+           classpathref="project.class.path">
+      <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
+      <compilerarg value="-J-Duser.language=${user.language}" />
+      <compilerarg value="-Xlint:unchecked" />
+    </javac>
+  </target>
+
+  <target name="run" depends="compile">
+    <java classname="${main.class}" classpathref="project.class.path" fork="true" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the class package                                           -->
+  <!-- =================================================================== -->
+  <target name="package" depends="compile">
+    <echo message="Creating the jar file ${build.dir}/${name}.jar" />
+    <tstamp>
+      <format property="ts" pattern="yyyyMMdd-HHmmss-z" />
+    </tstamp>
+    <jar jarfile="${build.dir}/${name}.jar" basedir="${build.dest}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}" />
+        <attribute name="Class-Path" value="${runtime.classpath}" />
+        <attribute name="Implementation-Title"   value="${Name}" />
+        <attribute name="Implementation-Version" value="${version}" />
+        <attribute name="Implementation-Vendor"  value="${vendor}" />
+        <attribute name="Build-Id" value="${ts} (${user.name} [${os.name} ${os.version} ${os.arch}])" />
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the API documentation                                       -->
+  <!-- =================================================================== -->
+  <target name="javadoc" depends="prepare-src">
+    <mkdir dir="${build.docs}" />
+    <javadoc packagenames="${javadoc.pkgs}"
+             sourcepath="${build.src}"
+             classpathref="project.class.path"
+             destdir="${build.docs}"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             noindex="false"
+             windowtitle="${Name} API"
+             doctitle="${Name}"
+             bottom="Copyright &#169; ${year} ${vendor} All Rights Reserved."
+             encoding="${javadoc.encoding}"
+             docencoding="${javadoc.docencoding}"
+             locale="${javadoc.locale}"
+    />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the API documentation, with links to JDK 1.4 classes        -->
+  <!-- We can use linkoffline with a newer Ant and avoid this target       -->
+  <!-- =================================================================== -->
+  <target name="javadoc-link" depends="prepare-src">
+    <mkdir dir="${build.docs}" />
+    <javadoc packagenames="${javadoc.pkgs}"
+             sourcepath="${build.src}"
+             classpathref="project.class.path"
+             destdir="${build.docs}"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             noindex="false"
+             windowtitle="${Name} API"
+             doctitle="${Name}"
+             bottom="Copyright &#169; ${year} ${vendor} All Rights Reserved."
+             encoding="${javadoc.encoding}"
+             docencoding="${javadoc.docencoding}"
+             locale="${javadoc.locale}">
+      <link href="${javadoc.link}" />
+      <classpath refid="project.class.path" />
+    </javadoc>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean">
+    <delete dir="${build.dir}" />
+  </target>
+
+<!-- End of file -->
+
+  <fileset id="dist.src.fileset" dir=".">
+    <include name="build.xml" />
+    <include name="*.bat" />
+    <include name="*.sh" />
+    <include name="${config.dir}/**/*.xml" />
+    <include name="${web.dir}/*.jnlp" />
+    <include name="${conf.dir}/**" />
+    <include name="${res.dir}/**" />
+    <include name="${lib.dir}/*.jar" />
+  </fileset>
+  <target name="dist" depends="package, dist-libcopy">
+    <mkdir dir="${bkup.dir}" />
+    <filter token="homepage" value="${jnlp.homepage}" />
+    <filter token="title" value="${jnlp.Name}" />
+    <copy todir="${bkup.dir}/${src.dir}" filtering="yes"
+          encoding="${compile.encoding}"
+          outputencoding="${compile.encoding}">
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </copy>
+    <copy todir="${bkup.dir}/${src.dir}">
+      <fileset dir="${src.dir}" excludes="**/*.java, **/*.bak" />
+    </copy>
+    <copy todir="${bkup.dir}">
+      <fileset refid="dist.src.fileset" />
+    </copy>
+    <zip destfile="${build.dir}/src.zip" basedir="${bkup.dir}" includes="**" />
+    <!--copy todir="${build.dir}" file="${}/example.jnlp"/-->
+    <delete dir="${bkup.dir}" />
+  </target>
+  <target name="dist-libcopy" if="have.library">
+    <copy todir="${build.dir}">
+      <fileset dir="${lib.dir}" includes="**/*.jar" />
+    </copy>
+  </target>
+
+  <target name="sign-libcopy" if="have.library">
+    <fileset id="lib.jar.fileset" dir="${lib.dir}">
+      <include name="jlfgr-1_0.jar" />
+    </fileset>
+    <mkdir dir="${build.dir}/lib" />
+    <copy todir="${build.dir}/lib">
+      <fileset refid="lib.jar.fileset" />
+    </copy>
+  </target>
+  <target name="sign" depends="sign-libcopy">
+    <input type="secure" message="Enter Password:" addproperty="store.password" />
+    <signjar keystore="${signjar.keystore}" alias="${signjar.alias}" storepass="${store.password}">
+      <fileset dir="${build.dir}" includes="**/*.jar" />
+    </signjar>
+  </target>
+
+  <target name="bkup">
+    <echo message="Building the buckup files (zip)" />
+    <tstamp>
+      <format property="TSTAMP_BACKUP" pattern="yyyyMMddHHmm" />
+    </tstamp>
+    <mkdir dir="${bkup.dir}" />
+    <copy todir="${bkup.dir}">
+      <fileset refid="dist.src.fileset" />
+    </copy>
+    <zip destfile="${name}-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
+    <delete dir="${bkup.dir}" />
+  </target>
+
+  <target name="test" depends="compile">
+    <junit printsummary="yes" haltonfailure="no">
+      <formatter type="xml" />
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <pathelement path="${java.class.path}" />
+      </classpath>
+      <batchtest fork="yes" todir="${build.reports}">
+        <fileset dir="${src.dir}" includes="**/*Test.java" />
+      </batchtest>
+    </junit>
+    <junitreport todir="${build.reports}">
+      <fileset dir="${build.reports}" includes="TEST-*.xml" />
+      <report format="frames" todir="${build.correctreports}" />
+    </junitreport>
+  </target>
+
+  <!--target name="crlf" depends="prepare-src">
+    <property name="src.crlf" value="./src_crlf" />
+    <mkdir dir="${src.crlf}" />
+    <copy todir="${src.crlf}">
+      <fileset dir="${src.dir}" excludes="**/*.bak" />
+    </copy>
+    <fixcrlf srcdir="${src.crlf}" includes="**/*.java" eol="crlf" />
+  </target>
+
+  <target name="lf" depends="prepare-src">
+    <property name="src.crlf" value="./src_crlf" />
+    <mkdir dir="${src.crlf}" />
+    <copy todir="${src.crlf}">
+      <fileset dir="${src.dir}" excludes="**/*.bak" />
+    </copy>
+    <fixcrlf srcdir="${src.crlf}" includes="**/*.java, **/*.java_, **/*.bat, **/*.rx*" eol="lf" />
+  </target>
+
+  <target name="n2a" depends="prepare-src">
+    <property name="src.n2a" value="./src_native2ascii" />
+    <mkdir dir="${src.n2a}" />
+    <native2ascii encoding="UTF-8" src="${src.dir}" dest="${src.n2a}" includes="**/*.java" />
+  </target-->
+
+  <!-- static code analysis -->
+  <property name="sca.dir" value=".." />
+
+  <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+    <javac srcdir="${build.src}"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+           includeAntRuntime="false"
+           classpathref="project.class.path">
+      <compilerclasspath>
+        <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+      </compilerclasspath>
+      <compilerarg value="-Xlint:unchecked" />
+      <compilerarg value="-Xep:MultipleTopLevelClasses:OFF" />
+    </javac>
+  </target>
+
+  <condition property="have.findbugs">
+      <available file="${env.FINDBUGS_HOME}" />
+  </condition>
+  <target name="findbugs" depends="compile" if="have.findbugs">
+    <echo>${env.FINDBUGS_HOME}</echo>
+    <path id="findbugs.classpath">
+      <fileset dir="${env.FINDBUGS_HOME}/lib" includes="*-ant.jar" />
+    </path>
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.classpath" />
+    <mkdir dir="${build.reports}" />
+    <echo>userdir: ${user.dir}</echo>
+    <echo>basedir: ${basedir}</echo>
+    <findbugs home="${env.FINDBUGS_HOME}" effort="max" reportLevel="low"
+            excludeFilter="${sca.dir}/excludefilter.xml"
+            output="xml:withMessages" outputFile="${build.reports}/findbugs.xml">
+      <auxClasspath refid="project.class.path" />
+      <sourcePath path="${src.dir}" />
+      <class location="${build.dest}" />
+    </findbugs>
+  </target>
+
+  <condition property="have.spotbugs">
+    <available file="${env.SPOTBUGS_HOME}" />
+  </condition>
+  <target name="spotbugs" depends="compile" if="have.spotbugs">
+    <echo>${env.SPOTBUGS_HOME}</echo>
+    <path id="spotbugs.classpath">
+      <fileset dir="${env.SPOTBUGS_HOME}/lib" includes="*-ant.jar" />
+    </path>
+    <taskdef resource="edu/umd/cs/findbugs/anttask/tasks.properties" classpathref="spotbugs.classpath" />
+    <mkdir dir="${build.reports}" />
+    <spotbugs home="${env.SPOTBUGS_HOME}" effort="max" reportLevel="low"
+            excludeFilter="${sca.dir}/excludefilter.xml"
+            output="xml" outputFile="${build.reports}/spotbugs.xml">
+      <sourcePath path="${src.dir}" />
+      <class location="${build.dest}" />
+    </spotbugs>
+  </target>
+
+  <condition property="have.pmd">
+    <available file="${env.PMD_HOME}" />
+  </condition>
+  <target name="pmd" if="have.pmd">
+    <echo>${env.PMD_HOME}</echo>
+    <path id="pmd.classpath">
+      <fileset dir="${env.PMD_HOME}/lib" includes="*.jar" />
+    </path>
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
+    <mkdir dir="${build.reports}" />
+    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}">
+      <sourceLanguage name="java" version="${compile.source}" />
+      <classpath refid="project.class.path" />
+      <formatter type="xml" toFile="${build.reports}/pmd.xml" />
+      <formatter type="text" toConsole="true" />
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </pmd>
+  </target>
+
+  <condition property="have.checkstyle">
+    <available file="${env.CHECKSTYLE_HOME}" />
+  </condition>
+  <target name="checkstyle" if="have.checkstyle">
+    <path id="checkstyle.classpath">
+      <fileset dir="${env.CHECKSTYLE_HOME}">
+        <include name="*-all.jar" />
+      </fileset>
+    </path>
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
+    <mkdir dir="${build.reports}" />
+    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
+      <formatter type="plain" />
+      <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </checkstyle>
+  </target>
+
+  <target name="reports" depends="clean,findbugs,pmd,checkstyle">
+  </target>
+
+  <fileset id="ftp.upload.fileset" dir="${build.dir}">
+    <include name="${name}.*" />
+    <!-- include name="screenshot*.*" / -->
+    <include name="*.jar" />
+    <include name="src.zip" />
+    <include name="index.html" />
+  </fileset>
+  <target name="ftp" depends="dist">
+    <property name="ftp.userid" value="${env.FTP_USERID}" />
+    <property name="ftp.server" value="${env.FTP_SERVER}" />
+    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
+    <!-- input type="secure" message="Enter Password:" addproperty="ftp.password" / -->
+    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
+    <property name="ssh.in"    value="${env.SSH_IN}" />
+    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
+      <arg value="rsautl"/>
+      <arg value="-decrypt"/>
+      <arg value="-inkey"/>
+      <arg value="${ssh.inkey}"/>
+      <arg value="-in"/>
+      <arg value="${ssh.in}"/>
+    </exec>
+    <ftp action="mkdir"
+         server="${ftp.server}" remotedir="${ftp.remotedir}"
+         userid="${ftp.userid}" password="${ftp.password}"
+         passive="yes" verbose="yes" />
+    <ftp server="${ftp.server}" remotedir="${ftp.remotedir}"
+         userid="${ftp.userid}" password="${ftp.password}"
+         passive="yes" verbose="yes">
+      <fileset refid="ftp.upload.fileset" />
+    </ftp>
+  </target>
+
+  <target name="ftps">
+    <echo message="ftps" />
+    <property name="ftp.userid" value="${env.FTP_USERID}" />
+    <property name="ftp.server" value="${env.FTP_SERVER}" />
+    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
+    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
+    <property name="ssh.in" value="${env.SSH_IN}" />
+    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
+      <arg value="rsautl" />
+      <arg value="-decrypt" />
+      <arg value="-inkey" />
+      <arg value="${ssh.inkey}" />
+      <arg value="-in" />
+      <arg value="${ssh.in}" />
+    </exec>
+    <ftps server="${ftp.server}" remotedir="${ftp.remotedir}"
+          userid="${ftp.userid}" password="${ftp.password}">
+      <fileset refid="ftp.upload.fileset" />
+    </ftps>
+  </target>
+
+  <scriptdef name="ftps" language="javascript">
+    <attribute name="server" />
+    <attribute name="remotedir" />
+    <attribute name="userid" />
+    <attribute name="password" />
+    <element name="fileset" type="fileset" />
+    <![CDATA[
+      var server = attributes.get("server");
+      var remotedir = attributes.get("remotedir");
+      var username = attributes.get("userid");
+      var password = attributes.get("password");
+      try {
+        var ftps = new org.apache.commons.net.ftp.FTPSClient("SSL");
+        ftps.connect(server);
+        var reply = ftps.getReplyCode();
+        if (!org.apache.commons.net.ftp.FTPReply.isPositiveCompletion(reply)) {
+          ftps.disconnect();
+          print("FTP server refused connection.");
+          System.exit(1);
+        }
+        ftps.setBufferSize(1000);
+        if (!ftps.login(username, password)) {
+          print("FTP server refused connection.");
+        } else {
+          print("Remote system is " + ftps.getSystemName());
+          //ftps.setFileType(FTP.BINARY_FILE_TYPE);
+          ftps.enterLocalPassiveMode();
+          ftps.makeDirectory(remotedir);
+          var filesets = elements.get("fileset");
+          for (i = 0; i < filesets.size(); i++) {
+            var fileset = filesets.get(i);
+            var scanner = fileset.getDirectoryScanner(project);
+            scanner.scan();
+            var basedir  = fileset.getDir(project);
+            var files = scanner.getIncludedFiles();
+            for(j = 0; j < files.length; j++) {
+              var filename = files[j];
+                var local = new java.io.File(basedir, filename);
+                print("file: " + remotedir + "/" +  filename);
+                var input = new java.io.FileInputStream(local);
+                ftps.storeFile(remotedir + "/" +  filename, input);
+                input.close();
+              }
+            }
+        }
+        ftps.logout();
+      } catch (ex) {
+        ex.printStackTrace();
+      }
+      ftps.disconnect();
+    ]]>
+  </scriptdef>
+</project>
