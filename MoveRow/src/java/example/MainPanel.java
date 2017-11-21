@@ -180,15 +180,17 @@ class UpAction extends AbstractAction {
             return;
         }
         RowDataModel model = (RowDataModel) table.getModel();
-        if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+        boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+        System.out.println(isShiftDown);
+        if (isShiftDown) { // Jump to the top
+            model.moveRow(pos[0], pos[pos.length - 1], 0);
+            table.setRowSelectionInterval(0, pos.length - 1);
+        } else {
             if (pos[0] == 0) {
                 return;
             }
             model.moveRow(pos[0], pos[pos.length - 1], pos[0] - 1);
             table.setRowSelectionInterval(pos[0] - 1, pos[pos.length - 1] - 1);
-        } else {
-            model.moveRow(pos[0], pos[pos.length - 1], 0);
-            table.setRowSelectionInterval(0, pos.length - 1);
         }
         Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
         table.scrollRectToVisible(r);
@@ -210,15 +212,16 @@ class DownAction extends AbstractAction {
             return;
         }
         RowDataModel model = (RowDataModel) table.getModel();
-        if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+        boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+        if (isShiftDown) { // Jump to the end
+            model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);
+            table.setRowSelectionInterval(model.getRowCount() - pos.length, model.getRowCount() - 1);
+        } else {
             if (pos[pos.length - 1] == model.getRowCount() - 1) {
                 return;
             }
             model.moveRow(pos[0], pos[pos.length - 1], pos[0] + 1);
             table.setRowSelectionInterval(pos[0] + 1, pos[pos.length - 1] + 1);
-        } else {
-            model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);
-            table.setRowSelectionInterval(model.getRowCount() - pos.length, model.getRowCount() - 1);
         }
         Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
         table.scrollRectToVisible(r);
