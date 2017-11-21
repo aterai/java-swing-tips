@@ -59,8 +59,8 @@ public class MainPanel extends JPanel {
                 /* Dummy action */
             }
         };
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
         return table;
     }
@@ -206,6 +206,7 @@ class TableRowTransferHandler extends TransferHandler {
         localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
+        getRootGlassPane(c).ifPresent(p -> p.setVisible(true));
         source = c;
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -234,7 +235,14 @@ class TableRowTransferHandler extends TransferHandler {
              }
         };
     }
-    private JInternalFrame getInternalFrame(JComponent c) {
+    private static Optional<Component> getRootGlassPane(Component c) {
+        Container dp = SwingUtilities.getAncestorOfClass(JDesktopPane.class, c);
+        if (dp instanceof JDesktopPane) {
+            return Optional.ofNullable(((JComponent) dp).getRootPane().getGlassPane());
+        }
+        return Optional.empty();
+    }
+    private static JInternalFrame getInternalFrame(Component c) {
         Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
         if (cn instanceof JInternalFrame) {
             return (JInternalFrame) cn;
@@ -248,31 +256,30 @@ class TableRowTransferHandler extends TransferHandler {
         }
         JTable target = (JTable) c;
         if (!target.equals(source)) {
-            JDesktopPane dp = null;
             Container cn = SwingUtilities.getAncestorOfClass(JDesktopPane.class, target);
             if (cn instanceof JDesktopPane) {
-                dp = (JDesktopPane) cn;
+                JDesktopPane dp = (JDesktopPane) cn;
+                JInternalFrame sf = getInternalFrame(source);
+                JInternalFrame tf = getInternalFrame(target);
+                if (Objects.isNull(sf) || Objects.isNull(tf) || dp.getIndexOf(tf) < dp.getIndexOf(sf)) {
+                    return false;
+                }
+                Point pt = SwingUtilities.convertPoint(target, info.getDropLocation().getDropPoint(), dp);
+                Rectangle rect = sf.getBounds().intersection(tf.getBounds());
+                if (rect.contains(pt)) {
+                    return false;
+                }
+                // tf.moveToFront();
+                // tf.getParent().repaint();
             }
-
-            JInternalFrame sf = getInternalFrame(source);
-            JInternalFrame tf = getInternalFrame(target);
-            if (Objects.isNull(sf) || Objects.isNull(tf) || dp.getIndexOf(tf) < dp.getIndexOf(sf)) {
-                return false;
-            }
-
-            Point pt = SwingUtilities.convertPoint(target, info.getDropLocation().getDropPoint(), dp);
-            Rectangle rect = sf.getBounds().intersection(tf.getBounds());
-            if (rect.contains(pt)) {
-                return false;
-            }
-            // tf.moveToFront();
-            // tf.getParent().repaint();
         }
         return true;
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor) && isDroppableTableIntersection(info);
-        info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        // XXX bug? The cursor flickering
+        // Problem with JTableHeader: info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        getRootGlassPane(info.getComponent()).ifPresent(p -> p.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
         return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
@@ -293,9 +300,8 @@ class TableRowTransferHandler extends TransferHandler {
         int index = dl.getRow();
         // boolean insert = dl.isInsert();
         int max = model.getRowCount();
-        if (index < 0 || index > max) {
-            index = max;
-        }
+        index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+        index = Math.min(index, max);
         addIndex = index;
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try {
@@ -318,7 +324,8 @@ class TableRowTransferHandler extends TransferHandler {
         cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
-        c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        getRootGlassPane(c).ifPresent(p -> p.setVisible(false));
+        // c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         if (remove && Objects.nonNull(indices)) {
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
             if (addCount > 0) {

@@ -111,6 +111,7 @@ class TableRowTransferHandler extends TransferHandler {
         localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
+        c.getRootPane().getGlassPane().setVisible(true);
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Object> list = new ArrayList<>();
@@ -139,7 +140,9 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         // XXX bug? The cursor flickering
-        info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        // Problem with JTableHeader: info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        Component glassPane = ((JComponent) info.getComponent()).getRootPane().getGlassPane();
+        glassPane.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
@@ -157,14 +160,13 @@ class TableRowTransferHandler extends TransferHandler {
         JTable.DropLocation dl = (JTable.DropLocation) tdl;
         JTable target = (JTable) info.getComponent();
         DefaultTableModel model = (DefaultTableModel) target.getModel();
-        int index = dl.getRow();
         // boolean insert = dl.isInsert();
         int max = model.getRowCount();
-        if (index < 0 || index > max) {
-            index = max;
-        }
+        int index = dl.getRow();
+        index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+        index = Math.min(index, max);
         addIndex = index;
-        target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
             addCount = values.length;
@@ -183,6 +185,7 @@ class TableRowTransferHandler extends TransferHandler {
         cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
+        c.getRootPane().getGlassPane().setVisible(false);
         // c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         if (remove && Objects.nonNull(indices)) {
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
