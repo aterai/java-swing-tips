@@ -347,12 +347,11 @@ class ListItemTransferHandler extends TransferHandler {
         JList.DropLocation dl = (JList.DropLocation) tdl;
         JList target = (JList) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
-        int index = dl.getIndex();
         // boolean insert = dl.isInsert();
         int max = listModel.getSize();
-        if (index < 0 || index > max) {
-            index = max;
-        }
+        int index = dl.getIndex();
+        index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+        index = Math.min(index, max);
         addIndex = index;
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);

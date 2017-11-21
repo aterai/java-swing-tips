@@ -45,13 +45,13 @@ public final class MainPanel extends JPanel {
         list.setDragEnabled(true);
         list.setTransferHandler(handler);
 
-        //Disable row Cut, Copy, Paste
+        // Disable row Cut, Copy, Paste
         ActionMap map = list.getActionMap();
         Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         return list;
@@ -119,7 +119,7 @@ class ListItemTransferHandler extends TransferHandler {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
@@ -133,12 +133,11 @@ class ListItemTransferHandler extends TransferHandler {
         JList.DropLocation dl = (JList.DropLocation) tdl;
         JList target = (JList) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
-        int index = dl.getIndex();
         // boolean insert = dl.isInsert();
         int max = listModel.getSize();
-        if (index < 0 || index > max) {
-            index = max;
-        }
+        int index = dl.getIndex();
+        index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+        index = Math.min(index, max);
         addIndex = index;
 
         try {
