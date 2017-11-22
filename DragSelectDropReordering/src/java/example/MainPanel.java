@@ -106,7 +106,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         addMouseMotionListener(rbl);
         addMouseListener(rbl);
 
-        //putClientProperty("List.isFileList", Boolean.TRUE);
+        // putClientProperty("List.isFileList", Boolean.TRUE);
         getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setTransferHandler(new ListItemTransferHandler());
         setDropMode(DropMode.INSERT);

@@ -127,11 +127,8 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
-        if (!canImport(info)) {
-            return false;
-        }
         TransferHandler.DropLocation tdl = info.getDropLocation();
-        if (!(tdl instanceof JList.DropLocation)) {
+        if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
@@ -143,13 +140,6 @@ class ListItemTransferHandler extends TransferHandler {
         index = index < 0 ? max : index; // If it is out of range, it is appended to the end
         index = Math.min(index, max);
         addIndex = index;
-
-        // ???
-        //if (indices != null && index >= indices[0] - 1 && index <= indices[indices.length - 1]) {
-        //    indices = null;
-        //    return false;
-        //}
-
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
             for (int i = 0; i < values.length; i++) {
@@ -169,9 +159,9 @@ class ListItemTransferHandler extends TransferHandler {
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && Objects.nonNull(indices)) {
-            //If we are moving items around in the same list, we
-            //need to adjust the indices accordingly, since those
-            //after the insertion point have moved.
+            // If we are moving items around in the same list, we
+            // need to adjust the indices accordingly, since those
+            // after the insertion point have moved.
             if (addCount > 0) {
                 for (int i = 0; i < indices.length; i++) {
                     if (indices[i] >= addIndex) {

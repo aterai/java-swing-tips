@@ -123,11 +123,8 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
-        if (!canImport(info)) {
-            return false;
-        }
         TransferHandler.DropLocation tdl = info.getDropLocation();
-        if (!(tdl instanceof JList.DropLocation)) {
+        if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
@@ -139,7 +136,6 @@ class ListItemTransferHandler extends TransferHandler {
         index = index < 0 ? max : index; // If it is out of range, it is appended to the end
         index = Math.min(index, max);
         addIndex = index;
-
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
             for (int i = 0; i < values.length; i++) {
