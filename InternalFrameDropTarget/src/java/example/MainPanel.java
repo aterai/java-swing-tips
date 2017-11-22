@@ -8,11 +8,11 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
-import javax.activation.*;
+// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final TransferHandler handler = new TableRowTransferHandler();
     // private final TransferHandler handler2 = new TableColumnTransferHandler();
     private final String[] columnNames = {"String", "Integer", "Boolean"};
@@ -28,6 +28,10 @@ public class MainPanel extends JPanel {
     private JTable makeDnDTable() {
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
+                // ArrayIndexOutOfBoundsException: 0 >= 0
+                // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+                // https://bugs.openjdk.java.net/browse/JDK-6967479
+                // return getValueAt(0, column).getClass();
                 switch (column) {
                 case 0:
                     return String.class;
@@ -55,9 +59,7 @@ public class MainPanel extends JPanel {
         // Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
         Action dummy = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                /* Dummy action */
-            }
+            @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
@@ -283,7 +285,7 @@ class TableRowTransferHandler extends TransferHandler {
         return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.MOVE;
+        return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("PMD.ReplaceVectorWithList")
     @Override public boolean importData(TransferHandler.TransferSupport info) {
@@ -297,13 +299,13 @@ class TableRowTransferHandler extends TransferHandler {
         JTable.DropLocation dl = (JTable.DropLocation) tdl;
         JTable target = (JTable) info.getComponent();
         DefaultTableModel model = (DefaultTableModel) target.getModel();
-        int index = dl.getRow();
         // boolean insert = dl.isInsert();
         int max = model.getRowCount();
+        int index = dl.getRow();
         index = index < 0 ? max : index; // If it is out of range, it is appended to the end
         index = Math.min(index, max);
         addIndex = index;
-        target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
             if (Objects.equals(source, target)) {
@@ -311,7 +313,7 @@ class TableRowTransferHandler extends TransferHandler {
             }
             for (int i = 0; i < values.length; i++) {
                 int idx = index++;
-                model.insertRow(idx, (Vector) values[i]);
+                model.insertRow(idx, (Vector<?>) values[i]);
                 target.getSelectionModel().addSelectionInterval(idx, idx);
             }
             return true;

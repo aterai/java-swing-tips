@@ -8,7 +8,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 // import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -117,12 +116,14 @@ class TableRowTransferHandler extends TransferHandler {
         source = c;
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<Object> list = new ArrayList<>();
+//         List<Object> list = new ArrayList<>();
+//         indices = table.getSelectedRows();
+//         for (int i: indices) {
+//             list.add(model.getDataVector().get(i));
+//         }
+//         Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
-        for (int i: indices) {
-            list.add(model.getDataVector().get(i));
-        }
-        Object[] transferedObjects = list.toArray();
+        Object[] transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).toArray();
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
