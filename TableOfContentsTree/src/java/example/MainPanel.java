@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -24,7 +25,7 @@ public final class MainPanel extends JPanel {
 
         JTree tree2 = new TableOfContentsTree(makeModel());
         tree2.setRootVisible(false);
-        //tree2.setLargeModel(false);
+        // tree2.setLargeModel(false);
 
         JSplitPane sp = new JSplitPane();
         sp.setResizeWeight(.5);
@@ -43,8 +44,8 @@ public final class MainPanel extends JPanel {
 
         DefaultMutableTreeNode s2 = new DefaultMutableTreeNode(new TableOfContents("3. Chapter", 10));
         s2.add(new DefaultMutableTreeNode(new TableOfContents("ddddddd", 12)));
-        s2.add(new DefaultMutableTreeNode(new TableOfContents("eee",     24)));
-        s2.add(new DefaultMutableTreeNode(new TableOfContents("f",       38)));
+        s2.add(new DefaultMutableTreeNode(new TableOfContents("eee", 24)));
+        s2.add(new DefaultMutableTreeNode(new TableOfContents("f", 38)));
 
         root.add(s0);
         root.add(s1);
@@ -79,7 +80,7 @@ class TableOfContents {
     public final Integer page;
     protected TableOfContents(String title, int page) {
         this.title = title;
-        this.page  = page;
+        this.page = page;
     }
     @Override public String toString() {
         return title;
@@ -99,7 +100,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             if (pn >= 0) {
                 String str = String.format("%3d", pn);
                 FontMetrics metrics = g.getFontMetrics();
-                //int xx = pnPt.x - getX() - metrics.stringWidth(str);
+                // int xx = pnPt.x - getX() - metrics.stringWidth(str);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(isSynth ? getForeground() : getTextNonSelectionColor());
                 g2.drawString(str, pnPt.x - getX() - metrics.stringWidth(str), pnPt.y);
@@ -118,18 +119,17 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
         super.updateUI();
         isSynth = getUI().getClass().getName().contains("Synth");
         if (isSynth) {
-            //System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
+            // System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
             setBackgroundSelectionColor(new Color(0x0, true));
         }
     }
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if (value instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
-            Object o = n.getUserObject();
-            if (o instanceof TableOfContents) {
-                TableOfContents toc = (TableOfContents) o;
+        return Optional.ofNullable(value)
+            .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
+            .map(DefaultMutableTreeNode::getUserObject)
+            .filter(TableOfContents.class::isInstance).map(TableOfContents.class::cast)
+            .map(toc -> {
                 int gap = l.getIconTextGap();
                 Dimension d = l.getPreferredSize();
                 Insets ins = tree.getInsets();
@@ -141,20 +141,51 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 }
 
                 pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
-                pn  = toc.page;
+                pn = toc.page;
                 rxs = d.width + gap;
                 rxe = tree.getWidth() - ins.right - gap;
 
                 p.setOpaque(false);
-                return p;
-            }
-        }
-        pn = -1;
-        return l;
+                return (Component) p;
+            })
+            .orElseGet(() -> {
+                pn = -1;
+                return (Component) l;
+            });
     }
+//     // @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
+//     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+//         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//         if (value instanceof DefaultMutableTreeNode) {
+//             DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
+//             Object o = n.getUserObject();
+//             if (o instanceof TableOfContents) {
+//                 TableOfContents toc = (TableOfContents) o;
+//                 int gap = l.getIconTextGap();
+//                 Dimension d = l.getPreferredSize();
+//                 Insets ins = tree.getInsets();
+//
+//                 p.removeAll();
+//                 p.add(l, BorderLayout.WEST);
+//                 if (isSynth) {
+//                     p.setForeground(l.getForeground());
+//                 }
+//
+//                 pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
+//                 pn = toc.page;
+//                 rxs = d.width + gap;
+//                 rxe = tree.getWidth() - ins.right - gap;
+//
+//                 p.setOpaque(false);
+//                 return p;
+//             }
+//         }
+//         pn = -1;
+//         return l;
+//     }
 }
 
-////TEST:
+// // TEST:
 // class ShortTableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //     protected static final String READER = "... ";
 //     protected final Point pt = new Point();
@@ -178,7 +209,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //         super.updateUI();
 //         isSynth = getUI().getClass().getName().contains("Synth");
 //         if (isSynth) {
-//             //System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
+//             // System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
 //             setBackgroundSelectionColor(new Color(0x0, true));
 //         }
 //     }
@@ -200,7 +231,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //
 //                 pn = String.format("%s%3d", READER, toc.page);
 //                 pt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
-//                 //pt.x = Math.max(pnx, titlex + metrics.stringWidth(pair.title) + gap);
+//                 // pt.x = Math.max(pnx, titlex + metrics.stringWidth(pair.title) + gap);
 //                 pt.y = (l.getIcon().getIconHeight() + metrics.getAscent()) / 2;
 //                 p.setOpaque(false);
 //
@@ -236,16 +267,26 @@ class TableOfContentsTree extends JTree {
             visRect.y -= i.top;
         }
         // we should consider a non-visible area above
-        Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-        if (container instanceof JScrollPane) {
-            JScrollPane pane = (JScrollPane) container;
-            JScrollBar bar = pane.getHorizontalScrollBar();
-            if (bar != null && bar.isVisible()) {
+        Class<JScrollPane> clz = JScrollPane.class;
+        Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+            .filter(clz::isInstance).map(clz::cast)
+            .map(JScrollPane::getHorizontalScrollBar)
+            .filter(JScrollBar::isVisible)
+            .ifPresent(bar -> {
                 int height = bar.getHeight();
                 visRect.y -= height;
                 visRect.height += height;
-            }
-        }
+            });
+//         Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+//         if (container instanceof JScrollPane) {
+//             JScrollPane pane = (JScrollPane) container;
+//             JScrollBar bar = pane.getHorizontalScrollBar();
+//             if (bar != null && bar.isVisible()) {
+//                 int height = bar.getHeight();
+//                 visRect.y -= height;
+//                 visRect.height += height;
+//             }
+//         }
         return visRect;
     }
     @Override protected void paintComponent(Graphics g) {
@@ -255,7 +296,7 @@ class TableOfContentsTree extends JTree {
         Graphics2D g2 = (Graphics2D) g.create();
         FontMetrics fm = g.getFontMetrics();
         int pnmaxWidth = fm.stringWidth("000");
-        Insets ins     = getInsets();
+        Insets ins = getInsets();
         Rectangle rect = getVisibleRowsRect();
         for (int i = 0; i < getRowCount(); i++) {
             Rectangle r = getRowBounds(i);
@@ -277,7 +318,7 @@ class TableOfContentsTree extends JTree {
                     TableOfContents toc = (TableOfContents) o;
                     String pn = Integer.toString(toc.page);
                     int x = getWidth() - 1 - fm.stringWidth(pn) - ins.right;
-                    //int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
+                    // int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
                     int y = r.y + c.getBaseline(r.width, r.height);
                     g2.drawString(pn, x, y);
 
