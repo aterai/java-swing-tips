@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
-//import sun.swing.*;
+// import sun.swing.*;
 
 public final class MainPanel {
     private MainPanel() { /* Singleton */ }
@@ -17,18 +17,18 @@ public final class MainPanel {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
         JMenu menu1 = new JMenu("RightAcc");
-        //JMenu menu2 = new JMenu("EastAcc");
-        //XXX: JMenuItem.setDefaultLocale(Locale.ENGLISH);
+        // JMenu menu2 = new JMenu("EastAcc");
+        // XXX: JMenuItem.setDefaultLocale(Locale.ENGLISH);
 
-        //UIManager.put("MenuItem.acceleratorForeground", menu1.getBackground());
-        //UIManager.put("MenuItem.acceleratorSelectionForeground", menu1.getBackground());
+        // UIManager.put("MenuItem.acceleratorForeground", menu1.getBackground());
+        // UIManager.put("MenuItem.acceleratorSelectionForeground", menu1.getBackground());
 
         menu0.setMnemonic(KeyEvent.VK_D);
         menu1.setMnemonic(KeyEvent.VK_R);
-        //menu2.setMnemonic(KeyEvent.VK_E);
+        // menu2.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu0);
         menuBar.add(menu1);
-        //menuBar.add(menu2);
+        // menuBar.add(menu2);
 
         List<JMenuItem> list = new ArrayList<>();
         JMenuItem menuItem = new JMenuItem("mi");
@@ -54,7 +54,7 @@ public final class MainPanel {
         for (JMenuItem mi: list) {
             menu0.add(mi);
             menu1.add(makeMenuItem1(mi));
-            //menu2.add(makeMenuItem2(mi));
+            // menu2.add(makeMenuItem2(mi));
         }
         return menuBar;
     }
@@ -62,13 +62,13 @@ public final class MainPanel {
         JMenuItem menuItem = new JMenuItem(mi.getText()) {
             @Override public void updateUI() {
                 super.updateUI();
-                //System.out.println(getLocale());
+                // System.out.println(getLocale());
                 if (getUI() instanceof WindowsMenuItemUI) {
                     setUI(new RAAWindowsMenuItemUI());
                 } else {
                     setUI(new RAABasicMenuItemUI());
                 }
-                //XXX: setLocale(Locale.JAPAN);
+                // XXX: setLocale(Locale.JAPAN);
             }
         };
         menuItem.setMnemonic(mi.getMnemonic());
@@ -76,7 +76,7 @@ public final class MainPanel {
         return menuItem;
     }
 
-//     //TEST: work Windows 7 only?
+//     // TEST: work Windows 7 only?
 //     private static JMenuItem makeMenuItem2(JMenuItem mi) {
 //         final JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
 //         label.setOpaque(true);
@@ -136,11 +136,11 @@ public final class MainPanel {
 //     }
 
     public static void main(String... args) {
-        //Locale.setDefault(Locale.ENGLISH);
-        //ResourceBundle awtBundle = ResourceBundle.getBundle(
-        //    "sun.awt.resources.awt", sun.util.CoreResourceBundleControl.getRBControlInstance());
-        //Locale.setDefault(new Locale("xx"));
-        //JMenuItem.setDefaultLocale(Locale.ENGLISH);
+        // Locale.setDefault(Locale.ENGLISH);
+        // ResourceBundle awtBundle = ResourceBundle.getBundle(
+        //     "sun.awt.resources.awt", sun.util.CoreResourceBundleControl.getRBControlInstance());
+        // Locale.setDefault(new Locale("xx"));
+        // JMenuItem.setDefaultLocale(Locale.ENGLISH);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -156,7 +156,7 @@ public final class MainPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.getContentPane().add(new MainPanel());
+        // frame.getContentPane().add(new MainPanel());
         frame.setJMenuBar(createMenuBar());
         frame.setSize(320, 240);
         frame.setLocationRelativeTo(null);
@@ -164,7 +164,7 @@ public final class MainPanel {
     }
 }
 
-//@see javax/swing/plaf/basic/BasicMenuItemUI.java
+// @see javax/swing/plaf/basic/BasicMenuItemUI.java
 final class MenuItemUIHelper {
     private MenuItemUIHelper() { /* Singleton */ }
     public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { //, Color holdc) {
@@ -187,7 +187,7 @@ final class MenuItemUIHelper {
             }
             if (Objects.nonNull(icon)) {
                 icon.paintIcon(menuItem, g, lr.getIconRect().x, lr.getIconRect().y);
-                //g.setColor(holdc);
+                // g.setColor(holdc);
             }
         });
     }
@@ -206,7 +206,7 @@ final class MenuItemUIHelper {
             if (lh.useCheckAndArrow()) {
                 checkIcon.paintIcon(menuItem, g, lr.getCheckRect().x, lr.getCheckRect().y);
             }
-            //g.setColor(holdc);
+            // g.setColor(holdc);
         });
     }
 
@@ -278,11 +278,12 @@ final class MenuItemUIHelper {
 
     public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
         StringBuilder accText = new StringBuilder();
-        //KeyStroke accelerator = mi.getAccelerator();
+        // KeyStroke accelerator = mi.getAccelerator();
         Optional.ofNullable(mi.getAccelerator()).ifPresent(accelerator -> {
             int modifiers = accelerator.getModifiers();
             if (modifiers > 0) {
-                accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
+                // accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
+                accText.append(InputEvent.getModifiersExText(modifiers)).append(acceleratorDelimiter);
             }
             int keyCode = accelerator.getKeyCode();
             if (keyCode == 0) {
@@ -302,7 +303,7 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
 //         Color holdc = g.getColor();
 
         Graphics2D g2 = (Graphics2D) g.create();
-        //System.out.println(defaultTextIconGap);
+        // System.out.println(defaultTextIconGap);
 
         JMenuItem mi = (JMenuItem) c;
         g2.setFont(mi.getFont());
@@ -346,7 +347,7 @@ class RAABasicMenuItemUI extends BasicMenuItemUI {
 //         Color holdc = g.getColor();
 
         Graphics2D g2 = (Graphics2D) g.create();
-        //System.out.println(defaultTextIconGap);
+        // System.out.println(defaultTextIconGap);
 
         JMenuItem mi = (JMenuItem) c;
         g2.setFont(mi.getFont());
