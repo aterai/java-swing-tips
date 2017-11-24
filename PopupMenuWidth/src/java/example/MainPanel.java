@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     private JMenu makeMenu(JMenu menu) {
         menu.add("Open").setMnemonic('O');
         menu.addSeparator();
-        menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK));
+        menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         return menu;
     }
 

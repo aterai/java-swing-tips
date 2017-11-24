@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("ee", new JLabel("eee"));
 
         InputMap im = tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), CLOSE_CURRENT_TAB);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), CLOSE_CURRENT_TAB);
         tabbedPane.getActionMap().put(CLOSE_CURRENT_TAB, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 JTabbedPane t = (JTabbedPane) e.getSource();
