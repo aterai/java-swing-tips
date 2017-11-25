@@ -317,8 +317,8 @@ public class TableSorter extends AbstractTableModel {
         return tableModel.getValueAt(modelIndex(row), column);
     }
 
-    @Override public void setValueAt(Object aValue, int row, int column) {
-        tableModel.setValueAt(aValue, modelIndex(row), column);
+    @Override public void setValueAt(Object value, int row, int column) {
+        tableModel.setValueAt(value, modelIndex(row), column);
     }
 
     // Helper classes

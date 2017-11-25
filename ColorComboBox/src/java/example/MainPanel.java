@@ -87,15 +87,15 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     protected AlternateRowColorComboBox() {
         super();
     }
-    protected AlternateRowColorComboBox(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected AlternateRowColorComboBox(ComboBoxModel<E> model) {
+        super(model);
     }
     //protected AlternateRowColorComboBox(E[] items) {
     //    super(items);
     //}
-    @Override public void setEditable(boolean aFlag) {
-        super.setEditable(aFlag);
-        if (aFlag) {
+    @Override public void setEditable(boolean flag) {
+        super.setEditable(flag);
+        if (flag) {
             JTextField field = (JTextField) getEditor().getEditorComponent();
             field.setOpaque(true);
             field.setBackground(getAlternateRowColor(getSelectedIndex()));

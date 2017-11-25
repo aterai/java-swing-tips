@@ -19,15 +19,15 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-            @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
+            @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
                 System.out.println("getComponentAfter");
                 button.setEnabled(isAllValid());
-                return super.getComponentAfter(focusCycleRoot, aComponent);
+                return super.getComponentAfter(focusCycleRoot, cmp);
             }
-            @Override public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
+            @Override public Component getComponentBefore(Container focusCycleRoot, Component cmp) {
                 System.out.println("getComponentAfter");
                 button.setEnabled(isAllValid());
-                return super.getComponentBefore(focusCycleRoot, aComponent);
+                return super.getComponentBefore(focusCycleRoot, cmp);
             }
         });
         setFocusCycleRoot(true);

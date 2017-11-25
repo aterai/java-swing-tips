@@ -136,12 +136,12 @@ class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
     @Override public Component getLastComponent(Container focusCycleRoot) {
         return order.get(order.size() - 1);
     }
-    @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
-        int i = order.indexOf(aComponent);
+    @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
+        int i = order.indexOf(cmp);
         return order.get((i + 1) % order.size());
     }
-    @Override public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
-        int i = order.indexOf(aComponent);
+    @Override public Component getComponentBefore(Container focusCycleRoot, Component cmp) {
+        int i = order.indexOf(cmp);
         return order.get((i - 1 + order.size()) % order.size());
     }
     @Override public Component getDefaultComponent(Container focusCycleRoot) {

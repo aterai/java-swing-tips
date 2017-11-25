@@ -119,9 +119,9 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //         setModel(new DefaultComboBoxModel<>());
 //         init();
 //     }
-    protected JSearchBar(ComboBoxModel<SearchEngine> aModel) {
-        super(aModel);
-        //setModel(aModel);
+    protected JSearchBar(ComboBoxModel<SearchEngine> model) {
+        super(model);
+        //setModel(model);
         //init();
     }
     protected JSearchBar(SearchEngine... items) {

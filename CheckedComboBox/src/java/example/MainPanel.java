@@ -119,8 +119,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     protected CheckedComboBox() {
         super();
     }
-    protected CheckedComboBox(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox(ComboBoxModel<E> model) {
+        super(model);
     }
 //     protected CheckedComboBox(E[] m) {
 //         super(m);

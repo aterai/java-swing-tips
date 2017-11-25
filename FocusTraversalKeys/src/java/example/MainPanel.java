@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
                 //return !Objects.equals(c, textarea) && super.accept(c);
                 return !JTextArea.class.isInstance(c) && super.accept(c);
             }
-            @Override public Component getDefaultComponent(Container aContainer) {
+            @Override public Component getDefaultComponent(Container container) {
                 //return button;
                 return getRootPane().getDefaultButton();
             }

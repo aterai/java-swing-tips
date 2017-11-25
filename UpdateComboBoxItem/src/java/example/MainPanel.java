@@ -140,8 +140,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     protected CheckedComboBox() {
         super();
     }
-    protected CheckedComboBox(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox(ComboBoxModel<E> model) {
+        super(model);
     }
 //     protected CheckedComboBox(E[] m) {
 //         super(m);
@@ -189,8 +189,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
 }
 
 class CheckedComboBox1<E extends CheckableItem> extends CheckedComboBox<E> {
-    protected CheckedComboBox1(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox1(ComboBoxModel<E> model) {
+        super(model);
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
@@ -202,8 +202,8 @@ class CheckedComboBox1<E extends CheckableItem> extends CheckedComboBox<E> {
 }
 
 class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
-    protected CheckedComboBox2(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox2(ComboBoxModel<E> model) {
+        super(model);
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
@@ -219,8 +219,8 @@ class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
 }
 
 class CheckedComboBox3<E extends CheckableItem> extends CheckedComboBox<E> {
-    protected CheckedComboBox3(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox3(ComboBoxModel<E> model) {
+        super(model);
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
@@ -244,8 +244,8 @@ class CheckableComboBoxModel<E> extends DefaultComboBoxModel<E> {
 }
 
 class CheckedComboBox4<E extends CheckableItem> extends CheckedComboBox<E> {
-    protected CheckedComboBox4(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected CheckedComboBox4(ComboBoxModel<E> model) {
+        super(model);
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {

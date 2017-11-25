@@ -86,8 +86,8 @@ public final class MainPanel extends JPanel {
 
 class RemoveButtonComboBox<E> extends JComboBox<E> {
     private transient CellButtonsMouseListener cbml;
-    protected RemoveButtonComboBox(ComboBoxModel<E> aModel) {
-        super(aModel);
+    protected RemoveButtonComboBox(ComboBoxModel<E> model) {
+        super(model);
     }
     @Override public void updateUI() {
         if (Objects.nonNull(cbml)) {

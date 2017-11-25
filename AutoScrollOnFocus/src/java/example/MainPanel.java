@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
 
         Box box = makeTestBox();
         box.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-            @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
-                Component c = super.getComponentAfter(focusCycleRoot, aComponent);
+            @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
+                Component c = super.getComponentAfter(focusCycleRoot, cmp);
                 //TEST1: box.scrollRectToVisible(c.getBounds());
                 //TEST2:
                 //Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot)).ifPresent(v -> {
@@ -29,8 +29,8 @@ public final class MainPanel extends JPanel {
                 }
                 return c;
             }
-            @Override public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
-                Component c = super.getComponentBefore(focusCycleRoot, aComponent);
+            @Override public Component getComponentBefore(Container focusCycleRoot, Component cmp) {
+                Component c = super.getComponentBefore(focusCycleRoot, cmp);
                 if (focusCycleRoot instanceof JComponent) {
                     ((JComponent) focusCycleRoot).scrollRectToVisible(c.getBounds());
                 }
