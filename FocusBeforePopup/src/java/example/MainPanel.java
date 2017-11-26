@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
                 // TEST:
                 // tc.requestFocusInWindow();
                 // tc.selectAll();
-                boolean isSelected = tc.getSelectionStart() != tc.getSelectionEnd();
-                cutAction.setEnabled(isSelected);
-                copyAction.setEnabled(isSelected);
+                boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+                cutAction.setEnabled(hasSelectedText);
+                copyAction.setEnabled(hasSelectedText);
             }
         });
 
@@ -152,13 +152,13 @@ class TextComponentPopupMenu extends JPopupMenu {
         if (c instanceof JTextComponent) {
             JTextComponent tc = (JTextComponent) c;
             tc.requestFocusInWindow();
-            boolean isSelected = tc.getSelectionStart() != tc.getSelectionEnd();
-            if (tc instanceof JTextField && !tc.isFocusOwner() && !isSelected) {
+            boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+            if (tc instanceof JTextField && !tc.isFocusOwner() && !hasSelectedText) {
                 tc.selectAll();
-                isSelected = true;
+                hasSelectedText = true;
             }
-            cutAction.setEnabled(isSelected);
-            copyAction.setEnabled(isSelected);
+            cutAction.setEnabled(hasSelectedText);
+            copyAction.setEnabled(hasSelectedText);
             super.show(c, x, y);
         }
     }

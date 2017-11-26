@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -46,10 +47,10 @@ public final class MainPanel extends JPanel {
 //             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 //                 JPopupMenu p = (JPopupMenu) e.getSource();
 //                 JTextComponent tc = (JTextComponent) p.getInvoker();
-//                 boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
-//                 cutAction.setEnabled(flg);
-//                 copyAction.setEnabled(flg);
-//                 deleteAction.setEnabled(flg);
+//                 boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+//                 cutAction.setEnabled(hasSelectedText);
+//                 copyAction.setEnabled(hasSelectedText);
+//                 deleteAction.setEnabled(hasSelectedText);
 //             }
 //         });
 //         return popup;
@@ -97,10 +98,10 @@ class TextComponentPopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTextComponent) {
             JTextComponent tc = (JTextComponent) c;
-            boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
-            cutAction.setEnabled(flg);
-            copyAction.setEnabled(flg);
-            deleteItem.setEnabled(flg);
+            boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+            cutAction.setEnabled(hasSelectedText);
+            copyAction.setEnabled(hasSelectedText);
+            deleteItem.setEnabled(hasSelectedText);
             super.show(c, x, y);
         }
     }

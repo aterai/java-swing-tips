@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -104,10 +105,10 @@ class TextComponentPopupMenu extends JPopupMenu {
             }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JTextComponent tc = (JTextComponent) getInvoker();
-                boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
-                cutAction.setEnabled(flg);
-                copyAction.setEnabled(flg);
-                deleteAction.setEnabled(flg);
+                boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+                cutAction.setEnabled(hasSelectedText);
+                copyAction.setEnabled(hasSelectedText);
+                deleteAction.setEnabled(hasSelectedText);
                 undoAction.setEnabled(manager.canUndo());
                 redoAction.setEnabled(manager.canRedo());
             }
