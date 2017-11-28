@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
-import com.sun.java.swing.plaf.motif.*;
+// import com.sun.java.swing.plaf.motif.*;
 
 public class MainPanel extends JPanel {
     protected static final int DESKTOPICON_WIDTH = 150;
@@ -53,7 +53,8 @@ public class MainPanel extends JPanel {
                 if (!check.isSelected()) {
                     return super.getPreferredSize();
                 }
-                if (getUI() instanceof MotifDesktopIconUI) {
+                // if (getUI() instanceof MotifDesktopIconUI) { // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
+                if ("com.sun.java.swing.plaf.motif.MotifDesktopIconUI".equals(getUI().getClass().getName())) {
                     return new Dimension(64, 64 + 32);
                 } else {
                     return new Dimension(DESKTOPICON_WIDTH, DESKTOPICON_HEIGHT);
