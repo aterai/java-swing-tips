@@ -10,7 +10,7 @@ import javax.swing.text.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    protected final JTree tree       = new JTree();
+    protected final JTree tree = new JTree();
     protected final JTextField field = new JTextField("foo");
     protected final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
 
@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         n.setBorder(BorderFactory.createTitledBorder("Search"));
 
         tree.setCellRenderer(renderer);
-        renderer.q = field.getText();
+        renderer.query = field.getText();
         fireDocumentChangeEvent();
 
         add(n, BorderLayout.NORTH);
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
     }
     protected final void fireDocumentChangeEvent() {
         String q = field.getText();
-        renderer.q = q;
+        renderer.query = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
         if (!q.isEmpty()) {
@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    public String q;
+    public String query;
 
     @Override public void updateUI() {
         super.updateUI();
@@ -112,9 +112,9 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         getHighlighter().removeAllHighlights();
         setText(txt);
         setBackground(selected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-        if (Objects.nonNull(q) && !q.isEmpty() && txt.startsWith(q)) {
+        if (Objects.nonNull(query) && !query.isEmpty() && txt.startsWith(query)) {
             try {
-                getHighlighter().addHighlight(0, q.length(), highlightPainter);
+                getHighlighter().addHighlight(0, query.length(), highlightPainter);
             } catch (BadLocationException ex) {
                 ex.printStackTrace();
             }

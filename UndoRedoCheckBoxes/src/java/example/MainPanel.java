@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
     protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
     protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
     private final JLabel label = new JLabel(print(status));
-    private final JPanel p = new JPanel();
+    private final JPanel panel = new JPanel();
     private final UndoManager um = new UndoManager();
     private final Action undoAction = new UndoAction(um);
     private final Action redoAction = new RedoAction(um);
@@ -67,10 +67,10 @@ public class MainPanel extends JPanel {
                 status = newValue;
                 label.setText(print(status));
             });
-            p.add(c);
+            panel.add(c);
         }
         add(label, BorderLayout.NORTH);
-        add(p);
+        add(panel);
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
         status = value;
         for (int i = 0; i < BIT_LENGTH; i++) {
             BigInteger l = BigInteger.ONE.shiftLeft(i);
-            JCheckBox c = (JCheckBox) p.getComponent(i);
+            JCheckBox c = (JCheckBox) panel.getComponent(i);
             c.setSelected(!status.and(l).equals(BigInteger.ZERO));
         }
         label.setText(print(status));

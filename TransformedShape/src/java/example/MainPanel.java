@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -40,8 +40,7 @@ public final class MainPanel extends JPanel {
 
 class FontRotateAnimation extends JComponent {
     protected int rotate;
-    protected final Shape shape;
-    protected Shape s;
+    protected Shape shape;
     private final Timer animator = new Timer(10, null);
     protected FontRotateAnimation(String str) {
         super();
@@ -52,28 +51,28 @@ class FontRotateAnimation extends JComponent {
         });
         Font font = new Font(Font.SERIF, Font.PLAIN, 200);
         FontRenderContext frc = new FontRenderContext(null, true, true);
-        shape = new TextLayout(str, font, frc).getOutline(null);
-        s = shape;
+        Shape outline = new TextLayout(str, font, frc).getOutline(null);
+        shape = outline;
         animator.addActionListener(e -> {
-            repaint(s.getBounds());
-            Rectangle2D b = shape.getBounds2D();
+            repaint(shape.getBounds()); // clear prev
+            Rectangle2D b = outline.getBounds2D();
             AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), b.getCenterX(), b.getCenterY());
             AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
 
-            Shape s1 = at.createTransformedShape(shape);
-            s = toCenterAT.createTransformedShape(s1);
-            repaint(s.getBounds());
-            //rotate = rotate >= 360 ? 0 : rotate + 2;
+            Shape s1 = at.createTransformedShape(outline);
+            shape = toCenterAT.createTransformedShape(s1);
+            repaint(shape.getBounds());
+            // rotate = rotate >= 360 ? 0 : rotate + 2;
             rotate = (rotate + 2) % 360;
         });
         animator.start();
     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(Color.BLACK);
-        g2.fill(s);
+        g2.fill(shape);
         g2.dispose();
     }
 }

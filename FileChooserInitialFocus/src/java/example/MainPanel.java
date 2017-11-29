@@ -6,26 +6,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-//import java.util.function.Function;
+// import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.swing.*;
-//import javax.swing.event.*;
+// import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field = new JTextField("C:/temp/test.txt");
-    private final JRadioButton r1  = new JRadioButton("default", false);
-    private final JRadioButton r2  = new JRadioButton("set initial focus on JTextField", true);
-    private final JButton button   = new JButton("JFileChooser");
-    private final JTextArea log    = new JTextArea();
-    private final JPanel p         = new JPanel(new BorderLayout());
-    //private final JFileChooser fileChooser;
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JFileChooser fileChooser = new JFileChooser();
+        JTextField field = new JTextField("C:/temp/test.txt");
+        JTextArea log = new JTextArea();
+        JRadioButton r1 = new JRadioButton("default", false);
+        JRadioButton r2 = new JRadioButton("set initial focus on JTextField", true);
 
-//         //TEST: PropertyChangeListener
+//         // TEST: PropertyChangeListener
 //         fileChooser.addPropertyChangeListener(e -> {
 //             String s = e.getPropertyName();
 //             if (s.equals("ancestor")) {
@@ -39,7 +35,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 
-//         //TEST: AncestorListener
+//         // TEST: AncestorListener
 //         fileChooser.addAncestorListener(new AncestorListener() {
 //             @Override public void ancestorAdded(AncestorEvent e) {
 //                 findFileNameTextField(fileChooser).ifPresent(c -> {
@@ -51,7 +47,7 @@ public final class MainPanel extends JPanel {
 //             @Override public void ancestorRemoved(AncestorEvent e) {}
 //         });
 
-//         //TEST: doAncestorChanged
+//         // TEST: doAncestorChanged
 //         fileChooser = new JFileChooser() {
 //             @Override public void updateUI() {
 //                 super.updateUI();
@@ -68,6 +64,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         };
 
+        JButton button = new JButton("JFileChooser");
         button.addActionListener(e -> {
             fileChooser.setSelectedFile(new File(field.getText().trim()));
             if (r2.isSelected()) {
@@ -83,7 +80,7 @@ public final class MainPanel extends JPanel {
                     });
                 });
             }
-            int retvalue = fileChooser.showOpenDialog(SwingUtilities.getRoot(p));
+            int retvalue = fileChooser.showOpenDialog(SwingUtilities.getRoot(button));
             if (retvalue == JFileChooser.APPROVE_OPTION) {
                 String path = fileChooser.getSelectedFile().getAbsolutePath();
                 field.setText(path);
@@ -103,6 +100,7 @@ public final class MainPanel extends JPanel {
             p2.add(b);
         }
 
+        JPanel p = new JPanel(new BorderLayout());
         p.add(p1, BorderLayout.NORTH);
         p.add(p2, BorderLayout.SOUTH);
         add(p, BorderLayout.NORTH);
@@ -136,7 +134,7 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {

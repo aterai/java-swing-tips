@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<ListItem> model = new DefaultListModel<>();
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
         model.addElement(new ListItem("test",       "wi0062-32.png"));
         model.addElement(new ListItem("adfasdf",    "wi0063-32.png"));
@@ -75,8 +75,8 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         super(model);
     }
     @Override public void updateUI() {
-        setSelectionForeground(null); //Nimbus
-        setSelectionBackground(null); //Nimbus
+        setSelectionForeground(null); // Nimbus
+        setSelectionBackground(null); // Nimbus
         setCellRenderer(null);
         removeMouseListener(rbl);
         removeMouseMotionListener(rbl);
@@ -127,7 +127,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             rubberBand.lineTo(destPoint.x, destPoint.y);
             rubberBand.lineTo(srcPoint.x,  destPoint.y);
             rubberBand.closePath();
-            //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+            // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
@@ -153,7 +153,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
     }
-//     //JDK 1.7.0
+//     // JDK 1.7.0
 //     private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
 //         ListModel model = l.getModel();
 //         List<Integer> ll = new ArrayList<>(model.getSize());
@@ -171,14 +171,14 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
-        //Color color = new Color(argb, true);
-        //float[] array = new float[4];
-        //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
+        // Color color = new Color(argb, true);
+        // float[] array = new float[4];
+        // color.getComponents(array);
+        // return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
         return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
@@ -197,44 +197,44 @@ class SelectedImageFilter extends RGBImageFilter {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.translate(x, y);
 //         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
-//         //new Color(200, 150, 150));
-//         //g2.setStroke(dashed);
-//         //g2.drawRect(0, 0, w - 1, h - 1);
+//         // new Color(200, 150, 150));
+//         // g2.setStroke(dashed);
+//         // g2.drawRect(0, 0, w - 1, h - 1);
 //         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //         g2.dispose();
 //     }
-//     //@Override public Insets getBorderInsets(Component c)
-//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+//     // @Override public Insets getBorderInsets(Component c)
+//     // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
-    private final JPanel p = new JPanel(new BorderLayout());
-    private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
+    private final JPanel renderer = new JPanel(new BorderLayout());
+    private final JLabel icon = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    //private final Border dotBorder = new DotBorder(2, 2, 2, 2);
-    //private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    // private final Border dotBorder = new DotBorder(2, 2, 2, 2);
+    // private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
     protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
+        if (Objects.isNull(b)) { // Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
         icon.setOpaque(false);
-        label.setForeground(p.getForeground());
-        label.setBackground(p.getBackground());
+        label.setForeground(renderer.getForeground());
+        label.setBackground(renderer.getBackground());
         label.setBorder(noFocusBorder);
-        p.setOpaque(false);
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(icon);
-        p.add(label, BorderLayout.SOUTH);
+        renderer.setOpaque(false);
+        renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        renderer.add(icon);
+        renderer.add(label, BorderLayout.SOUTH);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
-        //label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        // label.setBorder(cellHasFocus ? dotBorder : empBorder);
         label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
         if (isSelected) {
             icon.setIcon(value.sicon);
@@ -247,6 +247,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
             label.setBackground(list.getBackground());
             label.setOpaque(false);
         }
-        return p;
+        return renderer;
     }
 }

@@ -11,11 +11,11 @@ import java.util.*;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.*;
 
 public class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
-    private transient RubberBandingListener rbl;
+    private transient MouseInputListener rbl;
     private Color rubberBandColor;
     protected final Path2D rubberBand = new Path2D.Double();
 
@@ -23,8 +23,8 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         super(model);
     }
     @Override public void updateUI() {
-        setSelectionForeground(null); //Nimbus
-        setSelectionBackground(null); //Nimbus
+        setSelectionForeground(null); // Nimbus
+        setSelectionBackground(null); // Nimbus
         setCellRenderer(null);
         setTransferHandler(null);
         removeMouseListener(rbl);
@@ -43,7 +43,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         addMouseMotionListener(rbl);
         addMouseListener(rbl);
 
-        //putClientProperty("List.isFileList", Boolean.TRUE);
+        // putClientProperty("List.isFileList", Boolean.TRUE);
         getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setTransferHandler(new ListItemTransferHandler());
         setDropMode(DropMode.INSERT);
@@ -76,8 +76,6 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         @Override public void mouseDragged(MouseEvent e) {
             JList l = (JList) e.getComponent();
             if (l.getDragEnabled()) {
-                Component glassPane = l.getRootPane().getGlassPane();
-                glassPane.setVisible(true);
                 return;
             }
             Point destPoint = e.getPoint();
@@ -95,10 +93,10 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         @Override public void mouseReleased(MouseEvent e) {
             JList l = (JList) e.getComponent();
             l.setFocusable(true);
-            //if (Objects.isNull(srcPoint) || !getDragEnabled()) {
-            //    Component glassPane = l.getRootPane().getGlassPane();
-            //    glassPane.setVisible(false);
-            //}
+            // if (Objects.isNull(srcPoint) || !getDragEnabled()) {
+            //     Component glassPane = l.getRootPane().getGlassPane();
+            //     glassPane.setVisible(false);
+            // }
             getRubberBand().reset();
             l.setDragEnabled(l.getSelectedIndices().length > 0);
             l.repaint();
@@ -112,7 +110,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
                 if (l.getDragEnabled()) {
                     return;
                 }
-                //System.out.println("ccc:" + startSelectedIndex);
+                // System.out.println("ccc:" + startSelectedIndex);
                 l.setSelectedIndex(index);
             } else {
                 l.clearSelection();
@@ -124,34 +122,34 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             srcPoint.setLocation(e.getPoint());
             l.repaint();
         }
-        ////JDK 1.7.0
-        //private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-        //    ListModel model = l.getModel();
-        //    List<Integer> ll = new ArrayList<>(model.getSize());
-        //    for (int i = 0; i < model.getSize(); i++) {
-        //        if (rect.intersects(l.getCellBounds(i, i))) {
-        //            ll.add(i);
-        //        }
-        //    }
-        //    //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
-        //    int[] il = new int[ll.size()];
-        //    for (int i = 0; i < ll.size(); i++) {
-        //        il[i] = ll.get(i);
-        //    }
-        //    return il;
-        //}
+        // // JDK 1.7.0
+        // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+        //     ListModel model = l.getModel();
+        //     List<Integer> ll = new ArrayList<>(model.getSize());
+        //     for (int i = 0; i < model.getSize(); i++) {
+        //         if (rect.intersects(l.getCellBounds(i, i))) {
+        //             ll.add(i);
+        //         }
+        //     }
+        //     // JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
+        //     int[] il = new int[ll.size()];
+        //     for (int i = 0; i < ll.size(); i++) {
+        //         il[i] = ll.get(i);
+        //     }
+        //     return il;
+        // }
     }
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
-        //Color color = new Color(argb, true);
-        //float[] array = new float[4];
-        //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
+        // Color color = new Color(argb, true);
+        // float[] array = new float[4];
+        // color.getComponents(array);
+        // return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
         return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
@@ -170,44 +168,44 @@ class SelectedImageFilter extends RGBImageFilter {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.translate(x, y);
 //         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
-//         //new Color(200, 150, 150));
-//         //g2.setStroke(dashed);
-//         //g2.drawRect(0, 0, w - 1, h - 1);
+//         // new Color(200, 150, 150));
+//         // g2.setStroke(dashed);
+//         // g2.drawRect(0, 0, w - 1, h - 1);
 //         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //         g2.dispose();
 //     }
-//     //@Override public Insets getBorderInsets(Component c)
-//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+//     // @Override public Insets getBorderInsets(Component c)
+//     // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
-    private final JPanel p = new JPanel(new BorderLayout());
-    private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
+    private final JPanel renderer = new JPanel(new BorderLayout());
+    private final JLabel icon = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    //private final Border dotBorder = new DotBorder(2, 2, 2, 2);
-    //private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    // private final Border dotBorder = new DotBorder(2, 2, 2, 2);
+    // private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
     protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
+        if (Objects.isNull(b)) { // Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
         icon.setOpaque(false);
-        label.setForeground(p.getForeground());
-        label.setBackground(p.getBackground());
+        label.setForeground(renderer.getForeground());
+        label.setBackground(renderer.getBackground());
         label.setBorder(noFocusBorder);
-        p.setOpaque(false);
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(icon);
-        p.add(label, BorderLayout.SOUTH);
+        renderer.setOpaque(false);
+        renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        renderer.add(icon);
+        renderer.add(label, BorderLayout.SOUTH);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
-        //label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        // label.setBorder(cellHasFocus ? dotBorder : empBorder);
         label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
         if (isSelected) {
             icon.setIcon(value.sicon);
@@ -220,7 +218,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
             label.setBackground(list.getBackground());
             label.setOpaque(false);
         }
-        return p;
+        return renderer;
     }
 }
 

@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
 }
 
 class AlignDecimalCellRenderer implements TableCellRenderer {
-    private final JPanel p = new JPanel(new BorderLayout());
+    private final JPanel panel = new JPanel(new BorderLayout());
     private final JTextPane textPane = new JTextPane() {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
@@ -86,12 +86,12 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
         textPane.setText("\t" + Objects.toString(value, ""));
         if (isSelected) {
             textPane.setForeground(table.getSelectionForeground());
-            p.setBackground(table.getSelectionBackground());
+            panel.setBackground(table.getSelectionBackground());
         } else {
             textPane.setForeground(table.getForeground());
-            p.setBackground(table.getBackground());
+            panel.setBackground(table.getBackground());
         }
-        p.add(textPane, BorderLayout.EAST);
-        return p;
+        panel.add(textPane, BorderLayout.EAST);
+        return panel;
     }
 }

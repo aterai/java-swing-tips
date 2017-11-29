@@ -64,12 +64,12 @@ public final class MainPanel extends JPanel {
 }
 
 class CustomBevelBorder extends BevelBorder {
-    private final Insets i = new Insets(8, 8, 8, 8);
+    private final Insets ins = new Insets(8, 8, 8, 8);
     protected CustomBevelBorder(int bevelType) {
         super(bevelType);
     }
     @Override public Insets getBorderInsets(Component c, Insets insets) {
-        insets.set(i.top + 2, i.left + 2, i.bottom + 2, i.right + 2);
+        insets.set(ins.top + 2, ins.left + 2, ins.bottom + 2, ins.right + 2);
         return insets;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -93,13 +93,13 @@ class CustomBevelBorder extends BevelBorder {
         g2.translate(x, y);
 
         g2.setPaint(getHighlightInnerColor(c));
-        fillTopLeft(g2, w, h, i);
+        fillTopLeft(g2, w, h, ins);
 
         g2.setPaint(getShadowInnerColor(c));
-        g2.fill(makeBottomRightShape(w, h, i));
+        g2.fill(makeBottomRightShape(w, h, ins));
 
         g2.setPaint(getShadowOuterColor(c));
-        drawRectLine(g2, w, h, i);
+        drawRectLine(g2, w, h, ins);
 
         g2.dispose();
     }
@@ -112,13 +112,13 @@ class CustomBevelBorder extends BevelBorder {
         g2.translate(x, y);
 
         g2.setPaint(getShadowInnerColor(c));
-        fillTopLeft(g2, w, h, i);
+        fillTopLeft(g2, w, h, ins);
 
         g2.setPaint(getHighlightInnerColor(c));
-        g2.fill(makeBottomRightShape(w, h, i));
+        g2.fill(makeBottomRightShape(w, h, ins));
 
         g2.setPaint(getShadowOuterColor(c));
-        drawRectLine(g2, w, h, i);
+        drawRectLine(g2, w, h, ins);
 
         g2.dispose();
     }

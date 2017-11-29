@@ -26,12 +26,12 @@ public final class MainPanel extends JPanel {
 
         add(desktop);
         add(new JButton(new AbstractAction("add") {
-            private int n = 2;
+            private int num = 2;
             @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = createFrame("#", n);
+                JInternalFrame f = createFrame("#", num);
                 desktop.add(f);
                 desktop.getDesktopManager().activateFrame(f);
-                n++;
+                num++;
             }
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -64,8 +64,8 @@ class LightboxGlassPane extends JPanel {
     private final ImageIcon image = new ImageIcon(LightboxGlassPane.class.getResource("test.png"));
     private final transient AnimeIcon animatedIcon = new AnimeIcon();
     private float alpha;
-    private int w;
-    private int h;
+    private int curimgw;
+    private int curimgh;
     private final Rectangle rect = new Rectangle();
     protected Timer animator;
     protected transient Handler handler;
@@ -99,8 +99,8 @@ class LightboxGlassPane extends JPanel {
         }
         boolean b = Objects.isNull(animator) || !animator.isRunning();
         if (isVisible && b) {
-            w = 40;
-            h = 40;
+            curimgw = 40;
+            curimgh = 40;
             alpha = 0f;
             animator = new Timer(10, e -> {
                 animatedIcon.next();
@@ -119,19 +119,19 @@ class LightboxGlassPane extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
 
-        if (h < image.getIconHeight() + BW + BW) {
-            h += image.getIconHeight() / 16;
-        } else if (w < image.getIconWidth() + BW + BW) {
-            h  = image.getIconHeight() + BW + BW;
-            w += image.getIconWidth() / 16;
+        if (curimgh < image.getIconHeight() + BW + BW) {
+            curimgh += image.getIconHeight() / 16;
+        } else if (curimgw < image.getIconWidth() + BW + BW) {
+            curimgh = image.getIconHeight() + BW + BW;
+            curimgw += image.getIconWidth() / 16;
         } else if (1f - alpha > 0) {
-            w  = image.getIconWidth() + BW + BW;
+            curimgw = image.getIconWidth() + BW + BW;
             alpha = alpha + .1f;
         } else {
             animatedIcon.setRunning(false);
             animator.stop();
         }
-        rect.setSize(w, h);
+        rect.setSize(curimgw, curimgh);
         Rectangle screen = getBounds();
         Point centerPt = new Point(screen.x + screen.width / 2, screen.y + screen.height / 2);
         rect.setLocation(centerPt.x - rect.width / 2, centerPt.y - rect.height / 2);
@@ -153,10 +153,10 @@ class LightboxGlassPane extends JPanel {
 
 class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
-    private static final double R  = 2d;
+    private static final double R = 2d;
     private static final double SX = 0d;
     private static final double SY = 0d;
-    private static final int WIDTH  = (int) (R * 8 + SX * 2);
+    private static final int WIDTH = (int) (R * 8 + SX * 2);
     private static final int HEIGHT = (int) (R * 8 + SY * 2);
     private final List<Shape> list = new ArrayList<>(Arrays.asList(
         new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),

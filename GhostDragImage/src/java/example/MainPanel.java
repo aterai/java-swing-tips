@@ -100,6 +100,7 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JList<?> source = (JList<?>) c;
+        c.getRootPane().getGlassPane().setVisible(true);
         indices = source.getSelectedIndices();
         Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
@@ -120,18 +121,11 @@ class ListItemTransferHandler extends TransferHandler {
         };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
-        // Cursor flickering? return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
-        if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
-            info.setDropAction(TransferHandler.MOVE);
-            return true;
-        } else {
-            return false;
-        }
+        return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        Component glassPane = c.getRootPane().getGlassPane();
-        glassPane.setCursor(DragSource.DefaultMoveDrop);
+        c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
         if (c instanceof JList) {
             JList source = (JList) c;
             setDragImage(createDragImage(source));

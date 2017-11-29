@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
                 setRowHeight(0);
             }
         };
-        //tree.setCellRenderer(new CompoundTreeCellRenderer());
+        // tree.setCellRenderer(new CompoundTreeCellRenderer());
 
         add(makeTitledPanel("Default", new JTree()));
-        //add(makeTitledPanel("Margin", tree1));
+        // add(makeTitledPanel("Margin", tree1));
         add(makeTitledPanel("Label", tree));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final JPanel p = new JPanel(new BorderLayout());
+    private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel icon = new JLabel();
     private final JLabel text = new JLabel();
     private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
@@ -77,13 +77,13 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
         text.setBorder(emptyBorder);
         text.setOpaque(true);
-        p.setOpaque(false);
-        p.add(icon, BorderLayout.WEST);
+        renderer.setOpaque(false);
+        renderer.add(icon, BorderLayout.WEST);
 
         JPanel wrap = new JPanel(new GridBagLayout());
         wrap.setOpaque(false);
         wrap.add(text);
-        p.add(wrap);
+        renderer.add(wrap);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -102,9 +102,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 
-        return p;
+        return renderer;
     }
-    //@Override public void paint(Graphics g) {}
+    // @Override public void paint(Graphics g) {}
 }
 
 class DotBorder extends LineBorder {

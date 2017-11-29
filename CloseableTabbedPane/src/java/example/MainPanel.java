@@ -131,14 +131,14 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
             setRolloverEnabled(false);
         }
     };
-    private final Dimension d = button.getPreferredSize();
-    private final Rectangle repaintRect = new Rectangle(d.width * 2, d.height * 2);
+    private final Dimension dim = button.getPreferredSize();
+    private final Rectangle repaintRect = new Rectangle(dim.width * 2, dim.height * 2);
 
     private Rectangle getTabButtonRect(JTabbedPane tabbedPane, int index) {
         Rectangle r = tabbedPane.getBoundsAt(index);
-        //Dimension d = button.getPreferredSize();
-        r.translate(r.width - d.width - GAP, (r.height - d.height) / 2);
-        r.setSize(d);
+        // Dimension dim = button.getPreferredSize();
+        r.translate(r.width - dim.width - GAP, (r.height - dim.height) / 2);
+        r.setSize(dim);
         return r;
     }
     @Override public void paint(Graphics g, JComponent c) {
@@ -178,8 +178,8 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
         Point loc = e.getPoint();
         pt.setLocation(loc);
         if (l.getView().indexAtLocation(pt.x, pt.y) >= 0) {
-            //Dimension d = button.getPreferredSize();
-            loc.translate(-d.width, -d.height);
+            // Dimension dim = button.getPreferredSize();
+            loc.translate(-dim.width, -dim.height);
             repaintRect.setLocation(loc);
             l.repaint(repaintRect);
         }

@@ -48,11 +48,11 @@ public final class MainPanel extends JPanel {
         return popup;
     }
     private static AbstractButton makeButton(String symbol) {
-        final Icon icon = new SymbolIcon(symbol);
+        Icon icon = new SymbolIcon(symbol);
         JMenuItem b = new JMenuItem() {
-            private final Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());
+            private final Dimension dim = new Dimension(icon.getIconWidth(), icon.getIconHeight());
             @Override public Dimension getPreferredSize() {
-                return d;
+                return dim;
             }
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

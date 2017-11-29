@@ -179,10 +179,10 @@ class CellIconTransferHandler extends TransferHandler {
 }
 
 class IconListCellRenderer<E extends Icon> implements ListCellRenderer<E> {
-    private final JLabel l = new JLabel();
+    private final JLabel renderer = new JLabel();
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        l.setIcon(value);
-        return l;
+        renderer.setIcon(value);
+        return renderer;
     }
 }
 

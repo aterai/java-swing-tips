@@ -26,12 +26,12 @@ public class MainPanel extends JPanel {
         });
         button.addActionListener(e -> doReIconify(desktop));
         addButton.addActionListener(new ActionListener() {
-            private int n;
+            private int num;
             @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = createFrame("#" + n, n * 10, n * 10);
+                JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
                 desktop.add(f);
                 desktop.getDesktopManager().activateFrame(f);
-                n++;
+                num++;
             }
         });
         JToolBar toolbar = new JToolBar("toolbar");

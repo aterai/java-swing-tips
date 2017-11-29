@@ -45,13 +45,13 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        //table.setAutoCreateRowSorter(true);
+        // table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
-        //table.setShowHorizontalLines(false);
+        // table.setShowHorizontalLines(false);
         table.setFocusable(false);
-        //table.setCellSelectionEnabled(false);
+        // table.setCellSelectionEnabled(false);
         table.setIntercellSpacing(new Dimension(0, 1));
         table.setRowHeight(24);
         table.setSelectionForeground(table.getForeground());
@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
         Color alphaZero = new Color(0x0, true);
         table.setOpaque(false);
         table.setBackground(alphaZero);
-        //table.setGridColor(alphaZero);
+        // table.setGridColor(alphaZero);
         table.getTableHeader().setDefaultRenderer(new TransparentHeader());
         table.getTableHeader().setOpaque(false);
         table.getTableHeader().setBackground(alphaZero);
@@ -150,7 +150,7 @@ public class MainPanel extends JPanel {
 }
 
 class TransparentHeader extends JLabel implements TableCellRenderer {
-    private final Border b = BorderFactory.createCompoundBorder(
+    private final Border border = BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
         BorderFactory.createEmptyBorder(2, 2, 1, 2));
     private final Color alphaZero = new Color(0x0, true);
@@ -160,7 +160,7 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
         this.setOpaque(false);
         this.setBackground(alphaZero);
         this.setForeground(Color.BLACK);
-        this.setBorder(b);
+        this.setBorder(border);
         return this;
     }
 }
@@ -175,10 +175,10 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setHorizontalAlignment(SwingConstants.CENTER);
         if (isSelected) {
-            //setOpaque(true);
+            // setOpaque(true);
             setOpaque(false);
             setForeground(table.getSelectionForeground());
-            //super.setBackground(table.getSelectionBackground());
+            // super.setBackground(table.getSelectionBackground());
             super.setBackground(SELECTION_BACKGROUND);
         } else {
             setOpaque(false);
@@ -195,7 +195,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         }
         super.paintComponent(g);
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -208,9 +208,9 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //System.out.println(propertyName);
-        //String literal pool
-        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        // System.out.println(propertyName);
+        // String literal pool
+        // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
         if (flag && !Objects.equals(oldValue, newValue)) {
             super.firePropertyChange(propertyName, oldValue, newValue);

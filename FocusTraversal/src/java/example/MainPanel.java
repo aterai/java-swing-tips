@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JPanel p = new JPanel(new BorderLayout(2, 2));
+    private final JPanel panel = new JPanel(new BorderLayout(2, 2));
     private final JTextArea textarea = new JTextArea();
     private final JButton nb = new JButton("NORTH");
     private final JButton sb = new JButton("SOUTH");
@@ -22,17 +22,17 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(scroll);
-        p.add(nb, BorderLayout.NORTH);
-        p.add(sb, BorderLayout.SOUTH);
-        p.add(wb, BorderLayout.WEST);
-        p.add(eb, BorderLayout.EAST);
+        panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        panel.add(scroll);
+        panel.add(nb, BorderLayout.NORTH);
+        panel.add(sb, BorderLayout.SOUTH);
+        panel.add(wb, BorderLayout.WEST);
+        panel.add(eb, BorderLayout.EAST);
 
         setFocusTraversalPolicyProvider(true);
-        //frame.setFocusTraversalPolicy(policy);
-        //setFocusTraversalPolicy(policy);
-        //setFocusCycleRoot(true);
+        // frame.setFocusTraversalPolicy(policy);
+        // setFocusTraversalPolicy(policy);
+        // setFocusCycleRoot(true);
 
         FocusTraversalPolicy policy0 = getFocusTraversalPolicy();
         FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
             textarea.setEditable(check.isSelected());
             debugPrint();
         });
-        add(p);
+        add(panel);
         add(box, BorderLayout.NORTH);
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
@@ -85,18 +85,18 @@ public final class MainPanel extends JPanel {
     protected void debugPrint() {
         Container w = getTopLevelAncestor();
         textarea.setText(
-            debugString("frame",    w)
-          + debugString("this",     this)
-          + debugString("p",        p)
-          + debugString("box",      box)
-          + debugString("scroll",   scroll)
+            debugString("frame", w)
+          + debugString("this", this)
+          + debugString("panel", panel)
+          + debugString("box", box)
+          + debugString("scroll", scroll)
           + debugString("textarea", textarea)
-          + debugString("eb",       eb));
+          + debugString("eb", eb));
     }
     private static String debugString(String label, Container c) {
         return label + "------------------"
-          + "\n  isFocusCycleRoot: "               + c.isFocusCycleRoot()
-          + "\n  isFocusTraversalPolicySet: "      + c.isFocusTraversalPolicySet()
+          + "\n  isFocusCycleRoot: " + c.isFocusCycleRoot()
+          + "\n  isFocusTraversalPolicySet: "  + c.isFocusTraversalPolicySet()
           + "\n  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider()
           + "\n";
     }

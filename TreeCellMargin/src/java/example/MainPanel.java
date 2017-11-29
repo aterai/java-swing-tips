@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(new MarginTreeCellRenderer());
             }
         };
-        //tree1.setCellRenderer(new MarginTreeCellRenderer());
+        // tree1.setCellRenderer(new MarginTreeCellRenderer());
 
         JTree tree2 = new JTree() {
             @Override public void updateUI() {
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(new CompoundTreeCellRenderer());
             }
         };
-        //tree2.setCellRenderer(new CompoundTreeCellRenderer());
+        // tree2.setCellRenderer(new CompoundTreeCellRenderer());
 
         add(makeTitledPanel("Default", new JScrollPane(new JTree())));
         add(makeTitledPanel("Margin", new JScrollPane(tree1)));
@@ -71,8 +71,8 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
     protected boolean fillBackground;
     protected Color treeBGColor;
     protected Color focusBGColor;
-    //protected boolean selected;
-    //protected boolean hasFocus;
+    // protected boolean selected;
+    // protected boolean hasFocus;
 
     @Override public void updateUI() {
         super.updateUI();
@@ -84,7 +84,7 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
 
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
-        //this.tree = tree;
+        // this.tree = tree;
         this.hasFocus = hasFocus;
         this.selected = selected;
         return this;
@@ -109,12 +109,12 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
             g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
         }
 
-        //g.translate(MARGIN, 0);
-        //boolean flag = selected;
-        //selected = false;
+        // g.translate(MARGIN, 0);
+        // boolean flag = selected;
+        // selected = false;
         super.paint(g);
-        //g.translate(-2, 0);
-        //selected = flag;
+        // g.translate(-2, 0);
+        // selected = flag;
 
         if (hasFocus) {
             if (drawsFocusBorderAroundIcon) {
@@ -152,7 +152,7 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final JPanel p = new JPanel(new BorderLayout());
+    private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel icon = new JLabel();
     private final JLabel text = new JLabel();
     private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
@@ -182,9 +182,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
         text.setBorder(emptyBorder);
         text.setOpaque(true);
-        p.setOpaque(false);
-        p.add(icon, BorderLayout.WEST);
-        p.add(text);
+        renderer.setOpaque(false);
+        renderer.add(icon, BorderLayout.WEST);
+        renderer.add(text);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -209,9 +209,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 
-        return p;
+        return renderer;
     }
-    //@Override public void paint(Graphics g) {}
+    // @Override public void paint(Graphics g) {}
 }
 
 class DotBorder extends LineBorder {

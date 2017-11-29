@@ -78,11 +78,11 @@ public class MainPanel extends JPanel {
     protected void createActionPerformed() {
         model.addRow(new Object[] {"New name", model.getRowCount(), false});
         (new Timer(DELAY, new ActionListener() {
-            int i = table.convertRowIndexToView(model.getRowCount() - 1);
-            int h = START_HEIGHT;
+            int index = table.convertRowIndexToView(model.getRowCount() - 1);
+            int height = START_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
-                if (h < END_HEIGHT) {
-                    table.setRowHeight(i, h++);
+                if (height < END_HEIGHT) {
+                    table.setRowHeight(index, height++);
                 } else {
                     ((Timer) e.getSource()).stop();
                 }
@@ -91,17 +91,17 @@ public class MainPanel extends JPanel {
     }
 
     protected void deleteActionPerformed() {
-        final int[] selection = table.getSelectedRows();
+        int[] selection = table.getSelectedRows();
         if (selection.length == 0) {
             return;
         }
         (new Timer(DELAY, new ActionListener() {
-            int h = END_HEIGHT;
+            int height = END_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
-                h--;
-                if (h > START_HEIGHT) {
+                height--;
+                if (height > START_HEIGHT) {
                     for (int i = selection.length - 1; i >= 0; i--) {
-                        table.setRowHeight(selection[i], h);
+                        table.setRowHeight(selection[i], height);
                     }
                 } else {
                     ((Timer) e.getSource()).stop();

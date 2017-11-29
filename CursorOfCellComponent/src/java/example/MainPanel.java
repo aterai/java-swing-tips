@@ -76,7 +76,7 @@ class LinkCellList<E> extends JList<E> {
 }
 
 class LinkCellRenderer<E> implements ListCellRenderer<E> {
-    private final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     private final JCheckBox check = new JCheckBox("check") {
         @Override public void updateUI() {
             super.updateUI();
@@ -97,19 +97,19 @@ class LinkCellRenderer<E> implements ListCellRenderer<E> {
         }
     };
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        p.removeAll();
-        p.add(label);
-        p.add(check);
-        p.add(button);
-        p.setOpaque(true);
+        panel.removeAll();
+        panel.add(label);
+        panel.add(check);
+        panel.add(button);
+        panel.setOpaque(true);
         if (isSelected) {
-            p.setBackground(list.getSelectionBackground());
-            p.setForeground(list.getSelectionForeground());
+            panel.setBackground(list.getSelectionBackground());
+            panel.setForeground(list.getSelectionForeground());
         } else {
-            p.setBackground(list.getBackground());
-            p.setForeground(list.getForeground());
+            panel.setBackground(list.getBackground());
+            panel.setForeground(list.getForeground());
         }
         label.setText("<html><a href='#'>" + value);
-        return p;
+        return panel;
     }
 }

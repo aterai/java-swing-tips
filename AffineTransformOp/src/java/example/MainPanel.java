@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     protected Flip mode;
     protected final transient BufferedImage bufferedImage;
     protected final ButtonGroup bg = new ButtonGroup();
-    protected final JPanel p = new JPanel() {
+    protected final JPanel panel = new JPanel() {
         @Override protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
             bg.add(rb);
             box.add(Box.createHorizontalStrut(5));
         }
-        add(p);
+        add(panel);
         add(box, BorderLayout.SOUTH);
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));

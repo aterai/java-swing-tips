@@ -94,7 +94,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
     protected int rxs;
     protected int rxe;
     protected boolean isSynth;
-    protected final JPanel p = new JPanel(new BorderLayout()) {
+    protected final JPanel renderer = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (pn >= 0) {
@@ -134,10 +134,10 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 Dimension d = l.getPreferredSize();
                 Insets ins = tree.getInsets();
 
-                p.removeAll();
-                p.add(l, BorderLayout.WEST);
+                renderer.removeAll();
+                renderer.add(l, BorderLayout.WEST);
                 if (isSynth) {
-                    p.setForeground(l.getForeground());
+                    renderer.setForeground(l.getForeground());
                 }
 
                 pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
@@ -145,8 +145,8 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 rxs = d.width + gap;
                 rxe = tree.getWidth() - ins.right - gap;
 
-                p.setOpaque(false);
-                return (Component) p;
+                renderer.setOpaque(false);
+                return (Component) renderer;
             })
             .orElseGet(() -> {
                 pn = -1;

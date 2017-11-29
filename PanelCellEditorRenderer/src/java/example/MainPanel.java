@@ -83,23 +83,23 @@ class SpinnerPanel extends JPanel {
 }
 //*
 class SpinnerRenderer implements TableCellRenderer {
-    private final SpinnerPanel p = new SpinnerPanel();
+    private final SpinnerPanel renderer = new SpinnerPanel();
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        p.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        p.spinner.setValue((Integer) value);
-        return p;
+        renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+        renderer.spinner.setValue((Integer) value);
+        return renderer;
     }
 }
 
 class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
-    private final SpinnerPanel p = new SpinnerPanel();
+    private final SpinnerPanel renderer = new SpinnerPanel();
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        p.setBackground(table.getSelectionBackground());
-        p.spinner.setValue((Integer) value);
-        return p;
+        renderer.setBackground(table.getSelectionBackground());
+        renderer.spinner.setValue((Integer) value);
+        return renderer;
     }
     @Override public Object getCellEditorValue() {
-        return p.spinner.getValue();
+        return renderer.spinner.getValue();
     }
 //     @Override public boolean isCellEditable(EventObject e) {
 //         return true;
@@ -109,14 +109,14 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //     }
     @Override public boolean stopCellEditing() {
         try {
-            p.spinner.commitEdit();
+            renderer.spinner.commitEdit();
         } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
         }
         return super.stopCellEditing();
-        //fireEditingStopped();
-        //return true;
+        // fireEditingStopped();
+        // return true;
     }
 }
 /*/
@@ -143,8 +143,8 @@ class SpinnerEditor extends SpinnerPanel implements TableCellEditor {
         return spinner.getValue();
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
@@ -215,7 +215,7 @@ class ButtonsPanel extends JPanel {
             return d;
         }
     };
-    public int i = -1;
+    public int counter = -1;
     protected ButtonsPanel() {
         super();
         label.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -230,48 +230,48 @@ class ButtonsPanel extends JPanel {
 }
 //*
 class ButtonsRenderer implements TableCellRenderer {
-    private final ButtonsPanel p = new ButtonsPanel();
+    private final ButtonsPanel renderer = new ButtonsPanel();
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        p.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        p.label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
-        p.label.setText(Objects.toString(value, ""));
-        return p;
+        renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+        renderer.label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+        renderer.label.setText(Objects.toString(value, ""));
+        return renderer;
     }
 }
 
 class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
-    private final ButtonsPanel p = new ButtonsPanel();
+    private final ButtonsPanel renderer = new ButtonsPanel();
     protected ButtonsEditor() {
         super();
-        p.buttons.get(0).addActionListener(e -> {
-            p.i++;
-            p.label.setText(Integer.toString(p.i));
+        renderer.buttons.get(0).addActionListener(e -> {
+            renderer.counter++;
+            renderer.label.setText(Integer.toString(renderer.counter));
             fireEditingStopped();
         });
 
-        p.buttons.get(1).addActionListener(e -> {
-            p.i--;
-            p.label.setText(Integer.toString(p.i));
+        renderer.buttons.get(1).addActionListener(e -> {
+            renderer.counter--;
+            renderer.label.setText(Integer.toString(renderer.counter));
             fireEditingStopped();
         });
 
-        p.addMouseListener(new MouseAdapter() {
+        renderer.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 fireEditingStopped();
             }
         });
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        p.setBackground(table.getSelectionBackground());
-        p.label.setForeground(table.getSelectionForeground());
-        p.i = (Integer) value;
-        p.label.setText(Integer.toString(p.i));
-        return p;
+        renderer.setBackground(table.getSelectionBackground());
+        renderer.label.setForeground(table.getSelectionForeground());
+        renderer.counter = (Integer) value;
+        renderer.label.setText(Integer.toString(renderer.counter));
+        return renderer;
     }
     @Override public Object getCellEditorValue() {
-        return p.i;
+        return renderer.counter;
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean isCellEditable(EventObject e) {
 //         return true;
 //     }
@@ -337,8 +337,8 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         return i;
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

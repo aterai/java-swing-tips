@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
     }
 
     protected final void addActionPerformed() {
-        final int key = model.getRowCount();
+        int key = model.getRowCount();
         int lengthOfTask = new Random().nextInt(100) + 100;
         SwingWorker<Integer, ProgressValue> worker = new BackgroundTask(lengthOfTask) {
             @Override protected void process(List<ProgressValue> c) {
@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
                 if (!isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
                     cancel(true);
-                    //executor.shutdown();
+                    // executor.shutdown();
                     return;
                 }
                 c.forEach(v -> model.setValueAt(v, key, 2));
@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
                 if (!isDisplayable()) {
                     System.out.println("done: DISPOSE_ON_CLOSE");
                     cancel(true);
-                    //executor.shutdown();
+                    // executor.shutdown();
                     return;
                 }
                 String text;
@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
             }
         };
         model.addProgressValue("example(max: " + lengthOfTask + ")", new ProgressValue(lengthOfTask, 0), worker);
-        //executor.execute(worker);
+        // executor.execute(worker);
         worker.execute();
     }
 
@@ -160,7 +160,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -250,12 +250,12 @@ class ProgressValue {
 }
 
 class ProgressRenderer extends DefaultTableCellRenderer {
-    private final JProgressBar b = new JProgressBar();
-    private final JPanel p = new JPanel(new BorderLayout());
+    private final JProgressBar progress = new JProgressBar();
+    private final JPanel renderer = new JPanel(new BorderLayout());
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component c;
-        p.removeAll();
-        b.setValue(0);
+        renderer.removeAll();
+        progress.setValue(0);
         if (value instanceof ProgressValue) {
             ProgressValue pv = (ProgressValue) value;
             Integer current = pv.getProgress();
@@ -263,21 +263,21 @@ class ProgressRenderer extends DefaultTableCellRenderer {
             if (current < 0) {
                 c = super.getTableCellRendererComponent(table, "Canceled", isSelected, hasFocus, row, column);
             } else if (current < lengthOfTask) {
-                //b.setMaximum(lengthOfTask);
-                //b.setEnabled(true);
-                b.setValue(current * 100 / lengthOfTask);
-                b.setStringPainted(true);
-                b.setString(String.format("%d/%d", current, lengthOfTask));
-                p.add(b);
-                c = p;
+                // progress.setMaximum(lengthOfTask);
+                // progress.setEnabled(true);
+                progress.setValue(current * 100 / lengthOfTask);
+                progress.setStringPainted(true);
+                progress.setString(String.format("%d/%d", current, lengthOfTask));
+                renderer.add(progress);
+                c = renderer;
             } else {
                 c = super.getTableCellRendererComponent(table, "Done", isSelected, hasFocus, row, column);
             }
         } else {
-            //b.setEnabled(false);
-            //b.setValue(0);
-            //p.add(b);
-            //c = p;
+            // progress.setEnabled(false);
+            // progress.setValue(0);
+            // renderer.add(progress);
+            // c = renderer;
             c = super.getTableCellRendererComponent(table, "Waiting...", isSelected, hasFocus, row, column);
         }
         return c;
@@ -285,8 +285,8 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     @Override public void updateUI() {
         super.updateUI();
         setOpaque(true);
-        if (Objects.nonNull(p)) {
-            SwingUtilities.updateComponentTreeUI(p);
+        if (Objects.nonNull(renderer)) {
+            SwingUtilities.updateComponentTreeUI(renderer);
         }
     }
 }

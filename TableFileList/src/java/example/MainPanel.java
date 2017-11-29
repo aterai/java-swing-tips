@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
-//import java.util.List;
+// import java.util.List;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -16,28 +16,29 @@ import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"Name", "Comment"};
-    private final Object[][] data = {
-        {"test1.jpg", "adfasd"},
-        {"test1234.jpg", "  "},
-        {"test15354.gif", "fasdf"},
-        {"t.png", "comment"},
-        {"tfasdfasd.jpg", "123"},
-        {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
-        {"fffffffffffasdfasdf", ""},
-        {"test1.jpg", ""}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-        @Override public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
-    private final JTable table = new FileListTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"Name", "Comment"};
+        Object[][] data = {
+            {"test1.jpg", "adfasd"},
+            {"test1234.jpg", "  "},
+            {"test15354.gif", "fasdf"},
+            {"t.png", "comment"},
+            {"tfasdfasd.jpg", "123"},
+            {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
+            {"fffffffffffasdfasdf", ""},
+            {"test1.jpg", ""}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable table = new FileListTable(model);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -51,7 +52,6 @@ public final class MainPanel extends JPanel {
 //         rect.setSize(getStringWidth(table, row, col), rect.height);
 //         return(rect.contains(pt));
 //     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -76,25 +76,20 @@ public final class MainPanel extends JPanel {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (argb >> 16) & 0xFF;
         int g = (argb >>  8) & 0xFF;
         return (argb & 0xFF0000FF) | ((r >> 1) << 16) | ((g >> 1) << 8);
-        //return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
+        // return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 
 class FileNameRenderer implements TableCellRenderer {
     protected final Dimension dim = new Dimension();
-    private final JPanel p = new JPanel(new BorderLayout()) {
-        @Override public Dimension getPreferredSize() {
-            return dim;
-        }
-    };
-    private final JPanel panel = new JPanel(new BorderLayout());
+    private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel textLabel = new JLabel(" ");
     private final JLabel iconLabel;
     private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
@@ -104,16 +99,21 @@ class FileNameRenderer implements TableCellRenderer {
 
     protected FileNameRenderer(JTable table) {
         Border b = UIManager.getBorder("Table.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
+        if (Objects.isNull(b)) { // Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
 
+        JPanel p = new JPanel(new BorderLayout()) {
+            @Override public Dimension getPreferredSize() {
+                return dim;
+            }
+        };
         p.setOpaque(false);
-        panel.setOpaque(false);
+        renderer.setOpaque(false);
 
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
 
@@ -122,7 +122,7 @@ class FileNameRenderer implements TableCellRenderer {
 
         p.add(iconLabel, BorderLayout.WEST);
         p.add(textLabel);
-        panel.add(p, BorderLayout.WEST);
+        renderer.add(p, BorderLayout.WEST);
 
         Dimension d = iconLabel.getPreferredSize();
         dim.setSize(d);
@@ -137,7 +137,7 @@ class FileNameRenderer implements TableCellRenderer {
         Insets i = textLabel.getInsets();
         int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth();
-        dim.width = swidth > cwidth ? cwidth : swidth;
+        dim.width = Math.min(swidth, cwidth);
 
         if (isSelected) {
             textLabel.setOpaque(true);
@@ -150,7 +150,7 @@ class FileNameRenderer implements TableCellRenderer {
             textLabel.setBackground(table.getBackground());
             iconLabel.setIcon(nicon);
         }
-        return panel;
+        return renderer;
     }
 }
 
@@ -165,13 +165,13 @@ class FileNameRenderer implements TableCellRenderer {
 //     protected FileNameRenderer(JTable table) {
 //         super(new BorderLayout());
 //         Border b = UIManager.getBorder("Table.noFocusBorder");
-//         if (Objects.isNull(b)) { //Nimbus???
+//         if (Objects.isNull(b)) { // Nimbus???
 //             Insets i = focusCellHighlightBorder.getBorderInsets(this);
 //             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
 //         }
 //         noFocusBorder = b;
 //         setOpaque(false);
-//         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+//         // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
 //         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
 //         sicon = new ImageIcon(createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
 //         textLabel = new MyLabel(new Color(~table.getSelectionBackground().getRGB()));
@@ -191,7 +191,7 @@ class FileNameRenderer implements TableCellRenderer {
 //         Insets i = textLabel.getInsets();
 //         int swidth = fm.stringWidth(textLabel.getText()) + i.left + i.right;
 //         int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
-//         textLabel.setPreferredSize(new Dimension(swidth > cwidth ? cwidth : swidth, 10000)); //height: 10000 is dummy
+//         textLabel.setPreferredSize(new Dimension(swidth > cwidth ? cwidth : swidth, 10000)); // height: 10000 is dummy
 //
 //         if (isSelected) {
 //             textLabel.setOpaque(true);
@@ -206,7 +206,7 @@ class FileNameRenderer implements TableCellRenderer {
 //         }
 //         return this;
 //     }
-//     //Overridden for performance reasons. ---->
+//     // Overridden for performance reasons. ---->
 //     @Override public boolean isOpaque() {
 //         Color back = getBackground();
 //         Component p = getParent();
@@ -237,7 +237,7 @@ class FileNameRenderer implements TableCellRenderer {
 //         setOpaque(true);
 //         dotBorder = new DotBorder(color, 2);
 //         setBorder(empBorder);
-//         //setFocusable(true);
+//         // setFocusable(true);
 //     }
 //     private boolean isFocusedBorder() {
 //         return focusflag;
@@ -263,7 +263,7 @@ class FileNameRenderer implements TableCellRenderer {
 //             g2.dispose();
 //         }
 //     }
-//     //Overridden for performance reasons. ---->
+//     // Overridden for performance reasons. ---->
 //     @Override public boolean isOpaque() {
 //         Color back = getBackground();
 //         Component p = getParent();
@@ -274,8 +274,8 @@ class FileNameRenderer implements TableCellRenderer {
 //         return !colorMatch && super.isOpaque();
 //     }
 //     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-//         //System.out.println(propertyName);
-// //      //String literal pool
+//         // System.out.println(propertyName);
+// //      // String literal pool
 // //      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 // //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
 //         if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
@@ -394,7 +394,7 @@ class FileListTable extends JTable {
             }
         }
     }
-    //SwingUtilities2.pointOutsidePrefSize(...)
+    // SwingUtilities2.pointOutsidePrefSize(...)
     protected static Rectangle getCellRect2(JTable table, int row, int col) {
         TableCellRenderer tcr = table.getCellRenderer(row, col);
         Object value = table.getValueAt(row, col);

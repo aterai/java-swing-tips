@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
 class RowHeaderList<E> extends JList<E> {
     protected final JTable table;
     protected final ListSelectionModel tableSelection;
-    protected final ListSelectionModel rListSelection;
+    protected final ListSelectionModel listSelection;
     protected int rollOverRowIndex = -1;
     protected int pressedRowIndex  = -1;
 
@@ -93,14 +93,14 @@ class RowHeaderList<E> extends JList<E> {
         this.table = table;
         setFixedCellHeight(table.getRowHeight());
         setCellRenderer(new RowHeaderRenderer<>(table.getTableHeader()));
-        //setSelectionModel(table.getSelectionModel());
+        // setSelectionModel(table.getSelectionModel());
         RollOverListener rol = new RollOverListener();
         addMouseListener(rol);
         addMouseMotionListener(rol);
-        //setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
+        // setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
 
         tableSelection = table.getSelectionModel();
-        rListSelection = getSelectionModel();
+        listSelection = getSelectionModel();
     }
     class RowHeaderRenderer<E2> extends JLabel implements ListCellRenderer<E2> {
         private final JTableHeader header; // = table.getTableHeader();
@@ -108,7 +108,7 @@ class RowHeaderList<E> extends JList<E> {
             super();
             this.header = header;
             this.setOpaque(true);
-            //this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+            // this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
             this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 2, Color.GRAY.brighter()));
             this.setHorizontalAlignment(CENTER);
             this.setForeground(header.getForeground());
@@ -133,7 +133,7 @@ class RowHeaderList<E> extends JList<E> {
     class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             if (pressedRowIndex < 0) {
-                //pressedRowIndex  = -1;
+                // pressedRowIndex = -1;
                 rollOverRowIndex = -1;
                 repaint();
             }
@@ -151,9 +151,9 @@ class RowHeaderList<E> extends JList<E> {
                 int start = Math.min(row, pressedRowIndex);
                 int end   = Math.max(row, pressedRowIndex);
                 tableSelection.clearSelection();
-                rListSelection.clearSelection();
+                listSelection.clearSelection();
                 tableSelection.addSelectionInterval(start, end);
-                rListSelection.addSelectionInterval(start, end);
+                listSelection.addSelectionInterval(start, end);
                 repaint();
             }
         }
@@ -162,7 +162,7 @@ class RowHeaderList<E> extends JList<E> {
             if (row == pressedRowIndex) {
                 return;
             }
-            rListSelection.clearSelection();
+            listSelection.clearSelection();
             table.changeSelection(row, 0, false, false);
             table.changeSelection(row, table.getColumnModel().getColumnCount() - 1, false, true);
             pressedRowIndex = row;
@@ -172,13 +172,13 @@ class RowHeaderList<E> extends JList<E> {
 //             table.getSelectionModel().setAnchorSelectionIndex(row);
 //             table.getSelectionModel().setLeadSelectionIndex(row);
 //             tableSelection.addSelectionInterval(row, row);
-//             rListSelection.addSelectionInterval(row, row);
+//             listSelection.addSelectionInterval(row, row);
 //             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
 //             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
 //             table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount() - 1, false, true);
         }
         @Override public void mouseReleased(MouseEvent e) {
-            rListSelection.clearSelection();
+            listSelection.clearSelection();
             pressedRowIndex  = -1;
             rollOverRowIndex = -1;
             repaint();
@@ -188,7 +188,7 @@ class RowHeaderList<E> extends JList<E> {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        //new ColumnContext("No.",     Integer.class, false),
+        // new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  false),
         new ColumnContext("Comment", String.class,  false)
     };

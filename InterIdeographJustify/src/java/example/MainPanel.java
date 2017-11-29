@@ -82,11 +82,11 @@ public final class MainPanel extends JPanel {
 }
 
 class InterIdeographJustifyCellRenderer implements TableCellRenderer {
-    private final JustifiedLabel l = new JustifiedLabel();
+    private final JustifiedLabel renderer = new JustifiedLabel();
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        l.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        l.setText(Objects.toString(value, ""));
-        return l;
+        renderer.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        renderer.setText(Objects.toString(value, ""));
+        return renderer;
     }
 }
 

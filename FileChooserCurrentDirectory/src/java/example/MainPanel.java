@@ -13,7 +13,6 @@ public class MainPanel extends JPanel {
     protected final JTextField field = new JTextField(24);
     protected final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
     protected final JCheckBox check2 = new JCheckBox("isParent reset?");
-    protected final JPanel p = new JPanel(new GridBagLayout());
     protected final JFileChooser fc0 = new JFileChooser();
     protected final JFileChooser fc1 = new JFileChooser();
     protected final JFileChooser fc2 = new JFileChooser() {
@@ -34,6 +33,8 @@ public class MainPanel extends JPanel {
     }
     public MainPanel() {
         super(new BorderLayout());
+
+        JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser.DIRECTORIES_ONLY"));
         fc0.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

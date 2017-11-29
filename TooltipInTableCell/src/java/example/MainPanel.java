@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
             int mcol = convertColumnIndexToModel(vcol);
             if (mcol == LIST_ICON_COLUMN) {
                 TableCellRenderer tcr = getCellRenderer(vrow, vcol);
-                Component c = prepareRenderer(tcr, vrow, vcol); //Component c = tcr.getTableCellRendererComponent(this, getValueAt(vrow, vcol), false, false, vrow, vcol);
+                Component c = prepareRenderer(tcr, vrow, vcol); // Component c = tcr.getTableCellRendererComponent(this, getValueAt(vrow, vcol), false, false, vrow, vcol);
                 if (c instanceof JPanel) {
                     Rectangle r = getCellRect(vrow, vcol, true);
                     c.setBounds(r);
@@ -100,15 +100,15 @@ public final class MainPanel extends JPanel {
     }
 }
 class ListIconRenderer implements TableCellRenderer {
-    private final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEFT));
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        p.removeAll();
+        renderer.removeAll();
         if (isSelected) {
-            p.setOpaque(true);
-            p.setBackground(table.getSelectionBackground());
+            renderer.setOpaque(true);
+            renderer.setBackground(table.getSelectionBackground());
         } else {
-            p.setOpaque(false);
-            // p.setBackground(table.getBackground());
+            renderer.setOpaque(false);
+            // renderer.setBackground(table.getBackground());
         }
         if (value instanceof List<?>) {
             for (Object o: (List<?>) value) {
@@ -116,10 +116,10 @@ class ListIconRenderer implements TableCellRenderer {
                     Icon icon = (Icon) o;
                     JLabel label = new JLabel(icon);
                     label.setToolTipText(icon.toString());
-                    p.add(label);
+                    renderer.add(label);
                 }
             }
         }
-        return p;
+        return renderer;
     }
 }

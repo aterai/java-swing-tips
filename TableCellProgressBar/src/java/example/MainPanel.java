@@ -15,8 +15,8 @@ public class MainPanel extends JPanel {
     protected final JTable table = new JTable(model);
     protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     protected final Set<Integer> deleteRowSet = new TreeSet<>();
-    //TEST: protected final transient ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-    //TEST: protected final Executor executor = Executors.newFixedThreadPool(2);
+    // TEST: protected final transient ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    // TEST: protected final Executor executor = Executors.newFixedThreadPool(2);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
     }
 
     protected final void addActionPerformed() {
-        final int key = model.getRowCount();
+        int key = model.getRowCount();
         SwingWorker<Integer, Integer> worker = new BackgroundTask() {
             @Override protected void process(List<Integer> c) {
                 if (isCancelled()) {
@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
                 if (!isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
                     cancel(true);
-                    //executor.shutdown();
+                    // executor.shutdown();
                     return;
                 }
                 c.forEach(v -> model.setValueAt(v, key, 2));
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
                 if (!isDisplayable()) {
                     System.out.println("done: DISPOSE_ON_CLOSE");
                     cancel(true);
-                    //executor.shutdown();
+                    // executor.shutdown();
                     return;
                 }
                 String text;
@@ -81,11 +81,11 @@ public class MainPanel extends JPanel {
                     }
                 }
                 System.out.format("%s:%s(%dms)%n", key, text, i);
-                //executor.remove(this);
+                // executor.remove(this);
             }
         };
         model.addProgressValue("example", 0, worker);
-        //executor.execute(worker);
+        // executor.execute(worker);
         worker.execute();
     }
 
@@ -113,7 +113,7 @@ public class MainPanel extends JPanel {
             SwingWorker worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
-                //executor.remove(worker);
+                // executor.remove(worker);
             }
             worker = null;
         }
@@ -147,7 +147,6 @@ public class MainPanel extends JPanel {
             }
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -164,7 +163,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -235,19 +234,19 @@ class WorkerModel extends DefaultTableModel {
 }
 
 class ProgressRenderer extends DefaultTableCellRenderer {
-    private final JProgressBar b = new JProgressBar();
-    private final JPanel p = new JPanel(new BorderLayout());
+    private final JProgressBar progress = new JProgressBar();
+    private final JPanel renderer = new JPanel(new BorderLayout());
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Integer i = (Integer) value;
         String text = "Done";
         if (i < 0) {
             text = "Canceled";
-        } else if (i < b.getMaximum()) { // < 100
-            b.setValue(i);
-            p.add(b);
-            p.setOpaque(false);
-            p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            return p;
+        } else if (i < progress.getMaximum()) { // < 100
+            progress.setValue(i);
+            renderer.add(progress);
+            renderer.setOpaque(false);
+            renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+            return renderer;
         }
         super.getTableCellRendererComponent(table, text, isSelected, hasFocus, row, column);
         return this;
@@ -255,8 +254,8 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
-        if (Objects.nonNull(p)) {
-            SwingUtilities.updateComponentTreeUI(p);
+        if (Objects.nonNull(renderer)) {
+            SwingUtilities.updateComponentTreeUI(renderer);
         }
     }
 }

@@ -8,17 +8,17 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String TITLE = "MMMMMMMMMMMMMMMMMMMM";
-    private final ComboBoxModel<String> m = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
-    private final JComboBox<String> combo1 = new JComboBox<>(m);
-    private final JComboBox<String> combo2 = new JComboBox<>(m);
-    private final JComboBox<String> combo3 = new JComboBox<>(m);
+    private final ComboBoxModel<String> model1 = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
+    private final JComboBox<String> combo1 = new JComboBox<>(model1);
+    private final JComboBox<String> combo2 = new JComboBox<>(model1);
+    private final JComboBox<String> combo3 = new JComboBox<>(model1);
 
-    private final ComboBoxModel<WebSite> model = new DefaultComboBoxModel<>(new WebSite[] {
+    private final ComboBoxModel<WebSite> model2 = new DefaultComboBoxModel<>(new WebSite[] {
         new WebSite("a", new ColorIcon(Color.RED)),
         new WebSite("b", new ColorIcon(Color.GREEN)),
         new WebSite("c", new ColorIcon(Color.BLUE))});
-    private final JComboBox<WebSite> combo4 = new JComboBox<>(model);
-    private final JComboBox<WebSite> combo5 = new JComboBox<>(model);
+    private final JComboBox<WebSite> combo4 = new JComboBox<>(model2);
+    private final JComboBox<WebSite> combo5 = new JComboBox<>(model2);
     private final JComboBox<WebSite> combo6 = new JComboBox<>();
 
     public MainPanel() {
@@ -26,22 +26,22 @@ public final class MainPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
-        layout.putConstraint(SpringLayout.WEST, combo1,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo2,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo3,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo4,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo5,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo6,   10, SpringLayout.WEST,  this);
+        layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.WEST, combo4, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.WEST, combo5, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.WEST, combo6, 10, SpringLayout.WEST, this);
 
-        layout.putConstraint(SpringLayout.NORTH, combo1,  10, SpringLayout.NORTH, this);
-        layout.putConstraint(SpringLayout.NORTH, combo2,  10, SpringLayout.SOUTH, combo1);
-        layout.putConstraint(SpringLayout.NORTH, combo3,  10, SpringLayout.SOUTH, combo2);
-        layout.putConstraint(SpringLayout.NORTH, combo4,  10, SpringLayout.SOUTH, combo3);
-        layout.putConstraint(SpringLayout.NORTH, combo5,  10, SpringLayout.SOUTH, combo4);
-        layout.putConstraint(SpringLayout.NORTH, combo6,  10, SpringLayout.SOUTH, combo5);
+        layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
+        layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
+        layout.putConstraint(SpringLayout.NORTH, combo4, 10, SpringLayout.SOUTH, combo3);
+        layout.putConstraint(SpringLayout.NORTH, combo5, 10, SpringLayout.SOUTH, combo4);
+        layout.putConstraint(SpringLayout.NORTH, combo6, 10, SpringLayout.SOUTH, combo5);
 
-        //combo1.setEditable(true);
-        //((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
+        // combo1.setEditable(true);
+        // ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
 
         combo2.setPrototypeDisplayValue(TITLE);
         combo3.setPrototypeDisplayValue(TITLE);

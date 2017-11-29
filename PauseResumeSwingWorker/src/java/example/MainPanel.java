@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.beans.*;
+// import java.beans.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         area.setEditable(false);
 
         runButton.addActionListener(e -> {
-            //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
+            // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             cancelButton.setEnabled(true);
             pauseButton.setEnabled(true);
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
             statusPanel.add(bar1, BorderLayout.NORTH);
             statusPanel.add(bar2, BorderLayout.SOUTH);
             statusPanel.revalidate();
-            //bar1.setIndeterminate(true);
+            // bar1.setIndeterminate(true);
             worker = new ProgressTask();
             worker.execute();
         });
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         pauseButton.setEnabled(false);
         pauseButton.addActionListener(e -> {
             JButton b = (JButton) e.getSource();
-            //String pause = (String) getValue(Action.NAME);
+            // String pause = (String) getValue(Action.NAME);
             if (Objects.nonNull(worker)) {
                 if (worker.isCancelled() || worker.isPaused) {
                     b.setText(PAUSE);
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     }
     private class ProgressTask extends BackgroundTask {
         @Override protected void process(List<Progress> chunks) {
-            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
                 return;
             }
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
                 cancel(true);
                 return;
             }
-            //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+            // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
             updateComponentDone();
             String message;
             try {
@@ -190,7 +190,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -210,13 +210,13 @@ class Progress {
 }
 
 class BackgroundTask extends SwingWorker<String, Progress> {
-    private final Random r = new Random();
+    private final Random rnd = new Random();
     public boolean isPaused;
 
     @Override public String doInBackground() {
-        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
-        int lengthOfTask = 12; //filelist.size();
+        int lengthOfTask = 12; // filelist.size();
         publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
         while (current < lengthOfTask && !isCancelled()) {
@@ -235,7 +235,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     private void convertFileToSomething() throws InterruptedException {
         boolean blinking = false;
         int current = 0;
-        int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
+        int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();
         while (current <= lengthOfTask && !isCancelled()) {
             if (isPaused) {
                 try {
@@ -282,22 +282,22 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //             super("run");
 //         }
 //         @Override public void actionPerformed(ActionEvent e) {
-//             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-//             final JProgressBar bar1 = new JProgressBar();
-//             final JProgressBar bar2 = new JProgressBar();
+//             // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
+//             JProgressBar bar1 = new JProgressBar();
+//             JProgressBar bar2 = new JProgressBar();
 //             runButton.setEnabled(false);
 //             cancelButton.setEnabled(true);
 //             statusPanel.removeAll();
 //             statusPanel.add(bar1, BorderLayout.NORTH);
 //             statusPanel.add(bar2, BorderLayout.SOUTH);
 //             statusPanel.revalidate();
-//             //bar1.setIndeterminate(true);
+//             // bar1.setIndeterminate(true);
 //
 //             worker = new SwingWorker<String, String>() {
 //                 @Override public String doInBackground() {
-//                     //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+//                     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
 //                     int current = 0;
-//                     int lengthOfTask = 12; //filelist.size();
+//                     int lengthOfTask = 12; // filelist.size();
 //                     publish("Length Of Task: " + lengthOfTask);
 //                     publish("\n------------------------------\n");
 //                     setProgress(0);
@@ -320,7 +320,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //                 private final Random r = new Random();
 //                 private void convertFileToSomething() throws InterruptedException {
 //                     int current = 0;
-//                     int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
+//                     int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();
 //                     while (current <= lengthOfTask && !isCancelled()) {
 //                         int iv = 100 * current / lengthOfTask;
 //                         Thread.sleep(20); // dummy
@@ -329,13 +329,13 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //                     }
 //                 }
 //                 @Override protected void process(List<String> chunks) {
-//                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+//                     // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
 //                     for (String message: chunks) {
 //                         appendLine(message);
 //                     }
 //                 }
 //                 @Override public void done() {
-//                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+//                     // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //                     runButton.setEnabled(true);
 //                     cancelButton.setEnabled(false);
 //                     statusPanel.remove(bar1);
@@ -352,7 +352,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //                             text = "Exception";
 //                         }
 //                     }
-//                     //System.out.println(text);
+//                     // System.out.println(text);
 //                     appendLine(text);
 //                 }
 //             };
@@ -392,7 +392,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //             ex.printStackTrace();
 //         }
 //         JFrame frame = new JFrame("@title@");
-//         //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+//         // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 //         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //         frame.getContentPane().add(new MainPanel());
 //         frame.pack();

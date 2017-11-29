@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));
-        //Icon i = UIManager.getIcon("OptionPane.warningIcon");
+        // Icon i = UIManager.getIcon("OptionPane.warningIcon");
         add(makeLabel("Default", i));
 //*/
         add(makeLabel("Rotate: 180", new RotateIcon(i, 180)));
@@ -58,15 +58,15 @@ public final class MainPanel extends JPanel {
 }
 
 class RotateIcon implements Icon {
-    private final Dimension d = new Dimension();
+    private final Dimension dim = new Dimension();
     private final Image image;
     private final AffineTransform trans;
     protected RotateIcon(Icon icon, int rotate) {
         if (rotate % 90 != 0) {
             throw new IllegalArgumentException(rotate + ": Rotate must be (rotate % 90 == 0)");
         }
-        d.setSize(icon.getIconWidth(), icon.getIconHeight());
-        image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+        dim.setSize(icon.getIconWidth(), icon.getIconHeight());
+        image = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         icon.paintIcon(null, g, 0, 0);
         g.dispose();
@@ -75,33 +75,33 @@ class RotateIcon implements Icon {
         switch (numquadrants) {
           case 3:
           case -1:
-            trans = AffineTransform.getTranslateInstance(0, d.width);
-            d.setSize(icon.getIconHeight(), icon.getIconWidth());
+            trans = AffineTransform.getTranslateInstance(0, dim.width);
+            dim.setSize(icon.getIconHeight(), icon.getIconWidth());
             break;
           case 1:
           case -3:
-            trans = AffineTransform.getTranslateInstance(d.height, 0);
-            d.setSize(icon.getIconHeight(), icon.getIconWidth());
+            trans = AffineTransform.getTranslateInstance(dim.height, 0);
+            dim.setSize(icon.getIconHeight(), icon.getIconWidth());
             break;
           case 2:
-            trans = AffineTransform.getTranslateInstance(d.width, d.height);
+            trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
             break;
           default:
             trans = AffineTransform.getTranslateInstance(0, 0);
             break;
         }
 //         if (numquadrants == 1 || numquadrants == -3) {
-//             trans = AffineTransform.getTranslateInstance(d.height, 0);
-//             int v = d.width;
-//             d.width = d.height;
-//             d.height = v;
+//             trans = AffineTransform.getTranslateInstance(dim.height, 0);
+//             int v = dim.width;
+//             dim.width = dim.height;
+//             dim.height = v;
 //         } else if (numquadrants == -1 || numquadrants == 3) {
-//             trans = AffineTransform.getTranslateInstance(0, d.width);
-//             int v = d.width;
-//             d.width = d.height;
-//             d.height = v;
+//             trans = AffineTransform.getTranslateInstance(0, dim.width);
+//             int v = dim.width;
+//             dim.width = dim.height;
+//             dim.height = v;
 //         } else if (Math.abs(numquadrants) == 2) {
-//             trans = AffineTransform.getTranslateInstance(d.width, d.height);
+//             trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
 //         } else {
 //             trans = AffineTransform.getTranslateInstance(0, 0);
 //         }
@@ -114,10 +114,10 @@ class RotateIcon implements Icon {
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return d.width;
+        return dim.width;
     }
     @Override public int getIconHeight() {
-        return d.height;
+        return dim.height;
     }
 }
 

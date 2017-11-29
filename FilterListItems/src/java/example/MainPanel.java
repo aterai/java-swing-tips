@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
     private final DefaultListModel<ListItem> model = new DefaultListModel<>();
     private final JList<ListItem> list = new JList<ListItem>(model) {
         @Override public void updateUI() {
-            setSelectionForeground(null); //Nimbus
-            setSelectionBackground(null); //Nimbus
+            setSelectionForeground(null); // Nimbus
+            setSelectionBackground(null); // Nimbus
             setCellRenderer(null);
             super.updateUI();
             setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -132,27 +132,28 @@ class SelectedImageFilter extends RGBImageFilter {
 }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
-    private final JPanel p = new JPanel(new BorderLayout());
-    private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
+    private final JPanel renderer = new JPanel(new BorderLayout());
+    private final JLabel icon = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder;
 
     protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
+        if (Objects.isNull(b)) { // Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
         icon.setOpaque(false);
-        label.setForeground(p.getForeground());
-        label.setBackground(p.getBackground());
+        label.setForeground(renderer.getForeground());
+        label.setBackground(renderer.getBackground());
         label.setBorder(noFocusBorder);
-        p.setOpaque(false);
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(icon);
-        p.add(label, BorderLayout.SOUTH);
+
+        renderer.setOpaque(false);
+        renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        renderer.add(icon);
+        renderer.add(label, BorderLayout.SOUTH);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
@@ -168,6 +169,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
             label.setBackground(list.getBackground());
             label.setOpaque(false);
         }
-        return p;
+        return renderer;
     }
 }

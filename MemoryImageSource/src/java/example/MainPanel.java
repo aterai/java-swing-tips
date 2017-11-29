@@ -42,19 +42,19 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Point startPoint = new Point();
     private final transient BufferedImage backImage;
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200, 150, 100, 50));
-    private final Rectangle r = new Rectangle(320, 240);
-    private final int[] pixels = new int[r.width * r.height];
-    private final transient MemoryImageSource source = new MemoryImageSource(r.width, r.height, pixels, 0, r.width);
+    private final Rectangle rect = new Rectangle(320, 240);
+    private final int[] pixels = new int[rect.width * rect.height];
+    private final transient MemoryImageSource source = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
     private int penc;
 
     protected PaintPanel() {
         super();
         addMouseMotionListener(this);
         addMouseListener(this);
-        backImage = new BufferedImage(r.width, r.height, BufferedImage.TYPE_INT_ARGB);
+        backImage = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = backImage.createGraphics();
         g2.setPaint(TEXTURE);
-        g2.fill(r);
+        g2.fill(rect);
         g2.dispose();
     }
     @Override protected void paintComponent(Graphics g) {
@@ -76,25 +76,25 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         Point pt = new Point();
         for (int i = 0; i < delta; i++) {
             pt.setLocation((int) xStart, (int) yStart);
-            //if (pt.x < 0 || pt.y < 0 || pt.x >= r.width || pt.y >= r.height) {
-            if (!r.contains(pt)) {
+            // if (pt.x < 0 || pt.y < 0 || pt.x >= rect.width || pt.y >= rect.height) {
+            if (!rect.contains(pt)) {
                 break;
             }
             paintStamp(pixels, pt, penc);
-            //source.newPixels(pt.x - 2, pt.y - 2, 4, 4);
+            // source.newPixels(pt.x - 2, pt.y - 2, 4, 4);
             xStart += xIncrement;
             yStart += yIncrement;
         }
         startPoint = e.getPoint();
     }
     private void paintStamp(int[] pixels, Point p, int penc) {
-        //1x1:
-        //pixels[p.x + p.y * 320] = penc;
-        //3x3 square:
+        // 1 x 1:
+        // pixels[p.x + p.y * 320] = penc;
+        // 3 x 3 square:
         for (int n = -1; n <= 1; n++) {
             for (int m = -1; m <= 1; m++) {
-                int t = p.x + n + (p.y + m) * r.width;
-                if (t >= 0 && t < r.width * r.height) {
+                int t = p.x + n + (p.y + m) * rect.width;
+                if (t >= 0 && t < rect.width * rect.height) {
                     pixels[t] = penc;
                 }
             }
@@ -178,9 +178,9 @@ final class TextureFactory {
 //     }
 //     @Override protected void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         //if (Objects.nonNull(backImage)) {
+//         // if (Objects.nonNull(backImage)) {
 //         g.drawImage(backImage, 0, 0, this);
-//         //if (Objects.nonNull(currentImage)) {
+//         // if (Objects.nonNull(currentImage)) {
 //         g.drawImage(currentImage, 0, 0, this);
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {

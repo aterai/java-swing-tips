@@ -99,12 +99,7 @@ class SelectedImageFilter extends RGBImageFilter {
 
 class FileNameRenderer implements TableCellRenderer {
     protected final Dimension dim = new Dimension();
-    private final JPanel p = new JPanel(new BorderLayout()) {
-        @Override public Dimension getPreferredSize() {
-            return dim;
-        }
-    };
-    private final JPanel panel = new JPanel(new BorderLayout());
+    private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel textLabel = new JLabel(" ");
     private final JLabel iconLabel;
     private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
@@ -120,8 +115,13 @@ class FileNameRenderer implements TableCellRenderer {
         }
         noFocusBorder = b;
 
+        JPanel p = new JPanel(new BorderLayout()) {
+            @Override public Dimension getPreferredSize() {
+                return dim;
+            }
+        };
         p.setOpaque(false);
-        panel.setOpaque(false);
+        renderer.setOpaque(false);
 
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
@@ -132,7 +132,7 @@ class FileNameRenderer implements TableCellRenderer {
 
         p.add(iconLabel, BorderLayout.WEST);
         p.add(textLabel);
-        panel.add(p, BorderLayout.WEST);
+        renderer.add(p, BorderLayout.WEST);
 
         Dimension d = iconLabel.getPreferredSize();
         dim.setSize(d);
@@ -160,7 +160,7 @@ class FileNameRenderer implements TableCellRenderer {
             textLabel.setBackground(table.getBackground());
             iconLabel.setIcon(nicon);
         }
-        return panel;
+        return renderer;
     }
 }
 

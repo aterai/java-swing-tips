@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         n.setBorder(BorderFactory.createTitledBorder("Highlight Search"));
 
         tree.setCellRenderer(renderer);
-        renderer.q = field.getText();
+        renderer.query = field.getText();
         fireDocumentChangeEvent();
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -38,13 +38,12 @@ public final class MainPanel extends JPanel {
     }
     protected void fireDocumentChangeEvent() {
         String q = field.getText();
-        renderer.q = q;
+        renderer.query = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
         if (!q.isEmpty()) {
             searchTree(tree, root, q);
         }
-        //tree.repaint();
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
         Object o = path.getLastPathComponent();
@@ -86,7 +85,6 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -97,7 +95,7 @@ public final class MainPanel extends JPanel {
 //*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
-    public String q;
+    public String query;
     private boolean rollOver;
 
     @Override public void updateUI() {
@@ -115,7 +113,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         if (selected) {
             c.setForeground(getTextSelectionColor());
         } else {
-            rollOver = Objects.nonNull(q) && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
+            rollOver = Objects.nonNull(query) && !query.isEmpty() && Objects.toString(value, "").startsWith(query);
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }

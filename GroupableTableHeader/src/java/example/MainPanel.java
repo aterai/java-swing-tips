@@ -227,7 +227,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
  * modified by aterai aterai@outlook.com
  */
 class ColumnGroup {
-    protected final List<Object> v = new ArrayList<>();
+    protected final List<Object> list = new ArrayList<>();
     protected final String text;
     protected ColumnGroup(String text) {
         this.text = text;
@@ -240,15 +240,15 @@ class ColumnGroup {
         if (obj == null) {
             return;
         }
-        v.add(obj);
+        list.add(obj);
     }
 
     public List<?> getColumnGroupList(TableColumn c, List<Object> g) {
         g.add(this);
-        if (v.contains(c)) {
+        if (list.contains(c)) {
             return g;
         }
-        for (Object obj: v) {
+        for (Object obj: list) {
             if (obj instanceof ColumnGroup) {
                 List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, new ArrayList<>(g));
                 if (!groups.isEmpty()) {
@@ -267,7 +267,7 @@ class ColumnGroup {
         TableCellRenderer renderer = header.getDefaultRenderer();
         Component c = renderer.getTableCellRendererComponent(header.getTable(), getHeaderValue(), false, false, -1, -1);
         int width = 0;
-        for (Object obj: v) {
+        for (Object obj: list) {
             if (obj instanceof TableColumn) {
                 TableColumn aColumn = (TableColumn) obj;
                 width += aColumn.getWidth();

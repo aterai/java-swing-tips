@@ -65,18 +65,18 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         componentChoices.setRenderer(new ListCellRenderer<JComponent>() {
-            private final JLabel l = new JLabel();
+            private final JLabel renderer = new JLabel();
             @Override public Component getListCellRendererComponent(JList<? extends JComponent> list, JComponent value, int index, boolean isSelected, boolean cellHasFocus) {
-                l.setOpaque(index >= 0);
-                l.setText(value.getClass().getName());
+                renderer.setOpaque(index >= 0);
+                renderer.setText(value.getClass().getName());
                 if (isSelected) {
-                    l.setBackground(list.getSelectionBackground());
-                    l.setForeground(list.getSelectionForeground());
+                    renderer.setBackground(list.getSelectionBackground());
+                    renderer.setForeground(list.getSelectionForeground());
                 } else {
-                    l.setBackground(list.getBackground());
-                    l.setForeground(list.getForeground());
+                    renderer.setBackground(list.getBackground());
+                    renderer.setForeground(list.getForeground());
                 }
-                return l;
+                return renderer;
             }
         });
         button.addActionListener(e -> {

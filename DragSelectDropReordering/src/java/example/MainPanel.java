@@ -63,19 +63,6 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ListItem implements Serializable {
-    private static final long serialVersionUID = 1L;
-    public final ImageIcon nicon;
-    public final ImageIcon sicon;
-    public final String title;
-    protected ListItem(String title, String iconfile) {
-        this.nicon = new ImageIcon(getClass().getResource(iconfile));
-        ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-        this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
-        this.title = title;
-    }
-}
-
 class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private transient MouseInputListener rbl;
@@ -139,8 +126,6 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         @Override public void mouseDragged(MouseEvent e) {
             JList l = (JList) e.getComponent();
             if (l.getDragEnabled()) {
-                Component glassPane = l.getRootPane().getGlassPane();
-                glassPane.setVisible(true);
                 return;
             }
             Point destPoint = e.getPoint();
@@ -244,8 +229,8 @@ class SelectedImageFilter extends RGBImageFilter {
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
-    private final JPanel p = new JPanel(new BorderLayout());
-    private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
+    private final JPanel renderer = new JPanel(new BorderLayout());
+    private final JLabel icon = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     // private final Border dotBorder = new DotBorder(2, 2, 2, 2);
     // private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
@@ -260,13 +245,13 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
         }
         noFocusBorder = b;
         icon.setOpaque(false);
-        label.setForeground(p.getForeground());
-        label.setBackground(p.getBackground());
+        label.setForeground(renderer.getForeground());
+        label.setBackground(renderer.getBackground());
         label.setBorder(noFocusBorder);
-        p.setOpaque(false);
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(icon);
-        p.add(label, BorderLayout.SOUTH);
+        renderer.setOpaque(false);
+        renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        renderer.add(icon);
+        renderer.add(label, BorderLayout.SOUTH);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
@@ -283,7 +268,20 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
             label.setBackground(list.getBackground());
             label.setOpaque(false);
         }
-        return p;
+        return renderer;
+    }
+}
+
+class ListItem implements Serializable {
+    private static final long serialVersionUID = 1L;
+    public final ImageIcon nicon;
+    public final ImageIcon sicon;
+    public final String title;
+    protected ListItem(String title, String iconfile) {
+        this.nicon = new ImageIcon(getClass().getResource(iconfile));
+        ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
+        this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+        this.title = title;
     }
 }
 
@@ -302,6 +300,7 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JList<?> source = (JList<?>) c;
+        c.getRootPane().getGlassPane().setVisible(true);
         indices = source.getSelectedIndices();
         Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
@@ -323,18 +322,10 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
-//         if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
-//             info.setShowDropLocation(true);
-//             info.setDropAction(TransferHandler.MOVE);
-//             return true;
-//         } else {
-//             return false;
-//         }
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        Component glassPane = c.getRootPane().getGlassPane();
-        glassPane.setCursor(DragSource.DefaultMoveDrop);
+        c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
         // glassPane.setVisible(true);
         return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
@@ -392,7 +383,7 @@ class ListItemTransferHandler extends TransferHandler {
                 model.remove(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

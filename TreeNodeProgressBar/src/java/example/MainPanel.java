@@ -131,7 +131,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
             }
             publish(100 * current++ / lengthOfTask);
         }
-        return treeNode; //sleepDummy * lengthOfTask;
+        return treeNode; // sleepDummy * lengthOfTask;
     }
     @Override protected void process(List<Integer> c) {
         String title = treeNode.getUserObject().toString();
@@ -139,7 +139,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         ProgressObject o = new ProgressObject(title, i);
         treeNode.setUserObject(o);
         model.nodeChanged(treeNode);
-        //valueForPathChanged(path, str);
+        // valueForPathChanged(path, str);
     }
     @Override protected void done() {
         try {
@@ -154,7 +154,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
 class ProgressBarRenderer extends DefaultTreeCellRenderer {
     protected int nodeWidth = 100;
     protected static int barHeight = 4;
-    private final JProgressBar b = new JProgressBar(0, 100) {
+    private final JProgressBar progress = new JProgressBar(0, 100) {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
             d.setSize(nodeWidth, barHeight);
@@ -169,7 +169,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
             setBorder(BorderFactory.createEmptyBorder());
         }
     };
-    private final JPanel p = new JPanel(new BorderLayout()) {
+    private final JPanel renderer = new JPanel(new BorderLayout()) {
         @Override public void updateUI() {
             super.updateUI();
             setOpaque(false);
@@ -181,19 +181,19 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
         if (o instanceof ProgressObject) {
             ProgressObject n = (ProgressObject) o;
             int i = n.getValue();
-            b.setValue(i);
+            progress.setValue(i);
 
             FontMetrics metrics = c.getFontMetrics(c.getFont());
             int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.title);
             nodeWidth = ww;
 
-            p.removeAll();
-            p.add(c);
-            if (i < b.getMaximum()) {
-                p.add(b, BorderLayout.SOUTH);
+            renderer.removeAll();
+            renderer.add(c);
+            if (i < progress.getMaximum()) {
+                renderer.add(progress, BorderLayout.SOUTH);
             }
-            //p.add(i < b.getMaximum() ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
-            c = p;
+            // renderer.add(i < progress.getMaximum() ? progress : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+            c = renderer;
         }
         return c;
     }

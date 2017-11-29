@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final Pattern p = Pattern.compile("^a.*", Pattern.CASE_INSENSITIVE);
+    private final Pattern pattern = Pattern.compile("^a.*", Pattern.CASE_INSENSITIVE);
     private Color color;
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -78,7 +78,7 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
             c.setBackground(getBackgroundSelectionColor());
             String str = Objects.toString(value, "");
             //if (leaf && !str.isEmpty() && str.codePointAt(0) == 'a') {
-            if (leaf && p.matcher(str).matches()) {
+            if (leaf && pattern.matcher(str).matches()) {
                 c.setOpaque(true);
                 c.setBackground(Color.RED);
             } else {
