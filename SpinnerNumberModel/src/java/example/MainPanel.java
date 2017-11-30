@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
-        box.add(makePanel("Long.valueOf",               makeJSpinnerListPanel(list2)));
+        box.add(makeTitledPanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
+        box.add(makeTitledPanel("Long.valueOf",               makeJSpinnerListPanel(list2)));
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         }
         return box;
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

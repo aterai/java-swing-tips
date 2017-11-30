@@ -15,13 +15,13 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));
         p.add(new JLabel(new ImageIcon(url1)));
-        p.add(makePanel("getClassLoader().getResource(\"example/test.png\")", new JLabel(url1.toString())));
-        p.add(makePanel("getClass().getResource(\"test.png\")", new JLabel(url2.toString())));
+        p.add(makeTitledPanel("getClassLoader().getResource(\"example/test.png\")", new JLabel(url1.toString())));
+        p.add(makeTitledPanel("getClass().getResource(\"test.png\")", new JLabel(url2.toString())));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

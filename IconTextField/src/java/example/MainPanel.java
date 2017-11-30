@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         int w = image.getIconWidth();
         int h = image.getIconHeight();
 
-        final JLabel label1 = new JLabel(image);
+        JLabel label1 = new JLabel(image);
         JTextField field1 = new JTextField("bbbbbbbbbb") {
             @Override public void updateUI() {
                 super.updateUI();
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         label1.setBorder(BorderFactory.createEmptyBorder());
         label1.setBounds(m.left, m.top, w, h);
 
-        final JLabel label2 = new JLabel(image);
+        JLabel label2 = new JLabel(image);
         label2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         label2.setBorder(BorderFactory.createEmptyBorder());
         JTextField field2 = new JTextField("cccccccccccccccccccccccccccccccccccc") {
@@ -47,16 +47,16 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        box.add(makePanel("Default", new JTextField("aaaaaaaaaaaa")));
+        box.add(makeTitledPanel("Default", new JTextField("aaaaaaaaaaaa")));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("add Image(JLabel)", field1));
+        box.add(makeTitledPanel("add Image(JLabel)", field1));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("SpringLayout", field2));
+        box.add(makeTitledPanel("SpringLayout", field2));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

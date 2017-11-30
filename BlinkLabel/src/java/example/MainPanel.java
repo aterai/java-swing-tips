@@ -31,13 +31,13 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-        p.add(makePanel("\u25CB<->\u25CF", label1));
-        p.add(makePanel("!!!Warning!!!<->Empty", label2));
+        p.add(makeTitledPanel("\u25CB<->\u25CF", label1));
+        p.add(makeTitledPanel("!!!Warning!!!<->Empty", label2));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

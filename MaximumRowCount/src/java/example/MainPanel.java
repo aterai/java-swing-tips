@@ -20,14 +20,14 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        box.add(makePanel("JComboBox#setMaximumRowCount:", spinner));
+        box.add(makeTitledPanel("JComboBox#setMaximumRowCount:", spinner));
         box.add(Box.createVerticalStrut(10));
         box.add(comboBox);
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

@@ -20,15 +20,15 @@ public final class MainPanel extends JPanel {
         spinner1.setEnabled(false);
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Default", spinner0));
-        box.add(makePanel("spinner.setEnabled(false)", spinner1));
-        box.add(makePanel("field.setEnabled(false)", spinner));
+        box.add(makeTitledPanel("Default", spinner0));
+        box.add(makeTitledPanel("spinner.setEnabled(false)", spinner1));
+        box.add(makeTitledPanel("field.setEnabled(false)", spinner));
 
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

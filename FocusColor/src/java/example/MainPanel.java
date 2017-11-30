@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
         field2.addFocusListener(new BGFocusListener(new Color(255, 255, 230)));
         field3.addFocusListener(new BGFocusListener(new Color(255, 230, 230)));
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Color(230, 230, 255)", field1));
+        box.add(makeTitledPanel("Color(230, 230, 255)", field1));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("Color(255, 255, 230)", field2));
+        box.add(makeTitledPanel("Color(255, 255, 230)", field2));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("Color(255, 230, 230)", field3));
+        box.add(makeTitledPanel("Color(255, 230, 230)", field3));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

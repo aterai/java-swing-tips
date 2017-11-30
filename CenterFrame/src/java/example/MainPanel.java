@@ -31,12 +31,12 @@ public final class MainPanel extends JPanel {
             frame.setVisible(true);
         });
 
-        add(makePanel("in center of screen", center));
-        add(makePanel("relative to this button", relative));
+        add(makeTitledPanel("in center of screen", center));
+        add(makeTitledPanel("relative to this button", relative));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(10, 10));
         JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
-        p.add(makePanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
+        p.add(makeTitledPanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
             @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 try {
@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
 //                 }
             }
         })));
-        p.add(makePanel("getCanonicalPath", new JButton(new AbstractAction("c:/con.txt:getCanonicalPath") {
+        p.add(makeTitledPanel("getCanonicalPath", new JButton(new AbstractAction("c:/con.txt:getCanonicalPath") {
             @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 if (!isCanonicalPath(file)) {
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
                 }
             }
         })));
-        p.add(makePanel("isFile: JDK 1.5+ ", new JButton(new AbstractAction("c:/con.txt:isFile") {
+        p.add(makeTitledPanel("isFile: JDK 1.5+ ", new JButton(new AbstractAction("c:/con.txt:isFile") {
             @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 if (!file.isFile()) {
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
         }
         return true;
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

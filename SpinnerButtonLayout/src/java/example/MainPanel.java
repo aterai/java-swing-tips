@@ -31,16 +31,16 @@ public final class MainPanel extends JPanel {
         spinner1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Default",          spinner0));
-        box.add(makePanel("RIGHT_TO_LEFT",    spinner1));
-        box.add(makePanel("L(Prev), R(Next)", spinner2));
-        box.add(makePanel("L(Prev), R(Next)", spinner3));
+        box.add(makeTitledPanel("Default",          spinner0));
+        box.add(makeTitledPanel("RIGHT_TO_LEFT",    spinner1));
+        box.add(makeTitledPanel("L(Prev), R(Next)", spinner2));
+        box.add(makeTitledPanel("L(Prev), R(Next)", spinner3));
 
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

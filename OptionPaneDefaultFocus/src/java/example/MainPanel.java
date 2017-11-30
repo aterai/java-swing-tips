@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
 
         JTextArea log = new JTextArea();
         JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
-        p.add(makePanel("Default", makeButton(textField1, log)));
-        p.add(makePanel("WindowListener", makeButton2(textField2, log)));
-        p.add(makePanel("HierarchyListener", makeButton(textField3, log)));
-        p.add(makePanel("AncestorListener", makeButton(textField4, log)));
+        p.add(makeTitledPanel("Default", makeButton(textField1, log)));
+        p.add(makeTitledPanel("WindowListener", makeButton2(textField2, log)));
+        p.add(makeTitledPanel("HierarchyListener", makeButton(textField3, log)));
+        p.add(makeTitledPanel("AncestorListener", makeButton(textField4, log)));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         });
         return button;
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

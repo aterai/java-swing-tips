@@ -27,9 +27,9 @@ public final class MainPanel extends JPanel {
         label3.setIcon(icon);
 
         JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));
-        p.add(makePanel("String", label1));
-        p.add(makePanel("drawOval", label2));
-        p.add(makePanel("paintIcon", label3));
+        p.add(makeTitledPanel("String", label1));
+        p.add(makeTitledPanel("drawOval", label2));
+        p.add(makeTitledPanel("paintIcon", label3));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p);
         setPreferredSize(new Dimension(320, 240));
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         g2.dispose();
         return bi;
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

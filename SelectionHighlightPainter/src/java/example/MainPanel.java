@@ -38,16 +38,16 @@ public final class MainPanel extends JPanel {
         field2.setCaret(caret);
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Default", field0));
+        box.add(makeTitledPanel("Default", field0));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("JTextComponent#setSelectionColor(...)", field1));
+        box.add(makeTitledPanel("JTextComponent#setSelectionColor(...)", field1));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("JTextComponent#setCaret(...)", field2));
+        box.add(makeTitledPanel("JTextComponent#setCaret(...)", field2));
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

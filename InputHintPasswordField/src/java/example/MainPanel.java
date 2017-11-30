@@ -21,14 +21,14 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-        box.add(makePanel("JPasswordField", b));
+        box.add(makeTitledPanel("JPasswordField", b));
         box.add(Box.createVerticalStrut(16));
-        box.add(makePanel("InputHintPasswordField", field2));
+        box.add(makeTitledPanel("InputHintPasswordField", field2));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

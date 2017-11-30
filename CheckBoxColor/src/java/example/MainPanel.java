@@ -24,15 +24,15 @@ public final class MainPanel extends JPanel {
         cb3.setIcon(new CheckBoxIcon3());
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Default", new JCheckBox("aaaaaaaaaaaaa")));
-        box.add(makePanel("WindowsIconFactory",     cb1));
-        box.add(makePanel("CheckBox.icon+RED",      cb2));
-        box.add(makePanel("MetalCheckBoxIcon+GRAY", cb3));
+        box.add(makeTitledPanel("Default", new JCheckBox("aaaaaaaaaaaaa")));
+        box.add(makeTitledPanel("WindowsIconFactory",     cb1));
+        box.add(makeTitledPanel("CheckBox.icon+RED",      cb2));
+        box.add(makeTitledPanel("MetalCheckBoxIcon+GRAY", cb3));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

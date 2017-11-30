@@ -68,18 +68,18 @@ public class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        box.add(makePanel("Default", textField0));
+        box.add(makeTitledPanel("Default", textField0));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("Document#replace()+AbstractDocument#fireUndoableEditUpdate()", textField1));
+        box.add(makeTitledPanel("Document#replace()+AbstractDocument#fireUndoableEditUpdate()", textField1));
         box.add(Box.createVerticalStrut(10));
-        box.add(makePanel("DocumentFilter#replace()+UndoableEditListener#undoableEditHappened()", textField2));
+        box.add(makeTitledPanel("DocumentFilter#replace()+UndoableEditListener#undoableEditHappened()", textField2));
 
         add(box, BorderLayout.NORTH);
         add(p, BorderLayout.SOUTH);
 
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

@@ -24,9 +24,9 @@ public final class MainPanel extends JPanel {
         }
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("BasicSpinnerUI",   spinner1));
-        box.add(makePanel("getName()",        spinner2));
-        box.add(makePanel("WindowsSpinnerUI", spinner3));
+        box.add(makeTitledPanel("BasicSpinnerUI",   spinner1));
+        box.add(makeTitledPanel("getName()",        spinner2));
+        box.add(makeTitledPanel("WindowsSpinnerUI", spinner3));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -43,7 +43,6 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-
     private static class MySpinnerUI extends BasicSpinnerUI {
         @Override protected Component createNextButton() {
             JComponent nextButton = (JComponent) super.createNextButton();
@@ -70,13 +69,12 @@ public final class MainPanel extends JPanel {
             return previousButton;
         }
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

@@ -37,19 +37,19 @@ public final class MainPanel extends JPanel {
         field3.setFocusLostBehavior(JFormattedTextField.PERSIST);
 
         Box box = Box.createVerticalBox();
-        box.add(makePanel("COMMIT_OR_REVERT(default)", field0));
+        box.add(makeTitledPanel("COMMIT_OR_REVERT(default)", field0));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("REVERT", field1));
+        box.add(makeTitledPanel("REVERT", field1));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("COMMIT", field2));
+        box.add(makeTitledPanel("COMMIT", field2));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("PERSIST", field3));
+        box.add(makeTitledPanel("PERSIST", field3));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
