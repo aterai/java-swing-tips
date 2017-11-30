@@ -8,26 +8,26 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree();
-    private final JTextArea textArea = new JTextArea("aaaaaaaaaa");
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1, 5, 5));
-        //textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
 
+        JTree tree = new JTree();
         JCheckBox c = new JCheckBox("setEnabled", true);
         c.addActionListener(e -> tree.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        add(makePanel(new JScrollPane(tree), c));
 
+        JTextArea textArea = new JTextArea("aaaaaaaaaa");
+        // textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
         JButton b = new JButton("Clear");
         b.setFocusable(false);
         b.addActionListener(e -> textArea.setText(""));
-
-        add(makePanel(new JScrollPane(tree), c));
         add(makePanel(new JScrollPane(textArea), b));
+
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    public JComponent makePanel(JComponent m, JComponent c) {
-        int ir = 20; //inset.right
+    private static Component makePanel(JComponent m, Component c) {
+        int ir = 20; // inset.right
         int ch = c.getPreferredSize().height / 2;
 
 //         Border ib = BorderFactory.createMatteBorder(0, 0, ch, 0, Color.WHITE);

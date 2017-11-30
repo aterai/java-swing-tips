@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         add(makeTitledPanel("Default JToolTip", new JList<>(model)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(String title, JList<String> list) {
+    private static Component makeTitledPanel(String title, JList<String> list) {
         list.setCellRenderer(new TooltipListCellRenderer());
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

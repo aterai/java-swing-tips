@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JTextField field01 = new JTextField("bbbbbbb");
     private final JTextField field02 = new JTextField("ccccccccccccc");
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         Insets m = field01.getMargin();
         System.out.println(m.toString());
@@ -38,9 +38,9 @@ public final class MainPanel extends JPanel {
         System.out.println("getMargin().left: " + c.getMargin().left);
         System.out.println("getInsets().left: " + c.getInsets().left);
         System.out.println("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left);
-        return c.getBorder().getBorderInsets(c).left; //c.getMargin().left;
+        return c.getBorder().getBorderInsets(c).left; // c.getMargin().left;
     }
-    private static JPanel makePanel(JTextField field) {
+    private static Component makePanel(JTextField field) {
         JPanel p = new JPanel(new BorderLayout());
         String title = "left margin = " + getLeftMargin(field);
         p.setBorder(BorderFactory.createTitledBorder(title));

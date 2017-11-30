@@ -76,11 +76,11 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         }
     }
 
-    protected static JComponent makePanel(JComponent cmp) {
+    private static Component makePanel(Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         p.add(cmp, c);
         return p;
@@ -117,12 +117,12 @@ class StripedProgressBarUI extends BasicProgressBarUI {
         this.slope = slope;
     }
     @Override protected int getBoxLength(int availableLength, int otherDimension) {
-        return availableLength; //(int) Math.round(availableLength / 6d);
+        return availableLength; // (int) Math.round(availableLength / 6d);
     }
     @Override public void paintIndeterminate(Graphics g, JComponent c) {
-        //if (!(g instanceof Graphics2D)) {
-        //    return;
-        //}
+        // if (!(g instanceof Graphics2D)) {
+        //     return;
+        // }
 
         Insets b = progressBar.getInsets(); // area for border
         int barRectWidth  = progressBar.getWidth() - b.right - b.left;

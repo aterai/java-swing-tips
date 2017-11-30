@@ -13,13 +13,13 @@ import javax.swing.*;
 // https://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
 // Magic with Merlin: Swinging audio
 // https://www.ibm.com/developerworks/java/library/j-mer0730/
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String[] OPTION_PANE_AUDITORY_CUES = {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
     };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
@@ -36,8 +36,8 @@ public class MainPanel extends JPanel {
         });
 
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panel.add(makePanel("Look&Feel Default", button1));
-        panel.add(makePanel("notice2.wav", button2));
+        panel.add(makeTitledPanel("Look&Feel Default", button1));
+        panel.add(makeTitledPanel("notice2.wav", button2));
 
         JMenuBar mb = new JMenuBar();
         mb.add(LookAndFeelUtil.createLookAndFeelMenu());
@@ -45,13 +45,13 @@ public class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
         return p;
     }
-    protected void loadAndPlayAudio(String audioResource) {
+    private void loadAndPlayAudio(String audioResource) {
         try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource))) {
             DataLine.Info info = new DataLine.Info(Clip.class, soundStream.getFormat());
             Clip clip = (Clip) AudioSystem.getLine(info);
@@ -114,13 +114,13 @@ public class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        //UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
-        //UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.defaultCueList"));
-        //UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
+        // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
+        // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.defaultCueList"));
+        // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
         UIManager.put("AuditoryCues.playList", OPTION_PANE_AUDITORY_CUES);
-        //UIManager.put("OptionPane.informationSound", "/example/notice2.wav");
-        //UIManager.put("OptionPane.informationSound", "sounds/OptionPaneError.wav");
-        //System.out.println(UIManager.get("AuditoryCues.actionMap"));
+        // UIManager.put("OptionPane.informationSound", "/example/notice2.wav");
+        // UIManager.put("OptionPane.informationSound", "sounds/OptionPaneError.wav");
+        // System.out.println(UIManager.get("AuditoryCues.actionMap"));
 
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -165,7 +165,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

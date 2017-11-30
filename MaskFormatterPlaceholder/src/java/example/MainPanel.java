@@ -42,16 +42,17 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        box.add(makePanel("new MaskFormatter(\"###-####\")", field0));
+        box.add(makeTitledPanel("new MaskFormatter(\"###-####\")", field0));
         box.add(Box.createVerticalStrut(15));
-        box.add(makePanel("MaskFormatter#setPlaceholderCharacter('_')", field1));
+        box.add(makeTitledPanel("MaskFormatter#setPlaceholderCharacter('_')", field1));
         box.add(Box.createVerticalStrut(15));
-        box.add(makePanel("MaskFormatter#setPlaceholder(\"000-0000\")", field2));
+        box.add(makeTitledPanel("MaskFormatter#setPlaceholder(\"000-0000\")", field2));
+        // box.add(Box.createVerticalGlue());
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

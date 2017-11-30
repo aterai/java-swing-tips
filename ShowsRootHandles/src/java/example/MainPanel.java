@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(String title, JTree tree) {
+    private static Component makeTitledPanel(String title, JTree tree) {
         tree.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 2));
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

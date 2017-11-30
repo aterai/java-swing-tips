@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         add(makeTitledPanel("Default location", new JList<>(model)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(String title, JList<String> list) {
+    private static Component makeTitledPanel(String title, JList<String> list) {
         list.setCellRenderer(new TooltipListCellRenderer());
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
@@ -83,7 +83,7 @@ class CellRendererTooltipList<E> extends JList<E> {
     protected final JLabel label = new JLabel();
     protected CellRendererTooltipList(ListModel<E> m) {
         super(m);
-        //TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
+        // TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
         label.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
     }
     @Override public Point getToolTipLocation(MouseEvent e) {

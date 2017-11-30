@@ -22,13 +22,13 @@ public final class MainPanel extends JPanel {
             super.doLayout();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(0, 1));
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        add(makePanel(new JTable(100, 3), "Normal JTable.AUTO_RESIZE_LAST_COLUMN"));
-        add(makePanel(table, "Resize only last column when JTable resized"));
+        // table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        add(makeTitledPanel("Normal JTable.AUTO_RESIZE_LAST_COLUMN", new JTable(100, 3)));
+        add(makeTitledPanel("Resize only last column when JTable resized", table));
 
-//         //TEST:
+//         // TEST:
 //         JTable table1 = new JTable(100, 3) {
 //             private transient ComponentListener resizeHandler;
 //             @Override public void updateUI() {
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 //                 addComponentListener(resizeHandler);
 //             }
 //         };
-//         add(makePanel(table1, "JTable#addComponentListener(...)"));
+//         add(makeTitledPanel("JTable#addComponentListener(...)", table1));
 //
 //         JTable table2 = new JTable(100, 3);
 //         table2.getTableHeader().addComponentListener(new ComponentAdapter() {
@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
 //                 });
 //             }
 //         });
-//         add(makePanel(table2, "JTableHeader#addComponentListener(...)"));
+//         add(makeTitledPanel("JTableHeader#addComponentListener(...)", table2));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(JTable table, String title) {
+    private static Component makeTitledPanel(String title, JTable table) {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

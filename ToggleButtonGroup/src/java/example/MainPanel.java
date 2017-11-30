@@ -19,11 +19,11 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(String title, ButtonGroup bg) {
+    private static Component makeTitledPanel(String title, ButtonGroup bg) {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(title));
         for (String s: Arrays.asList("aaa", "bbb", "ccc")) {
-            //AbstractButton r = new JRadioButton(s);
+            // AbstractButton r = new JRadioButton(s);
             AbstractButton r = new JToggleButton(s);
             p.add(r);
             bg.add(r);

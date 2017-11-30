@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
     }
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
         p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {
@@ -131,7 +131,7 @@ class StarPanel3 extends JPanel {
 class StarIcon0 implements Icon {
     private final GeneralPath path = new GeneralPath();
     protected StarIcon0() {
-        //<blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
+        // <blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
         path.moveTo(50     * .8, 0      * .8);
         path.lineTo(61.803 * .8, 38.196 * .8);
         path.lineTo(100    * .8, 38.196 * .8);
@@ -143,7 +143,7 @@ class StarIcon0 implements Icon {
         path.lineTo(0      * .8, 38.196 * .8);
         path.lineTo(38.197 * .8, 38.196 * .8);
         path.closePath();
-        //</blockquote>
+        // </blockquote>
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -198,7 +198,7 @@ class StarIcon1 implements Icon {
 class StarIcon2 implements Icon {
     private static final int R2 = 40;
     private static final int R1 = 20;
-    //private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); //=15.0;
+    // private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); //=15.0;
     private static final int VC = 5; //16;
     private final Shape star;
     protected StarIcon2() {
@@ -235,7 +235,8 @@ class StarIcon2 implements Icon {
     }
 }
 
-//     //Java2D Shapes project.>http://java-sl.com/shapes.html
+//     // Java2D Shapes project.
+//     // http://java-sl.com/shapes.html
 //     protected static int[] getXCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
 //         int res[] = new int[vertexCount * 2];
 //         double addAngle = 2 * Math.PI / vertexCount;

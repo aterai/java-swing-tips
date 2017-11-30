@@ -9,10 +9,10 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
-    protected transient SwingWorker<String, Void> worker;
+public final class MainPanel extends JPanel {
+    private transient SwingWorker<String, Void> worker;
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         BoundedRangeModel model = new DefaultBoundedRangeModel();
@@ -74,11 +74,11 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makePanel(JComponent cmp) {
+    private static Component makePanel(Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         p.add(cmp, c);
         return p;

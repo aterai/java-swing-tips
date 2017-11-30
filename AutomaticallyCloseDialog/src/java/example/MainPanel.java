@@ -9,25 +9,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea textArea = new JTextArea();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+
         JLabel label = new JLabel();
         label.addHierarchyListener(new AutomaticallyCloseListener());
-        JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.add(makePanel("HierarchyListener", label));
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(textArea));
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private JPanel makePanel(String title, JComponent c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBorder(BorderFactory.createTitledBorder(title));
+
         JButton button = new JButton("show");
         button.addActionListener(e -> {
-            int r = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(p), c, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            int r = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(button), label, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
             switch (r) {
               case JOptionPane.OK_OPTION:
                 textArea.append("OK\n");
@@ -44,8 +36,15 @@ public final class MainPanel extends JPanel {
             }
             textArea.append("\n");
         });
+
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder("HierarchyListener"));
         p.add(button);
-        return p;
+
+        add(p, BorderLayout.NORTH);
+        add(new JScrollPane(textArea));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -71,7 +70,7 @@ public final class MainPanel extends JPanel {
 }
 
 class AutomaticallyCloseListener implements HierarchyListener {
-    //private final transient Logger logger = Logger.getLogger(getClass().getName());
+    // private final transient Logger logger = Logger.getLogger(getClass().getName());
     private static final int SECONDS = 5;
     private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
     private final Timer timer = new Timer(1000, null);
@@ -81,7 +80,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
             JLabel l = (JLabel) e.getComponent();
             if (l.isShowing()) {
-                //logger.info("isShowing=true\n");
+                // logger.info("isShowing=true\n");
                 atomicDown.set(SECONDS);
                 l.setText(String.format("Closing in %d seconds", SECONDS));
                 timer.removeActionListener(listener);
@@ -89,14 +88,14 @@ class AutomaticallyCloseListener implements HierarchyListener {
                     int i = atomicDown.decrementAndGet();
                     l.setText(String.format("Closing in %d seconds", i));
                     if (i <= 0 && timer.isRunning()) {
-                        //logger.info("Timer: timer.stop()\n");
+                        // logger.info("Timer: timer.stop()\n");
                         timer.stop();
                         Optional.ofNullable(l.getTopLevelAncestor())
                             .filter(Window.class::isInstance).map(Window.class::cast)
                             .ifPresent(Window::dispose);
 //                         Container c = l.getTopLevelAncestor();
 //                         if (c instanceof Window) {
-//                             //logger.info("window.dispose()\n");
+//                             // logger.info("window.dispose()\n");
 //                             ((Window) c).dispose();
 //                         }
                     }
@@ -104,9 +103,9 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 timer.addActionListener(listener);
                 timer.start();
             } else {
-                //logger.info("isShowing=false\n");
+                // logger.info("isShowing=false\n");
                 if (timer.isRunning()) {
-                    //logger.info("timer.stop()\n");
+                    // logger.info("timer.stop()\n");
                     timer.stop();
                 }
             }

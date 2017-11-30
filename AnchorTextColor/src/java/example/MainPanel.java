@@ -12,21 +12,20 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new GridLayout(3, 1));
-        add(makePanel("Default", HREF));
+        add(makeUrlPanel("Default", HREF));
 
         // Customize detault html link color in java swing - Stack Overflow
         // https://stackoverflow.com/questions/26749495/customize-detault-html-link-color-in-java-swing
         HTMLEditorKit kit = new HTMLEditorKit();
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule("a{color:#FF0000;}");
-        add(makePanel("styleSheet.addRule(\"a{color:#FF0000;}\")", HREF));
+        add(makeUrlPanel("styleSheet.addRule(\"a{color:#FF0000;}\")", HREF));
 
-        add(makePanel("<a style='color:#00FF00'...", String.format("<html><a style='color:#00FF00' href='%s'>%s</a>", MYSITE, MYSITE)));
+        add(makeUrlPanel("<a style='color:#00FF00'...", String.format("<html><a style='color:#00FF00' href='%s'>%s</a>", MYSITE, MYSITE)));
 
         setPreferredSize(new Dimension(320, 240));
     }
-
-    private static JPanel makePanel(String title, String href) {
+    private static Component makeUrlPanel(String title, String href) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
 
@@ -53,7 +52,6 @@ public final class MainPanel extends JPanel {
 
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -166,15 +164,15 @@ public final class MainPanel extends JPanel {
 //         viewRect.y = i.top;
 //         viewRect.width = size.width - i.right - viewRect.x;
 //         viewRect.height = size.height - i.bottom - viewRect.y;
-//         iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
-//         textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
+//         iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
+//         textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 //
 //         String text = SwingUtilities.layoutCompoundLabel(
-//             c, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
+//             c, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
 //             b.getVerticalAlignment(), b.getHorizontalAlignment(),
 //             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
 //             viewRect, iconRect, textRect,
-//             0); //b.getText() == null ? 0 : b.getIconTextGap());
+//             0); // b.getText() == null ? 0 : b.getIconTextGap());
 //
 //         if (c.isOpaque()) {
 //             g.setColor(b.getBackground());
@@ -184,7 +182,7 @@ public final class MainPanel extends JPanel {
 //         ButtonModel model = b.getModel();
 //         if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
 //             g.setColor(Color.BLUE);
-//             g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+//             g.drawLine(viewRect.x,                  viewRect.y + viewRect.height,
 //                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
 //         }
 //         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
