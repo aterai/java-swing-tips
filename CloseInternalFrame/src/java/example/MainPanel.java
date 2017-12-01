@@ -9,38 +9,36 @@ import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
-    protected final JDesktopPane desktop = new JDesktopPane();
-    protected final Action closeSelectedFrameAction1 = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(desktop.getDesktopManager()::closeFrame);
-        }
-    };
-    protected final Action closeSelectedFrameAction2 = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(JInternalFrame::doDefaultCloseAction);
-        }
-    };
-    protected final Action closeSelectedFrameAction3 = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> {
-                try {
-                    f.setClosed(true);
-                } catch (PropertyVetoException ex) {
-                    ex.printStackTrace();
-                }
-            });
-        }
-    };
-    protected final Action disposeSelectedFrameAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(JInternalFrame::dispose);
-        }
-    };
-    protected final Action createNewFrameAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            JInternalFrame frame = makeInternalFrame();
-            //frame.setVisible(true);
+public final class MainPanel extends JPanel {
+    private static int openFrameCount;
+    private static int row;
+    private static int col;
+
+    private MainPanel() {
+        super(new BorderLayout());
+        JDesktopPane desktop = new JDesktopPane();
+
+        desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+        desktop.getActionMap().put("escape", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                getSelectedFrame(desktop).ifPresent(desktop.getDesktopManager()::closeFrame);
+            }
+        });
+
+        add(desktop);
+        add(createToolBar(desktop), BorderLayout.NORTH);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    protected static Optional<? extends JInternalFrame> getSelectedFrame(JDesktopPane desktop) {
+        return Optional.ofNullable(desktop.getSelectedFrame());
+    }
+    private static JToolBar createToolBar(JDesktopPane desktop) {
+        JToolBar toolbar = new JToolBar("toolbar");
+        toolbar.setFloatable(false);
+        JButton b = new JButton(new ImageIcon(MainPanel.class.getResource("icon_new-file.png")));
+        b.addActionListener(e -> {
+            JInternalFrame frame = makeInternalFrame(desktop);
+            // frame.setVisible(true);
             desktop.add(frame);
             try {
                 frame.setSelected(true);
@@ -50,53 +48,42 @@ public class MainPanel extends JPanel {
             } catch (PropertyVetoException ex) {
                 ex.printStackTrace();
             }
-        }
-    };
-    protected int openFrameCount;
-    protected int row;
-    protected int col;
-
-    public MainPanel() {
-        super(new BorderLayout());
-
-        KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-        desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, "escape");
-        desktop.getActionMap().put("escape", closeSelectedFrameAction1);
-
-        add(desktop);
-        add(createToolBar(), BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
-    protected Optional<? extends JInternalFrame> getSelectedFrame() {
-        return Optional.ofNullable(desktop.getSelectedFrame());
-    }
-    private JToolBar createToolBar() {
-        JToolBar toolbar = new JToolBar("toolbar");
-        toolbar.setFloatable(false);
-        JButton b = new ToolBarButton(createNewFrameAction);
-        b.setIcon(new ImageIcon(MainPanel.class.getResource("icon_new-file.png")));
+        });
         b.setToolTipText("create new InternalFrame");
         toolbar.add(b);
         toolbar.add(Box.createGlue());
-        b = new ToolBarButton(disposeSelectedFrameAction);
-        b.setIcon(new CloseIcon(Color.RED));
+
+        b = new JButton(new CloseIcon(Color.RED));
+        b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(JInternalFrame::dispose));
         b.setToolTipText("f.dispose();");
         toolbar.add(b);
-        b = new ToolBarButton(closeSelectedFrameAction1);
-        b.setIcon(new CloseIcon(Color.GREEN));
+
+        b = new JButton(new CloseIcon(Color.GREEN));
+        b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(desktop.getDesktopManager()::closeFrame));
         b.setToolTipText("desktop.getDesktopManager().closeFrame(f);");
         toolbar.add(b);
-        b = new ToolBarButton(closeSelectedFrameAction2);
-        b.setIcon(new CloseIcon(Color.BLUE));
+
+        b = new JButton(new CloseIcon(Color.BLUE));
+        b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(JInternalFrame::doDefaultCloseAction));
         b.setToolTipText("f.doDefaultCloseAction();");
         toolbar.add(b);
-        b = new ToolBarButton(closeSelectedFrameAction3);
-        b.setIcon(new CloseIcon(Color.YELLOW));
+
+        b = new JButton(new CloseIcon(Color.YELLOW));
+        b.addActionListener(e -> {
+            getSelectedFrame(desktop).ifPresent(f -> {
+                try {
+                    f.setClosed(true);
+                } catch (PropertyVetoException ex) {
+                    ex.printStackTrace();
+                }
+            });
+        });
         b.setToolTipText("f.setClosed(true);");
         toolbar.add(b);
+
         return toolbar;
     }
-    protected JInternalFrame makeInternalFrame() {
+    private static JInternalFrame makeInternalFrame(JDesktopPane desktop) {
         JInternalFrame f = new JInternalFrame(String.format("Document #%s", ++openFrameCount), true, true, true, true);
         row += 1;
         f.setSize(240, 120);
@@ -105,26 +92,12 @@ public class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> {
             Rectangle drect = desktop.getBounds();
             drect.setLocation(0, 0);
-            if (!drect.contains(getBounds())) {
+            if (!drect.contains(f.getBounds())) {
                 row = 0;
                 col += 1;
             }
         });
         f.addInternalFrameListener(new TestInternalFrameListener());
-        //JComponent c = (JComponent) f.getContentPane();
-        //ActionMap am = f.getActionMap();
-        //Action a = new AbstractAction() {
-        //    @Override public void actionPerformed(ActionEvent e) {
-        //        try {
-        //            f.setClosed(true);
-        //        } catch (PropertyVetoException ex) {
-        //            ex.printStackTrace();
-        //        }
-        //    }
-        //};
-        //am.put("myTest", a);
-        //InputMap im = frame.getInputMap();
-        //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
         return f;
     }
     public static void main(String... args) {
@@ -174,27 +147,27 @@ class TestInternalFrameListener implements InternalFrameListener {
     }
 }
 
-class ToolBarButton extends JButton {
-    private transient MouseListener handler;
-    protected ToolBarButton(Action a) {
-        super(a);
-    }
-    @Override public void updateUI() {
-        removeMouseListener(handler);
-        super.updateUI();
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        handler = new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                setContentAreaFilled(true);
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                setContentAreaFilled(false);
-            }
-        };
-        addMouseListener(handler);
-    }
-}
+// class ToolBarButton extends JButton {
+//     private transient MouseListener handler;
+//     protected ToolBarButton(Icon icon) {
+//         super(icon);
+//     }
+//     @Override public void updateUI() {
+//         removeMouseListener(handler);
+//         super.updateUI();
+//         setContentAreaFilled(false);
+//         setFocusPainted(false);
+//         handler = new MouseAdapter() {
+//             @Override public void mouseEntered(MouseEvent e) {
+//                 setContentAreaFilled(true);
+//             }
+//             @Override public void mouseExited(MouseEvent e) {
+//                 setContentAreaFilled(false);
+//             }
+//         };
+//         addMouseListener(handler);
+//     }
+// }
 
 class CloseIcon implements Icon {
     private final Color color;
