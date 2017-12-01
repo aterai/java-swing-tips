@@ -234,13 +234,13 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     // private final Border dotBorder = new DotBorder(2, 2, 2, 2);
     // private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-    private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
+    private final Border focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
     protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
         if (Objects.isNull(b)) { // Nimbus???
-            Insets i = focusCellHighlightBorder.getBorderInsets(label);
+            Insets i = focusBorder.getBorderInsets(label);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
@@ -256,7 +256,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(value.title);
         // label.setBorder(cellHasFocus ? dotBorder : empBorder);
-        label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
+        label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
         if (isSelected) {
             icon.setIcon(value.sicon);
             label.setForeground(list.getSelectionForeground());

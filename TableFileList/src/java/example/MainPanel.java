@@ -92,7 +92,7 @@ class FileNameRenderer implements TableCellRenderer {
     private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel textLabel = new JLabel(" ");
     private final JLabel iconLabel;
-    private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private final Border focusBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
     private final Border noFocusBorder;
     private final ImageIcon nicon;
     private final ImageIcon sicon;
@@ -100,7 +100,7 @@ class FileNameRenderer implements TableCellRenderer {
     protected FileNameRenderer(JTable table) {
         Border b = UIManager.getBorder("Table.noFocusBorder");
         if (Objects.isNull(b)) { // Nimbus???
-            Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
+            Insets i = focusBorder.getBorderInsets(textLabel);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
@@ -113,7 +113,8 @@ class FileNameRenderer implements TableCellRenderer {
         p.setOpaque(false);
         renderer.setOpaque(false);
 
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/
+        // XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
 
@@ -131,7 +132,7 @@ class FileNameRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         textLabel.setFont(table.getFont());
         textLabel.setText(Objects.toString(value, ""));
-        textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+        textLabel.setBorder(hasFocus ? focusBorder : noFocusBorder);
 
         FontMetrics fm = table.getFontMetrics(table.getFont());
         Insets i = textLabel.getInsets();
@@ -157,7 +158,7 @@ class FileNameRenderer implements TableCellRenderer {
 // class FileNameRenderer extends JPanel implements TableCellRenderer {
 //     private final MyLabel textLabel;
 //     private final JLabel iconLabel;
-//     private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+//     private final Border focusBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
 //     private final Border noFocusBorder;
 //     private final ImageIcon nicon;
 //     private final ImageIcon sicon;
@@ -166,7 +167,7 @@ class FileNameRenderer implements TableCellRenderer {
 //         super(new BorderLayout());
 //         Border b = UIManager.getBorder("Table.noFocusBorder");
 //         if (Objects.isNull(b)) { // Nimbus???
-//             Insets i = focusCellHighlightBorder.getBorderInsets(this);
+//             Insets i = focusBorder.getBorderInsets(this);
 //             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
 //         }
 //         noFocusBorder = b;
@@ -185,7 +186,7 @@ class FileNameRenderer implements TableCellRenderer {
 //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //         textLabel.setFont(table.getFont());
 //         textLabel.setText(Objects.toString(value, ""));
-//         textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+//         textLabel.setBorder(hasFocus ? focusBorder : noFocusBorder);
 //
 //         FontMetrics fm = table.getFontMetrics(table.getFont());
 //         Insets i = textLabel.getInsets();
@@ -222,9 +223,9 @@ class FileNameRenderer implements TableCellRenderer {
 //     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint()    { /* Overridden for performance reasons. */ }
 //     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-//     //@Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     //@Override public void validate()   { /* Overridden for performance reasons. */ }
-//     //<---- Overridden for performance reasons.
+//     // @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//     // @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     // <---- Overridden for performance reasons.
 // }
 //
 // class MyLabel extends JLabel {

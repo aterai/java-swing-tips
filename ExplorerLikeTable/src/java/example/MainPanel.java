@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
         im.put(tab, im.get(enter));
         im.put(stab, im.get(senter));
 
-        final Color orgColor = table.getSelectionBackground();
-        final Color tflColor = this.getBackground();
+        Color orgColor = table.getSelectionBackground();
+        Color tflColor = this.getBackground();
         table.addFocusListener(new FocusListener() {
             @Override public void focusGained(FocusEvent e) {
                 table.setSelectionForeground(Color.WHITE);
@@ -86,14 +86,14 @@ public final class MainPanel extends JPanel {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (argb >> 16) & 0xFF;
         int g = (argb >>  8) & 0xFF;
         return (argb & 0xFF0000FF) | ((r >> 1) << 16) | ((g >> 1) << 8);
-        //return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
+        // return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 
@@ -102,15 +102,15 @@ class FileNameRenderer implements TableCellRenderer {
     private final JPanel renderer = new JPanel(new BorderLayout());
     private final JLabel textLabel = new JLabel(" ");
     private final JLabel iconLabel;
-    private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private final Border focusBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
     private final Border noFocusBorder;
     private final ImageIcon nicon;
     private final ImageIcon sicon;
 
     protected FileNameRenderer(JTable table) {
         Border b = UIManager.getBorder("Table.noFocusBorder");
-        if (Objects.isNull(b)) { //Nimbus???
-            Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
+        if (Objects.isNull(b)) { // Nimbus???
+            Insets i = focusBorder.getBorderInsets(textLabel);
             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
         noFocusBorder = b;
@@ -123,7 +123,8 @@ class FileNameRenderer implements TableCellRenderer {
         p.setOpaque(false);
         renderer.setOpaque(false);
 
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/
+        // XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
 
@@ -141,7 +142,7 @@ class FileNameRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         textLabel.setFont(table.getFont());
         textLabel.setText(Objects.toString(value, ""));
-        textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+        textLabel.setBorder(hasFocus ? focusBorder : noFocusBorder);
 
         FontMetrics fm = table.getFontMetrics(table.getFont());
         Insets i = textLabel.getInsets();

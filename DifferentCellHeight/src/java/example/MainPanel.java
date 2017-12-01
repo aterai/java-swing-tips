@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(makeList(m, true)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JList makeList(ListModel<String> model, final boolean hasTextAreaRenderer) {
+    private static JList makeList(ListModel<String> model, boolean hasTextAreaRenderer) {
         return new JList<String>(model) {
             @Override public void updateUI() {
                 setCellRenderer(null);
@@ -60,23 +60,23 @@ public final class MainPanel extends JPanel {
 }
 
 class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRenderer<E> {
-    //private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()), 2);
-    //private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    // private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()), 2);
+    // private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     private Border noFocusBorder;
-    private Border focusCellHighlightBorder;
+    private Border focusBorder;
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        //setLineWrap(true);
+        // setLineWrap(true);
         setText(Objects.toString(value, ""));
         if (isSelected) {
-            setBackground(new Color(list.getSelectionBackground().getRGB())); //Nimbus
+            setBackground(new Color(list.getSelectionBackground().getRGB())); // Nimbus
             setForeground(list.getSelectionForeground());
         } else {
             setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
             setForeground(list.getForeground());
         }
         if (cellHasFocus) {
-            setBorder(focusCellHighlightBorder);
+            setBorder(focusBorder);
         } else {
             setBorder(noFocusBorder);
         }
@@ -84,10 +84,10 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
     }
     @Override public void updateUI() {
         super.updateUI();
-        focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
+        focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
         noFocusBorder = UIManager.getBorder("List.noFocusBorder");
-        if (Objects.isNull(noFocusBorder) && Objects.nonNull(focusCellHighlightBorder)) {
-            Insets i = focusCellHighlightBorder.getBorderInsets(this);
+        if (Objects.isNull(noFocusBorder) && Objects.nonNull(focusBorder)) {
+            Insets i = focusBorder.getBorderInsets(this);
             noFocusBorder = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
         }
     }
@@ -130,7 +130,7 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 //         g2.drawRect(0, 0, w - 1, h - 1);
 //         g2.dispose();
 //     }
-//     //@Override public Insets getBorderInsets()
-//     //@Override public Insets getBorderInsets(Component c)
-//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+//     // @Override public Insets getBorderInsets()
+//     // @Override public Insets getBorderInsets(Component c)
+//     // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
