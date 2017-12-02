@@ -11,43 +11,43 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout(5, 5));
 
         JSlider slider = makeSlider();
-        //slider.updateUI();
-        //@see JSlider#updateUI()
-        //public void updateUI() {
-        //    setUI((SliderUI) UIManager.getUI(this));
-        //    // The labels preferred size may be derived from the font
-        //    // of the slider, so we must update the UI of the slider first, then
-        //    // that of labels.  This way when setSize is called the right
-        //    // font is used.
-        //    updateLabelUIs();
-        //}
-        //@see JSlider#updateLabelUIs()
-        //protected void updateLabelUIs() {
-        //    Dictionary<?, ?> labelTable = getLabelTable();
-        //    if (labelTable == null) {
-        //        return;
-        //    }
-        //    Enumeration<?> labels = labelTable.keys();
-        //    while (labels.hasMoreElements()) {
-        //        JComponent component = (JComponent) labelTable.get(labels.nextElement());
-        //        component.updateUI();
-        //        component.setSize(component.getPreferredSize());
-        //    }
-        //}
-        //SwingUtilities.updateComponentTreeUI(slider);
+        // slider.updateUI();
+        // @see JSlider#updateUI()
+        // public void updateUI() {
+        //     setUI((SliderUI) UIManager.getUI(this));
+        //     // The labels preferred size may be derived from the font
+        //     // of the slider, so we must update the UI of the slider first, then
+        //     // that of labels.  This way when setSize is called the right
+        //     // font is used.
+        //     updateLabelUIs();
+        // }
+        // @see JSlider#updateLabelUIs()
+        // protected void updateLabelUIs() {
+        //     Dictionary<?, ?> labelTable = getLabelTable();
+        //     if (labelTable == null) {
+        //         return;
+        //     }
+        //     Enumeration<?> labels = labelTable.keys();
+        //     while (labels.hasMoreElements()) {
+        //         JComponent component = (JComponent) labelTable.get(labels.nextElement());
+        //         component.updateUI();
+        //         component.setSize(component.getPreferredSize());
+        //     }
+        // }
+        // SwingUtilities.updateComponentTreeUI(slider);
 
         slider.setLabelTable(slider.getLabelTable());
-        //@see JSlider#setLabelTable(...)
-        //public void setLabelTable(Dictionary labels) {
-        //    Dictionary oldTable = labelTable;
-        //    labelTable = labels;
-        //    updateLabelUIs();
-        //    firePropertyChange("labelTable", oldTable, labelTable );
-        //    if (labels != oldTable) {
-        //        revalidate();
-        //        repaint();
-        //    }
-        //}
+        // @see JSlider#setLabelTable(...)
+        // public void setLabelTable(Dictionary labels) {
+        //     Dictionary oldTable = labelTable;
+        //     labelTable = labels;
+        //     updateLabelUIs();
+        //     firePropertyChange("labelTable", oldTable, labelTable );
+        //     if (labels != oldTable) {
+        //         revalidate();
+        //         repaint();
+        //     }
+        // }
 
         Box box = Box.createVerticalBox();
         box.add(Box.createVerticalStrut(5));
@@ -68,14 +68,14 @@ public final class MainPanel extends JPanel {
         slider.setPaintLabels(true);
         slider.setPaintTicks(true);
         slider.setSnapToTicks(true);
-        //slider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
+        // slider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
         Dictionary<?, ?> labelTable = slider.getLabelTable();
         Enumeration<?> ed = labelTable.keys();
         while (ed.hasMoreElements()) {
             Integer i = (Integer) ed.nextElement();
             JLabel label = (JLabel) labelTable.get(i);
             label.setText(String.valueOf(i / 100));
-            //TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
+            // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
         }
         return slider;
     }
@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
-                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
