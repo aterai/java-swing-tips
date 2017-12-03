@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
         JMenuBar mb = new JMenuBar();
         JMenu menu = new JMenu("File");
 
-        JComponent edit = makeEditButtonBar(Arrays.asList(
-            makeButton("Cut",   new DefaultEditorKit.CutAction()),
-            makeButton("Copy",  new DefaultEditorKit.CopyAction()),
+        Component edit = makeEditButtonBar(Arrays.asList(
+            makeButton("Cut", new DefaultEditorKit.CutAction()),
+            makeButton("Copy", new DefaultEditorKit.CopyAction()),
             makeButton("Paste", new DefaultEditorKit.PasteAction())));
 
         menu.add("aaaaaaaaaa");
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         mb.add(menu);
         return mb;
     }
-    private static JMenuItem makeEditMenuItem(JComponent edit) {
+    private static JMenuItem makeEditMenuItem(Component edit) {
         JMenuItem item = new JMenuItem("Edit") {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         item.setLayout(new GridBagLayout());
         c.anchor = GridBagConstraints.LINE_END;
-        //c.gridx = GridBagConstraints.RELATIVE;
+        // c.gridx = GridBagConstraints.RELATIVE;
         c.weightx = 1d;
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
         return item;
     }
-    private static JComponent makeEditButtonBar(List<AbstractButton> list) {
+    private static Component makeEditButtonBar(List<AbstractButton> list) {
         int size = list.size();
         JPanel p = new JPanel(new GridLayout(1, size, 0, 0)) {
             @Override public Dimension getMaximumSize() {
@@ -91,9 +91,9 @@ public final class MainPanel extends JPanel {
             }
         });
         b.setText(title);
-        //b.setVerticalAlignment(SwingConstants.CENTER);
-        //b.setVerticalTextPosition(SwingConstants.CENTER);
-        //b.setHorizontalAlignment(SwingConstants.CENTER);
+        // b.setVerticalAlignment(SwingConstants.CENTER);
+        // b.setVerticalTextPosition(SwingConstants.CENTER);
+        // b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
         b.setBorder(BorderFactory.createEmptyBorder());
         b.setContentAreaFilled(false);
@@ -142,7 +142,7 @@ class ToggleButtonBarCellIcon implements Icon {
 
         Path2D p = new Path2D.Double();
         if (c == parent.getComponent(0)) {
-            //:first-child
+            // :first-child
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
             p.lineTo(x + w, y);
@@ -150,7 +150,7 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
         } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
-            //:last-child
+            // :last-child
             w--;
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);

@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
                 Integer calendarField = getCalendarField();
                 Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
                 cal.add(calendarField, -stepSize);
-                //Date prev = cal.getTime();
-                //Comparable start = getStart();
-                //return ((start == null) || (start.compareTo(prev) <= 0)) ? prev : null;
-                //return prev;
+                // Date prev = cal.getTime();
+                // Comparable start = getStart();
+                // return ((start == null) || (start.compareTo(prev) <= 0)) ? prev : null;
+                // return prev;
                 return cal.getTime();
             }
             @Override public Object getNextValue() {
@@ -49,28 +49,28 @@ public final class MainPanel extends JPanel {
                 Integer calendarField = getCalendarField();
                 Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
                 cal.add(calendarField, stepSize);
-                //Date next = cal.getTime();
-                //Comparable end = getEnd();
-                //return ((end == null) || (end.compareTo(next) >= 0)) ? next : null;
-                //return next;
+                // Date next = cal.getTime();
+                // Comparable end = getEnd();
+                // return ((end == null) || (end.compareTo(next) >= 0)) ? next : null;
+                // return next;
                 return cal.getTime();
             }
         });
         ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
 
-        add(makeTitlePanel(spinner1, "Default SpinnerDateModel"));
-        add(makeTitlePanel(spinner2, "Override SpinnerDateModel#getNextValue(...)"));
+        add(makeTitlePanel("Default SpinnerDateModel", spinner1));
+        add(makeTitlePanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitlePanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

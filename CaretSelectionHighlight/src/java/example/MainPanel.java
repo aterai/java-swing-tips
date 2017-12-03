@@ -13,8 +13,8 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), makeTextArea(false)));
-        desktop.add(makeInternalFrame("FocusCaret",   new Point(50, 50), makeTextArea(true)));
-        desktop.add(makeInternalFrame("FocusCaret",   new Point(90, 90), makeTextArea(true)));
+        desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), makeTextArea(true)));
+        desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), makeTextArea(true)));
         EventQueue.invokeLater(() -> {
             for (JInternalFrame f: desktop.getAllFrames()) {
                 f.setVisible(true);
@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JInternalFrame makeInternalFrame(String title, Point p, JComponent c) {
+    private static JInternalFrame makeInternalFrame(String title, Point p, Component c) {
         JInternalFrame f = new JInternalFrame(title, true, true, true, true);
         f.add(c);
         f.setSize(200, 100);
@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
         return f;
     }
 
-    private static JComponent makeTextArea(boolean flag) {
+    private static Component makeTextArea(boolean flag) {
         JTextArea textArea = new JTextArea() {
             @Override public void updateUI() {
                 setCaret(null);
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
                 if (flag) {
                     Caret oldCaret = getCaret();
                     int blinkRate = oldCaret.getBlinkRate();
-                    //int blinkRate = UIManager.getInt("TextField.caretBlinkRate")
+                    // int blinkRate = UIManager.getInt("TextField.caretBlinkRate")
                     Caret caret = new FocusCaret();
                     caret.setBlinkRate(blinkRate);
                     setCaret(caret);
@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
 
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -87,12 +87,12 @@ class FocusCaret extends DefaultCaret {
     @Override public void focusGained(FocusEvent e) {
         super.focusGained(e);
         // https://stackoverflow.com/questions/18237317/how-to-retain-selected-text-in-jtextfield-when-focus-lost
-        setSelectionVisible(false); //removeHighlight
-        setSelectionVisible(true); //addHighlight
-        //TEST
-        //setVisible(true);
-        //damage(getComponent().getBounds());
-        //repaint();
+        setSelectionVisible(false); // removeHighlight
+        setSelectionVisible(true); // addHighlight
+        // TEST:
+        // setVisible(true);
+        // damage(getComponent().getBounds());
+        // repaint();
     }
     @Override protected Highlighter.HighlightPainter getSelectionPainter() {
 //         JComponent c = getComponent();

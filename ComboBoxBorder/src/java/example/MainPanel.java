@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         combo01.setUI(new BasicComboBoxUI());
         combo02.setUI(new BasicComboBoxUI() {
             @Override protected JButton createArrowButton() {
-                JButton b = new JButton(new ArrowIcon()); //.createArrowButton();
+                JButton b = new JButton(new ArrowIcon()); // .createArrowButton();
                 b.setBackground(Color.BLACK);
                 b.setContentAreaFilled(false);
                 b.setFocusPainted(false);
@@ -70,11 +70,11 @@ public final class MainPanel extends JPanel {
         ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(combo00, "MetalComboBoxUI:"));
+        box.add(makeTitledPanel("MetalComboBoxUI:", combo00));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo01, "BasicComboBoxUI:"));
+        box.add(makeTitledPanel("BasicComboBoxUI:", combo01));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo02, "BasicComboBoxUI#createArrowButton():"));
+        box.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo02));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(box, BorderLayout.NORTH);
@@ -82,13 +82,13 @@ public final class MainPanel extends JPanel {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        panel.setOpaque(true);
-        panel.setBackground(Color.BLACK);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        p.setOpaque(true);
+        p.setBackground(Color.BLACK);
+        return p;
     }
     private static JComboBox<String> makeComboBox() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

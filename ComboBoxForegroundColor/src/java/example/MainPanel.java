@@ -9,11 +9,11 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final ColorItem[] model = {
-        new ColorItem(Color.RED,     "Red"),
-        new ColorItem(Color.GREEN,   "Green"),
-        new ColorItem(Color.BLUE,    "Blue"),
-        new ColorItem(Color.CYAN,    "Cyan"),
-        new ColorItem(Color.ORANGE,  "Orange"),
+        new ColorItem(Color.RED, "Red"),
+        new ColorItem(Color.GREEN, "Green"),
+        new ColorItem(Color.BLUE, "Blue"),
+        new ColorItem(Color.CYAN, "Cyan"),
+        new ColorItem(Color.ORANGE, "Orange"),
         new ColorItem(Color.MAGENTA, "Magenta")
     };
     private final JComboBox<ColorItem> combo00 = new JComboBox<>(model);
@@ -26,20 +26,20 @@ public final class MainPanel extends JPanel {
         combo02.setRenderer(new ComboHtmlRenderer());
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(combo00, "default:"));
+        box.add(makeTitledPanel("default:", combo00));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo01, "setForeground:"));
+        box.add(makeTitledPanel("setForeground:", combo01));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo02, "html tag:"));
+        box.add(makeTitledPanel("html tag:", combo02));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -89,14 +89,14 @@ class ComboForegroundRenderer extends DefaultListCellRenderer {
             ColorItem item = (ColorItem) value;
             Color ic = item.color;
             if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
-                combo.setForeground(ic); //Windows, Motif Look&Feel
+                combo.setForeground(ic); // Windows, Motif Look&Feel
                 list.setSelectionForeground(ic);
                 list.setSelectionBackground(SELECTION_BACKGROUND);
             }
             JLabel l = (JLabel) super.getListCellRendererComponent(list, item.description, index, isSelected, cellHasFocus);
             l.setForeground(ic);
             l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
-            //l.setText(item.description);
+            // l.setText(item.description);
             return l;
         } else {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -113,7 +113,7 @@ class ComboHtmlRenderer extends DefaultListCellRenderer {
             list.setSelectionBackground(SELECTION_BACKGROUND);
         }
         JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        //l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
+        // l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
         l.setText(String.format("<html><font color='#%06X'>%s", item.color.getRGB() & 0xFFFFFF, item.description));
         l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
         return l;

@@ -26,11 +26,11 @@ public class MainPanel extends JPanel {
         progress01.setStringPainted(true);
         progress02.setStringPainted(true);
 
-        progress04.setOpaque(true); //for NimbusLookAndFeel
+        progress04.setOpaque(true); // for NimbusLookAndFeel
 
         BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTitlePanel("setStringPainted(true)",  Arrays.asList(progress01, progress02)));
+        p.add(makeTitlePanel("setStringPainted(true)", Arrays.asList(progress01, progress02)));
         p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
 
         JCheckBox check = new JCheckBox("Turn the progress bar red");
@@ -71,14 +71,14 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(String title, List<? extends Component> list) {
+    private static Component makeTitlePanel(String title, List<? extends Component> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
-        c.gridx   = GridBagConstraints.REMAINDER;
+        c.gridx = GridBagConstraints.REMAINDER;
         for (Component cmp: list) {
             p.add(cmp, c);
         }
@@ -100,7 +100,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -124,7 +124,7 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
             g2.dispose();
 
             Image image = c.createImage(new FilteredImageSource(buf.getSource(), new RedGreenChannelSwapFilter()));
-            //BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
+            // BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
             g.drawImage(image, 0, 0, null);
         } else {
             super.paint(g, c);

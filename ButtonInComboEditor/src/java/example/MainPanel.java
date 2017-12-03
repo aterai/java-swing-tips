@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
-    private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static Component makeTitlePanel(String title, List<? extends Component> list) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
         list.forEach(c -> {
@@ -97,7 +97,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
 
         field.addFocusListener(new FocusListener() {
             @Override public void focusGained(FocusEvent e) {
-                //field.setBorder(BorderFactory.createEmptyBorder(0, 16 + 4, 0, 0));
+                // field.setBorder(BorderFactory.createEmptyBorder(0, 16 + 4, 0, 0));
                 button.setVisible(false);
             }
             @Override public void focusLost(FocusEvent e) {
@@ -124,8 +124,8 @@ class URLItemComboBox extends JComboBox<URLItem> {
         JButton button = new JButton(rss);
         ImageProducer ip = new FilteredImageSource(rss.getImage().getSource(), new SelectedImageFilter());
         button.setRolloverIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip)));
-        //button.setRolloverIcon(makeFilteredImage(rss));
-        //button.setRolloverIcon(makeFilteredImage2(rss));
+        // button.setRolloverIcon(makeFilteredImage(rss));
+        // button.setRolloverIcon(makeFilteredImage2(rss));
         button.addActionListener(e -> System.out.println("clicked..."));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
@@ -186,14 +186,14 @@ class URLItemComboBox extends JComboBox<URLItem> {
 //         ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
 //         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
 //     }
-//     //Test:
+//     // Test:
 //     public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
 //         RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
 //         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//         //TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
-//         //BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+//         // TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
+//         // BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
 //         Graphics g = img.getGraphics();
-//         //g.drawImage(srcIcon.getImage(), 0, 0, null);
+//         // g.drawImage(srcIcon.getImage(), 0, 0, null);
 //         srcIcon.paintIcon(null, g, 0, 0);
 //         g.dispose();
 //         return new ImageIcon(op.filter(img, null));
@@ -219,14 +219,14 @@ class ComboBoxLayout implements LayoutManager {
         if (!(parent instanceof JComboBox)) {
             return;
         }
-        JComboBox cb     = (JComboBox) parent;
-        int width        = cb.getWidth();
-        int height       = cb.getHeight();
-        Insets insets    = cb.getInsets();
+        JComboBox cb = (JComboBox) parent;
+        int width = cb.getWidth();
+        int height = cb.getHeight();
+        Insets insets = cb.getInsets();
         int buttonHeight = height - insets.top - insets.bottom;
-        int buttonWidth  = buttonHeight;
-        int labelWidth   = buttonHeight;
-        int loupeWidth; //   = buttonHeight;
+        int buttonWidth = buttonHeight;
+        int labelWidth = buttonHeight;
+        int loupeWidth; // = buttonHeight;
 
         JButton arrowButton = (JButton) cb.getComponent(0);
         if (Objects.nonNull(arrowButton)) {
@@ -240,12 +240,12 @@ class ComboBoxLayout implements LayoutManager {
             label.setBounds(insets.left, insets.top, labelWidth, buttonHeight);
         }
         JButton rssButton = button;
-        //for (Component c: cb.getComponents()) {
-        //    if ("ComboBox.rssButton".equals(c.getName())) {
-        //        rssButton = (JButton) c;
-        //        break;
-        //    }
-        //}
+        // for (Component c: cb.getComponents()) {
+        //     if ("ComboBox.rssButton".equals(c.getName())) {
+        //         rssButton = (JButton) c;
+        //         break;
+        //     }
+        // }
         if (Objects.nonNull(rssButton) && rssButton.isVisible()) {
             Insets loupeInsets = rssButton.getInsets();
             loupeWidth = rssButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
@@ -278,12 +278,12 @@ class URLItem {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     private static final float SCALE = 1.2f;
     @Override public int filterRGB(int x, int y, int argb) {
-        //int a = (argb >> 24) & 0xFF;
+        // int a = (argb >> 24) & 0xFF;
         int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * SCALE);
         int g = (int) Math.min(0xFF, ((argb >>  8) & 0xFF) * SCALE);
         int b = (int) Math.min(0xFF, ((argb)       & 0xFF) * SCALE);

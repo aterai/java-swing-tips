@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
 //                     setModel(getSuggestedModel(model, text), text);
 //                 }
 //                 combo.hidePopup();
-//                 //hide_flag = true;
+//                 // hide_flag = true;
 //             }
 //         });
 
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
     }
     private static JComboBox<String> makeComboBox(String... model) {
         return new JComboBox<>(model);
-//         //Test: Remove ArrowButtn(look like a JTextField)
-//         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+//         // Test: Remove ArrowButtn(look like a JTextField)
+//         // UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 //         return new JComboBox(model) {
 //             @Override public void updateUI() {
 //                 super.updateUI();
@@ -68,12 +68,12 @@ public final class MainPanel extends JPanel {
 //                     }
 //                     @Override public void configureArrowButton() {}
 //                 });
-// //                 //Remove click on a JComboBox Border
+// //                 // Remove click on a JComboBox Border
 // //                 for (MouseListener ml: getMouseListeners()) {
 // //                     removeMouseListener(ml);
 // //                 }
 //             }
-//             //Remove click on a JComboBox Border
+//             // Remove click on a JComboBox Border
 //             @Override public boolean contains(int x, int y) {
 //                 Insets i = getInsets();
 //                 int w = getWidth()  - i.left - i.right;
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         };
     }
-    private static JPanel makeHelpPanel() {
+    private static Component makeHelpPanel() {
         JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));
         lp.add(new JLabel("Char: show Popup"));
         lp.add(new JLabel("ESC: hide Popup"));
@@ -95,8 +95,8 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("Help"));
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets  = new Insets(0, 5, 0, 5);
-        c.fill    = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 5, 0, 5);
+        c.fill = GridBagConstraints.BOTH;
         c.weighty = 1d;
 
         c.weightx = 1d;
@@ -183,7 +183,7 @@ class ComboKeyHandler extends KeyAdapter {
             if (!list.contains(text)) {
                 list.add(text);
                 Collections.sort(list);
-                //setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
+                // setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
                 setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
             }
             shouldHide = true;

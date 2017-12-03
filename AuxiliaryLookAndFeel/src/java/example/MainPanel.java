@@ -54,10 +54,10 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(cmp);
-        return panel;
+    private static Component createPanel(Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(c);
+        return p;
     }
     private static JComboBox<String> makeComboBox() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

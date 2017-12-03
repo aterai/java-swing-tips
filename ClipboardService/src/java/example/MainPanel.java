@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
         add(makeTitledPane("Default", new JScrollPane(new JTextArea())));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPane(String title, JComponent c) {
+    private static Component makeTitledPane(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
@@ -84,11 +84,11 @@ public class MainPanel extends JPanel {
 
 class TextComponentPopupMenu extends JPopupMenu {
     private final UndoManager manager = new UndoManager();
-    private final Action cutAction    = new DefaultEditorKit.CutAction();
-    private final Action copyAction   = new DefaultEditorKit.CopyAction();
-    private final Action pasteAction  = new DefaultEditorKit.PasteAction();
-    private final Action undoAction   = new UndoAction(manager);
-    private final Action redoAction   = new RedoAction(manager);
+    private final Action cutAction = new DefaultEditorKit.CutAction();
+    private final Action copyAction = new DefaultEditorKit.CopyAction();
+    private final Action pasteAction = new DefaultEditorKit.PasteAction();
+    private final Action undoAction = new UndoAction(manager);
+    private final Action redoAction = new RedoAction(manager);
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             JTextComponent tc = (JTextComponent) getInvoker();
@@ -133,7 +133,7 @@ class UndoAction extends AbstractAction {
         try {
             undoManager.undo();
         } catch (CannotUndoException ex) {
-            //ex.printStackTrace();
+            // ex.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }
     }
@@ -149,7 +149,7 @@ class RedoAction extends AbstractAction {
         try {
             undoManager.redo();
         } catch (CannotRedoException ex) {
-            //ex.printStackTrace();
+            // ex.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }
     }
