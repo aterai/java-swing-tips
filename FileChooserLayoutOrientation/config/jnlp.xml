@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST FileChooserLayoutOrientation" />
+  <property name="jnlp.Name"     value="FileChooserLayoutOrientation" />
+  <property name="jnlp.name"     value="filechooserlayoutorientation" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filechooserlayoutorientation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FileChooserLayoutOrientation.html" />
+</project>
