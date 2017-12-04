@@ -8,13 +8,15 @@ import java.beans.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox combo = makeComboBox();
-    private final JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
 
+        JComboBox combo = makeComboBox();
         UIManager.put("ComboBox.font", combo.getFont());
+
+        JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
+
+        LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
         UIManager.addPropertyChangeListener(e -> {
             if (e.getPropertyName().equals("lookAndFeel")) {
                 String lnf = e.getNewValue().toString();
@@ -30,9 +32,8 @@ public final class MainPanel extends JPanel {
             }
         });
         check.addActionListener(e -> {
-            JCheckBox check = (JCheckBox) e.getSource();
             String lnf = UIManager.getLookAndFeel().getName();
-            if (check.isSelected() && lnf.contains("Windows")) {
+            if (((JCheckBox) e.getSource()).isSelected() && lnf.contains("Windows")) {
                 UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
             } else {
                 UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
@@ -45,19 +46,14 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.add(check);
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo));
+        box.add(combo);
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(makeComboBox()));
+        box.add(makeComboBox());
         box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private static Component createPanel(Component c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
-        return p;
     }
     private static JComboBox<String> makeComboBox() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -130,7 +126,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {
