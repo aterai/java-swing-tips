@@ -36,9 +36,9 @@ public final class MainPanel extends JPanel {
         slider1.setModel(slider0.getModel());
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(slider0, "Default:"));
+        box.add(makeTitledPanel("Default:", slider0));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(slider1, "Gradient translucent track JSlider:"));
+        box.add(makeTitledPanel("Gradient translucent track JSlider:", slider1));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setOpaque(false);
@@ -72,12 +72,12 @@ public final class MainPanel extends JPanel {
         slider.addMouseWheelListener(ma);
         return slider;
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        panel.setOpaque(false);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.setOpaque(false);
+        p.add(c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -104,12 +104,12 @@ public final class MainPanel extends JPanel {
 
 class GradientPalletSliderUI extends MetalSliderUI {
     private static final int[] GRADIENT_PALLET = GradientPalletFactory.makeGradientPallet();
-    protected Color controlDarkShadow = new Color(100, 100, 100); //MetalLookAndFeel.getControlDarkShadow();
-    protected Color controlHighlight  = new Color(200, 255, 200); //MetalLookAndFeel.getControlHighlight();
-    protected Color controlShadow     = new Color(0, 100, 0); //MetalLookAndFeel.getControlShadow();
+    protected Color controlDarkShadow = new Color(100, 100, 100); // MetalLookAndFeel.getControlDarkShadow();
+    protected Color controlHighlight  = new Color(200, 255, 200); // MetalLookAndFeel.getControlHighlight();
+    protected Color controlShadow     = new Color(0, 100, 0); // MetalLookAndFeel.getControlShadow();
     @Override public void paintTrack(Graphics g) {
-        //Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
-        //boolean leftToRight = MetalUtils.isLeftToRight(slider);
+        // Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
+        // boolean leftToRight = MetalUtils.isLeftToRight(slider);
 
         g.translate(trackRect.x, trackRect.y);
 
@@ -122,13 +122,13 @@ class GradientPalletSliderUI extends MetalSliderUI {
             trackTop = trackBottom - getTrackWidth() + 1;
             trackRight = trackRect.width - 1;
         } else {
-            //if (leftToRight) {
-                trackLeft = trackRect.width - getThumbOverhang() - getTrackWidth();
-                trackRight = trackRect.width - getThumbOverhang() - 1;
-            //} else {
-            //    trackLeft = getThumbOverhang();
-            //    trackRight = getThumbOverhang() + getTrackWidth() - 1;
-            //}
+            // if (leftToRight) {
+            trackLeft = trackRect.width - getThumbOverhang() - getTrackWidth();
+            trackRight = trackRect.width - getThumbOverhang() - 1;
+            // } else {
+            //     trackLeft = getThumbOverhang();
+            //     trackRight = getThumbOverhang() + getTrackWidth() - 1;
+            // }
             trackBottom = trackRect.height - 1;
         }
 
@@ -268,7 +268,7 @@ final class GradientPalletFactory {
         int max = pallet.length - 1;
         int index = Math.min(Math.max(i, 0), max);
         int pix = pallet[index] & 0x00FFFFFF;
-        //int alpha = 0x64 << 24;
+        // int alpha = 0x64 << 24;
         return new Color(alpha | pix, true);
     }
 }

@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
         combo.setSelectedIndex(-1);
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(new JComboBox<>(model1), "default:"));
+        box.add(makeTitledPanel("default:", new JComboBox<>(model1)));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo, "Tree ComboBoxModel:"));
+        box.add(makeTitledPanel("Tree ComboBoxModel:", combo));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -67,11 +67,11 @@ public final class MainPanel extends JPanel {
 //         root.add(set2);
 //         return new DefaultTreeModel(root);
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

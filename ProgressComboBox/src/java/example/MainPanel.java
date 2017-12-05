@@ -22,11 +22,11 @@ public class MainPanel extends JPanel {
         button.addActionListener(e -> {
             button.setEnabled(false);
             combo.setEnabled(false);
-            //combo.removeAllItems();
+            // combo.removeAllItems();
             worker = new UITask();
             worker.execute();
         });
-        add(createPanel(combo, button, "ProgressComboBox: "), BorderLayout.NORTH);
+        add(makeTitledPanel("ProgressComboBox: ", combo, button), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -92,12 +92,12 @@ public class MainPanel extends JPanel {
         }
     }
 
-    public JPanel createPanel(JComponent cmp, JButton btn, String str) {
+    private static Component makeTitledPanel(String title, Component cmp, Component btn) {
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
 
         c.insets = new Insets(5, 5, 5, 0);
-        p.add(new JLabel(str), c);
+        p.add(new JLabel(title), c);
 
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -127,7 +127,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -145,7 +145,7 @@ class BackgroundTask extends SwingWorker<String[], Integer> {
                 Thread.sleep(50);
                 int iv = 100 * current / MAX;
                 publish(iv);
-                //setProgress(iv);
+                // setProgress(iv);
                 list.add("Test: " + current);
             } catch (InterruptedException ex) {
                 break;

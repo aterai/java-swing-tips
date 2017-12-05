@@ -8,11 +8,11 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
-    private final JComboBox<String> combo02 = new JComboBox<>(makeModel());
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JComboBox<String> combo01 = new JComboBox<>(makeModel());
+        JComboBox<String> combo02 = new JComboBox<>(makeModel());
 
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -29,26 +29,26 @@ public final class MainPanel extends JPanel {
             }
         };
         ActionMap am = combo02.getActionMap();
-        am.put("myUp",   up);
+        am.put("myUp", up);
         am.put("myDown", down);
 
         InputMap im = combo02.getInputMap();
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),   "myUp");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "myUp");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(combo01, "default:"));
+        box.add(makeTitledPanel("default:", combo01));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo02, "loop:"));
+        box.add(makeTitledPanel("loop:", combo02));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     private static ComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

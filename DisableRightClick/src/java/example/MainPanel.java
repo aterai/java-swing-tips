@@ -57,22 +57,22 @@ public final class MainPanel extends JPanel {
         }
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(makeComboBox(5), "default:"));
+        box.add(makeTitledPanel("default:", makeComboBox(5)));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(makeComboBox(20), "default:"));
+        box.add(makeTitledPanel("default:", makeComboBox(20)));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo1, "disable right click in drop-down list:"));
+        box.add(makeTitledPanel("disable right click in drop-down list:", combo1));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo2, "disable right click and scroll in drop-down list:"));
+        box.add(makeTitledPanel("disable right click and scroll in drop-down list:", combo2));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        return panel;
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     private static JComboBox<String> makeComboBox(int size) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -179,7 +179,7 @@ class BasicComboPopup3 extends BasicComboPopup {
                     // ie., don't allow CTRL key deselection.
                     ev = new MouseEvent(
                         e.getComponent(), e.getID(), e.getWhen(),
-                        //e.getModifiers() ^ InputEvent.CTRL_MASK,
+                        // e.getModifiers() ^ InputEvent.CTRL_MASK,
                         e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
                         e.getX(), e.getY(),
                         e.getXOnScreen(), e.getYOnScreen(),

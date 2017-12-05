@@ -13,8 +13,8 @@ import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
-    public static final Color BACKGROUND = Color.BLACK; //RED;
-    public static final Color FOREGROUND = Color.WHITE; //YELLOW;
+    public static final Color BACKGROUND = Color.BLACK; // RED;
+    public static final Color FOREGROUND = Color.WHITE; // YELLOW;
     public static final Color SELECTIONFOREGROUND = Color.CYAN;
 
     private MainPanel() {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         if (combo2.getUI() instanceof WindowsComboBoxUI) {
             combo2.setUI(new WindowsComboBoxUI() {
                 @Override protected JButton createArrowButton() {
-                    JButton b = new JButton(new ArrowIcon(Color.BLACK, Color.BLUE)); //.createArrowButton();
+                    JButton b = new JButton(new ArrowIcon(Color.BLACK, Color.BLUE)); // .createArrowButton();
                     b.setContentAreaFilled(false);
                     b.setFocusPainted(false);
                     b.setBorder(BorderFactory.createEmptyBorder());
@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
         }
 
         Box box0 = Box.createVerticalBox();
-        box0.add(createPanel(combo0, "RoundRectangle2D:", null));
+        box0.add(makeTitledPanel("RoundRectangle2D:", combo0, null));
         box0.add(Box.createVerticalStrut(5));
-        box0.add(createPanel(combo1, "Path2D:", null));
+        box0.add(makeTitledPanel("Path2D:", combo1, null));
         box0.add(Box.createVerticalStrut(5));
-        box0.add(createPanel(combo2, "WindowsComboBoxUI#createArrowButton():", null));
+        box0.add(makeTitledPanel("WindowsComboBoxUI#createArrowButton():", combo2, null));
         box0.add(Box.createVerticalStrut(5));
         box0.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        //UIManager.put("TitledBorder.titleColor", FOREGROUND);
-        //UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
+        // UIManager.put("TitledBorder.titleColor", FOREGROUND);
+        // UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
         UIManager.put("ComboBox.foreground", FOREGROUND);
         UIManager.put("ComboBox.background", BACKGROUND);
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
         UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
         UIManager.put("ComboBox.buttonShadow", FOREGROUND);
 
-        //UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.WHITE));
-        //UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
+        // UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.WHITE));
+        // UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
         UIManager.put("ComboBox.border", new KamabokoBorder());
 
         JComboBox<String> combo00 = new JComboBox<>(makeModel());
@@ -93,16 +93,16 @@ public final class MainPanel extends JPanel {
         ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
 
         Box box1 = Box.createVerticalBox();
-        box1.add(createPanel(combo00, "MetalComboBoxUI:", BACKGROUND));
+        box1.add(makeTitledPanel("MetalComboBoxUI:", combo00, BACKGROUND));
         box1.add(Box.createVerticalStrut(10));
-        box1.add(createPanel(combo01, "BasicComboBoxUI:", BACKGROUND));
+        box1.add(makeTitledPanel("BasicComboBoxUI:", combo01, BACKGROUND));
         box1.add(Box.createVerticalStrut(10));
-        box1.add(createPanel(combo02, "BasicComboBoxUI#createArrowButton():", BACKGROUND));
+        box1.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo02, BACKGROUND));
         box1.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Basic, Metal", createPanel(box1, null, BACKGROUND));
-        tabbedPane.add("Windows", createPanel(box0, null, null));
+        tabbedPane.add("Basic, Metal", makeTitledPanel(null, box1, BACKGROUND));
+        tabbedPane.add("Windows", makeTitledPanel(null, box0, null));
 
         JCheckBox check = new JCheckBox("editable");
         check.addActionListener(e -> {
@@ -113,29 +113,29 @@ public final class MainPanel extends JPanel {
 
         add(tabbedPane);
         add(check, BorderLayout.SOUTH);
-        //setOpaque(true);
-        //setBackground(BACKGROUND);
+        // setOpaque(true);
+        // setBackground(BACKGROUND);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str, Color bgc) {
-        JPanel panel = new JPanel(new BorderLayout());
+    private static Component makeTitledPanel(String title, JComponent cmp, Color bgc) {
+        JPanel p = new JPanel(new BorderLayout());
         if (cmp.getLayout() instanceof BoxLayout) {
-            panel.add(cmp, BorderLayout.NORTH);
+            p.add(cmp, BorderLayout.NORTH);
         } else {
-            panel.add(cmp);
+            p.add(cmp);
         }
-        if (Objects.nonNull(str)) {
-            TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), str);
+        if (Objects.nonNull(title)) {
+            TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title);
             if (Objects.nonNull(bgc)) {
                 b.setTitleColor(new Color(~bgc.getRGB()));
             }
-            panel.setBorder(b);
+            p.setBorder(b);
         }
         if (Objects.nonNull(bgc)) {
-            panel.setOpaque(true);
-            panel.setBackground(bgc);
+            p.setOpaque(true);
+            p.setBackground(bgc);
         }
-        return panel;
+        return p;
     }
     private static DefaultComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
