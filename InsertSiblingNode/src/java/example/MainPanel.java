@@ -42,49 +42,40 @@ public final class MainPanel extends JPanel {
 
 class TreePopupMenu extends JPopupMenu {
     protected TreePath path;
-    private final Action addChildNodeAction = new AbstractAction("add child node") {
-        @Override public void actionPerformed(ActionEvent e) {
+    protected TreePopupMenu() {
+        super();
+        add("add child node").addActionListener(e -> {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            DefaultMutableTreeNode self  = (DefaultMutableTreeNode) path.getLastPathComponent();
+            DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
             self.add(child);
             model.reload(self);
-            //or: model.insertNodeInto(child, self, self.getChildCount());
-        }
-    };
-    private final Action addAboveAction = new AbstractAction("insert preceding sibling node") {
-        @Override public void actionPerformed(ActionEvent e) {
+            // or: model.insertNodeInto(child, self, self.getChildCount());
+        });
+        addSeparator();
+        add("insert preceding sibling node").addActionListener(e -> {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            MutableTreeNode self   = (MutableTreeNode) path.getLastPathComponent();
+            MutableTreeNode self = (MutableTreeNode) path.getLastPathComponent();
             MutableTreeNode parent = (MutableTreeNode) self.getParent();
-            MutableTreeNode child  = new DefaultMutableTreeNode("New preceding sibling");
+            MutableTreeNode child = new DefaultMutableTreeNode("New preceding sibling");
             int index = model.getIndexOfChild(parent, self);
             parent.insert(child, index);
             model.reload(parent);
-            //or: model.insertNodeInto(child, parent, index);
-        }
-    };
-    private final Action addBelowAction = new AbstractAction("insert following sibling node") {
-        @Override public void actionPerformed(ActionEvent e) {
+            // or: model.insertNodeInto(child, parent, index);
+        });
+        add("insert following sibling node").addActionListener(e -> {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            MutableTreeNode self   = (MutableTreeNode) path.getLastPathComponent();
+            MutableTreeNode self = (MutableTreeNode) path.getLastPathComponent();
             MutableTreeNode parent = (MutableTreeNode) self.getParent();
-            MutableTreeNode child  = new DefaultMutableTreeNode("New following sibling");
+            MutableTreeNode child = new DefaultMutableTreeNode("New following sibling");
             int index = model.getIndexOfChild(parent, self);
             parent.insert(child, index + 1);
             model.reload(parent);
-            //or: model.insertNodeInto(child, parent, index + 1);
-        }
-    };
-    protected TreePopupMenu() {
-        super();
-        add(addChildNodeAction);
-        addSeparator();
-        add(addAboveAction);
-        add(addBelowAction);
+            // or: model.insertNodeInto(child, parent, index + 1);
+        });
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
