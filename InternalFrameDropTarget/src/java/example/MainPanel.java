@@ -219,6 +219,7 @@ class TableRowTransferHandler extends TransferHandler {
 //         }
 //         Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
+        @SuppressWarnings("JdkObsolete")
         Object[] transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).toArray();
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
         return new Transferable() {
