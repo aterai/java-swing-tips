@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        df.setTimeZone(TimeZone.getTimeZone("JST"));
+        df.setTimeZone(TimeZone.getDefault());
         jtp.setEditable(false);
         stopButton.setEnabled(false);
 

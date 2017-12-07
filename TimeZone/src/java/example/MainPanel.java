@@ -9,26 +9,29 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field = new JTextField(30);
-    private final JTextArea textArea = new JTextArea();
-    private final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
-    private final DateFormat df = DateFormat.getDateTimeInstance();
-    private final JButton formatButton = new JButton("format");
-    private final JButton parseButton = new JButton("parse");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-        field.setText(format.format(new Date()));
-        textArea.setEditable(false);
-        df.setTimeZone(TimeZone.getTimeZone("JST"));
+        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
+        DateFormat df = DateFormat.getDateTimeInstance();
+        // df.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+        df.setTimeZone(TimeZone.getDefault());
 
+        JTextField field = new JTextField(30);
+        field.setText(format.format(new Date()));
+
+        JButton formatButton = new JButton("format");
         formatButton.addActionListener(e -> field.setText(format.format(new Date())));
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+
+        JButton parseButton = new JButton("parse");
         parseButton.addActionListener(e -> {
             String str = field.getText().trim();
-            ParsePosition pp = new ParsePosition(0);
-            Date date = format.parse(str, pp);
-            String o = Objects.nonNull(date) ? df.format(date) : "error";
+            Date date = format.parse(str, new ParsePosition(0));
+            // String o = Objects.nonNull(date) ? df.format(date) : "error";
+            String o = Optional.ofNullable(date).map(df::format).orElse("error");
             textArea.append(o + "\n");
         });
 
@@ -40,16 +43,16 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("DateFormat"));
 
-        c.insets  = new Insets(2, 2, 2, 2);
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.insets = new Insets(2, 2, 2, 2);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.LINE_END;
         c.weightx = 1d;
         p.add(field, c);
 
-        c.insets  = new Insets(2, 0, 2, 2);
-        c.fill    = GridBagConstraints.NONE;
+        c.insets = new Insets(2, 0, 2, 2);
+        c.fill = GridBagConstraints.NONE;
         c.weightx = 0d;
-        c.gridy   = 1;
+        c.gridy = 1;
         p.add(bp, c);
 
         add(p, BorderLayout.NORTH);
