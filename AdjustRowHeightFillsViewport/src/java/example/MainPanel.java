@@ -20,8 +20,8 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        int prevHeight = -1;
-        int prevCount = -1;
+        private int prevHeight = -1;
+        private int prevCount = -1;
         private void updateRowsHeight(JViewport vport) {
             int height = vport.getExtentSize().height;
             int rowCount = getModel().getRowCount();
@@ -29,8 +29,9 @@ public class MainPanel extends JPanel {
             if ((height != prevHeight || rowCount != prevCount) && defautlRowHeight > 0) {
                 int over = height - rowCount * defautlRowHeight;
                 for (int i = 0; i < rowCount; i++) {
-                    int a = over-- > 0 ? i == rowCount - 1 ? over : 1 : 0;
+                    int a = over > 0 ? i == rowCount - 1 ? over : 1 : 0;
                     setRowHeight(i, defautlRowHeight + a);
+                    over--;
                 }
             }
             prevHeight = height;
@@ -42,20 +43,27 @@ public class MainPanel extends JPanel {
             Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
                 .filter(clz::isInstance).map(clz::cast)
                 .ifPresent(this::updateRowsHeight);
-//             Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-//             if (p instanceof JViewport) {
-//                 updateRowsHeight((JViewport) p);
-//             }
         }
     };
-    private final JScrollPane scroll = new JScrollPane(table);
-    private final JButton button = new JButton("add");
 
     public MainPanel() {
         super(new BorderLayout());
+
+        JScrollPane scroll = new JScrollPane(table);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.addComponentListener(new ComponentAdapter() {
+            @Override public void componentResized(ComponentEvent e) {
+                Component c = e.getComponent();
+                if (c instanceof JScrollPane) {
+                    ((JScrollPane) c).getViewport().getView().revalidate();
+                }
+            }
+        });
+
+        JButton button = new JButton("add");
         button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
+
         add(scroll);
         add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
