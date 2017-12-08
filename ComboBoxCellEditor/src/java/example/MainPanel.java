@@ -78,17 +78,17 @@ public final class MainPanel extends JPanel {
 class PluginNode {
     protected final String name;
     protected final String[] plugins;
-    private int selectedPluginIndex;
+    private int pluginIndex;
 
     protected PluginNode(String name, String... plugins) {
         this.name = name;
         this.plugins = plugins;
     }
     public int getSelectedPluginIndex() {
-        return selectedPluginIndex;
+        return pluginIndex;
     }
-    public void setSelectedPluginIndex(int selectedPluginIndex) {
-        this.selectedPluginIndex = selectedPluginIndex;
+    public void setSelectedPluginIndex(int pluginIndex) {
+        this.pluginIndex = pluginIndex;
     }
     @Override public String toString() {
         return name;

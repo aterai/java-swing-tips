@@ -14,7 +14,7 @@ import javax.swing.*;
 // Magic with Merlin: Swinging audio
 // https://www.ibm.com/developerworks/java/library/j-mer0730/
 public final class MainPanel extends JPanel {
-    private static final String[] OPTION_PANE_AUDITORY_CUES = {
+    private static final String[] AUDITORY_CUES = {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
     };
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
             UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
             loadAndPlayAudio("notice2.wav");
             JOptionPane.showMessageDialog(panel, "showMessageDialog2");
-            UIManager.put("AuditoryCues.playList", OPTION_PANE_AUDITORY_CUES);
+            UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
         });
 
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
         // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
         // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.defaultCueList"));
         // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
-        UIManager.put("AuditoryCues.playList", OPTION_PANE_AUDITORY_CUES);
+        UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
         // UIManager.put("OptionPane.informationSound", "/example/notice2.wav");
         // UIManager.put("OptionPane.informationSound", "sounds/OptionPaneError.wav");
         // System.out.println(UIManager.get("AuditoryCues.actionMap"));

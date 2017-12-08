@@ -72,17 +72,17 @@ final class SizeVariantUtil {
 
     public static JMenu createSizeVariantMenu() {
         JMenu menu = new JMenu("Resizing a Component");
-        ButtonGroup sizeVariantRadioGroup = new ButtonGroup();
+        ButtonGroup bg = new ButtonGroup();
         for (String key: Arrays.asList("regular", "mini", "small", "large")) {
-            menu.add(createSizeVariantItem(key, sizeVariantRadioGroup));
+            menu.add(createSizeVariantItem(key, bg));
         }
         return menu;
     }
-    private static JRadioButtonMenuItem createSizeVariantItem(String key, ButtonGroup sizeVariantRadioGroup) {
+    private static JRadioButtonMenuItem createSizeVariantItem(String key, ButtonGroup bg) {
         JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(key, "regular".equals(key));
-        menuItem.addActionListener(e -> setSizeVariant(sizeVariantRadioGroup.getSelection().getActionCommand()));
+        menuItem.addActionListener(e -> setSizeVariant(bg.getSelection().getActionCommand()));
         menuItem.setActionCommand(key);
-        sizeVariantRadioGroup.add(menuItem);
+        bg.add(menuItem);
         return menuItem;
     }
     private static void setSizeVariant(String key) {
