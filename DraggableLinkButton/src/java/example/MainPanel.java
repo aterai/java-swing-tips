@@ -43,9 +43,9 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }
-//         //TransferHandler
-//         final DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
-//         final JLabel label = new JLabel(MYSITE);
+//         // TransferHandler
+//         DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
+//         JLabel label = new JLabel(MYSITE);
 //         label.setTransferHandler(new TransferHandler("text") {
 //             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
 //                 return (flavors.length > 0 && flavors[0].equals(uriflavor));
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 //                 handler.exportAsDrag(l, e, TransferHandler.COPY);
 //             }
 //         });
-//         //DragGestureListener
+//         // DragGestureListener
 //         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY, new DragGestureListener() {
 //             @Override public void dragGestureRecognized(DragGestureEvent dge) {
 //                 Transferable t = new Transferable() {
@@ -113,15 +113,14 @@ public final class MainPanel extends JPanel {
 }
 
 class LinkViewButtonUI extends BasicButtonUI {
-    protected static final LinkViewButtonUI LINK_VIEW_BUTTON_UI = new LinkViewButtonUI();
-    //protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
+    // protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
     protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
     protected final Dimension size;
     protected final Rectangle viewRect;
     protected final Rectangle iconRect;
     protected final Rectangle textRect;
 
-    public static ButtonUI createUI(JButton b, final String href) {
+    public static ButtonUI createUI(JButton b, String href) {
         b.setForeground(Color.BLUE);
         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -132,14 +131,14 @@ class LinkViewButtonUI extends BasicButtonUI {
             @Override protected Transferable createTransferable(JComponent c) {
                 return new Transferable() {
                     @Override public Object getTransferData(DataFlavor flavor) {
-                        //System.out.println(flavor.getMimeType());
+                        // System.out.println(flavor.getMimeType());
                         return href;
                     }
                     @Override public DataFlavor[] getTransferDataFlavors() {
                         return new DataFlavor[] {URI_FLAVOR};
                     }
                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-                        //System.out.println(flavor.getMimeType());
+                        // System.out.println(flavor.getMimeType());
                         return flavor.equals(URI_FLAVOR);
                     }
                 };
@@ -152,7 +151,7 @@ class LinkViewButtonUI extends BasicButtonUI {
                 handler.exportAsDrag(button, e, TransferHandler.COPY);
             }
         });
-        return LINK_VIEW_BUTTON_UI;
+        return new LinkViewButtonUI();
     }
     protected LinkViewButtonUI() {
         super();
@@ -176,15 +175,15 @@ class LinkViewButtonUI extends BasicButtonUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
+            c, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            0); //b.getText() == null ? 0 : b.getIconTextGap());
+            0); // b.getText() == null ? 0 : b.getIconTextGap());
 
         if (c.isOpaque()) {
             g.setColor(b.getBackground());

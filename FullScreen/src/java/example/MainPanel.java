@@ -59,8 +59,7 @@ public class MainPanel extends JPanel {
         Component c = SwingUtilities.getRoot(getRootPane());
         if (c instanceof JDialog) {
             JDialog dialog = (JDialog) c;
-            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+            GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             if (Objects.isNull(graphicsDevice.getFullScreenWindow())) {
                 dialog.dispose(); //destroy the native resources
                 dialog.setUndecorated(true);

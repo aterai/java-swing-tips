@@ -10,34 +10,34 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected final JTextArea area    = new JTextArea();
+    protected final JTextArea area = new JTextArea();
     protected final JButton runButton = new JButton("run");
-    protected final JSpinner millisToDecideToPopup;
+    protected final JSpinner millisToDecide;
     protected final JSpinner millisToPopup;
-    //protected transient SwingWorker<String, String> worker;
-    //protected transient ProgressMonitor monitor;
+    // protected transient SwingWorker<String, String> worker;
+    // protected transient ProgressMonitor monitor;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
         area.setEditable(false);
 
         ProgressMonitor monitorDefault = new ProgressMonitor(null, "message dummy", "note", 0, 100);
-        millisToDecideToPopup = makeSpinner(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
+        millisToDecide = makeSpinner(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
         millisToPopup = makeSpinner(monitorDefault.getMillisToPopup(), 0, 5 * 1000, 100);
 
         runButton.addActionListener(e -> executeWorker((Component) e.getSource()));
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx = 0;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.LINE_END;
         p.add(new JLabel("MillisToDecideToPopup:"), c);
         p.add(new JLabel("MillisToPopup:"), c);
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        p.add(millisToDecideToPopup, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p.add(millisToDecide, c);
         p.add(millisToPopup, c);
 
         Box box = Box.createHorizontalBox();
@@ -52,15 +52,15 @@ public class MainPanel extends JPanel {
     }
     protected final void executeWorker(Component c) {
         Window w = SwingUtilities.getWindowAncestor(c);
-        int toDecideToPopup = (int) millisToDecideToPopup.getValue();
-        int toPopup         = (int) millisToPopup.getValue();
-        int lengthOfTask    = Math.max(10000, toDecideToPopup * 5);
+        int toDecideToPopup = (int) millisToDecide.getValue();
+        int toPopup = (int) millisToPopup.getValue();
+        int lengthOfTask = Math.max(10000, toDecideToPopup * 5);
         ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
         monitor.setMillisToDecideToPopup(toDecideToPopup);
         monitor.setMillisToPopup(toPopup);
 
-        //System.out.println(monitor.getMillisToDecideToPopup());
-        //System.out.println(monitor.getMillisToPopup());
+        // System.out.println(monitor.getMillisToDecideToPopup());
+        // System.out.println(monitor.getMillisToPopup());
 
         runButton.setEnabled(false);
         SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
@@ -122,7 +122,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

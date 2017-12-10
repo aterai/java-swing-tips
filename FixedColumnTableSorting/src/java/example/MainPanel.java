@@ -10,9 +10,9 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    public static final int FIXED_COLUMN_RANGE = 2;
-    //<blockquote cite="FixedColumnExample.java">
-    //@auther Nobuo Tamemasa
+    public static final int FIXEDCOLUMN_RANGE = 2;
+    // <blockquote cite="FixedColumnExample.java">
+    // @auther Nobuo Tamemasa
     private static final String ES = "";
     private final Object[][] data = {
         {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
         {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
     };
     private final Object[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
-    //</blockquote>
+    // </blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return column < FIXED_COLUMN_RANGE ? Integer.class : Object.class;
+            return column < FIXEDCOLUMN_RANGE ? Integer.class : Object.class;
         }
     };
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         fixedTable.setSelectionModel(table.getSelectionModel());
 
         for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-            if (i < FIXED_COLUMN_RANGE) {
+            if (i < FIXEDCOLUMN_RANGE) {
                 table.removeColumn(table.getColumnModel().getColumn(i));
                 fixedTable.getColumnModel().getColumn(i).setResizable(false);
             } else {
@@ -69,13 +69,13 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
         scroll.getRowHeader().setBackground(Color.WHITE);
 
-        //<blockquote cite="https://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
-        //@auther Rob Camick
+        // <blockquote cite="https://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
+        // @auther Rob Camick
         scroll.getRowHeader().addChangeListener(e -> {
             JViewport viewport = (JViewport) e.getSource();
             scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
         });
-        //</blockquote>
+        // </blockquote>
 
         addButton.addActionListener(e -> {
             sorter.setSortKeys(null);
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

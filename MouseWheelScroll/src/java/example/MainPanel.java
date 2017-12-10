@@ -11,8 +11,8 @@ public class MainPanel extends JPanel {
     protected boolean isPressed;
     protected final JLabel label = new JLabel();
     protected final JScrollPane scroll = new JScrollPane(label);
-    protected final JScrollBar defaultVerticalBar = scroll.getVerticalScrollBar();
-    protected final JScrollBar defaultHorizontalBar = scroll.getHorizontalScrollBar();
+    protected final JScrollBar verticalBar = scroll.getVerticalScrollBar();
+    protected final JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
     protected final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
         @Override public boolean isVisible() {
             if (isPressed) {
@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
-        for (JScrollBar sb: Arrays.asList(zeroVerticalBar, zeroHorizontalBar, defaultVerticalBar, defaultHorizontalBar)) {
+        for (JScrollBar sb: Arrays.asList(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar)) {
             sb.setUnitIncrement(25);
         }
 
@@ -77,8 +77,8 @@ public class MainPanel extends JPanel {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                scroll.setVerticalScrollBar(defaultVerticalBar);
-                scroll.setHorizontalScrollBar(defaultHorizontalBar);
+                scroll.setVerticalScrollBar(verticalBar);
+                scroll.setHorizontalScrollBar(horizontalBar);
             }
         });
 

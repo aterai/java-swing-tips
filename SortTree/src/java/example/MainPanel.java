@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,13 +16,13 @@ public final class MainPanel extends JPanel {
     private final JCheckBox sort0 = new JCheckBox("0: bubble sort");
     private final JCheckBox sort1 = new JCheckBox("1: bubble sort");
     private final JCheckBox sort2 = new JCheckBox("2: selection sort");
-    //private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort"); //JDK 1.6.0
-    private final JCheckBox sort3 = new JCheckBox("3: TimSort"); //JDK 1.7.0
+    // private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort"); // JDK 1.6.0
+    private final JCheckBox sort3 = new JCheckBox("3: TimSort"); // JDK 1.7.0
 
     public MainPanel() {
         super(new BorderLayout());
         JPanel box = new JPanel(new GridLayout(2, 2));
-        ActionListener sortActionListener = e -> {
+        ActionListener listener = e -> {
             JCheckBox check = (JCheckBox) e.getSource();
             if (check.isSelected()) {
                 TreeUtil.compareCount.set(0);
@@ -38,7 +37,7 @@ public final class MainPanel extends JPanel {
                 } else {
                     TreeUtil.sortTree3(r);
                 }
-                //log(check.getText());
+                // log(check.getText());
                 tree.setModel(new DefaultTreeModel(r));
             } else {
                 tree.setModel(new DefaultTreeModel(root));
@@ -47,7 +46,7 @@ public final class MainPanel extends JPanel {
         };
         for (JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
             box.add(check);
-            check.addActionListener(sortActionListener);
+            check.addActionListener(listener);
         }
         add(box, BorderLayout.SOUTH);
 
@@ -97,9 +96,9 @@ final class TreeUtil {
     public static AtomicInteger compareCount = new AtomicInteger();
     public static AtomicInteger swapCount = new AtomicInteger();
 
-//     //JDK 1.7.0
+//     // JDK 1.7.0
 //     private static TreeNodeComparator tnc = new TreeNodeComparator();
-//     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+//     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
 //         private static final long serialVersionUID = 1L;
 //         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
 //             compareCount.getAndIncrement();
@@ -115,7 +114,7 @@ final class TreeUtil {
 //         }
 //     }
 
-    //JDK 1.8.0
+    // JDK 1.8.0
     private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
         .thenComparing(n -> n.getUserObject().toString());
 
@@ -181,9 +180,9 @@ final class TreeUtil {
                 MutableTreeNode b = (MutableTreeNode) parent.getChildAt(min);
                 parent.insert(b, i);
                 parent.insert(a, min);
-                //MutableTreeNode node = (MutableTreeNode) parent.getChildAt(min);
-                //parent.insert(node, i);
-                //compareCount++;
+                // MutableTreeNode node = (MutableTreeNode) parent.getChildAt(min);
+                // parent.insert(node, i);
+                // compareCount++;
             }
         }
     }
@@ -227,7 +226,7 @@ final class TreeUtil {
     public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
         for (int i = 0; i < src.getChildCount(); i++) {
             DefaultMutableTreeNode node  = (DefaultMutableTreeNode) src.getChildAt(i);
-            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); //(DefaultMutableTreeNode) node.clone();
+            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); // (DefaultMutableTreeNode) node.clone();
             tgt.add(clone);
             if (!node.isLeaf()) {
                 deepCopyTree(node, clone);

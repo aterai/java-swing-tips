@@ -57,18 +57,18 @@ class SplitPaneWrapper extends JPanel {
     private static int getOrientedSize(JSplitPane sp) {
         return (sp.getOrientation() == JSplitPane.VERTICAL_SPLIT)
             ? sp.getHeight() - sp.getDividerSize()
-            : sp.getWidth()  - sp.getDividerSize();
+            : sp.getWidth() - sp.getDividerSize();
     }
     @Override public void doLayout() {
         if (flag) {
             int size = getOrientedSize(splitPane);
-            final double proportionalLocation = splitPane.getDividerLocation() / (double) size;
+            double proportionalLoc = splitPane.getDividerLocation() / (double) size;
             super.doLayout();
             int state = ((Frame) SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
             if (splitPane.isShowing() && state != prevState) {
                 EventQueue.invokeLater(() -> {
                     int s = getOrientedSize(splitPane);
-                    int iv = (int) Math.round(s * proportionalLocation);
+                    int iv = (int) Math.round(s * proportionalLoc);
                     System.out.format("DividerLocation: %d%n", iv);
                     splitPane.setDividerLocation(iv);
                 });
