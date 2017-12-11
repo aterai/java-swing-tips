@@ -12,35 +12,52 @@ public final class MainPanel extends JPanel {
         JTextArea log = new JTextArea();
         // TEST: UIManager.put("OptionPane.isYesLast", Boolean.TRUE);
 
+        String key = "OptionPane.buttonOrientation";
+
         JButton defaultButton = new JButton("Default");
         defaultButton.addActionListener(e -> {
-            UIManager.put("OptionPane.buttonOrientation", SwingConstants.CENTER);
-            String v = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: CENTER");
-            log.setText(v);
+            Integer iv = UIManager.getLookAndFeelDefaults().getInt(key);
+            System.out.println(iv);
+            UIManager.put(key, iv);
+            String str = JOptionPane.showInputDialog(getRootPane(), "Default");
+            log.setText(str);
         });
 
         JButton rightButton = new JButton("RIGHT");
         rightButton.addActionListener(e -> {
-            UIManager.put("OptionPane.buttonOrientation", SwingConstants.RIGHT);
-            String v = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: RIGHT");
-            log.setText(v);
+            UIManager.put(key, SwingConstants.RIGHT);
+            String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: RIGHT");
+            log.setText(str);
         });
 
+        JButton centerButton = new JButton("CENTER");
+        centerButton.addActionListener(e -> {
+            UIManager.put(key, SwingConstants.CENTER);
+            String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: CENTER");
+            log.setText(str);
+        });
+
+        
         JButton leftButton = new JButton("LEFT");
         leftButton.addActionListener(e -> {
-            UIManager.put("OptionPane.buttonOrientation", SwingConstants.LEFT);
-            String v = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: LEFT");
-            log.setText(v);
+            UIManager.put(key, SwingConstants.LEFT);
+            String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: LEFT");
+            log.setText(str);
         });
 
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JOptionPane"));
         p.add(defaultButton);
         p.add(rightButton);
+        p.add(centerButton);
         p.add(leftButton);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void updateUI() {
+        UIManager.put("OptionPane.buttonOrientation", null);
+        super.updateUI();
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
