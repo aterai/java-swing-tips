@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-//import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -17,9 +16,9 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(new DefaultTableModel(columnNames, 8));
         TableColumnModel m = table.getColumnModel();
         for (int i = 0; i < m.getColumnCount(); i++) {
-            //m.getColumn(i).setHeaderRenderer(new IconColumnHeaderRenderer());
-            //m.getColumn(i).setHeaderRenderer(new HtmlIconHeaderRenderer());
-            //m.getColumn(i).setHeaderValue(String.format("<html><table><td><img src='%s'/></td>%s", icons[i], columnNames[i]));
+            // m.getColumn(i).setHeaderRenderer(new IconColumnHeaderRenderer());
+            // m.getColumn(i).setHeaderRenderer(new HtmlIconHeaderRenderer());
+            // m.getColumn(i).setHeaderValue(String.format("<html><table><td><img src='%s'/></td>%s", icons[i], columnNames[i]));
             m.getColumn(i).setHeaderValue(String.format("<html><table cellpadding='0' cellspacing='0'><td><img src='%s'/></td>&nbsp;%s", icons[i], columnNames[i]));
         }
         table.setAutoCreateRowSorter(true);
@@ -55,7 +54,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// //TEST: LookAndFeel
+// // TEST: LookAndFeel
 // class IconColumnHeaderRenderer implements TableCellRenderer {
 //     private final Icon icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
 //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -67,14 +66,14 @@ public final class MainPanel extends JPanel {
 //     }
 // }
 
-//TEST: html baseline
+// TEST: html baseline
 // class HtmlIconHeaderRenderer implements TableCellRenderer {
 //     private final URL url = getClass().getResource("wi0063-16.png");
 //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
 //         String str = Objects.toString(value, "");
 //         String html = String.format("<html><img src='%s'/>&nbsp;%s", url, str);
-//         //String html = String.format("<html><table><td cellpadding='0'><img src='%s'/></td>%s", url, str);
+//         // String html = String.format("<html><table><td cellpadding='0'><img src='%s'/></td>%s", url, str);
 //         return r.getTableCellRendererComponent(table, html, isSelected, hasFocus, row, column);
 //     }
 // }
@@ -113,7 +112,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

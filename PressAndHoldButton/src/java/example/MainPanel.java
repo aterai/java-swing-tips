@@ -4,18 +4,15 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.net.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.Timer;
-//import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JToolBar toolbar = new JToolBar("toolbar");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JToolBar toolbar = new JToolBar("toolbar");
         toolbar.add(new PressAndHoldButton(new ImageIcon(getClass().getResource("ei0021-16.png"))));
         add(toolbar, BorderLayout.NORTH);
         add(new JLabel("press and hold the button for 1000 milliseconds"));

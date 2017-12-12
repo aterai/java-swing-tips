@@ -7,13 +7,12 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
-//import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.text.View;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
-//Copied from
-//JTabbedPane with close Icons | Oracle Forums
-//https://community.oracle.com/thread/1356993
+// Copied from
+// JTabbedPane with close Icons | Oracle Forums
+// https://community.oracle.com/thread/1356993
 
 /**
  * A JTabbedPane which has a close ('X') icon on each tab.
@@ -33,7 +32,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
     /**
      * The viewport of the scrolled tabs.
      */
-    //protected JViewport headerViewport;
+    // protected JViewport headerViewport;
 
     protected transient CloseableTabIconHandler handler;
 
@@ -136,10 +135,11 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
 //         super.addTab(title, new CloseTabIcon(extraIcon), component);
 //
 //         if (Objects.isNull(headerViewport)) {
-//             //for (Component c: getComponents()) {
-//             //    if ("TabbedPane.scrollableViewport".equals(c.getName()))
-//             //      headerViewport = (JViewport) c;
-//             //}
+//             // for (Component c: getComponents()) {
+//             //     if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+//             //         headerViewport = (JViewport) c;
+//             //     }
+//             // }
 //
 //             Component[] list = getComponents();
 //             for (int i = 0; i < list.length; i++) {

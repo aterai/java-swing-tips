@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
-// import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
@@ -53,13 +52,13 @@ public final class MainPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBackground(Color.RED);
         scroll.getViewport().setBackground(Color.GREEN);
-        //table.setBackground(Color.BLUE);
-        //table.setOpaque(false);
-        //table.setBackground(scroll.getBackground());
+        // table.setBackground(Color.BLUE);
+        // table.setOpaque(false);
+        // table.setBackground(scroll.getBackground());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setComponentPopupMenu(new TablePopupMenu());
-        //scroll.getViewport().setComponentPopupMenu(makePop());
-        //scroll.setComponentPopupMenu(makePop());
+        // scroll.getViewport().setComponentPopupMenu(makePop());
+        // scroll.setComponentPopupMenu(makePop());
         table.setRowSorter(new TableRowSorter<>(model));
 
         add(makeToolBox(table),  BorderLayout.NORTH);

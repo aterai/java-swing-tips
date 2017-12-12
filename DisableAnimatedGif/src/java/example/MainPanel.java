@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-//import java.awt.color.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -49,7 +48,7 @@ public final class MainPanel extends JPanel {
         p.add(label3);
         add(check, BorderLayout.NORTH);
         add(p);
-        //setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        // setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         setPreferredSize(new Dimension(320, 240));
     }
     private static Icon makeDisabledIcon(ImageIcon icon) {
@@ -81,7 +80,7 @@ public final class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        //frame.setResizable(false);
+        // frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

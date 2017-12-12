@@ -4,8 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.awt.geom.*;
-//import java.beans.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -31,7 +29,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -56,7 +54,7 @@ class ImageCaptionLabel extends JLabel {
             setFont(getFont().deriveFont(11f));
             setOpaque(false);
             setEditable(false);
-            //setFocusable(false);
+            // setFocusable(false);
             setBackground(new Color(0x0, true));
             setForeground(Color.WHITE);
             setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
@@ -70,14 +68,14 @@ class ImageCaptionLabel extends JLabel {
             };
             addMouseListener(listener);
         }
-        //@Override public boolean contains(int x, int y) {
-        //    return false;
-        //}
+//         @Override public boolean contains(int x, int y) {
+//             return false;
+//         }
     };
     protected final transient LabelHandler handler = new LabelHandler(textArea);
     protected void dispatchMouseEvent(MouseEvent e) {
         Component src = e.getComponent();
-        //this: target Component;
+        // this: target Component;
         this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
     }
     @Override public void updateUI() {
@@ -87,19 +85,19 @@ class ImageCaptionLabel extends JLabel {
             BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
-                //Insets insets = parent.getInsets();
+                // Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
                 if (ncomponents == 0) {
                     return;
                 }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
-                int x = 0; //insets.left; int y = insets.top;
+                int x = 0; // insets.left; int y = insets.top;
                 int tah = handler.getTextAreaHeight();
-                //for (int i = 0; i < ncomponents; i++) {
-                Component c = parent.getComponent(0); //= textArea;
+                // for (int i = 0; i < ncomponents; i++) {
+                Component c = parent.getComponent(0); // = textArea;
                 c.setBounds(x, height - tah, width, c.getPreferredSize().height);
-                //}
+                // }
             }
         });
     }
@@ -130,12 +128,12 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
         count += direction;
         txah = (int) (.5 + a * height);
         textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-        if (direction > 0) { //show
+        if (direction > 0) { // show
             if (txah >= textArea.getPreferredSize().height) {
                 txah = textArea.getPreferredSize().height;
                 animator.stop();
             }
-        } else { //hide
+        } else { // hide
             if (txah <= 0) {
                 txah = 0;
                 animator.stop();
@@ -176,10 +174,10 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
 final class AnimationUtil {
     private static final int N = 3;
     private AnimationUtil() { /* Singleton */ }
-    //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+    // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
+    // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     public static double easeIn(double t) {
-        //range: 0.0 <= t <= 1.0
+        // range: 0.0 <= t <= 1.0
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {
@@ -204,14 +202,14 @@ final class AnimationUtil {
         }
         return ret;
     }
-    //http://d.hatena.ne.jp/pcl/20120617/p1
-    //http://d.hatena.ne.jp/rexpit/20110328/1301305266
-    //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
-    //http://www.osix.net/modules/article/?id=696
+    // http://d.hatena.ne.jp/pcl/20120617/p1
+    // http://d.hatena.ne.jp/rexpit/20110328/1301305266
+    // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+    // http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
         int b = ib;
         if (b < 0) {
-            //return d / intpow(a, -b);
+            // return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;

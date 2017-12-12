@@ -9,7 +9,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.*;
-// import javax.activation.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

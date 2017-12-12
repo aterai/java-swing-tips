@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.util.*;
 import java.util.stream.*;
 import javax.swing.*;
 
@@ -16,14 +15,14 @@ public final class MainPanel extends JPanel {
         box.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
                 Component c = super.getComponentAfter(focusCycleRoot, cmp);
-                //TEST1: box.scrollRectToVisible(c.getBounds());
-                //TEST2:
-                //Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot)).ifPresent(v -> {
-                //    Component vc = SwingUtilities.getUnwrappedView((JViewport) v);
-                //    if (vc instanceof JComponent) {
-                //        ((JComponent) vc).scrollRectToVisible(c.getBounds());
-                //    }
-                //});
+                // TEST1: box.scrollRectToVisible(c.getBounds());
+                // TEST2:
+                // Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot)).ifPresent(v -> {
+                //     Component vc = SwingUtilities.getUnwrappedView((JViewport) v);
+                //     if (vc instanceof JComponent) {
+                //         ((JComponent) vc).scrollRectToVisible(c.getBounds());
+                //     }
+                // });
                 if (focusCycleRoot instanceof JComponent) {
                     ((JComponent) focusCycleRoot).scrollRectToVisible(c.getBounds());
                 }

@@ -4,8 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-// import java.io.*;
-// import java.sql.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -163,7 +161,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -180,6 +178,8 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         this.itemsPerPage = itemsPerPage;
     }
     @Override public String doInBackground() {
+        // import java.io.*;
+        // import java.sql.*;
         // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default/places.sqlite");
         // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
         // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
@@ -188,9 +188,9 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         int i = 0;
         while (i < c && !isCancelled()) {
             try {
-                Thread.sleep(500); //dummy
+                Thread.sleep(500); // dummy
             } catch (InterruptedException ex) {
-                //ex.printStackTrace();
+                // ex.printStackTrace();
                 return "Interrupted";
             }
             current = makeRowListAndPublish(current, itemsPerPage);
@@ -203,7 +203,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
             // load(stat, current, surplus);
         }
         // } catch (SQLException ex) {
-        //     //ex.printStackTrace();
+        //     // ex.printStackTrace();
         //     return "Error";
         // }
         return "Done";

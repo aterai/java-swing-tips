@@ -4,12 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
-//import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-// import java.io.*;
-// import java.nio.charset.StandardCharsets;
-// import java.util.Arrays;
 import java.util.Objects;
 import javax.jnlp.*;
 import javax.swing.*;
@@ -94,8 +90,7 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(textArea));
 
 //         JLabel l = new JLabel("Starburst.svg(drag here)");
-//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-//             l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
+//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
 //         p.add(l, BorderLayout.NORTH);
         return p;
     }
@@ -142,7 +137,7 @@ public final class MainPanel extends JPanel {
         int r2 = inner.getNumber().intValue();
         int vc = vcModel.getNumber().intValue();
         boolean antialias = check.isSelected();
-        //outer.setMinimum(r2 + 1);
+        // outer.setMinimum(r2 + 1);
         Path2D star = StarburstSVGMaker.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
@@ -258,6 +253,7 @@ class StarIcon implements Icon {
     }
 }
 
+// import java.nio.charset.StandardCharsets;
 // class FileWriter {
 //     private final File file;
 //     protected FileWriter(File file) {

@@ -8,7 +8,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Objects;
-// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -21,12 +20,12 @@ public final class MainPanel extends JPanel {
 
         String[] columnNames = {"String", "Icon", "Boolean"};
         Object[][] data = {
-            {"aaa", new ColorIcon(Color.RED),    true},
-            {"bbb", new ColorIcon(Color.GREEN),  false},
-            {"ccc", new ColorIcon(Color.BLUE),   true},
+            {"aaa", new ColorIcon(Color.RED), true},
+            {"bbb", new ColorIcon(Color.GREEN), false},
+            {"ccc", new ColorIcon(Color.BLUE), true},
             {"ddd", new ColorIcon(Color.ORANGE), true},
-            {"eee", new ColorIcon(Color.PINK),   false},
-            {"fff", new ColorIcon(Color.CYAN),   true},
+            {"eee", new ColorIcon(Color.PINK), false},
+            {"fff", new ColorIcon(Color.CYAN), true},
         };
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {

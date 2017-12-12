@@ -5,9 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-// import java.io.IOException;
 import java.util.Arrays;
-// import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

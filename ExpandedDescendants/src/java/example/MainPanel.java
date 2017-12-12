@@ -4,12 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-// import java.io.*;
 import java.util.*;
-// import java.util.List;
 import javax.swing.*;
-// import javax.swing.event.*;
-// import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
@@ -21,7 +17,7 @@ public final class MainPanel extends JPanel {
         DefaultMutableTreeNode root = makeTreeRoot();
         JTree tree = new JTree(new DefaultTreeModel(root));
 
-//         //TEST:
+//         // TEST:
 //         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 //         DefaultTreeModel treeModel = new DefaultTreeModel(root);
 //         for (File fileSystemRoot: fileSystemView.getRoots()) {
@@ -64,7 +60,7 @@ public final class MainPanel extends JPanel {
         JButton collapse = new JButton("Collapse");
         collapse.addActionListener(e -> {
             visitAll(tree, rootPath, false);
-            //tree.expandPath(rootPath);
+            // tree.expandPath(rootPath);
         });
 
         JPanel box = new JPanel(new GridLayout(1, 4));
@@ -163,16 +159,16 @@ public final class MainPanel extends JPanel {
 //         this.fileSystemView = fileSystemView;
 //     }
 //     @Override public void valueChanged(TreeSelectionEvent e) {
-//         final JTree tree = (JTree) e.getSource();
-//         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+//         JTree tree = (JTree) e.getSource();
+//         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 // //         if (Objects.isNull(frame)) {
 // //             frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
 // //             frame.setGlassPane(new LockingGlassPane());
 // //         }
 // //         frame.getGlassPane().setVisible(true);
 //
-//         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-//         //final TreePath path = e.getPath();
+//         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+//         // TreePath path = e.getPath();
 //
 //         if (!node.isLeaf()) {
 //             return;
@@ -201,12 +197,12 @@ public final class MainPanel extends JPanel {
 //                 for (File file: chunks) {
 //                     node.add(new DefaultMutableTreeNode(file));
 //                 }
-//                 model.reload(parent); //= model.nodeStructureChanged(parent);
-//                 //tree.expandPath(path);
+//                 model.reload(parent); // = model.nodeStructureChanged(parent);
+//                 // tree.expandPath(path);
 //             }
 // //              @Override public void done() {
-// //                  //frame.getGlassPane().setVisible(false);
-// //                  //tree.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+// //                  // frame.getGlassPane().setVisible(false);
+// //                  // tree.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 // //              }
 //         };
 //         worker.execute();
@@ -225,7 +221,7 @@ public final class MainPanel extends JPanel {
 //         if (selected) {
 //             c.setOpaque(false);
 //             c.setForeground(getTextSelectionColor());
-//             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
+//             // c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
 //         } else {
 //             c.setOpaque(true);
 //             c.setForeground(getTextNonSelectionColor());

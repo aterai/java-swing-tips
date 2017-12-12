@@ -8,7 +8,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
-// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -96,20 +95,20 @@ public final class MainPanel extends JPanel {
 //         // MouseListener
 //         @Override public void mousePressed(MouseEvent e) {
 //             JTableHeader src = (JTableHeader) e.getComponent();
-//             startPt = e.getPoint(); //e.getDragOrigin();
-//             //System.out.println(startPt);
+//             startPt = e.getPoint(); // e.getDragOrigin();
+//             // System.out.println(startPt);
 //         }
 //         @Override public void mouseDragged(MouseEvent e) {
-//             Point tabPt = e.getPoint(); //e.getDragOrigin();
+//             Point tabPt = e.getPoint(); // e.getDragOrigin();
 //             if (startPt != null && startPt.distance(tabPt) > gestureMotionThreshold) {
 //                 JTableHeader src = (JTableHeader) e.getComponent();
 //                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa" + src);
 //                 TransferHandler th = src.getTransferHandler();
 //                 index = src.columnAtPoint(tabPt);
 //                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-//                 //lineRect.setBounds(0, 0, 0, 0);
-//                 //src.getRootPane().getGlassPane().setVisible(true);
-//                 //src.setDropLocation(new DropLocation(tabPt, -1), null, true);
+//                 // lineRect.setBounds(0, 0, 0, 0);
+//                 // src.getRootPane().getGlassPane().setVisible(true);
+//                 // src.setDropLocation(new DropLocation(tabPt, -1), null, true);
 //                 startPt = null;
 //             }
 //         }
@@ -122,12 +121,12 @@ public final class MainPanel extends JPanel {
 //         @Override protected Transferable createTransferable(JComponent c) {
 //             System.out.println("createTransferable");
 //             JTableHeader header = (JTableHeader) c;
-//             //int index = table.getSelectedColumn();
-//             //TableColumn column = header.getDraggedColumn();
+//             // int index = table.getSelectedColumn();
+//             // TableColumn column = header.getDraggedColumn();
 //             return new DataHandler(header, localObjectFlavor.getMimeType());
 //         }
 //         @Override public boolean canImport(TransferHandler.TransferSupport info) {
-//             //System.out.println("canImport");
+//             // System.out.println("canImport");
 //             return info.isDataFlavorSupported(localObjectFlavor);
 //         }
 //         @Override public int getSourceActions(JComponent c) {
@@ -137,7 +136,7 @@ public final class MainPanel extends JPanel {
 //         @Override public boolean importData(TransferHandler.TransferSupport info) {
 //             System.out.println("importData");
 //             JTableHeader target = (JTableHeader) info.getComponent();
-//             //JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
+//             // JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
 //             try {
 //                 JTableHeader source = (JTableHeader) info.getTransferable().getTransferData(localObjectFlavor);
 //                 System.out.println("source: " + source);
@@ -342,7 +341,7 @@ class TableRowTransferHandler extends TransferHandler {
                 model.removeRow(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

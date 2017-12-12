@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
 import java.util.List;
-//import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -22,11 +21,11 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
 
         log("MainPanel: init");
-        //updateCheckBox("MainPanel: init");
+        // updateCheckBox("MainPanel: init");
 
         UIManager.addPropertyChangeListener(e -> {
             if (e.getPropertyName().equals("lookAndFeel")) {
-                //String lnf = e.getNewValue().toString();
+                // String lnf = e.getNewValue().toString();
                 updateCheckBox("UIManager: propertyChange");
             }
         });
@@ -48,8 +47,8 @@ public class MainPanel extends JPanel {
         });
 
 //         listMenuItems(menuBar)
-//           .filter(mi -> mi instanceof JRadioButtonMenuItem)
-//           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
+//             .filter(mi -> mi instanceof JRadioButtonMenuItem)
+//             .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
         JPanel np = new JPanel(new GridLayout(2, 1));
         np.add(dfbaiCheck);
@@ -164,7 +163,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

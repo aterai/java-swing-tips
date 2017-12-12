@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-// import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Optional;
@@ -101,12 +100,12 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
             Caret caret = tc.getCaret();
             int d = caret.getDot();
             int m = caret.getMark();
-            //logger.info(m + " / " + d);
+            // logger.info(m + " / " + d);
             if (d != m && (dot != d || mark != m)) {
                 Optional.ofNullable(tc.getSelectedText()).ifPresent(str -> {
                     logger.info(str);
-                    //StringSelection data = new StringSelection(str);
-                    //Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
+                    // StringSelection data = new StringSelection(str);
+                    // Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
                     tc.copy();
                 });
             }

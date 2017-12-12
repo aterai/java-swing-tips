@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-// import java.beans.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -146,7 +145,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-    //@see https://ateraimemo.com/Swing/ButtonWidth.html
+    // @see https://ateraimemo.com/Swing/ButtonWidth.html
     private static Component createRightAlignButtonBox4(List<? extends Component> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {

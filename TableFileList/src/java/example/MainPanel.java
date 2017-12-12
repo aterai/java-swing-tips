@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
-// import java.util.List;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -291,7 +290,7 @@ class FileNameRenderer implements TableCellRenderer {
 //     @Override public void invalidate() { /* Overridden for performance reasons. */ }
 //     @Override public void validate()   { /* Overridden for performance reasons. */ }
 //     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-//     //<---- Overridden for performance reasons.
+//     // <---- Overridden for performance reasons.
 // }
 
 class FileListTable extends JTable {

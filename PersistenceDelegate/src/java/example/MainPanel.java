@@ -8,7 +8,6 @@ import java.beans.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-//import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -34,19 +33,19 @@ public class MainPanel extends JPanel {
         encButton.addActionListener(e -> {
             try {
                 File file = File.createTempFile("output", ".xml");
-                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                 try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
 //                     xe.setExceptionListener(new ExceptionListener() {
 //                         @Override public void exceptionThrown(Exception ex) {
-//                             //XXX: ex.printStackTrace();
+//                             // XXX: ex.printStackTrace();
 //                         }
 //                     });
                     xe.writeObject(model);
-                    //xe.flush();
-                    //xe.close();
+                    // xe.flush();
+                    // xe.close();
                 }
-                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                 try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                     textArea.read(r, "temp");
                 }
@@ -106,8 +105,8 @@ public class MainPanel extends JPanel {
     }
 }
 
-//http://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
-//http://www.oracle.com/technetwork/java/persistence4-140124.html
+// http://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
+// http://www.oracle.com/technetwork/java/persistence4-140124.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
     @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
         super.initialize(type, oldInstance, newInstance, encoder);

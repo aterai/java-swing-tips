@@ -5,8 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.nio.charset.*;
-//import java.util.Objects;
-//import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -27,8 +25,8 @@ public final class MainPanel extends JPanel {
         add(makeTitlePanel(p1, "BorderLayout + JCheckBox"));
 
         JPasswordField pf2 = makePasswordField();
-        //AbstractDocument doc = (AbstractDocument) pf2.getDocument();
-        //doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
+        // AbstractDocument doc = (AbstractDocument) pf2.getDocument();
+        // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
         AbstractButton b2 = new JToggleButton();
         b2.addActionListener(e -> {
             AbstractButton c = (AbstractButton) e.getSource();
@@ -151,7 +149,7 @@ enum PasswordField {
 }
 
 // class ASCIIOnlyDocumentFilter extends DocumentFilter {
-//     //private static Pattern pattern = Pattern.compile("\\A\\p{ASCII}*\\z");
+//     // private static Pattern pattern = Pattern.compile("\\A\\p{ASCII}*\\z");
 //     private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
 //
 //     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
@@ -183,7 +181,7 @@ enum PasswordField {
 // //                 throw new BadLocationException(proposedValue, offset);
 // //             }
 // //         }
-// //         //if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { //JDK 8
+// //         // if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { //JDK 8
 // //         Matcher m = pattern.matcher(proposedValue);
 // //         if (!proposedValue.isEmpty() && !m.find()) {
 // //             throw new BadLocationException(proposedValue, offset);

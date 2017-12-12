@@ -7,7 +7,6 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Objects;
-// import javax.activation.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

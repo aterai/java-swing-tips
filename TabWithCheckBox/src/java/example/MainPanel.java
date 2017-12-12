@@ -4,11 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.util.Objects;
 import javax.swing.*;
-// import javax.swing.plaf.ButtonUI;
-// import javax.swing.plaf.basic.BasicRadioButtonUI;
-// import javax.swing.plaf.synth.*;
 
 public final class MainPanel extends JPanel {
     private int count;
@@ -19,7 +15,7 @@ public final class MainPanel extends JPanel {
         JTabbedPane tabs = new JTabbedPane() {
             @Override public void addTab(String title, Component content) {
                 super.addTab(title, content);
-//                 //TEST:
+//                 // TEST:
 //                 JCheckBox check = new JCheckBox(title) {
 //                     private final Rectangle viewRect = new Rectangle();
 //                     private final Rectangle textRect = new Rectangle();
@@ -30,10 +26,10 @@ public final class MainPanel extends JPanel {
 //                         if (ui instanceof BasicRadioButtonUI) {
 //                             icon = ((BasicRadioButtonUI) ui).getDefaultIcon();
 //                         } else if (ui instanceof SynthButtonUI) {
-//                             //icon = ((SynthButtonUI) ui).getDefaultIcon(this);
+//                             // icon = ((SynthButtonUI) ui).getDefaultIcon(this);
 //                             SynthContext context = ((SynthButtonUI) ui).getContext(this);
 //                             icon = context.getStyle().getIcon(context, "CheckBox.icon");
-//                             //context.dispose();
+//                             // context.dispose();
 //                         } else {
 //                             icon = getIcon();
 //                         }

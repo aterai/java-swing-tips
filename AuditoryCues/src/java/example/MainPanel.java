@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-// import java.security.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
@@ -61,6 +60,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
+// import java.security.*;
 //     private byte[] loadAudioData(final String soundFile) {
 //         if (soundFile == null) {
 //           return null;

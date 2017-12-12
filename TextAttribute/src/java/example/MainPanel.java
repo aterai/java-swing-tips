@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
-//import java.text.AttributedCharacterIterator.Attribute;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -22,12 +21,12 @@ public final class MainPanel extends JPanel {
 
         Font font = textField2.getFont();
         textField2.setFont(font.deriveFont(16f));
-        //TEST:
-        //Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
-        //attrs.put(TextAttribute.SIZE, 32);
-        //attrs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
-        //textField.setFont(font.deriveFont(attrs));
-        //textField.setMargin(new Insets(4, 2, 4, 2));
+        // TEST:
+        // Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
+        // attrs.put(TextAttribute.SIZE, 32);
+        // attrs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        // textField.setFont(font.deriveFont(attrs));
+        // textField.setMargin(new Insets(4, 2, 4, 2));
 
         comboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {

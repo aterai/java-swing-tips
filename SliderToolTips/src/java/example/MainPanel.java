@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
-        //slider.setPaintLabels(true);
+        // slider.setPaintLabels(true);
         slider.addMouseWheelListener(new SliderMouseWheelListener());
         return slider;
     }
@@ -96,7 +95,7 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
                       default:
                         throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
-                    super.mousePressed(e); //isDragging = true;
+                    super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {
                     super.mousePressed(e);
@@ -125,7 +124,7 @@ class MetalTooltipSliderUI extends MetalSliderUI {
                       default:
                         throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
-                    super.mousePressed(e); //isDragging = true;
+                    super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {
                     super.mousePressed(e);

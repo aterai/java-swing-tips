@@ -9,7 +9,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-// import javax.activation.*;
 import javax.swing.*;
 
 public final class MainPanel {

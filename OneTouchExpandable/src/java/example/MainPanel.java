@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.lang.reflect.*;
 import java.security.*;
-// import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -30,7 +29,7 @@ public final class MainPanel extends JPanel {
 
         final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
         splitPane.setOneTouchExpandable(true);
-        //splitPane.setDividerLocation(0);
+        // splitPane.setDividerLocation(0);
 
 //         BasicService bs;
 //         try {

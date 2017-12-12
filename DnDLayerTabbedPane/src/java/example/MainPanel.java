@@ -10,7 +10,6 @@ import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
 import java.util.*;
-// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -35,7 +34,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("JTabbedPane 06", new JLayer<>(sub, layerUI));
         tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
 
-        //ButtonTabComponent
+        // ButtonTabComponent
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
             tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
@@ -126,8 +125,8 @@ public final class MainPanel extends JPanel {
 }
 
 class DnDTabbedPane extends JTabbedPane {
-    private static final int SCROLL_SIZE = 20; //Test
-    private static final int BUTTON_SIZE = 30; //XXX 30 is magic number of scroll button size
+    private static final int SCROLL_SIZE = 20; // Test
+    private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
     private static final Rectangle RECT_BACKWARD = new Rectangle();
     private static final Rectangle RECT_FORWARD  = new Rectangle();
     private final DropMode dropMode = DropMode.INSERT;
@@ -195,7 +194,7 @@ class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
     }
     public DropLocation dropLocationForPoint(Point p) {
-        //boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
+        // boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
         switch (dropMode) {
           case INSERT:
             for (int i = 0; i < getTabCount(); i++) {
@@ -267,13 +266,13 @@ class DnDTabbedPane extends JTabbedPane {
         remove(prev);
         insertTab(str, icon, cmp, tip, tgtindex);
         setEnabledAt(tgtindex, isEnabled);
-        //When you drag'n'drop a disabled tab, it finishes enabled and selected.
-        //pointed out by dlorde
+        // When you drag'n'drop a disabled tab, it finishes enabled and selected.
+        // pointed out by dlorde
         if (isEnabled) {
             setSelectedIndex(tgtindex);
         }
-        //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
-        //pointed out by Daniel Dario Morales Salas
+        // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
+        // pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
 //     public Rectangle getTabAreaBounds() {
@@ -319,7 +318,7 @@ class DnDTabbedPane extends JTabbedPane {
             }
         }
         tabbedRect.translate(-xx, -yy);
-        //tabbedRect.grow(2, 2);
+        // tabbedRect.grow(2, 2);
         return tabbedRect;
     }
 
@@ -330,12 +329,12 @@ class DnDTabbedPane extends JTabbedPane {
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
         private Point startPt;
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
-        //private final Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
+        // private final Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
         // PropertyChangeListener
         @Override public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
-                //System.out.println("propertyChange: dropLocation");
+                // System.out.println("propertyChange: dropLocation");
                 repaint();
             }
         }
@@ -347,15 +346,15 @@ class DnDTabbedPane extends JTabbedPane {
                 startPt = null;
                 return;
             }
-            Point tabPt = e.getPoint(); //e.getDragOrigin();
+            Point tabPt = e.getPoint(); // e.getDragOrigin();
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
-            //disabled tab, null component problem.
-            //pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
+            // disabled tab, null component problem.
+            // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
             boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
             startPt = flag ? null : tabPt;
         }
         @Override public void mouseDragged(MouseEvent e) {
-            Point tabPt = e.getPoint(); //e.getDragOrigin();
+            Point tabPt = e.getPoint(); // e.getDragOrigin();
             if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
@@ -394,7 +393,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
         System.out.println("DropTargetListener#dragEnter: " + c.getName());
     }
 //     @Override public void dragOver(DropTargetDragEvent dtde) {
-//         //System.out.println("dragOver");
+//         // System.out.println("dragOver");
 //     }
 //     @Override public void dropActionChanged(DropTargetDragEvent dtde) {
 //         System.out.println("dropActionChanged");
@@ -412,8 +411,8 @@ class TabTransferHandler extends TransferHandler {
     protected final DataFlavor localObjectFlavor;
     protected DnDTabbedPane source;
     protected final JLabel label = new JLabel() {
-        //Free the pixel: GHOST drag and drop, over multiple windows
-        //http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
+        // Free the pixel: GHOST drag and drop, over multiple windows
+        // https://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
         @Override public boolean contains(int x, int y) {
             return false;
         }

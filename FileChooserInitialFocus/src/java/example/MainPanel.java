@@ -6,10 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-// import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.swing.*;
-// import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -52,14 +50,14 @@ public final class MainPanel extends JPanel {
 //             @Override public void updateUI() {
 //                 super.updateUI();
 //                 EventQueue.invokeLater(() -> {
-//                 setUI(new sun.swing.plaf.synth.SynthFileChooserUIImpl(fileChooser) {
-//                     @Override protected void doAncestorChanged(java.beans.PropertyChangeEvent e) {
-//                         findFileNameTextField(fileChooser).ifPresent(c -> {
-//                             ((JTextField) c).selectAll();
-//                             c.requestFocusInWindow();
-//                         });
-//                     }
-//                 });
+//                     setUI(new sun.swing.plaf.synth.SynthFileChooserUIImpl(fileChooser) {
+//                         @Override protected void doAncestorChanged(java.beans.PropertyChangeEvent e) {
+//                             findFileNameTextField(fileChooser).ifPresent(c -> {
+//                                 ((JTextField) c).selectAll();
+//                                 c.requestFocusInWindow();
+//                             });
+//                         }
+//                     });
 //                 });
 //             }
 //         };
@@ -108,6 +106,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setPreferredSize(new Dimension(320, 240));
     }
+// import java.util.function.Function;
 //     private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
 //         return Arrays.stream(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
 //             @Override public Stream<Component> apply(Component c) {

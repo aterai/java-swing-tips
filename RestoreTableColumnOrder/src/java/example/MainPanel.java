@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.util.*;
-//import java.util.List;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.*;
@@ -32,7 +31,7 @@ public final class MainPanel extends JPanel {
         add(b, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-//     //TEST: selection sort
+//     // TEST: selection sort
 //     public static void sortTableColumn(TableColumnModel model) {
 //         int n = model.getColumnCount();
 //         for (int i = 0; i < n - 1; i++) {
@@ -71,7 +70,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SortableTableColumnModel extends DefaultTableColumnModel {
-    //TEST: private static Comparator<TableColumn> tcc = (o1, o2) -> o1.getModelIndex() - o2.getModelIndex();
+    // TEST: private static Comparator<TableColumn> tcc = (o1, o2) -> o1.getModelIndex() - o2.getModelIndex();
     public void restoreColumnOrder() {
         Collections.sort(tableColumns, Comparator.comparingInt(TableColumn::getModelIndex));
         fireColumnMoved(new TableColumnModelEvent(this, 0, tableColumns.size()));

@@ -6,9 +6,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-// import javax.swing.event.*;
 import javax.swing.table.*;
-// import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final int AUTOWRAP_COLUMN = 1;
@@ -37,12 +35,12 @@ public final class MainPanel extends JPanel {
                 return c;
             }
 //             @Override public void doLayout() {
-//                 //System.out.println("doLayout");
+//                 // System.out.println("doLayout");
 //                 initPreferredHeight();
 //                 super.doLayout();
 //             }
 //             @Override public void columnMarginChanged(final ChangeEvent e) {
-//                 //System.out.println("columnMarginChanged");
+//                 // System.out.println("columnMarginChanged");
 //                 super.columnMarginChanged(e);
 //                 initPreferredHeight();
 //             }
@@ -63,11 +61,11 @@ public final class MainPanel extends JPanel {
 //             // https://tips4java.wordpress.com/2008/10/26/text-utilities/
 //             private int getPreferredHeight(JTextComponent c) {
 //                 Insets insets = c.getInsets();
-//                 //Insets margin = c.getMargin();
-//                 //System.out.println(insets);
+//                 // Insets margin = c.getMargin();
+//                 // System.out.println(insets);
 //                 View view = c.getUI().getRootView(c).getView(0);
 //                 float f = view.getPreferredSpan(View.Y_AXIS);
-//                 //System.out.println(f);
+//                 // System.out.println(f);
 //                 int preferredHeight = (int) f;
 //                 return preferredHeight + insets.top + insets.bottom;
 //             }
@@ -75,7 +73,7 @@ public final class MainPanel extends JPanel {
         table.setEnabled(false);
         table.setShowGrid(false);
         table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
-        //table.setIntercellSpacing(new Dimension());
+        // table.setIntercellSpacing(new Dimension());
         add(new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -106,14 +104,14 @@ public final class MainPanel extends JPanel {
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
 
-    //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
+    // public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
     @Override public void updateUI() {
         super.updateUI();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        //setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        //setMargin(new Insets(2, 2, 2, 2));
-        //setBorder(BorderFactory.createEmptyBorder());
+        // setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        // setMargin(new Insets(2, 2, 2, 2));
+        // setBorder(BorderFactory.createEmptyBorder());
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -128,14 +126,14 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
      * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
      */
     private void adjustRowHeight(JTable table, int row, int column) {
-        //The trick to get this to work properly is to set the width of the column to the
-        //textarea. The reason for this is that getPreferredSize(), without a width tries
-        //to place all the text in one line. By setting the size with the with of the column,
-        //getPreferredSize() returnes the proper height which the row should have in
-        //order to make room for the text.
-        //int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-        //int cWidth = table.getCellRect(row, column, false).width; //Ignore IntercellSpacing
-        //setSize(new Dimension(cWidth, 1000));
+        // The trick to get this to work properly is to set the width of the column to the
+        // textarea. The reason for this is that getPreferredSize(), without a width tries
+        // to place all the text in one line. By setting the size with the with of the column,
+        // getPreferredSize() returnes the proper height which the row should have in
+        // order to make room for the text.
+        // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+        // int cWidth = table.getCellRect(row, column, false).width; //Ignore IntercellSpacing
+        // setSize(new Dimension(cWidth, 1000));
 
         setBounds(table.getCellRect(row, column, false));
         //doLayout();
@@ -155,7 +153,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         }
     }
 
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -168,8 +166,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //String literal pool
-        //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+        // String literal pool
+        // if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
         if ("document".equals(propertyName)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && !Objects.equals(oldValue, newValue)) {
@@ -183,5 +181,5 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
     @Override public void validate()   { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    // <---- Overridden for performance reasons.
 }

@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-//import java.awt.image.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -62,7 +61,7 @@ public final class MainPanel extends JPanel {
 //         addMouseListener(handler);
 //     }
 //     @Override protected void paintComponent(Graphics g) {
-//         //super.paintComponent(g);
+//         // super.paintComponent(g);
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setStroke(new BasicStroke(3f));
 //         g2.setPaint(Color.BLACK);
@@ -91,14 +90,14 @@ public final class MainPanel extends JPanel {
 //                 g2.dispose();
 //                 //repaint();
 //                 Rectangle r = getRepaintRectangle(startPoint, p);
-//                 repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); //(3.0 / 2) = 1.5 < 2
+//                 repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); // (3.0 / 2) = 1.5 < 2
 //                 startPoint.setLocation(p);
 //             }
 //             @Override public void mousePressed(MouseEvent e) {
 //                 startPoint.setLocation(e.getPoint());
-//                 //if (offImage == null) { //resized
-//                 //    offImage = (BufferedImage) createImage(getWidth(), getHeight());
-//                 //}
+//                 // if (offImage == null) { // resized
+//                 //     offImage = (BufferedImage) createImage(getWidth(), getHeight());
+//                 // }
 //             }
 //         };
 //         addMouseMotionListener(handler);

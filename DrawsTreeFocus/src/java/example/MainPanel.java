@@ -5,45 +5,28 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-//import java.util.List;
-//import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
     private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
     private final JCheckBox dfbaiCheck = new JCheckBox(DRAWS_FOCUS_BORDER_AROUND_ICON);
     private final JCheckBox ddfiCheck  = new JCheckBox(DRAW_DASHED_FOCUS_INDICATOR);
-    private final JTree tree = new JTree();
-    public MainPanel() {
+
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTree tree = new JTree();
+
         dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
-        ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
-
-//         ActionListener al = e -> {
-//             Object o = e.getSource();
-//             if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
-//                 updateCheckBox();
-//             }
-//         };
-//
-//         List<JRadioButtonMenuItem> list = new ArrayList<>();
-//         searchAllMenuElements(menuBar, list);
-//         for (JRadioButtonMenuItem mi: list) {
-//             mi.addActionListener(al);
-//         }
-//
-// //         listMenuItems(menuBar)
-// //           .filter(mi -> mi instanceof JRadioButtonMenuItem)
-// //           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
-
         dfbaiCheck.addActionListener(e -> {
             boolean b = ((JCheckBox) e.getSource()).isSelected();
             UIManager.put(DRAWS_FOCUS_BORDER_AROUND_ICON, b);
             SwingUtilities.updateComponentTreeUI(tree);
         });
+
+        ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
         ddfiCheck.addActionListener(e -> {
             boolean b = ((JCheckBox) e.getSource()).isSelected();
             UIManager.put(DRAW_DASHED_FOCUS_INDICATOR, b);
@@ -58,7 +41,6 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-
     @Override public void updateUI() {
         super.updateUI();
         if (Objects.nonNull(dfbaiCheck)) {
@@ -68,28 +50,6 @@ public class MainPanel extends JPanel {
             ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
         }
     }
-
-//     private static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
-//         if (me instanceof JRadioButtonMenuItem) {
-//             list.add((JRadioButtonMenuItem) me);
-//         }
-//         MenuElement[] sub = me.getSubElements();
-//         if (sub.length != 0) {
-//             for (MenuElement e: sub) {
-//                 searchAllMenuElements(e, list);
-//             }
-//         }
-//     }
-
-//     static Stream<MenuElement> listMenuItems(MenuElement me) {
-//         MenuElement[] sub = me.getSubElements();
-//         if (sub.length != 0) {
-//             return Arrays.stream(sub).flatMap(MainPanel::listMenuItems);
-//         } else {
-//             return Stream.of(me);
-//         }
-//     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -150,7 +110,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

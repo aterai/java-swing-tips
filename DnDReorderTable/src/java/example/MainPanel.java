@@ -8,7 +8,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
-// import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 

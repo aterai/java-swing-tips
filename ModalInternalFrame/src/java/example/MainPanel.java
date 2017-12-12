@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-//import java.lang.reflect.*;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -84,8 +83,8 @@ public final class MainPanel extends JPanel {
         return desktop;
     }
 
-    //menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
-    //menuItem.setMnemonic(KeyEvent.VK_1);
+    // menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
+    // menuItem.setMnemonic(KeyEvent.VK_1);
     class ModalInternalFrameAction1 extends AbstractAction {
         protected ModalInternalFrameAction1(String label) {
             super(label);
@@ -97,8 +96,8 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    //menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
-    //menuItem.setMnemonic(KeyEvent.VK_2);
+    // menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
+    // menuItem.setMnemonic(KeyEvent.VK_2);
     class ModalInternalFrameAction2 extends AbstractAction {
         private final JComponent glass = new MyGlassPane();
         protected ModalInternalFrameAction2(String label) {
@@ -119,10 +118,10 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    //menuItem = new JMenuItem(new ModalInternalFrameAction3("Modal"));
-    //menuItem.setMnemonic(KeyEvent.VK_3);
-    //Creating Modal Internal Frames -- Approach 1 and Approach 2
-    //http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
+    // menuItem = new JMenuItem(new ModalInternalFrameAction3("Modal"));
+    // menuItem.setMnemonic(KeyEvent.VK_3);
+    // Creating Modal Internal Frames -- Approach 1 and Approach 2
+    // http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
     class ModalInternalFrameAction3 extends AbstractAction {
         protected final JComponent glass = new PrintGlassPane();
         protected ModalInternalFrameAction3(String label) {
@@ -131,17 +130,17 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             JOptionPane optionPane = new JOptionPane();
-            //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.FALSE);
+            // TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.FALSE);
             JInternalFrame modal = optionPane.createInternalFrame(getDesktop(), "modal3");
-            //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.TRUE);
+            // TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.TRUE);
 //*
             optionPane.setMessage("Hello, World");
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
             removeSystemMenuListener(modal);
 /*/
-            //GlassPane + JComboBox Test:
+            // GlassPane + JComboBox Test:
             String[] items = {"Banana", "Apple", "Pear", "Grape", "Kiwi"};
-            //JComboBox<String> combo = new JComboBox<>(items);
+            // JComboBox<String> combo = new JComboBox<>(items);
             JComboBox combo = new JComboBox(items);
             combo.setEditable(true);
             try {
@@ -149,7 +148,7 @@ public final class MainPanel extends JPanel {
                 if (System.getProperty("java.version").startsWith("1.6.0")) {
                     Class clazz = Class.forName("javax.swing.PopupFactory");
                     field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-                } else { //1.7.0, 1.8.0
+                } else { // 1.7.0, 1.8.0
                     Class clazz = Class.forName("javax.swing.ClientPropertyKey");
                     field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                 }
@@ -232,7 +231,7 @@ class MyGlassPane extends JDesktopPane {
 //         super((LayoutManager) null);
 //     }
     @Override public void updateUI() {
-        //setFocusTraversalPolicy(null);
+        // setFocusTraversalPolicy(null);
         super.updateUI();
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) {

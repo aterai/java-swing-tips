@@ -4,19 +4,18 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-// import java.beans.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea area     = new JTextArea();
+    private final JTextArea area = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton("run");
-    private final JButton canButton  = new JButton("cancel");
-    private final JProgressBar bar1  = new JProgressBar(0, 100);
-    private final JProgressBar bar2  = new JProgressBar(0, 100);
+    private final JButton runButton = new JButton("run");
+    private final JButton canButton = new JButton("cancel");
+    private final JProgressBar bar1 = new JProgressBar(0, 100);
+    private final JProgressBar bar2 = new JProgressBar(0, 100);
     private transient SwingWorker<String, Progress> worker;
 
     private MainPanel() {

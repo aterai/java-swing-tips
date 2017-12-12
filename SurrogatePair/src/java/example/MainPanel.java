@@ -8,7 +8,6 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-//import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
@@ -17,7 +16,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         StyleSheet styleSheet = new StyleSheet();
-        //styleSheet.addRule("body {font-size: 24pt; font-family: IPAexGothic;}");
+        // styleSheet.addRule("body {font-size: 24pt; font-family: IPAexGothic;}");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
         JEditorPane editor1 = new JEditorPane();
@@ -31,7 +30,7 @@ public final class MainPanel extends JPanel {
         }
 
         JEditorPane editor2 = new JEditorPane();
-        //editor2.setFont(new Font("IPAexGothic", Font.PLAIN, 24));
+        // editor2.setFont(new Font("IPAexGothic", Font.PLAIN, 24));
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setText("(\uD85B\uDE40) (\u26E40)\n(\uD842\uDF9F) (\u20B9F)");
 
