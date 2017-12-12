@@ -37,7 +37,6 @@ public final class MainPanel extends JPanel {
             log.setText(str);
         });
 
-        
         JButton leftButton = new JButton("LEFT");
         leftButton.addActionListener(e -> {
             UIManager.put(key, SwingConstants.LEFT);
