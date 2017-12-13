@@ -14,9 +14,7 @@ import javax.imageio.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public static final String FORMAT_NAME_GIF = "gif";
-    public static final String NATIVE_IMAGE_METADATA_FORMAT_NAME = "javax_imageio_gif_image_1.0";
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
         label.setIcon(new ImageIcon(getClass().getResource("duke.running.gif")));
@@ -40,24 +38,26 @@ public final class MainPanel extends JPanel {
     }
     // https://community.oracle.com/thread/1271862 Reading gif animation frame rates and such?
     private List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
+        String format = "gif";
+        String meta = "javax_imageio_gif_image_1.0";
         ImageReader reader = null;
         Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
         while (readers.hasNext()) {
             reader = readers.next();
             String metaFormat = reader.getOriginatingProvider().getNativeImageMetadataFormatName();
-            if (FORMAT_NAME_GIF.equalsIgnoreCase(reader.getFormatName()) && NATIVE_IMAGE_METADATA_FORMAT_NAME.equals(metaFormat)) {
+            if (format.equalsIgnoreCase(reader.getFormatName()) && meta.equals(metaFormat)) {
                 break;
             }
         }
-        reader = Objects.requireNonNull(reader, "Can not read image format!");
-        boolean isGif = FORMAT_NAME_GIF.equalsIgnoreCase(reader.getFormatName());
-        reader.setInput(imageStream, false, !isGif);
+        ImageReader imageReader = Objects.requireNonNull(reader, "Can not read image format!");
+        boolean isGif = format.equalsIgnoreCase(imageReader.getFormatName());
+        imageReader.setInput(imageStream, false, !isGif);
         List<BufferedImage> list = new ArrayList<>();
-        for (int i = 0; i < reader.getNumImages(true); i++) {
-            IIOImage frame = reader.readAll(i, null);
+        for (int i = 0; i < imageReader.getNumImages(true); i++) {
+            IIOImage frame = imageReader.readAll(i, null);
             list.add((BufferedImage) frame.getRenderedImage());
         }
-        reader.dispose();
+        imageReader.dispose();
         return list;
     }
     public static void main(String... args) {
