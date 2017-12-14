@@ -9,27 +9,36 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
-    private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
-    private final JCheckBox dfbaiCheck = new JCheckBox(DRAWS_FOCUS_BORDER_AROUND_ICON);
-    private final JCheckBox ddfiCheck  = new JCheckBox(DRAW_DASHED_FOCUS_INDICATOR);
+    private enum TreeDraws {
+        DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
+        DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
+        private final String key;
+        TreeDraws(String key) {
+            this.key = key;
+        }
+        @Override public String toString() {
+            return key;
+        }
+    }
+    private final JCheckBox dfbaiCheck = new JCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString());
+    private final JCheckBox ddfiCheck = new JCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString());
 
     private MainPanel() {
         super(new BorderLayout());
 
         JTree tree = new JTree();
 
-        dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
+        dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
         dfbaiCheck.addActionListener(e -> {
             boolean b = ((JCheckBox) e.getSource()).isSelected();
-            UIManager.put(DRAWS_FOCUS_BORDER_AROUND_ICON, b);
+            UIManager.put(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString(), b);
             SwingUtilities.updateComponentTreeUI(tree);
         });
 
-        ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
+        ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
         ddfiCheck.addActionListener(e -> {
             boolean b = ((JCheckBox) e.getSource()).isSelected();
-            UIManager.put(DRAW_DASHED_FOCUS_INDICATOR, b);
+            UIManager.put(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString(), b);
             SwingUtilities.updateComponentTreeUI(tree);
         });
 
@@ -44,10 +53,10 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
         super.updateUI();
         if (Objects.nonNull(dfbaiCheck)) {
-            dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
+            dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
         }
         if (Objects.nonNull(ddfiCheck)) {
-            ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
+            ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
         }
     }
     public static void main(String... args) {
