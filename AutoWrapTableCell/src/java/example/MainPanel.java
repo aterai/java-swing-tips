@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
             {"ccccccccccccccccccc", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
         };
         TableModel model = new DefaultTableModel(data, columnNames);
-        final JTable table = new JTable(model) {
+        JTable table = new JTable(model) {
             private final Color evenColor = new Color(230, 240, 255);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 //                 initPreferredHeight();
 //                 super.doLayout();
 //             }
-//             @Override public void columnMarginChanged(final ChangeEvent e) {
+//             @Override public void columnMarginChanged(ChangeEvent e) {
 //                 // System.out.println("columnMarginChanged");
 //                 super.columnMarginChanged(e);
 //                 initPreferredHeight();
@@ -132,11 +132,11 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         // getPreferredSize() returnes the proper height which the row should have in
         // order to make room for the text.
         // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-        // int cWidth = table.getCellRect(row, column, false).width; //Ignore IntercellSpacing
+        // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
         // setSize(new Dimension(cWidth, 1000));
 
         setBounds(table.getCellRect(row, column, false));
-        //doLayout();
+        // doLayout();
 
         int preferredHeight = getPreferredSize().height;
         while (rowAndCellHeights.size() <= row) {

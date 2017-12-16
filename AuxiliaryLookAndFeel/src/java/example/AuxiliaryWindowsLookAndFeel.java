@@ -24,7 +24,7 @@ public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
         UIDefaults table = new UIDefaults() {
             @Override protected void getUIError(String msg) { /* not needed */ }
         };
-        //final String packageName = "example.AuxiliaryWindows";
+        // String packageName = "example.AuxiliaryWindows";
         Object[] uiDefaults = {
             "ComboBoxUI", "example.AuxiliaryWindowsComboBoxUI",
         };
