@@ -11,29 +11,29 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
+        JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
         JRadioButton r1    = new JRadioButton("scrollRectToVisible", true);
         JRadioButton r2    = new JRadioButton("setViewPosition");
 
-        JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
-        //JViewport vport = scroll.getViewport();
-        //JDK 1.7.0
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
+        // JViewport vport = scroll.getViewport();
+        // JDK 1.7.0
         JViewport vport = new JViewport() {
-            private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
-            private boolean flag;
+            private static final boolean WEIGHT_MIXING = false;
+            private boolean isAjusting;
             @Override public void revalidate() {
-                if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
+                if (!WEIGHT_MIXING && isAjusting) {
                     return;
                 }
                 super.revalidate();
             }
             @Override public void setViewPosition(Point p) {
-                if (HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
+                if (WEIGHT_MIXING) {
                     super.setViewPosition(p);
                 } else {
-                    flag = true;
+                    isAjusting = true;
                     super.setViewPosition(p);
-                    flag = false;
+                    isAjusting = false;
                 }
             }
         };
@@ -111,7 +111,7 @@ class HandScrollListener extends MouseAdapter {
     }
 }
 
-// //TEST:
+// // TEST:
 // class DragScrollListener extends MouseAdapter {
 //     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 //     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
