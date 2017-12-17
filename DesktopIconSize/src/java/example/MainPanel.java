@@ -10,17 +10,16 @@ import javax.swing.plaf.synth.*;
 // import com.sun.java.swing.plaf.motif.*;
 
 public class MainPanel extends JPanel {
-    protected static final int DESKTOPICON_WIDTH = 150;
-    protected static final int DESKTOPICON_HEIGHT = 40;
+    protected static final Dimension ICON_SIZE = new Dimension(150, 40);
     protected final JDesktopPane desktop = new JDesktopPane();
-    protected final JCheckBox check = new JCheckBox(String.format("JDesktopIcon: %dx%d", DESKTOPICON_WIDTH, DESKTOPICON_HEIGHT));
+    protected final JCheckBox check = new JCheckBox(String.format("JDesktopIcon: %dx%d", ICON_SIZE.width, ICON_SIZE.height));
 
     public MainPanel() {
         super(new BorderLayout());
         desktop.setDesktopManager(new DefaultDesktopManager() {
             @Override protected Rectangle getBoundsForIconOf(JInternalFrame f) {
                 Rectangle r = super.getBoundsForIconOf(f);
-                //TEST: r.width = 200;
+                // TEST: r.width = 200;
                 System.out.println(r.getSize());
                 return r;
             }
@@ -57,7 +56,7 @@ public class MainPanel extends JPanel {
                 if ("com.sun.java.swing.plaf.motif.MotifDesktopIconUI".equals(getUI().getClass().getName())) {
                     return new Dimension(64, 64 + 32);
                 } else {
-                    return new Dimension(DESKTOPICON_WIDTH, DESKTOPICON_HEIGHT);
+                    return ICON_SIZE;
                 }
             }
         });
@@ -84,10 +83,10 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.put("DesktopIcon.width", DESKTOPICON_WIDTH);
-            //TEST:
-            //Font font = UIManager.getFont("InternalFrame.titleFont");
-            //UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));
+            UIManager.put("DesktopIcon.width", ICON_SIZE.width);
+            // TEST:
+            // Font font = UIManager.getFont("InternalFrame.titleFont");
+            // UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -135,7 +134,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {
