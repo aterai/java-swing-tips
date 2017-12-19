@@ -8,36 +8,33 @@ import java.io.*;
 import java.util.Date;
 import java.util.logging.*;
 import javax.swing.*;
-// import javax.swing.event.*;
-// import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final transient Logger logger = Logger.getLogger(TextAreaLogger.class.getName());
-
-    public MainPanel() {
+    private static final Logger LOGGER = Logger.getLogger(TextAreaLogger.class.getName());
+    private MainPanel() {
         super(new BorderLayout());
 
         JTextArea textArea = new JTextArea();
-        //TEST: textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
+        // TEST: textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
         textArea.setEditable(false);
 
-        logger.setUseParentHandlers(false);
-        logger.setLevel(Level.ALL);
+        LOGGER.setUseParentHandlers(false);
+        LOGGER.setLevel(Level.ALL);
 
         OutputStream os = new TextAreaOutputStream(textArea);
-        logger.addHandler(new TextAreaHandler(os));
+        LOGGER.addHandler(new TextAreaHandler(os));
 
-//         //TEST:
+//         // TEST:
 //         try {
-//             //System.setOut(new PrintStream(os, true, "UTF-8"));
+//             // System.setOut(new PrintStream(os, true, "UTF-8"));
 //             FileHandler fh = new FileHandler("test.log");
 //             fh.setEncoding("UTF-8");
-//             logger.addHandler(fh);
+//             LOGGER.addHandler(fh);
 //         } catch (IOException ex) {
 //             ex.printStackTrace();
 //         }
 
-        logger.info("test, TEST");
+        LOGGER.info("test, TEST");
 
         JTextField textField = new JTextField("aaa");
         JButton button = new JButton("Clear");
@@ -84,15 +81,14 @@ class TextAreaLogger {
 }
 
 class EnterAction extends AbstractAction {
-    private final transient Logger logger = Logger.getLogger(TextAreaLogger.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TextAreaLogger.class.getName());
     private final JTextField textField;
     protected EnterAction(JTextField textField) {
         super("Enter");
         this.textField = textField;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        String s = new Date().toString();
-        logger.info(s + "\n    " + textField.getText());
+        LOGGER.info(String.format("%s%n    %s%n", new Date().toString(), textField.getText()));
     }
 }
 
@@ -214,8 +210,8 @@ class TextAreaHandler extends StreamHandler {
     }
 }
 
-// //TEST:
-// //http://www.dreamincode.net/forums/topic/117537-external-program-output-to-jtextarea/
+// // TEST:
+// // http://www.dreamincode.net/forums/topic/117537-external-program-output-to-jtextarea/
 // class TextAreaOutputStream extends OutputStream {
 //     private final JTextArea textArea;
 //     private final StringBuilder sb = new StringBuilder();
@@ -237,7 +233,7 @@ class TextAreaHandler extends StreamHandler {
 //             textArea.append(sb.toString());
 //             sb.setLength(0);
 //         }
-//         //sb.append((char) b);
+//         // sb.append((char) b);
 //         String s;
 //         if (Character.charCount(b) == 1) {
 //             s = String.valueOf((char) b);
@@ -248,7 +244,7 @@ class TextAreaHandler extends StreamHandler {
 //     }
 // }
 
-// //http://d.hatena.ne.jp/altcla/20091029/1256824750
+// // http://d.hatena.ne.jp/altcla/20091029/1256824750
 // class TextAreaOutputStream extends OutputStream {
 //     private JTextArea textArea;
 //     private ByteArrayOutputStream buf;
@@ -288,8 +284,8 @@ class TextAreaHandler extends StreamHandler {
 //             s = new String(Character.toChars(i));
 //         }
 //         textArea.append(s);
-//         //textArea.append(new String(Character.toChars(i)));
-//         //textArea.setCaretPosition(textArea.getDocument().getLength());
+//         // textArea.append(new String(Character.toChars(i)));
+//         // textArea.setCaretPosition(textArea.getDocument().getLength());
 //     }
 // }
 
@@ -314,14 +310,14 @@ class TextAreaHandler extends StreamHandler {
 //     @Override public void write(int i) throws IOException {
 //         try {
 //             doc.replace(doc.getLength(), 0, new String(Character.toChars(i)), null);
-//             //doc.createPosition(doc.getLength());
+//             // doc.createPosition(doc.getLength());
 //         } catch (BadLocationException ex) {
 //             throw new IOException(ex);
 //         }
 //     }
 // }
 
-// //https://tips4java.wordpress.com/2008/11/08/message-console/
+// // https://tips4java.wordpress.com/2008/11/08/message-console/
 // try {
 //     PipedOutputStream pos = new PipedOutputStream();
 //     PipedInputStream  pis = new PipedInputStream(pos);
@@ -337,7 +333,7 @@ class TextAreaHandler extends StreamHandler {
 //                     displayPane.setCaretPosition(displayPane.getDocument().getLength());
 //                 }
 //             } catch (IOException ex) {
-//                 //JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
+//                 // JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
 //             }
 //         }
 //     }).start();

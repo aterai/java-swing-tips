@@ -19,6 +19,7 @@
     <exclude name="MethodArgumentCouldBeFinal" />
   </rule>
   <rule ref="category/java/design.xml">
+    <exclude name="DataClass" />
     <exclude name="LawOfDemeter" />
     <exclude name="LoosePackageCoupling" />
     <exclude name="NcssCount" />
@@ -27,7 +28,9 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="DataflowAnomalyAnalysis" />
+    <exclude name="DoNotCallSystemExit" />
     <exclude name="NullAssignment" />
+    <exclude name="UseProperClassLoader" />
   </rule>
   <rule ref="category/java/multithreading.xml">
     <exclude name="DoNotUseThreads" />

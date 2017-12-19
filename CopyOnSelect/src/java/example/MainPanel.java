@@ -12,12 +12,12 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final transient Logger logger = Logger.getLogger(CopyOnSelectListener.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CopyOnSelectListener.class.getName());
     private final JTextArea log = new JTextArea();
     public MainPanel() {
         super(new GridLayout(2, 1));
-        logger.setUseParentHandlers(false);
-        logger.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
+        LOGGER.setUseParentHandlers(false);
+        LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
 
         JTextArea textArea = new JTextArea("abcdefg hijklmn opqrstu") {
             private transient CopyOnSelectListener handler;
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyListener {
-    private final transient Logger logger = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(CopyOnSelectListener.class.getName());
     private boolean dragActive;
     private boolean shiftActive;
     private int dot;
@@ -100,10 +100,10 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
             Caret caret = tc.getCaret();
             int d = caret.getDot();
             int m = caret.getMark();
-            // logger.info(m + " / " + d);
+            // LOGGER.info(m + " / " + d);
             if (d != m && (dot != d || mark != m)) {
                 Optional.ofNullable(tc.getSelectedText()).ifPresent(str -> {
-                    logger.info(str);
+                    LOGGER.info(str);
                     // StringSelection data = new StringSelection(str);
                     // Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
                     tc.copy();

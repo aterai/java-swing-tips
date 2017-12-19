@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 }
 
 class AutomaticallyCloseListener implements HierarchyListener {
-    // private final transient Logger logger = Logger.getLogger(getClass().getName());
+    // private static final Logger LOGGER = Logger.getLogger(AutomaticallyCloseListener.class.getName());
     private static final int SECONDS = 5;
     private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
     private final Timer timer = new Timer(1000, null);
@@ -80,7 +80,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
             JLabel l = (JLabel) e.getComponent();
             if (l.isShowing()) {
-                // logger.info("isShowing=true\n");
+                // LOGGER.info("isShowing=true\n");
                 atomicDown.set(SECONDS);
                 l.setText(String.format("Closing in %d seconds", SECONDS));
                 timer.removeActionListener(listener);
@@ -88,14 +88,14 @@ class AutomaticallyCloseListener implements HierarchyListener {
                     int i = atomicDown.decrementAndGet();
                     l.setText(String.format("Closing in %d seconds", i));
                     if (i <= 0 && timer.isRunning()) {
-                        // logger.info("Timer: timer.stop()\n");
+                        // LOGGER.info("Timer: timer.stop()\n");
                         timer.stop();
                         Optional.ofNullable(l.getTopLevelAncestor())
                             .filter(Window.class::isInstance).map(Window.class::cast)
                             .ifPresent(Window::dispose);
 //                         Container c = l.getTopLevelAncestor();
 //                         if (c instanceof Window) {
-//                             // logger.info("window.dispose()\n");
+//                             // LOGGER.info("window.dispose()\n");
 //                             ((Window) c).dispose();
 //                         }
                     }
@@ -103,9 +103,9 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 timer.addActionListener(listener);
                 timer.start();
             } else {
-                // logger.info("isShowing=false\n");
+                // LOGGER.info("isShowing=false\n");
                 if (timer.isRunning()) {
-                    // logger.info("timer.stop()\n");
+                    // LOGGER.info("timer.stop()\n");
                     timer.stop();
                 }
             }
