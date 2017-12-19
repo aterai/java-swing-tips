@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
             fileHistoryMenu.add(mi, i);
         }
     }
-    class HistoryAction extends AbstractAction {
+    private class HistoryAction extends AbstractAction {
 //         private final File file;
 //         protected HistoryAction(File file) {
 //             super();

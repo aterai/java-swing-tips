@@ -222,7 +222,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         return model; //(SpinnerLocalDateTimeModel) getSpinner().getModel();
     }
 
-    class LocalDateTimeFormatter extends InternationalFormatter {
+    protected class LocalDateTimeFormatter extends InternationalFormatter {
         protected LocalDateTimeFormatter() {
             super(dateTimeFormatter.toFormat());
         }

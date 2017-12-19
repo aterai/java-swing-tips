@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
         DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
         private final String key;
-        TreeDraws(String key) {
+        /* default */ TreeDraws(String key) {
             this.key = key;
         }
         @Override public String toString() {

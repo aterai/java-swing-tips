@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    class HighlightBarHandler extends MouseInputAdapter {
+    private class HighlightBarHandler extends MouseInputAdapter {
         @Override public void mousePressed(MouseEvent e) {
             processHighlightBarMouseEvent(e);
         }

@@ -78,8 +78,8 @@ public class MainPanel extends JPanel {
     protected void createActionPerformed() {
         model.addRow(new Object[] {"New name", model.getRowCount(), false});
         (new Timer(DELAY, new ActionListener() {
-            int index = table.convertRowIndexToView(model.getRowCount() - 1);
-            int height = START_HEIGHT;
+            private int index = table.convertRowIndexToView(model.getRowCount() - 1);
+            private int height = START_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
                 if (height < END_HEIGHT) {
                     table.setRowHeight(index, height++);
@@ -96,7 +96,7 @@ public class MainPanel extends JPanel {
             return;
         }
         (new Timer(DELAY, new ActionListener() {
-            int height = END_HEIGHT;
+            private int height = END_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
                 height--;
                 if (height > START_HEIGHT) {

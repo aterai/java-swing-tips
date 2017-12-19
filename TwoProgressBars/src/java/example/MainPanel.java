@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         statusPanel.revalidate();
     }
 
-    class ProgressTask extends BackgroundTask {
+    private class ProgressTask extends BackgroundTask {
         @Override protected void process(List<Progress> chunks) {
             if (isCancelled()) {
                 return;

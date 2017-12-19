@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class UITask extends BackgroundTask {
+    private class UITask extends BackgroundTask {
         @Override protected void process(List<Integer> chunks) {
             if (isCancelled()) {
                 return;
@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    class ProgressCellRenderer extends DefaultListCellRenderer {
+    private class ProgressCellRenderer extends DefaultListCellRenderer {
         private final JProgressBar bar = new JProgressBar() {
             @Override public Dimension getPreferredSize() {
                 return ProgressCellRenderer.this.getPreferredSize();

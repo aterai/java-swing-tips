@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-    static class SudokuCellRenderer extends DefaultTableCellRenderer {
+    private static class SudokuCellRenderer extends DefaultTableCellRenderer {
         private final Font font;
         private final Font bold;
         private final Border b0 = BorderFactory.createMatteBorder(0, 0, BORDERWIDTH1, BORDERWIDTH1, Color.GRAY);

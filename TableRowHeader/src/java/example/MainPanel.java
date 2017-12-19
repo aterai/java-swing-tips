@@ -101,7 +101,7 @@ class RowHeaderList<E> extends JList<E> {
         tableSelection = table.getSelectionModel();
         listSelection = getSelectionModel();
     }
-    class RowHeaderRenderer<E2> extends JLabel implements ListCellRenderer<E2> {
+    protected class RowHeaderRenderer<E2> extends JLabel implements ListCellRenderer<E2> {
         private final JTableHeader header; // = table.getTableHeader();
         protected RowHeaderRenderer(JTableHeader header) {
             super();
@@ -129,7 +129,7 @@ class RowHeaderList<E> extends JList<E> {
             return this;
         }
     }
-    class RollOverListener extends MouseAdapter {
+    private class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             if (pressedRowIndex < 0) {
                 // pressedRowIndex = -1;

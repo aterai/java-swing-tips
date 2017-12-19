@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         EventQueue.invokeLater(() -> debugPrint());
     }
-    class FocusTraversalPolicyChangeAction extends AbstractAction {
+    protected class FocusTraversalPolicyChangeAction extends AbstractAction {
         private final FocusTraversalPolicy policy;
         protected FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
             super(name);

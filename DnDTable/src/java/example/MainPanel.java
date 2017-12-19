@@ -173,7 +173,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         return flavor.getHumanPresentableName().equals(NAME);
     }
 
-    class CDropTargetListener implements DropTargetListener {
+    private class CDropTargetListener implements DropTargetListener {
         @Override public void dragExit(DropTargetEvent e) {
             targetIndex = -1;
             repaint();

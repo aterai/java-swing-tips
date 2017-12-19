@@ -164,7 +164,7 @@ public class MainPanel extends JPanel {
         field.repaint();
     }
 
-    class HighlightHandler implements DocumentListener, ActionListener {
+    private class HighlightHandler implements DocumentListener, ActionListener {
         @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
         @Override public void insertUpdate(DocumentEvent e) {
             changeHighlight();

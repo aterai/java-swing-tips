@@ -133,7 +133,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         return flavor.getHumanPresentableName().equals(NAME);
     }
 
-    class CDropTargetListener implements DropTargetListener {
+    private class CDropTargetListener implements DropTargetListener {
         // DropTargetListener interface
         @Override public void dragExit(DropTargetEvent e) {
             targetIndex = -1;
