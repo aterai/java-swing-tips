@@ -9,7 +9,11 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import javax.jnlp.*;
+import javax.jnlp.BasicService;
+import javax.jnlp.FileContents;
+import javax.jnlp.PersistenceService;
+import javax.jnlp.ServiceManager;
+import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

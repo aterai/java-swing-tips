@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

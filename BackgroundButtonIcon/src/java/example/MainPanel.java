@@ -7,7 +7,6 @@ import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     private static final String TXT = "aaaaaaaaaaaaaaaaaaaa";

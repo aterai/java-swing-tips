@@ -4,10 +4,11 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.Objects;
-import javax.jnlp.*;
+import javax.jnlp.ClipboardService;
+import javax.jnlp.ServiceManager;
+import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 import javax.swing.event.*;
 

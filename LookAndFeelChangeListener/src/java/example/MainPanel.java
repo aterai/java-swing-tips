@@ -4,11 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
 //     private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";

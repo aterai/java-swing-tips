@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

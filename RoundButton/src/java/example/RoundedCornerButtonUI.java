@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 

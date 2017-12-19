@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultEditorKit;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

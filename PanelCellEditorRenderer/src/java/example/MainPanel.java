@@ -8,9 +8,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"JSpinner", "Buttons"};

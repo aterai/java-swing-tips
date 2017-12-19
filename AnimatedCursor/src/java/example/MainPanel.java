@@ -4,11 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
-import java.util.*;
 import java.util.stream.*;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public class MainPanel extends JPanel {
     protected int counter;

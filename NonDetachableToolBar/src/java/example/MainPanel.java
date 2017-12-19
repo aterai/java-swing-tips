@@ -3,9 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicToolBarUI;
 import com.sun.java.swing.plaf.windows.WindowsToolBarUI;
 
 public class MainPanel extends JPanel {

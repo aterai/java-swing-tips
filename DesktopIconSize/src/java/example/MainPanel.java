@@ -6,8 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
-import javax.swing.plaf.synth.*;
-// import com.sun.java.swing.plaf.motif.*;
 
 public class MainPanel extends JPanel {
     protected static final Dimension ICON_SIZE = new Dimension(150, 40);

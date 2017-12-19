@@ -13,7 +13,6 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
 
 @SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {

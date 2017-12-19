@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

@@ -3,11 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     protected final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));

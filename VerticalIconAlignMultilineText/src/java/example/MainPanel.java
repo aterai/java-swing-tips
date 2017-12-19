@@ -3,13 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
 import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 
 public final class MainPanel extends JPanel {

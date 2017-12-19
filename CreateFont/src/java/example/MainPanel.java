@@ -8,7 +8,6 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextPane textpane = new JTextPane();

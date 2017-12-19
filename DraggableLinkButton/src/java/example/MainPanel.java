@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.net.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;

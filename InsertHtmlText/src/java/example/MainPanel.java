@@ -3,11 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 

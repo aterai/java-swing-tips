@@ -9,7 +9,6 @@ import java.awt.geom.*;
 import java.text.ParseException;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {

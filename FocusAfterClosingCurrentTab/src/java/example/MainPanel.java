@@ -7,8 +7,6 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
 import javax.swing.plaf.synth.*;
 
 public final class MainPanel extends JPanel {

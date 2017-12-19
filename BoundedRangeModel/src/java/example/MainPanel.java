@@ -7,13 +7,11 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
-import java.util.regex.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     protected static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);

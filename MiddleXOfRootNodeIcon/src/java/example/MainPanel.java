@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

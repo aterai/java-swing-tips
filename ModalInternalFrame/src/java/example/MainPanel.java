@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultEditorKit;
 
 public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();

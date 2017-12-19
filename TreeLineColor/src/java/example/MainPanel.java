@@ -4,8 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.tree.*;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

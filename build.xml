@@ -403,7 +403,7 @@
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}">
+    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}" cacheLocation="${build.reports}/pmd/pmd.cache">
       <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />

@@ -10,7 +10,6 @@ import java.awt.image.*;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final DnDTabbedPane tab = new DnDTabbedPane();

@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final DefaultListModel<String> model = new DefaultListModel<>();

@@ -3,9 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JSlider slider = new JSlider(0, 100, 50);

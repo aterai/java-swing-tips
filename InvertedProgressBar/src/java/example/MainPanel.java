@@ -8,7 +8,6 @@ import java.awt.image.*;
 import java.beans.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel implements HierarchyListener {

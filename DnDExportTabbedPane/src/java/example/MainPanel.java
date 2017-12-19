@@ -11,7 +11,6 @@ import java.beans.*;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.table.*;
 
 @SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {

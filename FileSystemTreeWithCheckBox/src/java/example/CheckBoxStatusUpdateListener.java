@@ -2,7 +2,6 @@ package example;
 //-*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 //@homepage@
-import java.awt.event.*;
 import java.io.File;
 import java.util.*;
 import javax.swing.event.*;

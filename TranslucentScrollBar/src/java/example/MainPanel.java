@@ -3,11 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {

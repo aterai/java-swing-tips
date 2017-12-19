@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.awt.geom.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

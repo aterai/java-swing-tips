@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 

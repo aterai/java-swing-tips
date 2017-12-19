@@ -9,7 +9,6 @@ import java.beans.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.nimbus.*;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
     private transient SwingWorker<String, Void> worker;

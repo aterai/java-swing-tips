@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;

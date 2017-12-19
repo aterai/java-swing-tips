@@ -4,17 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.text.*;
 import java.time.*;
-import java.time.chrono.*;
 import java.time.format.*;
 import java.time.temporal.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
-import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"LocalDateTime", "String", "Boolean"};

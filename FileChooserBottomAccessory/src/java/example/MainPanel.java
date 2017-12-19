@@ -3,12 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Arrays;
 import java.util.stream.*;
 import javax.swing.*;
-import javax.swing.plaf.metal.*;
-import com.sun.java.swing.plaf.windows.*;
+import javax.swing.plaf.metal.MetalFileChooserUI;
+import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

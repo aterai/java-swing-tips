@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public final class MainPanel extends JPanel {
     private transient SwingWorker<String, Void> worker;

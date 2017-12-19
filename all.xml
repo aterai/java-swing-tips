@@ -18,20 +18,14 @@
   </condition>
   <target name="pmd" if="have.pmd">
     <path id="pmd.classpath">
-      <fileset dir="${env.PMD_HOME}/lib">
-        <include name="*.jar" />
-      </fileset>
+      <fileset dir="${env.PMD_HOME}/lib" includes="*.jar" />
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
-    <pmd rulesetfiles="${basedir}/ruleset.xml" encoding="UTF-8">
+    <pmd rulesetfiles="${basedir}/ruleset.xml" cacheLocation="${env.TEMP}/pmd/pmd.cache" encoding="UTF-8">
       <sourceLanguage name="java" version="1.8" />
-      <formatter type="text" toConsole="true" />
       <formatter type="xml" toFile="pmd.xml" />
-      <fileset dir="${basedir}">
-        <exclude name="**/target/**" />
-        <exclude name="**/module-info.java" />
-        <include name="**/*.java" />
-      </fileset>
+      <formatter type="text" toConsole="true" />
+      <fileset dir="${basedir}" excludes="**/module-info.java" includes="**/*.java" />
     </pmd>
   </target>
 
