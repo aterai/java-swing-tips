@@ -176,10 +176,10 @@ class TableRowTransferHandler extends TransferHandler {
             if (Objects.equals(source, target)) {
                 addCount = values.length;
             }
-            for (int i = 0; i < values.length; i++) {
-                int idx = index++;
-                model.insertRow(idx, (Vector<?>) values[i]);
-                target.getSelectionModel().addSelectionInterval(idx, idx);
+            for (Object o: values) {
+                int i = index++;
+                model.insertRow(i, (Vector<?>) o);
+                target.getSelectionModel().addSelectionInterval(i, i);
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {

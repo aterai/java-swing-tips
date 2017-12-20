@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
     }
 
 //     private int index = -1;
-//     private class Handler extends MouseAdapter { //, BeforeDrag
+//     private class Handler extends MouseAdapter { // , BeforeDrag
 //         private Point startPt;
 //         private final int gestureMotionThreshold = DragSource.getDragThreshold();
 //         // MouseListener
@@ -311,10 +311,10 @@ class TableRowTransferHandler extends TransferHandler {
             if (Objects.equals(source, target)) {
                 addCount = values.length;
             }
-            for (int i = 0; i < values.length; i++) {
-                int idx = index++;
-                model.insertRow(idx, (Vector<?>) values[i]);
-                target.getSelectionModel().addSelectionInterval(idx, idx);
+            for (Object o: values) {
+                int i = index++;
+                model.insertRow(i, (Vector<?>) o);
+                target.getSelectionModel().addSelectionInterval(i, i);
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {

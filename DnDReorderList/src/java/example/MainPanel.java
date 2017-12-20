@@ -141,10 +141,10 @@ class ListItemTransferHandler extends TransferHandler {
         addIndex = index;
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
-            for (int i = 0; i < values.length; i++) {
-                int idx = index++;
-                listModel.add(idx, values[i]);
-                target.addSelectionInterval(idx, idx);
+            for (Object o: values) {
+                int i = index++;
+                listModel.add(i, o);
+                target.addSelectionInterval(i, i);
             }
             addCount = values.length;
             return true;

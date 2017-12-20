@@ -23,7 +23,7 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
  * type) use the method addTab(String, Component, Icon). Only clicking the 'X'
  * closes the tab.
  */
-public class CloseableTabbedPane extends JTabbedPane { //implements MouseListener, MouseMotionListener {
+public class CloseableTabbedPane extends JTabbedPane { // implements MouseListener, MouseMotionListener {
     /**
      * The <code>EventListenerList</code>.
      */
@@ -103,7 +103,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
      * @param component the component to be displayed when this tab is clicked
      */
     @Override public void addTab(String title, Component component) {
-        //addTab(title, component, null);
+        // addTab(title, component, null);
         super.addTab(title, new CloseTabIcon(null), component);
 
 //         if (Objects.isNull(headerViewport)) {
@@ -187,10 +187,8 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         boolean closeit = true;
         // Guaranteed to return a non-null array
         Object[] listeners = eventListenerList.getListenerList();
-        //for (Object i: listeners) {
-        for (int j = 0; j < listeners.length; j++) {
-            Object i = listeners[j];
-            if (i instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) i).closeTab(tabIndexToClose)) {
+        for (Object o: listeners) {
+            if (o instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) o).closeTab(tabIndexToClose)) {
                 closeit = false;
                 break;
             }
@@ -252,8 +250,8 @@ class CloseableTabIconHandler extends MouseAdapter {
                         e.getClickCount(), e.isPopupTrigger(), e.getButton());
                     tabbedPane.dispatchEvent(event);
                 }
-                //the tab is being closed
-                //removeTabAt(tabNumber);
+                // the tab is being closed
+                // removeTabAt(tabNumber);
                 tabbedPane.remove(selIndex);
             } else {
                 icon.mouseover = false;
@@ -358,7 +356,7 @@ class CloseableTabIconHandler extends MouseAdapter {
     }
 
     private CloseTabIcon getCloseTabIcon(CloseableTabbedPane tabbedPane, Point pt) {
-        //int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
+        // int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
         int tabNumber = tabbedPane.indexAtLocation(pt.x, pt.y);
         if (tabNumber < 0) {
             return null;
@@ -436,7 +434,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
                                            SwingConstants.CENTER,
                                            SwingConstants.CENTER,
                                            SwingConstants.CENTER,
-                                           //SwingConstants.TRAILING,
+                                           // SwingConstants.TRAILING,
                                            horizontalTextPosition,
                                            tabRect,
                                            iconRect,
@@ -495,7 +493,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
      * @param isSelected true whether the tab is selected, false otherwise
      */
     @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-        //textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+        // textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
 
@@ -509,7 +507,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
                                            SwingConstants.CENTER,
                                            SwingConstants.CENTER,
                                            SwingConstants.CENTER,
-                                           //SwingConstants.TRAILING,
+                                           // SwingConstants.TRAILING,
                                            horizontalTextPosition,
                                            tabRect,
                                            iconRect,

@@ -90,8 +90,8 @@ public class MainPanel extends JPanel {
 
     protected void cancelActionPerformed() {
         int[] selection = table.getSelectedRows();
-        for (int i = 0; i < selection.length; i++) {
-            int midx = table.convertRowIndexToModel(selection[i]);
+        for (int i: selection) {
+            int midx = table.convertRowIndexToModel(i);
             SwingWorker worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
@@ -106,8 +106,8 @@ public class MainPanel extends JPanel {
         if (selection.length == 0) {
             return;
         }
-        for (int i = 0; i < selection.length; i++) {
-            int midx = table.convertRowIndexToModel(selection[i]);
+        for (int i: selection) {
+            int midx = table.convertRowIndexToModel(i);
             deleteRowSet.add(midx);
             SwingWorker worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {

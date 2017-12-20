@@ -21,14 +21,14 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        //title, resizable, closable, maximizable, iconifiable
+        // title, resizable, closable, maximizable, iconifiable
         JInternalFrame immovableFrame = new JInternalFrame("immovable", false, false, true, true);
         Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
         MouseMotionListener[] actions = (MouseMotionListener[]) north.getListeners(MouseMotionListener.class);
-        for (int i = 0; i < actions.length; i++) {
-            north.removeMouseMotionListener(actions[i]);
+        for (MouseMotionListener l: actions) {
+            north.removeMouseMotionListener(l);
         }
-        //immovableFrame.setLocation(0, 0);
+        // immovableFrame.setLocation(0, 0);
         immovableFrame.setSize(160, 0);
         desktop.add(immovableFrame);
         immovableFrame.setVisible(true);
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         desktop.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                //System.out.println(e.toString());
+                // System.out.println(e.toString());
                 immovableFrame.setSize(immovableFrame.getSize().width, desktop.getSize().height);
             }
         });
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
             JInternalFrame frame = createInternalFrame();
             desktop.add(frame);
             frame.setVisible(true);
-            //desktop.getDesktopManager().activateFrame(frame);
+            // desktop.getDesktopManager().activateFrame(frame);
         });
 
         JMenuBar menuBar = new JMenuBar();

@@ -1,7 +1,6 @@
 package example;
 //-*- mode:java; encoding:utf-8 -*-
-// vim:set fileencoding=utf-8:
-//@homepage@
+// vim:set fileencoding=utf-8:homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.util.*;
@@ -51,13 +50,13 @@ public class HtmlTableTransferHandler extends TransferHandler {
             htmlBuf.append("  <td>" + Objects.toString(obj, "") + "</td>\n");
         }
     }
-    //@see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
+    // @see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
     @Override protected Transferable createTransferable(JComponent c) {
         if (canStartDrag(c)) {
             JTable table = (JTable) c;
             int[] rows = getSelectedRows(table);
             int[] cols = getSelectedColumns(table);
-            //if (Objects.isNull(rows) || Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
+            // if (Objects.isNull(rows) || Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
             if (rows.length == 0 || cols.length == 0) {
                 return null;
             }
@@ -65,10 +64,10 @@ public class HtmlTableTransferHandler extends TransferHandler {
             StringBuilder plainBuf = new StringBuilder();
             StringBuilder htmlBuf = new StringBuilder(64);
             htmlBuf.append("<html>\n<body>\n<table border='1'>\n");
-            for (int row = 0; row < rows.length; row++) {
+            for (int row: rows) {
                 htmlBuf.append("<tr>\n");
-                for (int col = 0; col < cols.length; col++) {
-                    Object obj = table.getValueAt(rows[row], cols[col]);
+                for (int col: cols) {
+                    Object obj = table.getValueAt(row, col);
                     String val = Objects.toString(obj, "") + "\t";
                     plainBuf.append(val);
                     appendTag(htmlBuf, obj);
