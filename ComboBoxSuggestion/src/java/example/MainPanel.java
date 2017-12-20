@@ -151,7 +151,7 @@ class ComboKeyHandler extends KeyAdapter {
             String text = ((JTextField) e.getComponent()).getText();
             ComboBoxModel<String> m;
             if (text.isEmpty()) {
-                String[] array = list.toArray(new String[list.size()]);
+                String[] array = list.toArray(new String[0]);
                 m = new DefaultComboBoxModel<>(array);
                 setSuggestionModel(comboBox, m, "");
                 comboBox.hidePopup();

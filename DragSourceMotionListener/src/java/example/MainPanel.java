@@ -203,7 +203,7 @@ class LabelTransferable implements Transferable {
 //         }
         list.add(localObjectFlavor);
 //         return list.toArray(dh.getTransferDataFlavors());
-        return list.toArray(new DataFlavor[list.size()]);
+        return list.toArray(new DataFlavor[0]);
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         for (DataFlavor f: getTransferDataFlavors()) {
