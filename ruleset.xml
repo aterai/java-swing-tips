@@ -12,11 +12,11 @@
   </rule>
   <rule ref="category/java/codestyle.xml">
     <exclude name="AtLeastOneConstructor" />
-    <exclude name="OnlyOneReturn" />
-    <exclude name="ShortVariable" />
-    <exclude name="LongVariable" />
     <exclude name="LocalVariableCouldBeFinal" />
     <exclude name="MethodArgumentCouldBeFinal" />
+    <exclude name="OnlyOneReturn" />
+    <exclude name="LongVariable" />
+    <exclude name="ShortVariable" />
   </rule>
   <rule ref="category/java/design.xml">
     <exclude name="DataClass" />
@@ -28,7 +28,6 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="DataflowAnomalyAnalysis" />
-    <exclude name="DoNotCallSystemExit" />
     <exclude name="NullAssignment" />
     <exclude name="UseProperClassLoader" />
   </rule>

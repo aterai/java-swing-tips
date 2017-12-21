@@ -61,9 +61,9 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SaveHandler extends WindowAdapter implements DocumentListener, ActionListener {
-    //public static final String ASTERISK_TITLEBAR = "unsaved";
+    // public static final String ASTERISK_TITLEBAR = "unsaved";
     public static final String CMD_SAVE = "save";
     public static final String CMD_EXIT = "exit";
     private final JFrame frame;
@@ -85,17 +85,18 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
         this.title = frame.getTitle();
     }
 
-    //WindowAdapter
+    // WindowAdapter
     @Override public void windowClosing(WindowEvent e) {
         System.out.println("windowClosing");
         maybeExit();
     }
+    @SuppressWarnings("PMD.DoNotCallSystemExit")
     @Override public void windowClosed(WindowEvent e) {
         System.out.println("windowClosed");
-        System.exit(0); //webstart
+        System.exit(0); // webstart
     }
 
-    //ActionListener
+    // ActionListener
     @Override public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         if (CMD_EXIT.equals(cmd)) {
@@ -105,7 +106,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
         }
     }
 
-    //DocumentListener
+    // DocumentListener
     @Override public void insertUpdate(DocumentEvent e) {
         fireUnsavedFlagChangeEvent(true);
     }
@@ -123,20 +124,20 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
             return;
         }
         Toolkit.getDefaultToolkit().beep();
-        //String[] obj = {"unsaved documents", "Do you really want to exit?"};
-        //int retValue = JOptionPane.showConfirmDialog(frame, obj, "Select an Option", JOptionPane.YES_NO_CANCEL_OPTION);
+        // String[] obj = {"unsaved documents", "Do you really want to exit?"};
+        // int retValue = JOptionPane.showConfirmDialog(frame, obj, "Select an Option", JOptionPane.YES_NO_CANCEL_OPTION);
         Object[] options = {"Save", "Discard", "Cancel"};
         int retValue = JOptionPane.showOptionDialog(
             frame, "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue</html>",
             "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         if (retValue == JOptionPane.YES_OPTION) {
             System.out.println("exit");
-            //boolean ret = dummyDocumentSaveMethod();
-            //if (ret) { //saved and exit
-            //    frame.dispose();
-            //} else { //error and cancel exit
-            //    return;
-            //}
+            // boolean ret = dummyDocumentSaveMethod();
+            // if (ret) { // saved and exit
+            //     frame.dispose();
+            // } else { // error and cancel exit
+            //     return;
+            // }
             frame.dispose();
         } else if (retValue == JOptionPane.NO_OPTION) {
             System.out.println("Exit without save");

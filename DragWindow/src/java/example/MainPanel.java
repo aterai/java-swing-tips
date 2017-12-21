@@ -16,12 +16,12 @@ public class MainPanel {
         (new Thread() {
             @Override public void run() {
                 try {
-                    //dummy long task
+                    // dummy long task
                     Thread.sleep(6000);
                     EventQueue.invokeAndWait(new Runnable() {
                         @Override public void run() {
                             showFrame(frame);
-                            //hideSplash();
+                            // hideSplash();
                             splashScreen.setVisible(false);
                             splashScreen.dispose();
                         }
@@ -44,9 +44,9 @@ public class MainPanel {
 
         JButton button = new JButton("Exit");
         button.addActionListener(e -> {
-            //frame.dispose();
-            //System.exit(0);
-            //frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            // frame.dispose();
+            // System.exit(0);
+            // frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         });
 
@@ -127,11 +127,11 @@ public class MainPanel {
         JFrame frame = new JFrame();
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.getContentPane().add(new MainPanel(frame));
-        //frame.setMinimumSize(new Dimension(100, 100));
-        //frame.setSize(320, 240);
-        //frame.setLocationRelativeTo(null);
-        //frame.setVisible(true);
+        // frame.getContentPane().add(new MainPanel(frame));
+        // frame.setMinimumSize(new Dimension(100, 100));
+        // frame.setSize(320, 240);
+        // frame.setLocationRelativeTo(null);
+        // frame.setVisible(true);
         new MainPanel().start(frame);
     }
 }

@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
                 tray.remove(icon);
             }
             frame.dispose();
-            //System.exit(0);
+            // System.exit(0);
         });
 
         PopupMenu popup = new PopupMenu();

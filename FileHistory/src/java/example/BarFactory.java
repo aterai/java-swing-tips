@@ -15,16 +15,16 @@ public final class BarFactory {
     private static final String IMAGE_SUFFIX  = "Image";
     private static final String LABEL_SUFFIX  = "Label";
     private static final String ACTION_SUFFIX = "Action";
-    private static final String TIP_SUFFIX    = "Tooltip";
-    private static final String MNE_SUFFIX    = "Mnemonic";
+    private static final String TIP_SUFFIX = "Tooltip";
+    private static final String MNE_SUFFIX = "Mnemonic";
 
     private final ResourceBundle resources;
 
-    private final Map<String, JMenuItem> menuItems   = new ConcurrentHashMap<>();
-    private final Map<String, JButton>   toolButtons = new ConcurrentHashMap<>();
-    private final Map<Object, Action>    commands    = new ConcurrentHashMap<>();
-    private final Map<String, JMenu>     menus       = new ConcurrentHashMap<>();
-    //private Action[] actions;
+    private final Map<String, JMenuItem> menuItems = new ConcurrentHashMap<>();
+    private final Map<String, JButton> toolButtons = new ConcurrentHashMap<>();
+    private final Map<Object, Action> commands = new ConcurrentHashMap<>();
+    private final Map<String, JMenu> menus = new ConcurrentHashMap<>();
+    // private Action[] actions;
 
     public BarFactory(String restr) {
         ResourceBundle res;
@@ -34,20 +34,20 @@ public final class BarFactory {
             ex.printStackTrace();
             System.err.println("resources/" + restr + " not found");
             res = null;
-            //System.exit(1);
+            // System.exit(1);
         }
         resources = res;
-        //actions = act;
-        //initActions();
+        // actions = act;
+        // initActions();
     }
     public BarFactory(ResourceBundle res) {
         resources = res;
-        //actions = act;
-        //initActions();
+        // actions = act;
+        // initActions();
     }
 
     public void initActions(Action... actlist) {
-        //Action[] actlist = getActions();
+        // Action[] actlist = getActions();
         for (Action a: actlist) {
             commands.put(a.getValue(Action.NAME), a);
         }
@@ -191,7 +191,7 @@ public final class BarFactory {
         Action a = getAction(acmd);
         if (Objects.nonNull(a)) {
             mi.addActionListener(a);
-            //a.addPropertyChangeListener(createActionChangeListener(mi));
+            // a.addPropertyChangeListener(createActionChangeListener(mi));
             mi.setEnabled(a.isEnabled());
         } else {
             mi.setEnabled(false);
@@ -222,7 +222,7 @@ public final class BarFactory {
 }
 
 // https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html
-// [JDK-8027607] (rb) Provide UTF-8 based properties resource bundles - Java Bug System]
+// [JDK-8027607] (rb) Provide UTF-8 based properties resource bundles - Java Bug System
 // https://bugs.openjdk.java.net/browse/JDK-8027607
 class UTF8ResourceBundleControl extends ResourceBundle.Control {
     @Override public List<String> getFormats(String baseName) {
@@ -234,7 +234,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
         if ("properties".equals(format)) {
             String bundleName = toBundleName(
                 Objects.requireNonNull(baseName, "baseName must not be null"),
-                Objects.requireNonNull(locale,   "locale must not be null"));
+                Objects.requireNonNull(locale, "locale must not be null"));
             String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
             InputStream stream = null;
             ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
@@ -251,7 +251,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
                 stream = cloader.getResourceAsStream(resourceName);
             }
             if (Objects.nonNull(stream)) {
-                //BufferedInputStream bis = new BufferedInputStream(stream);
+                // BufferedInputStream bis = new BufferedInputStream(stream);
                 try (Reader r = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
                     bundle = new PropertyResourceBundle(r);
                 }

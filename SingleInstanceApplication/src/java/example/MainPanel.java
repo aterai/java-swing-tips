@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Objects;
 import javax.swing.*;
-//import com.sun.tools.attach.*;
+// import com.sun.tools.attach.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
             socket = null;
         }
         if (Objects.isNull(socket)) {
-            //String stag = "<html><center><br /><br /><br /><br /><br />";
-            //String etag = "<br /><br /><br /><br /><br /><br /></center>";
-            //JOptionPane.showMessageDialog(null, stag + "An instance of the application is already running..." + etag);
-            //System.exit(0);
+            // String stag = "<html><center><br /><br /><br /><br /><br />";
+            // String etag = "<br /><br /><br /><br /><br /><br /></center>";
+            // JOptionPane.showMessageDialog(null, stag + "An instance of the application is already running..." + etag);
+            // System.exit(0);
             JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
             return;
         }
@@ -60,9 +60,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//------------------------------------------------------
-//Attach API
-//> http://d.hatena.ne.jp/Kazzz/20071221/p1
+// // Attach API
+// // http://d.hatena.ne.jp/Kazzz/20071221/p1
 // interface IAppInstanceCounter {
 //     int getInstanceCount();
 // }
@@ -72,7 +71,7 @@ public final class MainPanel extends JPanel {
 //     protected JVMDescriptorInstanceCounter() {
 //         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
 //         mainclassName = traces[traces.length-1].getClassName();
-//         //System.out.println(mainclassName);
+//         // System.out.println(mainclassName);
 //     }
 //     public int getInstanceCount() {
 //         return FinderUtil.findAll(
@@ -101,7 +100,6 @@ public final class MainPanel extends JPanel {
 //     }
 // }
 
-//------------------------------------------------------
 // class PseudoFileSemaphoreCounter implements IAppInstanceCounter {
 //     private PseudoFileSemaphore semaphore;
 //     private int launchLimit;
