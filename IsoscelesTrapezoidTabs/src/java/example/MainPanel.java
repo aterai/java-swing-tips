@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
     private final JTabbedPane tabs = new JTabbedPane() {
@@ -18,9 +18,9 @@ public final class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        tabs.addTab("JTextArea",  new JScrollPane(new JTextArea()));
-        tabs.addTab("JTree",      new JScrollPane(new JTree()));
-        tabs.addTab("JButton",    new JButton("button"));
+        tabs.addTab("JTextArea", new JScrollPane(new JTextArea()));
+        tabs.addTab("JTree", new JScrollPane(new JTree()));
+        tabs.addTab("JButton", new JButton("button"));
         tabs.addTab("JSplitPane", new JSplitPane());
         add(tabs);
         setPreferredSize(new Dimension(320, 240));
@@ -53,7 +53,7 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private final Color tabBackgroundColor = Color.LIGHT_GRAY;
     private final Color tabBorderColor = Color.GRAY;
 
-    @SuppressWarnings(["PMD.NPathComplexity", "PMD.CyclomaticComplexity"]) // The method paintTabArea() has an NPath complexity of 303
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = tabPane.getTabCount();
 
@@ -103,8 +103,8 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
         g2.setClip(clipRect);
 
         GeneralPath trapezoid = new GeneralPath();
-        trapezoid.moveTo(x - ADJ2,     y + h);
-        trapezoid.lineTo(x + ADJ2,     y + textShiftOffset);
+        trapezoid.moveTo(x - ADJ2, y + h);
+        trapezoid.lineTo(x + ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w + ADJ2, y + h);
         // trapezoid.closePath();
@@ -117,8 +117,8 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
         g2.draw(trapezoid);
 
         // GeneralPath shape = new GeneralPath();
-        // shape.moveTo(x - ADJ2,     y + h);
-        // shape.lineTo(x + ADJ2,     y + textShiftOffset);
+        // shape.moveTo(x - ADJ2, y + h);
+        // shape.lineTo(x + ADJ2, y + textShiftOffset);
         // shape.lineTo(x + w - ADJ2, y + textShiftOffset);
         // shape.lineTo(x + w + ADJ2, y + h);
         // shape.closePath();
@@ -126,15 +126,15 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
         // g2.fill(shape);
         //
         // GeneralPath border = new GeneralPath();
-        // border.moveTo(x - ADJ2,     y + h);
+        // border.moveTo(x - ADJ2, y + h);
         // // if (isSelected || tabIndex == 0) {
         // //     border.moveTo(x - ADJ2, y + h);
         // // } else {
         // //     // pentagon
         // //     border.moveTo(x + ADJ2, y + h);
         // //     border.lineTo(x, (y + h - 1) / 2);
-        // //   }
-        // border.lineTo(x + ADJ2,     y + textShiftOffset);
+        // // }
+        // border.lineTo(x + ADJ2, y + textShiftOffset);
         // border.lineTo(x + w - ADJ2, y + textShiftOffset);
         // border.lineTo(x + w + ADJ2, y + h);
         //
