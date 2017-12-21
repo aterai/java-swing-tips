@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
+        // http://www.famfamfam.com/lab/icons/mini/
         JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
             private transient MouseListener handler;
             @Override public void updateUI() {
@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
                 setContentAreaFilled(false);
                 setFocusPainted(false);
                 setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-                //setAlignmentX(Component.LEFT_ALIGNMENT);
-                //setAlignmentY(Component.TOP_ALIGNMENT); //???
+                // setAlignmentX(Component.LEFT_ALIGNMENT);
+                // setAlignmentY(Component.TOP_ALIGNMENT); // ???
                 handler = new MouseAdapter() {
                     @Override public void mouseEntered(MouseEvent e) {
                         setContentAreaFilled(true);
@@ -41,13 +41,13 @@ public final class MainPanel extends JPanel {
 
         ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane() {
             @Override public void updateUI() {
-                UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
+                UIManager.put("TabbedPane.tabAreaInsets", null); // uninstall
                 super.updateUI();
-                //setAlignmentX(Component.LEFT_ALIGNMENT);
-                //setAlignmentY(Component.TOP_ALIGNMENT);
-                //System.out.println(button.getAlignmentY());
-                //button.setAlignmentY(Component.TOP_ALIGNMENT);
-                //System.out.println(button.getAlignmentY());
+                // setAlignmentX(Component.LEFT_ALIGNMENT);
+                // setAlignmentY(Component.TOP_ALIGNMENT);
+                // System.out.println(button.getAlignmentY());
+                // button.setAlignmentY(Component.TOP_ALIGNMENT);
+                // System.out.println(button.getAlignmentY());
                 UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets());
                 super.updateUI(); //reinstall
             }
@@ -138,6 +138,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {

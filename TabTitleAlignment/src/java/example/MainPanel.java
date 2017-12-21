@@ -105,6 +105,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0) {
@@ -283,7 +284,7 @@ class TabButton extends JButton {
         return new Dimension(SIZE, SIZE);
     }
     @Override public void updateUI() {
-        //we don't want to update UI for this button
+        // we don't want to update UI for this button
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

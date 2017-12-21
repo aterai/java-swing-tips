@@ -143,6 +143,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
         super();
         this.highlighter = highlighter;
     }
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         String str = Objects.toString(value, "");
@@ -187,12 +188,12 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
         } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
-            //setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); //Nimbus
+            // setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); //Nimbus
         }
         setSelected(Objects.equals(value, Boolean.TRUE));
         return this;
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -217,5 +218,5 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
     @Override public void validate()   { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    // <---- Overridden for performance reasons.
 }

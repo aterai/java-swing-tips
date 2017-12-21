@@ -151,19 +151,19 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     }
 
     @Override public Object getNextValue() {
-        //Calendar cal = Calendar.getInstance();
-        //cal.setTime(value.getTime());
-        //cal.add(calendarField, 1);
-        //Date next = cal.getTime();
+        // Calendar cal = Calendar.getInstance();
+        // cal.setTime(value.getTime());
+        // cal.add(calendarField, 1);
+        // Date next = cal.getTime();
         ChronoLocalDateTime<?> next = value.plus(1, temporalUnit);
         return Objects.isNull(end) || end.compareTo(next) >= 0 ? next : null;
     }
 
     @Override public Object getPreviousValue() {
-        //Calendar cal = Calendar.getInstance();
-        //cal.setTime(value.getTime());
-        //cal.add(calendarField, -1);
-        //Date prev = cal.getTime();
+        // Calendar cal = Calendar.getInstance();
+        // cal.setTime(value.getTime());
+        // cal.add(calendarField, -1);
+        // Date prev = cal.getTime();
         ChronoLocalDateTime<?> prev = value.minus(1, temporalUnit);
         return Objects.isNull(start) || start.compareTo(prev) <= 0 ? prev : null;
     }
@@ -219,7 +219,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     }
 
     public SpinnerLocalDateTimeModel getModel() {
-        return model; //(SpinnerLocalDateTimeModel) getSpinner().getModel();
+        return model; // (SpinnerLocalDateTimeModel) getSpinner().getModel();
     }
 
     protected class LocalDateTimeFormatter extends InternationalFormatter {
@@ -227,22 +227,23 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
             super(dateTimeFormatter.toFormat());
         }
         @Override public String valueToString(Object value) throws ParseException {
-            //System.out.println(value.getClass().getName());
+            // System.out.println(value.getClass().getName());
             if (value instanceof TemporalAccessor) {
-                //return ((LocalDateTime) value).format(dateTimeFormatter);
+                // return ((LocalDateTime) value).format(dateTimeFormatter);
                 return dateTimeFormatter.format((TemporalAccessor) value);
             } else {
                 return "";
             }
         }
+        @SuppressWarnings("PMD.CyclomaticComplexity")
         @Override public Object stringToValue(String text) throws ParseException {
-            //System.out.println("stringToValue:" + text);
+            // System.out.println("stringToValue:" + text);
             SpinnerLocalDateTimeModel model = getModel();
             try {
-                //LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
+                // LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
                 TemporalAccessor ta = dateTimeFormatter.parse(text);
                 ChronoLocalDateTime<?> value = model.getLocalDateTime();
-                //@see https://tips4java.wordpress.com/2015/04/09/temporal-spinners/
+                // @see https://tips4java.wordpress.com/2015/04/09/temporal-spinners/
                 for (ChronoField field: ChronoField.values()) {
                     if (field.isSupportedBy(value) && ta.isSupported(field)) {
                         value = field.adjustInto(value, ta.getLong(field));

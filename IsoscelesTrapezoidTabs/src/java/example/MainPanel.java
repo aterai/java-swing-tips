@@ -53,7 +53,7 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private final Color tabBackgroundColor = Color.LIGHT_GRAY;
     private final Color tabBorderColor = Color.GRAY;
 
-    @SuppressWarnings("PMD.NPathComplexity") // The method paintTabArea() has an NPath complexity of 303
+    @SuppressWarnings(["PMD.NPathComplexity", "PMD.CyclomaticComplexity"]) // The method paintTabArea() has an NPath complexity of 303
     @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = tabPane.getTabCount();
 
@@ -107,26 +107,26 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
         trapezoid.lineTo(x + ADJ2,     y + textShiftOffset);
         trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w + ADJ2, y + h);
-        //trapezoid.closePath();
+        // trapezoid.closePath();
 
-        //TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
+        // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
         g2.setColor(isSelected ? selectedTabColor : tabBackgroundColor);
         g2.fill(trapezoid);
 
         g2.setColor(tabBorderColor);
         g2.draw(trapezoid);
 
-        //GeneralPath shape = new GeneralPath();
-        //shape.moveTo(x - ADJ2,     y + h);
-        //shape.lineTo(x + ADJ2,     y + textShiftOffset);
-        //shape.lineTo(x + w - ADJ2, y + textShiftOffset);
-        //shape.lineTo(x + w + ADJ2, y + h);
-        //shape.closePath();
-        //g2.setColor(isSelected ? selectedTabColor : tabBackgroundColor);
-        //g2.fill(shape);
+        // GeneralPath shape = new GeneralPath();
+        // shape.moveTo(x - ADJ2,     y + h);
+        // shape.lineTo(x + ADJ2,     y + textShiftOffset);
+        // shape.lineTo(x + w - ADJ2, y + textShiftOffset);
+        // shape.lineTo(x + w + ADJ2, y + h);
+        // shape.closePath();
+        // g2.setColor(isSelected ? selectedTabColor : tabBackgroundColor);
+        // g2.fill(shape);
         //
-        //GeneralPath border = new GeneralPath();
-        //border.moveTo(x - ADJ2,     y + h);
+        // GeneralPath border = new GeneralPath();
+        // border.moveTo(x - ADJ2,     y + h);
         // // if (isSelected || tabIndex == 0) {
         // //     border.moveTo(x - ADJ2, y + h);
         // // } else {
@@ -134,12 +134,12 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
         // //     border.moveTo(x + ADJ2, y + h);
         // //     border.lineTo(x, (y + h - 1) / 2);
         // //   }
-        //border.lineTo(x + ADJ2,     y + textShiftOffset);
-        //border.lineTo(x + w - ADJ2, y + textShiftOffset);
-        //border.lineTo(x + w + ADJ2, y + h);
+        // border.lineTo(x + ADJ2,     y + textShiftOffset);
+        // border.lineTo(x + w - ADJ2, y + textShiftOffset);
+        // border.lineTo(x + w + ADJ2, y + h);
         //
-        //g2.setColor(tabBorderColor);
-        //g2.draw(border);
+        // g2.setColor(tabBorderColor);
+        // g2.draw(border);
 
         g2.dispose();
     }

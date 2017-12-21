@@ -211,6 +211,7 @@ class ResizeWindowListener extends MouseInputAdapter {
             ((Window) p).setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
         }
     }
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
         switch (side) {
           case NW:
