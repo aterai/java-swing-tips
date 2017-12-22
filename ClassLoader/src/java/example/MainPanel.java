@@ -7,10 +7,12 @@ import java.net.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    @SuppressWarnings("PMD.UseProperClassLoader")
     private MainPanel() {
         super(new BorderLayout());
 
         URL url1 = getClass().getClassLoader().getResource("example/test.png");
+        // URL url1 = Thread.currentThread().getContextClassLoader().getResource("example/test.png");
         URL url2 = getClass().getResource("test.png");
 
         JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));

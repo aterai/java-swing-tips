@@ -9,7 +9,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         try {
-            Thread.sleep(5000); //dummy task
+            Thread.sleep(5000); // dummy task
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         JWindow splashScreen = new JWindow();
         EventQueue.invokeLater(() -> {
             System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
-            ImageIcon img = new ImageIcon(MainPanel.class.getClassLoader().getResource("example/splash.png"));
+            ImageIcon img = new ImageIcon(MainPanel.class.getResource("splash.png"));
             splashScreen.getContentPane().add(new JLabel(img));
             splashScreen.pack();
             splashScreen.setLocationRelativeTo(null);
@@ -43,14 +43,14 @@ public final class MainPanel extends JPanel {
         System.out.println("createGUI start / EDT: " + EventQueue.isDispatchThread());
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel()); //new MainPanel() take long time
+        frame.getContentPane().add(new MainPanel()); // new MainPanel() take long time
         frame.pack();
         frame.setLocationRelativeTo(null);
         System.out.println("createGUI end");
 
         EventQueue.invokeLater(() -> {
             System.out.println("    splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
-            //splashScreen.setVisible(false);
+            // splashScreen.setVisible(false);
             splashScreen.dispose();
             System.out.println("    splashScreen dispose end");
 
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
 //         new SwingWorker() {
 //             @Override public Object doInBackground() {
 //                 System.out.println("frame make start / EDT: " + EventQueue.isDispatchThread());
-//                 frame.getContentPane().add(new MainPanel()); //new MainPanel() take long time
+//                 frame.getContentPane().add(new MainPanel()); // new MainPanel() take long time
 //                 System.out.println("frame make end");
 //                 return "Done";
 //             }

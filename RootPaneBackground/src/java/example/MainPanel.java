@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@") {
             @Override protected JRootPane createRootPane() {
                 return new JRootPane() {
-                    //private final TexturePaint texture = makeCheckerTexture();
+                    // private final TexturePaint texture = makeCheckerTexture();
                     @Override protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
                         Graphics2D g2 = (Graphics2D) g.create();
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
                     }
                     @Override public void updateUI() {
                         super.updateUI();
-                        URL url = getClass().getClassLoader().getResource("example/test.jpg");
+                        URL url = MainPanel.class.getResource("test.jpg");
                         BufferedImage bi = ImageUtil.getFilteredImage(url);
                         setBorder(new CentredBackgroundBorder(bi));
                         setOpaque(false);
@@ -75,9 +75,9 @@ public final class MainPanel extends JPanel {
                 };
             }
         };
-        //frame.getRootPane().setBackground(Color.BLUE);
-        //frame.getLayeredPane().setBackground(Color.GREEN);
-        //frame.getContentPane().setBackground(Color.RED);
+        // frame.getRootPane().setBackground(Color.BLUE);
+        // frame.getLayeredPane().setBackground(Color.GREEN);
+        // frame.getContentPane().setBackground(Color.RED);
         Container contentPane = frame.getContentPane();
         if (contentPane instanceof JComponent) {
             ((JComponent) contentPane).setOpaque(false);
@@ -107,7 +107,7 @@ final class ImageUtil {
         UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.TRUE);
         JMenuBar mb = new JMenuBar() {
             @Override protected void paintComponent(Graphics g) {
-                //super.paintComponent(g);
+                // super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(new Color(100, 100, 100, 100));
                 g2.fillRect(0, 0, getWidth(), getHeight());
@@ -117,7 +117,7 @@ final class ImageUtil {
         mb.setOpaque(false);
         for (String key: new String[] {"File", "Edit", "Help"}) {
             JMenu m = createMenu(key);
-            //if (m != null)
+            // if (m != null)
             mb.add(m);
         }
         return mb;
@@ -318,7 +318,7 @@ Translucent and Shaped Swing Windows | Java.net
 </a>
 */
 class TranslucentPopupFactory extends PopupFactory {
-    @Override public Popup getPopup(Component owner, Component contents, int x, int y) { //throws IllegalArgumentException {
+    @Override public Popup getPopup(Component owner, Component contents, int x, int y) { // throws IllegalArgumentException {
         return new TranslucentPopup(owner, contents, x, y);
     }
 }
@@ -330,27 +330,27 @@ class TranslucentPopup extends Popup {
         // create a new heavyweight window
         this.popupWindow = new JWindow();
         // mark the popup with partial opacity
-        //AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
-        //popupWindow.setOpacity(.5f);
-        //AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
-        popupWindow.setBackground(new Color(0x0, true)); //Java 1.7.0
+        // AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
+        // popupWindow.setOpacity(.5f);
+        // AWTUtilities.setWindowOpaque(popupWindow, false); // Java 1.6.0_10
+        popupWindow.setBackground(new Color(0x0, true)); // Java 1.7.0
         // determine the popup location
         popupWindow.setLocation(ownerX, ownerY);
         // add the contents to the popup
         popupWindow.getContentPane().add(contents);
         contents.invalidate();
-        //JComponent parent = (JComponent) contents.getParent();
+        // JComponent parent = (JComponent) contents.getParent();
         // set the shadow border
-        //parent.setBorder(new ShadowPopupBorder());
+        // parent.setBorder(new ShadowPopupBorder());
     }
     @Override public void show() {
-        //System.out.println("Always Heavy weight!");
+        // System.out.println("Always Heavy weight!");
         this.popupWindow.setVisible(true);
         this.popupWindow.pack();
         // mark the window as non-opaque, so that the
         // shadow border pixels take on the per-pixel
         // translucency
-        //AWTUtilities.setWindowOpaque(this.popupWindow, false);
+        // AWTUtilities.setWindowOpaque(this.popupWindow, false);
     }
     @Override public void hide() {
         this.popupWindow.setVisible(false);
