@@ -18,11 +18,11 @@ public final class MainPanel extends JPanel {
         box1.add(new JButton("a"));
         box1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
-        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")),    120, 5);
-        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"),       new JButton("Layout")), 100, 5);
-        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"),     new JButton("gap:2")),  120, 2);
-        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"),   new JButton("gap:2")),  2);
-        JComponent box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"),    new JButton("gap:2")),  120, 2);
+        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
+        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
+        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
+        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
+        JComponent box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
 
         Box box = Box.createVerticalBox();
         for (Component c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent createRightAlignButtonBox4(final List<JButton> list, final int buttonWidth, final int gap) {
+    private static JComponent createRightAlignButtonBox4(List<JButton> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
@@ -74,9 +74,9 @@ public final class MainPanel extends JPanel {
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
-        Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
-        Spring y     = Spring.constant(gap);
-        Spring g     = Spring.minus(Spring.constant(gap));
+        Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
+        Spring y = Spring.constant(gap);
+        Spring g = Spring.minus(Spring.constant(gap));
         Spring width = Spring.constant(buttonWidth);
         for (JButton b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-    private static JComponent createRightAlignButtonBox3(final List<JButton> list, final int buttonWidth, final int gap) {
+    private static JComponent createRightAlignButtonBox3(List<JButton> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
@@ -101,13 +101,13 @@ public final class MainPanel extends JPanel {
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
-        SpringLayout.Constraints pCons = layout.getConstraints(p);
-        //pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(p.getPreferredSize().height));
-        pCons.setConstraint(SpringLayout.EAST, Spring.constant((buttonWidth + gap) * list.size()));
+        SpringLayout.Constraints cons = layout.getConstraints(p);
+        // cons.setConstraint(SpringLayout.SOUTH, Spring.constant(p.getPreferredSize().height));
+        cons.setConstraint(SpringLayout.EAST, Spring.constant((buttonWidth + gap) * list.size()));
 
-        Spring x     = Spring.constant(0);
-        Spring y     = Spring.constant(gap);
-        Spring g     = Spring.constant(gap);
+        Spring x = Spring.constant(0);
+        Spring y = Spring.constant(gap);
+        Spring g = Spring.constant(gap);
         Spring width = Spring.constant(buttonWidth);
         for (JButton b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent createRightAlignButtonBox2(final List<JButton> list, final int buttonWidth, int gap) {
+    private static JComponent createRightAlignButtonBox2(List<JButton> list, int buttonWidth, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
                 for (JButton b: list) {

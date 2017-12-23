@@ -12,8 +12,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(2, 2, 4, 4));
-        //PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design
-        //http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
+        // PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design
+        // http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
         ImageIcon defaultIcon = new ImageIcon(getClass().getResource("31g.png"));
         ImageProducer ip = defaultIcon.getImage().getSource();
 
@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
         add(makeStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list, 2)));
 
         // 4
-        ImageIcon yStar = makeStarImageIcon(ip, 1f, 1f, 0f);
-        list = Arrays.asList(yStar, yStar, yStar, yStar, yStar);
+        ImageIcon star = makeStarImageIcon(ip, 1f, 1f, 0f);
+        list = Arrays.asList(star, star, star, star, star);
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1)));
         setPreferredSize(new Dimension(320, 240));
     }

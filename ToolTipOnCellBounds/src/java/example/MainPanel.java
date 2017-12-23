@@ -69,8 +69,8 @@ class TooltipList<E> extends JList<E> {
         Rectangle cellBounds = getCellBounds(i, i);
         if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
-            Component rComponent = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
-            if (rComponent instanceof JComponent && Objects.nonNull(((JComponent) rComponent).getToolTipText())) {
+            Component renderer = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
                 return cellBounds.getLocation();
             }
         }
@@ -93,12 +93,12 @@ class CellRendererTooltipList<E> extends JList<E> {
         if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
             E str = getModel().getElementAt(i);
-            Component rComponent = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
-            if (rComponent instanceof JComponent && Objects.nonNull(((JComponent) rComponent).getToolTipText())) {
+            Component renderer = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
                 Point pt = cellBounds.getLocation();
                 Insets ins = label.getInsets();
                 pt.translate(-ins.left, -ins.top);
-                label.setIcon(new RendererIcon(rComponent, cellBounds));
+                label.setIcon(new RendererIcon(renderer, cellBounds));
                 return pt;
             }
         }

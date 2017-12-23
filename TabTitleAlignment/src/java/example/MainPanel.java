@@ -160,7 +160,7 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
                                            metrics, title, icon,
                                            SwingConstants.CENTER,
-                                           SwingConstants.LEFT, //CENTER, <----
+                                           SwingConstants.LEFT, // CENTER, <----
                                            SwingConstants.CENTER,
                                            SwingConstants.TRAILING,
                                            tabRect,
@@ -168,15 +168,15 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
                                            textRect,
                                            textIconGap);
         tabPane.putClientProperty(html, null);
-        textRect.translate(tabInsets.left + 2, 0); //<----
+        textRect.translate(tabInsets.left + 2, 0); // <----
         textRect.width -= tabInsets.left + tabInsets.right;
 
-        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-        iconRect.x += xNudge;
-        iconRect.y += yNudge;
-        textRect.x += xNudge;
-        textRect.y += yNudge;
+        int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xnudge;
+        iconRect.y += ynudge;
+        textRect.x += xnudge;
+        textRect.y += ynudge;
     }
 }
 
@@ -195,7 +195,7 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
                                            metrics, title, icon,
                                            SwingConstants.CENTER,
-                                           SwingConstants.LEFT, //CENTER, <----
+                                           SwingConstants.LEFT, // CENTER, <----
                                            SwingConstants.CENTER,
                                            SwingConstants.TRAILING,
                                            tabRect,
@@ -203,15 +203,15 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
                                            textRect,
                                            textIconGap);
         tabPane.putClientProperty("html", null);
-        textRect.translate(tabInsets.left, 0); //<----
+        textRect.translate(tabInsets.left, 0); // <----
         textRect.width -= tabInsets.left + tabInsets.right;
 
-        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-        iconRect.x += xNudge;
-        iconRect.y += yNudge;
-        textRect.x += xNudge;
-        textRect.y += yNudge;
+        int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xnudge;
+        iconRect.y += ynudge;
+        textRect.x += xnudge;
+        textRect.y += ynudge;
     }
 }
 

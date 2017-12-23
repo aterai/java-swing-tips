@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     }
     private static JSlider makeSilder(String title) {
         JSlider slider = new JSlider(0, 100, 50);
-        //JSlider slider = new JSlider(-50, 50, 0);
+        // JSlider slider = new JSlider(-50, 50, 0);
         slider.setBorder(BorderFactory.createTitledBorder(title));
         slider.setMajorTickSpacing(10);
         slider.setSnapToTicks(true);
@@ -104,27 +104,27 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
     protected WindowsSnapToTicksDragSliderUI(JSlider slider) {
         super(slider);
     }
-    @Override protected TrackListener createTrackListener(final JSlider slider) {
+    @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mouseDragged(MouseEvent e) {
                 if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
                     super.mouseDragged(e);
                     return;
                 }
-                //case HORIZONTAL:
+                // case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
-                final int trackLength = trackRect.width;
-                final int trackLeft   = trackRect.x - halfThumbWidth;
-                final int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-                int xPos = e.getX();
-                int snappedPos = xPos;
-                if (xPos <= trackLeft) {
+                int trackLength = trackRect.width;
+                int trackLeft   = trackRect.x - halfThumbWidth;
+                int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+                int xpos = e.getX();
+                int snappedPos = xpos;
+                if (xpos <= trackLeft) {
                     snappedPos = trackLeft;
-                } else if (xPos >= trackRight) {
+                } else if (xpos >= trackRight) {
                     snappedPos = trackRight;
                 } else {
-                    //int tickSpacing = slider.getMajorTickSpacing();
-                    //float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
+                    // int tickSpacing = slider.getMajorTickSpacing();
+                    // float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
 
                     // a problem if you choose to set a negative MINIMUM for the JSlider;
                     // the calculated drag-positions are wrong.
@@ -132,10 +132,10 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                     int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
                     int tickSpacing = slider.getMinorTickSpacing() == 0 ? slider.getMajorTickSpacing() : slider.getMinorTickSpacing();
                     float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
-                    xPos -= trackLeft;
-                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+                    xpos -= trackLeft;
+                    snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
                     offset = 0;
-                    //System.out.println(snappedPos);
+                    // System.out.println(snappedPos);
                 }
                 e.translatePoint(snappedPos - e.getX(), 0);
                 super.mouseDragged(e);
@@ -152,27 +152,27 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
 }
 
 class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
-    @Override protected TrackListener createTrackListener(final JSlider slider) {
+    @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mouseDragged(MouseEvent e) {
                 if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
                     super.mouseDragged(e);
                     return;
                 }
-                //case HORIZONTAL:
+                // case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
-                final int trackLength = trackRect.width;
-                final int trackLeft   = trackRect.x - halfThumbWidth;
-                final int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-                int xPos = e.getX();
-                int snappedPos = xPos;
-                if (xPos <= trackLeft) {
+                int trackLength = trackRect.width;
+                int trackLeft   = trackRect.x - halfThumbWidth;
+                int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+                int xpos = e.getX();
+                int snappedPos = xpos;
+                if (xpos <= trackLeft) {
                     snappedPos = trackLeft;
-                } else if (xPos >= trackRight) {
+                } else if (xpos >= trackRight) {
                     snappedPos = trackRight;
                 } else {
-                    //int tickSpacing = slider.getMajorTickSpacing();
-                    //float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
+                    // int tickSpacing = slider.getMajorTickSpacing();
+                    // float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
 
                     // a problem if you choose to set a negative MINIMUM for the JSlider;
                     // the calculated drag-positions are wrong.
@@ -182,10 +182,10 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                                     ? slider.getMajorTickSpacing()
                                     : slider.getMinorTickSpacing();
                     float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
-                    xPos -= trackLeft;
-                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+                    xpos -= trackLeft;
+                    snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
                     offset = 0;
-                    //System.out.println(snappedPos);
+                    // System.out.println(snappedPos);
                 }
                 e.translatePoint(snappedPos - e.getX(), 0);
                 super.mouseDragged(e);

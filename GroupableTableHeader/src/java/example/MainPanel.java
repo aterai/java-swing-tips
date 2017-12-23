@@ -103,8 +103,8 @@ class GroupableTableHeader extends JTableHeader {
         if (columnGroups == null) {
             return Collections.emptyList();
         }
-        for (ColumnGroup cGroup: columnGroups) {
-            List<?> groups = cGroup.getColumnGroupList(col, new ArrayList<>());
+        for (ColumnGroup cg: columnGroups) {
+            List<?> groups = cg.getColumnGroupList(col, new ArrayList<>());
             if (!groups.isEmpty()) {
                 return groups;
             }
@@ -125,31 +125,30 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         Point left = clip.getLocation();
         Point right = new Point(clip.x + clip.width - 1, clip.y);
         TableColumnModel cm = header.getColumnModel();
-        int cMin = header.columnAtPoint(left);
-        int cMax = header.columnAtPoint(right);
+        int colMin = header.columnAtPoint(left);
+        int colMax = header.columnAtPoint(right);
 
-        Rectangle cellRect = header.getHeaderRect(cMin);
-        int headerY      = cellRect.y;
+        Rectangle cellRect = header.getHeaderRect(colMin);
+        int headerY = cellRect.y;
         int headerHeight = cellRect.height;
 
         Map<ColumnGroup, Rectangle> h = new ConcurrentHashMap<>();
-        //int columnMargin = header.getColumnModel().getColumnMargin();
-        //int columnWidth;
-        for (int column = cMin; column <= cMax; column++) {
-            TableColumn aColumn = cm.getColumn(column);
+        // int columnMargin = header.getColumnModel().getColumnMargin();
+        // int columnWidth;
+        for (int column = colMin; column <= colMax; column++) {
+            TableColumn tc = cm.getColumn(column);
             cellRect.y = headerY;
-            cellRect.setSize(aColumn.getWidth(), headerHeight);
+            cellRect.setSize(tc.getWidth(), headerHeight);
 
             int groupHeight = 0;
-            List<?> cGroups = ((GroupableTableHeader) header).getColumnGroups(aColumn);
-            for (Object o: cGroups) {
-                ColumnGroup cGroup = (ColumnGroup) o;
-                Rectangle groupRect = (Rectangle) h.get(cGroup);
+            for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
+                ColumnGroup cg = (ColumnGroup) o;
+                Rectangle groupRect = (Rectangle) h.get(cg);
                 if (groupRect == null) {
-                    groupRect = new Rectangle(cellRect.getLocation(), cGroup.getSize(header));
-                    h.put(cGroup, groupRect);
+                    groupRect = new Rectangle(cellRect.getLocation(), cg.getSize(header));
+                    h.put(cg, groupRect);
                 }
-                paintCellGroup(g, groupRect, cGroup);
+                paintCellGroup(g, groupRect, cg);
                 groupHeight += groupRect.height;
                 cellRect.height = headerHeight - groupHeight;
                 cellRect.y      = groupHeight;
@@ -159,19 +158,19 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         }
     }
 
-    //Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
+    // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
     private Component getHeaderRenderer(int columnIndex) {
-        TableColumn aColumn = header.getColumnModel().getColumn(columnIndex);
-        TableCellRenderer renderer = aColumn.getHeaderRenderer();
+        TableColumn tc = header.getColumnModel().getColumn(columnIndex);
+        TableCellRenderer renderer = tc.getHeaderRenderer();
         if (renderer == null) {
             renderer = header.getDefaultRenderer();
         }
         boolean hasFocus = !header.isPaintingForPrint() && header.hasFocus();
-        //&& (columnIndex == getSelectedColumnIndex())
-        return renderer.getTableCellRendererComponent(header.getTable(), aColumn.getHeaderValue(), false, hasFocus, -1, columnIndex);
+        // && (columnIndex == getSelectedColumnIndex())
+        return renderer.getTableCellRendererComponent(header.getTable(), tc.getHeaderValue(), false, hasFocus, -1, columnIndex);
     }
 
-    //Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
+    // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
     private void paintCell(Graphics g, Rectangle cellRect, int columnIndex) {
         Component component = getHeaderRenderer(columnIndex);
         rendererPane.paintComponent(g, component, header, cellRect.x, cellRect.y, cellRect.width, cellRect.height, true);
@@ -187,20 +186,19 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         int height = 0;
         TableColumnModel columnModel = header.getColumnModel();
         for (int column = 0; column < columnModel.getColumnCount(); column++) {
-            TableColumn aColumn = columnModel.getColumn(column);
+            TableColumn tc = columnModel.getColumn(column);
             Component comp = getHeaderRenderer(column);
             int rendererHeight = comp.getPreferredSize().height;
-            List<?> cGroups = ((GroupableTableHeader) header).getColumnGroups(aColumn);
-            for (Object o: cGroups) {
-                ColumnGroup cGroup = (ColumnGroup) o;
-                rendererHeight += cGroup.getSize(header).height;
+            for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
+                ColumnGroup cg = (ColumnGroup) o;
+                rendererHeight += cg.getSize(header).height;
             }
             height = Math.max(height, rendererHeight);
         }
         return height;
     }
 
-    //Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
+    // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
     private Dimension createHeaderSize(long width) {
         long w = Math.min(width, Integer.MAX_VALUE);
         return new Dimension((int) w, getHeaderHeight());
@@ -212,8 +210,8 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
 //         long width = 0;
 //         Enumeration<TableColumn> enumeration = header.getColumnModel().getColumns();
 //         while (enumeration.hasMoreElements()) {
-//             TableColumn aColumn = (TableColumn) enumeration.nextElement();
-//             width += aColumn.getPreferredWidth();
+//             TableColumn tc = (TableColumn) enumeration.nextElement();
+//             width += tc.getPreferredWidth();
 //         }
         return createHeaderSize(width);
     }
@@ -268,8 +266,8 @@ class ColumnGroup {
         int width = 0;
         for (Object obj: list) {
             if (obj instanceof TableColumn) {
-                TableColumn aColumn = (TableColumn) obj;
-                width += aColumn.getWidth();
+                TableColumn tc = (TableColumn) obj;
+                width += tc.getWidth();
             } else {
                 width += ((ColumnGroup) obj).getSize(header).width;
             }

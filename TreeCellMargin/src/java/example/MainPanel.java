@@ -95,17 +95,17 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
             return;
         }
 
-        Color bColor;
+        Color bgColor;
         if (selected) {
-            bColor = getBackgroundSelectionColor();
+            bgColor = getBackgroundSelectionColor();
         } else {
-            bColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
+            bgColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
         }
 
         int imageOffset = -1;
-        if (Objects.nonNull(bColor) && fillBackground) {
+        if (Objects.nonNull(bgColor) && fillBackground) {
             imageOffset = getLabelStart();
-            g.setColor(bColor);
+            g.setColor(bgColor);
             g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
         }
 
@@ -122,9 +122,9 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
             } else if (imageOffset == -1) {
                 imageOffset = getLabelStart();
             }
-            g.setColor(bColor);
+            g.setColor(bgColor);
             g.fillRect(imageOffset - MARGIN, 0, MARGIN + 1, getHeight());
-            paintFocus(g, imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight(), bColor);
+            paintFocus(g, imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight(), bgColor);
         }
     }
     private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
@@ -188,23 +188,23 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        Color bColor;
-        Color fColor;
+        Color bgColor;
+        Color fgColor;
         if (selected) {
-            bColor = getBackgroundSelectionColor();
-            fColor = getTextSelectionColor();
+            bgColor = getBackgroundSelectionColor();
+            fgColor = getTextSelectionColor();
             if (isSynth) {
                 text.setOpaque(false);
             } else {
                 text.setOpaque(true);
             }
         } else {
-            bColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
-            fColor = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
+            bgColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
+            fgColor = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
             text.setOpaque(false);
         }
-        text.setForeground(fColor);
-        text.setBackground(bColor);
+        text.setForeground(fgColor);
+        text.setBackground(bgColor);
         text.setBorder(hasFocus ? compoundFocusBorder : emptyBorder);
         text.setText(l.getText());
         icon.setIcon(l.getIcon());

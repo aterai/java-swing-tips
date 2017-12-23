@@ -443,12 +443,12 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 
         tabPane.putClientProperty(HTML, null);
 
-        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-        iconRect.x += xNudge;
-        iconRect.y += yNudge;
-        textRect.x += xNudge;
-        textRect.y += yNudge;
+        int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xnudge;
+        iconRect.y += ynudge;
+        textRect.x += xnudge;
+        textRect.y += ynudge;
     }
 }
 
@@ -516,11 +516,11 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
         tabPane.putClientProperty(HTML, null);
 
-        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-        iconRect.x += xNudge;
-        iconRect.y += yNudge;
-        textRect.x += xNudge;
-        textRect.y += yNudge;
+        int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xnudge;
+        iconRect.y += ynudge;
+        textRect.x += xnudge;
+        textRect.y += ynudge;
     }
 }

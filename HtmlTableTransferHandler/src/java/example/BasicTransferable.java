@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.*;
 
-//Copied from javax/swing/plaf/basic/BasicTransferable.java
+// Copied from javax/swing/plaf/basic/BasicTransferable.java
 class BasicTransferable implements Transferable {
     protected String plainData;
     protected String htmlData;
@@ -48,9 +48,10 @@ class BasicTransferable implements Transferable {
      * for providing the data (from most richly descriptive to least descriptive).
      * @return an array of data flavors in which this data can be transferred
      */
+    @SuppressWarnings("LocalVariableName")
     @Override public DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] richerFlavors = getRicherFlavors();
-        int nRicher = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+        int nRicher = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
         int nHTML = isHTMLSupported() ? htmlFlavors.length : 0;
         int nPlain = isPlainSupported() ? plainFlavors.length : 0;
         int nString = isPlainSupported() ? stringFlavors.length : 0;
@@ -59,22 +60,22 @@ class BasicTransferable implements Transferable {
 
         // fill in the array
         int nDone = 0;
-        //if (nRicher > 0) {
+        // if (nRicher > 0) {
             System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
             nDone += nRicher;
-        //}
-        //if (nHTML > 0) {
+        // }
+        // if (nHTML > 0) {
             System.arraycopy(htmlFlavors, 0, flavors, nDone, nHTML);
             nDone += nHTML;
-        //}
-        //if (nPlain > 0) {
+        // }
+        // if (nPlain > 0) {
             System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
             nDone += nPlain;
-        //}
-        //if (nString > 0) {
+        // }
+        // if (nString > 0) {
             System.arraycopy(stringFlavors, 0, flavors, nDone, nString);
-        //    nDone += nString;
-        //}
+        //     nDone += nString;
+        // }
         return flavors;
     }
 
@@ -107,7 +108,7 @@ class BasicTransferable implements Transferable {
      *              not supported.
      */
     @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-        //???: DataFlavor[] richerFlavors = getRicherFlavors();
+        // ???: DataFlavor[] richerFlavors = getRicherFlavors();
         if (isRicherFlavor(flavor)) {
             return getRicherData(flavor);
         } else if (isHTMLFlavor(flavor)) {
@@ -119,13 +120,13 @@ class BasicTransferable implements Transferable {
         }
         throw new UnsupportedFlavorException(flavor);
     }
-    //@see sun.datatransfer.DataFlavorUtil
+    // @see sun.datatransfer.DataFlavorUtil
     public static String getTextCharset(DataFlavor flavor) {
-        //if (!isFlavorCharsetTextType(flavor)) {
-        //    return null;
-        //}
-        //String encoding = flavor.getParameter("charset");
-        //return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
+        // if (!isFlavorCharsetTextType(flavor)) {
+        //     return null;
+        // }
+        // String encoding = flavor.getParameter("charset");
+        // return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
         return Optional.ofNullable(flavor.getParameter("charset")).orElse(Charset.defaultCharset().name());
     }
     private InputStream createInputStream(DataFlavor flavor, String data) throws IOException, UnsupportedFlavorException {
@@ -195,15 +196,15 @@ class BasicTransferable implements Transferable {
     }
 
     protected Object getHTMLTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
-        //String data = getHTMLData();
-        //data = Objects.nonNull(data) ? data : "";
+        // String data = getHTMLData();
+        // data = Objects.nonNull(data) ? data : "";
         String data = Objects.toString(getHTMLData(), "");
         if (String.class.equals(flavor.getRepresentationClass())) {
             return data;
         } else if (Reader.class.equals(flavor.getRepresentationClass())) {
             return new StringReader(data);
         } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-            //return new StringBufferInputStream(data);
+            // return new StringBufferInputStream(data);
             return createInputStream(flavor, data);
         }
         throw new UnsupportedFlavorException(flavor);
@@ -244,15 +245,15 @@ class BasicTransferable implements Transferable {
     }
 
     protected Object getPlaneTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
-        //String data = getPlainData();
-        //data = Objects.nonNull(data) ? data : "";
+        // String data = getPlainData();
+        // data = Objects.nonNull(data) ? data : "";
         String data = Objects.toString(getPlainData(), "");
         if (String.class.equals(flavor.getRepresentationClass())) {
             return data;
         } else if (Reader.class.equals(flavor.getRepresentationClass())) {
             return new StringReader(data);
         } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-            //return new StringBufferInputStream(data);
+            // return new StringBufferInputStream(data);
             return createInputStream(flavor, data);
         }
         throw new UnsupportedFlavorException(flavor);

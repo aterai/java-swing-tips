@@ -63,6 +63,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         g2.drawImage(createImage(source), 0, 0, this);
         g2.dispose();
     }
+    @SuppressWarnings("LocalVariableName")
     @Override public void mouseDragged(MouseEvent e) {
         double xDelta = e.getX() - startPoint.getX();
         double yDelta = e.getY() - startPoint.getY();

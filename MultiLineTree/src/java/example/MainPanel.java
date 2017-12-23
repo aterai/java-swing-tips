@@ -118,8 +118,8 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
 
     protected MultiLineCellRenderer() {
         super(new BorderLayout());
-        //text.setLineWrap(true);
-        //text.setWrapStyleWord(true);
+        // text.setLineWrap(true);
+        // text.setWrapStyleWord(true);
         text.setOpaque(true);
         text.setFont(icon.getFont());
         text.setBorder(BorderFactory.createEmptyBorder());
@@ -132,27 +132,27 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         add(text);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        //String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
-        //setText(stringValue);
+        // String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
+        // setText(stringValue);
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        //setEnabled(tree.isEnabled());
-        Color bColor;
-        Color fColor;
+        // setEnabled(tree.isEnabled());
+        Color bgColor;
+        Color fgColor;
         if (selected) {
-            bColor = renderer.getBackgroundSelectionColor();
-            fColor = renderer.getTextSelectionColor();
+            bgColor = renderer.getBackgroundSelectionColor();
+            fgColor = renderer.getTextSelectionColor();
         } else {
-            bColor = Optional.ofNullable(renderer.getBackgroundNonSelectionColor()).orElse(renderer.getBackground());
-            fColor = Optional.ofNullable(renderer.getTextNonSelectionColor()).orElse(renderer.getForeground());
+            bgColor = Optional.ofNullable(renderer.getBackgroundNonSelectionColor()).orElse(renderer.getBackground());
+            fgColor = Optional.ofNullable(renderer.getTextNonSelectionColor()).orElse(renderer.getForeground());
         }
         text.setFont(l.getFont());
         text.setText(l.getText());
-        text.setForeground(fColor);
-        text.setBackground(bColor);
-        //text.setBorder(hasFocus ? renderer.getBorder() : emptyBorder);
+        text.setForeground(fgColor);
+        text.setBackground(bgColor);
+        // text.setBorder(hasFocus ? renderer.getBorder() : emptyBorder);
 
         icon.setIcon(l.getIcon());
-        icon.setBackground(bColor);
+        icon.setBackground(bgColor);
         return this;
     }
     @Override public void updateUI() {
@@ -171,8 +171,8 @@ class CellTextArea extends JTextArea {
     @Override public Dimension getPreferredSize() {
         return preferredSize;
     }
-    //Multi-line tree items
-    //http://www.codeguru.com/java/articles/141.shtml
+    // Multi-line tree items
+    // http://www.codeguru.com/java/articles/141.shtml
     @Override public void setText(String str) {
         FontMetrics fm = getFontMetrics(getFont());
         int maxWidth = 0;
@@ -196,17 +196,17 @@ class CellTextArea2 extends JTextArea {
     @Override public Dimension getPreferredSize() {
         Dimension d = new Dimension(10, 10);
         Insets i = getInsets();
-        d.width  = Math.max(d.width,  getColumns() * getColumnWidth() + i.left + i.right);
+        d.width = Math.max(d.width, getColumns() * getColumnWidth() + i.left + i.right);
         d.height = Math.max(d.height, getRows() * getRowHeight() + i.top + i.bottom);
         return d;
     }
     @Override public void setText(String str) {
         super.setText(str);
         FontMetrics fm = getFontMetrics(getFont());
-        Document doc   = getDocument();
-        Element root   = doc.getDefaultRootElement();
-        int lineCount  = root.getElementCount(); //= root.getElementIndex(doc.getLength());
-        int maxWidth   = 10;
+        Document doc = getDocument();
+        Element root = doc.getDefaultRootElement();
+        int lineCount = root.getElementCount(); // = root.getElementIndex(doc.getLength());
+        int maxWidth = 10;
         try {
             for (int i = 0; i < lineCount; i++) {
                 Element e = root.getElement(i);
