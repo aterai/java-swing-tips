@@ -6,20 +6,19 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String INIT_TXT =
-        "Trail: Creating a GUI with JFC/Swing\n"
-      + "Lesson: Learning Swing by Example\n"
-      + "This lesson explains the concepts you need to\n"
-      + " use Swing components in building a user interface.\n"
-      + " First we examine the simplest Swing application you can write.\n"
-      + " Then we present several progressively complicated examples of creating\n"
-      + " user interfaces using components in the javax.swing package.\n"
-      + " We cover several Swing components, such as buttons, labels, and text areas.\n"
-      + " The handling of events is also discussed,\n"
-      + " as are layout management and accessibility.\n"
-      + " This lesson ends with a set of questions and exercises\n"
-      + " so you can test yourself on what you've learned.\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+    private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
+        + "Lesson: Learning Swing by Example\n"
+        + "This lesson explains the concepts you need to\n"
+        + " use Swing components in building a user interface.\n"
+        + " First we examine the simplest Swing application you can write.\n"
+        + " Then we present several progressively complicated examples of creating\n"
+        + " user interfaces using components in the javax.swing package.\n"
+        + " We cover several Swing components, such as buttons, labels, and text areas.\n"
+        + " The handling of events is also discussed,\n"
+        + " as are layout management and accessibility.\n"
+        + " This lesson ends with a set of questions and exercises\n"
+        + " so you can test yourself on what you've learned.\n"
+        + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private MainPanel() {
         super(new BorderLayout());
@@ -32,7 +31,7 @@ public final class MainPanel extends JPanel {
         textArea2.setMargin(new Insets(0, 0, 0, 1));
         JScrollPane scroll2 = new JScrollPane(textArea2) {
             @Override public void updateUI() {
-                //setViewportBorder(null);
+                // setViewportBorder(null);
                 super.updateUI();
                 EventQueue.invokeLater(() -> setViewportBorder(BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5)));
             }

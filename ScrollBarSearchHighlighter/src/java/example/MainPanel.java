@@ -13,29 +13,28 @@ import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public class MainPanel extends JPanel {
     protected static final String PATTERN = "Swing";
-    protected static final String INITTXT =
-        "Trail: Creating a GUI with JFC/Swing\n"
-      + "Lesson: Learning Swing by Example\n"
-      + "This lesson explains the concepts you need to\n"
-      + " use Swing components in building a user interface.\n"
-      + " First we examine the simplest Swing application you can write.\n"
-      + " Then we present several progressively complicated examples of creating\n"
-      + " user interfaces using components in the javax.swing package.\n"
-      + " We cover several Swing components, such as buttons, labels, and text areas.\n"
-      + " The handling of events is also discussed,\n"
-      + " as are layout management and accessibility.\n"
-      + " This lesson ends with a set of questions and exercises\n"
-      + " so you can test yourself on what you've learned.\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+    protected static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
+        + "Lesson: Learning Swing by Example\n"
+        + "This lesson explains the concepts you need to\n"
+        + " use Swing components in building a user interface.\n"
+        + " First we examine the simplest Swing application you can write.\n"
+        + " Then we present several progressively complicated examples of creating\n"
+        + " user interfaces using components in the javax.swing package.\n"
+        + " We cover several Swing components, such as buttons, labels, and text areas.\n"
+        + " The handling of events is also discussed,\n"
+        + " as are layout management and accessibility.\n"
+        + " This lesson ends with a set of questions and exercises\n"
+        + " so you can test yourself on what you've learned.\n"
+        + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     protected final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    protected final JTextArea textArea   = new JTextArea();
-    protected final JScrollPane scroll   = new JScrollPane(textArea);
+    protected final JTextArea textArea = new JTextArea();
+    protected final JScrollPane scroll = new JScrollPane(textArea);
     protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 //     protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
 //         @Override public Dimension getPreferredSize() {
 //             Dimension d = super.getPreferredSize();
-//             d.width += 4; //getInsets().left;
+//             d.width += 4; // getInsets().left;
 //             return d;
 //         }
 //     };
@@ -43,7 +42,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         textArea.setEditable(false);
-        textArea.setText(INITTXT + INITTXT + INITTXT);
+        textArea.setText(INIT_TXT + INIT_TXT + INIT_TXT);
 
         if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
@@ -54,7 +53,7 @@ public class MainPanel extends JPanel {
         scrollbar.setUnitIncrement(10);
         scroll.setVerticalScrollBar(scrollbar);
         JLabel label = new JLabel(new HighlightIcon(textArea, scrollbar));
-        //label.setBorder(BorderFactory.createLineBorder(Color.RED));
+        // label.setBorder(BorderFactory.createLineBorder(Color.RED));
         scroll.setRowHeaderView(label);
 
         /*
@@ -143,21 +142,21 @@ class HighlightIcon implements Icon {
     private final JTextComponent textArea;
     private final JScrollBar scrollbar;
     protected HighlightIcon(JTextComponent textArea, JScrollBar scrollbar) {
-        this.textArea  = textArea;
+        this.textArea = textArea;
         this.scrollbar = scrollbar;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        //Rectangle rect   = textArea.getBounds();
-        //Dimension sbSize = scrollbar.getSize();
-        //Insets sbInsets  = scrollbar.getInsets();
-        //double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
+        // Rectangle rect = textArea.getBounds();
+        // Dimension sbSize = scrollbar.getSize();
+        // Insets sbInsets = scrollbar.getInsets();
+        // double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
         int itop = scrollbar.getInsets().top;
         BoundedRangeModel range = scrollbar.getModel();
         double sy = range.getExtent() / (double) (range.getMaximum() - range.getMinimum());
         AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
         Highlighter highlighter = textArea.getHighlighter();
 
-        //paint Highlight
+        // paint Highlight
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(Color.RED);
@@ -165,17 +164,17 @@ class HighlightIcon implements Icon {
             for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height - 2);
+                int h = 2; // Math.max(2, s.height - 2);
                 g2.fillRect(0, itop + s.y, getIconWidth(), h);
             }
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
 
-        //paint Thumb
+        // paint Thumb
         if (scrollbar.isVisible()) {
-            //JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
-            //Rectangle thumbRect = vport.getBounds();
+            // JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+            // Rectangle thumbRect = vport.getBounds();
             thumbRect.height = range.getExtent();
             thumbRect.y = range.getValue(); //vport.getViewPosition().y;
             g2.setColor(THUMB_COLOR);
@@ -188,7 +187,7 @@ class HighlightIcon implements Icon {
         return 4;
     }
     @Override public int getIconHeight() {
-        //return scrollbar.getHeight();
+        // return scrollbar.getHeight();
         JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
         return vport.getHeight();
     }
@@ -212,7 +211,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
             for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height - 2);
+                int h = 2; // Math.max(2, s.height - 2);
                 g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
         } catch (BadLocationException ex) {
@@ -239,7 +238,7 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
             for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height - 2);
+                int h = 2; // Math.max(2, s.height - 2);
                 g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
         } catch (BadLocationException ex) {

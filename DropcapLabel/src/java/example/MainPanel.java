@@ -9,10 +9,10 @@ import java.text.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String TEXT =
-        "This lesson provides an introduction to Graphical User Interface (GUI) programming with Swing and the NetBeans IDE."
-      + " As you learned in the \"Hello World!\" lesson, the NetBeans IDE is a free, open-source, cross-platform integrated"
-      + " development environment with built-in support for the Java programming language.";
+    private static final String TEXT = "This lesson provides an introduction to"
+        + " Graphical User Interface (GUI) programming with Swing and the NetBeans IDE."
+        + " As you learned in the \"Hello World!\" lesson, the NetBeans IDE is a free, open-source, cross-platform integrated"
+        + " development environment with built-in support for the Java programming language.";
 
     private MainPanel() {
         super(new BorderLayout());

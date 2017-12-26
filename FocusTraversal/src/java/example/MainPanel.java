@@ -84,21 +84,20 @@ public final class MainPanel extends JPanel {
     }
     protected void debugPrint() {
         Container w = getTopLevelAncestor();
-        textarea.setText(
-            debugString("frame", w)
-          + debugString("this", this)
-          + debugString("panel", panel)
-          + debugString("box", box)
-          + debugString("scroll", scroll)
-          + debugString("textarea", textarea)
-          + debugString("eb", eb));
+        textarea.setText(debugString("frame", w)
+            + debugString("this", this)
+            + debugString("panel", panel)
+            + debugString("box", box)
+            + debugString("scroll", scroll)
+            + debugString("textarea", textarea)
+            + debugString("eb", eb));
     }
     private static String debugString(String label, Container c) {
         return label + "------------------"
-          + "\n  isFocusCycleRoot: " + c.isFocusCycleRoot()
-          + "\n  isFocusTraversalPolicySet: "  + c.isFocusTraversalPolicySet()
-          + "\n  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider()
-          + "\n";
+            + "\n  isFocusCycleRoot: " + c.isFocusCycleRoot()
+            + "\n  isFocusTraversalPolicySet: "  + c.isFocusTraversalPolicySet()
+            + "\n  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider()
+            + "\n";
     }
 
     public static void main(String... args) {

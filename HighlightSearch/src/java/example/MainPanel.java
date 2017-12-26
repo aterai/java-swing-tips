@@ -12,29 +12,28 @@ import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final String INIT_TXT =
-        "Trail: Creating a GUI with JFC/Swing\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
-      + "Lesson: Learning Swing by Example\n"
-      + "This lesson explains the concepts you need to\n"
-      + " use Swing components in building a user interface.\n"
-      + " First we examine the simplest Swing application you can write.\n"
-      + " Then we present several progressively complicated examples of creating\n"
-      + " user interfaces using components in the javax.swing package.\n"
-      + " We cover several Swing components, such as buttons, labels, and text areas.\n"
-      + " The handling of events is also discussed,\n"
-      + " as are layout management and accessibility.\n"
-      + " This lesson ends with a set of questions and exercises\n"
-      + " so you can test yourself on what you've learned.\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+    private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
+        + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
+        + "Lesson: Learning Swing by Example\n"
+        + "This lesson explains the concepts you need to\n"
+        + " use Swing components in building a user interface.\n"
+        + " First we examine the simplest Swing application you can write.\n"
+        + " Then we present several progressively complicated examples of creating\n"
+        + " user interfaces using components in the javax.swing package.\n"
+        + " We cover several Swing components, such as buttons, labels, and text areas.\n"
+        + " The handling of events is also discussed,\n"
+        + " as are layout management and accessibility.\n"
+        + " This lesson ends with a set of questions and exercises\n"
+        + " so you can test yourself on what you've learned.\n"
+        + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private final transient Highlighter.HighlightPainter currentPainter   = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private final JTextArea textArea  = new JTextArea();
-    private final JTextField field    = new JTextField("Swing");
-    private final JButton prevButton  = new JButton("\u22C0");
-    private final JButton nextButton  = new JButton("\u22C1");
+    private final JTextArea textArea = new JTextArea();
+    private final JTextField field = new JTextField("Swing");
+    private final JButton prevButton = new JButton("\u22C0");
+    private final JButton nextButton = new JButton("\u22C1");
     private final JCheckBox checkCase = new JCheckBox("Match case");
     private final JCheckBox checkWord = new JCheckBox("Match whole word only");
     private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
@@ -80,8 +79,8 @@ public class MainPanel extends JPanel {
         Rectangle rect = tc.modelToView(pos);
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
         if (Objects.nonNull(rect) && c instanceof JViewport) {
-            rect.x      = (int) (rect.x - c.getWidth() * .5);
-            rect.width  = c.getWidth();
+            rect.x = (int) (rect.x - c.getWidth() * .5);
+            rect.width = c.getWidth();
             rect.height = (int) (c.getHeight() * .5);
             tc.scrollRectToVisible(rect);
         }
@@ -114,7 +113,7 @@ public class MainPanel extends JPanel {
                 int pos = 0;
                 while (matcher.find(pos)) {
                     int start = matcher.start();
-                    int end   = matcher.end();
+                    int end = matcher.end();
                     highlighter.addHighlight(start, end, highlightPainter);
                     pos = end;
                 }

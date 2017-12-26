@@ -13,11 +13,11 @@ import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>"
-      + "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />"
-      + "<div title='tooltip: div[@title]'>div tag: div div div div</div>"
-      + "<div style='padding: 2 24;'><img src='" + MainPanel.class.getResource("favicon.png") + "' alt='16x16 favicon' />&nbsp;"
-      + "<a href='https://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>"
-      + "</body></html>";
+        + "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />"
+        + "<div title='tooltip: div[@title]'>div tag: div div div div</div>"
+        + "<div style='padding: 2 24;'><img src='" + MainPanel.class.getResource("favicon.png") + "' alt='16x16 favicon' />&nbsp;"
+        + "<a href='https://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>"
+        + "</body></html>";
     private String tooltip;
 
     private MainPanel() {
@@ -81,26 +81,26 @@ public final class MainPanel extends JPanel {
 class CustomTooltipEditorPane extends JEditorPane {
     private final transient Position.Bias[] bias = new Position.Bias[1];
     private transient HyperlinkListener listener;
-    //private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
-    //    if (e != null && offset > 0 && e.getStartOffset() == offset) {
-    //        try {
-    //            TextUI ui = editor.getUI();
-    //            Shape s1 = ui.modelToView(editor, offset, Position.Bias.Forward);
-    //            if (s1 == null) {
-    //                return false;
-    //            }
-    //            Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
-    //            Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
-    //            if (s2 != null) {
-    //                Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
-    //            }
-    //            return r1.contains(x, y);
-    //        } catch (BadLocationException ex) {
-    //            ex.printStackTrace();
-    //        }
-    //    }
-    //    return true;
-    //}
+//     private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
+//         if (e != null && offset > 0 && e.getStartOffset() == offset) {
+//             try {
+//                 TextUI ui = editor.getUI();
+//                 Shape s1 = ui.modelToView(editor, offset, Position.Bias.Forward);
+//                 if (s1 == null) {
+//                     return false;
+//                 }
+//                 Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
+//                 Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
+//                 if (s2 != null) {
+//                     Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
+//                 }
+//                 return r1.contains(x, y);
+//             } catch (BadLocationException ex) {
+//                 ex.printStackTrace();
+//             }
+//         }
+//         return true;
+//     }
     @Override public void updateUI() {
         removeHyperlinkListener(listener);
         super.updateUI();
@@ -146,12 +146,12 @@ class CustomTooltipEditorPane extends JEditorPane {
         return title;
     }
     private Optional<String> getSpanTitleAttribute(HTMLDocument hdoc, int pos) {
-        //HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
+        // HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
         Element elem = hdoc.getCharacterElement(pos);
-        //if (!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
-        //    elem = null;
-        //}
-        //if (elem != null) {
+        // if (!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
+        //     elem = null;
+        // }
+        // if (elem != null) {
         AttributeSet a = elem.getAttributes();
         AttributeSet span = (AttributeSet) a.getAttribute(HTML.Tag.SPAN);
         return Optional.ofNullable(span).map(s -> (String) s.getAttribute(HTML.Attribute.TITLE));

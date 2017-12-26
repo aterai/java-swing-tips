@@ -8,10 +8,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private static final String INFO =
-        " Start editing: Double-Click, Enter-Key\n"
-      + " Commit rename: field-focusLost, Enter-Key\n"
-      + "Cancel editing: Esc-Key, title.isEmpty\n";
+    private static final String INFO = " Start editing: Double-Click, Enter-Key\n"
+        + " Commit rename: field-focusLost, Enter-Key\n"
+        + "Cancel editing: Esc-Key, title.isEmpty\n";
     private final JTabbedPane tabbedPane = new JTabbedPane();
     public MainPanel() {
         super(new BorderLayout());
@@ -20,8 +19,8 @@ public final class MainPanel extends JPanel {
         tabbedPane.addMouseListener(l);
         tabbedPane.addTab("Shortcuts", new JTextArea(INFO));
         tabbedPane.addTab("badfasdfa", new JLabel("bbbbbbbbbbbafasdf"));
-        tabbedPane.addTab("cccc",      new JScrollPane(new JTree()));
-        tabbedPane.addTab("dddddddd",  new JLabel("dadfasdfasd"));
+        tabbedPane.addTab("cccc", new JScrollPane(new JTree()));
+        tabbedPane.addTab("dddddddd", new JLabel("dadfasdfasd"));
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }

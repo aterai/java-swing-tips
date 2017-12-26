@@ -9,18 +9,17 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String TEXT =
-      "icon.addMouseListener(new MouseAdapter() {\n"
-    + "  public void mouseClicked(MouseEvent e) {\n"
-    + "    boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;\n"
-    + "    if (isDoubleClick) {\n"
-    + "      frame.setVisible(true);\n"
-    + "    } else if (frame.isVisible()) {\n"
-    + "      frame.setExtendedState(Frame.NORMAL);\n"
-    + "      frame.toFront();\n"
-    + "    }\n"
-    + "  }\n"
-    + "});\n";
+    private static final String TEXT = "icon.addMouseListener(new MouseAdapter() {\n"
+        + "  public void mouseClicked(MouseEvent e) {\n"
+        + "    boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;\n"
+        + "    if (isDoubleClick) {\n"
+        + "      frame.setVisible(true);\n"
+        + "    } else if (frame.isVisible()) {\n"
+        + "      frame.setExtendedState(Frame.NORMAL);\n"
+        + "      frame.toFront();\n"
+        + "    }\n"
+        + "  }\n"
+        + "});\n";
     private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTextArea(TEXT)));
@@ -36,8 +35,8 @@ public final class MainPanel extends JPanel {
             for (TrayIcon icon: tray.getTrayIcons()) {
                 tray.remove(icon);
             }
-            //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            // frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             frame.dispose();
         });
 
