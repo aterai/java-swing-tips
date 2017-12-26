@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
                 xpos = trackLeft;
                 xpos += Math.round(pixelsPerValue * ((float) value - min));
 
-                xpos = Math.max(trackLeft, xPosition);
-                xpos = Math.min(trackRight, xPosition);
+                xpos = Math.max(trackLeft, xpos);
+                xpos = Math.min(trackRight, xpos);
 
                 return xpos;
             }
