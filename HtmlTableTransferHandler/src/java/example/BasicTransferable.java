@@ -61,19 +61,19 @@ class BasicTransferable implements Transferable {
         // fill in the array
         int nDone = 0;
         // if (nRicher > 0) {
-            System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
-            nDone += nRicher;
+        System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
+        nDone += nRicher;
         // }
         // if (nHTML > 0) {
-            System.arraycopy(htmlFlavors, 0, flavors, nDone, nHTML);
-            nDone += nHTML;
+        System.arraycopy(htmlFlavors, 0, flavors, nDone, nHTML);
+        nDone += nHTML;
         // }
         // if (nPlain > 0) {
-            System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
-            nDone += nPlain;
+        System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
+        nDone += nPlain;
         // }
         // if (nString > 0) {
-            System.arraycopy(stringFlavors, 0, flavors, nDone, nString);
+        System.arraycopy(stringFlavors, 0, flavors, nDone, nString);
         //     nDone += nString;
         // }
         return flavors;

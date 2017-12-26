@@ -84,12 +84,12 @@ class TreeTransferHandler extends TransferHandler {
                 return Objects.equals(FLAVOR, flavor);
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                 if (isDataFlavorSupported(flavor)) {
-                     return nodes;
-                 } else {
-                     throw new UnsupportedFlavorException(flavor);
-                 }
-             }
+                if (isDataFlavorSupported(flavor)) {
+                    return nodes;
+                } else {
+                    throw new UnsupportedFlavorException(flavor);
+                }
+            }
         };
     }
     @Override public int getSourceActions(JComponent c) {

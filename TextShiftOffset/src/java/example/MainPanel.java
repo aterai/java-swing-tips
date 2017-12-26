@@ -15,9 +15,9 @@ public final class MainPanel extends JPanel {
         UIManager.put("Button.textShiftOffset", 0);
 
         List<JRadioButton> rl = Arrays.asList(
-          new JRadioButton(new TextShiftOffsetAction(0)),
-          new JRadioButton(new TextShiftOffsetAction(1)),
-          new JRadioButton(new TextShiftOffsetAction(-1)));
+            new JRadioButton(new TextShiftOffsetAction(0)),
+            new JRadioButton(new TextShiftOffsetAction(1)),
+            new JRadioButton(new TextShiftOffsetAction(-1)));
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"Button.textShiftOffset\", offset)"));

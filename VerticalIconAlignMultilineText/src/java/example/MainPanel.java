@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> {
             boolean flag = button.isSelected();
             for (Component c: list) {
-               c.setFont(flag ? font1 : font0);
+                c.setFont(flag ? font1 : font0);
             }
         });
 

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
 
         URL url = getClass().getResource("bar.utf8.txt");
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-             textpane.read(reader, "text");
+            textpane.read(reader, "text");
         } catch (IOException ex) {
             ex.printStackTrace();
         }

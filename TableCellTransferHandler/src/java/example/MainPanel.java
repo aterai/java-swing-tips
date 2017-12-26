@@ -136,12 +136,12 @@ class CellIconTransferHandler extends TransferHandler {
                         return Objects.equals(localObjectFlavor, flavor);
                     }
                     @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                         if (isDataFlavorSupported(flavor)) {
-                             return table.getValueAt(row, col);
-                         } else {
-                             throw new UnsupportedFlavorException(flavor);
-                         }
-                     }
+                        if (isDataFlavorSupported(flavor)) {
+                            return table.getValueAt(row, col);
+                        } else {
+                            throw new UnsupportedFlavorException(flavor);
+                        }
+                    }
                 };
             }
         }

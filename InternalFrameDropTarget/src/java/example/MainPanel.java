@@ -32,13 +32,13 @@ public final class MainPanel extends JPanel {
                 // https://bugs.openjdk.java.net/browse/JDK-6967479
                 // return getValueAt(0, column).getClass();
                 switch (column) {
-                case 0:
+                  case 0:
                     return String.class;
-                case 1:
+                  case 1:
                     return Number.class;
-                case 2:
+                  case 2:
                     return Boolean.class;
-                default:
+                  default:
                     return super.getColumnClass(column);
                 }
             }
@@ -229,12 +229,12 @@ class TableRowTransferHandler extends TransferHandler {
                 return Objects.equals(localObjectFlavor, flavor);
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                 if (isDataFlavorSupported(flavor)) {
-                     return transferedObjects;
-                 } else {
-                     throw new UnsupportedFlavorException(flavor);
-                 }
-             }
+                if (isDataFlavorSupported(flavor)) {
+                    return transferedObjects;
+                } else {
+                    throw new UnsupportedFlavorException(flavor);
+                }
+            }
         };
     }
     private static Optional<Component> getRootGlassPane(Component c) {

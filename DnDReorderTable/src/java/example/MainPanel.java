@@ -130,12 +130,12 @@ class TableRowTransferHandler extends TransferHandler {
                 return Objects.equals(localObjectFlavor, flavor);
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                 if (isDataFlavorSupported(flavor)) {
-                     return transferedObjects;
-                 } else {
-                     throw new UnsupportedFlavorException(flavor);
-                 }
-             }
+                if (isDataFlavorSupported(flavor)) {
+                    return transferedObjects;
+                } else {
+                    throw new UnsupportedFlavorException(flavor);
+                }
+            }
         };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {

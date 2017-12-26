@@ -47,9 +47,9 @@ public final class MainPanel extends JPanel {
         };
 
         List<JRadioButton> rl = Arrays.asList(
-          new JRadioButton(new FocusTraversalPolicyChangeAction("Default", policy0)),
-          new JRadioButton(new FocusTraversalPolicyChangeAction("Custom",  policy1)),
-          new JRadioButton(new FocusTraversalPolicyChangeAction("Layout",  policy2)));
+            new JRadioButton(new FocusTraversalPolicyChangeAction("Default", policy0)),
+            new JRadioButton(new FocusTraversalPolicyChangeAction("Custom", policy1)),
+            new JRadioButton(new FocusTraversalPolicyChangeAction("Layout", policy2)));
         ButtonGroup bg = new ButtonGroup();
         box.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
         for (JRadioButton rb: rl) {

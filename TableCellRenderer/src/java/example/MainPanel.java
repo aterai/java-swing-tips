@@ -99,17 +99,17 @@ class WrappedLabel extends JLabel {
     protected WrappedLabel(String str) {
         super(str);
     }
-    //private int prevwidth = -1;
+    // private int prevwidth = -1;
     @Override public void doLayout() {
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
-        //if (w != prevwidth) {
-            Font font = getFont();
-            FontMetrics fm = getFontMetrics(font);
-            FontRenderContext frc = fm.getFontRenderContext();
-            gvtext = getWrappedGlyphVector(getText(), w, font, frc);
-        //    prevwidth = w;
-        //}
+        // if (w != prevwidth) {
+        Font font = getFont();
+        FontMetrics fm = getFontMetrics(font);
+        FontRenderContext frc = fm.getFontRenderContext();
+        gvtext = getWrappedGlyphVector(getText(), w, font, frc);
+        //     prevwidth = w;
+        // }
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
@@ -149,12 +149,12 @@ class WrappedLabel extends JLabel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    //public static class UIResource extends TextAreaCellRenderer implements UIResource {}
+    // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
     @Override public void updateUI() {
         super.updateUI();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        //setName("Table.cellRenderer");
+        // setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
@@ -168,7 +168,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         setText(Objects.toString(value, ""));
         return this;
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -181,8 +181,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //String literal pool
-        //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+        // String literal pool
+        // if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
         if ("document".equals(propertyName)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && !Objects.equals(oldValue, newValue)) {
@@ -192,9 +192,9 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void validate() { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    // <---- Overridden for performance reasons.
 }

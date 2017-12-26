@@ -27,10 +27,10 @@ public final class MainPanel extends JPanel {
         button2.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             stream(chooser)
-              .filter(JList.class::isInstance)
-              .map(JList.class::cast)
-              .findFirst()
-              .ifPresent(MainPanel::addHierarchyListener);
+                .filter(JList.class::isInstance)
+                .map(JList.class::cast)
+                .findFirst()
+                .ifPresent(MainPanel::addHierarchyListener);
             int retvalue = chooser.showOpenDialog(log.getRootPane());
             if (retvalue == JFileChooser.APPROVE_OPTION) {
                 log.setText(chooser.getSelectedFile().getAbsolutePath());

@@ -154,11 +154,11 @@ class RowSelectionTree extends JTree {
         // https://ateraimemo.com/Swing/TreeNodeCollapseVeto.html
         listener = new TreeWillExpandListener() {
             @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
-                 //throw new ExpandVetoException(e, "Tree expansion cancelled");
-             }
+                // throw new ExpandVetoException(e, "Tree expansion cancelled");
+            }
             @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-                 throw new ExpandVetoException(e, "Tree collapse cancelled");
-             }
+                throw new ExpandVetoException(e, "Tree collapse cancelled");
+            }
         };
         addTreeWillExpandListener(listener);
     }

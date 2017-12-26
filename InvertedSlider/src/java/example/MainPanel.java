@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("ComponentOrientation.RIGHT_TO_LEFT");
         check.addActionListener(e -> {
             ComponentOrientation orientation = ((JCheckBox) e.getSource()).isSelected()
-              ? ComponentOrientation.RIGHT_TO_LEFT
-              : ComponentOrientation.LEFT_TO_RIGHT;
+                ? ComponentOrientation.RIGHT_TO_LEFT
+                : ComponentOrientation.LEFT_TO_RIGHT;
             list.forEach(s -> s.setComponentOrientation(orientation));
         });
         list.forEach(s -> {
@@ -120,7 +120,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

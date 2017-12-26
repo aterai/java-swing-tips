@@ -156,10 +156,10 @@ class DnDTabbedPane extends JTabbedPane {
 //         }
     }
     private void clickArrowButton(String actionKey) {
-       Optional.ofNullable(getActionMap())
-           .map(am -> am.get(actionKey))
-           .filter(Action::isEnabled)
-           .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+        Optional.ofNullable(getActionMap())
+            .map(am -> am.get(actionKey))
+            .filter(Action::isEnabled)
+            .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
 //         ActionMap map = getActionMap();
 //         if (Objects.nonNull(map)) {
 //             Action action = map.get(actionKey);
@@ -451,12 +451,12 @@ class TabTransferHandler extends TransferHandler {
                 return Objects.equals(localObjectFlavor, flavor);
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                 if (isDataFlavorSupported(flavor)) {
-                     return new DnDTabData(source);
-                 } else {
-                     throw new UnsupportedFlavorException(flavor);
-                 }
-             }
+                if (isDataFlavorSupported(flavor)) {
+                    return new DnDTabData(source);
+                } else {
+                    throw new UnsupportedFlavorException(flavor);
+                }
+            }
         };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
