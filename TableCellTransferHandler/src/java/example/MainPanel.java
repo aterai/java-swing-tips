@@ -29,14 +29,10 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 switch (column) {
-                  case 0:
-                    return String.class;
-                  case 1:
-                    return Icon.class;
-                  case 2:
-                    return Boolean.class;
-                  default:
-                    return super.getColumnClass(column);
+                    case 0: return String.class;
+                    case 1: return Icon.class;
+                    case 2: return Boolean.class;
+                    default: return super.getColumnClass(column);
                 }
             }
         });

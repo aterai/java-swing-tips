@@ -15,14 +15,10 @@ public final class MainPanel extends JPanel {
     private final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
         @Override public Class<?> getColumnClass(int column) {
             switch (column) {
-              case 0:
-                return Integer.class;
-              case 1:
-                return String.class;
-              case 2:
-                return URL.class;
-              default:
-                return super.getColumnClass(column);
+                case 0: return Integer.class;
+                case 1: return String.class;
+                case 2: return URL.class;
+                default: return super.getColumnClass(column);
             }
         }
         @Override public boolean isCellEditable(int row, int col) {
@@ -70,7 +66,7 @@ public final class MainPanel extends JPanel {
         col.setPreferredWidth(1000);
 
         col = table.getColumnModel().getColumn(2);
-        //col.setCellRenderer(renderer);
+        // col.setCellRenderer(renderer);
         col.setPreferredWidth(2000);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -117,14 +113,14 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         int w  = table.getColumnModel().getColumn(column).getWidth();
         int h  = table.getRowHeight(row);
 
-        //TEST: this.setBorder(BorderFactory.createMatteBorder(0, 16, 0, 16, Color.RED));
+        // TEST: this.setBorder(BorderFactory.createMatteBorder(0, 16, 0, 16, Color.RED));
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
         lrect.width  = w - mw - i.right  - lrect.x;
         lrect.height = h - rh - i.bottom - lrect.y;
-        irect.setBounds(0, 0, 0, 0); //.x = irect.y = irect.width = irect.height = 0;
-        trect.setBounds(0, 0, 0, 0); //.x = trect.y = trect.width = trect.height = 0;
+        irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
+        trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
 
         String str = SwingUtilities.layoutCompoundLabel(
             this,
@@ -136,8 +132,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             this.getVerticalTextPosition(),
             this.getHorizontalTextPosition(),
             lrect,
-            irect, //icon
-            trect, //text
+            irect, // icon
+            trect, // text
             this.getIconTextGap());
 
         if (isRolloverCell(table, row, column)) {
@@ -152,7 +148,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     protected boolean isRolloverCell(JTable table, int row, int column) {
         return !table.isEditing() && this.row == row && this.col == column && this.isRollover;
     }
-    //@see SwingUtilities2.pointOutsidePrefSize(...)
+    // @see SwingUtilities2.pointOutsidePrefSize(...)
     private static boolean pointInsidePrefSize(JTable table, Point p) {
         int row = table.rowAtPoint(p);
         int col = table.columnAtPoint(p);
@@ -190,12 +186,12 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         if (isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
             repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
-        } else { //if (prevRollover) {
+        } else { // if (prevRollover) {
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
 // <<<<
-        //table.repaint();
+        // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
@@ -215,9 +211,9 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             URL url = (URL) table.getValueAt(crow, ccol);
             System.out.println(url);
             try {
-                //Web Start
-                //BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-                //bs.showDocument(url);
+                // Web Start
+                // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+                // bs.showDocument(url);
                 if (Desktop.isDesktopSupported()) { // JDK 1.6.0
                     Desktop.getDesktop().browse(url.toURI());
                 }

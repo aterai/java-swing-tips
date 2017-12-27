@@ -15,14 +15,10 @@ public final class MainPanel extends JPanel {
     private final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
         @Override public Class<?> getColumnClass(int column) {
             switch (column) {
-              case 0:
-                return Integer.class;
-              case 1:
-                return String.class;
-              case 2:
-                return URL.class;
-              default:
-                return super.getColumnClass(column);
+                case 0: return Integer.class;
+                case 1: return String.class;
+                case 2: return URL.class;
+                default: return super.getColumnClass(column);
             }
         }
         @Override public boolean isCellEditable(int row, int col) {
@@ -32,10 +28,10 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         try {
-            model.addRow(new Object[] {0, "FrontPage",       new URL("https://ateraimemo.com/")});
+            model.addRow(new Object[] {0, "FrontPage", new URL("https://ateraimemo.com/")});
             model.addRow(new Object[] {1, "Java Swing Tips", new URL("https://ateraimemo.com/Swing.html")});
-            model.addRow(new Object[] {2, "Example",         new URL("http://www.example.com/")});
-            model.addRow(new Object[] {3, "Example.jp",      new URL("http://www.example.jp/")});
+            model.addRow(new Object[] {2, "Example", new URL("http://www.example.com/")});
+            model.addRow(new Object[] {3, "Example.jp", new URL("http://www.example.jp/")});
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
@@ -70,7 +66,7 @@ public final class MainPanel extends JPanel {
         col.setPreferredWidth(1000);
 
         col = table.getColumnModel().getColumn(2);
-        //col.setCellRenderer(renderer);
+        // col.setCellRenderer(renderer);
         col.setPreferredWidth(2000);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -114,8 +110,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 // >>>> @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
 //         int mw = table.getColumnModel().getColumnMargin();
 //         int rh = table.getRowMargin();
-//         int w  = table.getColumnModel().getColumn(column).getWidth();
-//         int h  = table.getRowHeight(row);
+//         int w = table.getColumnModel().getColumn(column).getWidth();
+//         int h = table.getRowHeight(row);
 //
 //         Insets i = this.getInsets();
 //         lrect.x = i.left;
@@ -128,15 +124,15 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 //         String str = SwingUtilities.layoutCompoundLabel(
 //             this,
 //             this.getFontMetrics(this.getFont()),
-//             Objects.toString(value, ""), //this.getText(),
+//             Objects.toString(value, ""), // this.getText(),
 //             this.getIcon(),
 //             this.getVerticalAlignment(),
 //             this.getHorizontalAlignment(),
 //             this.getVerticalTextPosition(),
 //             this.getHorizontalTextPosition(),
 //             lrect,
-//             irect, //icon
-//             trect, //text
+//             irect, // icon
+//             trect, // text
 //             this.getIconTextGap());
 // <<<<
         String str = Objects.toString(value, "");
@@ -153,20 +149,20 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     protected boolean isRolloverCell(JTable table, int row, int column) {
         return !table.isEditing() && this.row == row && this.col == column && this.isRollover;
     }
-    //@see SwingUtilities2.pointOutsidePrefSize(...)
-    //private static boolean pointInsidePrefSize(JTable table, Point p) {
-    //    int row = table.rowAtPoint(p);
-    //    int col = table.columnAtPoint(p);
-    //    TableCellRenderer tcr = table.getCellRenderer(row, col);
-    //    Object value = table.getValueAt(row, col);
-    //    Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
-    //    Dimension itemSize = cell.getPreferredSize();
-    //    Insets i = ((JComponent) cell).getInsets();
-    //    Rectangle cellBounds = table.getCellRect(row, col, false);
-    //    cellBounds.width = itemSize.width - i.right - i.left;
-    //    cellBounds.translate(i.left, i.top);
-    //    return cellBounds.contains(p);
-    //}
+    // @see SwingUtilities2.pointOutsidePrefSize(...)
+    // private static boolean pointInsidePrefSize(JTable table, Point p) {
+    //     int row = table.rowAtPoint(p);
+    //     int col = table.columnAtPoint(p);
+    //     TableCellRenderer tcr = table.getCellRenderer(row, col);
+    //     Object value = table.getValueAt(row, col);
+    //     Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
+    //     Dimension itemSize = cell.getPreferredSize();
+    //     Insets i = ((JComponent) cell).getInsets();
+    //     Rectangle cellBounds = table.getCellRect(row, col, false);
+    //     cellBounds.width = itemSize.width - i.right - i.left;
+    //     cellBounds.translate(i.left, i.top);
+    //     return cellBounds.contains(p);
+    // }
     private static boolean isURLColumn(JTable table, int column) {
         return column >= 0 && table.getColumnClass(column).equals(URL.class);
     }
@@ -191,12 +187,12 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         if (isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
             repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
-        } else { //if (prevRollover) {
+        } else { // if (prevRollover) {
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
 // <<<<
-        //table.repaint();
+        // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
@@ -216,9 +212,9 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             URL url = (URL) table.getValueAt(crow, ccol);
             System.out.println(url);
             try {
-                //Web Start
-                //BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-                //bs.showDocument(url);
+                // Web Start
+                // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+                // bs.showDocument(url);
                 if (Desktop.isDesktopSupported()) { // JDK 1.6.0
                     Desktop.getDesktop().browse(url.toURI());
                 }

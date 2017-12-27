@@ -19,14 +19,10 @@ public class MainPanel extends JPanel {
             // https://bugs.openjdk.java.net/browse/JDK-6967479
             // return getValueAt(0, column).getClass();
             switch (column) {
-              case 0:
-                return String.class;
-              case 1:
-                return Number.class;
-              case 2:
-                return Boolean.class;
-              default:
-                return super.getColumnClass(column);
+                case 0: return String.class;
+                case 1: return Number.class;
+                case 2: return Boolean.class;
+                default: return super.getColumnClass(column);
             }
         }
     };
@@ -41,18 +37,18 @@ public class MainPanel extends JPanel {
         scroll.setBackground(Color.RED);
         scroll.getViewport().setBackground(Color.GREEN);
         scroll.setComponentPopupMenu(new TablePopupMenu());
-        //scroll.getViewport().setInheritsPopupMenu(true); // 1.5.0
+        // scroll.getViewport().setInheritsPopupMenu(true); // 1.5.0
 
-        //table.setComponentPopupMenu(new TablePopupMenu());
+        // table.setComponentPopupMenu(new TablePopupMenu());
         table.setInheritsPopupMenu(true);
         table.setFillsViewportHeight(true);
         table.setBackground(Color.YELLOW);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        //table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
-        //table.setOpaque(false);
-        //table.getTableHeader().setInheritsPopupMenu(true);
+        // table.setShowGrid(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
+        // table.setOpaque(false);
+        // table.getTableHeader().setInheritsPopupMenu(true);
 
         cb1.addActionListener(e -> table.setInheritsPopupMenu(((JCheckBox) e.getSource()).isSelected()));
         cb2.addActionListener(e -> table.setFillsViewportHeight(((JCheckBox) e.getSource()).isSelected()));

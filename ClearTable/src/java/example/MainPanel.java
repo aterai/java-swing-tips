@@ -22,20 +22,16 @@ public final class MainPanel extends JPanel {
                 // https://bugs.openjdk.java.net/browse/JDK-6967479
                 // return getValueAt(0, column).getClass();
                 switch (column) {
-                  case 0:
-                    return String.class;
-                  case 1:
-                    return Number.class;
-                  case 2:
-                    return Boolean.class;
-                  default:
-                    return super.getColumnClass(column);
+                    case 0: return String.class;
+                    case 1: return Number.class;
+                    case 2: return Boolean.class;
+                    default: return super.getColumnClass(column);
                 }
             }
         };
         JTable table = new JTable(model);
-        //RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-        //table.setRowSorter(sorter);
+        // RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+        // table.setRowSorter(sorter);
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
@@ -50,8 +46,8 @@ public final class MainPanel extends JPanel {
 //                 table.getTableHeader().repaint();
 //             }
             model.setRowCount(0);
-            //table.setAutoCreateColumnsFromModel(false);
-            //table.setModel(new DefaultTableModel());
+            // table.setAutoCreateColumnsFromModel(false);
+            // table.setModel(new DefaultTableModel());
         });
 
         add(button, BorderLayout.SOUTH);
@@ -90,11 +86,11 @@ class TablePopupMenu extends JPopupMenu {
         add("add").addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            //if (MainPanel.DEBUG && model.getRowCount() == 0) {
-            //    table.setRowSorter(new TableRowSorter<>(model));
-            //    //table.setRowSorter(sorter);
-            //    model.fireTableDataChanged();
-            //}
+            // if (MainPanel.DEBUG && model.getRowCount() == 0) {
+            //     table.setRowSorter(new TableRowSorter<>(model));
+            //     // table.setRowSorter(sorter);
+            //     model.fireTableDataChanged();
+            // }
             model.addRow(new Object[] {"", model.getRowCount(), false});
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
@@ -108,10 +104,10 @@ class TablePopupMenu extends JPopupMenu {
             for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
-            //if (MainPanel.DEBUG && model.getRowCount() == 0) {
-            //    table.setRowSorter(null);
-            //    table.getTableHeader().repaint();
-            //}
+            // if (MainPanel.DEBUG && model.getRowCount() == 0) {
+            //     table.setRowSorter(null);
+            //     table.getTableHeader().repaint();
+            // }
         });
     }
     @Override public void show(Component c, int x, int y) {

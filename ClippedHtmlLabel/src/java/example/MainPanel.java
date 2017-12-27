@@ -19,14 +19,10 @@ public final class MainPanel extends JPanel {
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override public Class<?> getColumnClass(int column) {
                 switch (column) {
-                  case 0:
-                    return Integer.class;
-                  case 1:
-                    return String.class;
-                  case 2:
-                    return URL.class;
-                  default:
-                    return super.getColumnClass(column);
+                    case 0: return Integer.class;
+                    case 1: return String.class;
+                    case 2: return URL.class;
+                    default: return super.getColumnClass(column);
                 }
             }
             @Override public boolean isCellEditable(int row, int col) {
@@ -34,10 +30,10 @@ public final class MainPanel extends JPanel {
             }
         };
         try {
-            model.addRow(new Object[] {0, "FrontPage",       new URL("https://ateraimemo.com/")});
+            model.addRow(new Object[] {0, "FrontPage", new URL("https://ateraimemo.com/")});
             model.addRow(new Object[] {1, "Java Swing Tips", new URL("https://ateraimemo.com/Swing.html")});
-            model.addRow(new Object[] {2, "Example",         new URL("http://www.example.com/")});
-            model.addRow(new Object[] {3, "Example.jp",      new URL("http://www.example.jp/")});
+            model.addRow(new Object[] {2, "Example", new URL("http://www.example.com/")});
+            model.addRow(new Object[] {3, "Example.jp", new URL("http://www.example.jp/")});
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
@@ -142,21 +138,21 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         lrect.y = i.top;
         lrect.width  = w - mw - i.right  - lrect.x;
         lrect.height = h - rh - i.bottom - lrect.y;
-        irect.setBounds(0, 0, 0, 0); //.x = irect.y = irect.width = irect.height = 0;
-        trect.setBounds(0, 0, 0, 0); //.x = trect.y = trect.width = trect.height = 0;
+        irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
+        trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
 
         String str = SwingUtilities.layoutCompoundLabel(
             this,
             this.getFontMetrics(this.getFont()),
-            Objects.toString(value, ""), //this.getText(),
+            Objects.toString(value, ""), // this.getText(),
             this.getIcon(),
             this.getVerticalAlignment(),
             this.getHorizontalAlignment(),
             this.getVerticalTextPosition(),
             this.getHorizontalTextPosition(),
             lrect,
-            irect, //icon
-            trect, //text
+            irect, // icon
+            trect, // text
             this.getIconTextGap());
 
         if (isRolloverCell(table, row, column)) {
@@ -214,7 +210,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         }
         table.repaint(repaintRect);
 // <<<<
-        //table.repaint();
+        // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
@@ -234,9 +230,9 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             URL url = (URL) table.getValueAt(crow, ccol);
             System.out.println(url);
             try {
-                //Web Start
-                //BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-                //bs.showDocument(url);
+                // Web Start
+                // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+                // bs.showDocument(url);
                 if (Desktop.isDesktopSupported()) { // JDK 1.6.0
                     Desktop.getDesktop().browse(url.toURI());
                 }

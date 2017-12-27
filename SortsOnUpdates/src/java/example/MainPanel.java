@@ -18,14 +18,10 @@ public final class MainPanel extends JPanel {
         TableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 switch (column) {
-                  case 0:
-                    return Integer.class;
-                  case 1:
-                    return String.class;
-                  case 2:
-                    return Boolean.class;
-                  default:
-                    return super.getColumnClass(column);
+                    case 0: return Integer.class;
+                    case 1: return String.class;
+                    case 2: return Boolean.class;
+                    default: return super.getColumnClass(column);
                 }
             }
         };

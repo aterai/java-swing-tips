@@ -23,14 +23,10 @@ public class MainPanel extends JPanel {
             // https://bugs.openjdk.java.net/browse/JDK-6967479
             // return getValueAt(0, column).getClass();
             switch (column) {
-              case 0:
-                return String.class;
-              case 1:
-                return Number.class;
-              case 2:
-                return Boolean.class;
-              default:
-                return super.getColumnClass(column);
+                case 0: return String.class;
+                case 1: return Number.class;
+                case 2: return Boolean.class;
+                default: return super.getColumnClass(column);
             }
         }
     };

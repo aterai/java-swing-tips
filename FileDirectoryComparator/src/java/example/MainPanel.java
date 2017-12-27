@@ -22,9 +22,9 @@ public final class MainPanel extends JPanel {
             @Override public Class<?> getColumnClass(int column) {
                 return File.class;
                 // switch (column) {
-                //   case 0:  return File.class;
-                //   case 1:  return Long.class;
-                //   case 2:  return String.class;
+                //   case 0: return File.class;
+                //   case 1: return Long.class;
+                //   case 2: return String.class;
                 //   default: return Object.class;
                 // }
             }
@@ -112,26 +112,26 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
         File file = (File) value;
         int c = table.convertColumnIndexToModel(column);
         switch (c) {
-          case 0:
-            //???: WindowsLnF, Java 1.7.0
-            //if (file.isDirectory()) {
-            //    l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
-            //} else {
-            //    l.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            //}
-            l.setIcon(fileSystemView.getSystemIcon(file));
-            l.setText(fileSystemView.getSystemDisplayName(file));
-            //l.setText(file.getName());
-            break;
-          case 1:
-            l.setHorizontalAlignment(SwingConstants.RIGHT);
-            l.setText(file.isDirectory() ? null : Long.toString(file.length()));
-            break;
-          case 2:
-            l.setText(file.getAbsolutePath());
-            break;
-          default:
-            break;
+            case 0:
+                // ???: WindowsLnF, Java 1.7.0
+                // if (file.isDirectory()) {
+                //     l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
+                // } else {
+                //     l.setIcon(UIManager.getIcon("FileView.fileIcon"));
+                // }
+                l.setIcon(fileSystemView.getSystemIcon(file));
+                l.setText(fileSystemView.getSystemDisplayName(file));
+                // l.setText(file.getName());
+                break;
+            case 1:
+                l.setHorizontalAlignment(SwingConstants.RIGHT);
+                l.setText(file.isDirectory() ? null : Long.toString(file.length()));
+                break;
+            case 2:
+                l.setText(file.getAbsolutePath());
+                break;
+            default:
+                break;
         }
         return l;
     }
@@ -141,14 +141,14 @@ class FileTransferHandler extends TransferHandler {
     @Override public boolean importData(TransferHandler.TransferSupport support) {
         try {
             if (canImport(support)) {
-                //FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
-                //List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                //model.setFiles((File[]) list.toArray(new File[list.size()]));
+                // FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
+                // List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                // model.setFiles((File[]) list.toArray(new File[list.size()]));
                 DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
                 for (Object o: (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
                     if (o instanceof File) {
                         File file = (File) o;
-                        //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
+                        // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
                         model.addRow(Collections.nCopies(3, file).toArray());
                     }
                 }
@@ -200,9 +200,9 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
     }
     @Override public int compare(File a, File b) {
         switch (column) {
-          case 0:  return a.getName().compareToIgnoreCase(b.getName());
-          case 1:  return Long.compare(a.length(), b.length());
-          default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
+            case 0: return a.getName().compareToIgnoreCase(b.getName());
+            case 1: return Long.compare(a.length(), b.length());
+            default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
         }
     }
 }
@@ -282,10 +282,10 @@ class FileGroupComparator extends DefaultFileComparator {
 //         this.files = files;
 //         fireTableDataChanged();
 //     }
-//     //public void removeRow(int row) {
-//     //    files.removeElementAt(row);
-//     //    fireTableRowsDeleted(row, row);
-//     //}
+//     // public void removeRow(int row) {
+//     //     files.removeElementAt(row);
+//     //     fireTableRowsDeleted(row, row);
+//     // }
 // }
 
 class TablePopupMenu extends JPopupMenu {

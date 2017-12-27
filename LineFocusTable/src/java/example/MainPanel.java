@@ -23,14 +23,10 @@ public final class MainPanel extends JPanel {
             // https://bugs.openjdk.java.net/browse/JDK-6967479
             // return getValueAt(0, column).getClass();
             switch (column) {
-              case 0:
-                return String.class;
-              case 1:
-                return Number.class;
-              case 2:
-                return Boolean.class;
-              default:
-                return super.getColumnClass(column);
+                case 0: return String.class;
+                case 1: return Number.class;
+                case 2: return Boolean.class;
+                default: return super.getColumnClass(column);
             }
         }
     };
@@ -40,10 +36,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2, 2, 2, 2));
 
-        //TableColumnModel columns = table.getColumnModel();
-        //for (int i = 0; i < columns.getColumnCount(); i++) {
-        //    columns.getColumn(i).setCellRenderer(new TestRenderer());
-        //}
+        // TableColumnModel columns = table.getColumnModel();
+        // for (int i = 0; i < columns.getColumnCount(); i++) {
+        //     columns.getColumn(i).setCellRenderer(new TestRenderer());
+        // }
 
         table.setRowSelectionAllowed(true);
         table.setAutoCreateRowSorter(true);
@@ -130,7 +126,7 @@ class LineFocusTable extends JTable {
                 if (m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
                     if (getEditingRow() % 2 == 0) {
                         cb.setOpaque(false);
-                        //cb.setBackground(getBackground());
+                        // cb.setBackground(getBackground());
                     } else {
                         cb.setOpaque(true);
                         cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
@@ -141,7 +137,7 @@ class LineFocusTable extends JTable {
                 }
             }
             @Override public void mouseExited(MouseEvent e) {
-                //in order to drag table row selection
+                // in order to drag table row selection
                 if (isEditing() && !getCellEditor().stopCellEditing()) {
                     getCellEditor().cancelCellEditing();
                 }
@@ -164,7 +160,7 @@ class LineFocusTable extends JTable {
             JCheckBox b = (JCheckBox) c;
             b.setBorderPainted(true);
         }
-        if (row == getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
+        if (row == getSelectionModel().getLeadSelectionIndex()) { // isRowSelected(row)) {
             ((JComponent) c).setBorder(dotBorder);
             updateBorderType(dotBorder, column);
         } else {
@@ -176,12 +172,12 @@ class LineFocusTable extends JTable {
         Component c = super.prepareEditor(editor, row, column);
         if (c instanceof JCheckBox) {
             JCheckBox b = (JCheckBox) c;
-            //System.out.println(b.getBorder());
+            // System.out.println(b.getBorder());
             b.setBorder(dotBorder);
             updateBorderType(dotBorder, column);
-            //updateBorderType((DotBorder) b.getBorder(), column);
-            //b.setBorderPainted(true);
-            //b.setBackground(getSelectionBackground());
+            // updateBorderType((DotBorder) b.getBorder(), column);
+            // b.setBorderPainted(true);
+            // b.setBackground(getSelectionBackground());
         }
         return c;
     }
@@ -222,7 +218,7 @@ class DotBorder extends EmptyBorder {
     }
 }
 
-// //Another example test:
+// // Another example test:
 // import java.awt.*;
 // import java.util.*;
 // import javax.swing.*;
