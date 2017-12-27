@@ -46,14 +46,14 @@ public final class MainPanel extends JPanel {
         area.setBackground(new Color(0x0, true)); //Nimbus
         area.setSelectionColor(SELECTION_COLOR);
         area.setText("<html><pre>"
-          + "public static void createAndShowGUI() {<br />"
-          + "    <span class='highlight'>JFrame</span> frame = new JFrame();<br />"
-          + "    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"
-          + "    frame.getContentPane().add(new MainPanel());<br />"
-          + "    frame.pack();<br />"
-          + "    frame.setLocationRelativeTo(null);<br />"
-          + "    frame.setVisible(true);<br />"
-          + "}<br />"
+            + "public static void createAndShowGUI() {<br />"
+            + "    <span class='highlight'>JFrame</span> frame = new JFrame();<br />"
+            + "    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"
+            + "    frame.getContentPane().add(new MainPanel());<br />"
+            + "    frame.pack();<br />"
+            + "    frame.setLocationRelativeTo(null);<br />"
+            + "    frame.setVisible(true);<br />"
+            + "}<br />"
         );
 
         //TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html

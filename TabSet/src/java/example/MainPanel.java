@@ -29,11 +29,10 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        textPane.setText(
-            "LEFT1\tCENTER\tRIGHT1\t3.14\n"
-          + "LEFT22\tCENTER22\tRIGHT22\t12.3\n"
-          + "LEFT333\tCENTER333\tRIGHT333\t1.23\n"
-          + "LEFT4444\tCENTER4444\tRIGHT4444\t0.9876\n");
+        textPane.setText("LEFT1\tCENTER\tRIGHT1\t3.14\n"
+            + "LEFT22\tCENTER22\tRIGHT22\t12.3\n"
+            + "LEFT333\tCENTER333\tRIGHT333\t1.23\n"
+            + "LEFT4444\tCENTER4444\tRIGHT4444\t0.9876\n");
 
         //MutableAttributeSet attr = new SimpleAttributeSet();
         Style attr = textPane.getStyle(StyleContext.DEFAULT_STYLE);

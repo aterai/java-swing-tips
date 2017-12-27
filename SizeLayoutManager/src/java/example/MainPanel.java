@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(2, 1));
         add(makeUI1());
-    add(makeUI2());
+        add(makeUI2());
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeUI1() {

@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private Wipe mode = Wipe.In;
+    private Wipe mode = Wipe.IN;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -17,22 +17,18 @@ public final class MainPanel extends JPanel {
             @Override protected void paintComponent(Graphics g) {
                 g.setColor(getBackground());
                 g.fillRect(0, 0, getWidth(), getHeight());
-                switch (getWipeMode()) {
-                  case In:
+                if (getWipeMode() == Wipe.IN) {
                     if (ww < icon.getIconWidth()) {
                         ww += 10;
                     } else {
                         animator.stop();
                     }
-                    break;
-                  case Out:
-                  default:
+                } else { // Wipe.OUT:
                     if (ww > 0) {
                         ww -= 10;
                     } else {
                         animator.stop();
                     }
-                    break;
                 }
                 int iw = icon.getIconWidth();
                 int ih = icon.getIconHeight();
@@ -91,4 +87,4 @@ public final class MainPanel extends JPanel {
     }
 }
 
-enum Wipe { In, Out }
+enum Wipe { IN, OUT }
