@@ -41,13 +41,13 @@ public final class MainPanel extends JPanel {
 
         JButton button1 = new JButton("Wipe In");
         button1.addActionListener(e -> {
-            setWipeMode(Wipe.In);
+            setWipeMode(Wipe.IN);
             animator.start();
         });
 
         JButton button2 = new JButton("Wipe Out");
         button2.addActionListener(e -> {
-            setWipeMode(Wipe.Out);
+            setWipeMode(Wipe.OUT);
             animator.start();
         });
 
