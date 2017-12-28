@@ -85,10 +85,10 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
         fire(e.getSource());
     }
     @Override public void keyPressed(KeyEvent e) {
-        shiftActive = (e.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) != 0;
+        shiftActive = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
     }
     @Override public void keyReleased(KeyEvent e) {
-        shiftActive = (e.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) != 0;
+        shiftActive = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
         if (!shiftActive) {
             fire(e.getSource());
         }

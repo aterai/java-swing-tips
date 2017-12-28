@@ -84,9 +84,9 @@ class SingleMouseClickSelectList<E> extends JList<E> {
         return new MouseEvent(
             e.getComponent(),
             e.getID(), e.getWhen(),
-            //e.getModifiers() | InputEvent.CTRL_MASK,
-            //select multiple objects in OS X: Command + click
-            //pointed out by nsby
+            // e.getModifiers() | InputEvent.CTRL_DOWN_MASK,
+            // select multiple objects in OS X: Command + click
+            // pointed out by nsby
             e.getModifiersEx() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
             e.getX(), e.getY(),
             e.getXOnScreen(), e.getYOnScreen(),
@@ -150,7 +150,7 @@ class SingleClickSelectList<E> extends JList<E> {
     }
     protected class SelectionHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
-            //JList list = (JList) e.getComponent();
+            // JList list = (JList) e.getComponent();
             startOutside = !cellsContains(e.getPoint());
             startIndex = locationToIndex(e.getPoint());
             if (startOutside) {
@@ -164,7 +164,7 @@ class SingleClickSelectList<E> extends JList<E> {
             startIndex = -1;
         }
         @Override public void mouseDragged(MouseEvent e) {
-            //JList list = (JList) e.getComponent();
+            // JList list = (JList) e.getComponent();
             if (!isDragging && startIndex == locationToIndex(e.getPoint())) {
                 isCellInsideDragging = true;
             } else {
