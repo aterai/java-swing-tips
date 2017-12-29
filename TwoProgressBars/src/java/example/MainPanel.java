@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
 
     protected void processChunks(List<Progress> chunks) {
         chunks.forEach(s -> {
-            switch (s.component) {
+            switch (s.componentType) {
               case TOTAL:
                 bar1.setValue((Integer) s.value);
                 break;
@@ -138,13 +138,13 @@ public final class MainPanel extends JPanel {
     }
 }
 
-enum Component { TOTAL, FILE, LOG }
+enum ComponentType { TOTAL, FILE, LOG }
 
 class Progress {
     public final Object value;
-    public final Component component;
-    protected Progress(Component component, Object value) {
-        this.component = component;
+    public final ComponentType componentType;
+    protected Progress(ComponentType componentType, Object value) {
+        this.componentType = componentType;
         this.value = value;
     }
 }
@@ -155,11 +155,11 @@ class BackgroundTask extends SwingWorker<String, Progress> {
         // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
         int lengthOfTask = 12; // filelist.size();
-        publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
-        publish(new Progress(Component.LOG, "\n------------------------------\n"));
+        publish(new Progress(ComponentType.LOG, "Length Of Task: " + lengthOfTask));
+        publish(new Progress(ComponentType.LOG, "\n------------------------------\n"));
         while (current < lengthOfTask && !isCancelled()) {
-            publish(new Progress(Component.LOG, "*"));
-            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
+            publish(new Progress(ComponentType.LOG, "*"));
+            publish(new Progress(ComponentType.TOTAL, 100 * current / lengthOfTask));
             try {
                 convertFileToSomething();
             } catch (InterruptedException ex) {
@@ -167,7 +167,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
             }
             current++;
         }
-        publish(new Progress(Component.LOG, "\n"));
+        publish(new Progress(ComponentType.LOG, "\n"));
         return "Done";
     }
     private void convertFileToSomething() throws InterruptedException {
@@ -176,7 +176,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
         while (current <= lengthOfTask && !isCancelled()) {
             int iv = 100 * current / lengthOfTask;
             Thread.sleep(20); // dummy
-            publish(new Progress(Component.FILE, iv + 1));
+            publish(new Progress(ComponentType.FILE, iv + 1));
             current++;
         }
     }
