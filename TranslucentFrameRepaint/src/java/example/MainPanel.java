@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
 
         JFrame digitalClock = new JFrame();
         digitalClock.setUndecorated(true);
-        //digitalClock.setAlwaysOnTop(true);
-        //AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
-        digitalClock.setBackground(new Color(0x0, true)); //JDK 1.7.0
+        // digitalClock.setAlwaysOnTop(true);
+        // AWTUtilities.setWindowOpaque(digitalClock, false); // JDK 1.6.0
+        digitalClock.setBackground(new Color(0x0, true)); // JDK 1.7.0
         digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         digitalClock.getContentPane().add(tp);
         digitalClock.pack();
@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
                 return d;
             }
         };
-        //XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
-        //combo.setPrototypeDisplayValue(TexturePaints.Checker);
+        // XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
+        // combo.setPrototypeDisplayValue(TexturePaints.Checker);
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 TexturePaints t = (TexturePaints) e.getItem();
@@ -84,12 +84,12 @@ public final class MainPanel extends JPanel {
 //         if (w instanceof JFrame) {
 //             JFrame f = (JFrame) w;
 //             JComponent cp = (JComponent) f.getContentPane();
-//             //cp.repaint();
+//             // cp.repaint();
 //             Rectangle r = c.getBounds();
 //             r = SwingUtilities.convertRectangle(c, r, cp);
 //             cp.repaint(r);
-//             //r = SwingUtilities.convertRectangle(c, r, f);
-//             //f.repaint(r.x, r.y, r.width, r.height);
+//             // r = SwingUtilities.convertRectangle(c, r, f);
+//             // f.repaint(r.x, r.y, r.width, r.height);
 //         } else {
 //             c.repaint();
 //         }
@@ -127,7 +127,7 @@ class TexturePanel extends JPanel {
     }
     public void setTexturePaint(Paint texture) {
         this.texture = texture;
-        //setOpaque(false);
+        // setOpaque(false);
         setOpaque(Objects.isNull(texture));
     }
     @Override protected void paintComponent(Graphics g) {
@@ -150,20 +150,12 @@ enum TexturePaints {
         this.description = description;
     }
     public Paint getTexturePaint() {
-        Paint p;
         switch (this) {
-          case Image:
-            p = TextureUtil.makeImageTexture();
-            break;
-          case Checker:
-            p = TextureUtil.makeCheckerTexture();
-            break;
-          case Null:
-          default:
-            p = null;
-            break;
+            case Image: return TextureUtil.makeImageTexture();
+            case Checker: return TextureUtil.makeCheckerTexture();
+            case Null: return null;
+            default: throw new AssertionError();
         }
-        return p;
     }
     @Override public String toString() {
         return description;
@@ -175,7 +167,7 @@ final class TextureUtil {
     public static TexturePaint makeImageTexture() {
         BufferedImage bi = null;
         try {
-            //http://www.viva-edo.com/komon/edokomon.html
+            // http://www.viva-edo.com/komon/edokomon.html
             bi = ImageIO.read(TextureUtil.class.getResource("unkaku_w.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -203,8 +195,8 @@ final class TextureUtil {
     }
 
     public static TexturePanel makeTexturePanel(JLabel label, URL url) {
-        //http://www.yourname.jp/soft/digitalfonts-20090306.shtml
-        //Digital display font: Copyright (c) Yourname, Inc.
+        // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
+        // Digital display font: Copyright (c) Yourname, Inc.
         Font font = makeFont(url);
         label.setFont(font.deriveFont(80f));
         label.setBackground(new Color(0x0, true));

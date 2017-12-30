@@ -83,16 +83,11 @@ class ScrollBarOnHoverLayerUI extends LayerUI<JScrollPane> {
         super.uninstallUI(c);
     }
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
-        JScrollPane sp = l.getView();
-        switch (e.getID()) {
-          case MouseEvent.MOUSE_ENTERED:
-            sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            break;
-          case MouseEvent.MOUSE_EXITED:
-            sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            break;
-          default:
-            break;
+        int id = e.getID();
+        if (id == MouseEvent.MOUSE_ENTERED) {
+            l.getView().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        } else if (id == MouseEvent.MOUSE_EXITED) {
+            l.getView().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         }
         // super.processMouseEvent(e, l);
     }

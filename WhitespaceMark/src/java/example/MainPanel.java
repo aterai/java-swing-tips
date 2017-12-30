@@ -90,12 +90,12 @@ class CustomViewFactory implements ViewFactory {
 //         return new WhitespaceLabelView(elem);
         return Optional.ofNullable(elem.getName()).map(kind -> {
             switch (kind) {
-              case AbstractDocument.ContentElementName:   return new WhitespaceLabelView(elem);
-              case AbstractDocument.ParagraphElementName: return new ParagraphWithEopmView(elem);
-              case AbstractDocument.SectionElementName:   return new BoxView(elem, View.Y_AXIS);
-              case StyleConstants.ComponentElementName:   return new ComponentView(elem);
-              case StyleConstants.IconElementName:        return new IconView(elem);
-              default:                                    return new WhitespaceLabelView(elem);
+                case AbstractDocument.ContentElementName: return new WhitespaceLabelView(elem);
+                case AbstractDocument.ParagraphElementName: return new ParagraphWithEopmView(elem);
+                case AbstractDocument.SectionElementName: return new BoxView(elem, View.Y_AXIS);
+                case StyleConstants.ComponentElementName: return new ComponentView(elem);
+                case StyleConstants.IconElementName: return new IconView(elem);
+                default: return new WhitespaceLabelView(elem);
             }
         }).orElseGet(() -> new WhitespaceLabelView(elem));
     }
@@ -153,7 +153,7 @@ class WhitespaceLabelView extends LabelView {
                 g2.setStroke(DASHED);
                 g2.setPaint(MARK_COLOR);
                 g2.drawLine(sx + 1, sy - 1, sx + spaceWidth - 2, sy - 1);
-                g2.drawLine(sx + 2, sy,     sx + spaceWidth - 2, sy);
+                g2.drawLine(sx + 2, sy, sx + spaceWidth - 2, sy);
             } else if ("\t".equals(s)) {
                 int tabWidth = (int) getTabExpander().nextTabStop((float) sx, i) - sx;
                 g2.setPaint(MARK_COLOR);

@@ -11,10 +11,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        final SlideInNotification handler = new SlideInNotification();
+        SlideInNotification handler = new SlideInNotification();
 
 //         optionPane.addPropertyChangeListener(e -> {
-//             if (dialog.isVisible() && e.getSource() == optionPane && //(event.getPropertyName().equals(VALUE_PROPERTY)) &&
+//             if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
 //                 Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
 //                 dialog.setVisible(false);
 //             }
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -72,7 +72,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     protected int dx;
     protected int dy;
 
-    public void startSlideIn(final SlideInAnimation slideInAnimation) {
+    public void startSlideIn(SlideInAnimation slideInAnimation) {
         if (animator.isRunning()) {
             return;
         }
@@ -90,7 +90,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
         dialog.getContentPane().add(optionPane);
         dialog.pack();
 
-        final Dimension d = dialog.getContentPane().getPreferredSize();
+        Dimension d = dialog.getContentPane().getPreferredSize();
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle desktopBounds = env.getMaximumWindowBounds();
         dx = desktopBounds.width - d.width;
@@ -104,17 +104,12 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
             @Override public void actionPerformed(ActionEvent e) {
                 counter += STEP;
                 double a = 1d;
-                switch (slideInAnimation) {
-                  case EASE_IN:
+                if (slideInAnimation == SlideInAnimation.EASE_IN) {
                     a = AnimationUtil.easeIn(counter / (double) d.height);
-                    break;
-                  case EASE_OUT:
+                } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
                     a = AnimationUtil.easeOut(counter / (double) d.height);
-                    break;
-                  case EASE_IN_OUT:
-                  default:
+                } else { // EASE_IN_OUT
                     a = AnimationUtil.easeInOut(counter / (double) d.height);
-                    break;
                 }
                 int visibleHeight = (int) (.5 + a * d.height);
                 if (visibleHeight >= d.height) {
@@ -164,10 +159,10 @@ enum SlideInAnimation {
 final class AnimationUtil {
     private static final int N = 3;
     private AnimationUtil() { /* Singleton */ }
-    //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+    // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
+    // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     public static double easeIn(double t) {
-        //range: 0.0 <= t <= 1.0
+        // range: 0.0 <= t <= 1.0
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {
@@ -192,14 +187,14 @@ final class AnimationUtil {
         }
         return ret;
     }
-    //http://d.hatena.ne.jp/pcl/20120617/p1
-    //http://d.hatena.ne.jp/rexpit/20110328/1301305266
-    //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
-    //http://www.osix.net/modules/article/?id=696
+    // http://d.hatena.ne.jp/pcl/20120617/p1
+    // http://d.hatena.ne.jp/rexpit/20110328/1301305266
+    // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+    // http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
         int b = ib;
         if (b < 0) {
-            //return d / intpow(a, -b);
+            // return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;

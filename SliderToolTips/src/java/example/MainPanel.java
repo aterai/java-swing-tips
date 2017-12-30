@@ -85,16 +85,21 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
                     JSlider slider = (JSlider) e.getComponent();
-                    switch (slider.getOrientation()) {
-                      case SwingConstants.VERTICAL:
+                    if (slider.getOrientation() == SwingConstants.VERTICAL) {
                         slider.setValue(valueForYPosition(e.getY()));
-                        break;
-                      case SwingConstants.HORIZONTAL:
+                    } else { // SwingConstants.HORIZONTAL
                         slider.setValue(valueForXPosition(e.getX()));
-                        break;
-                      default:
-                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
+//                     switch (slider.getOrientation()) {
+//                       case SwingConstants.VERTICAL:
+//                         slider.setValue(valueForYPosition(e.getY()));
+//                         break;
+//                       case SwingConstants.HORIZONTAL:
+//                         slider.setValue(valueForXPosition(e.getX()));
+//                         break;
+//                       default:
+//                         throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+//                     }
                     super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {
@@ -114,15 +119,10 @@ class MetalTooltipSliderUI extends MetalSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
                     JSlider slider = (JSlider) e.getComponent();
-                    switch (slider.getOrientation()) {
-                      case SwingConstants.VERTICAL:
+                    if (slider.getOrientation() == SwingConstants.VERTICAL) {
                         slider.setValue(valueForYPosition(e.getY()));
-                        break;
-                      case SwingConstants.HORIZONTAL:
+                    } else { // SwingConstants.HORIZONTAL
                         slider.setValue(valueForXPosition(e.getX()));
-                        break;
-                      default:
-                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
                     super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
