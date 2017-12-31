@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
         sub.addTab("Title bb", new JScrollPane(new JTree()));
         sub.addTab("Title cc", new JScrollPane(new JTextArea("JTextArea cc")));
 
-        tabbedPane.addTab("JTree 00",       new JScrollPane(new JTree()));
-        tabbedPane.addTab("JLabel 01",      new JLabel("Test"));
-        tabbedPane.addTab("JTable 02",      new JScrollPane(new JTable(10, 3)));
-        tabbedPane.addTab("JTextArea 03",   new JScrollPane(new JTextArea("JTextArea 03")));
-        tabbedPane.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
-        tabbedPane.addTab("null 05",        null);
-        tabbedPane.addTab("JTabbedPane 06", new JLayer<>(sub, layerUI));
-        tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
+        tabbedPane.addTab("JTree 00", new JScrollPane(new JTree()));
+        tabbedPane.addTab("JLabel 01", new JLabel("Test"));
+        tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
+        tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
+        tabbedPane.addTab("JLabel 04", new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+        tabbedPane.addTab("null 05", null);
+        tabbedPane.addTab("JTabbedPane 06", sub);
+        tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
         // ButtonTabComponent
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
@@ -127,7 +127,7 @@ class DnDTabbedPane extends JTabbedPane {
     private static final int SCROLL_SIZE = 20; // Test
     private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
     private static final Rectangle RECT_BACKWARD = new Rectangle();
-    private static final Rectangle RECT_FORWARD  = new Rectangle();
+    private static final Rectangle RECT_FORWARD = new Rectangle();
     private final DropMode dropMode = DropMode.INSERT;
     public int dragTabIndex = -1;
     private transient DropLocation dropLocation;
@@ -156,17 +156,34 @@ class DnDTabbedPane extends JTabbedPane {
 //         }
     }
     private void clickArrowButton(String actionKey) {
-        Optional.ofNullable(getActionMap())
-            .map(am -> am.get(actionKey))
-            .filter(Action::isEnabled)
-            .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
-//         ActionMap map = getActionMap();
-//         if (Objects.nonNull(map)) {
-//             Action action = map.get(actionKey);
-//             if (Objects.nonNull(action) && action.isEnabled()) {
-//                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-//             }
-//         }
+        JButton scrollForwardButton = null;
+        JButton scrollBackwardButton = null;
+        for (Component c: getComponents()) {
+            if (c instanceof JButton) {
+                if (scrollForwardButton == null && scrollBackwardButton == null) {
+                    scrollForwardButton = (JButton) c;
+                } else if (scrollBackwardButton == null) {
+                    scrollBackwardButton = (JButton) c;
+                }
+            }
+        }
+        JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
+        Optional.ofNullable(button)
+           .filter(JButton::isEnabled)
+           .ifPresent(JButton::doClick);
+
+//         // ArrayIndexOutOfBoundsException
+//         Optional.ofNullable(getActionMap())
+//             .map(am -> am.get(actionKey))
+//             .filter(Action::isEnabled)
+//             .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+// //         ActionMap map = getActionMap();
+// //         if (Objects.nonNull(map)) {
+// //             Action action = map.get(actionKey);
+// //             if (Objects.nonNull(action) && action.isEnabled()) {
+// //                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+// //             }
+// //         }
     }
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
@@ -231,12 +248,12 @@ class DnDTabbedPane extends JTabbedPane {
         System.out.println("exportTab");
         Component cmp = getComponentAt(dragIndex);
         Component tab = getTabComponentAt(dragIndex);
-        String str    = getTitleAt(dragIndex);
-        Icon icon     = getIconAt(dragIndex);
-        String tip    = getToolTipTextAt(dragIndex);
+        String title = getTitleAt(dragIndex);
+        Icon icon = getIconAt(dragIndex);
+        String tip = getToolTipTextAt(dragIndex);
         boolean isEnabled = isEnabledAt(dragIndex);
         remove(dragIndex);
-        target.insertTab(str, icon, cmp, tip, targetIndex);
+        target.insertTab(title, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, isEnabled);
 
         // ButtonTabComponent
@@ -257,13 +274,13 @@ class DnDTabbedPane extends JTabbedPane {
 //         }
         Component cmp = getComponentAt(prev);
         Component tab = getTabComponentAt(prev);
-        String str    = getTitleAt(prev);
-        Icon icon     = getIconAt(prev);
-        String tip    = getToolTipTextAt(prev);
+        String title = getTitleAt(prev);
+        Icon icon = getIconAt(prev);
+        String tip = getToolTipTextAt(prev);
         boolean isEnabled = isEnabledAt(prev);
-        int tgtindex  = prev > next ? next : next - 1;
+        int tgtindex = prev > next ? next : next - 1;
         remove(prev);
-        insertTab(str, icon, cmp, tip, tgtindex);
+        insertTab(title, icon, cmp, tip, tgtindex);
         setEnabledAt(tgtindex, isEnabled);
         // When you drag'n'drop a disabled tab, it finishes enabled and selected.
         // pointed out by dlorde
@@ -296,7 +313,7 @@ class DnDTabbedPane extends JTabbedPane {
 //             tabbedRect.width = tabbedRect.width - compRect.width;
 //         }
 //         tabbedRect.translate(-xx, -yy);
-//         //tabbedRect.grow(2, 2);
+//         // tabbedRect.grow(2, 2);
 //         return tabbedRect;
 //     }
     public Rectangle getTabAreaBounds() {
@@ -308,12 +325,12 @@ class DnDTabbedPane extends JTabbedPane {
         if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
             if (tabPlacement == BOTTOM) {
-                tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
+                tabbedRect.y += compRect.y + compRect.height;
             }
         } else {
             tabbedRect.width = tabbedRect.width - compRect.width;
             if (tabPlacement == RIGHT) {
-                tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
+                tabbedRect.x += compRect.x + compRect.width;
             }
         }
         tabbedRect.translate(-xx, -yy);
@@ -460,7 +477,7 @@ class TabTransferHandler extends TransferHandler {
         };
     }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
-        //System.out.println("canImport");
+        // System.out.println("canImport");
         if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
             System.out.println("canImport:" + support.isDrop() + " " + support.isDataFlavorSupported(localObjectFlavor));
             return false;
@@ -474,7 +491,7 @@ class TabTransferHandler extends TransferHandler {
         int idx = dl.getIndex();
 
 //         if (!isWebStart()) {
-//             //System.out.println("local");
+//             // System.out.println("local");
 //             try {
 //                 source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
 //             } catch (Exception ex) {
@@ -628,7 +645,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 class ButtonTabComponent extends JPanel {
     protected final JTabbedPane tabbedPane;
 
-    protected ButtonTabComponent(final JTabbedPane tabbedPane) {
+    protected ButtonTabComponent(JTabbedPane tabbedPane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
@@ -675,7 +692,7 @@ class ButtonTabComponent extends JPanel {
 }
 
 class TabButton extends JButton {
-    private static final int SIZE  = 17;
+    private static final int SIZE = 17;
     private static final int DELTA = 6;
 
     protected TabButton() {

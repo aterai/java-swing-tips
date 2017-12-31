@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -33,7 +32,7 @@ public final class MainPanel extends JPanel {
         tab.addTab("JLabel 04", new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
         tab.addTab("null 05", null);
         tab.addTab("JTabbedPane 06", sub);
-        tab.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
+        tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
         add(tab);
@@ -96,6 +95,38 @@ class DnDTabbedPane extends JTabbedPane {
 
     protected Rectangle rectBackward = new Rectangle();
     protected Rectangle rectForward = new Rectangle();
+
+    private void clickArrowButton(String actionKey) {
+        JButton scrollForwardButton = null;
+        JButton scrollBackwardButton = null;
+        for (Component c: getComponents()) {
+            if (c instanceof JButton) {
+                if (scrollForwardButton == null && scrollBackwardButton == null) {
+                    scrollForwardButton = (JButton) c;
+                } else if (scrollBackwardButton == null) {
+                    scrollBackwardButton = (JButton) c;
+                }
+            }
+        }
+        JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
+        Optional.ofNullable(button)
+           .filter(JButton::isEnabled)
+           .ifPresent(JButton::doClick);
+
+//         // ArrayIndexOutOfBoundsException
+//         Optional.ofNullable(getActionMap())
+//             .map(am -> am.get(actionKey))
+//             .filter(Action::isEnabled)
+//             .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+// //         ActionMap map = getActionMap();
+// //         if (Objects.nonNull(map)) {
+// //             Action action = map.get(actionKey);
+// //             if (Objects.nonNull(action) && action.isEnabled()) {
+// //                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+// //             }
+// //         }
+    }
+
     public void autoScrollTest(Point glassPt) {
         Rectangle r = getTabAreaBounds();
         if (isTopBottomTabPlacement(getTabPlacement())) {
@@ -106,25 +137,12 @@ class DnDTabbedPane extends JTabbedPane {
             rectForward.setBounds(r.x, r.y + r.height - RWH - BUTTON_SIZE, r.width, RWH + BUTTON_SIZE);
         }
         rectBackward = SwingUtilities.convertRectangle(getParent(), rectBackward, glassPane);
-        rectForward  = SwingUtilities.convertRectangle(getParent(), rectForward,  glassPane);
+        rectForward = SwingUtilities.convertRectangle(getParent(), rectForward,  glassPane);
         if (rectBackward.contains(glassPt)) {
             clickArrowButton("scrollTabsBackwardAction");
         } else if (rectForward.contains(glassPt)) {
             clickArrowButton("scrollTabsForwardAction");
         }
-    }
-    private void clickArrowButton(String actionKey) {
-        ActionMap am = getActionMap(); // = getActionMap(create=true) = non null
-        Optional.ofNullable(am.get(actionKey)).filter(Action::isEnabled).ifPresent(a -> {
-            a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-        });
-//         ActionMap map = getActionMap();
-//         if (map != null) {
-//             Action action = map.get(actionKey);
-//             if (action != null && action.isEnabled()) {
-//                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-//             }
-//         }
     }
 
     protected DnDTabbedPane() {
@@ -166,17 +184,17 @@ class DnDTabbedPane extends JTabbedPane {
         }
         Component cmp = getComponentAt(prev);
         Component tab = getTabComponentAt(prev);
-        String str = getTitleAt(prev);
+        String title = getTitleAt(prev);
         Icon icon = getIconAt(prev);
         String tip = getToolTipTextAt(prev);
-        boolean flg = isEnabledAt(prev);
+        boolean isEnabled = isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
         remove(prev);
-        insertTab(str, icon, cmp, tip, tgtindex);
-        setEnabledAt(tgtindex, flg);
+        insertTab(title, icon, cmp, tip, tgtindex);
+        setEnabledAt(tgtindex, isEnabled);
         // When you drag'n'drop a disabled tab, it finishes enabled and selected.
         // pointed out by dlorde
-        if (flg) {
+        if (isEnabled) {
             setSelectedIndex(tgtindex);
         }
         // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
@@ -204,15 +222,36 @@ class DnDTabbedPane extends JTabbedPane {
     protected void initGlassPane(Point tabPt) {
         getRootPane().setGlassPane(glassPane);
         if (hasGhost) {
-            Rectangle rect = getBoundsAt(dragTabIndex);
-            BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Component c = Optional.ofNullable(getTabComponentAt(dragTabIndex))
+                .orElseGet(() -> new JLabel(getTitleAt(dragTabIndex)));
+            Dimension d = c.getPreferredSize();
+            BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = image.createGraphics();
-            paint(g2);
+            SwingUtilities.paintComponent(g2, c, glassPane, 0, 0, d.width, d.height);
             g2.dispose();
-            rect.x = Math.max(0, rect.x); // rect.x < 0 ? 0 : rect.x;
-            rect.y = Math.max(0, rect.y); // rect.y < 0 ? 0 : rect.y;
-            image = image.getSubimage(rect.x, rect.y, rect.width, rect.height);
             glassPane.setImage(image);
+//             Rectangle rect = getBoundsAt(dragTabIndex);
+//             BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+//             Graphics2D g2 = image.createGraphics();
+//             paint(g2);
+//             g2.dispose();
+//             if (rect.x < 0) {
+//                 rect.translate(-rect.x, 0);
+//             }
+//             if (rect.y < 0) {
+//                 rect.translate(0, -rect.y);
+//             }
+//             if (rect.x + rect.width > image.getWidth()) {
+//                 rect.width = image.getWidth() - rect.x;
+//             }
+//             if (rect.y + rect.height > image.getHeight()) {
+//                 rect.height = image.getHeight() - rect.y;
+//             }
+//             glassPane.setImage(image.getSubimage(rect.x, rect.y, rect.width, rect.height));
+// //             rect.x = Math.max(0, rect.x); // rect.x < 0 ? 0 : rect.x;
+// //             rect.y = Math.max(0, rect.y); // rect.y < 0 ? 0 : rect.y;
+// //             image = image.getSubimage(rect.x, rect.y, rect.width, rect.height);
+// //             glassPane.setImage(image);
         }
         Point glassPt = SwingUtilities.convertPoint(this, tabPt, glassPane);
         glassPane.setPoint(glassPt);
@@ -229,15 +268,17 @@ class DnDTabbedPane extends JTabbedPane {
         //     comp = getComponentAt(idx++);
         // }
 
-        Rectangle compRect = Optional.ofNullable(getSelectedComponent()).map(Component::getBounds).orElseGet(Rectangle::new);
+        Rectangle compRect = Optional.ofNullable(getSelectedComponent())
+            .map(Component::getBounds)
+            .orElseGet(Rectangle::new);
 //         // TEST:
 //         Rectangle compRect = Optional.ofNullable(getSelectedComponent())
-//                                      .map(Component::getBounds)
-//                                      .orElseGet(() -> IntStream.range(0, getTabCount())
-//                                                                .mapToObj(this::getComponentAt)
-//                                                                .map(Component::getBounds)
-//                                                                .findFirst()
-//                                                                .orElseGet(Rectangle::new));
+//             .map(Component::getBounds)
+//             .orElseGet(() -> IntStream.range(0, getTabCount())
+//                 .mapToObj(this::getComponentAt)
+//                 .map(Component::getBounds)
+//                 .findFirst()
+//                 .orElseGet(Rectangle::new));
         int tabPlacement = getTabPlacement();
         if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
@@ -398,7 +439,7 @@ class TabDropTargetListener implements DropTargetListener {
     }
 }
 
-class GhostGlassPane extends JPanel {
+class GhostGlassPane extends JComponent {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f);
     public final DnDTabbedPane tabbedPane;
     private final Rectangle lineRect = new Rectangle();
@@ -439,7 +480,7 @@ class GhostGlassPane extends JPanel {
             g2.fill(tabbedPane.rectForward);
         }
         draggingGhostOp.ifPresent(img -> {
-            double xx = location.getX() - img.getWidth(this)  / 2d;
+            double xx = location.getX() - img.getWidth(this) / 2d;
             double yy = location.getY() - img.getHeight(this) / 2d;
             g2.drawImage(img, (int) xx, (int) yy, null);
         });
