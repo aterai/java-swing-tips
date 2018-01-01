@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     private final JMenuItem noFile = new JMenuItem("(Empty)");
     private JMenu fileHistoryMenu;
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             fileHistoryMenu.removeAll();
         } else {
             fileHistoryMenu = new JMenu("Recent Items");
-            fileHistoryMenu.setMnemonic('R');
+            fileHistoryMenu.setMnemonic(KeyEvent.VK_R);
             JMenuItem exit = BAR_FACTORY.getMenuItem("exit");
             fm.remove(exit);
             fm.add(fileHistoryMenu);
@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
             new HelpAction(),
             new VersionAction()
         };
-        //return defaultActions;
+        // return defaultActions;
     }
 //     private final Action[] defaultActions = {
 //         new NewAction(),
@@ -129,12 +129,12 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             System.out.println("-------- OpenAction --------");
-            //File file = null;
-            //JFileChooser fileChooser = new JFileChooser();
-            //int retvalue = fileChooser.showOpenDialog(this);
-            //if (retvalue == JFileChooser.APPROVE_OPTION) {
-            //    file = fileChooser.getSelectedFile();
-            //}
+            // File file = null;
+            // JFileChooser fileChooser = new JFileChooser();
+            // int retvalue = fileChooser.showOpenDialog(this);
+            // if (retvalue == JFileChooser.APPROVE_OPTION) {
+            //     file = fileChooser.getSelectedFile();
+            // }
             Object[] obj = {"Select files with JFileChooser.\n",
                 "This example do nothing\n",
                 " and pretend to generate an appropriate file name and open it."};
@@ -224,10 +224,10 @@ class HelpAction extends AbstractAction {
 }
 
 class VersionAction extends AbstractAction {
-    public static final String APP_NAME   = "@title@";
+    public static final String APP_NAME = "@title@";
     private static final String COPYRIGHT = "Copyright(C) 2006";
-    private static final String VERSION   = "0.0";
-    private static final int    RELEASE   = 1;
+    private static final String VERSION = "0.0";
+    private static final int    RELEASE = 1;
     protected VersionAction() {
         super("version");
     }

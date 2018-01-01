@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
@@ -12,10 +13,10 @@ public class MainPanel extends JPanel {
     private static final String SHOW_MNEMONICS = "Button.showMnemonics";
     private final JCheckBox showMnemonicsCheck = new JCheckBox(SHOW_MNEMONICS);
 
-    public MainPanel() {
+    private MainPanel() {
         super();
         showMnemonicsCheck.setSelected(UIManager.getBoolean(SHOW_MNEMONICS));
-        showMnemonicsCheck.setMnemonic('B');
+        showMnemonicsCheck.setMnemonic(KeyEvent.VK_B);
         showMnemonicsCheck.addActionListener(e -> {
             UIManager.put(SHOW_MNEMONICS, ((JCheckBox) e.getSource()).isSelected());
             if (UIManager.getLookAndFeel() instanceof WindowsLookAndFeel) {
@@ -27,7 +28,7 @@ public class MainPanel extends JPanel {
         add(showMnemonicsCheck);
 
         JButton button = new JButton("Dummy");
-        button.setMnemonic('D');
+        button.setMnemonic(KeyEvent.VK_D);
         add(button);
 
         setPreferredSize(new Dimension(320, 240));
@@ -107,7 +108,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

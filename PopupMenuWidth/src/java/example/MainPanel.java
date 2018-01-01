@@ -39,15 +39,15 @@ public final class MainPanel extends JPanel {
 
         menu = mb.add(new JMenu("Html"));
         JMenuItem item = menu.add("<html><table cellpadding='0' cellspacing='0' style='width:200'>Table");
-        item.setMnemonic('T');
-        //item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
+        item.setMnemonic(KeyEvent.VK_T);
+        // item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         makeMenu(menu);
 
         add(mb, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private JMenu makeMenu(JMenu menu) {
-        menu.add("Open").setMnemonic('O');
+        menu.add("Open").setMnemonic(KeyEvent.VK_O);
         menu.addSeparator();
         menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         return menu;
