@@ -187,26 +187,37 @@ class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
     }
     public DropLocation dropLocationForPoint(Point p) {
-        // boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
-        switch (dropMode) {
-          case INSERT:
-            for (int i = 0; i < getTabCount(); i++) {
-                if (getBoundsAt(i).contains(p)) {
-                    return new DropLocation(p, i);
-                }
-            }
-            if (getTabAreaBounds().contains(p)) {
-                return new DropLocation(p, getTabCount());
-            }
-            break;
-          case USE_SELECTION:
-          case ON:
-          case ON_OR_INSERT:
-          default:
+        if (dropMode != DropMode.INSERT) {
             assert false : "Unexpected drop mode";
-            break;
+        }
+        for (int i = 0; i < getTabCount(); i++) {
+            if (getBoundsAt(i).contains(p)) {
+                return new DropLocation(p, i);
+            }
+        }
+        if (getTabAreaBounds().contains(p)) {
+            return new DropLocation(p, getTabCount());
         }
         return new DropLocation(p, -1);
+//         switch (dropMode) {
+//             case INSERT:
+//                 for (int i = 0; i < getTabCount(); i++) {
+//                     if (getBoundsAt(i).contains(p)) {
+//                         return new DropLocation(p, i);
+//                     }
+//                 }
+//                 if (getTabAreaBounds().contains(p)) {
+//                     return new DropLocation(p, getTabCount());
+//                 }
+//                 break;
+//             case USE_SELECTION:
+//             case ON:
+//             case ON_OR_INSERT:
+//             default:
+//                 assert false : "Unexpected drop mode";
+//                 break;
+//         }
+//         return new DropLocation(p, -1);
     }
     public final DropLocation getDropLocation() {
         return dropLocation;
