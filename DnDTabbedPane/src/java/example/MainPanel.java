@@ -110,8 +110,8 @@ class DnDTabbedPane extends JTabbedPane {
         }
         JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
         Optional.ofNullable(button)
-           .filter(JButton::isEnabled)
-           .ifPresent(JButton::doClick);
+            .filter(JButton::isEnabled)
+            .ifPresent(JButton::doClick);
 
 //         // ArrayIndexOutOfBoundsException
 //         Optional.ofNullable(getActionMap())
