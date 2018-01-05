@@ -29,33 +29,29 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         List<? extends JTabbedPane> list = Arrays.asList(
-            makeTestTab(new JTabbedPane()),
-            makeTestTab(tabbedPane));
+            makeTabbedPane(new JTabbedPane()),
+            makeTabbedPane(tabbedPane));
         JPanel p = new JPanel(new GridLayout(2, 1));
-        for (JTabbedPane t: list) {
-            p.add(t);
-        }
+        list.forEach(p::add);
 
         JCheckBox check = new JCheckBox("LEFT");
         check.addActionListener(e -> {
-            JCheckBox c = (JCheckBox) e.getSource();
-            for (JTabbedPane t: list) {
-                t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
-            }
+            int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP;
+            list.forEach(t -> t.setTabPlacement(tabPlacement));
         });
 
         add(check, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JTabbedPane makeTestTab(JTabbedPane jtp) {
-//         jtp.setTabPlacement(JTabbedPane.RIGHT);
-//         jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        jtp.addTab("1111111111111111111111111111", new JLabel("aaaaaaaaaaa"));
-        jtp.addTab("2", new JLabel("bbbbbbbbb"));
-        jtp.addTab("33333333333333333333333333333333333333333333", new JLabel("cccccccccc"));
-        jtp.addTab("444444444444", new JLabel("dddddddddddddddd"));
-        return jtp;
+    private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
+        // tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
+        // tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.addTab("1111111111111111111111111111", new JLabel("aaaaaaaaaaa"));
+        tabbedPane.addTab("2", new JLabel("bbbbbbbbb"));
+        tabbedPane.addTab("33333333333333333333333333333333333333333333", new JLabel("cccccccccc"));
+        tabbedPane.addTab("444444444444", new JLabel("dddddddddddddddd"));
+        return tabbedPane;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -81,18 +77,17 @@ public final class MainPanel extends JPanel {
 }
 
 class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
-    //protected Insets tabInsets;
-    //protected Insets selectedTabPadInsets;
-    //protected Insets tabAreaInsets;
-    //protected Insets contentBorderInsets;
+    // protected Insets tabInsets;
+    // protected Insets selectedTabPadInsets;
+    // protected Insets tabAreaInsets;
+    // protected Insets contentBorderInsets;
     @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
         Insets insets = tabPane.getInsets();
-        //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+        // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        switch (tabPlacement) {
-          case LEFT: case RIGHT:
+        if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             return (int) (width / 4);
-          case BOTTOM: case TOP: default:
+        } else { // TOP || BOTTOM
             return (int) (width / tabPane.getTabCount());
         }
     }
@@ -117,18 +112,17 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
 }
 
 class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
-    //protected Insets tabInsets;
-    //protected Insets selectedTabPadInsets;
-    //protected Insets tabAreaInsets;
-    //protected Insets contentBorderInsets;
+    // protected Insets tabInsets;
+    // protected Insets selectedTabPadInsets;
+    // protected Insets tabAreaInsets;
+    // protected Insets contentBorderInsets;
     @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
         Insets insets = tabPane.getInsets();
-        //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+        // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        switch (tabPlacement) {
-          case LEFT: case RIGHT:
+        if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             return (int) (width / 4);
-          case BOTTOM: case TOP: default:
+        } else { // TOP || BOTTOM
             return (int) (width / tabPane.getTabCount());
         }
     }
