@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String SHOW_MNEMONICS = "Button.showMnemonics";
     private final JCheckBox showMnemonicsCheck = new JCheckBox(SHOW_MNEMONICS);
 
