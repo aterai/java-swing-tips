@@ -104,7 +104,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
-    private Insets getTabInsets() {
+    protected Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
         if (Objects.nonNull(insets)) {
             return insets;
@@ -114,7 +114,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
-    private Insets getTabAreaInsets() {
+    protected Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
         if (Objects.nonNull(insets)) {
             return insets;
@@ -124,48 +124,46 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    // @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {
             super.doLayout();
             return;
         }
-        Insets tabInsets     = getTabInsets();
+        Insets tabInsets = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();
         int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        int tabWidth  = 0;
-        int gap       = 0;
+        int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
+        int gap = 0;
 
-        switch (getTabPlacement()) {
-          case LEFT: case RIGHT:
-            tabWidth = Math.min(MAX_TAB_WIDTH, Math.max(MIN_TAB_WIDTH, areaWidth / 3));
-            break;
-          case BOTTOM: case TOP: default:
-            tabWidth = areaWidth / tabCount;
-            if (tabWidth < MIN_TAB_WIDTH) {
-                tabWidth = MIN_TAB_WIDTH;
-            } else if (tabWidth > MAX_TAB_WIDTH) {
-                tabWidth = MAX_TAB_WIDTH;
-            } else {
-                gap = areaWidth - tabWidth * tabCount;
-            }
-            break;
+        boolean isTopBottom = isTopBottomTabPlacement(getTabPlacement());
+        int tw = isTopBottom ? areaWidth / tabCount : areaWidth / 3;
+        tabWidth = Math.min(MAX_TAB_WIDTH, Math.max(MIN_TAB_WIDTH, tw));
+        if (isTopBottom && tabWidth < MAX_TAB_WIDTH) {
+            gap = areaWidth - tabWidth * tabCount;
         }
 
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth -= tabInsets.left + tabInsets.right + 3;
-        for (int i = 0; i < tabCount; i++) {
-            int w = i < gap ? tabWidth + 1 : tabWidth;
-            Optional.ofNullable((JComponent) getTabComponentAt(i))
-                .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
-        }
+        updateAllTabWidth(tabWidth, gap);
+
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
         super.insertTab(title, icon, component, Objects.nonNull(tip) ? tip : title, index);
         setTabComponentAt(index, new ButtonTabComponent(this));
+    }
+    protected void updateAllTabWidth(int tabWidth, int gap) {
+        for (int i = 0; i < getTabCount(); i++) {
+            int w = i < gap ? tabWidth + 1 : tabWidth;
+            Optional.ofNullable((JComponent) getTabComponentAt(i))
+                .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
+        }
+    }
+    private static boolean isTopBottomTabPlacement(int tabPlacement) {
+        return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
     }
 }
 

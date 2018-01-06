@@ -138,29 +138,26 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {
             super.doLayout();
             return;
         }
-        Insets tabInsets     = getTabInsets();
+        Insets tabInsets = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();
+        int tabPlacement = getTabPlacement();
         int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        int tabWidth  = 0; // = tabInsets.left + tabInsets.right + 3;
-        int gap       = 0;
+        int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
+        int gap = 0;
 
-        switch (getTabPlacement()) {
-          case LEFT: case RIGHT:
+        if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             tabWidth = areaWidth / 4;
             gap = 0;
-            break;
-          case BOTTOM: case TOP: default:
+        } else { // TOP || BOTTOM
             tabWidth = areaWidth / tabCount;
             gap = areaWidth - tabWidth * tabCount;
-            break;
         }
         if (tabWidth > MAX_TAB_WIDTH) {
             tabWidth = MAX_TAB_WIDTH;

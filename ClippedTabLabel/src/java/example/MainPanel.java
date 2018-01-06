@@ -16,19 +16,17 @@ public final class MainPanel extends JPanel {
             makeTestTabbedPane(new JTabbedPane()),
             makeTestTabbedPane(new ClippedTitleTabbedPane()));
 
-        JPanel p = new JPanel(new GridLayout(2, 1));
-        for (JTabbedPane t: list) {
-            p.add(t);
-        }
+        JPanel p = new JPanel(new GridLayout(list.size(), 1));
+        list.forEach(p::add);
 
         JCheckBox check = new JCheckBox("LEFT");
         check.addActionListener(e -> {
-            JCheckBox c = (JCheckBox) e.getSource();
-            list.forEach(t -> t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP));
+            int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP;
+            list.forEach(t -> t.setTabPlacement(tabPlacement));
         });
 
-        add(p);
         add(check, BorderLayout.NORTH);
+        add(p);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
@@ -91,29 +89,26 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {
             super.doLayout();
             return;
         }
-        Insets tabInsets     = getTabInsets();
+        Insets tabInsets = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();
+        int tabPlacement = getTabPlacement();
         int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        int tabWidth  = 0; // = tabInsets.left + tabInsets.right + 3;
-        int gap       = 0;
+        int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
+        int gap = 0;
 
-        switch (getTabPlacement()) {
-          case LEFT: case RIGHT:
+        if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             tabWidth = areaWidth / 4;
             gap = 0;
-            break;
-          case BOTTOM: case TOP: default:
+        } else { // TOP || BOTTOM
             tabWidth = areaWidth / tabCount;
             gap = areaWidth - tabWidth * tabCount;
-            break;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth -= tabInsets.left + tabInsets.right + 3;
