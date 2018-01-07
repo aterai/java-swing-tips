@@ -36,11 +36,9 @@ public final class MainPanel extends JPanel {
         JSpinner spinner3 = new SimpleBorderSpinner();
 
         List<JSpinner> list = Arrays.asList(spinner0, spinner1, spinner2, spinner3);
-        Box box = Box.createVerticalBox();
-        for (JSpinner s: list) {
-            s.setEnabled(false);
-        }
+        list.forEach(s -> s.setEnabled(false));
 
+        Box box = Box.createVerticalBox();
         addTestSpinner(box, spinner0, "Default");
         addTestSpinner(box, spinner1, "setOpaque(false)");
         addTestSpinner(box, spinner2, "setBorder(...)");
@@ -48,10 +46,8 @@ public final class MainPanel extends JPanel {
 
         JCheckBox check = new JCheckBox("setEnabled");
         check.addActionListener(e -> {
-            JCheckBox cb = (JCheckBox) e.getSource();
-            for (JSpinner s: list) {
-                s.setEnabled(cb.isSelected());
-            }
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            list.forEach(s -> s.setEnabled(flg));
         });
 
         setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 20));

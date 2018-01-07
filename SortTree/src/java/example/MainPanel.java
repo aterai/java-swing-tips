@@ -209,9 +209,7 @@ final class TreeUtil {
 
         Collections.sort(children, tnc);
         parent.removeAllChildren();
-        for (MutableTreeNode node: children) {
-            parent.add(node);
-        }
+        children.forEach(parent::add);
     }
     public static void sortTree3(DefaultMutableTreeNode root) {
         Enumeration<?> e = root.preorderEnumeration();

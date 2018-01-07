@@ -20,15 +20,15 @@ public final class MainPanel extends JPanel {
         JToggleButton t2 = new JToggleButton(nicon, true);
         t1.setSelectedIcon(sicon);
         t2.setSelectedIcon(sicon);
-        List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
 
+        List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("ButtonGroup"));
-        for (AbstractButton b: l) {
+        l.forEach(b -> {
             bg.add(b);
             p.add(b);
-        }
+        });
 
         JButton clear = new JButton("clearSelection");
         clear.addActionListener(e -> bg.clearSelection());

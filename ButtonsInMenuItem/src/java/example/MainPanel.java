@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
                 return super.getPreferredSize();
             }
         };
-        for (AbstractButton b: list) {
+        list.forEach(b -> {
             b.setIcon(new ToggleButtonBarCellIcon());
             p.add(b);
-        }
+        });
         p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         p.setOpaque(false);
 

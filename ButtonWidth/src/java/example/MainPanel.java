@@ -53,9 +53,7 @@ public final class MainPanel extends JPanel {
                 return super.getPreferredSize();
             }
         };
-        for (JButton b: list) {
-            p.add(b);
-        }
+        list.forEach(p::add);
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(p);
@@ -128,9 +126,7 @@ public final class MainPanel extends JPanel {
     private static JComponent createRightAlignButtonBox2(List<JButton> list, int buttonWidth, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
-                for (JButton b: list) {
-                    b.setPreferredSize(null);
-                }
+                list.forEach(b -> b.setPreferredSize(null));
                 super.updateUI();
                 EventQueue.invokeLater(() -> {
                     int maxHeight = 0;
@@ -138,9 +134,7 @@ public final class MainPanel extends JPanel {
                         maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                     }
                     Dimension d = new Dimension(buttonWidth, maxHeight);
-                    for (JButton b: list) {
-                        b.setPreferredSize(d);
-                    }
+                    list.forEach(b -> b.setPreferredSize(d));
                     revalidate();
                 });
             }

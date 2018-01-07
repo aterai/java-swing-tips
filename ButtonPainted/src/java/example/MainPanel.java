@@ -28,36 +28,28 @@ public final class MainPanel extends JPanel {
         JCheckBox focusPainted = new JCheckBox("setFocusPainted", true);
         focusPainted.addActionListener(e -> {
             boolean flg = ((JCheckBox) e.getSource()).isSelected();
-            for (JButton b: list) {
-                b.setFocusPainted(flg);
-            }
+            list.forEach(b -> b.setFocusPainted(flg));
             p.revalidate();
         });
 
         JCheckBox borderPainted = new JCheckBox("setBorderPainted", true);
         borderPainted.addActionListener(e -> {
             boolean flg = ((JCheckBox) e.getSource()).isSelected();
-            for (JButton b: list) {
-                b.setBorderPainted(flg);
-            }
+            list.forEach(b -> b.setBorderPainted(flg));
             p.revalidate();
         });
 
         JCheckBox contentAreaFilled = new JCheckBox("setContentAreaFilled", true);
         contentAreaFilled.addActionListener(e -> {
             boolean flg = ((JCheckBox) e.getSource()).isSelected();
-            for (JButton b: list) {
-                b.setContentAreaFilled(flg);
-            }
+            list.forEach(b -> b.setContentAreaFilled(flg));
             p.revalidate();
         });
 
         JCheckBox rolloverEnabled = new JCheckBox("setRolloverEnabled", true);
         rolloverEnabled.addActionListener(e -> {
             boolean flg = ((JCheckBox) e.getSource()).isSelected();
-            for (JButton b: list) {
-                b.setRolloverEnabled(flg);
-            }
+            list.forEach(b -> b.setRolloverEnabled(flg));
             p.revalidate();
         });
 

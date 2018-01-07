@@ -19,10 +19,8 @@ public final class MainPanel extends JPanel {
         tree2.setShowsRootHandles(false);
 
         check.addActionListener(e -> {
-            boolean flag = ((JCheckBox) e.getSource()).isSelected();
-            for (JTree tree: list) {
-                tree.setRootVisible(flag);
-            }
+            boolean flg = ((JCheckBox) e.getSource()).isSelected();
+            list.forEach(tree -> tree.setRootVisible(flg));
         });
 
         JPanel p = new JPanel(new GridLayout(1, 2));

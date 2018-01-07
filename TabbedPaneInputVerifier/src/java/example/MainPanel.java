@@ -24,17 +24,17 @@ public final class MainPanel extends JPanel {
 
         EventQueue.invokeLater(() -> field0.requestFocusInWindow());
 
-        for (JTextField tf: list) {
+        list.forEach(tf -> {
             tf.setHorizontalAlignment(SwingConstants.RIGHT);
             tf.setInputVerifier(new IntegerInputVerifier());
-        }
+        });
 
         JButton button0 = new JButton("Dummy");
         JButton button1 = new JButton("setText(0)");
         button1.addActionListener(e -> {
-            for (JTextField tf: list) {
+            list.forEach(tf -> {
                 tf.setText("0");
-            }
+            });
         });
 
         button1.setVerifyInputWhenFocusTarget(false);

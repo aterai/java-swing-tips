@@ -20,22 +20,20 @@ public final class MainPanel extends JPanel {
 
         JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
         check.addActionListener(e -> {
-            JCheckBox cb = (JCheckBox) e.getSource();
-            for (JSlider slider: list) {
-                slider.setMinorTickSpacing(cb.isSelected() ? 5 : 0);
-            }
+            int mts = ((JCheckBox) e.getSource()).isSelected() ? 5 : 0;
+            list.forEach(slider -> slider.setMinorTickSpacing(mts));
         });
 
-        Box b = Box.createVerticalBox();
-        b.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        Box box = Box.createVerticalBox();
+        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         for (JSlider slider: list) {
-            b.add(slider);
-            b.add(Box.createVerticalStrut(10));
+            box.add(slider);
+            box.add(Box.createVerticalStrut(10));
         }
-        b.add(check);
-        b.add(Box.createVerticalGlue());
+        box.add(check);
+        box.add(Box.createVerticalGlue());
 
-        add(b);
+        add(box);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JSlider makeSilder(String title) {

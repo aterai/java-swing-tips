@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-//import javax.swing.plaf.basic.*;
+// import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -22,20 +22,20 @@ public final class MainPanel extends JPanel {
             new RoundButton(new ImageIcon(getClass().getResource("001.png")), "001d.png", "001g.png"),
             new RoundButton(new ImageIcon(getClass().getResource("002.png")), "002d.png", "002g.png"),
             new RoundButton(new ImageIcon(getClass().getResource("004.png")), "004d.png", "004g.png"));
-        //TEST: buttons = makeButtonArray2(getClass()); //Set ButtonUI
+        // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
 
         Box box = Box.createHorizontalBox();
         // JDK 5
-        //new Box(BoxLayout.X_AXIS) {
-        //    @Override protected void paintComponent(Graphics g) {
-        //        if (Objects.nonNull(ui)) {
-        //            super.paintComponent(g);
-        //        } else if (isOpaque()) {
-        //            g.setColor(getBackground());
-        //            g.fillRect(0, 0, getWidth(), getHeight());
-        //        }
-        //    }
-        //};
+        // new Box(BoxLayout.X_AXIS) {
+        //     @Override protected void paintComponent(Graphics g) {
+        //         if (Objects.nonNull(ui)) {
+        //             super.paintComponent(g);
+        //         } else if (isOpaque()) {
+        //             g.setColor(getBackground());
+        //             g.fillRect(0, 0, getWidth(), getHeight());
+        //         }
+        //     }
+        // };
         box.setOpaque(true);
         box.setBackground(new Color(120, 120, 160));
         box.add(Box.createHorizontalGlue());
@@ -50,9 +50,7 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("ButtonBorder Color");
         check.addActionListener(e -> {
             Color bgc = ((JCheckBox) e.getSource()).isSelected() ? Color.WHITE : Color.BLACK;
-            for (JButton b: buttons) {
-                b.setBackground(bgc);
-            }
+            buttons.forEach(b -> b.setBackground(bgc));
             box.repaint();
         });
 
@@ -72,8 +70,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     //TEST:
-//     public static List<JButton> makeButtonArray2(final Class clazz) {
+//     // TEST:
+//     public static List<JButton> makeButtonArray2(Class clazz) {
 //         return Arrays.asList(
 //             new JButton(new ImageIcon(clazz.getResource("005.png"))) {{
 //                 setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
@@ -139,12 +137,12 @@ class RoundButton extends JButton {
 //     }
 //     protected RoundButton(Action a) {
 //         super(a);
-//         //setAction(a);
+//         // setAction(a);
 //     }
 //     protected RoundButton(String text, Icon icon) {
 //         super(text, icon);
-//         //setModel(new DefaultButtonModel());
-//         //init(text, icon);
+//         // setModel(new DefaultButtonModel());
+//         // init(text, icon);
 //     }
     protected RoundButton(Icon icon, String i2, String i3) {
         super(icon);
@@ -157,7 +155,7 @@ class RoundButton extends JButton {
         setBackground(Color.BLACK);
         setContentAreaFilled(false);
         setFocusPainted(false);
-        //setVerticalAlignment(SwingConstants.TOP);
+        // setVerticalAlignment(SwingConstants.TOP);
         setAlignmentY(Component.TOP_ALIGNMENT);
         initShape();
     }
@@ -179,7 +177,7 @@ class RoundButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(getBackground());
-        //g2.setStroke(new BasicStroke(1f));
+        // g2.setStroke(new BasicStroke(1f));
         g2.draw(shape);
         g2.dispose();
     }
@@ -204,7 +202,7 @@ class RoundButton extends JButton {
 //         b.setFocusPainted(false);
 //         b.setOpaque(false);
 //         b.setBackground(Color.BLACK);
-//         //b.setVerticalAlignment(SwingConstants.TOP);
+//         // b.setVerticalAlignment(SwingConstants.TOP);
 //         b.setAlignmentY(Component.TOP_ALIGNMENT);
 //         initShape(b);
 //     }
@@ -242,10 +240,10 @@ class RoundButton extends JButton {
 //         super.paint(g, c);
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         initShape(c);
-//         //Border
+//         // Border
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //         g2.setPaint(c.getBackground());
-//         //g2.setStroke(new BasicStroke(1f));
+//         // g2.setStroke(new BasicStroke(1f));
 //         g2.draw(shape);
 //         g2.dispose();
 //     }
@@ -266,14 +264,14 @@ class RoundButton extends JButton {
 // }
 
 enum ButtonAlignments {
-    Top("Top Alignment",       Component.TOP_ALIGNMENT),
+    Top("Top Alignment", Component.TOP_ALIGNMENT),
     Center("Center Alignment", Component.CENTER_ALIGNMENT),
     Bottom("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
     private final String description;
     public final float alingment;
     ButtonAlignments(String description, float alingment) {
         this.description = description;
-        this.alingment   = alingment;
+        this.alingment = alingment;
     }
     @Override public String toString() {
         return description;
