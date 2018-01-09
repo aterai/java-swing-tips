@@ -81,7 +81,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
         }
         return deltaY;
     }
-    //@see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
+    // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"}) // Cyclomatic Complexity, Standard Cyclomatic Complexity
     @Override public void mouseDragged(MouseEvent e) {
         if (startPos == null || startingBounds == null) {
@@ -98,79 +98,79 @@ public class ResizeMouseListener extends MouseInputAdapter {
         Rectangle parentBounds = parent.getBounds();
 
         switch (cursor) {
-          case Cursor.NW_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX);
-            dy = getDeltaY(deltaY);
-            c.setBounds(
-                startingBounds.x - dx,
-                startingBounds.y - dy,
-                startingBounds.width  + dx,
-                startingBounds.height + dy);
-            break;
-          case Cursor.N_RESIZE_CURSOR:
-            dy = getDeltaY(deltaY);
-            c.setBounds(
-                startingBounds.x,
-                startingBounds.y - dy,
-                startingBounds.width,
-                startingBounds.height + dy);
-            break;
-          case Cursor.NE_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX, parentBounds);
-            dy = getDeltaY(deltaY);
-            c.setBounds(
-                startingBounds.x,
-                startingBounds.y - dy,
-                startingBounds.width  - dx,
-                startingBounds.height + dy);
-            break;
-          case Cursor.E_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX, parentBounds);
-            c.setSize(
-                startingBounds.width - dx,
-                startingBounds.height);
-            break;
-          case Cursor.SE_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX, parentBounds);
-            dy = getDeltaY(deltaY, parentBounds);
-            c.setSize(
-                startingBounds.width  - dx,
-                startingBounds.height - dy);
-            break;
-          case Cursor.S_RESIZE_CURSOR:
-            dy = getDeltaY(deltaY, parentBounds);
-            c.setSize(
-                startingBounds.width,
-                startingBounds.height - dy);
-            break;
-          case Cursor.SW_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX);
-            dy = getDeltaY(deltaY, parentBounds);
-            c.setBounds(
-                startingBounds.x - dx,
-                startingBounds.y,
-                startingBounds.width  + dx,
-                startingBounds.height - dy);
-            break;
-          case Cursor.W_RESIZE_CURSOR:
-            dx = getDeltaX(deltaX);
-            c.setBounds(
-                startingBounds.x - dx,
-                startingBounds.y,
-                startingBounds.width + dx,
-                startingBounds.height);
-            break;
-          case Cursor.MOVE_CURSOR:
-            c.setLocation(
-                startingBounds.x - deltaX,
-                startingBounds.y - deltaY);
-            break;
-          default:
-            return;
+            case Cursor.NW_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX);
+                dy = getDeltaY(deltaY);
+                c.setBounds(
+                    startingBounds.x - dx,
+                    startingBounds.y - dy,
+                    startingBounds.width  + dx,
+                    startingBounds.height + dy);
+                break;
+            case Cursor.N_RESIZE_CURSOR:
+                dy = getDeltaY(deltaY);
+                c.setBounds(
+                    startingBounds.x,
+                    startingBounds.y - dy,
+                    startingBounds.width,
+                    startingBounds.height + dy);
+                break;
+            case Cursor.NE_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX, parentBounds);
+                dy = getDeltaY(deltaY);
+                c.setBounds(
+                    startingBounds.x,
+                    startingBounds.y - dy,
+                    startingBounds.width  - dx,
+                    startingBounds.height + dy);
+                break;
+            case Cursor.E_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX, parentBounds);
+                c.setSize(
+                    startingBounds.width - dx,
+                    startingBounds.height);
+                break;
+            case Cursor.SE_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX, parentBounds);
+                dy = getDeltaY(deltaY, parentBounds);
+                c.setSize(
+                    startingBounds.width  - dx,
+                    startingBounds.height - dy);
+                break;
+            case Cursor.S_RESIZE_CURSOR:
+                dy = getDeltaY(deltaY, parentBounds);
+                c.setSize(
+                    startingBounds.width,
+                    startingBounds.height - dy);
+                break;
+            case Cursor.SW_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX);
+                dy = getDeltaY(deltaY, parentBounds);
+                c.setBounds(
+                    startingBounds.x - dx,
+                    startingBounds.y,
+                    startingBounds.width  + dx,
+                    startingBounds.height - dy);
+                break;
+            case Cursor.W_RESIZE_CURSOR:
+                dx = getDeltaX(deltaX);
+                c.setBounds(
+                    startingBounds.x - dx,
+                    startingBounds.y,
+                    startingBounds.width + dx,
+                    startingBounds.height);
+                break;
+            case Cursor.MOVE_CURSOR:
+                c.setLocation(
+                    startingBounds.x - deltaX,
+                    startingBounds.y - deltaY);
+                break;
+            default:
+                return;
         }
-        //setBounds(newX, newY, newW, newH);
+        // setBounds(newX, newY, newW, newH);
         parent.revalidate();
-        //parent.repaint();
+        // parent.repaint();
     }
     @Override public void mouseReleased(MouseEvent e) {
         startPos = null;

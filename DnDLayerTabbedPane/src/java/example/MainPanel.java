@@ -169,8 +169,8 @@ class DnDTabbedPane extends JTabbedPane {
         }
         JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
         Optional.ofNullable(button)
-           .filter(JButton::isEnabled)
-           .ifPresent(JButton::doClick);
+            .filter(JButton::isEnabled)
+            .ifPresent(JButton::doClick);
 
 //         // ArrayIndexOutOfBoundsException
 //         Optional.ofNullable(getActionMap())
@@ -353,7 +353,7 @@ class DnDTabbedPane extends JTabbedPane {
         return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
     }
 
-    private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
+    private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
         private Point startPt;
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
         // private final Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");

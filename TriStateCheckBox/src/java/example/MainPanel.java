@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     private final Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"},
-        {true, 2, "DDD"}, {false,  5, "CCC"},
-        {true, 3, "EEE"}, {false,  6, "GGG"},
-        {true, 4, "FFF"}, {false,  7, "HHH"}
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -115,12 +115,12 @@ class HeaderRenderer implements TableCellRenderer {
             check.setSelected(true);
         }
         l.setIcon(new ComponentIcon(check));
-        l.setText(null); //XXX: Nimbus???
+        l.setText(null); // XXX: Nimbus???
 //         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
 //         System.out.println("getMaximunSize: " + l.getMaximumSize());
 //         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
+//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
 //             System.out.println(l.getPreferredSize().height);
 //             Rectangle rect = table.getTableHeader().getHeaderRect(column);
 //             l.setPreferredSize(new Dimension(0, rect.height));
@@ -155,20 +155,20 @@ class TriStateCheckBox extends JCheckBox {
     }
     public void updateStatus(Status s) {
         switch (s) {
-          case SELECTED:
-            setSelected(true);
-            setIcon(null);
-            break;
-          case DESELECTED:
-            setSelected(false);
-            setIcon(null);
-            break;
-          case INDETERMINATE:
-            setSelected(false);
-            setIcon(icon);
-            break;
-          default:
-            throw new AssertionError("Unknown Status");
+            case SELECTED:
+                setSelected(true);
+                setIcon(null);
+                break;
+            case DESELECTED:
+                setSelected(false);
+                setIcon(null);
+                break;
+            case INDETERMINATE:
+                setSelected(false);
+                setIcon(icon);
+                break;
+            default:
+                throw new AssertionError("Unknown Status");
         }
     }
     @Override public void updateUI() {
@@ -187,7 +187,7 @@ class TriStateCheckBox extends JCheckBox {
 }
 
 class IndeterminateIcon implements Icon {
-    private static final Color FOREGROUND = Color.BLACK; //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final Color FOREGROUND = Color.BLACK; // TEST: UIManager.getColor("CheckBox.foreground");
     private static final int SIDE_MARGIN = 4;
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
@@ -261,7 +261,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

@@ -171,28 +171,28 @@ class ComboKeyHandler extends KeyAdapter {
         String text = textField.getText();
         shouldHide = false;
         switch (e.getKeyCode()) {
-          case KeyEvent.VK_RIGHT:
-            for (String s: list) {
-                if (s.startsWith(text)) {
-                    textField.setText(s);
-                    return;
+            case KeyEvent.VK_RIGHT:
+                for (String s: list) {
+                    if (s.startsWith(text)) {
+                        textField.setText(s);
+                        return;
+                    }
                 }
-            }
-            break;
-          case KeyEvent.VK_ENTER:
-            if (!list.contains(text)) {
-                list.add(text);
-                Collections.sort(list);
-                // setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
-                setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
-            }
-            shouldHide = true;
-            break;
-          case KeyEvent.VK_ESCAPE:
-            shouldHide = true;
-            break;
-          default:
-            break;
+                break;
+            case KeyEvent.VK_ENTER:
+                if (!list.contains(text)) {
+                    list.add(text);
+                    Collections.sort(list);
+                    // setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
+                    setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
+                }
+                shouldHide = true;
+                break;
+            case KeyEvent.VK_ESCAPE:
+                shouldHide = true;
+                break;
+            default:
+                break;
         }
     }
     private static void setSuggestionModel(JComboBox<String> comboBox, ComboBoxModel<String> mdl, String str) {
@@ -238,7 +238,7 @@ class ComboKeyHandler extends KeyAdapter {
 //     }
 //     class ComboKeyHandler extends KeyAdapter {
 //         private boolean shouldHide = false;
-//         @Override public void keyTyped(final KeyEvent e) {
+//         @Override public void keyTyped(KeyEvent e) {
 //             EventQueue.invokeLater(new Runnable() {
 //                 @Override public void run() {
 //                     String text = ((JTextField) e.getSource()).getText();

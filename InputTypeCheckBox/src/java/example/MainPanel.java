@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
     private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     private final Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"},
-        {true, 2, "DDD"}, {false,  5, "CCC"},
-        {true, 3, "EEE"}, {false,  6, "GGG"},
-        {true, 4, "FFF"}, {false,  7, "HHH"}
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -103,7 +103,7 @@ class HeaderRenderer implements TableCellRenderer {
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel) r.getTableCellRendererComponent(table, INPUT, isSelected, hasFocus, row, column);
 
-//         //TEST:
+//         // TEST:
 //         JCheckBox check = new JCheckBox();
 //         updateCheckBox(check, value);
 //         String selected = check.isSelected() ? "checked " : "";
@@ -122,23 +122,23 @@ class HeaderRenderer implements TableCellRenderer {
             JCheckBox check = (JCheckBox) c;
             check.setOpaque(false);
             check.setBorder(BorderFactory.createEmptyBorder());
-            //check.setText("Check All");
+            // check.setText("Check All");
             if (value instanceof Status) {
                 switch ((Status) value) {
-                  case SELECTED:
-                    check.setSelected(true);
-                    check.setEnabled(true);
-                    break;
-                  case DESELECTED:
-                    check.setSelected(false);
-                    check.setEnabled(true);
-                    break;
-                  case INDETERMINATE:
-                    check.setSelected(true);
-                    check.setEnabled(false);
-                    break;
-                  default:
-                    throw new AssertionError("Unknown Status");
+                    case SELECTED:
+                        check.setSelected(true);
+                        check.setEnabled(true);
+                        break;
+                    case DESELECTED:
+                        check.setSelected(false);
+                        check.setEnabled(true);
+                        break;
+                    case INDETERMINATE:
+                        check.setSelected(true);
+                        check.setEnabled(false);
+                        break;
+                    default:
+                        throw new AssertionError("Unknown Status");
                 }
             }
         }
@@ -224,7 +224,7 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
                 m.setValueAt(b, i, mci);
             }
             column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-            //header.repaint();
+            // header.repaint();
         }
     }
 }

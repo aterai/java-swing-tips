@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        //URL path = getClass().getResource("CRW_3857_JFR.jpg");
+        // URL path = getClass().getResource("CRW_3857_JFR.jpg");
         String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
 
         int w = 2048;
@@ -73,18 +73,18 @@ public final class MainPanel extends JPanel {
 
         tabs.addChangeListener(e -> {
             switch (tabs.getSelectedIndex()) {
-              case 2:
-                editor2.setText(st0);
-                saveImage(editor2);
-                break;
-              case 1:
-                editor1.setText(st1);
-                saveImage(editor1);
-                break;
-              default:
-                editor0.setText(st0);
-                saveImage(editor0);
-                break;
+                case 2:
+                    editor2.setText(st0);
+                    saveImage(editor2);
+                    break;
+                case 1:
+                    editor1.setText(st1);
+                    saveImage(editor1);
+                    break;
+                default:
+                    editor0.setText(st0);
+                    saveImage(editor0);
+                    break;
             }
         });
 
@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void saveImage(final JComponent c) {
+    private void saveImage(JComponent c) {
         EventQueue.invokeLater(() -> {
             double s = .02;
             int w = (int) (c.getWidth() * s);
@@ -149,9 +149,9 @@ class ImageLoadSynchronouslyHTMLEditorKit extends HTMLEditorKit {
             }
         };
     }
-    //@Override public Document createDefaultDocument() {
-    //    Document doc = super.createDefaultDocument ();
-    //    ((HTMLDocument) doc).setAsynchronousLoadPriority(-1);
-    //    return doc;
-    //}
+    // @Override public Document createDefaultDocument() {
+    //     Document doc = super.createDefaultDocument ();
+    //     ((HTMLDocument) doc).setAsynchronousLoadPriority(-1);
+    //     return doc;
+    // }
 }

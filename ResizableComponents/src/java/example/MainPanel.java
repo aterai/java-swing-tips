@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
         popup.add("tree").addActionListener(e -> createTree());
 
         layeredPane.setComponentPopupMenu(popup);
-        //layeredPane.addMouseListener(new MouseAdapter() { /* Dummy listener */ }); //??? for 1.5.0
+        // layeredPane.addMouseListener(new MouseAdapter() { /* Dummy listener */ }); // ??? for 1.5.0
         add(layeredPane);
         toolbar.add(new AbstractAction("add table") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -124,8 +124,8 @@ class JResizer extends JPanel { // implements Serializable {
     }
 }
 
-//Resizable Components - Santhosh Kumar's Weblog
-//http://www.jroller.com/santhosh/entry/resizable_components
+// Resizable Components - Santhosh Kumar's Weblog
+// http://www.jroller.com/santhosh/entry/resizable_components
 interface ResizableBorder extends Border {
     int getResizeCursor(MouseEvent e);
 }
@@ -186,17 +186,17 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {
         switch (location) {
-          case NORTH:      return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
-          case SOUTH:      return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
-          case WEST:       return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);
-          case EAST:       return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist, dist);
-          case NORTH_WEST: return new Rectangle(x, y, dist, dist);
-          case NORTH_EAST: return new Rectangle(x + w - dist, y, dist, dist);
-          case SOUTH_WEST: return new Rectangle(x, y + h - dist, dist, dist);
-          case SOUTH_EAST: return new Rectangle(x + w - dist, y + h - dist, dist, dist);
-          default:         return null; //throw new AssertionError("Unknown location");
+            case NORTH: return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
+            case SOUTH: return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
+            case WEST: return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);
+            case EAST: return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist, dist);
+            case NORTH_WEST: return new Rectangle(x, y, dist, dist);
+            case NORTH_EAST: return new Rectangle(x + w - dist, y, dist, dist);
+            case SOUTH_WEST: return new Rectangle(x, y + h - dist, dist, dist);
+            case SOUTH_EAST: return new Rectangle(x + w - dist, y + h - dist, dist, dist);
+            default: return null; // throw new AssertionError("Unknown location");
         }
-        //return null;
+        // return null;
     }
 
     @Override public int getResizeCursor(MouseEvent e) {

@@ -108,26 +108,26 @@ class RowDataRenderer implements TableCellRenderer {
         label.setHorizontalAlignment(SwingConstants.LEFT);
         RowData data = (RowData) value;
         switch (table.convertColumnIndexToModel(column)) {
-          case 0:
-            String str = data.getGroup();
-            if (row > 0) {
-                RowData prev = (RowData) table.getValueAt(row - 1, column);
-                if (Objects.equals(prev.getGroup(), str)) {
-                    label.setText(" ");
-                    break;
+            case 0:
+                String str = data.getGroup();
+                if (row > 0) {
+                    RowData prev = (RowData) table.getValueAt(row - 1, column);
+                    if (Objects.equals(prev.getGroup(), str)) {
+                        label.setText(" ");
+                        break;
+                    }
                 }
-            }
-            label.setText("+ " + str);
-            break;
-          case 1:
-            label.setText(data.getName());
-            break;
-          case 2:
-            label.setHorizontalAlignment(SwingConstants.RIGHT);
-            label.setText(Integer.toString(data.getCount()));
-            break;
-          default:
-            break;
+                label.setText("+ " + str);
+                break;
+            case 1:
+                label.setText(data.getName());
+                break;
+            case 2:
+                label.setHorizontalAlignment(SwingConstants.RIGHT);
+                label.setText(Integer.toString(data.getCount()));
+                break;
+            default:
+                break;
         }
         return label;
     }

@@ -73,22 +73,22 @@ class RotateIcon implements Icon {
 
         int numquadrants = (rotate / 90) % 4;
         switch (numquadrants) {
-          case 3:
-          case -1:
-            trans = AffineTransform.getTranslateInstance(0, dim.width);
-            dim.setSize(icon.getIconHeight(), icon.getIconWidth());
-            break;
-          case 1:
-          case -3:
-            trans = AffineTransform.getTranslateInstance(dim.height, 0);
-            dim.setSize(icon.getIconHeight(), icon.getIconWidth());
-            break;
-          case 2:
-            trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
-            break;
-          default:
-            trans = AffineTransform.getTranslateInstance(0, 0);
-            break;
+            case 3:
+            case -1:
+                trans = AffineTransform.getTranslateInstance(0, dim.width);
+                dim.setSize(icon.getIconHeight(), icon.getIconWidth());
+                break;
+            case 1:
+            case -3:
+                trans = AffineTransform.getTranslateInstance(dim.height, 0);
+                dim.setSize(icon.getIconHeight(), icon.getIconWidth());
+                break;
+            case 2:
+                trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
+                break;
+            default:
+                trans = AffineTransform.getTranslateInstance(0, 0);
+                break;
         }
 //         if (numquadrants == 1 || numquadrants == -3) {
 //             trans = AffineTransform.getTranslateInstance(dim.height, 0);
@@ -147,17 +147,17 @@ class QuadrantRotateIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         switch (rotate) {
-          case CLOCKWISE:
-            g2.translate(h, 0);
-            break;
-          case VERTICAL_FLIP:
-            g2.translate(w, h);
-            break;
-          case COUNTER_CLOCKWISE:
-            g2.translate(0, w);
-            break;
-          default:
-            throw new AssertionError("Unknown QuadrantRotateIcon");
+            case CLOCKWISE:
+                g2.translate(h, 0);
+                break;
+            case VERTICAL_FLIP:
+                g2.translate(w, h);
+                break;
+            case COUNTER_CLOCKWISE:
+                g2.translate(0, w);
+                break;
+            default:
+                throw new AssertionError("Unknown QuadrantRotateIcon");
         }
         g2.rotate(Math.toRadians(90 * rotate.getNumQuadrants()));
         icon.paintIcon(c, g2, 0, 0);

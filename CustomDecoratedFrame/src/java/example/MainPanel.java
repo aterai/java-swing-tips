@@ -10,16 +10,16 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private static final int W = 4;
-    private final SideLabel left        = new SideLabel(Side.W);
-    private final SideLabel right       = new SideLabel(Side.E);
-    private final SideLabel top         = new SideLabel(Side.N);
-    private final SideLabel bottom      = new SideLabel(Side.S);
-    private final SideLabel topleft     = new SideLabel(Side.NW);
-    private final SideLabel topright    = new SideLabel(Side.NE);
-    private final SideLabel bottomleft  = new SideLabel(Side.SW);
+    private final SideLabel left = new SideLabel(Side.W);
+    private final SideLabel right = new SideLabel(Side.E);
+    private final SideLabel top = new SideLabel(Side.N);
+    private final SideLabel bottom = new SideLabel(Side.S);
+    private final SideLabel topleft = new SideLabel(Side.NW);
+    private final SideLabel topright = new SideLabel(Side.NE);
+    private final SideLabel bottomleft = new SideLabel(Side.SW);
     private final SideLabel bottomright = new SideLabel(Side.SE);
-    private final JPanel contentPanel   = new JPanel(new BorderLayout());
-    private final JPanel resizePanel    = new JPanel(new BorderLayout()) {
+    private final JPanel contentPanel = new JPanel(new BorderLayout());
+    private final JPanel resizePanel = new JPanel(new BorderLayout()) {
         private final Color borderColor = new Color(100, 100, 100);
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -90,12 +90,12 @@ public final class MainPanel extends JPanel {
         title.addMouseListener(dwl);
         title.addMouseMotionListener(dwl);
         title.setOpaque(false);
-        //title.setBackground(Color.ORANGE);
+        // title.setBackground(Color.ORANGE);
         title.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
 
         title.add(new JLabel(str, SwingConstants.CENTER));
         title.add(makeCloseButton(), BorderLayout.EAST);
-        //title.add(iconify, BorderLayout.WEST);
+        // title.add(iconify, BorderLayout.WEST);
 
         MouseInputListener rwl = new ResizeWindowListener();
         for (SideLabel l: Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
@@ -214,41 +214,42 @@ class ResizeWindowListener extends MouseInputAdapter {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
         switch (side) {
-          case NW:
-            r.y      += dy;
-            r.height -= dy;
-            r.x      += dx;
-            r.width  -= dx;
-            break;
-          case N:
-            r.y      += dy;
-            r.height -= dy;
-            break;
-          case NE:
-            r.y      += dy;
-            r.height -= dy;
-            r.width  += dx;
-            break;
-          case W:
-            r.x      += dx;
-            r.width  -= dx;
-            break;
-          case E:
-            r.width  += dx;
-            break;
-          case SW:
-            r.height += dy;
-            r.x      += dx;
-            r.width  -= dx;
-            break;
-          case S:
-            r.height += dy;
-            break;
-          case SE:
-            r.height += dy;
-            r.width  += dx;
-            break;
-          default: throw new AssertionError("Unknown SideLabel");
+            case NW:
+                r.y += dy;
+                r.height -= dy;
+                r.x += dx;
+                r.width -= dx;
+                break;
+            case N:
+                r.y += dy;
+                r.height -= dy;
+                break;
+            case NE:
+                r.y += dy;
+                r.height -= dy;
+                r.width += dx;
+                break;
+            case W:
+                r.x += dx;
+                r.width -= dx;
+                break;
+            case E:
+                r.width += dx;
+                break;
+            case SW:
+                r.height += dy;
+                r.x += dx;
+                r.width -= dx;
+                break;
+            case S:
+                r.height += dy;
+                break;
+            case SE:
+                r.height += dy;
+                r.width += dx;
+                break;
+            default:
+                throw new AssertionError("Unknown SideLabel");
         }
         return r;
     }

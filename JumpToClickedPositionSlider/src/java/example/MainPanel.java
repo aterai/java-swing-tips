@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
 
         add(box1, BorderLayout.WEST);
         add(box2);
-        //setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 10));
+        // setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 10));
         setPreferredSize(new Dimension(320, 240));
     }
     private static void setSilderUI(JSlider slider) {
@@ -82,7 +82,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     }
 //     // JSlider question: Position after leftclick - Stack Overflow
 //     // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
-//     //TEST:
+//     // TEST:
 //     protected void scrollDueToClickInTrack(int direction) {
 //         int value = slider.getValue();
 //         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
@@ -98,16 +98,16 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
                 if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
                     JSlider slider = (JSlider) e.getComponent();
                     switch (slider.getOrientation()) {
-                      case SwingConstants.VERTICAL:
-                        slider.setValue(valueForYPosition(e.getY()));
-                        break;
-                      case SwingConstants.HORIZONTAL:
-                        slider.setValue(valueForXPosition(e.getX()));
-                        break;
-                      default:
-                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                        case SwingConstants.VERTICAL:
+                            slider.setValue(valueForYPosition(e.getY()));
+                            break;
+                        case SwingConstants.HORIZONTAL:
+                            slider.setValue(valueForXPosition(e.getX()));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
-                    super.mousePressed(e); //isDragging = true;
+                    super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {
                     super.mousePressed(e);
@@ -127,16 +127,16 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
                 if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
                     JSlider slider = (JSlider) e.getComponent();
                     switch (slider.getOrientation()) {
-                      case SwingConstants.VERTICAL:
-                        slider.setValue(valueForYPosition(e.getY()));
-                        break;
-                      case SwingConstants.HORIZONTAL:
-                        slider.setValue(valueForXPosition(e.getX()));
-                        break;
-                      default:
-                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                        case SwingConstants.VERTICAL:
+                            slider.setValue(valueForYPosition(e.getY()));
+                            break;
+                        case SwingConstants.HORIZONTAL:
+                            slider.setValue(valueForXPosition(e.getX()));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                     }
-                    super.mousePressed(e); //isDragging = true;
+                    super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {
                     super.mousePressed(e);

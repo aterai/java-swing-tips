@@ -91,13 +91,13 @@ public class TitledBorder2 extends AbstractBorder {
     public static final int TRAILING = 5;
 
     // Space between the border and the component's edge
-    protected static final int EDGE_SPACING = 2; //2;
+    protected static final int EDGE_SPACING = 2; // 2;
 
     // Space between the border and text
-    protected static final int TEXT_SPACING = 5; //2;
+    protected static final int TEXT_SPACING = 5; // 2;
 
     // Horizontal inset of text that is left or right justified
-    protected static final int TEXT_INSET_H = 10; //5;
+    protected static final int TEXT_INSET_H = 10; // 5;
 
     /**
      * Creates a TitledBorder instance.
@@ -177,7 +177,7 @@ public class TitledBorder2 extends AbstractBorder {
      * @param titleFont the font of the title
      * @param titleColor the color of the title
      */
-    //@ConstructorProperties({"border", "title", "titleJustification", "titlePosition", "titleFont", "titleColor"})
+    // @ConstructorProperties({"border", "title", "titleJustification", "titlePosition", "titleFont", "titleColor"})
     public TitledBorder2(Border border,
                          String title,
                          int titleJustification,
@@ -227,44 +227,44 @@ public class TitledBorder2 extends AbstractBorder {
             int labelH = size.height;
             int position = getPosition();
             switch (position) {
-              case ABOVE_TOP:
-                insets.left = 0;
-                insets.right = 0;
-                borderY += labelH - edge;
-                borderH -= labelH - edge;
-                break;
-              case TOP:
-                insets.top = edge + insets.top / 2 - labelH / 2;
-                if (insets.top < edge) {
-                    borderY -= insets.top;
-                    borderH += insets.top;
-                } else {
-                    labelY += insets.top;
-                }
-                break;
-              case BELOW_TOP:
-                labelY += insets.top + edge;
-                break;
-              case ABOVE_BOTTOM:
-                labelY += height - labelH - insets.bottom - edge;
-                break;
-              case BOTTOM:
-                labelY += height - labelH;
-                insets.bottom = edge + (insets.bottom - labelH) / 2;
-                if (insets.bottom < edge) {
-                    borderH += insets.bottom;
-                } else {
-                    labelY -= insets.bottom;
-                }
-                break;
-              case BELOW_BOTTOM:
-                insets.left = 0;
-                insets.right = 0;
-                labelY += height - labelH;
-                borderH -= labelH - edge;
-                break;
-              default:
-                // will NOT execute because of the line preceding the switch.
+                case ABOVE_TOP:
+                    insets.left = 0;
+                    insets.right = 0;
+                    borderY += labelH - edge;
+                    borderH -= labelH - edge;
+                    break;
+                case TOP:
+                    insets.top = edge + insets.top / 2 - labelH / 2;
+                    if (insets.top < edge) {
+                        borderY -= insets.top;
+                        borderH += insets.top;
+                    } else {
+                        labelY += insets.top;
+                    }
+                    break;
+                case BELOW_TOP:
+                    labelY += insets.top + edge;
+                    break;
+                case ABOVE_BOTTOM:
+                    labelY += height - labelH - insets.bottom - edge;
+                    break;
+                case BOTTOM:
+                    labelY += height - labelH;
+                    insets.bottom = edge + (insets.bottom - labelH) / 2;
+                    if (insets.bottom < edge) {
+                        borderH += insets.bottom;
+                    } else {
+                        labelY -= insets.bottom;
+                    }
+                    break;
+                case BELOW_BOTTOM:
+                    insets.left = 0;
+                    insets.right = 0;
+                    labelY += height - labelH;
+                    borderH -= labelH - edge;
+                    break;
+                default:
+                    // will NOT execute because of the line preceding the switch.
             }
             insets.left += edge + TEXT_INSET_H;
             insets.right += edge + TEXT_INSET_H;
@@ -275,17 +275,17 @@ public class TitledBorder2 extends AbstractBorder {
                 labelW = size.width;
             }
             switch (getJustification(c)) {
-              case LEFT:
-                labelX += insets.left;
-                break;
-              case RIGHT:
-                labelX += width - insets.right - labelW;
-                break;
-              case CENTER:
-                labelX += (width - labelW) / 2;
-                break;
-              default:
-                // will NOT execute because of the line preceding the switch.
+                case LEFT:
+                    labelX += insets.left;
+                    break;
+                case RIGHT:
+                    labelX += width - insets.right - labelW;
+                    break;
+                case CENTER:
+                    labelX += (width - labelW) / 2;
+                    break;
+                default:
+                    // will NOT execute because of the line preceding the switch.
             }
 
             if (border != null) {
@@ -332,30 +332,30 @@ public class TitledBorder2 extends AbstractBorder {
             Dimension size = label.getPreferredSize();
 
             switch (getPosition()) {
-              case ABOVE_TOP:
-                insets.top += size.height - edge;
-                break;
-              case TOP:
-                if (insets.top < size.height) {
-                    insets.top = size.height - edge;
-                }
-                break;
-              case BELOW_TOP:
-                insets.top += size.height;
-                break;
-              case ABOVE_BOTTOM:
-                insets.bottom += size.height;
-                break;
-              case BOTTOM:
-                if (insets.bottom < size.height) {
-                    insets.bottom = size.height - edge;
-                }
-                break;
-              case BELOW_BOTTOM:
-                insets.bottom += size.height - edge;
-                break;
-              default:
-                // will NOT execute because of the line preceding the switch.
+                case ABOVE_TOP:
+                    insets.top += size.height - edge;
+                    break;
+                case TOP:
+                    if (insets.top < size.height) {
+                        insets.top = size.height - edge;
+                    }
+                    break;
+                case BELOW_TOP:
+                    insets.top += size.height;
+                    break;
+                case ABOVE_BOTTOM:
+                    insets.bottom += size.height;
+                    break;
+                case BOTTOM:
+                    if (insets.bottom < size.height) {
+                        insets.bottom = size.height - edge;
+                    }
+                    break;
+                case BELOW_BOTTOM:
+                    insets.bottom += size.height - edge;
+                    break;
+                default:
+                    // will NOT execute because of the line preceding the switch.
             }
             insets.top += edge + TEXT_SPACING;
             insets.left += edge + TEXT_SPACING;
@@ -451,17 +451,17 @@ public class TitledBorder2 extends AbstractBorder {
      */
     public void setTitlePosition(int titlePosition) {
         switch (titlePosition) {
-          case ABOVE_TOP:
-          case TOP:
-          case BELOW_TOP:
-          case ABOVE_BOTTOM:
-          case BOTTOM:
-          case BELOW_BOTTOM:
-          case DEFAULT_POSITION:
-            this.titlePosition = titlePosition;
-            break;
-          default:
-            throw new IllegalArgumentException(titlePosition + " is not a valid title position.");
+            case ABOVE_TOP:
+            case TOP:
+            case BELOW_TOP:
+            case ABOVE_BOTTOM:
+            case BOTTOM:
+            case BELOW_BOTTOM:
+            case DEFAULT_POSITION:
+                this.titlePosition = titlePosition;
+                break;
+            default:
+                throw new IllegalArgumentException(titlePosition + " is not a valid title position.");
         }
     }
 
@@ -471,16 +471,16 @@ public class TitledBorder2 extends AbstractBorder {
      */
     public void setTitleJustification(int titleJustification) {
         switch (titleJustification) {
-        case DEFAULT_JUSTIFICATION:
-        case LEFT:
-        case CENTER:
-        case RIGHT:
-        case LEADING:
-        case TRAILING:
-            this.titleJustification = titleJustification;
-            break;
-        default:
-            throw new IllegalArgumentException(titleJustification + " is not a valid title justification.");
+            case DEFAULT_JUSTIFICATION:
+            case LEFT:
+            case CENTER:
+            case RIGHT:
+            case LEADING:
+            case TRAILING:
+                this.titleJustification = titleJustification;
+                break;
+            default:
+                throw new IllegalArgumentException(titleJustification + " is not a valid title justification.");
         }
     }
 
@@ -552,26 +552,22 @@ public class TitledBorder2 extends AbstractBorder {
 
             int baseline = label.getBaseline(size.width, size.height);
             switch (getPosition()) {
-              case ABOVE_TOP:
-                return baseline;
-              case TOP:
-                insets.top = edge + (insets.top - size.height) / 2;
-                return insets.top < edge
-                    ? baseline
-                    : baseline + insets.top;
-              case BELOW_TOP:
-                return baseline + insets.top + edge;
-              case ABOVE_BOTTOM:
-                return baseline + height - size.height - insets.bottom - edge;
-              case BOTTOM:
-                insets.bottom = edge + (insets.bottom - size.height) / 2;
-                return insets.bottom < edge
-                    ? baseline + height - size.height
-                    : baseline + height - size.height + insets.bottom;
-              case BELOW_BOTTOM:
-                return baseline + height - size.height;
-              default:
-                // will NOT execute because of the line preceding the switch.
+                case ABOVE_TOP:
+                    return baseline;
+                case TOP:
+                    insets.top = edge + (insets.top - size.height) / 2;
+                    return insets.top < edge ? baseline : baseline + insets.top;
+                case BELOW_TOP:
+                    return baseline + insets.top + edge;
+                case ABOVE_BOTTOM:
+                    return baseline + height - size.height - insets.bottom - edge;
+                case BOTTOM:
+                    insets.bottom = edge + (insets.bottom - size.height) / 2;
+                    return insets.bottom < edge ? baseline + height - size.height : baseline + height - size.height + insets.bottom;
+                case BELOW_BOTTOM:
+                    return baseline + height - size.height;
+                default:
+                    // will NOT execute because of the line preceding the switch.
             }
         }
         return -1;
@@ -588,16 +584,16 @@ public class TitledBorder2 extends AbstractBorder {
     @Override public Component.BaselineResizeBehavior getBaselineResizeBehavior(Component c) {
         super.getBaselineResizeBehavior(c);
         switch (getPosition()) {
-          case TitledBorder2.ABOVE_TOP:
-          case TitledBorder2.TOP:
-          case TitledBorder2.BELOW_TOP:
-            return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
-          case TitledBorder2.ABOVE_BOTTOM:
-          case TitledBorder2.BOTTOM:
-          case TitledBorder2.BELOW_BOTTOM:
-            return JComponent.BaselineResizeBehavior.CONSTANT_DESCENT;
-          default:
-            return Component.BaselineResizeBehavior.OTHER;
+            case TitledBorder2.ABOVE_TOP:
+            case TitledBorder2.TOP:
+            case TitledBorder2.BELOW_TOP:
+                return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+            case TitledBorder2.ABOVE_BOTTOM:
+            case TitledBorder2.BOTTOM:
+            case TitledBorder2.BELOW_BOTTOM:
+                return JComponent.BaselineResizeBehavior.CONSTANT_DESCENT;
+            default:
+                return Component.BaselineResizeBehavior.OTHER;
         }
     }
 
@@ -678,7 +674,7 @@ public class TitledBorder2 extends AbstractBorder {
         return this.label;
     }
 
-    //private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
+    // private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
     @SuppressWarnings("PMD.AvoidReassigningParameters")
     private static Insets makeBorderInsets(Border border, Component c, Insets insets) {
         if (Objects.isNull(border)) {

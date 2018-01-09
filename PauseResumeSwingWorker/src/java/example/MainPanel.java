@@ -12,13 +12,13 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private static final String PAUSE  = "pause";
     private static final String RESUME = "resume";
-    private final JTextArea area       = new JTextArea();
-    private final JPanel statusPanel   = new JPanel(new BorderLayout());
-    private final JButton runButton    = new JButton("run");
+    private final JTextArea area  = new JTextArea();
+    private final JPanel statusPanel = new JPanel(new BorderLayout());
+    private final JButton runButton = new JButton("run");
     private final JButton cancelButton = new JButton("cancel");
-    private final JButton pauseButton  = new JButton(PAUSE);
-    private final JProgressBar bar1    = new JProgressBar();
-    private final JProgressBar bar2    = new JProgressBar();
+    private final JButton pauseButton = new JButton(PAUSE);
+    private final JProgressBar bar1 = new JProgressBar();
+    private final JProgressBar bar2 = new JProgressBar();
     private transient BackgroundTask worker;
 
     public MainPanel() {
@@ -115,20 +115,20 @@ public final class MainPanel extends JPanel {
     protected void processChunks(List<Progress> chunks) {
         for (Progress s: chunks) {
             switch (s.component) {
-              case TOTAL:
-                bar1.setValue((Integer) s.value);
-                break;
-              case FILE:
-                bar2.setValue((Integer) s.value);
-                break;
-              case LOG:
-                area.append((String) s.value);
-                break;
-              case PAUSE:
-                textProgress((Boolean) s.value);
-                break;
-              default:
-                throw new AssertionError("Unknown Progress");
+                case TOTAL:
+                    bar1.setValue((Integer) s.value);
+                    break;
+                case FILE:
+                    bar2.setValue((Integer) s.value);
+                    break;
+                case LOG:
+                    area.append((String) s.value);
+                    break;
+                case PAUSE:
+                    textProgress((Boolean) s.value);
+                    break;
+                default:
+                    throw new AssertionError("Unknown Progress");
             }
         }
     }
@@ -254,10 +254,10 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 }
 
 // public final class MainPanel extends JPanel {
-//     private final JTextArea area     = new JTextArea();
+//     private final JTextArea area = new JTextArea();
 //     private final JPanel statusPanel = new JPanel(new BorderLayout());
-//     private final JButton runButton  = new JButton(new RunAction());
-//     private final JButton cancelButton  = new JButton(new CancelAction());
+//     private final JButton runButton = new JButton(new RunAction());
+//     private final JButton cancelButton = new JButton(new CancelAction());
 //     private SwingWorker<String, String> worker;
 //
 //     public MainPanel() {

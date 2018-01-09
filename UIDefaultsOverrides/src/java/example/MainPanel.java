@@ -48,11 +48,11 @@ public final class MainPanel extends JPanel {
         r.putClientProperty("Nimbus.Overrides", d);
         r.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
-//         //or
+//         // or
 //         d.put("TextArea.NotInScrollPane", new State("NotInScrollPane") {
 //             @Override protected boolean isInState(JComponent c) {
-//                 //@see javax.swing.plaf.nimbus.TextAreaNotInScrollPaneState
-//                 //return !(c.getParent() instanceof JViewport);
+//                 // @see javax.swing.plaf.nimbus.TextAreaNotInScrollPaneState
+//                 // return !(c.getParent() instanceof JViewport);
 //                 return false;
 //             }
 //         });
@@ -130,12 +130,12 @@ enum CheckIcon {
     MOUSEOVER;
 }
 
-//@see CheckBoxMenuItemPainter.java
+// @see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
-//     public static final int CHECKICON_ENABLED_SELECTED   = 6;
+//     public static final int CHECKICON_ENABLED_SELECTED = 6;
 //     public static final int CHECKICON_SELECTED_MOUSEOVER = 7;
-//     public static final int CHECKICON_ENABLED            = 8;
-//     public static final int CHECKICON_MOUSEOVER          = 9;
+//     public static final int CHECKICON_ENABLED = 8;
+//     public static final int CHECKICON_MOUSEOVER = 9;
     private final CheckIcon state;
     private final PaintContext ctx;
     protected MyCheckBoxMenuItemPainter(CheckIcon state) {
@@ -145,20 +145,20 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     }
     @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] eckey) {
         switch (state) {
-          case ENABLED:
-            paintcheckIconEnabled(g);
-            break;
-          case MOUSEOVER:
-            paintcheckIconMouseOver(g);
-            break;
-          case ENABLED_SELECTED:
-            paintcheckIconEnabledAndSelected(g);
-            break;
-          case SELECTED_MOUSEOVER:
-            paintcheckIconSelectedAndMouseOver(g);
-            break;
-          default:
-            break;
+            case ENABLED:
+                paintcheckIconEnabled(g);
+                break;
+            case MOUSEOVER:
+                paintcheckIconMouseOver(g);
+                break;
+            case ENABLED_SELECTED:
+                paintcheckIconEnabledAndSelected(g);
+                break;
+            case SELECTED_MOUSEOVER:
+                paintcheckIconSelectedAndMouseOver(g);
+                break;
+            default:
+                break;
         }
     }
     @Override protected final PaintContext getPaintContext() {
@@ -193,11 +193,11 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
         setWrapStyleWord(true);
         setOpaque(true);
 
-        //System.out.println(UIManager.get("nimbusFocus"));
+        // System.out.println(UIManager.get("nimbusFocus"));
         Border b = BorderFactory.createLineBorder(new Color(115, 164, 209));
         fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1, 4, 1, 4));
         setBorder(epb);
-        //setMargin(new Insets(0, 0, 0, 0));
+        // setMargin(new Insets(0, 0, 0, 0));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setFont(table.getFont());
@@ -223,14 +223,14 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
      * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
      */
     private int getAdjustedRowHeight(int row, int column) {
-        //The trick to get this to work properly is to set the width of the column to the
-        //textarea. The reason for this is that getPreferredSize(), without a width tries
-        //to place all the text in one line. By setting the size with the with of the column,
-        //getPreferredSize() returnes the proper height which the row should have in
-        //order to make room for the text.
-        //int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-        //int cWidth = table.getCellRect(row, column, false).width; //Ignore IntercellSpacing
-        //setSize(new Dimension(cWidth, 1000));
+        // The trick to get this to work properly is to set the width of the column to the
+        // textarea. The reason for this is that getPreferredSize(), without a width tries
+        // to place all the text in one line. By setting the size with the with of the column,
+        // getPreferredSize() returnes the proper height which the row should have in
+        // order to make room for the text.
+        // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+        // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
+        // setSize(new Dimension(cWidth, 1000));
 
         int prefH = getPreferredSize().height;
         while (rowColHeight.size() <= row) {

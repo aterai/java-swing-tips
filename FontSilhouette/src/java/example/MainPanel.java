@@ -83,26 +83,26 @@ class SilhouetteIcon implements Icon, Serializable {
         while (!pi.isDone()) {
             int pathSegmentType = pi.currentSegment(coords);
             switch (pathSegmentType) {
-              case PathIterator.SEG_MOVETO:
-                path.moveTo(coords[0], coords[1]);
-                break;
-              case PathIterator.SEG_LINETO:
-                path.lineTo(coords[0], coords[1]);
-                break;
-              case PathIterator.SEG_QUADTO:
-                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-                break;
-              case PathIterator.SEG_CUBICTO:
-                path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-                break;
-              case PathIterator.SEG_CLOSE:
-                path.closePath();
-                area.add(new Area(path));
-                path.reset();
-                break;
-              default:
-                System.err.println("Unexpected value! " + pathSegmentType);
-                break;
+                case PathIterator.SEG_MOVETO:
+                    path.moveTo(coords[0], coords[1]);
+                    break;
+                case PathIterator.SEG_LINETO:
+                    path.lineTo(coords[0], coords[1]);
+                    break;
+                case PathIterator.SEG_QUADTO:
+                    path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+                    break;
+                case PathIterator.SEG_CUBICTO:
+                    path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    path.closePath();
+                    area.add(new Area(path));
+                    path.reset();
+                    break;
+                default:
+                    System.err.println("Unexpected value! " + pathSegmentType);
+                    break;
             }
             pi.next();
         }
@@ -131,8 +131,8 @@ class SilhouetteIcon implements Icon, Serializable {
         g2.setStroke(new BasicStroke(1));
         g2.setPaint(c.getBackground());
         g2.fill(shapeCentered);
-        //g2.setPaint(PIECE_PAINT.brighter());
-        //g2.draw(shapeCentered);
+        // g2.setPaint(PIECE_PAINT.brighter());
+        // g2.draw(shapeCentered);
         g2.dispose();
     }
     @Override public int getIconWidth() {

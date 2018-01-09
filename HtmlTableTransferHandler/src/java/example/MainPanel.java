@@ -68,9 +68,9 @@ class PropertyTable extends JTable {
     protected PropertyTable(TableModel model) {
         super(model);
     }
-    //public PropertyTable(Object[][] data, String[] columnNames) {
-    //    super(data, columnNames);
-    //}
+    // public PropertyTable(Object[][] data, String[] columnNames) {
+    //     super(data, columnNames);
+    // }
     private Class<?> getClassAt(int row, int column) {
         int mc = convertColumnIndexToModel(column);
         int mr = convertRowIndexToModel(row);
@@ -112,7 +112,7 @@ class PropertyTable extends JTable {
     }
 }
 //*
-//delegation pattern
+// delegation pattern
 class DateEditor extends AbstractCellEditor implements TableCellEditor {
     protected final JSpinner spinner;
     protected final JSpinner.DateEditor editor;
@@ -130,7 +130,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
                 setArrowButtonEnabled(false);
             }
             @Override public void focusGained(FocusEvent e) {
-                //System.out.println("getTextField");
+                // System.out.println("getTextField");
                 setArrowButtonEnabled(true);
                 EventQueue.invokeLater(() -> {
                     editor.getTextField().setCaretPosition(8);
@@ -155,7 +155,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public Object getCellEditorValue() {
         return spinner.getValue();
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean isCellEditable(EventObject e) {
 //         return true;
 //     }
@@ -173,15 +173,15 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //             editor.getTextField().setValue(getValue());
         }
         return super.stopCellEditing();
-        //fireEditingStopped();
-        //return true;
+        // fireEditingStopped();
+        // return true;
     }
 //     @Override public void cancelCellEditing() {
 //         fireEditingCanceled();
 //     }
 }
 /*/
-//inheritence to extend a class
+// inheritence to extend a class
 class DateEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
     private final JSpinner.DateEditor editor;
@@ -198,7 +198,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
                 setArrowButtonEnabled(false);
             }
             @Override public void focusGained(FocusEvent e) {
-                //System.out.println("getTextField");
+                // System.out.println("getTextField");
                 setArrowButtonEnabled(true);
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
@@ -226,9 +226,9 @@ class DateEditor extends JSpinner implements TableCellEditor {
         return getValue();
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
@@ -315,13 +315,13 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
     protected ColorEditor() {
         super();
-        //Set up the editor (from the table's point of view),
-        //which is a button.
-        //This button brings up the color chooser dialog,
-        //which is the editor from the user's point of view.
+        // Set up the editor (from the table's point of view),
+        // which is a button.
+        // This button brings up the color chooser dialog,
+        // which is the editor from the user's point of view.
         button.setActionCommand(EDIT);
         button.addActionListener(this);
-        //button.setBorderPainted(false);
+        // button.setBorderPainted(false);
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -329,7 +329,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-        //Set up the dialog that the button brings up.
+        // Set up the dialog that the button brings up.
         colorChooser = new JColorChooser();
         dialog = JColorChooser.createDialog(button, "Pick a Color", true, colorChooser, this, null);
     }
@@ -339,24 +339,24 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
      */
     @Override public void actionPerformed(ActionEvent e) {
         if (EDIT.equals(e.getActionCommand())) {
-            //The user has clicked the cell, so
-            //bring up the dialog.
+            // The user has clicked the cell, so
+            // bring up the dialog.
             button.setBackground(currentColor);
             button.setIcon(new ColorIcon(currentColor));
             colorChooser.setColor(currentColor);
             dialog.setVisible(true);
 
-            //Make the renderer reappear.
+            // Make the renderer reappear.
             fireEditingStopped();
-        } else { //User pressed dialog's "OK" button.
+        } else { // User pressed dialog's "OK" button.
             currentColor = colorChooser.getColor();
         }
     }
-    //Implement the one CellEditor method that AbstractCellEditor doesn't.
+    // Implement the one CellEditor method that AbstractCellEditor doesn't.
     @Override public Object getCellEditorValue() {
         return currentColor;
     }
-    //Implement the one method defined by TableCellEditor.
+    // Implement the one method defined by TableCellEditor.
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         currentColor = (Color) value;
         button.setIcon(new ColorIcon(currentColor));

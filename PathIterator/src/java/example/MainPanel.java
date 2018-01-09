@@ -13,16 +13,16 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final SpinnerNumberModel outer   = new SpinnerNumberModel(40, 10, 1000, 1);
-    private final SpinnerNumberModel inner   = new SpinnerNumberModel(30, 10, 1000, 1);
-    private final SpinnerNumberModel vcModel = new SpinnerNumberModel(20, 3,  100,  1);
-    private final JSpinner spinner1          = new JSpinner(outer);
-    private final JSpinner spinner2          = new JSpinner(inner);
-    private final JSpinner vcSpinner         = new JSpinner(vcModel);
-    private final JTextField styleField      = new JTextField("stroke:none; fill:pink");
-    private final JCheckBox check            = new JCheckBox("Antialias", true);
-    private final JLabel label               = new JLabel();
-    private final JTextArea textArea         = new ClipboardServiceTextArea();
+    private final SpinnerNumberModel outer = new SpinnerNumberModel(40, 10, 1000, 1);
+    private final SpinnerNumberModel inner = new SpinnerNumberModel(30, 10, 1000, 1);
+    private final SpinnerNumberModel vcModel = new SpinnerNumberModel(20, 3, 100, 1);
+    private final JSpinner spinner1 = new JSpinner(outer);
+    private final JSpinner spinner2 = new JSpinner(inner);
+    private final JSpinner vcSpinner = new JSpinner(vcModel);
+    private final JTextField styleField = new JTextField("stroke:none; fill:pink");
+    private final JCheckBox check = new JCheckBox("Antialias", true);
+    private final JLabel label = new JLabel();
+    private final JTextArea textArea = new ClipboardServiceTextArea();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
         JTabbedPane tab = new JTabbedPane();
         tab.add("Preview", makePreviewPanel());
-        tab.add("SVG",     makeSVGPanel());
+        tab.add("SVG", makeSVGPanel());
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(makePreferencesPanel(), BorderLayout.NORTH);
@@ -61,18 +61,18 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("Preferences"));
         GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx = 0;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.LINE_END;
         p.add(new JLabel("Addendum Circle Radius:"), c);
         p.add(new JLabel("Dedendum Circle Radius:"), c);
         p.add(new JLabel("Count of Teeth:"), c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        p.add(spinner1,  c);
-        p.add(spinner2,  c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p.add(spinner1, c);
+        p.add(spinner2, c);
         p.add(vcSpinner, c);
         return p;
     }
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
 //                 outfile = File.createTempFile("starburst", ".svg");
 //                 FileWriter w = new FileWriter(outfile);
 //                 w.writeData(textArea.getText());
-//                 //outfile.deleteOnExit();
+//                 // outfile.deleteOnExit();
 //             } catch (IOException ex) {
 //                 Toolkit.getDefaultToolkit().beep();
 //                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -187,24 +187,24 @@ final class StarburstSVGMaker {
         double[] c = new double[6];
         while (!pi.isDone()) {
             switch (pi.currentSegment(c)) {
-              case PathIterator.SEG_MOVETO:
-                sb.append(String.format("M%.2f,%.2f ", c[0], c[1]));
-                break;
-              case PathIterator.SEG_LINETO:
-                sb.append(String.format("L%.2f,%.2f ", c[0], c[1]));
-                break;
-              case PathIterator.SEG_QUADTO:
-                sb.append(String.format("Q%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3]));
-                break;
-              case PathIterator.SEG_CUBICTO:
-                sb.append(String.format("C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5]));
-                break;
-              case PathIterator.SEG_CLOSE:
-                sb.append('Z');
-                break;
-              default:
-                // Should never happen
-                throw new InternalError("unrecognized path type");
+                case PathIterator.SEG_MOVETO:
+                    sb.append(String.format("M%.2f,%.2f ", c[0], c[1]));
+                    break;
+                case PathIterator.SEG_LINETO:
+                    sb.append(String.format("L%.2f,%.2f ", c[0], c[1]));
+                    break;
+                case PathIterator.SEG_QUADTO:
+                    sb.append(String.format("Q%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3]));
+                    break;
+                case PathIterator.SEG_CUBICTO:
+                    sb.append(String.format("C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5]));
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    sb.append('Z');
+                    break;
+                default:
+                    // Should never happen
+                    throw new InternalError("unrecognized path type");
             }
             pi.next();
         }

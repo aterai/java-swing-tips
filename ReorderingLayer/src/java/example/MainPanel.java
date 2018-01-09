@@ -102,43 +102,43 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
         JComponent parent = l.getView();
         switch (e.getID()) {
-          case MouseEvent.MOUSE_PRESSED:
-            if (parent.getComponentCount() > 0) {
-                startPt.setLocation(e.getPoint());
+            case MouseEvent.MOUSE_PRESSED:
+                if (parent.getComponentCount() > 0) {
+                    startPt.setLocation(e.getPoint());
+                    l.repaint();
+                }
+                break;
+            case MouseEvent.MOUSE_RELEASED:
+                if (Objects.isNull(draggingComonent)) {
+                    return;
+                }
+                Point pt = e.getPoint();
+
+                Component cmp = draggingComonent;
+                draggingComonent = null;
+
+                // swap the dragging panel and the dummy filler
+                for (int i = 0; i < parent.getComponentCount(); i++) {
+                    Component c = parent.getComponent(i);
+                    if (Objects.equals(c, gap)) {
+                        replaceComponent(parent, gap, cmp, i);
+                        return;
+                    }
+                    int tgt = getTargetIndex(c.getBounds(), pt, i);
+                    if (tgt >= 0) {
+                        replaceComponent(parent, gap, cmp, tgt);
+                        return;
+                    }
+                }
+                if (parent.getParent().getBounds().contains(pt)) {
+                    replaceComponent(parent, gap, cmp, parent.getComponentCount());
+                } else {
+                    replaceComponent(parent, gap, cmp, index);
+                }
                 l.repaint();
-            }
-            break;
-          case MouseEvent.MOUSE_RELEASED:
-            if (Objects.isNull(draggingComonent)) {
-                return;
-            }
-            Point pt = e.getPoint();
-
-            Component cmp = draggingComonent;
-            draggingComonent = null;
-
-            //swap the dragging panel and the dummy filler
-            for (int i = 0; i < parent.getComponentCount(); i++) {
-                Component c = parent.getComponent(i);
-                if (Objects.equals(c, gap)) {
-                    replaceComponent(parent, gap, cmp, i);
-                    return;
-                }
-                int tgt = getTargetIndex(c.getBounds(), pt, i);
-                if (tgt >= 0) {
-                    replaceComponent(parent, gap, cmp, tgt);
-                    return;
-                }
-            }
-            if (parent.getParent().getBounds().contains(pt)) {
-                replaceComponent(parent, gap, cmp, parent.getComponentCount());
-            } else {
-                replaceComponent(parent, gap, cmp, index);
-            }
-            l.repaint();
-            break;
-          default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
@@ -148,14 +148,14 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
             JComponent parent = l.getView();
 
             if (Objects.isNull(draggingComonent)) {
-                //MotionThreshold
+                // MotionThreshold
                 if (startPt.distance(pt) > gestureMotionThreshold) {
                     startDragging(parent, pt);
                 }
                 return;
             }
 
-            //update the cursor window location
+            // update the cursor window location
             updateWindowLocation(pt, parent);
             l.repaint();
 
@@ -163,7 +163,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
                 return;
             }
 
-            //change the dummy filler location
+            // change the dummy filler location
             for (int i = 0; i < parent.getComponentCount(); i++) {
                 Component c = parent.getComponent(i);
                 Rectangle r = c.getBounds();
@@ -190,7 +190,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
         draggingComonent = c;
 
         Rectangle r = draggingComonent.getBounds();
-        draggingRect.setBounds(r); //save draggingComonent size
+        draggingRect.setBounds(r); // save draggingComonent size
         dragOffset.setLocation(pt.x - r.x, pt.y - r.y);
 
         gap = Box.createRigidArea(r.getSize());

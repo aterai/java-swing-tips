@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
     private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     private final Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"},
-        {true, 2, "DDD"}, {false,  5, "CCC"},
-        {true, 3, "EEE"}, {false,  6, "GGG"},
-        {true, 4, "FFF"}, {false,  7, "HHH"}
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -100,20 +100,20 @@ class HeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof Status) {
             switch ((Status) value) {
-              case SELECTED:
-                check.setSelected(true);
-                check.setEnabled(true);
-                break;
-              case DESELECTED:
-                check.setSelected(false);
-                check.setEnabled(true);
-                break;
-              case INDETERMINATE:
-                check.setSelected(true);
-                check.setEnabled(false);
-                break;
-              default:
-                throw new AssertionError("Unknown Status");
+                case SELECTED:
+                    check.setSelected(true);
+                    check.setEnabled(true);
+                    break;
+                case DESELECTED:
+                    check.setSelected(false);
+                    check.setEnabled(true);
+                    break;
+                case INDETERMINATE:
+                    check.setSelected(true);
+                    check.setEnabled(false);
+                    break;
+                default:
+                    throw new AssertionError("Unknown Status");
             }
         } else {
             check.setSelected(true);
@@ -125,12 +125,12 @@ class HeaderRenderer implements TableCellRenderer {
         JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         label.setIcon(new ComponentIcon(check));
         l.setIcon(new ComponentIcon(label));
-        l.setText(null); //XXX: Nimbus???
+        l.setText(null); // XXX: Nimbus???
 //         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
 //         System.out.println("getMaximunSize: " + l.getMaximumSize());
 //         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
+//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
 //             System.out.println(l.getPreferredSize().height);
 //             Rectangle rect = table.getTableHeader().getHeaderRect(column);
 //             l.setPreferredSize(new Dimension(0, rect.height));

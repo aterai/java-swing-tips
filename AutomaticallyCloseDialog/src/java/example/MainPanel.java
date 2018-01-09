@@ -21,18 +21,18 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> {
             int r = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(button), label, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
             switch (r) {
-              case JOptionPane.OK_OPTION:
-                textArea.append("OK\n");
-                break;
-              case JOptionPane.CANCEL_OPTION:
-                textArea.append("Cancel\n");
-                break;
-              case JOptionPane.CLOSED_OPTION:
-                textArea.append("Closed(automatically)\n");
-                break;
-              default:
-                textArea.append("----\n");
-                break;
+                case JOptionPane.OK_OPTION:
+                    textArea.append("OK\n");
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    textArea.append("Cancel\n");
+                    break;
+                case JOptionPane.CLOSED_OPTION:
+                    textArea.append("Closed(automatically)\n");
+                    break;
+                default:
+                    textArea.append("----\n");
+                    break;
             }
             textArea.append("\n");
         });

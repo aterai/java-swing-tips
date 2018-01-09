@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     protected void drawAllOval(Graphics g) {
-        //g.setColor(DRAW_COLOR);
+        // g.setColor(DRAW_COLOR);
         for (int i = 0; i < number; i++) {
             int px = (int) (MINX + factorx * i);
             int py = MAXY - (int) (factory * array.get(i));
@@ -106,17 +106,17 @@ public class MainPanel extends JPanel {
         GenerateInputs gi = (GenerateInputs) distributionsChoices.getSelectedItem();
         for (int i = 0; i < n; i++) {
             switch (gi) {
-              case Random:
-                array.add((double) Math.random());
-                break;
-              case Ascending:
-                array.add(i / (double) n);
-                break;
-              case Descending:
-                array.add(1d - i / (double) n);
-                break;
-              default:
-                throw new AssertionError("Unknown GenerateInputs");
+                case Random:
+                    array.add((double) Math.random());
+                    break;
+                case Ascending:
+                    array.add(i / (double) n);
+                    break;
+                case Descending:
+                    array.add(1d - i / (double) n);
+                    break;
+                default:
+                    throw new AssertionError("Unknown GenerateInputs");
             }
         }
     }
@@ -180,7 +180,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.setResizable(false);
         frame.pack();

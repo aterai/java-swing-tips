@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         });
         return p;
     }
-    private static AbstractButton makeButton(final JTree tree, final TreePath path, Color color) {
+    private static AbstractButton makeButton(JTree tree, TreePath path, Color color) {
         AbstractButton b = new JRadioButton(path.getLastPathComponent().toString()) {
             @Override public boolean contains(int x, int y) {
                 Icon i = getIcon();
@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
 
 // https://ateraimemo.com/Swing/ToggleButtonBar.html
 class ArrowToggleButtonBarCellIcon implements Icon {
-    public static final int TH = 10; //The height of a triangle
+    public static final int TH = 10; // The height of a triangle
     private static final int HEIGHT = TH * 2 + 1;
     private static final int WIDTH = 100;
     private Shape shape;
@@ -183,7 +183,7 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
         super.paint(g, c);
         Optional.ofNullable(shape).ifPresent(s -> {
             Graphics2D g2 = (Graphics2D) g.create();
-            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setPaint(Color.GRAY);
             g2.draw(shape);
             g2.dispose();
@@ -204,21 +204,21 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     private void update(MouseEvent e, JLayer<? extends V> l) {
         Shape s = null;
         switch (e.getID()) {
-          case MouseEvent.MOUSE_ENTERED:
-          case MouseEvent.MOUSE_MOVED:
-            Component c = e.getComponent();
-            if (c instanceof AbstractButton) {
-                AbstractButton b = (AbstractButton) c;
-                if (b.getIcon() instanceof ArrowToggleButtonBarCellIcon) {
-                    ArrowToggleButtonBarCellIcon icon = (ArrowToggleButtonBarCellIcon) b.getIcon();
-                    Rectangle r = c.getBounds();
-                    AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
-                    s = at.createTransformedShape(icon.getShape());
+            case MouseEvent.MOUSE_ENTERED:
+            case MouseEvent.MOUSE_MOVED:
+                Component c = e.getComponent();
+                if (c instanceof AbstractButton) {
+                    AbstractButton b = (AbstractButton) c;
+                    if (b.getIcon() instanceof ArrowToggleButtonBarCellIcon) {
+                        ArrowToggleButtonBarCellIcon icon = (ArrowToggleButtonBarCellIcon) b.getIcon();
+                        Rectangle r = c.getBounds();
+                        AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
+                        s = at.createTransformedShape(icon.getShape());
+                    }
                 }
-            }
-            break;
-          default:
-            break;
+                break;
+            default:
+                break;
         }
         if (!Objects.equals(s, shape)) {
             shape = s;

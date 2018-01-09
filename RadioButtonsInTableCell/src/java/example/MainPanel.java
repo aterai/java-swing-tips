@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-//http://www2.gol.com/users/tame/swing/examples/JTableExamples2.html
+// http://www2.gol.com/users/tame/swing/examples/JTableExamples2.html
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(model);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 //         if (System.getProperty("java.version").startsWith("1.6.0")) {
-//             //1.6.0_xx bug? column header click -> edit cancel?
+//             // 1.6.0_xx bug? column header click -> edit cancel?
 //             table.getTableHeader().addMouseListener(new MouseAdapter() {
 //                 @Override public void mousePressed(MouseEvent e) {
 //                     if (table.isEditing()) {
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
 //                 }
 //             }
 //         });
-        //RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
+        // RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
         table.getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
         table.getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
         add(new JScrollPane(table));
@@ -111,17 +111,17 @@ class RadioButtonsPanel extends JPanel {
             removeAll();
             initButtons();
             switch ((Answer) v) {
-              case A:
-                buttons[0].setSelected(true);
-                break;
-              case B:
-                buttons[1].setSelected(true);
-                break;
-              case C:
-                buttons[2].setSelected(true);
-                break;
-              default:
-                break;
+                case A:
+                    buttons[0].setSelected(true);
+                    break;
+                case B:
+                    buttons[1].setSelected(true);
+                    break;
+                case C:
+                    buttons[2].setSelected(true);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -156,9 +156,9 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         return Answer.valueOf(bg.getSelection().getActionCommand());
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
