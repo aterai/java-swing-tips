@@ -46,9 +46,9 @@ public final class MainPanel extends JPanel {
             if (Objects.isNull(expandedState)) {
                 return;
             }
-            Enumeration<TreePath> expandedState = getExpandedState();
-            while (expandedState.hasMoreElements()) {
-                tree.expandPath(expandedState.nextElement());
+            Enumeration<TreePath> expandedNodes = getExpandedState();
+            while (expandedNodes.hasMoreElements()) {
+                tree.expandPath(expandedNodes.nextElement());
             }
             setExpandedState(tree.getExpandedDescendants(rootPath));
         });
@@ -220,7 +220,7 @@ public final class MainPanel extends JPanel {
 //         if (selected) {
 //             c.setOpaque(false);
 //             c.setForeground(getTextSelectionColor());
-//             // c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
+//             // c.setBackground(Color.BLUE); // getBackgroundSelectionColor());
 //         } else {
 //             c.setOpaque(true);
 //             c.setForeground(getTextNonSelectionColor());

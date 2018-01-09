@@ -50,8 +50,8 @@ class SplitPaneWrapper extends JPanel {
         add(splitPane);
         EventQueue.invokeLater(() -> splitPane.setDividerLocation(.5));
     }
-    public void setTestFlag(boolean flag) {
-        this.flag = flag;
+    public void setTestFlag(boolean f) {
+        this.flag = f;
     }
     private static int getOrientedSize(JSplitPane sp) {
         return (sp.getOrientation() == JSplitPane.VERTICAL_SPLIT)

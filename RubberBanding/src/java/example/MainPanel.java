@@ -19,18 +19,17 @@ public final class MainPanel extends JPanel {
         // http://www.icongalore.com/
         // XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
-        model.addElement(new ListItem("test",       "wi0062-32.png"));
-        model.addElement(new ListItem("adfasdf",    "wi0063-32.png"));
-        model.addElement(new ListItem("Test",       "wi0064-32.png"));
-        model.addElement(new ListItem("12345",      "wi0096-32.png"));
-        model.addElement(new ListItem("111111",     "wi0054-32.png"));
-        model.addElement(new ListItem("22222",      "wi0062-32.png"));
-        model.addElement(new ListItem("3333",       "wi0063-32.png"));
+        model.addElement(new ListItem("test", "wi0062-32.png"));
+        model.addElement(new ListItem("adfasdf", "wi0063-32.png"));
+        model.addElement(new ListItem("Test", "wi0064-32.png"));
+        model.addElement(new ListItem("12345", "wi0096-32.png"));
+        model.addElement(new ListItem("111111", "wi0054-32.png"));
+        model.addElement(new ListItem("22222", "wi0062-32.png"));
+        model.addElement(new ListItem("3333", "wi0063-32.png"));
 
         add(new JScrollPane(new RubberBandSelectionList<>(model)));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -120,15 +119,15 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             JList l = (JList) e.getComponent();
             l.setFocusable(true);
             Point destPoint = e.getPoint();
-            Path2D rubberBand = getRubberBand();
-            rubberBand.reset();
-            rubberBand.moveTo(srcPoint.x,  srcPoint.y);
-            rubberBand.lineTo(destPoint.x, srcPoint.y);
-            rubberBand.lineTo(destPoint.x, destPoint.y);
-            rubberBand.lineTo(srcPoint.x,  destPoint.y);
-            rubberBand.closePath();
+            Path2D rb = getRubberBand();
+            rb.reset();
+            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.lineTo(destPoint.x, srcPoint.y);
+            rb.lineTo(destPoint.x, destPoint.y);
+            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.closePath();
             // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
+            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {

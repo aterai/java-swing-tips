@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -31,7 +32,7 @@ public class MainPanel extends JPanel {
         dialog.setLocationRelativeTo(null);
         dialog.setTitle("TEST: JDialog");
 
-        //TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
+        // TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
         icon = new TrayIcon(imglist[0], "TRAY", makeTrayPopupMenu());
         animator.addActionListener(e -> {
             icon.setImage(imglist[idx]);
@@ -68,9 +69,7 @@ public class MainPanel extends JPanel {
         item5.addActionListener(e -> {
             animator.stop();
             SystemTray tray = SystemTray.getSystemTray();
-            for (TrayIcon icon: tray.getTrayIcons()) {
-                tray.remove(icon);
-            }
+            Arrays.asList(tray.getTrayIcons()).forEach(tray::remove);
             for (Frame frame: Frame.getFrames()) {
                 frame.dispose();
             }
@@ -102,7 +101,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

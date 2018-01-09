@@ -116,11 +116,11 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
         int i = locationToIndex(p);
         DefaultListModel<E> m = (DefaultListModel<E>) getModel();
         E n = m.get(i);
-        ListCellRenderer<? super E> renderer = getCellRenderer();
-        Component c = renderer.getListCellRendererComponent(this, n, i, false, false);
-        Rectangle r = getCellBounds(i, i);
-        r.width = c.getPreferredSize().width;
-        return i < 0 || !r.contains(p);
+        // ListCellRenderer<? super E> r = getCellRenderer();
+        Component c = getCellRenderer().getListCellRendererComponent(this, n, i, false, false);
+        Rectangle rect = getCellBounds(i, i);
+        rect.width = c.getPreferredSize().width;
+        return i < 0 || !rect.contains(p);
     }
     @Override protected void processMouseEvent(MouseEvent e) {
         if (!pointOutsidePrefSize(e.getPoint())) {
@@ -205,7 +205,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
     }
 }
 //*
-//delegation pattern
+// delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final JCheckBox checkBox = new JCheckBox() {
         protected transient ActionListener handler;
@@ -236,7 +236,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         return e instanceof MouseEvent;
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {
 //         return true;
 //     }
@@ -249,7 +249,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     }
 }
 /*/
-//inheritence to extend a class
+// inheritence to extend a class
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     private transient ActionListener handler;
     @Override public void updateUI() {
@@ -278,9 +278,9 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         return e instanceof MouseEvent;
     }
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }

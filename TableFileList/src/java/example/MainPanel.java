@@ -358,16 +358,16 @@ class FileListTable extends JTable {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             Point destPoint = e.getPoint();
-            Path2D rubberBand = getRubberBand();
-            rubberBand.reset();
-            rubberBand.moveTo(srcPoint.x,  srcPoint.y);
-            rubberBand.lineTo(destPoint.x, srcPoint.y);
-            rubberBand.lineTo(destPoint.x, destPoint.y);
-            rubberBand.lineTo(srcPoint.x,  destPoint.y);
-            rubberBand.closePath();
+            Path2D rb = getRubberBand();
+            rb.reset();
+            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.lineTo(destPoint.x, srcPoint.y);
+            rb.lineTo(destPoint.x, destPoint.y);
+            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.closePath();
             clearSelection();
             int col = convertColumnIndexToView(0);
-            int[] indeces = IntStream.range(0, getModel().getRowCount()).filter(i -> rubberBand.intersects(getCellRect2(FileListTable.this, i, col))).toArray();
+            int[] indeces = IntStream.range(0, getModel().getRowCount()).filter(i -> rb.intersects(getCellRect2(FileListTable.this, i, col))).toArray();
             for (int i: indeces) {
                 addRowSelectionInterval(i, i);
                 changeSelection(i, col, true, true);

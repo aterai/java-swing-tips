@@ -126,15 +126,15 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
                 return;
             }
             Point destPoint = e.getPoint();
-            Path2D rubberBand = getRubberBand();
-            rubberBand.reset();
-            rubberBand.moveTo(srcPoint.x,  srcPoint.y);
-            rubberBand.lineTo(destPoint.x, srcPoint.y);
-            rubberBand.lineTo(destPoint.x, destPoint.y);
-            rubberBand.lineTo(srcPoint.x,  destPoint.y);
-            rubberBand.closePath();
+            Path2D rb = getRubberBand();
+            rb.reset();
+            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.lineTo(destPoint.x, srcPoint.y);
+            rb.lineTo(destPoint.x, destPoint.y);
+            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.closePath();
             // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
+            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
