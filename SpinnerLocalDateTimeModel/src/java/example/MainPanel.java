@@ -238,19 +238,19 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         @SuppressWarnings("PMD.CyclomaticComplexity")
         @Override public Object stringToValue(String text) throws ParseException {
             // System.out.println("stringToValue:" + text);
-            SpinnerLocalDateTimeModel model = getModel();
+            SpinnerLocalDateTimeModel m = getModel();
             try {
                 // LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
                 TemporalAccessor ta = dateTimeFormatter.parse(text);
-                ChronoLocalDateTime<?> value = model.getLocalDateTime();
+                ChronoLocalDateTime<?> value = m.getLocalDateTime();
                 // @see https://tips4java.wordpress.com/2015/04/09/temporal-spinners/
                 for (ChronoField field: ChronoField.values()) {
                     if (field.isSupportedBy(value) && ta.isSupported(field)) {
                         value = field.adjustInto(value, ta.getLong(field));
                     }
                 }
-                Comparable<ChronoLocalDateTime<?>> min = model.getStart();
-                Comparable<ChronoLocalDateTime<?>> max = model.getEnd();
+                Comparable<ChronoLocalDateTime<?>> min = m.getStart();
+                Comparable<ChronoLocalDateTime<?>> max = m.getEnd();
                 if (Objects.nonNull(min) && min.compareTo(value) > 0) {
                     throw new ParseException(text + " is out of range", 0);
                 } else if (Objects.nonNull(max) && max.compareTo(value) < 0) {

@@ -67,14 +67,7 @@ public class MainPanel extends JPanel {
         checkBox.setHorizontalAlignment(SwingConstants.CENTER);
         table.setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
 
-        DefaultTableCellRenderer l = new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-                return c;
-            }
-        };
-        table.setDefaultRenderer(Object.class, l);
+        table.setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
         table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
 
         JScrollPane scroll = new JScrollPane(table) {
@@ -164,6 +157,15 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
     }
 }
 
+class TranslucentObjectRenderer extends DefaultTableCellRenderer {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        // c.setOpaque(true);
+        c.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        return c;
+    }
+}
+
 class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
     private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
     @Override public void updateUI() {
@@ -222,5 +224,5 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
     @Override public void validate()   { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    // <---- Overridden for performance reasons.
 }

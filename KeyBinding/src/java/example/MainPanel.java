@@ -24,10 +24,10 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-    private final JComponent[] list = {
+    private final JComponent[] clist = {
         new JComboBox(),
         new JFormattedTextField(),
-        //new JFileChooser(),
+        // new JFileChooser(),
         new JInternalFrame(),
         new JLabel(),
         new JLayeredPane(),
@@ -54,10 +54,11 @@ public final class MainPanel extends JPanel {
         new JTextArea(),
         new JTextField()
     };
-    private final JComboBox<JComponent> componentChoices = new JComboBox<>(list);
+    private final JComboBox<JComponent> componentChoices = new JComboBox<>(clist);
     private final JButton button = new JButton("show");
-    private final List<Integer> focusType = Arrays.asList(
-        JComponent.WHEN_FOCUSED, JComponent.WHEN_IN_FOCUSED_WINDOW,
+    private final List<Integer> focusTypes = Arrays.asList(
+        JComponent.WHEN_FOCUSED,
+        JComponent.WHEN_IN_FOCUSED_WINDOW,
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     public MainPanel() {
@@ -81,7 +82,7 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> {
             model.setRowCount(0);
             JComponent c = componentChoices.getItemAt(componentChoices.getSelectedIndex());
-            for (Integer f: focusType) {
+            for (Integer f: focusTypes) {
                 loadBindingMap(f, c.getInputMap(f), c.getActionMap());
             }
         });
@@ -191,8 +192,8 @@ class BindingMapModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class columnClass;
         public final boolean isEditable;
         protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;

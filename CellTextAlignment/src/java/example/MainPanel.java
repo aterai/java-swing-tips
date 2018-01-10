@@ -8,7 +8,25 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-//     private final JTable table = new JTable(model) {
+    private final JRadioButton leftRadio = new JRadioButton("left", true);
+    private final JRadioButton centerRadio = new JRadioButton("center");
+    private final JRadioButton rightRadio = new JRadioButton("right");
+    private final JRadioButton customRadio = new JRadioButton("custom");
+
+    private MainPanel() {
+        super(new BorderLayout());
+
+        String[] columnNames = {"Integer", "String", "Boolean"};
+        Object[][] data = {
+            {12, "aaa", true}, {5, "bbb", false},
+            {92, "CCC", true}, {0, "DDD", false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+//     JTable table = new JTable(model) {
 //         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //             Component c = super.prepareRenderer(tcr, row, column);
 //             if (1 == convertColumnIndexToModel(column)) {
@@ -19,26 +37,7 @@ public final class MainPanel extends JPanel {
 //             return c;
 //         }
 //     };
-    private final JRadioButton leftRadio   = new JRadioButton("left", true);
-    private final JRadioButton centerRadio = new JRadioButton("center");
-    private final JRadioButton rightRadio  = new JRadioButton("right");
-    private final JRadioButton customRadio = new JRadioButton("custom");
-    private final String[] columnNames = {"Integer", "String", "Boolean"};
-    private final Object[][] data = {
-        {12, "aaa", true}, {5, "bbb", false},
-        {92, "CCC", true}, {0, "DDD", false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-    private final ButtonGroup bg = new ButtonGroup();
-
-    public MainPanel() {
-        super(new BorderLayout());
-
+        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
         TableColumn col = table.getColumnModel().getColumn(0);
@@ -52,6 +51,7 @@ public final class MainPanel extends JPanel {
         col = table.getColumnModel().getColumn(2);
         col.setHeaderRenderer(new HeaderRenderer());
 
+        ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
         for (JRadioButton r: Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
             bg.add(r);

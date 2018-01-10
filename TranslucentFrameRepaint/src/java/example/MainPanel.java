@@ -125,10 +125,10 @@ class TexturePanel extends JPanel {
     protected TexturePanel(LayoutManager lm) {
         super(lm);
     }
-    public void setTexturePaint(Paint texture) {
-        this.texture = texture;
+    public void setTexturePaint(Paint texturePaint) {
+        this.texture = texturePaint;
         // setOpaque(false);
-        setOpaque(Objects.isNull(texture));
+        setOpaque(Objects.isNull(texturePaint));
     }
     @Override protected void paintComponent(Graphics g) {
         if (Objects.nonNull(texture)) {

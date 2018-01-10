@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         model.addElement("3333333333333333333\n33333333333333333333\n33333333333333333");
         model.addElement("444");
 
-        JList<String> list = new JList<String>(model) {
+        add(new JScrollPane(new JList<String>(model) {
             private transient MouseInputListener cbml;
             @Override public void updateUI() {
                 removeMouseListener(cbml);
@@ -30,9 +30,7 @@ public final class MainPanel extends JPanel {
                 addMouseMotionListener(cbml);
                 setCellRenderer(new ButtonsRenderer<>(model));
             }
-        };
-
-        add(new JScrollPane(list));
+        }));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -67,7 +65,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         this.list = list;
     }
     @Override public void mouseMoved(MouseEvent e) {
-        //JList list = (JList) e.getComponent();
+        // JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (!list.getCellBounds(index, index).contains(pt)) {
@@ -106,7 +104,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         prevIndex = index;
     }
     @Override public void mousePressed(MouseEvent e) {
-        //JList list = (JList) e.getComponent();
+        // JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (index >= 0) {
@@ -120,7 +118,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        //JList list = (JList) e.getComponent();
+        // JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (index >= 0) {
@@ -144,7 +142,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         Component c = list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
-        //c.doLayout(); //may be needed for mone LayoutManager
+        // c.doLayout(); // may be needed for mone LayoutManager
         pt.translate(-r.x, -r.y);
 //         Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
 //         if (b instanceof JButton) {
@@ -163,7 +161,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected final JButton deleteButton = new JButton("delete");
     protected final JButton copyButton = new JButton("copy");
     protected final DefaultListModel<E> model;
-    protected int index;
+    protected int targetIndex;
     public int pressedIndex  = -1;
     public int rolloverIndex = -1;
     public JButton button;
@@ -180,10 +178,10 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         deleteButton.addActionListener(e -> {
             boolean isMoreThanOneItem = model.getSize() > 1;
             if (isMoreThanOneItem) {
-                model.remove(index);
+                model.remove(targetIndex);
             }
         });
-        copyButton.addActionListener(e -> model.add(index, model.get(index)));
+        copyButton.addActionListener(e -> model.add(targetIndex, model.get(targetIndex)));
 
         Box box = Box.createHorizontalBox();
         for (JButton b: Arrays.asList(deleteButton, copyButton)) {
@@ -201,7 +199,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         textArea.setText(Objects.toString(value, ""));
-        this.index = index;
+        this.targetIndex = index;
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             textArea.setForeground(list.getSelectionForeground());

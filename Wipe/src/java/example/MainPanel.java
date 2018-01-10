@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         animator.start();
     }
-    protected void setWipeMode(Wipe mode) {
-        this.mode = mode;
+    protected void setWipeMode(Wipe wmode) {
+        this.mode = wmode;
     }
     protected Wipe getWipeMode() {
         return mode;

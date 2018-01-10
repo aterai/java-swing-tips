@@ -149,9 +149,9 @@ class TreeTransferHandler extends TransferHandler {
         }
         return tgt;
     }
-    @Override protected void exportDone(JComponent source, Transferable data, int action) {
+    @Override protected void exportDone(JComponent src, Transferable data, int action) {
         if (action == TransferHandler.MOVE) {
-            JTree tree = (JTree) source;
+            JTree tree = (JTree) src;
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             for (TreePath path: tree.getSelectionPaths()) {
                 model.removeNodeFromParent((MutableTreeNode) path.getLastPathComponent());

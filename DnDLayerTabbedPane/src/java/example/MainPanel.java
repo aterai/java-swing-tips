@@ -446,8 +446,8 @@ class TabTransferHandler extends TransferHandler {
     };
     protected final JWindow dialog = new JWindow();
     protected DragImageMode mode = DragImageMode.Lightweight;
-    public void setDragImageMode(DragImageMode mode) {
-        this.mode = mode;
+    public void setDragImageMode(DragImageMode dmode) {
+        this.mode = dmode;
         setDragImage(null);
     }
     protected TabTransferHandler() {
@@ -585,12 +585,12 @@ class TabTransferHandler extends TransferHandler {
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
         try {
             DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(localObjectFlavor);
-            DnDTabbedPane source = data.tabbedPane;
+            DnDTabbedPane src = data.tabbedPane;
             int index = dl.getIndex(); // boolean insert = dl.isInsert();
-            if (target.equals(source)) {
-                source.convertTab(source.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
+            if (target.equals(src)) {
+                src.convertTab(src.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
             } else {
-                source.exportTab(source.dragTabIndex, target, index);
+                src.exportTab(src.dragTabIndex, target, index);
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {

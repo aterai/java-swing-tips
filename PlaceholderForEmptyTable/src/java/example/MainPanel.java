@@ -34,8 +34,8 @@ public final class MainPanel extends JPanel {
         });
 
         model.addTableModelListener(e -> {
-            DefaultTableModel model = (DefaultTableModel) e.getSource();
-            editor.setVisible(model.getRowCount() == 0);
+            DefaultTableModel m = (DefaultTableModel) e.getSource();
+            editor.setVisible(m.getRowCount() == 0);
         });
 
         table.setAutoCreateRowSorter(true);

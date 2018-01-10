@@ -73,9 +73,9 @@ class RippleBorder extends EmptyBorder {
             }
         });
     }
-    @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         if (!animator.isRunning()) {
-            super.paintBorder(comp, g, x, y, w, h);
+            super.paintBorder(c, g, x, y, w, h);
             return;
         }
         Graphics2D g2 = (Graphics2D) g.create();

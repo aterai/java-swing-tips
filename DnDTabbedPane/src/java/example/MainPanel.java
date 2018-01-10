@@ -461,8 +461,8 @@ class GhostGlassPane extends JComponent {
     public void setImage(BufferedImage draggingGhost) {
         this.draggingGhostOp = Optional.ofNullable(draggingGhost);
     }
-    public void setPoint(Point location) {
-        this.location.setLocation(location);
+    public void setPoint(Point pt) {
+        this.location.setLocation(pt);
     }
     @Override public void setVisible(boolean v) {
         super.setVisible(v);

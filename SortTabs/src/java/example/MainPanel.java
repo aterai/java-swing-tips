@@ -145,9 +145,9 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent e) {
-                    JTextField editor = getEditor();
-                    Optional.ofNullable(editor.getActionMap().get("rename-tab"))
-                        .filter(a -> !editor.getBounds().contains(e.getPoint()))
+                    JTextField tabEditor = getEditor();
+                    Optional.ofNullable(tabEditor.getActionMap().get("rename-tab"))
+                        .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
                         .ifPresent(a -> a.actionPerformed(null));
                 }
             });
