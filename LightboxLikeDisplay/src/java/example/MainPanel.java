@@ -168,14 +168,14 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
-    private boolean isRunning;
+    private boolean running;
     public void next() {
-        if (isRunning) {
+        if (running) {
             list.add(list.remove(0));
         }
     }
-    public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -186,7 +186,7 @@ class AnimeIcon implements Icon {
         g2.setPaint(ELLIPSE_COLOR);
         int size = list.size();
         for (int i = 0; i < size; i++) {
-            float alpha = isRunning ? (i + 1) / (float) size : .5f;
+            float alpha = running ? (i + 1) / (float) size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(list.get(i));
         }

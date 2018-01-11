@@ -13,11 +13,11 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea area     = new JTextArea();
+    private final JTextArea area = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
-    private final JButton runButton  = new JButton("run");
-    private final JButton canButton  = new JButton("cancel");
-    private final JProgressBar bar   = new JProgressBar();
+    private final JButton runButton = new JButton("run");
+    private final JButton canButton = new JButton("cancel");
+    private final JProgressBar bar = new JProgressBar();
     private final AnimatedLabel anil = new AnimatedLabel();
     private transient SwingWorker<String, String> worker;
 
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 
     private class UIUpdateTask extends BackgroundTask {
         @Override protected void process(List<String> chunks) {
-            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
                 return;
             }
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -135,7 +135,7 @@ class BackgroundTask extends SwingWorker<String, String> {
             return "Interrupted";
         }
         int current = 0;
-        int lengthOfTask = 120; //list.size();
+        int lengthOfTask = 120; // list.size();
         publish("Length Of Task: " + lengthOfTask);
         publish("\n------------------------------\n");
 
@@ -143,7 +143,7 @@ class BackgroundTask extends SwingWorker<String, String> {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
-                //return "Interrupted";
+                // return "Interrupted";
                 break;
             }
             setProgress(100 * current / lengthOfTask);
@@ -216,26 +216,26 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
-    private boolean isRunning;
+    private boolean running;
     public void next() {
-        if (isRunning) {
+        if (running) {
             list.add(list.remove(0));
         }
     }
-    public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        //g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        // g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
         g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
         g2.fillRect(0, 0, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
         float size = (float) list.size();
         list.stream().forEach(s -> {
-            float alpha = isRunning ? (list.indexOf(s) + 1) / size : .5f;
+            float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(s);
         });

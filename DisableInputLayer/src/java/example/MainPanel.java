@@ -59,21 +59,21 @@ public final class MainPanel extends JPanel {
 
 class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
     private static final String CMD_REPAINT = "repaint";
-    private boolean isRunning;
+    private boolean running;
     public void start() {
-        if (isRunning) {
+        if (running) {
             return;
         }
-        isRunning = true;
+        running = true;
         firePropertyChange(CMD_REPAINT, false, true);
     }
     public void stop() {
-        isRunning = false;
+        running = false;
         firePropertyChange(CMD_REPAINT, true, false);
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (!isRunning) {
+        if (!running) {
             return;
         }
         Graphics2D g2 = (Graphics2D) g.create();
@@ -99,7 +99,7 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
         super.uninstallUI(c);
     }
     @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
-        if (isRunning && e instanceof InputEvent) {
+        if (running && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }

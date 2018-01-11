@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         }
     };
     private final JLabel l2 = new JLabel("Gif Animated ToolTip") {
-        //private final Icon icon = new ImageIcon(url);
+        // private final Icon icon = new ImageIcon(url);
         @Override public JToolTip createToolTip() {
             JToolTip tip = new AnimatedToolTip(new JLabel("", new ImageIcon(url), SwingConstants.LEFT));
             tip.setComponent(this);
@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -104,7 +104,7 @@ class AnimatedToolTip extends JToolTip {
         firePropertyChange("tiptext", oldValue, tipText);
     }
     @Override public String getTipText() {
-        //return Objects.nonNull(iconlabel) ? iconlabel.getText() : "";
+        // return Objects.nonNull(iconlabel) ? iconlabel.getText() : "";
         return Optional.ofNullable(iconlabel).map(JLabel::getText).orElse("");
     }
 }
@@ -156,18 +156,18 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
-    private boolean isRunning;
+    private boolean running;
     public void next() {
-        if (isRunning) {
+        if (running) {
             list.add(list.remove(0));
         }
     }
-    public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
-        //g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        // g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
         g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -176,14 +176,14 @@ class AnimeIcon implements Icon {
 
         float size = (float) list.size();
         list.stream().forEach(s -> {
-            float alpha = isRunning ? (list.indexOf(s) + 1) / size : .5f;
+            float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(s);
         });
 
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
-//             float alpha = isRunning ? (i + 1) / (float) size : .5f;
+//             float alpha = running ? (i + 1) / (float) size : .5f;
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }

@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -64,7 +64,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private final MarqueeLabel label = new MarqueeLabel();
     private final Timer animator;
     protected final JList list;
-    private boolean isRunning;
+    private boolean running;
     private int animateIndex = -1;
 
     protected AnimeListCellRenderer(JList l) {
@@ -73,17 +73,17 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         animator = new Timer(80, e -> {
             int i = list.getSelectedIndex();
             if (i >= 0) {
-                isRunning = true;
+                running = true;
                 list.repaint(list.getCellBounds(i, i));
             } else {
-                isRunning = false;
+                running = false;
             }
         });
         setOpaque(true);
         add(icon, BorderLayout.WEST);
         add(label);
         list.addHierarchyListener(this);
-        //animator.start();
+        // animator.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
@@ -94,14 +94,14 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             }
         }
     }
-    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-        setBackground(isSelected ? SELECTEDCOLOR : list.getBackground());
+    @Override public Component getListCellRendererComponent(JList<? extends String> l, String value, int index, boolean isSelected, boolean cellHasFocus) {
+        setBackground(isSelected ? SELECTEDCOLOR : l.getBackground());
         label.setText(Objects.toString(value, ""));
         animateIndex = index;
         return this;
     }
     protected boolean isAnimatingCell() {
-        return isRunning && animateIndex == list.getSelectedIndex();
+        return running && animateIndex == list.getSelectedIndex();
     }
     private class MarqueeLabel extends JLabel {
         private float xx;
@@ -127,12 +127,12 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         }
     }
     private class AnimeIcon extends JComponent {
-        private static final double R  = 2d;
+        private static final double R = 2d;
         private static final double SX = 1d;
         private static final double SY = 1d;
-        private static final int WIDTH  = (int) (R * 8 + SX * 2);
+        private static final int WIDTH = (int) (R * 8 + SX * 2);
         private static final int HEIGHT = (int) (R * 8 + SY * 2);
-        private final List<Shape> list = new ArrayList<>(Arrays.asList(
+        private final List<Shape> flipbookFrames = new ArrayList<>(Arrays.asList(
             new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),
             new Ellipse2D.Double(SX + 5 * R, SY + 1 * R, 2 * R, 2 * R),
             new Ellipse2D.Double(SX + 6 * R, SY + 3 * R, 2 * R, 2 * R),
@@ -152,20 +152,20 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         }
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
-            //g2.setPaint(getBackground());
-            //g2.fillRect(0, 0, getWidth(), getHeight());
+            // g2.setPaint(getBackground());
+            // g2.fillRect(0, 0, getWidth(), getHeight());
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (isAnimatingCell()) {
                 float alpha = .1f;
-                for (Shape s: list) {
+                for (Shape s: flipbookFrames) {
                     g2.setPaint(new Color(.5f, .5f, .5f, alpha));
                     g2.fill(s);
                     alpha += .1f;
                 }
-                list.add(list.remove(0));
+                flipbookFrames.add(flipbookFrames.remove(0));
             } else {
                 g2.setPaint(new Color(.6f, .6f, .6f));
-                for (Shape s: list) {
+                for (Shape s: flipbookFrames) {
                     g2.fill(s);
                 }
             }

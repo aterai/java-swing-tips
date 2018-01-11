@@ -13,11 +13,11 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class MainPanel extends JPanel {
-    protected final JTextArea area     = new JTextArea();
-    protected final JProgressBar bar   = new JProgressBar();
+    protected final JTextArea area = new JTextArea();
+    protected final JProgressBar bar = new JProgressBar();
     protected final JPanel statusPanel = new JPanel(new BorderLayout());
-    protected final JButton runButton  = new JButton("run");
-    protected final JButton canButton  = new JButton("cancel");
+    protected final JButton runButton = new JButton("run");
+    protected final JButton canButton = new JButton("cancel");
     protected final AnimatedLabel anil = new AnimatedLabel();
     protected transient BackgroundTask worker;
 
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
         bar.setIndeterminate(true);
         worker = new BackgroundTask() {
             @Override protected void process(List<String> chunks) {
-                //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                 if (isCancelled()) {
                     return;
                 }
@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
                 chunks.forEach(s -> appendLine(s));
             }
             @Override public void done() {
-                //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+                // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
                 if (!isDisplayable()) {
                     cancel(true);
                     return;
@@ -117,10 +117,10 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        //frame.setResizable(false);
+        // frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -128,7 +128,7 @@ public class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<String, String> {
     @Override public String doInBackground() {
-        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
@@ -138,7 +138,7 @@ class BackgroundTask extends SwingWorker<String, String> {
             return "Interrupted";
         }
         int current = 0;
-        int lengthOfTask = 120; //list.size();
+        int lengthOfTask = 120; // list.size();
         publish("Length Of Task: " + lengthOfTask);
         publish("\n------------------------------\n");
         while (current < lengthOfTask && !isCancelled()) {
@@ -196,10 +196,10 @@ class AnimatedLabel extends JLabel {
     }
 }
 
-// //TEST: 1
+// // TEST: 1
 // class AnimeIcon implements Icon {
 //     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
-//     private static final double R  = 2d;
+//     private static final double R = 2d;
 //     private static final double SX = 1d;
 //     private static final double SY = 1d;
 //     private static final int WIDTH  = (int) (R * 8 + SX * 2);
@@ -214,14 +214,14 @@ class AnimatedLabel extends JLabel {
 //         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
 //         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 //
-//     private boolean isRunning;
+//     private boolean running;
 //     public void next() {
-//         if (isRunning) {
+//         if (running) {
 //             list.add(list.remove(0));
 //         }
 //     }
-//     public void setRunning(boolean isRunning) {
-//         this.isRunning = isRunning;
+//     public void setRunning(boolean running) {
+//         this.running = running;
 //     }
 //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //         Graphics2D g2 = (Graphics2D) g.create();
@@ -232,7 +232,7 @@ class AnimatedLabel extends JLabel {
 //         g2.translate(x, y);
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
-//             float alpha = isRunning ? (i + 1) / (float) size : .5f;
+//             float alpha = running ? (i + 1) / (float) size : .5f;
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }
@@ -246,12 +246,12 @@ class AnimatedLabel extends JLabel {
 //     }
 // }
 
-// //TEST: 2
+// // TEST: 2
 // class AnimeIcon implements Icon {
 //     private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
 //     private final List<Shape> list = new ArrayList<>();
 //     private final Dimension dim;
-//     private boolean isRunning;
+//     private boolean running;
 //     protected AnimeIcon() {
 //         super();
 //         int r = 4;
@@ -261,7 +261,7 @@ class AnimatedLabel extends JLabel {
 //             at.concatenate(AffineTransform.getTranslateInstance(r, r));
 //             list.add(at.createTransformedShape(s));
 //         }
-//         //int d = (int) (r * 2 * (1 + 2 * Math.sqrt(2)));
+//         // int d = (int) (r * 2 * (1 + 2 * Math.sqrt(2)));
 //         int d = (int) r * 2 * (1 + 3); // 2 * Math.sqrt(2) is nearly equal to 3.
 //         dim = new Dimension(d, d);
 //     }
@@ -282,28 +282,28 @@ class AnimatedLabel extends JLabel {
 //         g2.translate(xx, yy);
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
-//             float alpha = isRunning ? (i + 1) / (float) size : .5f;
+//             float alpha = running ? (i + 1) / (float) size : .5f;
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }
 //         g2.dispose();
 //     }
 //     public void next() {
-//         if (isRunning) {
+//         if (running) {
 //             list.add(list.remove(0));
 //         }
 //     }
-//     public void setRunning(boolean isRunning) {
-//         this.isRunning = isRunning;
+//     public void setRunning(boolean running) {
+//         this.running = running;
 //     }
 // }
 
-//TEST: 3
+// TEST: 3
 class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.9f, .7f, .7f);
     private final List<Shape> list = new ArrayList<>();
     private final Dimension dim;
-    private boolean isRunning;
+    private boolean running;
     private int rotate = 45;
     protected AnimeIcon() {
         super();
@@ -335,28 +335,28 @@ class AnimeIcon implements Icon {
         at.concatenate(AffineTransform.getTranslateInstance(xx, yy));
         int size = list.size();
         for (int i = 0; i < size; i++) {
-            float alpha = isRunning ? (i + 1) / (float) size : .5f;
+            float alpha = running ? (i + 1) / (float) size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(at.createTransformedShape(list.get(i)));
         }
         g2.dispose();
     }
     public void next() {
-        if (isRunning) {
-            rotate = (rotate + 45) % 360; //45 = 360 / 8
+        if (running) {
+            rotate = (rotate + 45) % 360; // 45 = 360 / 8
         }
     }
-    public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }
 
-// //TEST: 4
+// // TEST: 4
 // class AnimeIcon implements Icon {
 //     private static final int R = 4;
 //     private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
 //     private final Dimension dim;
-//     private boolean isRunning;
+//     private boolean running;
 //     private final List<Shape> list = new ArrayList<>();
 //     protected AnimeIcon() {
 //         super();
@@ -390,18 +390,18 @@ class AnimeIcon implements Icon {
 //         g2.setPaint(ELLIPSE_COLOR);
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
-//             float alpha = isRunning ? (i + 1) / (float) size : .5f;
+//             float alpha = running ? (i + 1) / (float) size : .5f;
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }
 //         g2.dispose();
 //     }
 //     public void next() {
-//         if (isRunning) {
+//         if (running) {
 //             list.add(list.remove(0));
 //         }
 //     }
-//     public void setRunning(boolean isRunning) {
-//         this.isRunning = isRunning;
+//     public void setRunning(boolean running) {
+//         this.running = running;
 //     }
 // }

@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -66,14 +66,14 @@ public final class MainPanel extends JPanel {
 
 class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
     private static final String CMD_REPAINT = "repaint";
-    private boolean isRunning;
+    private boolean running;
     public void setInputBlock(boolean block) {
-        firePropertyChange(CMD_REPAINT, isRunning, block);
-        isRunning = block;
+        firePropertyChange(CMD_REPAINT, running, block);
+        running = block;
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (!isRunning) {
+        if (!running) {
             return;
         }
         Graphics2D g2 = (Graphics2D) g.create();
@@ -99,7 +99,7 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
         super.uninstallUI(c);
     }
     @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
-        if (isRunning && e instanceof InputEvent) {
+        if (running && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }
