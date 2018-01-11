@@ -7,14 +7,12 @@ import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final JDesktopPane desktop = new JDesktopPane();
-    protected final JCheckBox check      = new JCheckBox("Icons should be relocated", true);
-    protected final JButton button       = new JButton("relocate");
-    protected final JButton addButton    = new JButton("add");
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+        JCheckBox check = new JCheckBox("Icons should be relocated", true);
+
+        JDesktopPane desktop = new JDesktopPane();
         desktop.setDesktopManager(new ReIconifyDesktopManager());
         desktop.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
@@ -24,7 +22,11 @@ public class MainPanel extends JPanel {
                 doReIconify((JDesktopPane) e.getComponent());
             }
         });
+
+        JButton button = new JButton("relocate");
         button.addActionListener(e -> doReIconify(desktop));
+
+        JButton addButton = new JButton("add");
         addButton.addActionListener(new ActionListener() {
             private int num;
             @Override public void actionPerformed(ActionEvent e) {
@@ -34,6 +36,7 @@ public class MainPanel extends JPanel {
                 num++;
             }
         });
+
         JToolBar toolbar = new JToolBar("toolbar");
         toolbar.setFloatable(false);
         toolbar.add(addButton);
@@ -42,40 +45,32 @@ public class MainPanel extends JPanel {
         toolbar.addSeparator();
         toolbar.add(check);
 
-        addIconifiedFrame(createFrame("Frame", 30, 10));
-        addIconifiedFrame(createFrame("Frame", 50, 30));
+        addIconifiedFrame(desktop, createFrame("Frame", 30, 10));
+        addIconifiedFrame(desktop, createFrame("Frame", 50, 30));
         add(desktop);
         add(toolbar, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected static class ReIconifyDesktopManager extends DefaultDesktopManager {
-        public void reIconifyFrame(JInternalFrame jif) {
-            deiconifyFrame(jif);
-            Rectangle r = getBoundsForIconOf(jif);
-            iconifyFrame(jif);
-            jif.getDesktopIcon().setBounds(r);
-        }
-    }
-    protected static void doReIconify(JDesktopPane desktopPane) {
-        DesktopManager dm = desktopPane.getDesktopManager();
+    public static void doReIconify(JDesktopPane desktop) {
+        DesktopManager dm = desktop.getDesktopManager();
         if (dm instanceof ReIconifyDesktopManager) {
             ReIconifyDesktopManager rdm = (ReIconifyDesktopManager) dm;
-            for (JInternalFrame f: desktopPane.getAllFrames()) {
+            for (JInternalFrame f: desktop.getAllFrames()) {
                 if (f.isIcon()) {
                     rdm.reIconifyFrame(f);
                 }
             }
         }
     }
-    protected static JInternalFrame createFrame(String t, int x, int y) {
-        //title, resizable, closable, maximizable, iconifiable
+    public static JInternalFrame createFrame(String t, int x, int y) {
+        // title, resizable, closable, maximizable, iconifiable
         JInternalFrame f = new JInternalFrame(t, false, true, true, true);
         f.setSize(200, 100);
         f.setLocation(x, y);
         f.setVisible(true);
         return f;
     }
-    protected final void addIconifiedFrame(JInternalFrame f) {
+    protected static void addIconifiedFrame(JDesktopPane desktop, JInternalFrame f) {
         desktop.add(f);
         try {
             f.setIcon(true);
@@ -104,5 +99,14 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ReIconifyDesktopManager extends DefaultDesktopManager {
+    public void reIconifyFrame(JInternalFrame f) {
+        deiconifyFrame(f);
+        Rectangle r = getBoundsForIconOf(f);
+        iconifyFrame(f);
+        f.getDesktopIcon().setBounds(r);
     }
 }

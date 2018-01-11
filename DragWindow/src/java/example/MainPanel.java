@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
-public class MainPanel {
+public final class MainPanel {
     public void start(JFrame frame) {
         ImageIcon img = new ImageIcon(MainPanel.class.getResource("splash.png"));
         JWindow splashScreen = createSplashScreen(frame, img);
@@ -18,13 +18,11 @@ public class MainPanel {
                 try {
                     // dummy long task
                     Thread.sleep(6000);
-                    EventQueue.invokeAndWait(new Runnable() {
-                        @Override public void run() {
-                            showFrame(frame);
-                            // hideSplash();
-                            splashScreen.setVisible(false);
-                            splashScreen.dispose();
-                        }
+                    EventQueue.invokeAndWait(() -> {
+                        showFrame(frame);
+                        // hideSplash();
+                        splashScreen.setVisible(false);
+                        splashScreen.dispose();
                     });
                 } catch (InterruptedException | InvocationTargetException ex) {
                     ex.printStackTrace();
@@ -32,7 +30,7 @@ public class MainPanel {
             }
         }).start();
     }
-    private static JPanel makeUI(JFrame frame) {
+    private static JPanel makeUI() {
         JLabel label = new JLabel("Draggable Label (@title@)");
         DragWindowListener dwl = new DragWindowListener();
         label.addMouseListener(dwl);
@@ -44,6 +42,8 @@ public class MainPanel {
 
         JButton button = new JButton("Exit");
         button.addActionListener(e -> {
+            JComponent c = (JComponent) e.getSource();
+            JFrame frame = (JFrame) c.getTopLevelAncestor();
             // frame.dispose();
             // System.exit(0);
             // frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -73,15 +73,15 @@ public class MainPanel {
         window.setLocationRelativeTo(null);
         return window;
     }
-    protected void showFrame(JFrame frame) {
-        frame.getContentPane().add(makeUI(frame));
+    public static void showFrame(JFrame frame) {
+        frame.getContentPane().add(makeUI());
         frame.setMinimumSize(new Dimension(100, 100));
         frame.setSize(320, 240);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-//     protected JMenuBar createMenuBar() {
+//     public static JMenuBar createMenuBar() {
 //         JMenuBar menuBar = new JMenuBar();
 //         JMenu menu = new JMenu("FFFFFF");
 //         menu.setMnemonic(KeyEvent.VK_F);

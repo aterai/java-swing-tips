@@ -7,12 +7,12 @@ import java.awt.event.*;
 import java.util.Date;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final Timer timer = new Timer(4000, e -> printInfo(new Date().toString()));
-    protected final JButton button = new JButton("JButton JButton");
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+        JButton button = new JButton("JButton JButton");
+
+        Timer timer = new Timer(4000, e -> printInfo(button, new Date().toString()));
 
         JCheckBox vcheck = new JCheckBox("setVisible", true);
         vcheck.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));
@@ -33,22 +33,22 @@ public class MainPanel extends JPanel {
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         button.addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                printInfo("SHOWING_CHANGED");
+                printInfo(button, "SHOWING_CHANGED");
             }
             if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-                printInfo("DISPLAYABILITY_CHANGED");
+                printInfo(button, "DISPLAYABILITY_CHANGED");
             }
         });
 
-        printInfo("after: new JButton, before: add(button); frame.setVisible(true)");
+        printInfo(button, "after: new JButton, before: add(button); frame.setVisible(true)");
 
         JPanel panel = new JPanel();
         panel.add(button);
         for (int i = 0; i < 5; i++) {
             panel.add(new JLabel("<html>asfasfdasdfasdfsa<br>asfdd134123fgh"));
         }
-        tab.addTab("Main",   new JScrollPane(panel));
-        tab.addTab("JTree",  new JScrollPane(new JTree()));
+        tab.addTab("Main", new JScrollPane(panel));
+        tab.addTab("JTree", new JScrollPane(new JTree()));
         tab.addTab("JLabel", new JLabel("Test"));
 
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -68,11 +68,11 @@ public class MainPanel extends JPanel {
         timer.start();
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void printInfo(String str) {
-        System.out.println("JButton: " + str);
-        System.out.println("  isDisplayable:" + button.isDisplayable());
-        System.out.println("  isShowing:" + button.isShowing());
-        System.out.println("  isVisible:" + button.isVisible());
+    public static void printInfo(Component c, String str) {
+        System.out.println(c.getClass().getName() + ": " + str);
+        System.out.println("  isDisplayable:" + c.isDisplayable());
+        System.out.println("  isShowing:" + c.isShowing());
+        System.out.println("  isVisible:" + c.isVisible());
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

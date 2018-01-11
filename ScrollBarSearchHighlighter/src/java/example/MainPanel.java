@@ -11,9 +11,10 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.text.*;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
-public class MainPanel extends JPanel {
-    protected static final String PATTERN = "Swing";
-    protected static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
+public final class MainPanel extends JPanel {
+    private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private static final String PATTERN = "Swing";
+    private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
         + "Lesson: Learning Swing by Example\n"
         + "This lesson explains the concepts you need to\n"
         + " use Swing components in building a user interface.\n"
@@ -27,31 +28,31 @@ public class MainPanel extends JPanel {
         + " so you can test yourself on what you've learned.\n"
         + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    protected final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    protected final JTextArea textArea = new JTextArea();
-    protected final JScrollPane scroll = new JScrollPane(textArea);
-    protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
-//     protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
-//         @Override public Dimension getPreferredSize() {
-//             Dimension d = super.getPreferredSize();
-//             d.width += 4; // getInsets().left;
-//             return d;
-//         }
-//     };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setText(INIT_TXT + INIT_TXT + INIT_TXT);
 
+        JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
+//         JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
+//             @Override public Dimension getPreferredSize() {
+//                 Dimension d = super.getPreferredSize();
+//                 d.width += 4; // getInsets().left;
+//                 return d;
+//             }
+//         };
         if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
         } else {
             scrollbar.setUI(new MetalHighlightScrollBarUI(textArea));
         }
-
         scrollbar.setUnitIncrement(10);
+
+        JScrollPane scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBar(scrollbar);
+
         JLabel label = new JLabel(new HighlightIcon(textArea, scrollbar));
         // label.setBorder(BorderFactory.createLineBorder(Color.RED));
         scroll.setRowHeaderView(label);
@@ -75,7 +76,10 @@ public class MainPanel extends JPanel {
         check.addActionListener(e -> textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected()));
 
         JButton highlight = new JButton("highlight");
-        highlight.addActionListener(e -> setHighlight(textArea, PATTERN));
+        highlight.addActionListener(e -> {
+            setHighlight(textArea, PATTERN);
+            repaint();
+        });
 
         JButton clear = new JButton("clear");
         clear.addActionListener(e -> {
@@ -94,7 +98,7 @@ public class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-    public void setHighlight(JTextComponent jtc, String pattern) {
+    public static void setHighlight(JTextComponent jtc, String pattern) {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
         Document doc = jtc.getDocument();
@@ -104,14 +108,13 @@ public class MainPanel extends JPanel {
             int pos = 0;
             while (matcher.find(pos)) {
                 int start = matcher.start();
-                int end   = matcher.end();
-                highlighter.addHighlight(start, end, highlightPainter);
+                int end = matcher.end();
+                highlighter.addHighlight(start, end, HIGHLIGHT_PAINTER);
                 pos = end;
             }
         } catch (BadLocationException | PatternSyntaxException ex) {
             ex.printStackTrace();
         }
-        repaint();
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -176,7 +179,7 @@ class HighlightIcon implements Icon {
             // JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
             // Rectangle thumbRect = vport.getBounds();
             thumbRect.height = range.getExtent();
-            thumbRect.y = range.getValue(); //vport.getViewPosition().y;
+            thumbRect.y = range.getValue(); // vport.getViewPosition().y;
             g2.setColor(THUMB_COLOR);
             Rectangle s = at.createTransformedShape(thumbRect).getBounds();
             g2.fillRect(0, itop + s.y, getIconWidth(), s.height);
