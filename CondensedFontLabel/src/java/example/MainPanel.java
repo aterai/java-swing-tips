@@ -12,29 +12,30 @@ import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "1234567890 ABCDEFG HIJKLMN OPQRSTU VWXYZ";
-    private final JTextArea textArea = new JTextArea(TEXT) {
-        @Override public void updateUI() {
-            super.updateUI();
-            setEditable(false);
-            setLineWrap(true);
-            setWrapStyleWord(true);
-            setOpaque(false);
-            setBackground(new Color(0x0, true));
-        }
-    };
-    private final JLabel lbl1 = new WrappedLabel(TEXT);
-    private final JLabel lbl2 = new WrappingLabel(TEXT);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(0, 1));
 
-        Border b = BorderFactory.createLineBorder(Color.GRAY,  5);
+        JTextArea textArea = new JTextArea(TEXT) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setEditable(false);
+                setLineWrap(true);
+                setWrapStyleWord(true);
+                setOpaque(false);
+                setBackground(new Color(0x0, true));
+            }
+        };
+        JLabel lbl1 = new WrappedLabel(TEXT);
+        JLabel lbl2 = new WrappingLabel(TEXT);
+
+        Border b = BorderFactory.createLineBorder(Color.GRAY, 5);
         textArea.setBorder(BorderFactory.createTitledBorder(b, "JTextArea(condensed: 0.9)"));
         lbl1.setBorder(BorderFactory.createTitledBorder(b, "GlyphVector(condensed: 0.9)"));
         lbl2.setBorder(BorderFactory.createTitledBorder(b, "LineBreakMeasurer(condensed: 0.9)"));
 
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18).deriveFont(AffineTransform.getScaleInstance(.9, 1d));
-//         //TEST:
+//         // TEST:
 //         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
 //         if (font.isTransformed()) {
 //             font = font.deriveFont(AffineTransform.getScaleInstance(.9, 1d));
@@ -70,7 +71,7 @@ public final class MainPanel extends JPanel {
 }
 
 class WrappingLabel extends JLabel {
-    //TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
+    // TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
     protected WrappingLabel(String text) {
         super(text);
     }
@@ -85,8 +86,8 @@ class WrappingLabel extends JLabel {
         int w = getWidth() - i.left - i.right;
 
         AttributedString as = new AttributedString(getText());
-        as.addAttribute(TextAttribute.FONT, getFont()); //TEST: .deriveFont(at));
-        //TEST: as.addAttribute(TextAttribute.TRANSFORM, at);
+        as.addAttribute(TextAttribute.FONT, getFont()); // TEST: .deriveFont(at));
+        // TEST: as.addAttribute(TextAttribute.TRANSFORM, at);
         AttributedCharacterIterator aci = as.getIterator();
         FontRenderContext frc = g2.getFontRenderContext();
         LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
@@ -103,7 +104,7 @@ class WrappingLabel extends JLabel {
 class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
     private int width = -1;
-    //TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
+    // TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
 
     protected WrappedLabel(String str) {
         super(str);
@@ -130,17 +131,17 @@ class WrappedLabel extends JLabel {
             super.paintComponent(g);
         }
     }
-    private GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
-        Point2D gmPos    = new Point2D.Float();
-        GlyphVector gv   = font.createGlyphVector(frc, str);
+    private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
+        Point2D gmPos = new Point2D.Float();
+        GlyphVector gv = font.createGlyphVector(frc, str);
         float lineheight = (float) gv.getLogicalBounds().getHeight();
-        float xpos       = 0f;
-        float advance    = 0f;
-        int   lineCount  = 0;
+        float xpos = 0f;
+        float advance = 0f;
+        int lineCount = 0;
         GlyphMetrics gm;
 
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
-            //TEST: gv.setGlyphTransform(i, at);
+            // TEST: gv.setGlyphTransform(i, at);
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
             if (xpos < width && width <= xpos + advance) {

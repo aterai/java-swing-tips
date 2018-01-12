@@ -11,18 +11,18 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも";
-    private final JLabel    lbl1 = new JLabel(TEXT);
-    private final JLabel    lbl2 = new WrappedLabel(TEXT);
-    private final JLabel    lbl3 = new WrappingLabel(TEXT);
+    private final JLabel lbl1 = new JLabel(TEXT);
+    private final JLabel lbl2 = new WrappedLabel(TEXT);
+    private final JLabel lbl3 = new WrappingLabel(TEXT);
     private final JTextArea lbl4 = new JTextArea(TEXT);
     public MainPanel() {
         super(new GridLayout(4, 1, 0, 0));
         lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));
-        lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN,  5), "GlyphVector"));
-        lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN,   5), "LineBreakMeasurer"));
+        lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 5), "GlyphVector"));
+        lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN, 5), "LineBreakMeasurer"));
         lbl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
 
-        //lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
+        // lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
         lbl4.setFont(lbl1.getFont());
         lbl4.setEditable(false);
         lbl4.setLineWrap(true);
@@ -116,13 +116,13 @@ class WrappedLabel extends JLabel {
             super.paintComponent(g);
         }
     }
-    private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {
-        Point2D gmPos    = new Point2D.Float();
-        GlyphVector gv   = font.createGlyphVector(frc, str);
+    private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
+        Point2D gmPos = new Point2D.Float();
+        GlyphVector gv = font.createGlyphVector(frc, str);
         float lineheight = (float) (gv.getLogicalBounds().getHeight());
-        float xpos       = 0f;
-        float advance    = 0f;
-        int   lineCount  = 0;
+        float xpos = 0f;
+        float advance = 0f;
+        int lineCount = 0;
         GlyphMetrics gm;
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
             gm = gv.getGlyphMetrics(i);
