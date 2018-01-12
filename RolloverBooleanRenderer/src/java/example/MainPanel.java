@@ -25,15 +25,15 @@ public final class MainPanel extends JPanel {
         @Override public void updateUI() {
             addMouseListener(highlighter);
             addMouseMotionListener(highlighter);
-            setDefaultRenderer(Object.class,  null);
-            setDefaultRenderer(Number.class,  null);
+            setDefaultRenderer(Object.class, null);
+            setDefaultRenderer(Number.class, null);
             setDefaultRenderer(Boolean.class, null);
             super.updateUI();
             highlighter = new HighlightListener();
             addMouseListener(highlighter);
             addMouseMotionListener(highlighter);
-            setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
-            setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
+            setDefaultRenderer(Object.class, new RolloverDefaultTableCellRenderer(highlighter));
+            setDefaultRenderer(Number.class, new RolloverNumberRenderer(highlighter));
             setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
         }
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
@@ -50,9 +50,7 @@ public final class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
 
-        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                       new JScrollPane(new JTable(model)),
-                                       new JScrollPane(table));
+        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTable(model)), new JScrollPane(table));
         sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
@@ -81,10 +79,10 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightListener extends MouseAdapter {
-    private int row = -1;
-    private int col = -1;
+    private int vrow = -1; // viewRowIndex
+    private int vcol = -1; // viewColumnIndex
     public boolean isHighlightableCell(int row, int column) {
-        return this.row == row && this.col == column;
+        return this.vrow == row && this.vcol == column;
     }
     private static Optional<JTable> getTable(MouseEvent e) {
         Component c = e.getComponent();
@@ -95,23 +93,23 @@ class HighlightListener extends MouseAdapter {
     }
     @Override public void mouseMoved(MouseEvent e) {
         getTable(e).ifPresent(table -> {
-            int prevRow = row;
-            int prevCol = col;
+            int prevRow = vrow;
+            int prevCol = vcol;
             Point pt = e.getPoint();
-            row = table.rowAtPoint(pt);
-            col = table.columnAtPoint(pt);
-            if (row < 0 || col < 0) {
-                row = -1;
-                col = -1;
+            vrow = table.rowAtPoint(pt);
+            vcol = table.columnAtPoint(pt);
+            if (vrow < 0 || vcol < 0) {
+                vrow = -1;
+                vcol = -1;
             }
             // >>>> HyperlinkCellRenderer.java
             // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-            if (row == prevRow && col == prevCol) {
+            if (vrow == prevRow && vcol == prevCol) {
                 return;
             }
             Rectangle repaintRect;
-            if (row >= 0 && col >= 0) {
-                Rectangle r = table.getCellRect(row, col, false);
+            if (vrow >= 0 && vcol >= 0) {
+                Rectangle r = table.getCellRect(vrow, vcol, false);
                 if (prevRow >= 0 && prevCol >= 0) {
                     repaintRect = r.union(table.getCellRect(prevRow, prevCol, false));
                 } else {
@@ -122,16 +120,16 @@ class HighlightListener extends MouseAdapter {
             }
             table.repaint(repaintRect);
             // <<<<
-            //table.repaint();
+            // table.repaint();
         });
     }
     @Override public void mouseExited(MouseEvent e) {
         getTable(e).ifPresent(table -> {
-            if (row >= 0 && col >= 0) {
-                table.repaint(table.getCellRect(row, col, false));
+            if (vrow >= 0 && vcol >= 0) {
+                table.repaint(table.getCellRect(vrow, vcol, false));
             }
-            row = -1;
-            col = -1;
+            vrow = -1;
+            vcol = -1;
         });
     }
 }
@@ -188,7 +186,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
         } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
-            // setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); //Nimbus
+            // setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); // Nimbus
         }
         setSelected(Objects.equals(value, Boolean.TRUE));
         return this;
@@ -214,9 +212,9 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void validate() { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
     // <---- Overridden for performance reasons.
 }

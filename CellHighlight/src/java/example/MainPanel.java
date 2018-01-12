@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
             removeMouseListener(highlighter);
             removeMouseMotionListener(highlighter);
             super.updateUI();
-            //setAutoCreateRowSorter(true);
+            // setAutoCreateRowSorter(true);
             setRowSelectionAllowed(false);
 
             highlighter = new HighlightListener();
@@ -57,12 +57,12 @@ public final class MainPanel extends JPanel {
 class HighlightListener extends MouseAdapter {
     private static final Color HIGHLIGHT1 = new Color(200, 200, 255);
     private static final Color HIGHLIGHT2 = new Color(240, 240, 255);
-    private int row = -1;
-    private int col = -1;
+    private int vrow = -1; // viewRowIndex
+    private int vcol = -1; // viewColumnIndex
 
     public Optional<? extends Color> getHighlightableCellColor(int row, int column) {
-        if (this.row == row || this.col == column) {
-            if (this.row == row && this.col == column) {
+        if (this.vrow == row || this.vcol == column) {
+            if (this.vrow == row && this.vcol == column) {
                 return Optional.of(HIGHLIGHT1);
             } else {
                 return Optional.of(HIGHLIGHT2);
@@ -75,11 +75,11 @@ class HighlightListener extends MouseAdapter {
         Component c = e.getComponent();
         if (c instanceof JTable) {
             JTable table = (JTable) c;
-            row = table.rowAtPoint(pt);
-            col = table.columnAtPoint(pt);
-            if (row < 0 || col < 0) {
-                row = -1;
-                col = -1;
+            vrow = table.rowAtPoint(pt);
+            vcol = table.columnAtPoint(pt);
+            if (vrow < 0 || vcol < 0) {
+                vrow = -1;
+                vcol = -1;
             }
             table.repaint();
         }
@@ -91,8 +91,8 @@ class HighlightListener extends MouseAdapter {
         setHighlighTableCell(e);
     }
     @Override public void mouseExited(MouseEvent e) {
-        row = -1;
-        col = -1;
+        vrow = -1;
+        vcol = -1;
         e.getComponent().repaint();
     }
 }

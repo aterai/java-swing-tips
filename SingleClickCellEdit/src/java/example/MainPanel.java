@@ -28,11 +28,11 @@ public final class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        //table.setFillsViewportHeight(true);
+        // table.setFillsViewportHeight(true);
         table.setIntercellSpacing(new Dimension());
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
@@ -89,38 +89,38 @@ public final class MainPanel extends JPanel {
 }
 
 class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-    private int row = -1;
-    private int col = -1;
+    private int vrow = -1; // viewRowIndex
+    private int vcol = -1; // viewColumnIndex
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         String str = Objects.toString(value, "");
-        if (!table.isEditing() && this.row == row && this.col == column) {
+        if (!table.isEditing() && this.vrow == row && this.vcol == column) {
             setText("<html><u>" + str);
         } else {
             setText(str);
         }
-        //setForeground(table.getForeground());
+        // setForeground(table.getForeground());
         return this;
     }
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
         Point pt = e.getPoint();
-        row = table.rowAtPoint(pt);
-        col = table.columnAtPoint(pt);
-        if (row < 0 || col < 0) {
-            row = -1;
-            col = -1;
+        vrow = table.rowAtPoint(pt);
+        vcol = table.columnAtPoint(pt);
+        if (vrow < 0 || vcol < 0) {
+            vrow = -1;
+            vcol = -1;
         }
         table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {
-        row = -1;
-        col = -1;
+        vrow = -1;
+        vcol = -1;
         e.getComponent().repaint();
     }
-    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
-    @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
-    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
-    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseDragged(MouseEvent e) { /* not needed */ }
+    @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e) { /* not needed */ }
     @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 }
