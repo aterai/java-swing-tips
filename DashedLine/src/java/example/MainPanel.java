@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Optional;
+import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -11,7 +11,11 @@ public class MainPanel extends JPanel {
     protected transient BasicStroke dashedStroke;
 
     protected float[] getDashArray() {
-        String[] slist = field.getText().split(",");
+        // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
+        String[] slist = Arrays.stream(field.getText().split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .toArray(String[]::new);
         if (slist.length == 0) {
             return new float[] {1f};
         }

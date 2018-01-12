@@ -69,16 +69,12 @@ public final class MainPanel extends JPanel {
             cs = Charset.forName(encoding);
         } else {
             String contentType = urlConnection.getContentType();
-            for (String value: contentType.split(";")) {
-                value = value.trim();
-                if (value.toLowerCase(Locale.ENGLISH).startsWith("charset=")) {
-                    encoding = value.substring("charset=".length());
-                }
-            }
-            System.out.println(encoding);
-            if (Objects.nonNull(encoding)) {
-                cs = Charset.forName(encoding);
-            }
+            Arrays.stream(contentType.split(";"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty() && s.toLowerCase(Locale.ENGLISH).startsWith("charset="))
+                .map(s -> s.substring("charset=".length()))
+                .findFirst()
+                .ifPresent(Charset::forName);
         }
         System.out.println(cs);
         return cs;
