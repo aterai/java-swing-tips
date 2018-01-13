@@ -28,11 +28,11 @@ public final class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        final JTable table = new JTable(model);
+        JTable table = new JTable(model);
         table.setRowHeight(36);
         table.setAutoCreateRowSorter(true);
-        //table.addMouseListener(new CellButtonsMouseListener());
-        //ButtonsEditorRenderer er = new ButtonsEditorRenderer(table);
+        // table.addMouseListener(new CellButtonsMouseListener());
+        // ButtonsEditorRenderer er = new ButtonsEditorRenderer(table);
         TableColumn column = table.getColumnModel().getColumn(1);
         column.setCellRenderer(new ButtonsRenderer());
         column.setCellEditor(new ButtonsEditor(table));
@@ -125,7 +125,7 @@ class EditAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
+        // Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
         int row = table.convertRowIndexToModel(table.getEditingRow());
         Object o = table.getModel().getValueAt(row, 0);
         JOptionPane.showMessageDialog(table, "Editing: " + o);
@@ -141,7 +141,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
             if (o instanceof TableCellEditor) {
                 actionPerformed(null);
             } else if (o instanceof JButton) {
-                //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
+                // DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
                 ButtonModel m = ((JButton) e.getComponent()).getModel();
                 if (m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());
@@ -165,17 +165,17 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         }
         addMouseListener(handler);
     }
-    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        this.setBackground(table.getSelectionBackground());
+    @Override public Component getTableCellEditorComponent(JTable tbl, Object value, boolean isSelected, int row, int column) {
+        this.setBackground(tbl.getSelectionBackground());
         return this;
     }
     @Override public Object getCellEditorValue() {
         return "";
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

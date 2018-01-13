@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComboBox<String> c0 = makeComboBox(true,  false);
+        JComboBox<String> c0 = makeComboBox(true, false);
         JComboBox<String> c1 = makeComboBox(false, false);
-        JComboBox<String> c2 = makeComboBox(true,  true);
+        JComboBox<String> c2 = makeComboBox(true, true);
         JComboBox<String> c3 = makeComboBox(false, true);
 
         JButton button = new JButton("add");
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(makeTitlePanel("setEditable(false)", Arrays.asList(c0, c1)));
-        p.add(makeTitlePanel("setEditable(true)",  Arrays.asList(c2, c3)));
+        p.add(makeTitlePanel("setEditable(true)", Arrays.asList(c2, c3)));
 
         add(p, BorderLayout.NORTH);
         add(button, BorderLayout.SOUTH);
@@ -194,7 +194,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         Container c = (Container) list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
-        //c.doLayout(); //may be needed for mone LayoutManager
+        // c.doLayout(); // may be needed for mone LayoutManager
         pt.translate(-r.x, -r.y);
         Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
         if (b instanceof JButton) {
@@ -208,8 +208,8 @@ class CellButtonsMouseListener extends MouseAdapter {
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     protected final RemoveButtonComboBox<E> comboBox;
-    protected JList list;
-    protected int index;
+    protected MutableComboBoxModel model;
+    protected int targetIndex;
     public int rolloverIndex = -1;
     private final JLabel label = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton("x") {
@@ -220,10 +220,9 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
         super(new BorderLayout());
         deleteButton.addActionListener(e -> {
-            MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-            boolean isMoreThanOneItem = m.getSize() > 1;
+            boolean isMoreThanOneItem = model.getSize() > 1;
             if (isMoreThanOneItem) {
-                m.removeElementAt(index);
+                model.removeElementAt(targetIndex);
                 comboBox.showPopup();
             }
         });
@@ -239,8 +238,8 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(Objects.toString(value, ""));
-        this.list = list;
-        this.index = index;
+        this.model = (MutableComboBoxModel) list.getModel();
+        this.targetIndex = index;
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             label.setForeground(list.getSelectionForeground());

@@ -8,44 +8,46 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree(makeModel()) {
-        protected final Color rolloverRowColor = new Color(220, 240, 255);
-        protected int rollOverRowIndex = -1;
-        protected transient MouseMotionListener listener;
-        @Override public void updateUI() {
-            removeMouseMotionListener(listener);
-            super.updateUI();
-            setCellRenderer(new DefaultTreeCellRenderer() {
-                @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                    JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                    if (row == rollOverRowIndex) {
-                        c.setOpaque(true);
-                        c.setBackground(rolloverRowColor);
-                        if (selected) {
-                            c.setForeground(getTextNonSelectionColor());
-                        }
-                    } else {
-                        c.setOpaque(false);
-                    }
-                    return c;
-                }
-            });
-            listener = new MouseAdapter() {
-                @Override public void mouseMoved(MouseEvent e) {
-                    int row = getRowForLocation(e.getX(), e.getY());
-                    if (row != rollOverRowIndex) {
-                        rollOverRowIndex = row;
-                        repaint();
-                    }
-                }
-            };
-            addMouseMotionListener(listener);
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(tree));
+        add(new JScrollPane(makeTree(makeModel())));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static JTree makeTree(TreeModel model) {
+        return new JTree(model) {
+            private final Color rolloverRowColor = new Color(220, 240, 255);
+            private int rollOverRowIndex = -1;
+            private transient MouseMotionListener listener;
+            @Override public void updateUI() {
+                removeMouseMotionListener(listener);
+                super.updateUI();
+                setCellRenderer(new DefaultTreeCellRenderer() {
+                    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+                        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+                        if (row == rollOverRowIndex) {
+                            c.setOpaque(true);
+                            c.setBackground(rolloverRowColor);
+                            if (selected) {
+                                c.setForeground(getTextNonSelectionColor());
+                            }
+                        } else {
+                            c.setOpaque(false);
+                        }
+                        return c;
+                    }
+                });
+                listener = new MouseAdapter() {
+                    @Override public void mouseMoved(MouseEvent e) {
+                        int row = getRowForLocation(e.getX(), e.getY());
+                        if (row != rollOverRowIndex) {
+                            rollOverRowIndex = row;
+                            repaint();
+                        }
+                    }
+                };
+                addMouseMotionListener(listener);
+            }
+        };
     }
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");

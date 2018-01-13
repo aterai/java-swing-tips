@@ -106,7 +106,7 @@ class MenuArrowIcon implements Icon {
 
 class MenuToggleButton extends JToggleButton {
     private static final Icon ARROW_ICON = new MenuArrowIcon();
-    protected JPopupMenu pop;
+    protected JPopupMenu popup;
 
     protected MenuToggleButton() {
         this("", null);
@@ -122,8 +122,8 @@ class MenuToggleButton extends JToggleButton {
         Action action = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent e) {
                 Component b = (Component) e.getSource();
-                if (Objects.nonNull(pop)) {
-                    pop.show(b, 0, b.getHeight());
+                if (Objects.nonNull(popup)) {
+                    popup.show(b, 0, b.getHeight());
                 }
             }
         };
@@ -133,7 +133,7 @@ class MenuToggleButton extends JToggleButton {
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
     public void setPopupMenu(JPopupMenu pop) {
-        this.pop = pop;
+        this.popup = pop;
         pop.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }

@@ -44,7 +44,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private final Rectangle rect = new Rectangle(320, 240);
     private final int[] pixels = new int[rect.width * rect.height];
     private final transient MemoryImageSource source = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
-    private int penc;
+    private int penColor;
 
     protected PaintPanel() {
         super();
@@ -80,14 +80,14 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
             if (!rect.contains(pt)) {
                 break;
             }
-            paintStamp(pixels, pt, penc);
+            paintStamp(pt, penColor);
             // source.newPixels(pt.x - 2, pt.y - 2, 4, 4);
             xStart += xIncrement;
             yStart += yIncrement;
         }
         startPoint = e.getPoint();
     }
-    private void paintStamp(int[] pixels, Point p, int penc) {
+    private void paintStamp(Point p, int penc) {
         // 1 x 1:
         // pixels[p.x + p.y * 320] = penc;
         // 3 x 3 square:
@@ -103,13 +103,13 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     @Override public void mousePressed(MouseEvent e) {
         startPoint = e.getPoint();
-        penc = e.getButton() == MouseEvent.BUTTON1 ? 0xFF000000 : 0x0;
+        penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF000000 : 0x0;
     }
-    @Override public void mouseMoved(MouseEvent e)    { /* not needed */ }
-    @Override public void mouseExited(MouseEvent e)   { /* not needed */ }
-    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseMoved(MouseEvent e) { /* not needed */ }
+    @Override public void mouseExited(MouseEvent e) { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
     @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
-    @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
 }
 
 final class TextureFactory {

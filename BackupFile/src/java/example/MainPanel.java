@@ -24,11 +24,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         jtp.setEditable(false);
         StyledDocument doc = jtp.getStyledDocument();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
         Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-        //Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
-        //StyleConstants.setForeground(error, Color.BLACK);
-        //Style error = doc.addStyle(ERROR, regular);
+        // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
+        // StyleConstants.setForeground(error, Color.BLACK);
+        // Style error = doc.addStyle(ERROR, regular);
         StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
         StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  def), Color.BLUE);
 
@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
 
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 
-        //Box nbox = Box.createHorizontalBox();
+        // Box nbox = Box.createHorizontalBox();
         JPanel nbox = new JPanel(new GridLayout(3, 2, 5, 5));
         nbox.add(new JLabel("削除しないバックアップの数:", SwingConstants.RIGHT));
         nbox.add(spinner1);
@@ -159,24 +159,24 @@ class Message {
 }
 
 class BackgroundTask extends SwingWorker<File, Message> {
-    private final File file;
+    private final File orgFile;
     private final int intold;
     private final int intnew;
     protected BackgroundTask(File file, int intold, int intnew) {
         super();
-        this.file = file;
+        this.orgFile = file;
         this.intold = intold;
         this.intnew = intnew;
     }
     @Override public File doInBackground() throws IOException {
-        if (!file.exists()) {
-            return file;
+        if (!orgFile.exists()) {
+            return orgFile;
         }
 
-        String newfilename = file.getAbsolutePath();
+        String newfilename = orgFile.getAbsolutePath();
 
-        if (intold == 0 && intnew == 0) { //= backup off
-            if (file.delete()) {
+        if (intold == 0 && intnew == 0) { // = backup off
+            if (orgFile.delete()) {
                 return new File(newfilename);
             } else {
                 publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
@@ -184,12 +184,12 @@ class BackgroundTask extends SwingWorker<File, Message> {
             }
         }
 
-        File tmpFile = renameAndBackup(file, newfilename);
+        File tmpFile = renameAndBackup(orgFile, newfilename);
         if (Objects.nonNull(tmpFile)) {
             return tmpFile;
         }
 
-        if (renameAndShiftBackup(file)) {
+        if (renameAndShiftBackup(orgFile)) {
             return new File(newfilename);
         } else {
             return null;

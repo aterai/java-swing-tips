@@ -14,26 +14,26 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    protected static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);
-    protected static final String PATTERN     = "Swing";
-    protected final List<Integer> highlighter = new ArrayList<>();
+    protected static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
+    protected static final String PATTERN = "Swing";
+    protected final List<Integer> emphasisIndices = new ArrayList<>();
 
     protected final DefaultTableModel model = new DefaultTableModel(0, 2);
-    protected final JTable table         = new JTable(model);
-    protected final JScrollPane scroll   = new JScrollPane(table);
-    protected final JLabel label         = new JLabel();
+    protected final JTable table = new JTable(model);
+    protected final JScrollPane scroll = new JScrollPane(table);
+    protected final JLabel label = new JLabel();
     protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 
     public MainPanel() {
         super(new BorderLayout());
         IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i % 19 == 0 || i % 17 == 0 ? PATTERN : "aaaaa", ""}));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (highlighter.contains(row)) {
+            @Override public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+                if (emphasisIndices.contains(row)) {
                     setBackground(Color.YELLOW);
                 } else {
-                    setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+                    setBackground(isSelected ? t.getSelectionBackground() : t.getBackground());
                 }
                 return this;
             }
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 
         JToggleButton button = new JToggleButton("highlight");
         button.addActionListener(e -> {
-            highlighter.clear();
+            emphasisIndices.clear();
             if (((JToggleButton) e.getSource()).isSelected()) {
                 updateHighlighter();
             }
@@ -85,7 +85,7 @@ public class MainPanel extends JPanel {
     protected final void updateHighlighter() {
         for (int i = 0; i < table.getRowCount(); i++) {
             if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
-                highlighter.add(i);
+                emphasisIndices.add(i);
             }
         }
     }
@@ -95,24 +95,24 @@ public class MainPanel extends JPanel {
             Rectangle vrect = vport.getBounds();
             Rectangle trect = table.getBounds();
             Rectangle crect = SwingUtilities.calculateInnerArea(label, label.getBounds());
-            //Insets insets   = ((JComponent) c).getInsets();
-            //Insets insets   = label.getInsets();
+            // Insets insets = ((JComponent) c).getInsets();
+            // Insets insets = label.getInsets();
 
-            //paint Background
+            // paint Background
             g.setColor(Color.WHITE);
             g.fillRect(crect.x, crect.y, crect.width, crect.height);
 
-            //double sy = (crect.height - insets.top - insets.bottom) / trect.getHeight();
+            // double sy = (crect.height - insets.top - insets.bottom) / trect.getHeight();
             double sy = crect.getHeight() / trect.getHeight();
             AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
-            //paint Highlight
+            // paint Highlight
             g.setColor(Color.YELLOW);
-            highlighter.forEach(viewIndex -> {
+            emphasisIndices.forEach(viewIndex -> {
                 Rectangle r = table.getCellRect(viewIndex, 0, true);
                 Rectangle s = at.createTransformedShape(r).getBounds();
                 g.fillRect(x, crect.y + s.y, getIconWidth(), Math.max(2, s.height - 2));
             });
-            //paint Thumb
+            // paint Thumb
             if (scrollbar.isVisible()) {
                 Rectangle thumbRect = new Rectangle(vrect);
                 thumbRect.y = vport.getViewPosition().y;
