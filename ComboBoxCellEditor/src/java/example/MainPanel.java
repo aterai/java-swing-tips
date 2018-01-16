@@ -40,12 +40,12 @@ public final class MainPanel extends JPanel {
                     Object userObject = node.getUserObject();
                     if (userObject instanceof PluginNode) {
                         PluginNode uo = (PluginNode) userObject;
-                        textArea.append(String.format("%s %s%n", uo, uo.plugins[uo.getSelectedPluginIndex()]));
+                        textArea.append(String.format("%s %s%n", uo, uo.plugins[uo.getSelectedIndex()]));
                     }
                 }
             }
-            @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
-            @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
+            @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+            @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
             @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
         });
         add(new JScrollPane(tree));
@@ -78,17 +78,17 @@ public final class MainPanel extends JPanel {
 class PluginNode {
     protected final String name;
     protected final String[] plugins;
-    private int pluginIndex;
+    private int selectedIndex;
 
     protected PluginNode(String name, String... plugins) {
         this.name = name;
         this.plugins = plugins;
     }
-    public int getSelectedPluginIndex() {
-        return pluginIndex;
+    public int getSelectedIndex() {
+        return selectedIndex;
     }
-    public void setSelectedPluginIndex(int pluginIndex) {
-        this.pluginIndex = pluginIndex;
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
     }
     @Override public String toString() {
         return name;
@@ -119,7 +119,7 @@ class PluginPanel extends JPanel {
                     for (String s: node.plugins) {
                         model.addElement(s);
                     }
-                    comboBox.setSelectedIndex(node.getSelectedPluginIndex());
+                    comboBox.setSelectedIndex(node.getSelectedIndex());
                 } else {
                     remove(comboBox);
                 }
@@ -157,11 +157,11 @@ class PluginCellEditor extends DefaultCellEditor {
     }
     @Override public Object getCellEditorValue() {
         Object o = super.getCellEditorValue();
-        return Optional.ofNullable(node).map(node -> {
+        return Optional.ofNullable(node).map(n -> {
             DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
-            PluginNode n = new PluginNode(panel.pluginName.getText(), node.plugins);
-            n.setSelectedPluginIndex(m.getIndexOf(o));
-            return (Object) n;
+            PluginNode pn = new PluginNode(panel.pluginName.getText(), n.plugins);
+            pn.setSelectedIndex(m.getIndexOf(o));
+            return (Object) pn;
         }).orElse(o);
     }
     @Override public boolean isCellEditable(EventObject e) {
@@ -175,8 +175,8 @@ class PluginCellEditor extends DefaultCellEditor {
         if (Objects.isNull(path)) {
             return false;
         }
-        Object node = path.getLastPathComponent();
-        if (!(node instanceof DefaultMutableTreeNode)) {
+        Object n = path.getLastPathComponent();
+        if (!(n instanceof DefaultMutableTreeNode)) {
             return false;
         }
         Rectangle r = tree.getPathBounds(path);

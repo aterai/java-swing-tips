@@ -58,7 +58,7 @@ class VerticalTitledBorder extends TitledBorder {
         super(title);
         this.label = new JLabel(title);
         this.label.setOpaque(true);
-        //this.label.putClientProperty(BasicHTML.propertyKey, null);
+        // this.label.putClientProperty(BasicHTML.propertyKey, null);
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
@@ -67,8 +67,8 @@ class VerticalTitledBorder extends TitledBorder {
             super.paintBorder(c, g, x, y, width, height);
         } else {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-            JLabel label = getLabel(c);
-            Dimension size = label.getPreferredSize();
+            JLabel lbl = getLabel(c);
+            Dimension size = lbl.getPreferredSize();
             Insets insets = makeComponentBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
             int borderX = x + edge;
@@ -77,7 +77,7 @@ class VerticalTitledBorder extends TitledBorder {
             int borderH = height - edge - edge;
 
             int labelH = size.height;
-            int labelW = height - insets.top - insets.bottom; //TEST: - (edge * 8);
+            int labelW = height - insets.top - insets.bottom; // TEST: - (edge * 8);
             if (labelW > size.width) {
                 labelW = size.width;
             }
@@ -92,9 +92,9 @@ class VerticalTitledBorder extends TitledBorder {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(0, (height + labelW) / 2);
             g2.rotate(Math.toRadians(-90));
-            //or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
-            label.setSize(labelW, labelH);
-            label.paint(g2);
+            // or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
+            lbl.setSize(labelW, labelH);
+            lbl.paint(g2);
             g2.dispose();
         }
     }
@@ -104,8 +104,8 @@ class VerticalTitledBorder extends TitledBorder {
         String title = getTitle();
         if (Objects.nonNull(title) && !title.isEmpty()) {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-            JLabel label = getLabel(c);
-            Dimension size = label.getPreferredSize();
+            JLabel lbl = getLabel(c);
+            Dimension size = lbl.getPreferredSize();
             if (ins.left < size.height) {
                 ins.left = size.height - edge;
             }
@@ -117,7 +117,7 @@ class VerticalTitledBorder extends TitledBorder {
         return ins;
     }
 
-    //Copied from TitledBorder
+    // Copied from TitledBorder
     private Color getColor(Component c) {
         Color color = getTitleColor();
         if (Objects.nonNull(color)) {
@@ -135,7 +135,7 @@ class VerticalTitledBorder extends TitledBorder {
         this.label.setForeground(getColor(c));
         this.label.setComponentOrientation(c.getComponentOrientation());
         this.label.setEnabled(c.isEnabled());
-        this.label.setBackground(c.getBackground()); //???
+        this.label.setBackground(c.getBackground()); // ???
         return this.label;
     }
     // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border border, Component c, Insets insets)

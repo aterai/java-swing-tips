@@ -40,7 +40,7 @@ import javax.swing.plaf.basic.BasicHTML;
  * @author David Kloba
  * @author Amy Fowler
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "HiddenField"})
 public class TitledBorder2 extends AbstractBorder {
     // @see javax/swing/border/TitledBorder.java
     protected String title;

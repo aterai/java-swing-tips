@@ -91,7 +91,7 @@ final class HtmlViewUtil {
                     Shape s = new Rectangle();
                     Position.Bias b = Position.Bias.Forward;
                     s = v.modelToView(e.getStartOffset(), b, e.getEndOffset(), b, s);
-                    //System.out.println("v.h: " + s.getBounds());
+                    // System.out.println("v.h: " + s.getBounds());
                     y = (int) (.5 + Math.abs(s.getBounds().height - iconRect.height) * .5);
                 } catch (BadLocationException ex) {
                     ex.printStackTrace();
@@ -126,8 +126,8 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //textRect.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // textRect.x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
             c, fm, b.getText(), getDefaultIcon(),
@@ -159,9 +159,9 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
             }
         }
     }
-    @Override protected void paintFocus(Graphics g, Rectangle textRect, Dimension size) {
-        if (textRect.width > 0 && textRect.height > 0) {
-            super.paintFocus(g, textRect, size);
+    @Override protected void paintFocus(Graphics g, Rectangle txtRect, Dimension sz) {
+        if (txtRect.width > 0 && txtRect.height > 0) {
+            super.paintFocus(g, txtRect, sz);
         }
     }
 }
@@ -190,8 +190,8 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //textRect.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // textRect.x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
             c, fm, b.getText(), getDefaultIcon(),
@@ -223,9 +223,9 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
             }
         }
     }
-    @Override protected void paintFocus(Graphics g, Rectangle textRect, Dimension size) {
-        if (textRect.width > 0 && textRect.height > 0) {
-            super.paintFocus(g, textRect, size);
+    @Override protected void paintFocus(Graphics g, Rectangle txtRect, Dimension sz) {
+        if (txtRect.width > 0 && txtRect.height > 0) {
+            super.paintFocus(g, txtRect, sz);
         }
     }
 }

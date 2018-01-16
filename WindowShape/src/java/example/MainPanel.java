@@ -9,19 +9,19 @@ import java.awt.geom.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
     private static final Font FONT = new Font(Font.SERIF, Font.PLAIN, 300);
-    protected final JTextField textField = new JTextField("\u2605", 20);
-    protected final JLabel label = new JLabel("", SwingConstants.CENTER);
-    protected transient JFrame frame;
-    protected final JToggleButton button = new JToggleButton("show");
+    private transient JFrame frame;
 
-    public MainPanel() {
+    private MainPanel() {
         super();
+        JTextField textField = new JTextField("\u2605", 20);
+        JLabel label = new JLabel("", SwingConstants.CENTER);
 
+        JToggleButton button = new JToggleButton("show");
         button.addActionListener(e -> {
-            AbstractButton button = (AbstractButton) e.getSource();
+            AbstractButton btn = (AbstractButton) e.getSource();
             if (Objects.isNull(frame)) {
                 frame = new JFrame();
                 frame.setUndecorated(true);
@@ -31,9 +31,9 @@ public class MainPanel extends JPanel {
                 frame.getContentPane().setBackground(Color.GREEN);
                 frame.pack();
             }
-            if (button.isSelected()) {
+            if (btn.isSelected()) {
                 String str = textField.getText().trim();
-                //label.setText(str);
+                // label.setText(str);
                 TextLayout tl = new TextLayout(str, FONT, FRC);
                 Rectangle2D b = tl.getBounds();
                 Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(), -b.getY()));
@@ -51,10 +51,10 @@ public class MainPanel extends JPanel {
 //                 shape = at.createTransformedShape(p);
 
                 frame.setBounds(shape.getBounds());
-                //frame.setSize(shape.getBounds().width, shape.getBounds().height);
-                //AWTUtilities.setWindowShape(frame, shape); //JDK 1.6.0
-                frame.setShape(shape); //JDK 1.7.0
-                frame.setLocationRelativeTo(button.getTopLevelAncestor());
+                // frame.setSize(shape.getBounds().width, shape.getBounds().height);
+                // AWTUtilities.setWindowShape(frame, shape); // JDK 1.6.0
+                frame.setShape(shape); // JDK 1.7.0
+                frame.setLocationRelativeTo(btn.getTopLevelAncestor());
                 frame.setVisible(true);
             } else {
                 frame.setVisible(false);
