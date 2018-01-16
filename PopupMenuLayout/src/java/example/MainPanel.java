@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JTextArea textArea = new JTextArea("\u2605 \u2606 \u293E \u293F \u2940 \u2941 \u21D0 \u21D2 \u21E6 \u21E8 \u21BA \u21BB \u21B6 \u21B7");
+        JTextArea textArea = new JTextArea("★ ☆ ⤾ ⤿ ⥀ ⥁ ⇐ ⇒ ⇦ ⇨ ↺ ↻ ↶ ↷");
         JPopupMenu popup = makePopup();
         textArea.setComponentPopupMenu(popup);
         add(new JScrollPane(textArea));
@@ -27,10 +27,10 @@ public final class MainPanel extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
 
         c.gridy = 0;
-        popup.add(makeButton("\u21E6"), c);
-        popup.add(makeButton("\u21E8"), c);
-        popup.add(makeButton("\u21BB"), c);
-        popup.add(makeButton("\u2729"), c);
+        popup.add(makeButton("⇦"), c);
+        popup.add(makeButton("⇨"), c);
+        popup.add(makeButton("↻"), c);
+        popup.add(makeButton("✩"), c);
 
         c.insets = new Insets(2, 0, 2, 0);
         c.gridwidth = 4;
@@ -58,13 +58,13 @@ public final class MainPanel extends JPanel {
                 super.paintComponent(g);
                 Dimension cd = getSize();
                 Dimension pd = getPreferredSize();
-                int offx = (int) (.5 + .5 * (cd.width  - pd.width));
+                int offx = (int) (.5 + .5 * (cd.width - pd.width));
                 int offy = (int) (.5 + .5 * (cd.height - pd.height));
                 icon.paintIcon(this, g, offx, offy);
             }
         };
         b.setOpaque(true);
-        if ("\u21E8".equals(symbol)) { //Test
+        if ("\u21E8".equals(symbol)) { // Test
             b.setEnabled(false);
             b.setToolTipText("forward");
         }

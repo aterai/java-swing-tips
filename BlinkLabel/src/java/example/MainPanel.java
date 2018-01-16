@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final String BLACK_CIRCLE = "\u25CF";
-    private static final String WHITE_CIRCLE = "\u25CB";
+    private static final String BLACK_CIRCLE = "●"; // "\u25CF";
+    private static final String WHITE_CIRCLE = "○"; // "\u25CB";
 
     private MainPanel() {
         super(new BorderLayout());
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-        p.add(makeTitledPanel("\u25CB<->\u25CF", label1));
+        p.add(makeTitledPanel("○<->●", label1));
         p.add(makeTitledPanel("!!!Warning!!!<->Empty", label2));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

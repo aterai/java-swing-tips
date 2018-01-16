@@ -10,19 +10,18 @@ import java.nio.file.Files;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    protected final JTextArea textArea = new JTextArea();
-
-    protected final String[] columnNames = {"A", "B"};
-    protected final Object[][] data = {
-        {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
-    };
-    protected DefaultTableModel model = new DefaultTableModel(data, columnNames);
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
-
+        String[] columnNames = {"A", "B"};
+        Object[][] data = {
+            {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
         JTable table = new JTable(model);
+
+        JTextArea textArea = new JTextArea();
+
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);
         sp.setTopComponent(new JScrollPane(table));
@@ -40,7 +39,8 @@ public class MainPanel extends JPanel {
 //                             // XXX: ex.printStackTrace();
 //                         }
 //                     });
-                    xe.writeObject(model);
+                    DefaultTableModel m = (DefaultTableModel) table.getModel();
+                    xe.writeObject(m);
                     // xe.flush();
                     // xe.close();
                 }
@@ -60,16 +60,13 @@ public class MainPanel extends JPanel {
                 return;
             }
             try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
-                model = (DefaultTableModel) xd.readObject();
-                table.setModel(model);
+                DefaultTableModel m = (DefaultTableModel) xd.readObject();
+                table.setModel(m);
             }
         });
 
         JButton clearButton = new JButton("clear");
-        clearButton.addActionListener(e -> {
-            model = new DefaultTableModel();
-            table.setModel(model);
-        });
+        clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
 
         JPanel p = new JPanel();
         p.add(encButton);

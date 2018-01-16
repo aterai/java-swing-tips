@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //String faceMark = "\uD83D\uDE10";
+        // String faceMark = "\uD83D\uDE10";
         String faceMark = ":)";
 
         JTextPane textPane = new JTextPane();
@@ -46,21 +46,23 @@ public final class MainPanel extends JPanel {
                             Style face = doc.getStyle(faceMark);
                             doc.setCharacterAttributes(start + pos, faceMark.length(), face, false);
                             pos = text.indexOf(faceMark, pos + faceMark.length());
-                            //textPane.getInputAttributes().removeAttributes(face);
+                            // textPane.getInputAttributes().removeAttributes(face);
                         }
                     } catch (BadLocationException ex) {
                         ex.printStackTrace();
                     }
-                    //MutableAttributeSet inputAttributes = textPane.getInputAttributes();
-                    //inputAttributes.removeAttributes(inputAttributes);
+                    // MutableAttributeSet inputAttributes = textPane.getInputAttributes();
+                    // inputAttributes.removeAttributes(inputAttributes);
                 });
             }
         });
         Style face = doc.addStyle(faceMark, doc.getStyle(StyleContext.DEFAULT_STYLE));
         StyleConstants.setIcon(face, new FaceIcon());
-        //StyleConstants.setForeground(face, Color.RED);
+        // StyleConstants.setForeground(face, Color.RED);
 
-        textPane.setText("aaaa \uD83D\uDE10 aaaaaa :) asdfa :-) aaaa\n");
+        // textPane.setText("aaaa \uD83D\uDE10 aaaaaa :) asdfa :-) aaaa\n");
+        textPane.setText("aaaa 😐 aaaaaa :) asdfa :-) aaaa\n");
+
         add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }

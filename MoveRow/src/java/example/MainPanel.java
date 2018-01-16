@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         header.addMouseListener(new HeaderMouseListener());
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        //header.setReorderingAllowed(false);
+        // header.setReorderingAllowed(false);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(80);
@@ -43,8 +43,8 @@ public final class MainPanel extends JPanel {
     private JToolBar makeToolBar() {
         JToolBar tb = new JToolBar("Sort by my order");
         tb.setFloatable(true);
-        tb.add(makeToolButton(new UpAction("\u25B2", table)));
-        tb.add(makeToolButton(new DownAction("\u25BC", table)));
+        tb.add(makeToolButton(new UpAction("▲", table)));
+        tb.add(makeToolButton(new DownAction("▼", table)));
         tb.add(Box.createHorizontalGlue());
         tb.add(makeToolButton(new InitAction("OK", table)));
         return tb;
@@ -91,8 +91,8 @@ class TablePopupMenu extends JPopupMenu {
 
         createAction = new RowDataCreateAction("add", table);
         deleteAction = new DeleteAction("delete", table);
-        upAction     = new UpAction("up", table);
-        downAction   = new DownAction("down", table);
+        upAction = new UpAction("up", table);
+        downAction = new DownAction("down", table);
 
         add(createAction);
         addSeparator();
@@ -102,9 +102,9 @@ class TablePopupMenu extends JPopupMenu {
         add(downAction);
     }
     @Override public void show(Component c, int x, int y) {
-        int row   = table.rowAtPoint(new Point(x, y));
+        int row = table.rowAtPoint(new Point(x, y));
         int count = table.getSelectedRowCount();
-//         int[] l   = table.getSelectedRows();
+//         int[] l = table.getSelectedRows();
 //         boolean flg = true;
 //         for (int i = 0; i < l.length; i++) {
 //             if (l[i] == row) {
@@ -159,7 +159,7 @@ class DeleteAction extends AbstractAction {
         int[] selection = table.getSelectedRows();
         RowDataModel model = (RowDataModel) table.getModel();
         for (int i = selection.length - 1; i >= 0; i--) {
-            //RowData ixsc = model.getRowData(selection[i]);
+            // RowData ixsc = model.getRowData(selection[i]);
             model.removeRow(selection[i]);
         }
     }
@@ -247,9 +247,9 @@ class InitAction extends AbstractAction {
         RowDataModel nmodel = new RowDataModel();
         Vector<?> dv = model.getDataVector();
         for (int i = 0; i < row; i++) {
-            //RowData test = model.getRowData(i);
+            // RowData test = model.getRowData(i);
             Vector<?> v = (Vector<?>) dv.get(i);
-            //new RowData((String) v.get(1), (String) v.get(2));
+            // new RowData((String) v.get(1), (String) v.get(2));
             nmodel.addRowData(new RowData((String) v.get(1), (String) v.get(2)));
         }
         JTableHeader h = table.getTableHeader();
@@ -267,8 +267,8 @@ class InitAction extends AbstractAction {
 
 class RowDataModel extends SortableTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
     private int number;
@@ -290,8 +290,8 @@ class RowDataModel extends SortableTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class columnClass;
         public final boolean isEditable;
         protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;

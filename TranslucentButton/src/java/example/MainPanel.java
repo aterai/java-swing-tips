@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super();
-        //Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
+        // Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
         URL url = getClass().getResource("RECYCLE BIN - EMPTY_16x16-32.png");
         Icon icon = new ImageIcon(url);
 
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         p.add(b);
         add(p);
 
-        add(makeButton("\u260f text"));
+        add(makeButton("☏ text"));
 
         b = new TranslucentButton("TranslucentButton", icon);
         add(b);
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 
         BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
         setBorder(new CentredBackgroundBorder(bi));
-        //setBackground(new Color(50, 50, 50));
+        // setBackground(new Color(50, 50, 50));
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -203,17 +203,17 @@ class TranslucentButtonIcon implements Icon {
     protected TranslucentButtonIcon(JComponent c) {
         Insets i = c.getBorder().getBorderInsets(c);
         Dimension d = c.getPreferredSize();
-        width  = d.width - i.left - i.right;
+        width = d.width - i.left - i.right;
         height = d.height - i.top - i.bottom;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
-            //XXX: Insets i = b.getMargin();
+            // XXX: Insets i = b.getMargin();
             Insets i = b.getBorder().getBorderInsets(b);
             int w = c.getWidth();
             int h = c.getHeight();
-            width  = w - i.left - i.right;
+            width = w - i.left - i.right;
             height = h - i.top - i.bottom;
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -251,7 +251,7 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = (width  - image.getWidth())  / 2;
+        int cx = (width  - image.getWidth()) / 2;
         int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);

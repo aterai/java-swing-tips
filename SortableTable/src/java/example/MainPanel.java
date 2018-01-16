@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         header.addMouseListener(new HeaderMouseListener());
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        //header.setReorderingAllowed(false);
+        // header.setReorderingAllowed(false);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(80);
@@ -116,8 +116,8 @@ class TablePopupMenu extends JPopupMenu {
 
 class RowDataModel extends SortableTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
     private int number;
@@ -139,8 +139,8 @@ class RowDataModel extends SortableTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class columnClass;
         public final boolean isEditable;
         protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;

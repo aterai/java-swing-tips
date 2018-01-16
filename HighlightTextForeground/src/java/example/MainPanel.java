@@ -28,12 +28,12 @@ public class MainPanel extends JPanel {
         + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
-    private final transient Highlighter.HighlightPainter currentPainter   = new DefaultHighlighter.DefaultHighlightPainter(new Color(0xAA006400, true));
+    private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0xAA006400, true));
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0x64DDDD00, true));
     private final JTextPane textPane = new JTextPane();
     private final JTextField field = new JTextField("Swing");
-    private final JButton prevButton = new JButton("\u22C0");
-    private final JButton nextButton = new JButton("\u22C1");
+    private final JButton prevButton = new JButton("⋀");
+    private final JButton nextButton = new JButton("⋁");
     private final JCheckBox checkCase = new JCheckBox("Match case");
     private final JCheckBox checkWord = new JCheckBox("Match whole word only");
     private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
@@ -49,8 +49,8 @@ public class MainPanel extends JPanel {
         nextButton.setActionCommand("next");
 
         StyledDocument doc = textPane.getStyledDocument();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        //Style regular = doc.addStyle("regular", def);
+        // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        // Style regular = doc.addStyle("regular", def);
         Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
         Style htf = doc.addStyle("highlight-text-foreground", def);
         StyleConstants.setForeground(htf, new Color(0xFFDDFF));
@@ -86,8 +86,8 @@ public class MainPanel extends JPanel {
         Rectangle rect = tc.modelToView(pos);
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
         if (Objects.nonNull(rect) && c instanceof JViewport) {
-            rect.x      = (int) (rect.x - c.getWidth() * .5);
-            rect.width  = c.getWidth();
+            rect.x = (int) (rect.x - c.getWidth() * .5);
+            rect.width = c.getWidth();
             rect.height = (int) (c.getHeight() * .5);
             tc.scrollRectToVisible(rect);
         }
@@ -115,24 +115,24 @@ public class MainPanel extends JPanel {
         Style s = doc.getStyle("highlight-text-foreground");
         Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
 
-        //clear the previous highlight:
+        // clear the previous highlight:
         Highlighter highlighter = textPane.getHighlighter();
         for (Highlighter.Highlight h: highlighter.getHighlights()) {
             doc.setCharacterAttributes(h.getStartOffset(), h.getEndOffset() - h.getStartOffset(), def, true);
         }
         highlighter.removeAllHighlights();
-        //doc.setCharacterAttributes(0, doc.getLength(), def, true);
+        // doc.setCharacterAttributes(0, doc.getLength(), def, true);
 
-        //match highlighting:
+        // match highlighting:
         getPattern().ifPresent(pattern -> {
             try {
                 Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
                 int pos = 0;
                 while (matcher.find(pos)) {
                     int start = matcher.start();
-                    int end   = matcher.end();
+                    int end = matcher.end();
                     highlighter.addHighlight(start, end, highlightPainter);
-                    //doc.setCharacterAttributes(start, end - start, red, true);
+                    // doc.setCharacterAttributes(start, end - start, red, true);
                     pos = end;
                 }
             } catch (BadLocationException ex) {

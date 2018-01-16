@@ -52,7 +52,7 @@ class StarPanel1 extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
-        //<blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
+        // <blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
         GeneralPath p = new GeneralPath();
         p.moveTo(-w / 4f, -h / 12f);
         p.lineTo(+w / 4f, -h / 12f);
@@ -60,7 +60,7 @@ class StarPanel1 extends JPanel {
         p.lineTo(+0,      -h / 4f);
         p.lineTo(+w / 6f,  h / 4f);
         p.closePath();
-        //</blockquote>
+        // </blockquote>
         g2.translate(w / 2, h / 2);
         g2.setPaint(Color.YELLOW);
         g2.fill(p);
@@ -97,7 +97,7 @@ class StarPanel3 extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(0, FONTSIZE);
         FontRenderContext frc = g2.getFontRenderContext();
-        Shape shape = new TextLayout("\u2605", font, frc).getOutline(null);
+        Shape shape = new TextLayout("★", font, frc).getOutline(null);
         g2.setPaint(Color.YELLOW);
         g2.fill(shape);
         g2.setPaint(Color.BLACK);
@@ -198,8 +198,8 @@ class StarIcon1 implements Icon {
 class StarIcon2 implements Icon {
     private static final int R2 = 40;
     private static final int R1 = 20;
-    // private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); //=15.0;
-    private static final int VC = 5; //16;
+    // private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); // =15.0;
+    private static final int VC = 5; // 16;
     private final Shape star;
     protected StarIcon2() {
         double agl = 0d;
@@ -238,28 +238,28 @@ class StarIcon2 implements Icon {
 //     // Java2D Shapes project.
 //     // http://java-sl.com/shapes.html
 //     protected static int[] getXCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//         int res[] = new int[vertexCount * 2];
+//         int[] res = new int[vertexCount * 2];
 //         double addAngle = 2 * Math.PI / vertexCount;
 //         double angle = startAngle;
 //         double innerAngle = startAngle + Math.PI / vertexCount;
-//         for (int i=0; i < vertexCount; i++) {
+//         for (int i = 0; i < vertexCount; i++) {
 //             res[i * 2] = (int) Math.round(r * Math.cos(angle)) + x;
-//             angle+=addAngle;
+//             angle += addAngle;
 //             res[i * 2 + 1] = (int) Math.round(innerR * Math.cos(innerAngle)) + x;
 //             innerAngle += addAngle;
 //         }
 //         return res;
 //     }
 //     protected static int[] getYCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//         int res[] = new int[vertexCount * 2];
+//         int[] res = new int[vertexCount * 2];
 //         double addAngle = 2 * Math.PI / vertexCount;
 //         double angle = startAngle;
 //         double innerAngle = startAngle + Math.PI / vertexCount;
 //         for (int i = 0; i < vertexCount; i++) {
-//             res[i * 2]=(int) Math.round(r * Math.sin(angle)) + y;
+//             res[i * 2] = (int) Math.round(r * Math.sin(angle)) + y;
 //             angle += addAngle;
 //             res[i * 2 + 1] = (int) Math.round(innerR * Math.sin(innerAngle)) + y;
-//             innerAngle+=addAngle;
+//             innerAngle += addAngle;
 //         }
 //         return res;
 //     }

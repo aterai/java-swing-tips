@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
 
         String[] columnNames = {"A", "B"};
         Object[][] data = {
-            {"aaa", "ccccccc"}, {"bbb", "\u2600\u2601\u2602\u2603"}
+            {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
         };
         JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setAutoCreateRowSorter(true);
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         encButton.addActionListener(e -> {
             try {
                 File file = File.createTempFile("output", ".xml");
-                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                 try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
                     xe.writeObject(table.getRowSorter().getSortKeys());
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
                     xe.setPersistenceDelegate(DefaultTableColumnModel.class, new DefaultTableColumnModelPersistenceDelegate());
                     xe.writeObject(table.getColumnModel());
                 }
-                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                 try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                     textArea.read(r, "temp");
                 }
@@ -142,7 +142,7 @@ class TableHeaderPopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add("Edit: setHeaderValue").addActionListener(e -> {

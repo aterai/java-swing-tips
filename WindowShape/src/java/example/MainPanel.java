@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super();
-        JTextField textField = new JTextField("\u2605", 20);
+        JTextField textField = new JTextField("★", 20);
         JLabel label = new JLabel("", SwingConstants.CENTER);
 
         JToggleButton button = new JToggleButton("show");

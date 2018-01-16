@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         Insets i = b1.getBorder().getBorderInsets(b1);
         b1.setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, 4));
 
-        JButton b2 = new JButton("\u25BC") {
+        JButton b2 = new JButton("▼") {
             private final Dimension dim = new Dimension(120, 24);
             @Override public Dimension getPreferredSize() {
                 return dim;

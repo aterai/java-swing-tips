@@ -179,13 +179,6 @@
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
-        <module name="ImportOrder">
-            <property name="groups" value="java,javax"/>
-            <property name="ordered" value="true"/>
-        </module>
-
-        <module name="OneStatementPerLine"/>
-
 <!--
     Checkstyle configuration that checks the Google coding conventions from Google Java Style
     that can be found at https://google.github.io/styleguide/javaguide.html.
@@ -203,15 +196,15 @@
             <property name="format" value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
             <property name="message" value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
         </module>
-        <!-- module name="AvoidEscapedUnicodeCharacters">
+        <module name="AvoidEscapedUnicodeCharacters">
             <property name="allowEscapesForControlCharacters" value="true"/>
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
-        </module -->
-        <!-- module name="LineLength">
-            <property name="max" value="100"/>
+        </module>
+        <module name="LineLength">
+            <property name="max" value="500"/>
             <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-        </module -->
+        </module>
         <!-- module name="AvoidStarImport"/ -->
         <!-- module name="OneTopLevelClass"/ -->
         <module name="NoLineWrap"/>
@@ -347,6 +340,10 @@
         </module -->
         <module name="OverloadMethodsDeclarationOrder"/>
         <!-- module name="VariableDeclarationUsageDistance"/ -->
+        <module name="ImportOrder">
+            <property name="groups" value="java,javax"/>
+            <property name="ordered" value="true"/>
+        </module>
         <!-- module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>

@@ -51,11 +51,11 @@ public final class MainPanel extends JPanel {
 
         cbox.addItemListener(e -> {
             hrenderer.setEnabledAt(2, !((JCheckBox) e.getItemSelectable()).isSelected());
-            //if (e.getStateChange() == ItemEvent.SELECTED) {
-            //    hrenderer.setEnabledAt(2, false);
-            //} else if (e.getStateChange() == ItemEvent.DESELECTED) {
-            //    hrenderer.setEnabledAt(2, true);
-            //}
+            // if (e.getStateChange() == ItemEvent.SELECTED) {
+            //     hrenderer.setEnabledAt(2, false);
+            // } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            //     hrenderer.setEnabledAt(2, true);
+            // }
         });
 
         add(new JScrollPane(table));
@@ -88,8 +88,8 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends SortableTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
     private int number;
@@ -111,8 +111,8 @@ class RowDataModel extends SortableTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class columnClass;
         public final boolean isEditable;
         protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;

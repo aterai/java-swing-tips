@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
+    @SuppressWarnings("AvoidEscapedUnicodeCharacters")
     public MainPanel() {
         super(new BorderLayout());
 
@@ -32,6 +33,7 @@ public final class MainPanel extends JPanel {
         // editor2.setFont(new Font("IPAexGothic", Font.PLAIN, 24));
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setText("(\uD85B\uDE40) (\u26E40)\n(\uD842\uDF9F) (\u20B9F)");
+        // editor2.setText("(𦹀) (𦹀)\n(𠮟) (𠮟)");
 
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(makeTitledPane(editor1, "Numeric character reference"));

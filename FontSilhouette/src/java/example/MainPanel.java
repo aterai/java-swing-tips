@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(4, 6, 0, 0));
         String[] pieces = {
-            "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
-            "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
+            "♔", "♕", "♖", "♗", "♘", "♙", // "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
+            "♚", "♛", "♜", "♝", "♞", "♟", // "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
         };
         for (int i = 0; i < pieces.length; i++) {
             add(initLabel(new JLabel(pieces[i], SwingConstants.CENTER), i));
@@ -70,7 +70,7 @@ class SilhouetteIcon implements Icon, Serializable {
     private final int size;
     protected SilhouetteIcon(Font font, String str, int size) {
         this.font = font;
-        this.str  = str;
+        this.str = str;
         this.size = size;
     }
     // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
@@ -116,7 +116,7 @@ class SilhouetteIcon implements Icon, Serializable {
         FontRenderContext frc = g2.getFontRenderContext();
         Shape shape = font.createGlyphVector(frc, str).getOutline();
         Rectangle r = shape.getBounds();
-        int sx = getIconWidth()  - r.width;
+        int sx = getIconWidth() - r.width;
         int sy = getIconHeight() - r.height;
         AffineTransform at = AffineTransform.getTranslateInstance(-r.x + sx / 2, -r.y + sy / 2);
         Shape shapeCentered = at.createTransformedShape(shape);

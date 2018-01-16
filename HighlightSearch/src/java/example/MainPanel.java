@@ -28,12 +28,12 @@ public class MainPanel extends JPanel {
         + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
-    private final transient Highlighter.HighlightPainter currentPainter   = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);
+    private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
     private final JTextField field = new JTextField("Swing");
-    private final JButton prevButton = new JButton("\u22C0");
-    private final JButton nextButton = new JButton("\u22C1");
+    private final JButton prevButton = new JButton("⋀");
+    private final JButton nextButton = new JButton("⋁");
     private final JCheckBox checkCase = new JCheckBox("Match case");
     private final JCheckBox checkWord = new JCheckBox("Match whole word only");
     private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();

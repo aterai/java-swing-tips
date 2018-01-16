@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         OvertypeTextArea textArea = new OvertypeTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        textArea.setText("Press the INSERT key to toggle the overwrite mode.\n\u3042\u3042\u3042\naaaaaaaaaaafasdfas");
+        textArea.setText("Press the INSERT key to toggle the overwrite mode.\nあああ\naaaaaaaaaaafasdfas");
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -51,7 +51,7 @@ class OvertypeTextArea extends JTextArea {
     @Override public void updateUI() {
         super.updateUI();
         EventQueue.invokeLater(() -> {
-            //setCaretColor(Color.RED);
+            // setCaretColor(Color.RED);
             defaultCaret = getCaret();
             overtypeCaret = new OvertypeCaret();
             overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
@@ -99,10 +99,10 @@ class OvertypeTextArea extends JTextArea {
         super.processKeyEvent(e);
         // Handle release of Insert key to toggle overtype/insert mode
         if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_INSERT) {
-            setCaretPosition(getCaretPosition());  //add
-            moveCaretPosition(getCaretPosition()); //add
+            setCaretPosition(getCaretPosition()); // add
+            moveCaretPosition(getCaretPosition()); // add
             setOvertypeMode(!isOvertypeMode());
-            repaint(); //add
+            repaint(); // add
         }
     }
 
@@ -149,13 +149,15 @@ class OvertypeTextArea extends JTextArea {
          */
         // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
         @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+        @SuppressWarnings("AvoidEscapedUnicodeCharacters")
         @Override protected synchronized void damage(Rectangle r) {
             if (Objects.nonNull(r)) {
                 JTextComponent c = getComponent();
                 x = r.x;
                 y = r.y;
-                //width = c.getFontMetrics(c.getFont()).charWidth('w');
+                // width = c.getFontMetrics(c.getFont()).charWidth('w');
                 width = c.getFontMetrics(c.getFont()).charWidth('\u3042');
+                // width = c.getFontMetrics(c.getFont()).charWidth('あ'); // CheckSytle 8.7: error Unable to process files...
                 height = r.height;
                 c.repaint();
             }

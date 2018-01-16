@@ -11,8 +11,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    //private final Box box = Box.createVerticalBox();
-    //private final Component glue = Box.createVerticalGlue();
+    // private final Box box = Box.createVerticalBox();
+    // private final Component glue = Box.createVerticalGlue();
     public MainPanel() {
         super(new BorderLayout());
 
@@ -121,10 +121,10 @@ abstract class AbstractExpansionPanel extends JPanel {
     protected AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         this.title = title;
-        label = new JLabel("\u25BC " + title) {
+        label = new JLabel("▼ " + title) {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                //Insets ins = getInsets();
+                // Insets ins = getInsets();
                 g2.setPaint(new GradientPaint(50, 0, Color.WHITE, getWidth(), getHeight(), new Color(200, 200, 255)));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.dispose();
@@ -145,8 +145,8 @@ abstract class AbstractExpansionPanel extends JPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(240, 240, 255));
         Border outBorder = BorderFactory.createMatteBorder(0, 2, 2, 2, Color.WHITE);
-        Border inBorder  = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-        Border border    = BorderFactory.createCompoundBorder(outBorder, inBorder);
+        Border inBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        Border border = BorderFactory.createCompoundBorder(outBorder, inBorder);
         panel.setBorder(border);
         add(panel);
     }
@@ -164,9 +164,9 @@ abstract class AbstractExpansionPanel extends JPanel {
     }
     protected void initPanel() {
         panel.setVisible(!panel.isVisible());
-        label.setText(String.format("%s %s", panel.isVisible() ? "\u25B3" : "\u25BC", title));
+        label.setText(String.format("%s %s", panel.isVisible() ? "△" : "▼", title));
         revalidate();
-        //fireExpansionEvent();
+        // fireExpansionEvent();
         EventQueue.invokeLater(() -> panel.scrollRectToVisible(panel.getBounds()));
     }
 

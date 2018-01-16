@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setPaint(Color.BLACK);
                 FontRenderContext frc = g2.getFontRenderContext();
-                Shape copyright = new TextLayout("\u00a9", font, frc).getOutline(null);
-                //Rectangle r = copyright.getBounds()
-                //at.translate(r.getWidth(), r.getHeight());
-                //AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
+                Shape copyright = new TextLayout("©", font, frc).getOutline(null);
+                // Rectangle r = copyright.getBounds()
+                // at.translate(r.getWidth(), r.getHeight());
+                // AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
                 Shape copyleft = at.createTransformedShape(copyright);
                 Rectangle2D b = copyleft.getBounds2D();
                 AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());

@@ -9,10 +9,12 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    @SuppressWarnings("AvoidEscapedUnicodeCharacters")
+    private MainPanel() {
         super(new GridLayout(2, 1));
 
         JPasswordField pf1 = new JPasswordField();
+        // pf1.setEchoChar('★'); // CheckSytle 8.7: error Unable to process files...
         pf1.setEchoChar('\u2605');
 
         JPasswordField pf2 = new JPasswordField() {
@@ -22,22 +24,21 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitlePanel(pf1, "setEchoChar('\u2605')"));
-        add(makeTitlePanel(pf2, "drawEchoCharacter"));
+        add(makeTitlePanel("setEchoChar('★')", pf1));
+        add(makeTitlePanel("drawEchoCharacter", pf2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitlePanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

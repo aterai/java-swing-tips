@@ -77,13 +77,13 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     public static final int NONE = 0;
     public static final int DOWN = 1;
     public static final int UP   = 2;
-    //private transient Icon ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-    //private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-    //private transient Icon noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+    // private transient Icon ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
+    // private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+    // private transient Icon noneSortIcon = new EmptyIcon(ascendingSortIcon);
     private Dimension iconSize;
     private int pushedColumn = -1;
     private final Map<Integer, Integer> state = new ConcurrentHashMap<>();
-    private final Map<Integer, Boolean> dmap  = new ConcurrentHashMap<>();
+    private final Map<Integer, Boolean> dmap = new ConcurrentHashMap<>();
     private final JTableHeader header;
 
     protected SortButtonRenderer(JTableHeader header) {
@@ -108,12 +108,12 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         if (ivalue != null) {
             if (ivalue == DOWN) {
                 setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
-                //setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
-                //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
+                // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
+                // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
             } else if (ivalue == UP) {
                 setIcon(UIManager.getIcon("Table.descendingSortIcon"));
-                //setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
-                //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
+                // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
+                // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
             }
         }
         boolean isPressed = modelColumn == pushedColumn;
@@ -123,9 +123,9 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        //ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-        //descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-        //noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+        // ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
+        // descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+        // noneSortIcon = new EmptyIcon(ascendingSortIcon);
         Icon i = UIManager.getIcon("Table.ascendingSortIcon");
         iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
     }
@@ -137,8 +137,8 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         header.repaint();
     }
     public boolean isEnabledAt(int col) {
-        //return dmap.containsKey(col) ? dmap.get(col) : true;
-        //return !dmap.containsKey(col) ? true : dmap.get(col);
+        // return dmap.containsKey(col) ? dmap.get(col) : true;
+        // return !dmap.containsKey(col) ? true : dmap.get(col);
         return !dmap.containsKey(col) || dmap.get(col);
     }
     public void setSelectedColumn(int col) {

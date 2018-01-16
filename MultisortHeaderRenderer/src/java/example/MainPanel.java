@@ -69,10 +69,10 @@ class MultisortHeaderRenderer implements TableCellRenderer {
             for (int i = 0; i < keys.size(); i++) {
                 TableRowSorter.SortKey sortKey = keys.get(i);
                 if (column == sortKey.getColumn()) {
-                    //BLACK TRIANGLE
-                    //String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "\u25B2 " : "\u25BC ";
-                    //BLACK SMALL TRIANGLE
-                    String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "\u25B4 " : "\u25BE ";
+                    // BLACK TRIANGLE
+                    // String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "▲ " : "▼ ";
+                    // BLACK SMALL TRIANGLE
+                    String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "▴ " : "▾ ";
                     str = String.format("<html>%s<small color='gray'>%s%d", str, k, i + 1);
                 }
             }

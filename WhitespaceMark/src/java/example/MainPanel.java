@@ -9,8 +9,8 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final String TABTEST = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-    private static final String ZSTEST = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
-    private static final String ZS_TAB_ZSTEST = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
+    private static final String ZSTEST = "adfasdfasdfasdf\nffas2　　1 3 dfas\n\n　00000　12345　\n";
+    private static final String ZS_TAB_ZSTEST = "　　日本語　\n";
 
     private MainPanel() {
         super(new BorderLayout());
@@ -130,7 +130,7 @@ class ParagraphWithEopmView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
-    private static final String IDEOGRAPHIC_SPACE = "\u3000";
+    private static final String IDEOGRAPHIC_SPACE = "　"; // "\u3000";
     private static final Color MARK_COLOR = new Color(130, 140, 120);
     private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
     protected WhitespaceLabelView(Element elem) {
