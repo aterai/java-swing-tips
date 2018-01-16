@@ -75,11 +75,11 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
 //     }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
-        JTable table = header.getTable();
-        TableColumnModel columnModel = table.getColumnModel();
-        TableModel m = table.getModel();
+        JTable tbl = header.getTable();
+        TableColumnModel columnModel = tbl.getColumnModel();
+        TableModel m = tbl.getModel();
         int vci = columnModel.getColumnIndexAtX(e.getX());
-        int mci = table.convertColumnIndexToModel(vci);
+        int mci = tbl.convertColumnIndexToModel(vci);
         if (mci == targetColumnIndex && m.getRowCount() > 0) {
             TableColumn column = columnModel.getColumn(vci);
             Object v = column.getHeaderValue();
@@ -88,7 +88,7 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
                 m.setValueAt(b, i, mci);
             }
             column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-            //header.repaint();
+            // header.repaint();
         }
     }
 }

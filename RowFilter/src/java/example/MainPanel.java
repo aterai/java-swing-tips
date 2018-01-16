@@ -37,25 +37,25 @@ public final class MainPanel extends JPanel {
         model.addRowData(new RowData("Name b", "Test bb"));
         model.addRowData(new RowData("Name a", "ff"));
         model.addRowData(new RowData("Name 0", "Test aa"));
-        //table.setRowSorter(sorter); <- IndexOutOfBoundsException: Invalid range (add, delete, etc.)
+        // table.setRowSorter(sorter); <- IndexOutOfBoundsException: Invalid range (add, delete, etc.)
 
         JScrollPane scrollPane = new JScrollPane(table);
-        //scrollPane.setBackground(Color.WHITE);
+        // scrollPane.setBackground(Color.WHITE);
         scrollPane.getViewport().setBackground(Color.WHITE);
         table.setComponentPopupMenu(new TablePopupMenu());
         table.setFillsViewportHeight(true);
         table.setIntercellSpacing(new Dimension());
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         Set<RowFilter<? super RowDataModel, ? super Integer>> filters = new HashSet<>(2);
         RowFilter<RowDataModel, Integer> filter1 = new RowFilter<RowDataModel, Integer>() {
             @Override public boolean include(Entry<? extends RowDataModel, ? extends Integer> entry) {
-                RowDataModel model = entry.getModel();
-                RowData t = model.getRowData(entry.getIdentifier());
-                return !t.getComment().trim().isEmpty();
+                RowDataModel m = entry.getModel();
+                RowData rd = m.getRowData(entry.getIdentifier());
+                return !rd.getComment().trim().isEmpty();
             }
         };
         RowFilter<RowDataModel, Integer> filter2 = new RowFilter<RowDataModel, Integer>() {
@@ -63,8 +63,8 @@ public final class MainPanel extends JPanel {
                 return entry.getIdentifier() % 2 == 0;
             }
         };
-        //sorter.setRowFilter(RowFilter.andFilter(filters));
-        //sorter.setRowFilter(filter1);
+        // sorter.setRowFilter(RowFilter.andFilter(filters));
+        // sorter.setRowFilter(filter1);
         check1.addActionListener(e -> {
             JCheckBox cb = (JCheckBox) e.getSource();
             if (cb.isSelected()) {
@@ -92,23 +92,23 @@ public final class MainPanel extends JPanel {
     }
     protected boolean canAddRow() {
         return !check1.isSelected() && !check2.isSelected();
-        //return filters.isEmpty();
+        // return filters.isEmpty();
     }
     private class TablePopupMenu extends JPopupMenu {
         private final Action addAction = new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
-                JTable table = (JTable) getInvoker();
-                RowDataModel model = (RowDataModel) table.getModel();
-                model.addRowData(new RowData("example", ""));
+                JTable tbl = (JTable) getInvoker();
+                RowDataModel m = (RowDataModel) tbl.getModel();
+                m.addRowData(new RowData("example", ""));
             }
         };
         private final Action deleteAction = new AbstractAction("delete") {
             @Override public void actionPerformed(ActionEvent e) {
-                JTable table = (JTable) getInvoker();
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                int[] selection = table.getSelectedRows();
+                JTable tbl = (JTable) getInvoker();
+                DefaultTableModel m = (DefaultTableModel) tbl.getModel();
+                int[] selection = tbl.getSelectedRows();
                 for (int i = selection.length - 1; i >= 0; i--) {
-                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                    m.removeRow(tbl.convertRowIndexToModel(selection[i]));
                 }
             }
         };
@@ -151,9 +151,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {

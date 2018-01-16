@@ -40,15 +40,7 @@ public final class MainPanel extends JPanel {
         }
         model.addTreeModelListener(new FilterableStatusUpdateListener());
 
-        tree.setCellRenderer(new DefaultTreeCellRenderer() {
-            private final JLabel emptyLabel = new JLabel();
-            @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                FilterableNode uo = (FilterableNode) node.getUserObject();
-                return uo.status ? c : emptyLabel;
-            }
-        });
+        tree.setCellRenderer(new FilterTreeCellRenderer());
         fireDocumentChangeEvent();
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -60,55 +52,12 @@ public final class MainPanel extends JPanel {
         String q = field.getText();
         TreePath rtp = tree.getPathForRow(0);
         if (q.isEmpty()) {
-            resetAll(tree, rtp, true);
+            TreeUtil.resetAll(tree, rtp, true);
             ((DefaultTreeModel) tree.getModel()).reload();
-            //visitAll(tree, rtp, true);
+            // TreeUtil.visitAll(tree, rtp, true);
         } else {
-            visitAll(tree, rtp, false);
-            searchTree(tree, rtp, q);
-        }
-    }
-    private static void searchTree(JTree tree, TreePath path, String q) {
-        Object o = path.getLastPathComponent();
-        if (o instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-            FilterableNode uo = (FilterableNode) node.getUserObject();
-            uo.status = node.toString().startsWith(q);
-            ((DefaultTreeModel) tree.getModel()).nodeChanged(node);
-            if (uo.status) {
-                tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
-            }
-            if (!uo.status && !node.isLeaf() && node.getChildCount() >= 0) {
-                Enumeration<?> e = node.children();
-                while (e.hasMoreElements()) {
-                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
-                }
-            }
-        }
-    }
-    private void resetAll(JTree tree, TreePath parent, boolean match) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
-        FilterableNode uo = (FilterableNode) node.getUserObject();
-        uo.status = match;
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                resetAll(tree, parent.pathByAddingChild(e.nextElement()), match);
-            }
-        }
-    }
-    private void visitAll(JTree tree, TreePath parent, boolean expand) {
-        TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
-            }
-        }
-        if (expand) {
-            tree.expandPath(parent);
-        } else {
-            tree.collapsePath(parent);
+            TreeUtil.visitAll(tree, rtp, false);
+            TreeUtil.searchTree(tree, rtp, q);
         }
     }
     public static void main(String... args) {
@@ -217,5 +166,62 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     }
     @Override public void treeStructureChanged(TreeModelEvent e) {
         /* not needed */
+    }
+}
+
+class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
+    private final JLabel emptyLabel = new JLabel();
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        FilterableNode uo = (FilterableNode) node.getUserObject();
+        return uo.status ? c : emptyLabel;
+    }
+}
+
+final class TreeUtil {
+    private TreeUtil() { /* Singleton */ }
+    public static void searchTree(JTree tree, TreePath path, String q) {
+        Object o = path.getLastPathComponent();
+        if (o instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+            FilterableNode uo = (FilterableNode) node.getUserObject();
+            uo.status = node.toString().startsWith(q);
+            ((DefaultTreeModel) tree.getModel()).nodeChanged(node);
+            if (uo.status) {
+                tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
+            }
+            if (!uo.status && !node.isLeaf() && node.getChildCount() >= 0) {
+                Enumeration<?> e = node.children();
+                while (e.hasMoreElements()) {
+                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+                }
+            }
+        }
+    }
+    public static void resetAll(JTree tree, TreePath parent, boolean match) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
+        FilterableNode uo = (FilterableNode) node.getUserObject();
+        uo.status = match;
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
+            Enumeration<?> e = node.children();
+            while (e.hasMoreElements()) {
+                resetAll(tree, parent.pathByAddingChild(e.nextElement()), match);
+            }
+        }
+    }
+    public static void visitAll(JTree tree, TreePath parent, boolean expand) {
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
+            Enumeration<?> e = node.children();
+            while (e.hasMoreElements()) {
+                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
+            }
+        }
+        if (expand) {
+            tree.expandPath(parent);
+        } else {
+            tree.collapsePath(parent);
+        }
     }
 }

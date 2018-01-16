@@ -22,14 +22,14 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
         TableModel m = table.getModel();
         boolean repaint = false;
         if (e.getType() == TableModelEvent.DELETE) {
-            //System.out.println("DELETE");
-            //System.out.println(status + ":   " + Status.INDETERMINATE.equals(status));
+            // System.out.println("DELETE");
+            // System.out.println(status + ":   " + Status.INDETERMINATE.equals(status));
             repaint = fireDeleteEvent(m, column, status);
         } else if (e.getType() == TableModelEvent.INSERT && !Status.INDETERMINATE.equals(status)) {
-            //System.out.println("INSERT");
+            // System.out.println("INSERT");
             repaint = fireInsertEvent(m, column, status, e);
         } else if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
-            //System.out.println("UPDATE");
+            // System.out.println("UPDATE");
             repaint = fireUpdateEvent(m, column, status);
         }
         if (repaint) {
@@ -48,8 +48,8 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
                 selected &= b;
                 deselected &= !b;
             }
-            //System.out.println(selected);
-            //System.out.println(deselected);
+            // System.out.println(selected);
+            // System.out.println(deselected);
             if (deselected) {
                 column.setHeaderValue(Status.DESELECTED);
             } else if (selected) {
@@ -103,11 +103,11 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
     }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
-        JTable table = header.getTable();
-        TableColumnModel columnModel = table.getColumnModel();
-        TableModel m = table.getModel();
+        JTable tbl = header.getTable();
+        TableColumnModel columnModel = tbl.getColumnModel();
+        TableModel m = tbl.getModel();
         int vci = columnModel.getColumnIndexAtX(e.getX());
-        int mci = table.convertColumnIndexToModel(vci);
+        int mci = tbl.convertColumnIndexToModel(vci);
         if (mci == targetColumnIndex && m.getRowCount() > 0) {
             TableColumn column = columnModel.getColumn(vci);
             Object v = column.getHeaderValue();
@@ -116,7 +116,7 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
                 m.setValueAt(b, i, mci);
             }
             column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-            //header.repaint();
+            // header.repaint();
         }
     }
 }

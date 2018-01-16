@@ -56,13 +56,13 @@ class TableHeaderTabbedPane extends JPanel {
     protected TableHeaderTabbedPane() {
         super(new BorderLayout());
 
-        int left  = 1;
+        int left = 1;
         int right = 3;
         tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
         contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
 
         JTable table = new JTable(new DefaultTableModel(null, new String[] {}));
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         header = table.getTableHeader();
         model = (TableColumnModel) header.getColumnModel();
 
@@ -70,7 +70,7 @@ class TableHeaderTabbedPane extends JPanel {
         header.addMouseListener(handler);
         header.addMouseMotionListener(handler);
 
-        final TabButton l = new TabButton();
+        TabButton l = new TabButton();
         header.setDefaultRenderer(new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 l.setText(Objects.toString(value, ""));
@@ -88,9 +88,9 @@ class TableHeaderTabbedPane extends JPanel {
         vp.setView(table);
         sp.setViewport(vp);
 
-        //JPanel wrapPanel = new JPanel(new BorderLayout());
-        //wrapPanel.add(sp);
-        //add(wrapPanel, BorderLayout.NORTH);
+        // JPanel wrapPanel = new JPanel(new BorderLayout());
+        // wrapPanel.add(sp);
+        // add(wrapPanel, BorderLayout.NORTH);
         add(sp, BorderLayout.NORTH);
         add(contentsPanel);
     }
@@ -106,12 +106,11 @@ class TableHeaderTabbedPane extends JPanel {
     }
     private class TableHeaderMouseInputHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
-            JTableHeader header = (JTableHeader) e.getComponent();
-            int index = header.columnAtPoint(e.getPoint());
-            if (index < 0) {
+            int idx = ((JTableHeader) e.getComponent()).columnAtPoint(e.getPoint());
+            if (idx < 0) {
                 return;
             }
-            Object title = model.getColumn(index).getHeaderValue();
+            Object title = model.getColumn(idx).getHeaderValue();
             cardLayout.show(contentsPanel, (String) title);
             selectedColumn = title;
         }
@@ -126,18 +125,18 @@ class TableHeaderTabbedPane extends JPanel {
             updateRolloverColumn(e);
         }
         @Override public void mouseExited(MouseEvent e) {
-            //int oldRolloverColumn = rolloverColumn;
+            // int oldRolloverColumn = rolloverColumn;
             rolloverColumn = -1;
         }
-        //@see BasicTableHeaderUI.MouseInputHandler
+        // @see BasicTableHeaderUI.MouseInputHandler
         private void updateRolloverColumn(MouseEvent e) {
-            JTableHeader header = (JTableHeader) e.getComponent();
-            if (Objects.isNull(header.getDraggedColumn()) && header.contains(e.getPoint())) {
-                int col = header.columnAtPoint(e.getPoint());
+            JTableHeader h = (JTableHeader) e.getComponent();
+            if (Objects.isNull(h.getDraggedColumn()) && h.contains(e.getPoint())) {
+                int col = h.columnAtPoint(e.getPoint());
                 if (col != rolloverColumn) {
-                    //int oldRolloverColumn = rolloverColumn;
+                    // int oldRolloverColumn = rolloverColumn;
                     rolloverColumn = col;
-                    //rolloverColumnUpdated(oldRolloverColumn, rolloverColumn);
+                    // rolloverColumnUpdated(oldRolloverColumn, rolloverColumn);
                 }
             }
         }
