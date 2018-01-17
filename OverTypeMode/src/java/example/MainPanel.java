@@ -148,8 +148,7 @@ class OvertypeTextArea extends JTextArea {
          * consider the area for the default caret and this caret)
          */
         // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
-        @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
-        @SuppressWarnings("AvoidEscapedUnicodeCharacters")
+        @SuppressWarnings({"PMD.AvoidSynchronizedAtMethodLevel", "AvoidEscapedUnicodeCharacters"})
         @Override protected synchronized void damage(Rectangle r) {
             if (Objects.nonNull(r)) {
                 JTextComponent c = getComponent();
