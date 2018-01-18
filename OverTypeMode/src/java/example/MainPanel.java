@@ -148,15 +148,15 @@ class OvertypeTextArea extends JTextArea {
          * consider the area for the default caret and this caret)
          */
         // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
-        @SuppressWarnings({"PMD.AvoidSynchronizedAtMethodLevel", "AvoidEscapedUnicodeCharacters"})
+        @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
         @Override protected synchronized void damage(Rectangle r) {
             if (Objects.nonNull(r)) {
                 JTextComponent c = getComponent();
                 x = r.x;
                 y = r.y;
                 // width = c.getFontMetrics(c.getFont()).charWidth('w');
-                width = c.getFontMetrics(c.getFont()).charWidth('\u3042');
-                // width = c.getFontMetrics(c.getFont()).charWidth('あ'); // CheckSytle 8.7: error Unable to process files...
+                // width = c.getFontMetrics(c.getFont()).charWidth('\u3042');
+                width = c.getFontMetrics(c.getFont()).charWidth('あ');
                 height = r.height;
                 c.repaint();
             }

@@ -9,13 +9,12 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    @SuppressWarnings("AvoidEscapedUnicodeCharacters")
     private MainPanel() {
         super(new GridLayout(2, 1));
 
         JPasswordField pf1 = new JPasswordField();
-        // pf1.setEchoChar('★'); // CheckSytle 8.7: error Unable to process files...
-        pf1.setEchoChar('\u2605');
+        // pf1.setEchoChar('\u2605');
+        pf1.setEchoChar('★');
 
         JPasswordField pf2 = new JPasswordField() {
             @Override public void updateUI() {

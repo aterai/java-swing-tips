@@ -76,7 +76,7 @@ class ColumnComparator implements Comparator, Serializable {
 class SortButtonRenderer extends JButton implements TableCellRenderer {
     public static final int NONE = 0;
     public static final int DOWN = 1;
-    public static final int UP   = 2;
+    public static final int UP = 2;
     // private transient Icon ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
     // private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
     // private transient Icon noneSortIcon = new EmptyIcon(ascendingSortIcon);
