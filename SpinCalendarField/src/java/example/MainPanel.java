@@ -15,9 +15,9 @@ public final class MainPanel extends JPanel {
         DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
 
         Calendar c = Calendar.getInstance();
-        //c.clear(Calendar.HOUR_OF_DAY);
-        //c.clear(Calendar.AM_PM);
-        //c.clear(Calendar.HOUR);
+        // c.clear(Calendar.HOUR_OF_DAY);
+        // c.clear(Calendar.AM_PM);
+        // c.clear(Calendar.HOUR);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.clear(Calendar.MINUTE);
         c.clear(Calendar.SECOND);
@@ -35,19 +35,19 @@ public final class MainPanel extends JPanel {
         });
         ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
 
-        add(makeTitlePanel(spinner1, "Default SpinnerDateModel"));
-        add(makeTitlePanel(spinner2, "Override SpinnerDateModel#setCalendarField(...)"));
+        add(makeTitledPanel("Default SpinnerDateModel", spinner1));
+        add(makeTitledPanel("Override SpinnerDateModel#setCalendarField(...)", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

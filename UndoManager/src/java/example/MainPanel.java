@@ -9,16 +9,16 @@ import javax.swing.text.*;
 import javax.swing.undo.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field1 = new JTextField("aaaaaaaaa");
-    private final JTextField field2 = new JTextField("bbbbbbbbb");
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
-
+        JTextField field1 = new JTextField("aaaaaaaaa");
         initUndoRedo(field1);
+
+        JTextField field2 = new JTextField("bbbbbbbbb");
         initUndoRedo(field2);
 
-        add(makeTitlePanel(field1, "undo:Ctrl-z, redo:Ctrl-y"));
-        add(makeTitlePanel(field2, "test"));
+        add(makeTitledPanel("undo:Ctrl-z, redo:Ctrl-y", field1));
+        add(makeTitledPanel("test", field2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             try {
                 undoManager.undo();
             } catch (CannotUndoException ex) {
-                //cue.printStackTrace();
+                // cue.printStackTrace();
                 Toolkit.getDefaultToolkit().beep();
             }
         }
@@ -56,20 +56,19 @@ public final class MainPanel extends JPanel {
             try {
                 undoManager.redo();
             } catch (CannotRedoException ex) {
-                //cre.printStackTrace();
+                // cre.printStackTrace();
                 Toolkit.getDefaultToolkit().beep();
             }
         }
     }
-
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

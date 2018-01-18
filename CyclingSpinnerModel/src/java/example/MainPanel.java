@@ -8,13 +8,15 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JSpinner spinner01 = new JSpinner();
-    private final JSpinner spinner02 = new JSpinner();
-    private final JSpinner spinner03 = new JSpinner();
-    private final JSpinner spinner04 = new JSpinner();
-    private final List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
+
+        JSpinner spinner01 = new JSpinner();
+        JSpinner spinner02 = new JSpinner();
+        JSpinner spinner03 = new JSpinner();
+        JSpinner spinner04 = new JSpinner();
+        List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
+
         spinner01.setModel(new SpinnerNumberModel(20, 0, 59, 1));
         spinner02.setModel(new SpinnerListModel(weeks));
         spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
@@ -38,19 +40,19 @@ public final class MainPanel extends JPanel {
                 return Objects.nonNull(o) ? o : l.get(l.size() - 1);
             }
         });
-        add(makeTitlePanel("default model", Arrays.asList(spinner01, spinner02)));
-        add(makeTitlePanel("cycling model", Arrays.asList(spinner03, spinner04)));
+        add(makeTitledPanel("default model", Arrays.asList(spinner01, spinner02)));
+        add(makeTitledPanel("cycling model", Arrays.asList(spinner03, spinner04)));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static Component makeTitledPanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
-        c.gridx   = GridBagConstraints.REMAINDER;
+        c.gridx = GridBagConstraints.REMAINDER;
         for (Component cmp: list) {
             p.add(cmp, c);
         }

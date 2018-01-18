@@ -13,9 +13,9 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(0, 1));
+        String dateFormat = "yyyy/MM/dd";
 
         Calendar cal = Calendar.getInstance();
         cal.clear(Calendar.MILLISECOND);
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         System.out.println(end);
 
         JSpinner spinner0 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
-        spinner0.setEditor(new JSpinner.DateEditor(spinner0, DATE_FORMAT_PATTERN));
+        spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
         LocalDateTime d = LocalDateTime.now();
         LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
@@ -44,13 +44,13 @@ public final class MainPanel extends JPanel {
         System.out.println(e);
 
         JSpinner spinner1 = new JSpinner(new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH));
-        spinner1.setEditor(new JSpinner.DateEditor(spinner1, DATE_FORMAT_PATTERN));
+        spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 
         JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
-        spinner2.setEditor(new LocalDateTimeEditor(spinner2, DATE_FORMAT_PATTERN));
+        spinner2.setEditor(new LocalDateTimeEditor(spinner2, dateFormat));
 
 //         JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
-//         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).toFormat());
+//         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(dateFormat).toFormat());
 //         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
 //         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
 //         ftf.setHorizontalAlignment(SwingConstants.LEFT);
@@ -58,23 +58,23 @@ public final class MainPanel extends JPanel {
 //         ftf.setEditable(true);
 //         ftf.setFormatterFactory(factory);
 
-        add(makeTitlePanel(spinner0, "SpinnerDateModel"));
-        add(makeTitlePanel(spinner1, "SpinnerDateModel / toInstant"));
-        add(makeTitlePanel(spinner2, "SpinnerLocalDateTimeModel"));
+        add(makeTitledPanel("SpinnerDateModel", spinner0));
+        add(makeTitledPanel("SpinnerDateModel / toInstant", spinner1));
+        add(makeTitledPanel("SpinnerLocalDateTimeModel", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
@@ -113,7 +113,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
 //         }
         this.value = Optional.ofNullable(value).orElseThrow(() -> new IllegalArgumentException("value is null"));
         this.start = start;
-        this.end   = end;
+        this.end = end;
         this.temporalUnit = temporalUnit;
     }
 
@@ -191,14 +191,14 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     protected final transient DateTimeFormatter dateTimeFormatter;
     private final SpinnerLocalDateTimeModel model;
 
-    protected LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
+    protected LocalDateTimeEditor(JSpinner spinner, String dateFormatPattern) {
         super(spinner);
         if (!(spinner.getModel() instanceof SpinnerLocalDateTimeModel)) {
             throw new IllegalArgumentException("model not a SpinnerLocalDateTimeModel");
         }
         dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormatPattern);
         model = (SpinnerLocalDateTimeModel) spinner.getModel();
-        final DefaultFormatter formatter = new LocalDateTimeFormatter();
+        DefaultFormatter formatter = new LocalDateTimeFormatter();
 
         EventQueue.invokeLater(() -> {
             formatter.setValueClass(LocalDateTime.class);

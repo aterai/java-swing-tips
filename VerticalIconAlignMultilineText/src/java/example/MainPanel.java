@@ -12,10 +12,8 @@ import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "<html>The vertical alignment of this text gets offset when the font changes.";
-
     private MainPanel() {
         super(new BorderLayout());
-
         JCheckBox check1 = new JCheckBox(TEXT);
         check1.setVerticalTextPosition(SwingConstants.TOP);
 
@@ -44,16 +42,16 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new GridLayout(1, 2, 2, 2));
-        p.add(makeTitledPanel(check1, "SwingConstants.TOP"));
-        p.add(makeTitledPanel(check2, "First line center"));
+        p.add(makeTitledPanel("SwingConstants.TOP", check1));
+        p.add(makeTitledPanel("First line center", check2));
         add(p);
         add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
         p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
         return p;
     }
     public static void main(String... args) {

@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        p.add(makeTitlePanel("setEditable(false)", Arrays.asList(c0, c1)));
-        p.add(makeTitlePanel("setEditable(true)", Arrays.asList(c2, c3)));
+        p.add(makeTitledPanel("setEditable(false)", Arrays.asList(c0, c1)));
+        p.add(makeTitledPanel("setEditable(true)", Arrays.asList(c2, c3)));
 
         add(p, BorderLayout.NORTH);
         add(button, BorderLayout.SOUTH);
@@ -48,14 +48,14 @@ public final class MainPanel extends JPanel {
         comboBox.setEditable(isEditable);
         return comboBox;
     }
-    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static Component makeTitledPanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
-        c.gridx   = GridBagConstraints.REMAINDER;
+        c.gridx = GridBagConstraints.REMAINDER;
         for (Component cmp: list) {
             p.add(cmp, c);
         }

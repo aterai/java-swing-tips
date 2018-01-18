@@ -9,34 +9,34 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
-        JTextField tf = new JTextField(12);
+        JTextField field = new JTextField(12);
 
-        ((AbstractDocument) tf.getDocument()).setDocumentFilter(new SizeFilter());
-        //((AbstractDocument) tf.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
+        ((AbstractDocument) field.getDocument()).setDocumentFilter(new SizeFilter());
+        // ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
 
-        ActionMap am = tf.getActionMap();
+        ActionMap am = field.getActionMap();
 
-        String key = DefaultEditorKit.deletePrevCharAction; //"delete-previous";
+        String key = DefaultEditorKit.deletePrevCharAction; // "delete-previous";
         am.put(key, new SilentDeleteTextAction(key, am.get(key)));
 
-        key = DefaultEditorKit.deleteNextCharAction; //"delete-next";
+        key = DefaultEditorKit.deleteNextCharAction; // "delete-next";
         am.put(key, new SilentDeleteTextAction(key, am.get(key)));
 
-        add(makeTitlePanel(new JTextField(), "Default"));
-        add(makeTitlePanel(tf, "Override delete-previous, delete-next beep"));
+        add(makeTitledPanel("Default", new JTextField()));
+        add(makeTitledPanel("Override delete-previous, delete-next beep", field));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
@@ -72,7 +72,7 @@ class SilentDeleteTextAction extends TextAction {
         JTextComponent target = getTextComponent(e);
         if (Objects.nonNull(target) && target.isEditable()) {
             Caret caret = target.getCaret();
-            int dot  = caret.getDot();
+            int dot = caret.getDot();
             int mark = caret.getMark();
             if (DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
                 // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
@@ -123,10 +123,10 @@ class SizeFilter extends DocumentFilter {
 //         maxCharacters = maxChars;
 //     }
 //     @Override public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a) throws BadLocationException {
-//         //This rejects the entire insertion if it would make
-//         //the contents too long. Another option would be
-//         //to truncate the inserted string so the contents
-//         //would be exactly maxCharacters in length.
+//         // This rejects the entire insertion if it would make
+//         // the contents too long. Another option would be
+//         // to truncate the inserted string so the contents
+//         // would be exactly maxCharacters in length.
 //         if ((fb.getDocument().getLength() + str.length()) <= maxCharacters) {
 //             super.insertString(fb, offs, str, a);
 //         } else {
@@ -134,10 +134,10 @@ class SizeFilter extends DocumentFilter {
 //         }
 //     }
 //     @Override public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a) throws BadLocationException {
-//         //This rejects the entire replacement if it would make
-//         //the contents too long. Another option would be
-//         //to truncate the replacement string so the contents
-//         //would be exactly maxCharacters in length.
+//         // This rejects the entire replacement if it would make
+//         // the contents too long. Another option would be
+//         // to truncate the replacement string so the contents
+//         // would be exactly maxCharacters in length.
 //         if ((fb.getDocument().getLength() + str.length() - length) <= maxCharacters) {
 //             super.replace(fb, offs, length, str, a);
 //         } else {

@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
 
         HashMap<Integer, Integer> stepSizeMap = new HashMap<>();
         stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);
-        stepSizeMap.put(Calendar.MINUTE,      1);
-        stepSizeMap.put(Calendar.SECOND,      30);
+        stepSizeMap.put(Calendar.MINUTE, 1);
+        stepSizeMap.put(Calendar.SECOND, 30);
         stepSizeMap.put(Calendar.MILLISECOND, 500);
 
         JSpinner spinner2 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND) {
@@ -58,12 +58,12 @@ public final class MainPanel extends JPanel {
         });
         ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
 
-        add(makeTitlePanel("Default SpinnerDateModel", spinner1));
-        add(makeTitlePanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
+        add(makeTitledPanel("Default SpinnerDateModel", spinner1));
+        add(makeTitledPanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitlePanel(String title, Component cmp) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

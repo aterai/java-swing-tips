@@ -13,9 +13,9 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(CopyOnSelectListener.class.getName());
-    private final JTextArea log = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
+        JTextArea log = new JTextArea();
         LOGGER.setUseParentHandlers(false);
         LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
 
@@ -33,11 +33,11 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitledPane("Copy On Select", new JScrollPane(textArea)));
-        add(makeTitledPane("log", new JScrollPane(log)));
+        add(makeTitledPanel("Copy On Select", new JScrollPane(textArea)));
+        add(makeTitledPanel("log", new JScrollPane(log)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPane(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

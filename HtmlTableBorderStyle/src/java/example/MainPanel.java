@@ -31,12 +31,12 @@ public final class MainPanel extends JPanel {
         String html2 = "<html><table " + TABLE_STYLE2 + ">" + "<tr>" + TD2 + TD2 + "</tr><tr>" + TD2 + TD2 + "</tr></table>";
         String html3 = "<html><table " + TABLE_STYLE3 + ">" + "<tr>" + TD3 + TD3 + "</tr><tr>" + TD3 + TD3 + "</tr></table>";
 
-        add(makeTitledPanel(new JLabel(html1), "border-left, border-bottom"));
-        add(makeTitledPanel(new JLabel(html2), "border-left, border-top"));
-        add(makeTitledPanel(new JLabel(html3), "cellspacing"));
+        add(makeTitledPanel("border-left, border-bottom", new JLabel(html1)));
+        add(makeTitledPanel("border-left, border-top", new JLabel(html2)));
+        add(makeTitledPanel("cellspacing", new JLabel(html3)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

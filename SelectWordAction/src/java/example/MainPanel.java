@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private static final String TEXT = "AA-BB_CC\nAA-bb_CC\naa1-bb2_cc3\naa_(bb)_cc;\n11-22_33";
     private final JTextArea textArea = new JTextArea(TEXT);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         textArea.getActionMap().put(DefaultEditorKit.selectWordAction, new TextAction(DefaultEditorKit.selectWordAction) {
@@ -35,12 +35,12 @@ public final class MainPanel extends JPanel {
         });
         JSplitPane split = new JSplitPane();
         split.setResizeWeight(.5);
-        split.setLeftComponent(makeTitledPane(new JTextArea(TEXT), "Default"));
-        split.setRightComponent(makeTitledPane(textArea, "Break words: _ and -"));
+        split.setLeftComponent(makeTitledPanel("Default", new JTextArea(TEXT)));
+        split.setRightComponent(makeTitledPanel("Break words: _ and -", textArea));
         add(split);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPane(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JLabel(title), BorderLayout.NORTH);
         p.add(new JScrollPane(c));
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 
 final class TextUtilties {
     private TextUtilties() { /* HideUtilityClassConstructor */ }
-    //@see javax.swint.text.Utilities.getWordStart(...)
+    // @see javax.swint.text.Utilities.getWordStart(...)
     public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
         Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
             .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
@@ -104,7 +104,7 @@ final class TextUtilties {
         SegmentCache.releaseSharedSegment(seg);
         return offs2;
     }
-    //@see javax.swint.text.Utilities.getWordEnd(...)
+    // @see javax.swint.text.Utilities.getWordEnd(...)
     public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
         Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
             .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));

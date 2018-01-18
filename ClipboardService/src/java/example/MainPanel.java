@@ -51,11 +51,11 @@ public class MainPanel extends JPanel {
         };
         textArea.setComponentPopupMenu(new TextComponentPopupMenu(textArea));
 
-        add(makeTitledPane("ClipboardService", new JScrollPane(textArea)));
-        add(makeTitledPane("Default", new JScrollPane(new JTextArea())));
+        add(makeTitledPanel("ClipboardService", new JScrollPane(textArea)));
+        add(makeTitledPanel("Default", new JScrollPane(new JTextArea())));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledPane(String title, Component c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

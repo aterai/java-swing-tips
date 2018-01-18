@@ -6,11 +6,11 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 1, .01));
         JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0%");
-        //editor1.getTextField().setEditable(false);
+        // editor1.getTextField().setEditable(false);
         spinner1.setEditor(editor1);
 
         JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(0, 0, 1, .01));
@@ -19,19 +19,19 @@ public final class MainPanel extends JPanel {
         editor2.getTextField().setBackground(UIManager.getColor("FormattedTextField.background"));
         spinner2.setEditor(editor2);
 
-        add(makeTitlePanel(spinner1, "JSpinner"));
-        add(makeTitlePanel(spinner2, "getTextField().setEditable(false)"));
+        add(makeTitledPanel("JSpinner", spinner1));
+        add(makeTitledPanel("getTextField().setEditable(false)", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

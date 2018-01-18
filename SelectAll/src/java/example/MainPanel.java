@@ -8,28 +8,29 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field1 = new JTextField("aaaaaaaaa");
-    private final JTextField field2 = new JTextField("bbbbbbbbb");
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
-        field1.addFocusListener(new FocusAdapter() {
+
+        JTextField field = new JTextField("aaaaaaaaa");
+        field.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 ((JTextComponent) e.getComponent()).selectAll();
             }
         });
-        add(makeTitlePanel(field1, "focusGained: selectAll"));
-        add(makeTitlePanel(field2, "default"));
+
+        add(makeTitledPanel("focusGained: selectAll", field));
+        add(makeTitledPanel("default", new JTextField("bbbbbbbbb")));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

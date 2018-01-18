@@ -6,30 +6,36 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
-import java.util.List;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final ImageIcon image1;
-    private final ImageIcon image2;
-    public MainPanel() {
-        super(new GridLayout(2, 1));
-        image1 = new ImageIcon(getClass().getResource("favicon.png"));
-        image2 = new ImageIcon(getClass().getResource("16x16.png"));
-        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
+    private MainPanel() {
+        super(new BorderLayout());
+        ImageIcon image1 = new ImageIcon(getClass().getResource("favicon.png"));
+        ImageIcon image2 = new ImageIcon(getClass().getResource("16x16.png"));
+        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
 
-        JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel());
+        JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
         initComboBox(combo01);
 
-        JComboBox<URLItem> combo02 = new URLItemComboBox(makeTestModel(), rss);
+        JComboBox<URLItem> combo02 = new URLItemComboBox(makeTestModel(image1, image2), rss);
         initComboBox(combo02);
 
-        add(makeTitlePanel("setEditable(true)", Arrays.asList(combo01, combo02)));
+        Box box = Box.createVerticalBox();
+        box.setBorder(BorderFactory.createTitledBorder("setEditable(true)"));
+        box.add(Box.createVerticalStrut(2));
+        box.add(combo01);
+        box.add(Box.createVerticalStrut(5));
+        box.add(combo02);
+        box.add(Box.createVerticalStrut(2));
+
+        add(box, BorderLayout.NORTH);
+        add(new JScrollPane(new JTextArea()));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private DefaultComboBoxModel<URLItem> makeTestModel() {
+    private static DefaultComboBoxModel<URLItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
         DefaultComboBoxModel<URLItem> model = new DefaultComboBoxModel<>();
         model.addElement(new URLItem("https://ateraimemo.com/", image1, true));
         model.addElement(new URLItem("https://ateraimemo.com/Swing.html", image1, true));
@@ -48,18 +54,6 @@ public final class MainPanel extends JPanel {
                 return c;
             }
         });
-    }
-    private static Component makeTitlePanel(String title, List<? extends Component> list) {
-        Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createTitledBorder(title));
-        list.forEach(c -> {
-            box.add(Box.createVerticalStrut(5));
-            box.add(c);
-        });
-        box.add(Box.createVerticalStrut(2));
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(box, BorderLayout.NORTH);
-        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -88,9 +82,9 @@ class URLItemComboBox extends JComboBox<URLItem> {
     protected URLItemComboBox(DefaultComboBoxModel<URLItem> model, ImageIcon rss) {
         super(model);
 
-        final JTextField field = (JTextField) getEditor().getEditorComponent();
-        final JButton button = makeRssButton(rss);
-        final JLabel label = makeLabel(field);
+        JTextField field = (JTextField) getEditor().getEditorComponent();
+        JButton button = makeRssButton(rss);
+        JLabel label = makeLabel(field);
         setLayout(new ComboBoxLayout(label, button));
         add(button);
         add(label);
@@ -134,7 +128,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         button.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return button;
     }
-    private static JLabel makeLabel(final JTextField field) {
+    private static JLabel makeLabel(JTextField field) {
         JLabel label = new JLabel();
         label.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {

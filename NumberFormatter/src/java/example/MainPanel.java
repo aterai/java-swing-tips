@@ -9,33 +9,33 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
-    private final JSpinner s1 = new JSpinner(makeSpinnerNumberModel());
-    private final JSpinner s2 = new WarningSpinner(makeSpinnerNumberModel());
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(3, 1));
-        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s1.getEditor();
+
+        JSpinner spinner = new JSpinner(makeSpinnerNumberModel());
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField.AbstractFormatter formatter = editor.getTextField().getFormatter();
         if (formatter instanceof DefaultFormatter) {
             ((DefaultFormatter) formatter).setAllowsInvalid(false);
         }
-        add(makeTitlePanel(s0, "Default"));
-        add(makeTitlePanel(s1, "NumberFormatter#setAllowsInvalid(false)"));
-        add(makeTitlePanel(s2, "BackgroundColor"));
+
+        add(makeTitledPanel("Default", new JSpinner(makeSpinnerNumberModel())));
+        add(makeTitledPanel("NumberFormatter#setAllowsInvalid(false)", spinner));
+        add(makeTitledPanel("BackgroundColor", new WarningSpinner(makeSpinnerNumberModel())));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
         return new SpinnerNumberModel(Long.valueOf(10), Long.valueOf(0), Long.valueOf(99999), Long.valueOf(1));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
@@ -83,12 +83,12 @@ class WarningSpinner extends JSpinner {
             }
         });
     }
-    private static DefaultFormatterFactory makeFFactory(final SpinnerNumberModel m) { //DecimalFormatSymbols dfs) {
-        final NumberFormat format = new DecimalFormat("####0"); //, dfs);
+    private static DefaultFormatterFactory makeFFactory(SpinnerNumberModel m) { // DecimalFormatSymbols dfs) {
+        NumberFormat format = new DecimalFormat("####0"); // , dfs);
         NumberFormatter editFormatter = new NumberFormatter(format) {
-            //@Override protected DocumentFilter getDocumentFilter() {
-            //    return new IntegerDocumentFilter();
-            //}
+            // @Override protected DocumentFilter getDocumentFilter() {
+            //     return new IntegerDocumentFilter();
+            // }
             @Override public Object stringToValue(String text) throws ParseException {
                 try {
                     Long.parseLong(text);
@@ -108,22 +108,22 @@ class WarningSpinner extends JSpinner {
                 throw new ParseException("not Long", 0);
             }
         };
-        //editFormatter.setAllowsInvalid(false);
-        //editFormatter.setCommitsOnValidEdit(true);
+        // editFormatter.setAllowsInvalid(false);
+        // editFormatter.setCommitsOnValidEdit(true);
         editFormatter.setValueClass(Long.class);
         NumberFormatter displayFormatter = new NumberFormatter(format);
         return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
     }
 }
 
-//     private static JSpinner makeSpinner2(final SpinnerNumberModel m) {
+//     private static JSpinner makeSpinner2(SpinnerNumberModel m) {
 //         JSpinner s = new JSpinner(m);
 //         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
-//         final JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+//         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
 //         ftf.setFormatterFactory(makeFFactory2(m));
 //         ftf.addFocusListener(new FocusAdapter() {
-//             @Override public void focusLost(final FocusEvent e) {
-//                 //JTextComponent textField = (JTextComponent) e.getSource();
+//             @Override public void focusLost(FocusEvent e) {
+//                 // JTextComponent textField = (JTextComponent) e.getSource();
 //                 System.out.println(ftf.getText());
 // //                 try {
 // //                     ftf.commitEdit();
@@ -143,7 +143,7 @@ class WarningSpinner extends JSpinner {
 //         });
 //         return s;
 //     }
-//     private static DefaultFormatterFactory makeFFactory2(final SpinnerNumberModel m) {
+//     private static DefaultFormatterFactory makeFFactory2(SpinnerNumberModel m) {
 //         NumberFormatter formatter = new NumberFormatter(new DecimalFormat("########0"));
 //         formatter.setAllowsInvalid(false);
 //         formatter.setCommitsOnValidEdit(true);
@@ -167,7 +167,7 @@ class WarningSpinner extends JSpinner {
 //         String before = currentContent.substring(0, offset);
 //         String after = currentContent.substring(length + offset, currentLength);
 //         String newValue = before + Objects.toString(text, "") + after;
-//         //currentValue =
+//         // currentValue =
 //         checkInput(newValue, offset);
 //         fb.replace(offset, length, text, attrs);
 //     }

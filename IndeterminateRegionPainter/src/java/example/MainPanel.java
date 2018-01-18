@@ -10,18 +10,16 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.*;
 
-public class MainPanel extends JPanel {
-    protected final BoundedRangeModel model = new DefaultBoundedRangeModel();
-    protected final JProgressBar progressBar0 = new JProgressBar(model);
-    protected final JProgressBar progressBar1;
-    protected transient SwingWorker<String, Void> worker;
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private transient SwingWorker<String, Void> worker;
+    private MainPanel() {
         super(new BorderLayout());
+        BoundedRangeModel model = new DefaultBoundedRangeModel();
+        JProgressBar progressBar0 = new JProgressBar(model);
 
+        JProgressBar progressBar1 = new JProgressBar(model);
         UIDefaults d = new UIDefaults();
         d.put("ProgressBar[Enabled+Indeterminate].foregroundPainter", new IndeterminateRegionPainter());
-        progressBar1 = new JProgressBar(model);
         progressBar1.putClientProperty("Nimbus.Overrides", d);
 
 //         UIManager.put("ProgressBar.cycleTime", 1000);
@@ -36,7 +34,7 @@ public class MainPanel extends JPanel {
 //                 }
 //
 //                 Insets b = progressBar.getInsets(); // area for border
-//                 int barRectWidth  = progressBar.getWidth() - b.right - b.left;
+//                 int barRectWidth = progressBar.getWidth() - b.right - b.left;
 //                 int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
 //
 //                 if (barRectWidth <= 0 || barRectHeight <= 0) {
@@ -68,8 +66,8 @@ public class MainPanel extends JPanel {
 //         });
 
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTitlePanel("Default", progressBar0));
-        p.add(makeTitlePanel("ProgressBar[Indeterminate].foregroundPainter", progressBar1));
+        p.add(makeTitledPanel("Default", progressBar0));
+        p.add(makeTitledPanel("ProgressBar[Indeterminate].foregroundPainter", progressBar1));
 
         JButton button = new JButton("Test start");
         button.addActionListener(e -> {
@@ -101,12 +99,12 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(String title, JComponent cmp) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         p.add(cmp, c);
         return p;
@@ -120,7 +118,7 @@ public class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -128,7 +126,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -223,17 +221,17 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
         return path;
     }
     private Rectangle2D decodeRect3() {
-        rect.setRect(decodeX(.4f), //x
-                     decodeY(.4f), //y
-                     decodeX(3f)   - decodeX(.4f), //width
-                     decodeY(2.6f) - decodeY(.4f)); //height
+        rect.setRect(decodeX(.4f), // x
+                     decodeY(.4f), // y
+                     decodeX(3f)   - decodeX(.4f), // width
+                     decodeY(2.6f) - decodeY(.4f)); // height
         return rect;
     }
     private Rectangle2D decodeRect4() {
-        rect.setRect(decodeX(.6f), //x
-                     decodeY(.6f), //y
-                     decodeX(2.8f) - decodeX(.6f), //width
-                     decodeY(2.4f) - decodeY(.6f)); //height
+        rect.setRect(decodeX(.6f), // x
+                     decodeY(.6f), // y
+                     decodeX(2.8f) - decodeX(.6f), // width
+                     decodeY(2.4f) - decodeY(.6f)); // height
         return rect;
     }
     private Paint decodeGradient5(Shape s) {

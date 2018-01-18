@@ -16,11 +16,11 @@ public final class MainPanel extends JPanel {
         d.put("Tree.linesStyle", "dashed");
         tree.putClientProperty("Nimbus.Overrides", d);
 
-        add(makeTitledPane("Default", new JScrollPane(new JTree())));
-        add(makeTitledPane("linesStyle: dashed", new JScrollPane(tree)));
+        add(makeTitledPanel("Default", new JScrollPane(new JTree())));
+        add(makeTitledPanel("linesStyle: dashed", new JScrollPane(tree)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPane(String title, JComponent c) {
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);

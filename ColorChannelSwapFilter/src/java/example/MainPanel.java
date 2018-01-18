@@ -30,8 +30,8 @@ public class MainPanel extends JPanel {
 
         BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTitlePanel("setStringPainted(true)", Arrays.asList(progress01, progress02)));
-        p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
+        p.add(makeTitledPanel("setStringPainted(true)", Arrays.asList(progress01, progress02)));
+        p.add(makeTitledPanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
 
         JCheckBox check = new JCheckBox("Turn the progress bar red");
         check.addActionListener(e -> {
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitlePanel(String title, List<? extends Component> list) {
+    private static Component makeTitledPanel(String title, List<? extends Component> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

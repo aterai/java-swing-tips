@@ -15,17 +15,17 @@ public final class MainPanel extends JPanel {
     private MainPanel(ExecutorService threadPool) {
         super(new BorderLayout());
 
-        //JTextPane   textPane;
-        JEditorPane editorPane   = new JEditorPane();
-        JTextArea   textArea     = new JTextArea();
+        // JTextPane textPane;
+        JEditorPane editorPane = new JEditorPane();
+        JTextArea textArea = new JTextArea();
         JButton editorPaneButton = new JButton("JEditorPane");
-        JButton textAreaButton   = new JButton("JTextArea");
-        JButton clearButton      = new JButton("clear all");
+        JButton textAreaButton = new JButton("JTextArea");
+        JButton clearButton = new JButton("clear all");
 
 /*
         textPane = new JTextPane() {
-            //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
-            //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
+            // Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
+            // http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
             @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
                 if (Objects.isNull(p)) {
@@ -65,14 +65,14 @@ public final class MainPanel extends JPanel {
         box.add(clearButton);
 
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTitledPanel(editorPane, "NoWrapEditorKit(JEditorPane)"));
-        p.add(makeTitledPanel(textArea,   "JTextArea"));
+        p.add(makeTitledPanel("NoWrapEditorKit(JEditorPane)", editorPane));
+        p.add(makeTitledPanel("JTextArea", textArea));
 
         add(box, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitledPanel(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JScrollPane sp = new JScrollPane(c);
         sp.setBorder(BorderFactory.createTitledBorder(title));
         return sp;
@@ -142,8 +142,8 @@ class NoWrapEditorKit1 extends StyledEditorKit {
         }
         @Override public void layout(int width, int height) {
             super.layout(Integer.MAX_VALUE - 64, height);
-            //??? Integer.MAX_VALUE - 64 = error?
-            //??? Integer.MAX_VALUE - 64 = ok?
+            // ??? Integer.MAX_VALUE - 64 = error?
+            // ??? Integer.MAX_VALUE - 64 = ok?
         }
     }
 }

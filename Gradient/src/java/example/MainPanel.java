@@ -36,9 +36,9 @@ public final class MainPanel extends JPanel {
         c.insets = new Insets(2, 2, 2, 2);
         c.gridwidth = 2;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.anchor  = GridBagConstraints.LINE_START;
-        p.add(makeTitlePanel(title, sp), c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.LINE_START;
+        p.add(makeTitledPanel(title, sp), c);
 
         c.insets = new Insets(2, 2 + indent, 2, 2);
         c.gridwidth = 1;
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-    private static JPanel makeTitlePanel(String title, JSeparator separator) {
+    private static Component makeTitledPanel(String title, JSeparator separator) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(2, 2, 2, 2);

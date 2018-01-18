@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         JPanel p1 = new JPanel(new BorderLayout());
         p1.add(pf1);
         p1.add(b1, BorderLayout.SOUTH);
-        add(makeTitlePanel(p1, "BorderLayout + JCheckBox"));
+        add(makeTitledPanel("BorderLayout + JCheckBox", p1));
 
         JPasswordField pf2 = makePasswordField();
         // AbstractDocument doc = (AbstractDocument) pf2.getDocument();
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         JPanel p2 = makeOverlayLayoutPanel();
         p2.add(b2);
         p2.add(pf2);
-        add(makeTitlePanel(p2, "OverlayLayout + JToggleButton"));
+        add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
 
         JPasswordField pf3 = makePasswordField();
         AbstractDocument doc = (AbstractDocument) pf3.getDocument();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         JPanel pp3 = makeOverlayLayoutPanel();
         pp3.add(b3);
         pp3.add(p3);
-        add(makeTitlePanel(pp3, "CardLayout + JTextField(can copy) + ..."));
+        add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", pp3));
 
         JPasswordField pf4 = makePasswordField();
         AbstractButton b4 = new JButton();
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
         JPanel p4 = makeOverlayLayoutPanel();
         p4.add(b4);
         p4.add(pf4);
-        add(makeTitlePanel(p4, "press and hold down the mouse button"));
+        add(makeTitledPanel("press and hold down the mouse button", p4));
 
         setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -110,14 +110,14 @@ public final class MainPanel extends JPanel {
         pf.setAlignmentX(Component.RIGHT_ALIGNMENT);
         return pf;
     }
-    private static JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
@@ -180,7 +180,7 @@ enum PasswordField {
 // //                 throw new BadLocationException(proposedValue, offset);
 // //             }
 // //         }
-// //         // if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { //JDK 8
+// //         // if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { // JDK 8
 // //         Matcher m = pattern.matcher(proposedValue);
 // //         if (!proposedValue.isEmpty() && !m.find()) {
 // //             throw new BadLocationException(proposedValue, offset);

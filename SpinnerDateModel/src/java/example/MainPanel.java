@@ -7,15 +7,14 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new GridLayout(3, 1));
+        String dateFormat = "yyyy/MM/dd";
 
         Date date = new Date();
         JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
-        spinner1.setEditor(new JSpinner.DateEditor(spinner1, DATE_FORMAT_PATTERN));
+        spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 
         Calendar today = Calendar.getInstance();
         today.clear(Calendar.MILLISECOND);
@@ -28,34 +27,34 @@ public class MainPanel extends JPanel {
         System.out.println(start);
 
         JSpinner spinner2 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
-        spinner2.setEditor(new JSpinner.DateEditor(spinner2, DATE_FORMAT_PATTERN));
+        spinner2.setEditor(new JSpinner.DateEditor(spinner2, dateFormat));
 
         JSpinner spinner3 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
-        final JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, DATE_FORMAT_PATTERN);
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, dateFormat);
         spinner3.setEditor(editor);
         editor.getTextField().addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 EventQueue.invokeLater(() -> {
-                    int i = DATE_FORMAT_PATTERN.lastIndexOf("dd");
+                    int i = dateFormat.lastIndexOf("dd");
                     editor.getTextField().select(i, i + 2);
                 });
             }
         });
 
-        add(makeTitlePanel(spinner1, "Calendar.DAY_OF_MONTH"));
-        add(makeTitlePanel(spinner2, "min: set(Calendar.HOUR_OF_DAY, 0)"));
-        add(makeTitlePanel(spinner3, "JSpinner.DateEditor + FocusListener"));
+        add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
+        add(makeTitledPanel("min: set(Calendar.HOUR_OF_DAY, 0)", spinner2));
+        add(makeTitledPanel("JSpinner.DateEditor + FocusListener", spinner3));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {

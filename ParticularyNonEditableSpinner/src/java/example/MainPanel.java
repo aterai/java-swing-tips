@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 1, .01));
         JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0%");
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 if (getComponentCount() > 0) {
                     JFormattedTextField f = getTextField();
-                    f.setBorder(null); //Nimbus
+                    f.setBorder(null); // Nimbus
                     super.updateUI();
                     initTextFieldBorder(f);
                 } else {
@@ -41,15 +41,15 @@ public final class MainPanel extends JPanel {
 //         cb.setGap(0);
 //         cb.install(editor2);
 
-        add(makeTitlePanel(spinner1, "JSpinner+Default"));
-        add(makeTitlePanel(spinner2, "JSpinner+StringBorder"));
+        add(makeTitledPanel("JSpinner+Default", spinner1));
+        add(makeTitledPanel("JSpinner+StringBorder", spinner2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     protected static void initTextFieldBorder(JTextField textField) {
         EventQueue.invokeLater(() -> {
             Border b = new StringBorder(textField, "%");
-            //if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
+            // if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
             if (textField.getUI().getClass().getName().startsWith("Synth")) {
                 Border c = textField.getBorder();
                 textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
@@ -58,14 +58,14 @@ public final class MainPanel extends JPanel {
             }
         });
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
@@ -110,7 +110,7 @@ class StringBorder implements Border {
         Graphics2D g2 = (Graphics2D) g.create();
         float tx = x + width - rect.width;
         float ty = y - rect.y + (height - rect.height) / 2;
-        //g2.setPaint(Color.RED);
+        // g2.setPaint(Color.RED);
         g2.drawString(str, tx, ty);
         g2.dispose();
     }

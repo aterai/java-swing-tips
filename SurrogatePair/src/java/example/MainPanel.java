@@ -12,7 +12,7 @@ import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
     @SuppressWarnings("AvoidEscapedUnicodeCharacters")
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         StyleSheet styleSheet = new StyleSheet();
@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
         // editor2.setText("(𦹀) (𦹀)\n(𠮟) (𠮟)");
 
         JPanel p = new JPanel(new GridLayout(0, 1));
-        p.add(makeTitledPane(editor1, "Numeric character reference"));
-        p.add(makeTitledPane(editor2, "Unicode escapes"));
+        p.add(makeTitledPanel("Numeric character reference", editor1));
+        p.add(makeTitledPanel("Unicode escapes", editor2));
 
         JButton button = new JButton("browse: SurrogatePair.html");
         button.addActionListener(e -> browseCacheFile(url));
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected static void browseCacheFile(URL url) {
+    private static void browseCacheFile(URL url) {
         if (Desktop.isDesktopSupported()) {
             try (InputStream in = new BufferedInputStream(url.openStream())) {
                 Path path = Files.createTempFile("_tmp", ".html");
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 //             }
         }
     }
-    public JComponent makeTitledPane(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JScrollPane scroll = new JScrollPane(c);
         scroll.setBorder(BorderFactory.createTitledBorder(title));
         return scroll;

@@ -6,11 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JSlider slider = new JSlider(0, 100, 50);
-    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(500, 0, 1000, 10));
-
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
+        JSlider slider = new JSlider(0, 100, 50);
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(500, 0, 1000, 10));
 
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
@@ -40,29 +39,28 @@ public final class MainPanel extends JPanel {
             SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
             Integer oldValue = (Integer) source.getValue();
             int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
-            int max = ((Integer) model.getMaximum()).intValue(); //1000
-            int min = ((Integer) model.getMinimum()).intValue(); //0
+            int max = ((Integer) model.getMaximum()).intValue(); // 1000
+            int min = ((Integer) model.getMinimum()).intValue(); // 0
             if (min <= intValue && intValue <= max) {
                 source.setValue(intValue);
             }
         });
 
-        add(makeTitlePanel(spinner, "MouseWheel+JSpinner"));
-        add(makeTitlePanel(slider,  "MouseWheel+JSlider"));
+        add(makeTitledPanel("MouseWheel+JSpinner", spinner));
+        add(makeTitledPanel("MouseWheel+JSlider", slider));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

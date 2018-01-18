@@ -12,8 +12,7 @@ import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = makeCheckerTexture();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JTextField textField01 = new JTextField(20) {
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 setOpaque(false);
-                //setBackground(new Color(0x0, true));
+                // setBackground(new Color(0x0, true));
                 setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
             }
         };
@@ -78,22 +77,22 @@ public final class MainPanel extends JPanel {
         }
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.setOpaque(false);
-        p.add(makeTitlePanel(textField01, "Override: JTextField#paintComponent(...)"));
-        p.add(makeTitlePanel(textField02, "setBorder(new RoundedCornerBorder())"));
+        p.add(makeTitledPanel("Override: JTextField#paintComponent(...)", textField01));
+        p.add(makeTitledPanel("setBorder(new RoundedCornerBorder())", textField02));
         add(p);
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(2, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         p.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     @Override protected void paintComponent(Graphics g) {
@@ -154,7 +153,7 @@ class RoundedCornerBorder extends AbstractBorder {
 
 //         Container parent = c.getParent();
 //         if (Objects.nonNull(parent)) {
-//             //g2.setPaint(parent.getBackground());
+//             // g2.setPaint(parent.getBackground());
 //             g2.setPaint(new Color(0x0, true));
 //             Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
 //             corner.subtract(new Area(border));
@@ -162,7 +161,7 @@ class RoundedCornerBorder extends AbstractBorder {
 //         }
 
         g2.setPaint(ALPHA_ZERO);
-        //Area corner = new Area(border.getBounds2D());
+        // Area corner = new Area(border.getBounds2D());
         Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
         corner.subtract(new Area(border));
         g2.fill(corner);
@@ -172,7 +171,7 @@ class RoundedCornerBorder extends AbstractBorder {
         g2.dispose();
     }
     public Shape getBorderShape(int x, int y, int w, int h) {
-        int r = h; //h / 2;
+        int r = h; // h / 2;
         return new RoundRectangle2D.Double(x, y, w, h, r, r);
     }
     @Override public Insets getBorderInsets(Component c) {

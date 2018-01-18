@@ -23,12 +23,12 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitlePanel("setEchoChar('★')", pf1));
-        add(makeTitlePanel("drawEchoCharacter", pf2));
+        add(makeTitledPanel("setEchoChar('★')", pf1));
+        add(makeTitledPanel("drawEchoCharacter", pf2));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitlePanel(String title, Component cmp) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

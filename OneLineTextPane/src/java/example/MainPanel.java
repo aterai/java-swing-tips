@@ -9,28 +9,10 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         String str = "red green blue aaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        //JTextField textField = new JTextField(str);
-        add(makeTitlePanel(new JTextField(str), "JTextField"));
-        add(makeTitlePanel(makeOneLineTextPane(str), "JTextPane+StyledDocument+JScrollPane"));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        setPreferredSize(new Dimension(320, 240));
-    }
 
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
-        JPanel p = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
-        p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        return p;
-    }
-
-    public JComponent makeOneLineTextPane(String text) {
         JTextPane textPane = new JTextPane() {
             @Override public void scrollRectToVisible(Rectangle rect) {
                 int r = getBorder().getBorderInsets(this).right;
@@ -45,7 +27,7 @@ public final class MainPanel extends JPanel {
         AbstractDocument doc = new SimpleSyntaxDocument();
         textPane.setDocument(doc);
         try {
-            doc.insertString(0, text, null);
+            doc.insertString(0, str, null);
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
@@ -65,7 +47,7 @@ public final class MainPanel extends JPanel {
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK));
         textPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 
-        //// @see https://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
+        // // @see https://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
         // textPane.addCaretListener(new VisibleCaretListener());
 
         JScrollPane scrollPane = new JScrollPane(
@@ -79,7 +61,20 @@ public final class MainPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
 
-        return scrollPane;
+        add(makeTitledPanel("JTextField", new JTextField(str)));
+        add(makeTitledPanel("JTextPane+StyledDocument+JScrollPane", scrollPane));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static Component makeTitledPanel(String title, Component cmp) {
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1d;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
+        p.add(cmp, c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -112,15 +107,15 @@ public final class MainPanel extends JPanel {
 // modified by aterai aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
-    //HashMap<String, AttributeSet> keywords = new HashMap<>();
+    // HashMap<String, AttributeSet> keywords = new HashMap<>();
     private static final String OPERANDS = ".,";
     private final Style def = getStyle(StyleContext.DEFAULT_STYLE);
     protected SimpleSyntaxDocument() {
         super();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(addStyle("red",   def), Color.RED);
+        // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        StyleConstants.setForeground(addStyle("red", def), Color.RED);
         StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
-        StyleConstants.setForeground(addStyle("blue",  def), Color.BLUE);
+        StyleConstants.setForeground(addStyle("blue", def), Color.BLUE);
     }
     @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
@@ -155,9 +150,9 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private void applyHighlighting(String content, int line) throws BadLocationException {
         Element root = getDefaultRootElement();
-        int startOffset   = root.getElement(line).getStartOffset();
-        int endOffset     = root.getElement(line).getEndOffset() - 1;
-        int lineLength    = endOffset - startOffset;
+        int startOffset = root.getElement(line).getStartOffset();
+        int endOffset = root.getElement(line).getEndOffset() - 1;
+        int lineLength = endOffset - startOffset;
         int contentLength = content.length();
         endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
         setCharacterAttributes(startOffset, lineLength, def, true);
@@ -186,7 +181,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         }
         String token = content.substring(startOffset, endOfToken);
         Style s = getStyle(token);
-        //if (keywords.containsKey(token)) {
+        // if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
         if (Objects.nonNull(s)) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);

@@ -15,19 +15,19 @@ public final class MainPanel extends JPanel {
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field));
         field.setText("abcdefghijklmn");
 
-        add(makeTitlePanel(new JTextField("abcdefghijklmn"), "Default"));
-        add(makeTitlePanel(field, "FirstCharToUpperCase"));
+        add(makeTitledPanel("Default", new JTextField("abcdefghijklmn")));
+        add(makeTitledPanel("FirstCharToUpperCase", field));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
         return p;
     }
     public static void main(String... args) {
