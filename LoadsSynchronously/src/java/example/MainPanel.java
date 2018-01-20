@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         editor1.setEditorKit(new HTMLEditorKit());
         tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
-        editor2.setEditorKit(new ImageLoadSynchronouslyHTMLEditorKit());
+        editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());
         tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));
 
         tabs.addChangeListener(e -> {
@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ImageLoadSynchronouslyHTMLEditorKit extends HTMLEditorKit {
+class ImageLoadSynchronouslyHtmlEditorKit extends HTMLEditorKit {
     @Override public ViewFactory getViewFactory() {
         return new HTMLEditorKit.HTMLFactory() {
             @Override public View create(Element elem) {

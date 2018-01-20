@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
         textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
     });
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        //TEST: ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FIFODocumentFilter());
-        textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
+        // TEST: ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FifoDocumentFilter());
+        textArea.getDocument().addDocumentListener(new FifoDocumentListener(textArea));
         textArea.setEditable(false);
 
         JButton start = new JButton("Start");
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class FIFODocumentListener implements DocumentListener {
+class FifoDocumentListener implements DocumentListener {
     private static final int MAX_LINES = 10;
     private final JTextComponent textComponent;
-    protected FIFODocumentListener(JTextComponent textComponent) {
+    protected FifoDocumentListener(JTextComponent textComponent) {
         this.textComponent = textComponent;
     }
     @Override public void insertUpdate(DocumentEvent e) {
@@ -104,7 +104,7 @@ class FIFODocumentListener implements DocumentListener {
     @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
 }
 
-class FIFODocumentFilter extends DocumentFilter {
+class FifoDocumentFilter extends DocumentFilter {
     private static final int MAX_LINES = 10;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
         fb.insertString(offset, text, attr);

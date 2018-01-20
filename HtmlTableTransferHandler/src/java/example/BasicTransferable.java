@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.*;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
+@SuppressWarnings("AbbreviationAsWordInName")
 class BasicTransferable implements Transferable {
     protected String plainData;
     protected String htmlData;

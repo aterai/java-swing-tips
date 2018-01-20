@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        textPane.setComponentPopupMenu(new HTMLColorPopupMenu());
+        textPane.setComponentPopupMenu(new HtmlColorPopupMenu());
         // textPane.setEditorKit(new HTMLEditorKit());
         textPane.setContentType("text/html");
         textArea.setText(textPane.getText());
@@ -74,8 +74,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class HTMLColorPopupMenu extends JPopupMenu {
-    protected HTMLColorPopupMenu() {
+class HtmlColorPopupMenu extends JPopupMenu {
+    protected HtmlColorPopupMenu() {
         super();
         MutableAttributeSet red = new SimpleAttributeSet();
         StyleConstants.setForeground(red, Color.RED);

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         String text = String.format("<span>Hello <img src='%s' />!!!</span>", url);
 
         JEditorPane editor1 = makeEditorPane(new HTMLEditorKit(), text);
-        JEditorPane editor2 = makeEditorPane(new ImgBaselineHTMLEditorKit(), text);
+        JEditorPane editor2 = makeEditorPane(new ImgBaselineHtmlEditorKit(), text);
 
         add(new JScrollPane(editor1));
         add(new JScrollPane(editor2));
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ImgBaselineHTMLEditorKit extends HTMLEditorKit {
+class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
     @Override public ViewFactory getViewFactory() {
         return new HTMLEditorKit.HTMLFactory() {
             @Override public View create(Element elem) {
