@@ -91,7 +91,7 @@ public class MainPanel extends JPanel {
         worker.execute();
     }
 
-    protected void appendLine(String str) {
+    protected final void appendLine(String str) {
         area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
     }
@@ -202,7 +202,7 @@ class AnimatedLabel extends JLabel {
 //     private static final double R = 2d;
 //     private static final double SX = 1d;
 //     private static final double SY = 1d;
-//     private static final int WIDTH  = (int) (R * 8 + SX * 2);
+//     private static final int WIDTH = (int) (R * 8 + SX * 2);
 //     private static final int HEIGHT = (int) (R * 8 + SY * 2);
 //     private final List<Shape> list = new ArrayList<>(Arrays.asList(
 //         new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),

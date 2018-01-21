@@ -12,8 +12,8 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5, 5));
 
-        //TEST: System.out.println(UIManager.getBoolean("ComboBox.noActionOnKeyNavigation"));
-        //TEST: UIManager.put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
+        // TEST: System.out.println(UIManager.getBoolean("ComboBox.noActionOnKeyNavigation"));
+        // TEST: UIManager.put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
 
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(new JLabel("ComboBox.isEnterSelectablePopup: false(default)", SwingConstants.LEFT));
@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JComboBox<String> makeComboBox(boolean isEnterSelectable) {
-        //UIManager.put("ComboBox.isEnterSelectablePopup", Boolean.TRUE);
+        // UIManager.put("ComboBox.isEnterSelectablePopup", Boolean.TRUE);
         JComboBox<String> combo = new JComboBox<>(new String[] {"aaa", "bbb", "CCC", "DDD"});
         combo.setEditable(true);
         combo.addPopupMenuListener(new PopupMenuListener() {
@@ -39,10 +39,10 @@ public class MainPanel extends JPanel {
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
         });
         combo.addActionListener(e -> append("ActionListener: " + combo.getSelectedItem()));
-        //TEST: combo.addItemListener(e -> append("ItemListener: " + combo.getSelectedItem()));
+        // TEST: combo.addItemListener(e -> append("ItemListener: " + combo.getSelectedItem()));
         return combo;
     }
-    protected void append(String text) {
+    protected final void append(String text) {
         log.append(text + "\n");
         log.setCaretPosition(log.getDocument().getLength());
     }

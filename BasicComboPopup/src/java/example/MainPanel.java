@@ -42,8 +42,8 @@ public class MainPanel extends JPanel {
         });
 
         InputMap imc = popup.getInputMap();
-        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),    "myUp");
-        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),  "myDown");
+        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "myUp");
+        imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
         imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "myEnt");
 
         jtp.getActionMap().put("myPop", new AbstractAction() {
@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(jtp));
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void append(String str) {
+    protected final void append(String str) {
         popup.hide();
         try {
             Document doc = jtp.getDocument();
