@@ -68,7 +68,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
                      : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
-    protected Path2D getRubberBand() {
+    protected final Path2D getRubberBand() {
         return rubberBand;
     }
     private class RubberBandingListener extends MouseInputAdapter {
@@ -81,10 +81,10 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             Point destPoint = e.getPoint();
             Path2D rb = getRubberBand();
             rb.reset();
-            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.moveTo(srcPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, destPoint.y);
-            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.lineTo(srcPoint.x, destPoint.y);
             rb.closePath();
             // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());

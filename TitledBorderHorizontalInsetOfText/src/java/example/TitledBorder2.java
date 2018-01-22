@@ -643,7 +643,7 @@ public class TitledBorder2 extends AbstractBorder {
         return justification;
     }
 
-    protected Font getFont(Component c) {
+    protected final Font getFont(Component c) {
         Font font = getTitleFont();
         if (Objects.nonNull(font)) {
             return font;

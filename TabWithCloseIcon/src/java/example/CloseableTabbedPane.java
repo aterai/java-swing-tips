@@ -195,7 +195,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
         }
         return closeit;
     }
-    public Point getHeaderViewPosition() {
+    public final Point getHeaderViewPosition() {
         return Arrays.stream(getComponents())
             .filter(JViewport.class::isInstance)
             .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))

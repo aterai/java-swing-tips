@@ -47,18 +47,18 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected boolean isAllValid() {
+    protected final boolean isAllValid() {
         return list.stream().allMatch(t -> t.getInputVerifier().verify(t));
     }
-    protected void updateButton() {
+    protected final void updateButton() {
         if (isAllValid()) {
             button.setEnabled(true);
-            //EventQueue.invokeLater(() -> button.requestFocusInWindow());
+            // EventQueue.invokeLater(() -> button.requestFocusInWindow());
         } else {
             button.setEnabled(false);
         }
     }
-    protected JTextField makeTextField() {
+    protected final JTextField makeTextField() {
         JTextField textField = new JTextField(24);
         textField.setInputVerifier(new InputVerifier() {
             @Override public boolean verify(JComponent c) {
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
                 updateButton();
             }
         });
-//         //TEST:
+//         // TEST:
 //         textField.getDocument().addDocumentListener(new DocumentListener() {
 //             @Override public void insertUpdate(DocumentEvent e) {
 //                 System.out.println("insertUpdate");

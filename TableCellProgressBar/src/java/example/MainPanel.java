@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
         worker.execute();
     }
 
-    protected void cancelActionPerformed() {
+    protected final void cancelActionPerformed() {
         int[] selection = table.getSelectedRows();
         for (int i: selection) {
             int midx = table.convertRowIndexToModel(i);
@@ -101,7 +101,7 @@ public class MainPanel extends JPanel {
         table.repaint();
     }
 
-    protected void deleteActionPerformed() {
+    protected final void deleteActionPerformed() {
         int[] selection = table.getSelectedRows();
         if (selection.length == 0) {
             return;
@@ -190,8 +190,8 @@ class BackgroundTask extends SwingWorker<Integer, Integer> {
 
 class WorkerModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",      Integer.class, false),
-        new ColumnContext("Name",     String.class,  false),
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, false),
         new ColumnContext("Progress", Integer.class, false)
     };
     private final Map<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
@@ -221,8 +221,8 @@ class WorkerModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class columnClass;
         public final boolean isEditable;
         protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;

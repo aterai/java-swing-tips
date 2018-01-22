@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class RoundedCornerButtonUI extends BasicButtonUI {
-    private static final double ARC_WIDTH  = 16d;
+    private static final double ARC_WIDTH = 16d;
     private static final double ARC_HEIGHT = 16d;
     private static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100, 150, 255);
@@ -50,7 +50,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
                 }
             }
         };
-        //if (listener != null)
+        // if (listener != null)
         button.addMouseListener(listener);
         button.addMouseMotionListener(listener);
         button.addFocusListener(listener);
@@ -63,7 +63,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //ContentArea
+        // ContentArea
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
@@ -80,16 +80,16 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
             }
         }
 
-        //Border
+        // Border
         g2.setPaint(c.getForeground());
         g2.draw(shape);
         g2.dispose();
         super.paint(g, c);
     }
-    protected boolean isShapeContains(Point pt) {
+    protected final boolean isShapeContains(Point pt) {
         return shape != null && shape.contains(pt.x, pt.y);
     }
-    protected void initShape(JComponent c) {
+    protected final void initShape(JComponent c) {
         if (!c.getBounds().equals(base)) {
             base = c.getBounds();
             shape = new RoundRectangle2D.Double(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
@@ -99,7 +99,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
                                                  ARC_WIDTH, ARC_HEIGHT);
         }
     }
-    protected void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {
+    protected final void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {
         g2.setPaint(new GradientPaint(0, 0, color, c.getWidth() - 1, c.getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
         g2.setPaint(c.getBackground());

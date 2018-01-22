@@ -58,16 +58,16 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void setFontPaintFlag(EnumSet<FontPaint> fp) {
+    protected final void setFontPaintFlag(EnumSet<FontPaint> fp) {
         fontPaintFlag = fp;
         fontPanel.repaint();
     }
-    protected String getCharacterString() {
+    protected final String getCharacterString() {
         int code = ((Integer) spinner.getValue()).intValue();
         // char[] ca = Character.toChars(code);
         // int len = Character.charCount(code);
         // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
-        return new String(Character.toChars(code)); //, 0, len);
+        return new String(Character.toChars(code)); // , 0, len);
 //         if (code < 0x10000) {
 //             str = Character.toString((char) code);
 //         } else {
@@ -128,13 +128,13 @@ public class MainPanel extends JPanel {
 //                     throw new ParseException(text, 0);
 //                 }
             }
-            //private static final String MASK = "000000";
+            // private static final String MASK = "000000";
             @Override public String valueToString(Object value) throws ParseException {
-                //String str = MASK + Integer.toHexString((Integer) value).toUpperCase(Locale.ENGLISH);
-                //int i = str.length() - MASK.length();
-                //return str.substring(i);
-                //String s = Integer.toHexString((Integer) value);
-                //return String.format("%6S", s).replaceAll(" ", "0");
+                // String str = MASK + Integer.toHexString((Integer) value).toUpperCase(Locale.ENGLISH);
+                // int i = str.length() - MASK.length();
+                // return str.substring(i);
+                // String s = Integer.toHexString((Integer) value);
+                // return String.format("%6S", s).replaceAll(" ", "0");
                 return String.format("%06X", (Integer) value);
             }
         };

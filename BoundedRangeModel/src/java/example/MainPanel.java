@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
         scrollbar.getModel().addChangeListener(e -> label.repaint());
 
         label.setIcon(new HighlightIcon());
-        Border in  = BorderFactory.createLineBorder(Color.BLACK);
+        Border in = BorderFactory.createLineBorder(Color.BLACK);
         Border out = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         label.setBorder(BorderFactory.createCompoundBorder(out, in));
         MouseInputListener handler = new HighlightBarHandler();
@@ -75,7 +75,7 @@ public class MainPanel extends JPanel {
             processHighlightBarMouseEvent(e);
         }
     }
-    protected void processHighlightBarMouseEvent(MouseEvent e) {
+    protected final void processHighlightBarMouseEvent(MouseEvent e) {
         Point pt = e.getPoint();
         Component c = (Component) e.getComponent();
         BoundedRangeModel m = scrollbar.getModel();

@@ -12,7 +12,7 @@ import javax.swing.undo.*;
 public class MainPanel extends JPanel {
     protected BigInteger status = new BigInteger("111000111", 2);
     protected static final int BIT_LENGTH = 50;
-    protected static final String ONEPAD  = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
+    protected static final String ONEPAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
     protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
     protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
     private final JLabel label = new JLabel(print(status));
@@ -25,13 +25,13 @@ public class MainPanel extends JPanel {
             BigInteger newValue = new BigInteger(ONEPAD, 2);
             undoSupport.postEdit(new StatusEdit(status, newValue));
             updateCheckBoxes(newValue);
-            //TEST:
-            //undoSupport.beginUpdate();
-            //try {
-            // ...
-            //} finally {
-            //    undoSupport.endUpdate();
-            //}
+            // TEST:
+            // undoSupport.beginUpdate();
+            // try {
+            //     ...
+            // } finally {
+            //     undoSupport.endUpdate();
+            // }
         }
     };
     private final Action clearAllAction = new AbstractAction("clear all") {
@@ -74,7 +74,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void updateCheckBoxes(BigInteger value) {
+    protected final void updateCheckBoxes(BigInteger value) {
         status = value;
         for (int i = 0; i < BIT_LENGTH; i++) {
             BigInteger l = BigInteger.ONE.shiftLeft(i);
@@ -100,13 +100,13 @@ public class MainPanel extends JPanel {
             updateCheckBoxes(newValue);
         }
     }
-//       //TEST: bit count
-//       private static final BigInteger M1  = new BigInteger("5555555555555555", 16); //binary: 0101...
-//       private static final BigInteger M2  = new BigInteger("3333333333333333", 16); //binary: 00110011..
-//       private static final BigInteger M4  = new BigInteger("0F0F0F0F0F0F0F0F", 16); //binary:  4 zeros,  4 ones ...
-//       private static final BigInteger M8  = new BigInteger("00FF00FF00FF00FF", 16); //binary:  8 zeros,  8 ones ...
-//       private static final BigInteger M16 = new BigInteger("0000FFFF0000FFFF", 16); //binary: 16 zeros, 16 ones ...
-//       private static final BigInteger M32 = new BigInteger("00000000FFFFFFFF", 16); //binary: 32 zeros, 32 ones
+//       // TEST: bit count
+//       private static final BigInteger M1 = new BigInteger("5555555555555555", 16); // binary: 0101...
+//       private static final BigInteger M2 = new BigInteger("3333333333333333", 16); // binary: 00110011..
+//       private static final BigInteger M4 = new BigInteger("0F0F0F0F0F0F0F0F", 16); // binary: 4 zeros, 4 ones ...
+//       private static final BigInteger M8 = new BigInteger("00FF00FF00FF00FF", 16); // binary: 8 zeros, 8 ones ...
+//       private static final BigInteger M16 = new BigInteger("0000FFFF0000FFFF", 16); // binary: 16 zeros, 16 ones ...
+//       private static final BigInteger M32 = new BigInteger("00000000FFFFFFFF", 16); // binary: 32 zeros, 32 ones
 //       private static int numofbits(BigInteger bits) {
 //         bits = bits.and(M1).add(bits.shiftRight(1).and(M1));
 //         bits = bits.and(M2).add(bits.shiftRight(2).and(M2));

@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected void createActionPerformed() {
+    protected final void createActionPerformed() {
         model.addRow(new Object[] {"New name", model.getRowCount(), false});
         (new Timer(DELAY, new ActionListener() {
             private int index = table.convertRowIndexToView(model.getRowCount() - 1);
@@ -86,7 +86,7 @@ public class MainPanel extends JPanel {
         })).start();
     }
 
-    protected void deleteActionPerformed() {
+    protected final void deleteActionPerformed() {
         int[] selection = table.getSelectedRows();
         if (selection.length == 0) {
             return;

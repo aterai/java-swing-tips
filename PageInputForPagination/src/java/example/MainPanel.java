@@ -22,9 +22,9 @@ public class MainPanel extends JPanel {
     protected final JTable table = new JTable(model);
 
     private final JButton first = new JButton("|<");
-    private final JButton prev  = new JButton("<");
-    private final JButton next  = new JButton(">");
-    private final JButton last  = new JButton(">|");
+    private final JButton prev = new JButton("<");
+    private final JButton next = new JButton(">");
+    private final JButton last = new JButton(">|");
     private final Action enterAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int v = Integer.parseInt(field.getText());
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected void updateCurrentPageIndex(ActionEvent e) {
+    protected final void updateCurrentPageIndex(ActionEvent e) {
         Object c = e.getSource();
         if (first.equals(c)) {
             currentPageIndex = 1;
@@ -130,7 +130,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    protected void initFilterAndButtons() {
+    protected final void initFilterAndButtons() {
         sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 int ti = currentPageIndex - 1;

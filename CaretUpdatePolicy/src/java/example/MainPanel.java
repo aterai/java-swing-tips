@@ -12,18 +12,18 @@ import javax.swing.text.DefaultCaret;
 public class MainPanel extends JPanel {
     protected final JCheckBox check = new JCheckBox("on EDT", true);
     protected final JButton start = new JButton("Start");
-    protected final JButton stop  = new JButton("Stop");
+    protected final JButton stop = new JButton("Stop");
     protected final JTextArea textArea0 = new JTextArea();
     protected final JTextArea textArea1 = new JTextArea();
     protected final JTextArea textArea2 = new JTextArea();
-    //TEST: protected final Timer timer = new Timer(500, e -> test(new Date().toString()));
-    //TEST: protected Thread thread;
+    // TEST: protected final Timer timer = new Timer(500, e -> test(new Date().toString()));
+    // TEST: protected Thread thread;
     protected transient SwingWorker<String, String> worker;
 
     public MainPanel() {
         super(new BorderLayout());
 
-        ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT); //default
+        ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT); // default
         ((DefaultCaret) textArea1.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         ((DefaultCaret) textArea2.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
@@ -37,8 +37,8 @@ public class MainPanel extends JPanel {
         start.addActionListener(e -> startTest());
         stop.setEnabled(false);
         stop.addActionListener(e -> {
-            //TEST: timer.stop();
-            //TEST: thread = null;
+            // TEST: timer.stop();
+            // TEST: thread = null;
             if (Objects.nonNull(worker)) {
                 worker.cancel(true);
                 worker = null;
@@ -67,9 +67,9 @@ public class MainPanel extends JPanel {
                     return "Interrupted";
                 }
                 if (check.isSelected()) {
-                    publish(new Date().toString()); //On EDT
+                    publish(new Date().toString()); // On EDT
                 } else {
-                    test(new Date().toString()); //Not on EDT
+                    test(new Date().toString()); // Not on EDT
                 }
             }
         }
@@ -83,17 +83,17 @@ public class MainPanel extends JPanel {
     private static void insertText(JTextArea textArea, String s) {
         textArea.append(s + "\n");
     }
-    protected void test(String s) {
+    protected final void test(String s) {
         insertText(textArea0, s);
         insertText(textArea1, s);
         insertText(textArea2, s);
     }
     private void startTest() {
-//         //TEST:
+//         // TEST:
 //         if (!timer.isRunning()) {
 //             timer.start();
 //         }
-//         //TEST:
+//         // TEST:
 //         if (Objects.isNull(thread)) {
 //             thread = new Thread(() -> {
 //                 while (thread != null) {
@@ -117,9 +117,9 @@ public class MainPanel extends JPanel {
                             return "Interrupted";
                         }
                         if (check.isSelected()) {
-                            publish(new Date().toString()); //On EDT
+                            publish(new Date().toString()); // On EDT
                         } else {
-                            test(new Date().toString()); //Not on EDT
+                            test(new Date().toString()); // Not on EDT
                         }
                     }
                 }

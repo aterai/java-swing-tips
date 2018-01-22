@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
     protected final Action elementIDAction = new AbstractAction("Element#getElement(id)") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-            final String id = field.getText().trim();
+            String id = field.getText().trim();
             HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
             Element element = doc.getElement(id);
             if (Objects.nonNull(element)) {
@@ -46,8 +46,8 @@ public class MainPanel extends JPanel {
     protected final Action parserAction = new AbstractAction("ParserDelegator") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-            final String id = field.getText().trim();
-            final String text = editorPane.getText();
+            String id = field.getText().trim();
+            String text = editorPane.getText();
             ParserDelegator delegator = new ParserDelegator();
             try {
                 delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
@@ -88,18 +88,18 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void addHighlight(Element element, boolean isBlock) {
+    protected final void addHighlight(Element element, boolean isBlock) {
         Highlighter highlighter = editorPane.getHighlighter();
         int start = element.getStartOffset();
-        int lf    = isBlock ? 1 : 0;
-        int end   = element.getEndOffset() - lf; //lf???, setDrawsLayeredHighlights(false) bug???
+        int lf = isBlock ? 1 : 0;
+        int end = element.getEndOffset() - lf; // lf???, setDrawsLayeredHighlights(false) bug???
         try {
             highlighter.addHighlight(start, end, highlightPainter);
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
     }
-    protected void traverseElementById(Element element) {
+    protected final void traverseElementById(Element element) {
         if (element.isLeaf()) {
             checkID(element);
         } else {
@@ -112,7 +112,7 @@ public class MainPanel extends JPanel {
             }
         }
     }
-    protected void checkID(Element element) {
+    protected final void checkID(Element element) {
         AttributeSet attrs = element.getAttributes();
         Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
@@ -123,17 +123,17 @@ public class MainPanel extends JPanel {
             return;
         }
         textArea.append(String.format("%s%n", tag));
-        if (tag.isBlock()) { //block
+        if (tag.isBlock()) { // block
             Object bid = attrs.getAttribute(HTML.Attribute.ID);
             if (Objects.nonNull(bid)) {
                 textArea.append(String.format("block: id=%s%n", bid));
                 addHighlight(element, true);
             }
-        } else { //inline
+        } else { // inline
             Enumeration<?> e = attrs.getAttributeNames();
             while (e.hasMoreElements()) {
                 Object obj = attrs.getAttribute(e.nextElement());
-                //System.out.println("AttributeNames: " + obj);
+                // System.out.println("AttributeNames: " + obj);
                 if (obj instanceof AttributeSet) {
                     AttributeSet a = (AttributeSet) obj;
                     Object iid = a.getAttribute(HTML.Attribute.ID);

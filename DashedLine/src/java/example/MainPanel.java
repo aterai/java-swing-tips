@@ -10,7 +10,7 @@ public class MainPanel extends JPanel {
     private final JTextField field = new JTextField("1f, 1f, 5f, 1f");
     protected transient BasicStroke dashedStroke;
 
-    protected float[] getDashArray() {
+    protected final float[] getDashArray() {
         // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
         String[] slist = Arrays.stream(field.getText().split(","))
             .map(String::trim)

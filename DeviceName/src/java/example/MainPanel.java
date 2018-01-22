@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
-    protected boolean isCanonicalPath(File file) {
+    protected final boolean isCanonicalPath(File file) {
         if (Objects.isNull(file)) {
             return false;
         }

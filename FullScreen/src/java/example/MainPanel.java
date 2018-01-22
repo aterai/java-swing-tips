@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void toggleFullScreenWindow() {
+    protected final void toggleFullScreenWindow() {
         Component c = SwingUtilities.getRoot(getRootPane());
         if (c instanceof JDialog) {
             JDialog dialog = (JDialog) c;

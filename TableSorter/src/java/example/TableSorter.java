@@ -96,11 +96,11 @@ import javax.swing.table.*;
  * @author Parwinder Sekhon
  * @version 2.0 02/27/04
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "DesignForExtension"})
 public class TableSorter extends AbstractTableModel {
     public static final int DESCENDING = -1;
     public static final int NOT_SORTED = 0;
-    public static final int ASCENDING  = 1;
+    public static final int ASCENDING = 1;
 
     private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
     public static final Comparator COMPARABLE_COMAPRATOR = new ComparableComparator();
@@ -264,7 +264,7 @@ public class TableSorter extends AbstractTableModel {
     private List<Row> getViewToModel() {
         if (viewToModel.isEmpty()) {
             int tableModelRowCount = tableModel.getRowCount();
-            //viewToModel = new Row[tableModelRowCount];
+            // viewToModel = new Row[tableModelRowCount];
             for (int row = 0; row < tableModelRowCount; row++) {
                 viewToModel.add(new Row(row));
             }
@@ -292,12 +292,12 @@ public class TableSorter extends AbstractTableModel {
     // TableModel interface methods
 
     @Override public int getRowCount() {
-        //return (tableModel == null) ? 0 : tableModel.getRowCount();
+        // return (tableModel == null) ? 0 : tableModel.getRowCount();
         return Optional.ofNullable(tableModel).map(TableModel::getRowCount).orElse(0);
     }
 
     @Override public int getColumnCount() {
-        //return (tableModel == null) ? 0 : tableModel.getColumnCount();
+        // return (tableModel == null) ? 0 : tableModel.getColumnCount();
         return Optional.ofNullable(tableModel).map(TableModel::getColumnCount).orElse(0);
     }
 
@@ -403,7 +403,7 @@ public class TableSorter extends AbstractTableModel {
             // Something has happened to the data that may have invalidated the row order.
             clearSortingState();
             fireTableDataChanged();
-            //return;
+            // return;
         }
     }
 
@@ -424,8 +424,8 @@ public class TableSorter extends AbstractTableModel {
                 }
                 // Cycle the sorting states through {NOT_SORTED, ASCENDING, DESCENDING} or
                 // {NOT_SORTED, DESCENDING, ASCENDING} depending on whether shift is pressed.
-                //int d = e.isShiftDown() ? -1 : 1;
-                //status = status + d;
+                // int d = e.isShiftDown() ? -1 : 1;
+                // status = status + d;
                 status = (status + 4) % 3 - 1; // signed mod, returning {-1, 0, 1}
                 setSortingStatus(column, status);
             }
@@ -482,7 +482,7 @@ class Arrow implements Icon, Serializable {
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Color color1 = Optional.ofNullable(c).map(Component::getBackground).orElse(Color.GRAY);
-        //Color color1 = Objects.nonNull(c) ? c.getBackground() : Color.GRAY;
+        // Color color1 = Objects.nonNull(c) ? c.getBackground() : Color.GRAY;
         Color color2;
         // In a compound sort, make each succesive triangle 20%
         // smaller than the previous one.

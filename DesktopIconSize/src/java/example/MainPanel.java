@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
         add(mb, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected JInternalFrame createFrame(String t, int x, int y) {
+    protected final JInternalFrame createFrame(String t, int x, int y) {
         JInternalFrame f = new JInternalFrame(t, true, true, true, true);
         f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
             @Override public Dimension getPreferredSize() {

@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void createTree() {
+    protected final void createTree() {
         JTree tree = new JTree();
         tree.setVisibleRowCount(8);
         Component c = new JScrollPane(tree);
@@ -54,7 +54,7 @@ public class MainPanel extends JPanel {
         layeredPane.add(resizer);
         layeredPane.moveToFront(resizer);
     }
-    protected void createTable() {
+    protected final void createTable() {
         JTable table = new JTable(12, 3);
         table.setPreferredScrollableViewportSize(new Dimension(160, 160));
         Component c = new JScrollPane(table);

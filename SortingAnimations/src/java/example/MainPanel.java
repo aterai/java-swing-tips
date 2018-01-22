@@ -25,10 +25,10 @@ public class MainPanel extends JPanel {
     private transient SwingWorker<String, Rectangle> worker;
 
     private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
-    private final JComboBox<? extends Enum> algorithmsChoices    = new JComboBox<>(SortAlgorithms.values());
+    private final JComboBox<? extends Enum> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
     private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
     private final JSpinner spinner = new JSpinner(model);
-    private final JButton startButton  = new JButton("Start");
+    private final JButton startButton = new JButton("Start");
     private final JButton cancelButton = new JButton("Cancel");
     protected final JPanel panel = new JPanel() {
         @Override protected void paintComponent(Graphics g) {
@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void drawAllOval(Graphics g) {
+    protected final void drawAllOval(Graphics g) {
         // g.setColor(DRAW_COLOR);
         for (int i = 0; i < number; i++) {
             int px = (int) (MINX + factorx * i);
@@ -99,7 +99,7 @@ public class MainPanel extends JPanel {
         distributionsChoices.setEnabled(flag);
         algorithmsChoices.setEnabled(flag);
     }
-    protected void genArray(int n) {
+    protected final void genArray(int n) {
         array.clear();
         factorx = (MAXX - MINX) / (double) n;
         factory = MAXY - MINY;
