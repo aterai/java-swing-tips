@@ -139,10 +139,10 @@ class FileModel extends DefaultTableModel {
         return COLUMN_LIST.get(column).columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -156,10 +156,10 @@ class RowData {
     private int width;
     private int height;
     protected RowData(String name, String comment, int width, int height) {
-        this.name    = name;
+        this.name = name;
         this.comment = comment;
-        this.width   = width;
-        this.height  = height;
+        this.width = width;
+        this.height = height;
     }
     public void setName(String str) {
         name = str;

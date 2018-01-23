@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         };
 
         new DropTarget(table, DnDConstants.ACTION_COPY, dtl, true);
-        //new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
+        // new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
 
 //         table.setDropMode(DropMode.INSERT_ROWS);
 //         table.setTransferHandler(new FileTransferHandler());
@@ -87,18 +87,18 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// //table.setDropMode(DropMode.INSERT_ROWS);
-// //table.setTransferHandler(new FileTransferHandler());
+// // table.setDropMode(DropMode.INSERT_ROWS);
+// // table.setTransferHandler(new FileTransferHandler());
 // class FileTransferHandler extends TransferHandler {
 //     @Override public boolean importData(JComponent component, Transferable transferable) {
 //         try {
 //             if (canImport(component, transferable.getTransferDataFlavors())) {
-//                 //DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
+//                 // DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
 //                 FileModel model = (FileModel) ((JTable) component).getModel();
 //                 for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if (o instanceof File) {
 //                         File file = (File) o;
-//                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
+//                         // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
 //                         model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
 //                     }
 //                 }
@@ -124,9 +124,9 @@ public final class MainPanel extends JPanel {
 
 class FileModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",       Integer.class, false),
-        new ColumnContext("Name",      String.class,  true),
-        new ColumnContext("Full Path", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Full Path", String.class, true)
     };
     private int number;
     public void addFileName(FileName t) {
@@ -147,10 +147,10 @@ class FileModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

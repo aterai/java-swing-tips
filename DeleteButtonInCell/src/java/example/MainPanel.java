@@ -16,13 +16,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         RowDataModel model = new RowDataModel();
-        //JTable table = new JTable(model) {
-        //    @Override public int rowAtPoint(Point pt) {
-        //        // [JDK-6291631] JTable: rowAtPoint returns 0 for negative y - Java Bug System
-        //        // https://bugs.openjdk.java.net/browse/JDK-6291631
-        //        return pt.y < 0 ? -1 : super.rowAtPoint(pt);
-        //    }
-        //};
+        // JTable table = new JTable(model) {
+        //     @Override public int rowAtPoint(Point pt) {
+        //         // [JDK-6291631] JTable: rowAtPoint returns 0 for negative y - Java Bug System
+        //         // https://bugs.openjdk.java.net/browse/JDK-6291631
+        //         return pt.y < 0 ? -1 : super.rowAtPoint(pt);
+        //     }
+        // };
         JTable table = new JTable(model);
 
         TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         //         });
         //         ButtonColumn buttonColumn = new ButtonColumn();
 
-        //ButtonColumn buttonColumn = new ButtonColumn(table);
+        // ButtonColumn buttonColumn = new ButtonColumn(table);
         TableColumn column = table.getColumnModel().getColumn(BUTTON_COLUMN);
         column.setCellRenderer(new DeleteButtonRenderer());
         column.setCellEditor(new DeleteButtonEditor());
@@ -150,9 +150,9 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         return "";
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
 
     @Override public boolean isCellEditable(EventObject e) {
         return true;
@@ -210,10 +210,10 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true),
-        new ColumnContext("",        String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true),
+        new ColumnContext("", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {
@@ -234,10 +234,10 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

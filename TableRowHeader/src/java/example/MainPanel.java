@@ -85,7 +85,7 @@ class RowHeaderList<E> extends JList<E> {
     protected final ListSelectionModel tableSelection;
     protected final ListSelectionModel listSelection;
     protected int rollOverRowIndex = -1;
-    protected int pressedRowIndex  = -1;
+    protected int pressedRowIndex = -1;
 
     protected RowHeaderList(ListModel<E> model, JTable table) {
         super(model);
@@ -146,9 +146,9 @@ class RowHeaderList<E> extends JList<E> {
         }
         @Override public void mouseDragged(MouseEvent e) {
             if (pressedRowIndex >= 0) {
-                int row   = locationToIndex(e.getPoint());
+                int row = locationToIndex(e.getPoint());
                 int start = Math.min(row, pressedRowIndex);
-                int end   = Math.max(row, pressedRowIndex);
+                int end = Math.max(row, pressedRowIndex);
                 tableSelection.clearSelection();
                 listSelection.clearSelection();
                 tableSelection.addSelectionInterval(start, end);
@@ -178,7 +178,7 @@ class RowHeaderList<E> extends JList<E> {
         }
         @Override public void mouseReleased(MouseEvent e) {
             listSelection.clearSelection();
-            pressedRowIndex  = -1;
+            pressedRowIndex = -1;
             rollOverRowIndex = -1;
             repaint();
         }
@@ -187,9 +187,9 @@ class RowHeaderList<E> extends JList<E> {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        // new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  false),
-        new ColumnContext("Comment", String.class,  false)
+        // new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, false),
+        new ColumnContext("Comment", String.class, false)
     };
     private int number;
     private final DefaultListModel<String> rowListModel;
@@ -220,10 +220,10 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

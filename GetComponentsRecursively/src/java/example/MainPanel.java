@@ -32,11 +32,11 @@ public final class MainPanel extends JPanel {
                 detailsAction.actionPerformed(null);
             }
 
-            //TEST1: searchAndResizeMode(chooser);
-            //TEST2: Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
-            //TEST3: getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+            // TEST1: searchAndResizeMode(chooser);
+            // TEST2: Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
+            // TEST3: getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
-            //TEST4:
+            // TEST4:
             stream(chooser)
                 .filter(JTable.class::isInstance).map(JTable.class::cast)
                 .findFirst()
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    //TEST1
+    // TEST1
     public static boolean searchAndResizeMode(Container parent) {
         for (Component c: parent.getComponents()) {
             if (c instanceof JTable) {
@@ -70,8 +70,8 @@ public final class MainPanel extends JPanel {
         return false;
     }
 
-    //TEST2
-    public static Component findChildComponent(Container container, Class cls) {
+    // TEST2
+    public static Component findChildComponent(Container container, Class<? extends Component> cls) {
         int n = container.getComponentCount();
         for (int i = 0; i < n; i++) {
             Component comp = container.getComponent(i);
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
         return null;
     }
 
-    //TEST3
+    // TEST3
     public static <T> Optional<T> getComponentByClass(Container parent, Class<T> clz) {
         if (clz.isInstance(parent)) {
             return Optional.of(clz.cast(parent));
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
         return Optional.empty();
     }
 
-    //TEST4
+    // TEST4
     public static Stream<Component> stream(Container parent) {
         return Arrays.stream(parent.getComponents())
             .filter(Container.class::isInstance).map(c -> stream(Container.class.cast(c)))

@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
 
 //             if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
 //                 Dimension d = chooser.getPreferredSize();
-//                 chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
+//                 chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
 //             }
 
             // java - How can I start the JFileChooser in the Details view? - Stack Overflow
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 //         AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
 //         if (Objects.nonNull(b)) {
 //             Dimension d = chooser.getPreferredSize();
-//             chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
+//             chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
 //             b.doClick();
 //         };
 //     private static AbstractButton getDetailsViewButton(Container parent, Icon icon) {
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
 //         }
 //         return b;
 //     }
-//     private Component findChildComponent(Container container, Class cls) {
+//     private Component findChildComponent(Container container, Class<?> cls) {
 //         int n = container.getComponentCount();
 //         for (int i = 0; i < n; i++) {
 //             Component comp = container.getComponent(i);

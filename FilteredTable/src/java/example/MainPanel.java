@@ -87,9 +87,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private final List<RowData> list = new ArrayList<>();
     private int number;
@@ -113,17 +113,17 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
         }
     }
     public void filterRows(boolean flg) {
-        //dataVector.clear();
+        // dataVector.clear();
         setRowCount(0);
         for (int i = 0; i < list.size(); i++) {
             if (flg && i % 2 == 0) {
@@ -131,9 +131,9 @@ class RowDataModel extends DefaultTableModel {
             }
             RowData t = list.get(i);
             addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
-            //dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
+            // dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
         }
-        //setDataVector(v, columnIdentifiers);
+        // setDataVector(v, columnIdentifiers);
         fireTableDataChanged();
     }
 }

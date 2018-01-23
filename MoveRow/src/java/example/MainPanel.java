@@ -291,9 +291,9 @@ class RowDataModel extends SortableTableModel {
     }
     private static class ColumnContext {
         public final String columnName;
-        public final Class columnClass;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

@@ -117,8 +117,8 @@ class TablePopupMenu extends JPopupMenu {
 class RowDataModel extends SortableTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.", Integer.class, false),
-        new ColumnContext("Name", String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {
@@ -140,9 +140,9 @@ class RowDataModel extends SortableTableModel {
     }
     private static class ColumnContext {
         public final String columnName;
-        public final Class columnClass;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

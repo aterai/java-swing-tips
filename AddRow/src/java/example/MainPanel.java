@@ -7,24 +7,24 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final RowDataModel model = new RowDataModel();
-    private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(250, 250, 250);
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-            }
-            return c;
-        }
-    };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        RowDataModel model = new RowDataModel();
+        JTable table = new JTable(model) {
+            private final Color evenColor = new Color(250, 250, 250);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+                }
+                return c;
+            }
+        };
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -71,9 +71,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {
@@ -94,10 +94,10 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

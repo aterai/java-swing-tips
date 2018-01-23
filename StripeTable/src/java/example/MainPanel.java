@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         model.addRowData(new RowData("Name 0", "Test aa"));
 
         JTable table = new JTable(model);
-//         //TEST:
+//         // TEST:
 //         JTable table = new JTable(model) {
 //             protected final Color evenColor = new Color(240, 240, 255);
 //             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
         table.setDefaultRenderer(Integer.class, renderer);
 
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -96,9 +96,9 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {
@@ -119,10 +119,10 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

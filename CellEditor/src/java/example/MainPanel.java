@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        DefaultCellEditor dce   = new DefaultCellEditor(new JTextField());
-        JCheckBox modelCheck    = new JCheckBox("isCellEditable return false");
-        JCheckBox objectCheck   = new JCheckBox("setDefaultEditor(Object.class, null)");
+        DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
+        JCheckBox modelCheck = new JCheckBox("isCellEditable return false");
+        JCheckBox objectCheck = new JCheckBox("setDefaultEditor(Object.class, null)");
         JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
 
         RowDataModel model = new RowDataModel() {
@@ -80,9 +80,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
+        new ColumnContext("No.", Integer.class, false),
+        new ColumnContext("Name", String.class, true),
+        new ColumnContext("Comment", String.class, true)
     };
     private int number;
     public void addRowData(RowData t) {
@@ -103,10 +103,10 @@ class RowDataModel extends DefaultTableModel {
         return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
+        public final String columnName;
+        public final Class<?> columnClass;
         public final boolean isEditable;
-        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;

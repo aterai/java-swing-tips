@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 //     BareBonesBrowserLaunch.openURL(url);            //
 //  Public Domain Software -- Free to Use as You Like  //
 /////////////////////////////////////////////////////////
-//class BareBonesBrowserLaunch {
+// class BareBonesBrowserLaunch {
 final class BrowserLauncher {
     private static final String ERR_MSG = "Error attempting to launch web browser";
     private BrowserLauncher() { /* Singleton */ }
@@ -73,13 +73,13 @@ final class BrowserLauncher {
         String osName = System.getProperty("os.name");
         try {
             if (osName.startsWith("Mac OS")) {
-                Class fileMgr = Class.forName("com.apple.eio.FileManager");
-                //Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
+                Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
+                // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
                 @SuppressWarnings("unchecked") Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
                 openURL.invoke(null, new Object[] {url});
             } else if (osName.startsWith("Windows")) {
                 Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);
-            } else { //assume Unix or Linux
+            } else { // assume Unix or Linux
                 String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape"};
                 String browser = null;
                 for (int count = 0; count < browsers.length && Objects.isNull(browser); count++) {
