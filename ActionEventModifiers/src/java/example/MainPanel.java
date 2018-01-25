@@ -5,11 +5,12 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.util.logging.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final Logger LOGGER = Logger.getLogger(MainPanel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private final JTextArea log = new JTextArea();
     private MainPanel() {
         super(new BorderLayout());

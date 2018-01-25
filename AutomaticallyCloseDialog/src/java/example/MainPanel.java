@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 }
 
 class AutomaticallyCloseListener implements HierarchyListener {
-    // private static final Logger LOGGER = Logger.getLogger(AutomaticallyCloseListener.class.getName());
+    // private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private static final int SECONDS = 5;
     private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
     private final Timer timer = new Timer(1000, null);
