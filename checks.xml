@@ -342,15 +342,11 @@
         </module>
         <module name="OverloadMethodsDeclarationOrder"/>
         <!-- module name="VariableDeclarationUsageDistance"/ -->
-        <module name="ImportOrder">
-            <property name="groups" value="java,javax"/>
-            <property name="ordered" value="true"/>
-        </module>
-        <!-- module name="CustomImportOrder">
+        <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
-        </module -->
+            <property name="separateLineBetweenGroups" value="false"/>
+            <property name="customImportOrderRules" value="STANDARD_JAVA_PACKAGE###STATIC###THIRD_PARTY_PACKAGE"/>
+        </module>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">
             <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
