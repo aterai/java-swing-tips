@@ -9,12 +9,12 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField pf1 = new JTextField(30);
-    private final JTextField pf2 = new JTextField(30);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextField pf1 = new JTextField(30);
         pf1.setComponentPopupMenu(new TextFieldPopupMenu());
+
+        JTextField pf2 = new JTextField(30);
         pf2.setComponentPopupMenu(new TextFieldPopupMenu());
 
         Box panel = Box.createVerticalBox();
@@ -29,7 +29,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea("Dummy")));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

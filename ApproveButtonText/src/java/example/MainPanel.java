@@ -6,16 +6,16 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         add(makeDefaultChooserPanel());
         add(makeCustomChooserPanel());
         setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makeCustomChooserPanel() {
-        //for JDK 1.6.0_11
-        //UIManager.put("FileChooser.saveButtonText",   "保存(S)");
-        //UIManager.put("FileChooser.openButtonText",   "開く(O)");
+        // for JDK 1.6.0_11
+        // UIManager.put("FileChooser.saveButtonText", "保存(S)");
+        // UIManager.put("FileChooser.openButtonText", "開く(O)");
         UIManager.put("FileChooser.cancelButtonText", "キャンセル");
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("custom"));
@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
         JButton showOpenDialog = new JButton("Open:取消し->キャンセル");
         showOpenDialog.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-            //fileChooser.setApproveButtonText("開く(O)");
-            //fileChooser.setApproveButtonMnemonic('O');
+            // fileChooser.setApproveButtonText("開く(O)");
+            // fileChooser.setApproveButtonMnemonic('O');
             int retvalue = fileChooser.showOpenDialog(p);
             System.out.println(retvalue);
         });
@@ -74,16 +74,16 @@ public final class MainPanel extends JPanel {
 //         if (default) {
 //             if (saveButtonText == null) {
 //                 Locale l = fc.getLocale();
-//                 saveButtonText   = UIManager.getString("FileChooser.saveButtonText", l);
-//                 openButtonText   = UIManager.getString("FileChooser.openButtonText", l);
+//                 saveButtonText = UIManager.getString("FileChooser.saveButtonText", l);
+//                 openButtonText = UIManager.getString("FileChooser.openButtonText", l);
 //                 cancelButtonText = UIManager.getString("FileChooser.cancelButtonText", l);
 //             }
-//             UIManager.put("FileChooser.saveButtonText",   saveButtonText);
-//             UIManager.put("FileChooser.openButtonText",   openButtonText);
+//             UIManager.put("FileChooser.saveButtonText", saveButtonText);
+//             UIManager.put("FileChooser.openButtonText", openButtonText);
 //             UIManager.put("FileChooser.cancelButtonText", cancelButtonText);
 //         } else {
-//             UIManager.put("FileChooser.saveButtonText",   "保存(S)");
-//             UIManager.put("FileChooser.openButtonText",   "開く(O)");
+//             UIManager.put("FileChooser.saveButtonText", "保存(S)");
+//             UIManager.put("FileChooser.openButtonText", "開く(O)");
 //             UIManager.put("FileChooser.cancelButtonText", "キャンセル");
 //         }
 //     }

@@ -7,17 +7,20 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<String> combo00 = makeComboBox();
-    private final JComboBox<String> combo01 = makeComboBox();
-    private final JComboBox<String> combo02 = makeComboBox();
-    private final JComboBox<String> combo03 = makeComboBox();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JComboBox<String> combo00 = makeComboBox();
         combo00.setEditable(false);
+
+        JComboBox<String> combo01 = makeComboBox();
         combo01.setEditable(true);
+
+        JComboBox<String> combo02 = makeComboBox();
         combo02.setEditable(false);
-        combo03.setEditable(true);
         combo02.addPopupMenuListener(new WidePopupMenuListener());
+
+        JComboBox<String> combo03 = makeComboBox();
+        combo03.setEditable(true);
         combo03.addPopupMenuListener(new WidePopupMenuListener());
 
         int g = 5;
@@ -44,28 +47,6 @@ public final class MainPanel extends JPanel {
         model.addElement("bbb12");
         return new JComboBox<>(model);
     }
-    // https://community.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
-    private static class WidePopupMenuListener implements PopupMenuListener {
-        private static final int POPUP_MIN_WIDTH = 300;
-        private boolean adjusting;
-        @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-            JComboBox combo = (JComboBox) e.getSource();
-            Dimension size = combo.getSize();
-            if (size.width >= POPUP_MIN_WIDTH) {
-                return;
-            }
-            if (!adjusting) {
-                adjusting = true;
-                combo.setSize(POPUP_MIN_WIDTH, size.height);
-                combo.showPopup();
-            }
-            combo.setSize(size);
-            adjusting = false;
-        }
-        @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
-        @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -87,4 +68,26 @@ public final class MainPanel extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+
+// https://community.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
+class WidePopupMenuListener implements PopupMenuListener {
+    private static final int POPUP_MIN_WIDTH = 300;
+    private boolean adjusting;
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        JComboBox combo = (JComboBox) e.getSource();
+        Dimension size = combo.getSize();
+        if (size.width >= POPUP_MIN_WIDTH) {
+            return;
+        }
+        if (!adjusting) {
+            adjusting = true;
+            combo.setSize(POPUP_MIN_WIDTH, size.height);
+            combo.showPopup();
+        }
+        combo.setSize(size);
+        adjusting = false;
+    }
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+    @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
 }

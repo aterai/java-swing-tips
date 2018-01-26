@@ -33,8 +33,7 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
@@ -48,13 +47,12 @@ public final class MainPanel extends JPanel {
         col = table.getColumnModel().getColumn(1);
         col.setCellRenderer(new ComboCellRenderer());
         col.setCellEditor(new DefaultCellEditor(combo));
-        //table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
+        // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     private static JComboBox<String> makeComboBox() {
         JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
             @Override public void updateUI() {
@@ -74,15 +72,14 @@ public final class MainPanel extends JPanel {
 //                 editor.setEditable(false);
             }
         };
-        //combo.setBorder(BorderFactory.createEmptyBorder());
-        //((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
-        //((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
-        //combo.setBackground(Color.WHITE);
-        //combo.setOpaque(true);
-        //combo.setEditable(true);
+        // combo.setBorder(BorderFactory.createEmptyBorder());
+        // ((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
+        // ((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
+        // combo.setBackground(Color.WHITE);
+        // combo.setOpaque(true);
+        // combo.setEditable(true);
         return combo;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -115,7 +112,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
             @Override protected JButton createArrowButton() {
                 button = super.createArrowButton();
                 button.setContentAreaFilled(false);
-                //button.setBackground(ComboCellRenderer.this.getBackground());
+                // button.setBackground(ComboCellRenderer.this.getBackground());
                 button.setBorder(BorderFactory.createEmptyBorder());
                 return button;
             }
@@ -125,7 +122,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
         JTextField editor = (JTextField) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
-        //editor.setEditable(false);
+        // editor.setEditable(false);
         removeAllItems();
         if (button != null) {
             if (isSelected) {
@@ -134,7 +131,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
                 button.setBackground(table.getSelectionBackground());
             } else {
                 editor.setForeground(table.getForeground());
-                //setBackground(table.getBackground());
+                // setBackground(table.getBackground());
                 Color bg = row % 2 == 0 ? EVEN_COLOR : table.getBackground();
                 editor.setBackground(bg);
                 button.setBackground(bg);
@@ -143,7 +140,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
         addItem(Objects.toString(value, ""));
         return this;
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -164,9 +161,9 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
 //     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()       { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
 //     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     @Override public void validate()   { /* Overridden for performance reasons. */ }
-    @Override public void revalidate()    { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+//     @Override public void validate() { /* Overridden for performance reasons. */ }
+    @Override public void revalidate() { /* Overridden for performance reasons. */ }
+    // <---- Overridden for performance reasons.
 }

@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "String"};
     private final Object[][] data = {
         {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
-        {"AAA",  "bbbbbb"}, {"CCC", "ddddddd"}
+        {"AAA", "bbbbbb"}, {"CCC", "ddddddd"}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
@@ -62,14 +62,14 @@ class TextComponentPopupMenu extends JPopupMenu {
     protected TextComponentPopupMenu(JTextComponent tc) {
         super();
 
-        final UndoManager manager = new UndoManager();
-        final Action undoAction   = new UndoAction(manager);
-        final Action redoAction   = new RedoAction(manager);
-        final Action cutAction    = new DefaultEditorKit.CutAction();
-        final Action copyAction   = new DefaultEditorKit.CopyAction();
-        final Action pasteAction  = new DefaultEditorKit.PasteAction();
-        final Action deleteAction = new DeleteAction();
-//         final Action deleteAction = new AbstractAction("delete") {
+        UndoManager manager = new UndoManager();
+        Action undoAction = new UndoAction(manager);
+        Action redoAction = new RedoAction(manager);
+        Action cutAction = new DefaultEditorKit.CutAction();
+        Action copyAction = new DefaultEditorKit.CopyAction();
+        Action pasteAction = new DefaultEditorKit.PasteAction();
+        Action deleteAction = new DeleteAction();
+//         Action deleteAction = new AbstractAction("delete") {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 ((JTextComponent) getInvoker()).replaceSelection(null);
 //             }
@@ -79,7 +79,7 @@ class TextComponentPopupMenu extends JPopupMenu {
                 manager.discardAllEdits();
                 e.getComponent().requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         tc.getDocument().addUndoableEditListener(manager);
@@ -151,7 +151,7 @@ class DeleteAction extends AbstractAction {
         super("delete");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        //Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+        // Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
         Container c = SwingUtilities.getUnwrappedParent((Component) e.getSource());
         if (c instanceof JPopupMenu) {
             JPopupMenu pop = (JPopupMenu) c;

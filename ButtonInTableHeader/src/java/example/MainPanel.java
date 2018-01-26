@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private final Object[] columnNames = {"Boolean", "Integer", "String"};
     private final Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"},
-        {true, 2, "DDD"}, {false,  5, "CCC"},
-        {true, 3, "EEE"}, {false,  6, "GGG"},
-        {true, 4, "FFF"}, {false,  7, "HHH"}
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPopupMenu pop = new JPopupMenu();
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         table.getColumnModel().getColumn(1).setHeaderRenderer(r);
         table.getColumnModel().getColumn(2).setHeaderRenderer(r);
 
-        //table.setAutoCreateRowSorter(true);
+        // table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -100,16 +100,16 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             JTable table = header.getTable();
             TableColumnModel columnModel = table.getColumnModel();
             int vci = columnModel.getColumnIndexAtX(e.getX());
-            //int mci = table.convertColumnIndexToModel(vci);
-            //TableColumn column = table.getColumnModel().getColumn(mci);
-            //int w = column.getWidth(); //Nimbus???
-            //int h = header.getHeight();
+            // int mci = table.convertColumnIndexToModel(vci);
+            // TableColumn column = table.getColumnModel().getColumn(mci);
+            // int w = column.getWidth(); // Nimbus???
+            // int h = header.getHeight();
             Rectangle r = header.getHeaderRect(vci);
             Container c = (Container) getTableCellRendererComponent(table, "", true, true, -1, vci);
-            //if (!isNimbus) {
-            //  Insets i = c.getInsets();
-            //  r.translate(r.width - i.right, 0);
-            //} else {
+            // if (!isNimbus) {
+            //     Insets i = c.getInsets();
+            //     r.translate(r.width - i.right, 0);
+            // } else {
             r.translate(r.width - BUTTON_WIDTH, 0);
             r.setSize(BUTTON_WIDTH, r.height);
             Point pt = e.getPoint();
@@ -142,8 +142,8 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
     @Override public void updateUI() {
         super.updateUI();
-        //setOpaque(false);
-        //setFont(header.getFont());
+        // setOpaque(false);
+        // setFont(header.getFont());
         setBorder(BorderFactory.createEmptyBorder());
         setContentAreaFilled(false);
         EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(pop));
@@ -164,20 +164,20 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         if (rolloverIndex == mci) {
             int w = table.getColumnModel().getColumn(mci).getWidth();
             int h = table.getTableHeader().getHeight();
-            //Icon icon = new MenuArrowIcon();
+            // Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
-            Border inside  = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
+            Border inside = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
             Border b = BorderFactory.createCompoundBorder(outside, inside);
             l.setBorder(b);
             l.add(this);
-            //Insets i = b.getBorderInsets(l);
-            //setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
+            // Insets i = b.getBorderInsets(l);
+            // setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
             setBounds(w - BUTTON_WIDTH, 0, BUTTON_WIDTH, h - 2);
             setBackground(BUTTONBGC);
             setOpaque(true);
             setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
         }
-//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus
+//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus
 //             System.out.println(l.getPreferredSize().height);
 //             l.setPreferredSize(new Dimension(0, h));
 //         }

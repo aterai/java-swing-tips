@@ -6,12 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    private final JTable table = new JTable(new DefaultTableModel(10, 4));
-    private final JTableHeader header = table.getTableHeader();
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+        JTable table = new JTable(new DefaultTableModel(10, 4));
         table.setCellSelectionEnabled(true);
         table.setAutoCreateRowSorter(true);
 
@@ -20,14 +18,11 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < cm.getColumnCount(); i++) {
             cm.getColumn(i).setHeaderRenderer(r);
         }
-        cm.getSelectionModel().addListSelectionListener(e -> {
-            header.repaint();
-        });
+        cm.getSelectionModel().addListSelectionListener(e -> table.getTableHeader().repaint());
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

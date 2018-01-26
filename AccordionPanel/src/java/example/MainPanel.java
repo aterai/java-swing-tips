@@ -13,7 +13,7 @@ import javax.swing.border.*;
 public final class MainPanel extends JPanel {
     // private final Box box = Box.createVerticalBox();
     // private final Component glue = Box.createVerticalGlue();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         Box accordion = Box.createVerticalBox();

@@ -9,16 +9,17 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public final JLabel label = new JLabel("0") {
-        @Override public Dimension getMaximumSize() {
-            return getPreferredSize();
-        }
-        @Override public Dimension getPreferredSize() {
-            return new Dimension(100, 100);
-        }
-    };
-    public MainPanel() {
+    private MainPanel() {
         super(new GridBagLayout());
+
+        JLabel label = new JLabel("0") {
+            @Override public Dimension getMaximumSize() {
+                return getPreferredSize();
+            }
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(100, 100);
+            }
+        };
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
         label.setHorizontalAlignment(SwingConstants.CENTER);

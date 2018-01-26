@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
@@ -32,13 +32,12 @@ public final class MainPanel extends JPanel {
 
         col = table.getColumnModel().getColumn(1);
         col.setCellEditor(new DefaultCellEditor(combo));
-        //table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
+        // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     private static JComboBox<String> makeComboBox() {
         JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
             @Override public void updateUI() {
@@ -58,15 +57,14 @@ public final class MainPanel extends JPanel {
 //                 editor.setEditable(false);
             }
         };
-        //combo.setBorder(BorderFactory.createEmptyBorder());
-        //((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
-        //((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
-        //combo.setBackground(Color.WHITE);
-        //combo.setOpaque(true);
-        //combo.setEditable(true);
+        // combo.setBorder(BorderFactory.createEmptyBorder());
+        // ((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
+        // ((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
+        // combo.setBackground(Color.WHITE);
+        // combo.setOpaque(true);
+        // combo.setEditable(true);
         return combo;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

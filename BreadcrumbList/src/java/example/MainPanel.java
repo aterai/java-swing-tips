@@ -12,10 +12,11 @@ import javax.swing.plaf.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JPanel breadcrumb = makePanel(10 + 1);
-    private final JTree tree = new JTree();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JPanel breadcrumb = makePanel(10 + 1);
+
+        JTree tree = new JTree();
         tree.setSelectionRow(0);
         tree.addTreeSelectionListener(e -> {
             Object o = tree.getLastSelectedPathComponent();

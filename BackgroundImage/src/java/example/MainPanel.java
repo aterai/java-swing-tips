@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final ImageIcon bgimage;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         bgimage = new ImageIcon(getClass().getResource("16x16.png"));
         add(new JLabel("@title@"));

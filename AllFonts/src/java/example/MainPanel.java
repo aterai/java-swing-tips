@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         for (Font f: GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {

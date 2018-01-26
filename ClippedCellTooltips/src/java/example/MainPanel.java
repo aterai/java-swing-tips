@@ -41,17 +41,16 @@ public final class MainPanel extends JPanel {
             for (int i = 0; i < getColumnModel().getColumnCount(); i++) {
                 getColumnModel().getColumn(i).setHeaderRenderer(r);
             }
-            //JTableHeader h = getTableHeader();
-            //h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
+            // JTableHeader h = getTableHeader();
+            // h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

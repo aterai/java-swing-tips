@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Date"};
     private final Object[][] data = {
         {-1, "AAA", new Date()}, {2, "BBB", new Date()},
-        {-9, "EEE", new Date()}, {1, "",    new Date()},
+        {-9, "EEE", new Date()}, {1, "", new Date()},
         {10, "CCC", new Date()}, {7, "FFF", new Date()},
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
@@ -23,18 +23,17 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JLabel r = (JLabel) table.getDefaultRenderer(Date.class);
         r.setHorizontalAlignment(SwingConstants.LEFT);
         table.setDefaultEditor(Date.class, new SpinnerCellEditor());
-        //table.setShowGrid(false);
-        //table.setAutoCreateRowSorter(true);
+        // table.setShowGrid(false);
+        // table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -57,6 +56,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 //class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
@@ -71,7 +71,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
 
 //         addFocusListener(new FocusAdapter() {
 //             @Override public void focusGained(FocusEvent e) {
-//                 //System.out.println("spinner");
+//                 // System.out.println("spinner");
 //                 editor.getTextField().requestFocusInWindow();
 //             }
 //         });
@@ -80,7 +80,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
                 setArrowButtonEnabled(false);
             }
             @Override public void focusGained(FocusEvent e) {
-                //System.out.println("getTextField");
+                // System.out.println("getTextField");
                 setArrowButtonEnabled(true);
                 EventQueue.invokeLater(() -> {
                     editor.getTextField().setCaretPosition(8);
@@ -106,9 +106,9 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         return getValue();
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

@@ -12,12 +12,13 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
         JTextArea area = new JTextArea();
-        //area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
+        // area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
         area.setForeground(Color.WHITE);
-        area.setBackground(new Color(0x0, true)); //Nimbus
+        area.setBackground(new Color(0x0, true)); // Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
         area.setText("public static void createAndShowGUI() {\n"
@@ -28,6 +29,7 @@ public final class MainPanel extends JPanel {
                    + "  frame.setLocationRelativeTo(null);\n"
                    + "  frame.setVisible(true);\n"
                    + "}\n");
+
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
         JScrollPane scroll = new JScrollPane(area);
@@ -37,8 +39,7 @@ public final class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    private BufferedImage getFilteredImage(URL url) {
+    private static BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
         try {
             image = ImageIO.read(url);
@@ -55,7 +56,6 @@ public final class MainPanel extends JPanel {
         op.filter(image, dest);
         return dest;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

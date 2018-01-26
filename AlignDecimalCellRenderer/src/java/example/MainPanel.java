@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Double", "ALIGN_DECIMAL"};
     private final Object[][] data = {
         {"aaa", 1.4142, 1.4142}, {"bbb", 98.765, 98.765},
@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTable table = new JTable(model) {
             @Override public void updateUI() {
@@ -73,7 +73,7 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
             setOpaque(false);
             putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
             EventQueue.invokeLater(() -> {
-                //MutableAttributeSet attr = new SimpleAttributeSet();
+                // MutableAttributeSet attr = new SimpleAttributeSet();
                 Style attr = getStyle(StyleContext.DEFAULT_STYLE);
                 StyleConstants.setTabSet(attr, new TabSet(new TabStop[] {new TabStop(25f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)}));
                 setParagraphAttributes(attr, false);

@@ -10,13 +10,13 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeTable()));
         setBorder(BorderFactory.createTitledBorder("JComboBox in a Table Cell"));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JTable makeTable() {
+    private static JTable makeTable() {
         String[] columnNames = {"Border", "JPanel+JComboBox"};
         Object[][] data = {
             {"AAA", "aaaaaa"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "ddddd"}
@@ -84,7 +84,7 @@ class ComboBoxPanel extends JPanel {
         comboBox.setSelectedIndex(0);
     }
 }
-/*/ //TEST:
+/*/ // TEST:
 class ComboBoxPanel extends JPanel {
     private String[] m = {"a", "b", "c"};
     protected JComboBox<String> comboBox = new JComboBox<String>(m) {
@@ -131,7 +131,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         return this;
     }
 
-    //Copied from DefaultCellEditor.EditorDelegate
+    // Copied from DefaultCellEditor.EditorDelegate
     @Override public Object getCellEditorValue() {
         return comboBox.getSelectedItem();
     }
@@ -150,9 +150,9 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         return true;
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
@@ -201,12 +201,12 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 }
 
 class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
-    //private final JTextField editor;
-    //private JButton button;
+    // private final JTextField editor;
+    // private JButton button;
     protected ComboCellRenderer() {
         super();
         setEditable(true);
-        //setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+        // setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), getBorder()));
         JComponent editor = (JComponent) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
@@ -218,16 +218,16 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
         if (isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());
-            //button.setBackground(table.getSelectionBackground());
+            // button.setBackground(table.getSelectionBackground());
         } else {
             editor.setForeground(table.getForeground());
             editor.setBackground(table.getBackground());
-            //button.setBackground(bg);
+            // button.setBackground(bg);
         }
         addItem(Objects.toString(value, ""));
         return this;
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -240,17 +240,17 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
         }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //System.out.println(propertyName);
-        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-        //    super.firePropertyChange(propertyName, oldValue, newValue);
-        //}
+        // System.out.println(propertyName);
+        // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //     super.firePropertyChange(propertyName, oldValue, newValue);
+        // }
     }
-    //@Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+    // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()      { /* Overridden for performance reasons. */ }
-    //@Override public void invalidate() { /* Overridden for performance reasons. */ }
-    //@Override public void validate()   { /* Overridden for performance reasons. */ }
-    @Override public void revalidate()   { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
+    // @Override public void invalidate() { /* Overridden for performance reasons. */ }
+    // @Override public void validate() { /* Overridden for performance reasons. */ }
+    @Override public void revalidate() { /* Overridden for performance reasons. */ }
+    // <---- Overridden for performance reasons.
 }

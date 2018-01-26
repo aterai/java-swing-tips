@@ -11,29 +11,31 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.Timer;
 
-public class MainPanel extends JPanel {
-    protected final URL url = MainPanel.class.getResource("anime.gif");
-    private final JLabel l1 = new JLabel("Timer Animated ToolTip") {
-        @Override public JToolTip createToolTip() {
-            JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));
-            tip.setComponent(this);
-            return tip;
-        }
-    };
-    private final JLabel l2 = new JLabel("Gif Animated ToolTip") {
-        // private final Icon icon = new ImageIcon(url);
-        @Override public JToolTip createToolTip() {
-            JToolTip tip = new AnimatedToolTip(new JLabel("", new ImageIcon(url), SwingConstants.LEFT));
-            tip.setComponent(this);
-            return tip;
-        }
-    };
-    private final JLabel l3 = new JLabel("Gif Animated ToolTip(html)");
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+        URL url = getClass().getResource("anime.gif");
+
+        JLabel l1 = new JLabel("Timer Animated ToolTip") {
+            @Override public JToolTip createToolTip() {
+                JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));
+                tip.setComponent(this);
+                return tip;
+            }
+        };
         l1.setToolTipText("Test1");
+
+        JLabel l2 = new JLabel("Gif Animated ToolTip") {
+            // private final Icon icon = new ImageIcon(url);
+            @Override public JToolTip createToolTip() {
+                JToolTip tip = new AnimatedToolTip(new JLabel("", new ImageIcon(url), SwingConstants.LEFT));
+                tip.setComponent(this);
+                return tip;
+            }
+        };
         l2.setToolTipText("Test2");
+
+        JLabel l3 = new JLabel("Gif Animated ToolTip(html)");
         l3.setToolTipText(String.format("<html><img src='%s'>Test3</html>", url));
 
         JPanel p1 = new JPanel(new BorderLayout());
@@ -53,7 +55,6 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -94,7 +95,7 @@ class AnimatedToolTip extends JToolTip {
 //     @Override public Dimension getPreferredSize() {
 //         Insets i = getInsets();
 //         Dimension d = iconlabel.getPreferredSize();
-//         d.width  += i.left + i.right;
+//         d.width += i.left + i.right;
 //         d.height += i.top + i.bottom;
 //         return d;
 //     }
@@ -141,10 +142,10 @@ class AnimatedLabel extends JLabel {
 
 class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
-    private static final double R  = 2d;
+    private static final double R = 2d;
     private static final double SX = 1d;
     private static final double SY = 1d;
-    private static final int WIDTH  = (int) (R * 8 + SX * 2);
+    private static final int WIDTH = (int) (R * 8 + SX * 2);
     private static final int HEIGHT = (int) (R * 8 + SY * 2);
     private final List<Shape> list = new ArrayList<>(Arrays.asList(
         new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),

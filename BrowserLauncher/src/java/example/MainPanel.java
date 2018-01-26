@@ -11,9 +11,10 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "https://ateraimemo.com/";
-    private final JTextArea textArea = new JTextArea();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextArea textArea = new JTextArea();
+
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
         editor.setOpaque(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -31,7 +32,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

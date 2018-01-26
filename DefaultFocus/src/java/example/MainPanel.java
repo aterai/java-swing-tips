@@ -12,7 +12,8 @@ public final class MainPanel extends JPanel {
     private final JButton wb = new JButton("WEST");
     private final JButton eb = new JButton("EAST");
     private final JTextArea ta = new JTextArea("aaaaaaaaaa");
-    public MainPanel() {
+
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
@@ -67,9 +68,8 @@ public final class MainPanel extends JPanel {
         });
 
         System.out.println("this");
-        //field.requestFocusInWindow();
+        // field.requestFocusInWindow();
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

@@ -8,21 +8,22 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final ColorItem[] model = {
-        new ColorItem(Color.RED, "Red"),
-        new ColorItem(Color.GREEN, "Green"),
-        new ColorItem(Color.BLUE, "Blue"),
-        new ColorItem(Color.CYAN, "Cyan"),
-        new ColorItem(Color.ORANGE, "Orange"),
-        new ColorItem(Color.MAGENTA, "Magenta")
-    };
-    private final JComboBox<ColorItem> combo00 = new JComboBox<>(model);
-    private final JComboBox<ColorItem> combo01 = new JComboBox<>(model);
-    private final JComboBox<ColorItem> combo02 = new JComboBox<>(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        ColorItem[] model = {
+            new ColorItem(Color.RED, "Red"),
+            new ColorItem(Color.GREEN, "Green"),
+            new ColorItem(Color.BLUE, "Blue"),
+            new ColorItem(Color.CYAN, "Cyan"),
+            new ColorItem(Color.ORANGE, "Orange"),
+            new ColorItem(Color.MAGENTA, "Magenta")};
+
+        JComboBox<ColorItem> combo00 = new JComboBox<>(model);
+
+        JComboBox<ColorItem> combo01 = new JComboBox<>(model);
         combo01.setRenderer(new ComboForegroundRenderer(combo01));
+
+        JComboBox<ColorItem> combo02 = new JComboBox<>(model);
         combo02.setRenderer(new ComboHtmlRenderer());
 
         Box box = Box.createVerticalBox();

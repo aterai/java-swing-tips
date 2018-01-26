@@ -38,11 +38,11 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         table.setCellSelectionEnabled(true);
-        //table.putClientProperty("Table.isFileList", Boolean.TRUE);
-        //table.getTableHeader().setReorderingAllowed(false);
+        // table.putClientProperty("Table.isFileList", Boolean.TRUE);
+        // table.getTableHeader().setReorderingAllowed(false);
         add(new JScrollPane(new JTable(model)));
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

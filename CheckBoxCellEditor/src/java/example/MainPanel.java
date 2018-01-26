@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Boolean"};
     private final Object[][] data = {
         {"AAA", true}, {"bbb", false},
@@ -25,14 +25,14 @@ public class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model) {
         @Override public void updateUI() {
-            //setDefaultRenderer(Boolean.class, null);
+            // setDefaultRenderer(Boolean.class, null);
             setDefaultEditor(Boolean.class, null);
             super.updateUI();
-            //setDefaultRenderer(Boolean.class, new CheckBoxPanelRenderer());
+            // setDefaultRenderer(Boolean.class, new CheckBoxPanelRenderer());
             setDefaultEditor(Boolean.class, new CheckBoxPanelEditor());
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         table.setRowHeight(24);
@@ -97,8 +97,8 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
     };
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         checkBox.setSelected(Objects.equals(value, Boolean.TRUE));
-        //renderer.setBackground(table.getSelectionBackground());
-        //renderer.removeAll();
+        // renderer.setBackground(table.getSelectionBackground());
+        // renderer.removeAll();
         renderer.add(checkBox);
         return renderer;
     }

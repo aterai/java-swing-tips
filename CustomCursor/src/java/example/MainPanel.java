@@ -7,23 +7,23 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JButton label1 = new JButton("?");
-    private final JButton label2 = new JButton("Oval");
-    private final JButton label3 = new JButton("Rect");
-    private final Point centerpt = new Point(16, 16);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        Point hotSpot = new Point(16, 16);
+
         BufferedImage bi1 = makeStringBufferedImage("?");
-        label1.setCursor(getToolkit().createCustomCursor(bi1, centerpt, "?"));
+        JButton label1 = new JButton("?");
+        label1.setCursor(getToolkit().createCustomCursor(bi1, hotSpot, "?"));
 
         BufferedImage bi2 = makeOvalBufferedImage();
-        label2.setCursor(getToolkit().createCustomCursor(bi2, centerpt, "oval"));
+        JButton label2 = new JButton("Oval");
+        label2.setCursor(getToolkit().createCustomCursor(bi2, hotSpot, "oval"));
         label2.setIcon(new ImageIcon(bi2));
 
         Icon icon = new GreenBlueIcon();
         BufferedImage bi3 = makeIconBufferedImage(icon);
-        label3.setCursor(getToolkit().createCustomCursor(bi3, centerpt, "rect"));
+        JButton label3 = new JButton("Rect");
+        label3.setCursor(getToolkit().createCustomCursor(bi3, hotSpot, "rect"));
         label3.setIcon(icon);
 
         JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));

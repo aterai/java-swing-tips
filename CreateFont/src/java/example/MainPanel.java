@@ -10,37 +10,36 @@ import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextPane textpane = new JTextPane();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextPane textPane = new JTextPane();
 
         makeFont(getClass().getResource("mona.ttf")).ifPresent(font -> {
             System.out.println(font.toString());
-            textpane.setFont(font.deriveFont(10f));
-            //textpane.setDocument(doc);
+            textPane.setFont(font.deriveFont(10f));
+            // textPane.setDocument(doc);
         });
 
         URL url = getClass().getResource("bar.utf8.txt");
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-            textpane.read(reader, "text");
+            textPane.read(reader, "text");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        add(new JScrollPane(textpane));
+//         TreeMap fontMap = new TreeMap();
+//         fontMap.put(font.getFamily(), font);
+//         StyleContext sc = new StyleContext();
+//         Style style = sc.addStyle("Mona Style", null);
+//         StyleConstants.setFontFamily(style, font.getFamily());
+//         StyleConstants.setFontSize(style, 12);
+//         FontDocument doc = new FontDocument(sc);
+//         doc.setLogicalStyle(0, style);
+//         textPane.setDocument(doc);
+
+        add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    //         TreeMap fontMap = new TreeMap();
-    //         fontMap.put(font.getFamily(), font);
-    //         StyleContext sc = new StyleContext();
-    //         Style style = sc.addStyle("Mona Style", null);
-    //         StyleConstants.setFontFamily(style, font.getFamily());
-    //         StyleConstants.setFontSize(style, 12);
-    //         FontDocument doc = new FontDocument(sc);
-    //         doc.setLogicalStyle(0, style);
-    //         textpane.setDocument(doc);
-
 //     private static Font makeFontOld(URL url) {
 //         Font font = null;
 //         InputStream is = null;
@@ -61,7 +60,6 @@ public final class MainPanel extends JPanel {
 //         }
 //         return font;
 //     }
-
     private static Optional<Font> makeFont(URL url) {
         try (InputStream is = url.openStream()) {
             return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
@@ -70,7 +68,6 @@ public final class MainPanel extends JPanel {
         }
         return Optional.empty();
     }
-
 //     private static Document makeDocument(URL url, String encoding) {
 //         DefaultStyledDocument doc = new DefaultStyledDocument();
 //         try (Reader reader = new InputStreamReader(url.openStream(), encoding);
@@ -83,13 +80,12 @@ public final class MainPanel extends JPanel {
 // //             while ((nch = reader.read(buff, 0, buff.length)) != -1) {
 // //                 doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
 // //             }
-//             //reader.close();
+//             // reader.close();
 //         } catch (IOException | BadLocationException ex) {
 //             ex.printStackTrace();
 //         }
 //         return doc;
 //     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

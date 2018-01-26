@@ -7,10 +7,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
-    private final JDesktopPane desktop = new JDesktopPane();
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JDesktopPane desktop = new JDesktopPane();
         desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), makeTextArea(false)));
         desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), makeTextArea(true)));
         desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), makeTextArea(true)));
@@ -22,7 +23,6 @@ public class MainPanel extends JPanel {
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
-
     private static JInternalFrame makeInternalFrame(String title, Point p, Component c) {
         JInternalFrame f = new JInternalFrame(title, true, true, true, true);
         f.add(c);
@@ -30,7 +30,6 @@ public class MainPanel extends JPanel {
         f.setLocation(p);
         return f;
     }
-
     private static Component makeTextArea(boolean flag) {
         JTextArea textArea = new JTextArea() {
             @Override public void updateUI() {
@@ -51,7 +50,6 @@ public class MainPanel extends JPanel {
         textArea.selectAll();
         return new JScrollPane(textArea);
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -59,7 +57,6 @@ public class MainPanel extends JPanel {
             }
         });
     }
-
     public static void createAndShowGUI() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

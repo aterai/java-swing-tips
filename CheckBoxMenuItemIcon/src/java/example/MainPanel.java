@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JCheckBox check = new JCheckBox("JCheckBox#setIcon(...)");
         check.setIcon(new CheckIcon());
@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         add(new JTextArea());
         setPreferredSize(new Dimension(320, 240));
     }
-    public JMenuBar createMenuBar() {
+    private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("JMenu");
         menuBar.add(menu);
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         JMenu menu2 = new JMenu("JMenu2");
         JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem("setIcon");
         jcbmi.setIcon(new CheckIcon());
-        //jcbmi.setSelectedIcon(new CheckIcon());
+        // jcbmi.setSelectedIcon(new CheckIcon());
         menu2.add(jcbmi);
         menuBar.add(menu);
         menuBar.add(menu2);

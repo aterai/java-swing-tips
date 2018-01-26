@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
         }
     };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JScrollPane scroll = new JScrollPane(table);

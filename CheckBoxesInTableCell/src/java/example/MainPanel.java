@@ -26,12 +26,12 @@ public final class MainPanel extends JPanel {
         }
     };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
 //         if (System.getProperty("java.version").startsWith("1.6.0")) {
-//             //1.6.0_xx bug? column header click -> edit cancel?
+//             // 1.6.0_xx bug? column header click -> edit cancel?
 //             table.getTableHeader().addMouseListener(new MouseAdapter() {
 //                 @Override public void mousePressed(MouseEvent e) {
 //                     if (table.isEditing()) {
@@ -41,16 +41,16 @@ public final class MainPanel extends JPanel {
 //             });
 //         }
 
-        //https://ateraimemo.com/Swing/TerminateEdit.html
-        //table.getTableHeader().setReorderingAllowed(false);
-        //frame.setResizeable(false);
-        //or
+        // https://ateraimemo.com/Swing/TerminateEdit.html
+        // table.getTableHeader().setReorderingAllowed(false);
+        // frame.setResizeable(false);
+        // or
 //         table.addMouseListener(new MouseAdapter() {
 //             @Override public void mouseReleased(MouseEvent e) {
 //                 JTable t = (JTable) e.getComponent();
-//                 Point p  = e.getPoint();
-//                 int row  = t.rowAtPoint(p);
-//                 int col  = t.columnAtPoint(p);
+//                 Point p = e.getPoint();
+//                 int row = t.rowAtPoint(p);
+//                 int col = t.columnAtPoint(p);
 //                 if (t.convertColumnIndexToModel(col) == 1) {
 //                     t.getCellEditor(row, col).stopCellEditing();
 //                 }
@@ -126,7 +126,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
         updateButtons(value);
         return this;
     }
-    //public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
+    // public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
 // // TEST:
@@ -138,7 +138,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 //         EventQueue.invokeLater(() -> {
 //             ActionMap am = getActionMap();
 //             for (int i = 0; i < buttons.length; i++) {
-//                 final String t = TITLES[i];
+//                 String t = TITLES[i];
 //                 am.put(t, new AbstractAction(t) {
 //                     @Override public void actionPerformed(ActionEvent e) {
 //                         for (JCheckBox b: buttons) {
@@ -166,15 +166,15 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 //         i = buttons[0].isSelected() ? 1 << 2 | i : i;
 //         i = buttons[1].isSelected() ? 1 << 1 | i : i;
 //         i = buttons[2].isSelected() ? 1 << 0 | i : i;
-//         //if (buttons[0].isSelected()) { i |= 1 << 2; }
-//         //if (buttons[1].isSelected()) { i |= 1 << 1; }
-//         //if (buttons[2].isSelected()) { i |= 1 << 0; }
+//         // if (buttons[0].isSelected()) { i |= 1 << 2; }
+//         // if (buttons[1].isSelected()) { i |= 1 << 1; }
+//         // if (buttons[2].isSelected()) { i |= 1 << 0; }
 //         return i;
 //     }
 //
-//     //Copied from AbstractCellEditor
-//     //protected EventListenerList listenerList = new EventListenerList();
-//     //protected transient ChangeEvent changeEvent;
+//     // Copied from AbstractCellEditor
+//     // protected EventListenerList listenerList = new EventListenerList();
+//     // protected transient ChangeEvent changeEvent;
 //     @Override public boolean isCellEditable(EventObject e) {
 //         return true;
 //     }

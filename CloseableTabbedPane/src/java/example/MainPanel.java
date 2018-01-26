@@ -9,14 +9,12 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel {
-    private final JTabbedPane tabbedPane0 = new CloseableTabbedPane();
-    private final JTabbedPane tabbedPane1 = new JTabbedPane();
-    private final JButton addTabButton = new JButton("add tab");
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTabbedPane tabbedPane0 = new CloseableTabbedPane();
+        JTabbedPane tabbedPane1 = new JTabbedPane();
         for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
             t.addTab("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new JLabel("aaa"));
             t.addTab("bbbbbbbbaa", new JLabel("bbb"));
@@ -33,6 +31,7 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 
+        JButton addTabButton = new JButton("add tab");
         addTabButton.addActionListener(e -> {
             String title = new Date().toString();
             for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
@@ -100,7 +99,7 @@ class CloseTabIcon implements Icon {
 
 class CloseableTabbedPane extends JTabbedPane {
     private static final Icon CLOSE_ICON = new CloseTabIcon();
-    @Override public void addTab(String title, final Component content) {
+    @Override public void addTab(String title, Component content) {
         JPanel tab = new JPanel(new BorderLayout());
         tab.setOpaque(false);
         JLabel label = new JLabel(title);

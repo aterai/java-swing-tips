@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final ImageIcon iib = new ImageIcon(getClass().getResource("b.png"));
     private final JLabel label = new JLabel(iia);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         int w = iia.getIconWidth();

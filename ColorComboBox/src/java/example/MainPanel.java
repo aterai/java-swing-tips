@@ -7,11 +7,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<String> combo01 = new AlternateRowColorComboBox<>(makeModel());
-    private final JComboBox<String> combo02 = new AlternateRowColorComboBox<>(makeModel());
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JComboBox<String> combo01 = new AlternateRowColorComboBox<>(makeModel());
 //         // MetalLookAndFeel
 //         combo01.setUI(new MetalComboBoxUI() {
 //             @Override public PropertyChangeListener createPropertyChangeListener() {
@@ -20,7 +18,7 @@ public final class MainPanel extends JPanel {
 //                         String propertyName = e.getPropertyName();
 //                         if (propertyName == "background") {
 //                             Color color = (Color) e.getNewValue();
-//                             //arrowButton.setBackground(color);
+//                             // arrowButton.setBackground(color);
 //                             listBox.setBackground(color);
 //                         } else {
 //                             super.propertyChange(e);
@@ -29,6 +27,8 @@ public final class MainPanel extends JPanel {
 //                 };
 //             }
 //         });
+
+        JComboBox<String> combo02 = new AlternateRowColorComboBox<>(makeModel());
         combo02.setEditable(true);
 
         Box box = Box.createVerticalBox();
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 
 class AlternateRowColorComboBox<E> extends JComboBox<E> {
     private static final Color EVEN_BGCOLOR = new Color(225, 255, 225);
-    private static final Color ODD_BGCOLOR  = new Color(255, 255, 255);
+    private static final Color ODD_BGCOLOR = new Color(255, 255, 255);
     private transient ItemListener itemColorListener;
 
     protected AlternateRowColorComboBox() {
@@ -90,9 +90,9 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     protected AlternateRowColorComboBox(ComboBoxModel<E> model) {
         super(model);
     }
-    //protected AlternateRowColorComboBox(E[] items) {
-    //    super(items);
-    //}
+    // protected AlternateRowColorComboBox(E[] items) {
+    //     super(items);
+    // }
     @Override public void setEditable(boolean flag) {
         super.setEditable(flag);
         if (flag) {

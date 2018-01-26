@@ -14,12 +14,12 @@ public final class MainPanel extends JPanel {
     private static final int LIMIT = 1000;
     private final JTextPane jtp = new JTextPane();
     private final JButton startButton = new JButton("Start");
-    private final JButton stopButton  = new JButton("Stop");
+    private final JButton stopButton = new JButton("Stop");
     private final JButton clearButton = new JButton("Clear");
     private final DateFormat df = DateFormat.getDateTimeInstance();
     private final Timer timer;
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         df.setTimeZone(TimeZone.getDefault());
         jtp.setEditable(false);
@@ -47,7 +47,6 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-
     private void timerStop() {
         timer.stop();
         startButton.setEnabled(true);
@@ -75,7 +74,6 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

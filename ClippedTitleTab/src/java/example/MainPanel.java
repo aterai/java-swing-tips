@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         List<? extends JTabbedPane> list = Arrays.asList(
             makeTabbedPane(new JTabbedPane()),

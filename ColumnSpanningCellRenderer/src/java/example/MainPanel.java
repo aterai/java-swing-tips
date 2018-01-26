@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel {
     private static final String SEE = "See Also: Constan Field Values";
     private final String[] columnNames = {"AAA", "BBB"};
     private final Object[][] data = {
-        {new OptionPaneDescription("errorIcon",       UIManager.getIcon("OptionPane.errorIcon"),       "public static final int ERROR_MESSAGE\nUsed for error messages."), SEE},
+        {new OptionPaneDescription("errorIcon", UIManager.getIcon("OptionPane.errorIcon"), "public static final int ERROR_MESSAGE\nUsed for error messages."), SEE},
         {new OptionPaneDescription("informationIcon", UIManager.getIcon("OptionPane.informationIcon"), "public static final int INFORMATION_MESSAGE\nUsed for information messages."), SEE},
-        {new OptionPaneDescription("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int QUESTION_MESSAGE\nUsed for questions."), SEE},
-        {new OptionPaneDescription("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int WARNING_MESSAGE\nUsed for warning messages."), SEE},
+        {new OptionPaneDescription("questionIcon", UIManager.getIcon("OptionPane.questionIcon"), "public static final int QUESTION_MESSAGE\nUsed for questions."), SEE},
+        {new OptionPaneDescription("warningIcon", UIManager.getIcon("OptionPane.warningIcon"), "public static final int WARNING_MESSAGE\nUsed for warning messages."), SEE},
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
@@ -24,12 +24,12 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowSelectionAllowed(true);
-        //table.setFocusable(false);
+        // table.setFocusable(false);
         table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
         table.setIntercellSpacing(new Dimension(0, 1));
@@ -42,7 +42,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -50,7 +49,6 @@ public final class MainPanel extends JPanel {
             }
         });
     }
-
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -125,7 +123,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         iconLabel.setIcon(d.icon);
 
         Rectangle cr = table.getCellRect(row, column, false);
-/*/ //Flickering on first visible row ?
+/*/ // Flickering on first visible row ?
         if (column == TARGET_COLIDX) {
             cr.x = 0;
             cr.width -= iconLabel.getPreferredSize().width;
@@ -154,7 +152,7 @@ class OptionPaneDescription {
     public final String text;
     protected OptionPaneDescription(String title, Icon icon, String text) {
         this.title = title;
-        this.icon  = icon;
-        this.text  = text;
+        this.icon = icon;
+        this.text = text;
     }
 }

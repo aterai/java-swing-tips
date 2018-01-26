@@ -7,11 +7,11 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    private final String[] model = {"Item 0", "Item 1", "Item 2"};
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] model = {"Item 0", "Item 1", "Item 2"};
         String[] columnNames = {"Default", "setEnabled", "String"};
         Object[][] data = {
             {model[0], model[0], "aaa"}, {model[1], model[2], "bbb"}
@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox<>(model)));
 
         JComboBox<String> comboBox = new JComboBox<>(model);
-        //comboBox.setEnabled(false);
+        // comboBox.setEnabled(false);
         comboBox.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 System.out.println("ancestorAdded");
@@ -33,9 +33,9 @@ public class MainPanel extends JPanel {
                 });
             }
             @Override public void ancestorRemoved(AncestorEvent e) {
-                //OR:
-                //System.out.println("ancestorRemoved");
-                //e.getComponent().setEnabled(false);
+                // OR:
+                // System.out.println("ancestorRemoved");
+                // e.getComponent().setEnabled(false);
             }
             @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
         });

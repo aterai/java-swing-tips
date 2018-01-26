@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JButton b1 = new JButton("Button1");
     private final JButton b2 = new JButton("Button2");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
         JPanel p = new JPanel(new BorderLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("Dummy TextComponet"));
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
         HashMap<String, JButton> map = new HashMap<>();
-        map.put("null",    null);
+        map.put("null", null);
         map.put("Button1", b1);
         map.put("Button2", b2);
         ActionListener al = e -> Optional.ofNullable(box.getRootPane()).ifPresent(r -> r.setDefaultButton(map.get(bg.getSelection().getActionCommand())));
