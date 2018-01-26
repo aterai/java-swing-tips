@@ -11,12 +11,7 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final DnDTabbedPane tab = new DnDTabbedPane();
-    private final JCheckBox gcheck = new JCheckBox("Tab Ghost", true);
-    private final JCheckBox tcheck = new JCheckBox("Top", true);
-    private final JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    private final JCheckBox debugp = new JCheckBox("Debug Paint", true);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         DnDTabbedPane sub = new DnDTabbedPane();
         sub.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -24,6 +19,7 @@ public final class MainPanel extends JPanel {
         sub.addTab("Title bb", new JScrollPane(new JTree()));
         sub.addTab("Title cc", new JScrollPane(new JTextArea("123412341234\n46746745\n245342\n")));
 
+        DnDTabbedPane tab = new DnDTabbedPane();
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tab.addTab("JTree 00", new JScrollPane(new JTree()));
         tab.addTab("JLabel 01", new JLabel("Test"));
@@ -34,14 +30,21 @@ public final class MainPanel extends JPanel {
         tab.addTab("JTabbedPane 06", sub);
         tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
-        add(makeCheckBoxPanel(), BorderLayout.NORTH);
+        add(makeCheckBoxPanel(tab), BorderLayout.NORTH);
         add(tab);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeCheckBoxPanel() {
+    private static Component makeCheckBoxPanel(DnDTabbedPane tab) {
+        JCheckBox gcheck = new JCheckBox("Tab Ghost", true);
         gcheck.addActionListener(e -> tab.hasGhost = gcheck.isSelected());
+
+        JCheckBox tcheck = new JCheckBox("Top", true);
         tcheck.addActionListener(e -> tab.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+
+        JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
         scheck.addActionListener(e -> tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+
+        JCheckBox debugp = new JCheckBox("Debug Paint", true);
         debugp.addActionListener(e -> tab.isPaintScrollArea = debugp.isSelected());
 
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -137,7 +140,7 @@ class DnDTabbedPane extends JTabbedPane {
             rectForward.setBounds(r.x, r.y + r.height - RWH - BUTTON_SIZE, r.width, RWH + BUTTON_SIZE);
         }
         rectBackward = SwingUtilities.convertRectangle(getParent(), rectBackward, glassPane);
-        rectForward = SwingUtilities.convertRectangle(getParent(), rectForward,  glassPane);
+        rectForward = SwingUtilities.convertRectangle(getParent(), rectForward, glassPane);
         if (rectBackward.contains(glassPt)) {
             clickArrowButton("scrollTabsBackwardAction");
         } else if (rectForward.contains(glassPt)) {

@@ -6,12 +6,14 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio", true);
-    private final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTextArea()), new JScrollPane(new JTree()));
-    private final SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTextArea()), new JScrollPane(new JTree()));
+        SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
+
+        JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio", true);
         check.addActionListener(e -> spw.setTestFlag(check.isSelected()));
+
         add(check, BorderLayout.NORTH);
         add(spw);
         setPreferredSize(new Dimension(320, 240));

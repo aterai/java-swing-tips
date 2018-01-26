@@ -7,38 +7,38 @@ import javax.swing.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
-        add(new JScrollPane(makeEditorPane(true)));
-        add(new JScrollPane(makeEditorPane(false)));
+        String html = "<html><h2>H2</h2>text<ul><li>list: %s</li></ul></html>";
+
+        JEditorPane editor0 = makeEditorPane();
+        editor0.setText(String.format(html, "Default"));
+
+        String url = getClass().getResource("bullet.png").toString();
+        JEditorPane editor1 = makeEditorPane();
+        HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor1.getEditorKit();
+        StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
+        styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", url));
+        editor1.setText(String.format(html, "bullet.png"));
+
+        // styleSheet.addRule("ul{list-style-type:circle;margin:0px 20px;}");
+        // styleSheet.addRule("ul{list-style-type:disc;margin:0px 20px;}");
+        // styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
+        // styleSheet.addRule("ul{list-style-type:decimal;margin:0px 20px;}");
+
+        // Pseudo element is not supported in javax.swing.text.html.CSS
+        // styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
+        // styleSheet.addRule("ul li:before{content: "\u00BB";}");
+
+        add(new JScrollPane(editor0));
+        add(new JScrollPane(editor1));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    private JComponent makeEditorPane(boolean isDefault) {
-        JEditorPane pane = new JEditorPane();
-        pane.setContentType("text/html");
-        pane.setEditable(false);
-        String bullet;
-        if (isDefault) {
-            bullet = "Default";
-        } else {
-            bullet = "bullet.png";
-            HTMLEditorKit htmlEditorKit = (HTMLEditorKit) pane.getEditorKit();
-            StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
-            String u = getClass().getResource(bullet).toString();
-            styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", u));
-
-            //styleSheet.addRule("ul{list-style-type:circle;margin:0px 20px;}");
-            //styleSheet.addRule("ul{list-style-type:disc;margin:0px 20px;}");
-            //styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
-            //styleSheet.addRule("ul{list-style-type:decimal;margin:0px 20px;}");
-
-            //Pseudo element is not supported in javax.swing.text.html.CSS
-            //styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
-            //styleSheet.addRule("ul li:before{content: "\u00BB";}");
-        }
-        pane.setText("<html><h2>H2</h2>text<ul><li>list: " + bullet + "</li></ul></html>");
-        return pane;
+    private static JEditorPane makeEditorPane() {
+        JEditorPane editorPane = new JEditorPane();
+        editorPane.setContentType("text/html");
+        editorPane.setEditable(false);
+        return editorPane;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

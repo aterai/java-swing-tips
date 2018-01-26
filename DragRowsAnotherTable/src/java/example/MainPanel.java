@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
         return table;
     }
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(new JScrollPane(makeDnDTable()));
@@ -65,7 +65,6 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -202,7 +201,7 @@ class TableRowTransferHandler extends TransferHandler {
                 model.removeRow(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

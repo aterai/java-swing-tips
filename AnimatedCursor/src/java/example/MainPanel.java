@@ -7,10 +7,8 @@ import java.awt.event.*;
 import java.util.stream.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected int counter;
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         Point pt = new Point();
@@ -37,10 +35,7 @@ public class MainPanel extends JPanel {
                 animator.stop();
             }
         });
-        animator.addActionListener(e -> {
-            button.setCursor(list[counter]);
-            counter = (counter + 1) % list.length;
-        });
+        animator.addActionListener(new CursorActionListener(list));
 
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
@@ -64,11 +59,23 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class CursorActionListener implements ActionListener {
+    private int counter;
+    private Cursor[] frames;
+    protected CursorActionListener(Cursor[] frames) {
+        this.frames = frames;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        ((Component) e.getSource()).setCursor(frames[counter]);
+        counter = (counter + 1) % frames.length;
     }
 }

@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
             return false;
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        //for (String s: (String[]) Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
+        // for (String s: (String[]) Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
         PropertyChangeListener l = this::initModel;
         Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", l);
         Toolkit.getDefaultToolkit().addPropertyChangeListener("awt.multiClickInterval", l);

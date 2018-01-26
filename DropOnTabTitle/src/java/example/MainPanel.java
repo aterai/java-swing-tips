@@ -9,17 +9,15 @@ import java.io.IOException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane jtp = new JTabbedPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("00000000", new JScrollPane(makeList(0)));
+        tabs.addTab("11111111", new JScrollPane(makeList(1)));
+        tabs.addTab("22222222", new JScrollPane(makeList(2)));
+        add(tabs);
 
-        jtp.addTab("00000000", new JScrollPane(makeList(0)));
-        jtp.addTab("11111111", new JScrollPane(makeList(1)));
-        jtp.addTab("22222222", new JScrollPane(makeList(2)));
-        add(jtp);
-
-        new DropTarget(jtp, DnDConstants.ACTION_MOVE, new TabTitleDropTargetListener(), true);
+        new DropTarget(tabs, DnDConstants.ACTION_MOVE, new TabTitleDropTargetListener(), true);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JList<String> makeList(int index) {
@@ -81,13 +79,13 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     @Override public void dragExit(DragSourceEvent e) {
         e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
     }
-    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
-    @Override public void dragDropEnd(DragSourceDropEvent e)       { /* not needed */ }
+    @Override public void dragOver(DragSourceDragEvent e) { /* not needed */ }
+    @Override public void dragDropEnd(DragSourceDropEvent e) { /* not needed */ }
     @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
 
     // Interface: Transferable
-    //private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    //private final DataFlavor FLAVOR = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
+    // private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    // private final DataFlavor FLAVOR = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
     @Override public Object getTransferData(DataFlavor flavor) {
         return this;
     }
@@ -95,27 +93,27 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
         DefaultListModel m = (DefaultListModel) getModel();
         DataFlavor[] f = new DataFlavor[m.size()];
         for (int i = 0; i < m.size(); i++) {
-            //f[i] = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
+            // f[i] = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
             f[i] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
         }
         return f;
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getHumanPresentableName().equals(NAME);
-        //return flavor.getRepresentationClass().equals(Object.class);
+        // return flavor.getRepresentationClass().equals(Object.class);
     }
 }
 
 class TabTitleDropTargetListener implements DropTargetListener {
     protected int targetTabIndex = -1;
     @Override public void dropActionChanged(DropTargetDragEvent e) {
-        //repaint();
+        // repaint();
     }
     @Override public void dragExit(DropTargetEvent e) {
-        //repaint();
+        // repaint();
     }
     @Override public void dragEnter(DropTargetDragEvent e) {
-        //repaint();
+        // repaint();
     }
     @Override public void dragOver(DropTargetDragEvent e) {
         if (isDropAcceptable(e)) {

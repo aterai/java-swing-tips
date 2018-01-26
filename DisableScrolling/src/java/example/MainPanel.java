@@ -27,19 +27,19 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JScrollPane scroll = new JScrollPane(table);
-    //Fixed: [#JDK-6299213] The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731) - Java Bug System
-    //       https://bugs.openjdk.java.net/browse/JDK-6299213
-    //private final JScrollPane scroll = new JScrollPane(table) {
-    //    @Override public void updateUI() {
-    //        super.updateUI();
-    //        JPopupMenu jpm = getComponentPopupMenu();
-    //        if (jpm == null && pop != null) {
-    //            SwingUtilities.updateComponentTreeUI(pop);
-    //        }
-    //    }
-    //};
+    // Fixed: [#JDK-6299213] The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731) - Java Bug System
+    //        https://bugs.openjdk.java.net/browse/JDK-6299213
+    // private final JScrollPane scroll = new JScrollPane(table) {
+    //     @Override public void updateUI() {
+    //         super.updateUI();
+    //         JPopupMenu jpm = getComponentPopupMenu();
+    //         if (jpm == null && pop != null) {
+    //             SwingUtilities.updateComponentTreeUI(pop);
+    //         }
+    //     }
+    // };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
@@ -53,19 +53,19 @@ public final class MainPanel extends JPanel {
                 bar.setEnabled(false);
                 scroll.setWheelScrollingEnabled(false);
                 table.setEnabled(false);
-                //table.getTableHeader().setEnabled(false);
-                //scroll.setComponentPopupMenu(null);
+                // table.getTableHeader().setEnabled(false);
+                // scroll.setComponentPopupMenu(null);
             } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                 bar.setEnabled(true);
                 scroll.setWheelScrollingEnabled(true);
                 table.setEnabled(true);
-                //table.getTableHeader().setEnabled(true);
-                //scroll.setComponentPopupMenu(pop);
+                // table.getTableHeader().setEnabled(true);
+                // scroll.setComponentPopupMenu(pop);
             }
         });
 
-        //scroll.setComponentPopupMenu(new TablePopupMenu());
-        //table.setInheritsPopupMenu(true);
+        // scroll.setComponentPopupMenu(new TablePopupMenu());
+        // table.setInheritsPopupMenu(true);
         table.setComponentPopupMenu(new TablePopupMenu());
 
         add(scroll);

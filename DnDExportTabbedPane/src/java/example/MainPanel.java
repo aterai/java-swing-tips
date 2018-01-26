@@ -14,9 +14,10 @@ import javax.swing.*;
 
 @SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {
-    private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        DnDTabbedPane tabbedPane = new DnDTabbedPane();
+
         DnDTabbedPane sub = new DnDTabbedPane();
         sub.addTab("Title aa", new JLabel("aaa"));
         sub.addTab("Title bb", new JScrollPane(new JTree()));
@@ -62,10 +63,10 @@ public final class MainPanel extends JPanel {
         p.add(tabbedPane);
         p.add(sub2);
         add(p);
-        add(makeCheckBoxPanel(), BorderLayout.NORTH);
+        add(makeCheckBoxPanel(tabbedPane), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeCheckBoxPanel() {
+    private static Component makeCheckBoxPanel(JTabbedPane tabbedPane) {
         JCheckBox tcheck = new JCheckBox("Top", true);
         tcheck.addActionListener(e -> tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
         JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);

@@ -11,7 +11,8 @@ import javax.swing.event.*;
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "https://ateraimemo.com/";
     private final JTextArea textArea = new JTextArea();
-    public MainPanel() {
+
+    private MainPanel() {
         super(new BorderLayout());
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
         editor.setOpaque(false);

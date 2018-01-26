@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
-        {"eee",  1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
+        {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         TableColumn col = table.getColumnModel().getColumn(0);
@@ -105,11 +105,11 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     private static final Color LINE_COLOR = new Color(255, 100, 100);
     private final Rectangle targetLine = new Rectangle();
     protected int draggedIndex = -1;
-    protected int targetIndex  = -1;
+    protected int targetIndex = -1;
 
     protected DnDTable(TableModel model) {
         super(model);
-        //DropTarget dropTarget =
+        // DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
@@ -125,9 +125,9 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     protected void initTargetLine(Point p) {
         Rectangle rect = new Rectangle();
         int cellHeight = getRowHeight();
-        int lineWidth  = getWidth();
+        int lineWidth = getWidth();
         int lineHeight = 2;
-        int modelSize  = getRowCount();
+        int modelSize = getRowCount();
         rect.setSize(lineWidth, cellHeight);
         targetLine.setSize(lineWidth, lineHeight);
         targetIndex = -1;
@@ -250,9 +250,9 @@ class TableDragSourceListener implements DragSourceListener {
     @Override public void dragExit(DragSourceEvent e) {
         e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
     }
-    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
+    @Override public void dragOver(DragSourceDragEvent e) { /* not needed */ }
     @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
     @Override public void dragDropEnd(DragSourceDropEvent e) {
-        //e.getDragSourceContext().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // e.getDragSourceContext().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 }

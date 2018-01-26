@@ -7,28 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values()); //ERROR, WARNING, INFO, NONE
-    private final JButton messageButton = new JButton("TrayIcon#displayMessage()");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        initSystemTray();
-
-        messageButton.addActionListener(e -> {
-            TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
-            if (icons.length > 0) {
-                icons[0].displayMessage("caption", "text text text text", (TrayIcon.MessageType) messageType.getSelectedItem());
-            }
-        });
-        JPanel p = new JPanel();
-        p.add(messageType);
-        p.add(messageButton);
-
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(new JTextArea()));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private void initSystemTray() {
         MenuItem openItem = new MenuItem("OPEN");
         openItem.addActionListener(e -> {
             Container c = getTopLevelAncestor();
@@ -56,10 +36,27 @@ public final class MainPanel extends JPanel {
         Image image = new ImageIcon(getClass().getResource("16x16.png")).getImage();
         try {
             SystemTray.getSystemTray().add(new TrayIcon(image, "TRAY", popup));
-            //icon.addActionListener(e -> log.append(e.toString() + "\n"));
+            // icon.addActionListener(e -> log.append(e.toString() + "\n"));
         } catch (AWTException ex) {
             ex.printStackTrace();
         }
+
+        JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values()); // ERROR, WARNING, INFO, NONE
+
+        JButton messageButton = new JButton("TrayIcon#displayMessage()");
+        messageButton.addActionListener(e -> {
+            TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
+            if (icons.length > 0) {
+                icons[0].displayMessage("caption", "text text text text", (TrayIcon.MessageType) messageType.getSelectedItem());
+            }
+        });
+        JPanel p = new JPanel();
+        p.add(messageType);
+        p.add(messageButton);
+
+        add(p, BorderLayout.NORTH);
+        add(new JScrollPane(new JTextArea()));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -9,20 +9,18 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("Paint Shadow", true);
-    private final JLabel label = new JLabel();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-
-        final JPopupMenu popup0 = new JPopupMenu();
+        JPopupMenu popup0 = new JPopupMenu();
         initPopupMenu(popup0);
 
-        final DropShadowPopupMenu popup1 = new DropShadowPopupMenu();
+        DropShadowPopupMenu popup1 = new DropShadowPopupMenu();
         initPopupMenu(popup1);
 
-        label.setIcon(new ImageIcon(getClass().getResource("test.png")));
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("test.png")));
         label.setComponentPopupMenu(popup1);
+
+        JCheckBox check = new JCheckBox("Paint Shadow", true);
         check.addActionListener(e -> {
             JCheckBox c = (JCheckBox) e.getSource();
             label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
@@ -79,16 +77,16 @@ class DropShadowPopupMenu extends JPopupMenu {
         return false;
     }
     @Override public void updateUI() {
-        //clear shadow border
+        // clear shadow border
         inner = null;
         setBorder(null);
         super.updateUI();
     }
     @Override protected void paintComponent(Graphics g) {
-        //super.paintComponent(g); //???: Windows LnF
+        // super.paintComponent(g); // ???: Windows LnF
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
-        g2.setPaint(getBackground()); //??? 1.7.0_03
+        g2.setPaint(getBackground()); // ??? 1.7.0_03
         g2.fillRect(0, 0, getWidth() - OFFSET, getHeight() - OFFSET);
         g2.dispose();
     }
@@ -118,8 +116,8 @@ class DropShadowPopupMenu extends JPopupMenu {
         Rectangle r = SwingUtilities.getWindowAncestor(c).getBounds();
         Dimension d = this.getPreferredSize();
         SwingUtilities.convertPointToScreen(p, c);
-        //System.out.println(r + " : " + p);
-        //pointed out by sawshun
+        // System.out.println(r + " : " + p);
+        // pointed out by sawshun
         Border outer;
         if (r.contains(p.x, p.y, d.width + OFFSET, d.height + OFFSET)) {
             outer = BorderFactory.createEmptyBorder(0, 0, OFFSET, OFFSET);
@@ -171,7 +169,7 @@ class ShadowBorder extends AbstractBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(screen, 0, 0, c);
         g2.drawImage(shadow, 0, 0, c);
-        g2.setPaint(c.getBackground()); //??? 1.7.0_03
+        g2.setPaint(c.getBackground()); // ??? 1.7.0_03
         g2.fillRect(x, y, w - xoff, h - yoff);
         g2.dispose();
     }
@@ -193,10 +191,10 @@ class DropShadowPopupMenu extends JPopupMenu {
         return false;
     }
     @Override protected void paintComponent(Graphics g) {
-        //super.paintComponent(g);
+        // super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
-        g2.setPaint(getBackground()); //??? 1.7.0_03
+        g2.setPaint(getBackground()); // ??? 1.7.0_03
         g2.fillRect(0, 0, getWidth() - OFFSET, getHeight() - OFFSET);
         g2.dispose();
     }
@@ -218,8 +216,8 @@ class DropShadowPopupMenu extends JPopupMenu {
         }
         EventQueue.invokeLater(() -> {
             Container top = getTopLevelAncestor();
-            if (top instanceof JWindow) { //HeavyWeight Popup
-                ((JWindow) top).setBackground(new Color(0x0, true)); //JDK 1.7.0
+            if (top instanceof JWindow) { // HeavyWeight Popup
+                ((JWindow) top).setBackground(new Color(0x0, true)); // JDK 1.7.0
             }
         });
         super.show(c, x, y);

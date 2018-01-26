@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setTransferHandler(handler);
@@ -64,7 +64,6 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -197,7 +196,7 @@ class TableRowTransferHandler extends TransferHandler {
                 model.removeRow(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

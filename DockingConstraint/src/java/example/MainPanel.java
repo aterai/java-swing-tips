@@ -8,10 +8,10 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JComboBox<String> combo = new JComboBox<>(makeModel());
-    private final JLabel label     = new JLabel();
+    private final JLabel label = new JLabel();
     private final JToolBar toolbar = new JToolBar("toolbar");
-    private final JButton button   = new JButton("button");
-    public MainPanel() {
+    private final JButton button = new JButton("button");
+    private MainPanel() {
         super(new BorderLayout());
 /*
         toolbar.setUI(new BasicToolBarUI() {

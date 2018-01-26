@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-        //DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
-        //ce.setClickCountToStart(Integer.MAX_VALUE);
+        // DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
+        // ce.setClickCountToStart(Integer.MAX_VALUE);
 
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
@@ -49,7 +49,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

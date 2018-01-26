@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JComboBox<String> combo = new JComboBox<>();
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         textArea.setText(INIT_TXT);
         textArea.setLineWrap(true);

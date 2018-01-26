@@ -3,67 +3,74 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected static final String DEVICE_NAME = "con.txt";
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout(10, 10));
-        JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
-        p.add(makeTitledPanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File file = new File(DEVICE_NAME);
-                try {
-                    if (file.createNewFile()) {
-                        System.out.println("the named file does not exist and was successfully created.");
-                    } else {
-                        System.out.println("the named file already exists.");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Object[] obj = {ex.getMessage()};
-                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+        String deviceName = "con.txt";
+
+        JButton b1 = new JButton("c:/" + deviceName);
+        b1.addActionListener(e -> {
+            File file = new File(deviceName);
+            try {
+                if (file.createNewFile()) {
+                    System.out.println("the named file does not exist and was successfully created.");
+                } else {
+                    System.out.println("the named file already exists.");
                 }
-//                 JFileChooser fileChooser = new JFileChooser();
-//                 int retvalue = fileChooser.showOpenDialog(getRootPane());
-//                 if (retvalue == JFileChooser.APPROVE_OPTION) {
-//                     File file = fileChooser.getSelectedFile();
-//                     System.out.println(file.getAbsolutePath());
-//                     try {
-//                         file.createNewFile();
-//                         file.deleteOnExit();
-//                     } catch (IOException ex) {
-//                         ex.printStackTrace();
-//                     }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Object[] obj = {ex.getMessage()};
+                JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+//             JFileChooser fileChooser = new JFileChooser();
+//             int retvalue = fileChooser.showOpenDialog(getRootPane());
+//             if (retvalue == JFileChooser.APPROVE_OPTION) {
+//                 File file = fileChooser.getSelectedFile();
+//                 System.out.println(file.getAbsolutePath());
+//                 try {
+//                     file.createNewFile();
+//                     file.deleteOnExit();
+//                 } catch (IOException ex) {
+//                     ex.printStackTrace();
 //                 }
+//             }
+        });
+        Component p1 = makeTitledPanel("IOException: before 1.5", b1);
+
+        JButton b2 = new JButton("c:/" + deviceName + ":getCanonicalPath");
+        b2.addActionListener(e -> {
+            File file = new File(deviceName);
+            if (!isCanonicalPath(file)) {
+                Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
+                JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-        })));
-        p.add(makeTitledPanel("getCanonicalPath", new JButton(new AbstractAction("c:/con.txt:getCanonicalPath") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File file = new File(DEVICE_NAME);
-                if (!isCanonicalPath(file)) {
-                    Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
-                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
+        });
+        Component p2 = makeTitledPanel("getCanonicalPath: before 1.5", b2);
+
+        JButton b3 = new JButton("c:/" + deviceName + ":isFile");
+        b3.addActionListener(e -> {
+            File file = new File(deviceName);
+            if (!file.isFile()) {
+                Object[] obj = {file.getAbsolutePath() + " is not a file."};
+                JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-        })));
-        p.add(makeTitledPanel("isFile: JDK 1.5+ ", new JButton(new AbstractAction("c:/con.txt:isFile") {
-            @Override public void actionPerformed(ActionEvent e) {
-                File file = new File(DEVICE_NAME);
-                if (!file.isFile()) {
-                    Object[] obj = {file.getAbsolutePath() + " is not a file."};
-                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        })));
+        });
+        Component p3 = makeTitledPanel("isFile: JDK 1.5+", b3);
+
+        JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
+        p.add(p1);
+        p.add(p2);
+        p.add(p3);
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
-    protected final boolean isCanonicalPath(File file) {
+    // Before 1.5
+    public static boolean isCanonicalPath(File file) {
         if (Objects.isNull(file)) {
             return false;
         }

@@ -7,40 +7,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final RowDataModel model = new RowDataModel();
-    private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(250, 250, 250);
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-            }
-            return c;
-        }
-    };
-    private final JCheckBox cbox = new JCheckBox("setEnabledAt(2, false)");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        JTableHeader header = table.getTableHeader();
-
-        SortButtonRenderer hrenderer = new SortButtonRenderer(header);
-        hrenderer.setEnabledAt(0, false);
-
-        header.setDefaultRenderer(hrenderer);
-        header.addMouseListener(new HeaderMouseListener());
-        table.setRowSelectionAllowed(true);
-        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        table.getTableHeader().setReorderingAllowed(false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(80);
-        col.setMaxWidth(80);
-
+        RowDataModel model = new RowDataModel();
         model.addRowData(new RowData("Name 1", "comment..."));
         model.addRowData(new RowData("Name 2", "Test"));
         model.addRowData(new RowData("Name d", "ee"));
@@ -49,7 +18,36 @@ public final class MainPanel extends JPanel {
         model.addRowData(new RowData("Name a", "ff"));
         model.addRowData(new RowData("Name 0", "Test aa"));
 
-        cbox.addItemListener(e -> {
+        JTable table = new JTable(model) {
+            private final Color evenColor = new Color(250, 250, 250);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+                }
+                return c;
+            }
+        };
+        table.setRowSelectionAllowed(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        table.getTableHeader().setReorderingAllowed(false);
+
+        JTableHeader header = table.getTableHeader();
+        SortButtonRenderer hrenderer = new SortButtonRenderer(header);
+        hrenderer.setEnabledAt(0, false);
+        header.setDefaultRenderer(hrenderer);
+        header.addMouseListener(new HeaderMouseListener());
+
+        TableColumn col = table.getColumnModel().getColumn(0);
+        col.setMinWidth(80);
+        col.setMaxWidth(80);
+
+        JCheckBox check = new JCheckBox("setEnabledAt(2, false)");
+        check.addItemListener(e -> {
             hrenderer.setEnabledAt(2, !((JCheckBox) e.getItemSelectable()).isSelected());
             // if (e.getStateChange() == ItemEvent.SELECTED) {
             //     hrenderer.setEnabledAt(2, false);
@@ -59,10 +57,9 @@ public final class MainPanel extends JPanel {
         });
 
         add(new JScrollPane(table));
-        add(cbox, BorderLayout.SOUTH);
+        add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

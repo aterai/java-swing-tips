@@ -18,19 +18,18 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         int index = 0;
-        //table.getRowSorter().toggleSortOrder(index); //SortOrder.ASCENDING
+        // table.getRowSorter().toggleSortOrder(index); // SortOrder.ASCENDING
         table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, SortOrder.DESCENDING)));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

@@ -6,29 +6,27 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label1 = new JLabel();
-    private final JLabel label2 = new JLabel() {
-        @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-            int info = infoflags;
-            if (!isEnabled()) {
-                info &= ~FRAMEBITS;
-            }
-            return super.imageUpdate(img, info, x, y, w, h);
-        }
-    };
-    private final JLabel label3 = new JLabel();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         ImageIcon icon = new ImageIcon(getClass().getResource("duke.running.gif"));
-        label1.setIcon(icon);
+
+        JLabel label1 = new JLabel(icon);
         label1.setEnabled(false);
         label1.setBorder(BorderFactory.createTitledBorder("Default"));
 
-        label2.setIcon(icon);
+        JLabel label2 = new JLabel(icon) {
+            @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+                int info = infoflags;
+                if (!isEnabled()) {
+                    info &= ~FRAMEBITS;
+                }
+                return super.imageUpdate(img, info, x, y, w, h);
+            }
+        };
         label2.setEnabled(false);
         label2.setBorder(BorderFactory.createTitledBorder("Override imageUpdate(...)"));
 
-        label3.setIcon(icon);
+        JLabel label3 = new JLabel(icon);
         label3.setEnabled(false);
         label3.setBorder(BorderFactory.createTitledBorder("setDisabledIcon"));
         ImageIcon i = new ImageIcon(getClass().getResource("duke.running_frame_0001.gif"));

@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTree tree = new DnDTree();
         tree.setModel(makeModel());
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private DefaultTreeModel makeModel() {
+    private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
@@ -39,7 +39,6 @@ public final class MainPanel extends JPanel {
         set2.add(set3);
         return new DefaultTreeModel(root);
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

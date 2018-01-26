@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         UIManager.put("SplitPaneDivider.draggingColor", new Color(255, 100, 100, 100));
 
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         splitPane.setTopComponent(new JScrollPane(new JTable(model)));
         splitPane.setBottomComponent(new JScrollPane(new JTree()));
         splitPane.setDividerSize(24);
-        //splitPane.setContinuousLayout(false);
+        // splitPane.setContinuousLayout(false);
 
         add(splitPane);
         setPreferredSize(new Dimension(320, 240));

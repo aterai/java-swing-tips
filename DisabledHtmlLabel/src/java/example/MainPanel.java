@@ -10,8 +10,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html>Html <font color='red'>label</font><br/> Test";
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JLabel label0 = new JLabel("Default JLabel");
@@ -21,8 +20,7 @@ public final class MainPanel extends JPanel {
             // https://community.oracle.com/thread/1377943
             @Override public void setEnabled(boolean b) {
                 super.setEnabled(b);
-                setForeground(b ? UIManager.getColor("Label.foreground")
-                                : UIManager.getColor("Label.disabledForeground"));
+                setForeground(b ? UIManager.getColor("Label.foreground") : UIManager.getColor("Label.disabledForeground"));
             }
         };
         JLabel label3 = new DisabledHtmlLabel(HTML_TEXT);
@@ -37,31 +35,30 @@ public final class MainPanel extends JPanel {
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setFont(UIManager.getFont("Label.font"));
 
-        JPanel box = new JPanel(new GridLayout(2, 3));
-        box.add(initTitledBorder("JLabel",        label0));
-        box.add(initTitledBorder("JLabel+Html",   label1));
-        box.add(initTitledBorder("JLabel+Html+",  label2));
-        box.add(initTitledBorder("JLabel+Html++", label3));
-        box.add(initTitledBorder("JEditorPane",   editor1));
-        box.add(initTitledBorder("JEditorPane+",  editor2));
+        JPanel p = new JPanel(new GridLayout(2, 3));
+        p.add(initTitledBorder("JLabel", label0));
+        p.add(initTitledBorder("JLabel+Html", label1));
+        p.add(initTitledBorder("JLabel+Html+", label2));
+        p.add(initTitledBorder("JLabel+Html++", label3));
+        p.add(initTitledBorder("JEditorPane", editor1));
+        p.add(initTitledBorder("JEditorPane+", editor2));
 
         JCheckBox check = new JCheckBox("setEnabled", true);
         check.addActionListener(e -> {
             boolean f = ((JCheckBox) e.getSource()).isSelected();
-            for (Component c: box.getComponents()) {
+            for (Component c: p.getComponents()) {
                 c.setEnabled(f);
             }
         });
 
         add(check, BorderLayout.NORTH);
-        add(box);
+        add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent initTitledBorder(String title, JComponent c) {
+    private static Component initTitledBorder(String title, JComponent c) {
         c.setBorder(BorderFactory.createTitledBorder(title));
         return c;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -100,7 +97,7 @@ class DisabledHtmlLabel extends JLabel {
             Graphics2D g2 = source.createGraphics();
             g2.setPaint(new Color(0x0, true));
             g2.fillRect(0, 0, getWidth(), getHeight());
-            //print(g2);
+            // print(g2);
             paint(g2);
             g2.dispose();
             shadow = COLOR_CONVERT.filter(source, null);

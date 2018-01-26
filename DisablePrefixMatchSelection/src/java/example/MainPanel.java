@@ -6,12 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Position;
 
-public class MainPanel extends JPanel {
-    private static final String TXT = "<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select";
-    protected final JCheckBox check = new JCheckBox(TXT);
-
-    public MainPanel() {
-        super(new BorderLayout(5, 5));
+public final class MainPanel extends JPanel {
+    private MainPanel() {
+        super(new GridLayout(1, 2, 5, 5));
+        // JCheckBox check = new JCheckBox("<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select");
 
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
@@ -25,14 +23,21 @@ public class MainPanel extends JPanel {
 
         JList<String> list = new JList<String>(model) {
             @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
-                return check.isSelected() ? -1 : super.getNextMatch(prefix, startIndex, bias);
+                return -1;
             }
         };
 
-        add(new JScrollPane(list));
-        add(check, BorderLayout.NORTH);
+        add(makeTitledPanel("Default", new JScrollPane(new JList<String>(model))));
+        add(makeTitledPanel("Disable prefixMatchSelection", new JScrollPane(list)));
+        // add(check, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static Component makeTitledPanel(String title, Component c) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        p.add(c);
+        return p;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
