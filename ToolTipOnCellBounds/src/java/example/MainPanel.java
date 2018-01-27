@@ -89,7 +89,7 @@ class CellRendererTooltipList<E> extends JList<E> {
         Point p = e.getPoint();
         int i = locationToIndex(p);
         ListCellRenderer<? super E> r = getCellRenderer();
-        final Rectangle cellBounds = getCellBounds(i, i);
+        Rectangle cellBounds = getCellBounds(i, i);
         if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
             E str = getModel().getElementAt(i);
@@ -122,7 +122,7 @@ class CellRendererTooltipList<E> extends JList<E> {
 }
 
 class TooltipListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);

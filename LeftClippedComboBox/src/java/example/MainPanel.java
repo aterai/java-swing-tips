@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
     }
     private static JButton getArrowButton(JComboBox box) {
         for (Component c: box.getComponents()) {
-            if (c instanceof JButton) { //&& "ComboBox.arrowButton".equals(c.getName())) {
-                //System.out.println(c.getName());
+            if (c instanceof JButton) { // && "ComboBox.arrowButton".equals(c.getName())) {
+                // System.out.println(c.getName());
                 return (JButton) c;
             }
         }
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
         model.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
         return new JComboBox<>(model);
     }
-    private static void initComboBoxRenderer(final JComboBox<String> combo) {
-        final JButton arrowButton = getArrowButton(combo);
+    private static void initComboBoxRenderer(JComboBox<String> combo) {
+        JButton arrowButton = getArrowButton(combo);
         combo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 int itb = 0;
                 int ilr = 0;
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
                 ilr += insets.left + insets.right;
                 int availableWidth = combo.getWidth() - ilr;
                 if (index < 0) {
-                    //@see BasicComboBoxUI#rectangleForCurrentValue
+                    // @see BasicComboBoxUI#rectangleForCurrentValue
                     int buttonSize = combo.getHeight() - itb;
                     if (Objects.nonNull(arrowButton)) {
                         buttonSize = arrowButton.getWidth();
@@ -67,28 +67,28 @@ public final class MainPanel extends JPanel {
                     availableWidth -= buttonSize;
                     JTextField tf = (JTextField) combo.getEditor().getEditorComponent();
                     insets = tf.getMargin();
-                    //availableWidth -= insets.left;
+                    // availableWidth -= insets.left;
                     availableWidth -= insets.left + insets.right;
                 }
                 String cellText = Objects.toString(value, "");
-                //<blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
-                //@title Left Dot Renderer
-                //@auther Rob Camick
-                //FontMetrics fm = getFontMetrics(getFont());
-                //if (fm.stringWidth(cellText) > availableWidth) {
-                //    String dots = "...";
-                //    int textWidth = fm.stringWidth(dots);
-                //    int nChars = cellText.length() - 1;
-                //    while (nChars > 0) {
-                //        textWidth += fm.charWidth(cellText.charAt(nChars));
-                //        if (textWidth > availableWidth) {
-                //            break;
-                //        }
-                //        nChars--;
-                //    }
-                //    setText(dots + cellText.substring(nChars + 1));
-                //}
-                //</blockquote>
+                // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
+                // @title Left Dot Renderer
+                // @auther Rob Camick
+                // FontMetrics fm = getFontMetrics(getFont());
+                // if (fm.stringWidth(cellText) > availableWidth) {
+                //     String dots = "...";
+                //     int textWidth = fm.stringWidth(dots);
+                //     int nChars = cellText.length() - 1;
+                //     while (nChars > 0) {
+                //         textWidth += fm.charWidth(cellText.charAt(nChars));
+                //         if (textWidth > availableWidth) {
+                //             break;
+                //         }
+                //         nChars--;
+                //     }
+                //     setText(dots + cellText.substring(nChars + 1));
+                // }
+                // </blockquote>
                 FontMetrics fm = getFontMetrics(getFont());
                 if (fm.stringWidth(cellText) > availableWidth) {
                     String dots = "...";

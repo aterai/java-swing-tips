@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 
         list1.setEnabled(false);
 
-        //System.out.println(UIManager.getBorder("List.focusCellHighlightBorder"));
+        // System.out.println(UIManager.getBorder("List.focusCellHighlightBorder"));
         list2.setFocusable(false);
         list2.setSelectionModel(new DefaultListSelectionModel() {
             @Override public boolean isSelectedIndex(int index) {
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     }
     private static void setListCellRenderer(JList<String> l) {
         l.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 return super.getListCellRendererComponent(list, value, index, false, false);
             }
         });

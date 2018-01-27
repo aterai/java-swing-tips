@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
         JComboBox<String> combo2 = new JComboBox<>(items);
         combo2.setRenderer(new DefaultListCellRenderer() {
             private int cheight;
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                //Dimension d = super.getPreferredSize();
-                //cheight = index < 0 ? d.height : 32;
+                // Dimension d = super.getPreferredSize();
+                // cheight = index < 0 ? d.height : 32;
                 cheight = Optional.ofNullable(super.getPreferredSize())
                     .filter(d -> index < 0).map(d -> d.height).orElse(32);
                 return this;
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
 
         JComboBox<String> combo3 = new JComboBox<>(items);
         combo3.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 String title = Objects.toString(value, "");
                 if (index >= 0) {
                     title = String.format("<html><table><td height='32'>%s", value);
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
 
         JComboBox<String> combo4 = new JComboBox<>(items);
         combo4.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 setIcon(index >= 0 ? new H32Icon() : null);
-                //setIconTextGap(0);
+                // setIconTextGap(0);
                 return this;
             }
         });

@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     private static void initComboBox(JComboBox<URLItem> combo) {
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 c.setIcon(((URLItem) value).favicon);
                 return c;

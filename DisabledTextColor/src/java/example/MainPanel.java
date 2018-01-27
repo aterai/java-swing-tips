@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
             clist.forEach(c -> c.setEnabled(flg));
         });
         combo2.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (index < 0 && !combo2.isEnabled()) {
                     JLabel l = (JLabel) c;

@@ -185,7 +185,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
 }
 
 class SearchEngineListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         if (value instanceof SearchEngine) {
             SearchEngine se = (SearchEngine) value;

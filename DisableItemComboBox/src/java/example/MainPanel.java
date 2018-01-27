@@ -113,7 +113,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     @Override public void updateUI() {
         super.updateUI();
         setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
                 if (disableIndexSet.contains(index)) {
                     c = super.getListCellRendererComponent(list, value, index, false, false);
@@ -130,9 +130,9 @@ class DisableItemComboBox<E> extends JComboBox<E> {
             am.put("selectPrevious3", up);
             am.put("selectNext3", down);
             InputMap im = getInputMap();
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), "selectPrevious3");
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "selectNext3");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
         });
     }
@@ -153,7 +153,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
         if (disableIndexSet.contains(index)) {
             isDisableIndex = true;
         } else {
-            //isDisableIndex = false;
+            // isDisableIndex = false;
             super.setSelectedIndex(index);
         }
     }

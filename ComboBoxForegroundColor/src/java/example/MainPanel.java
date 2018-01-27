@@ -85,7 +85,7 @@ class ComboForegroundRenderer extends DefaultListCellRenderer {
         super();
         this.combo = combo;
     }
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (value instanceof ColorItem) {
             ColorItem item = (ColorItem) value;
             Color ic = item.color;
@@ -108,7 +108,7 @@ class ComboForegroundRenderer extends DefaultListCellRenderer {
 
 class ComboHtmlRenderer extends DefaultListCellRenderer {
     private final Color sbgc = new Color(240, 245, 250);
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         ColorItem item = (ColorItem) value;
         if (index < 0) {
             list.setSelectionBackground(sbgc);

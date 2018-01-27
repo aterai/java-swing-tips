@@ -74,7 +74,7 @@ public class MainPanel extends JPanel {
                 return ProgressCellRenderer.this.getPreferredSize();
             }
         };
-        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
                 bar.setFont(list.getFont());
                 bar.setBorder(BorderFactory.createEmptyBorder());

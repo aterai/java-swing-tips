@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JList makeList(final Set<Integer> disableIndexSet) {
+    private static JList makeList(Set<Integer> disableIndexSet) {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbbbbbbbbbbbbbbb");
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
 
         JList<String> list = new JList<>(model);
         list.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
                 if (disableIndexSet.contains(index)) {
                     c = super.getListCellRendererComponent(list, value, index, false, false);

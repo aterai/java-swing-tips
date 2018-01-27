@@ -59,7 +59,7 @@ class RollOverList<E> extends JList<E> {
     @Override public void updateUI() {
         removeMouseListener(rollOverListener);
         removeMouseMotionListener(rollOverListener);
-        setSelectionBackground(null); //Nimbus
+        setSelectionBackground(null); // Nimbus
         super.updateUI();
         rollOverListener = new RollOverListener();
         addMouseMotionListener(rollOverListener);
@@ -67,15 +67,15 @@ class RollOverList<E> extends JList<E> {
         setCellRenderer(new RollOverCellRenderer());
     }
     private class RollOverCellRenderer extends DefaultListCellRenderer {
-        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (index == rollOverRowIndex) {
                 c.setBackground(ROLLOVER_BACKGROUND);
                 if (isSelected) {
                     c.setForeground(Color.BLACK);
                 }
-                //c.setForeground(getSelectionForeground());
-                //c.setBackground(getSelectionBackground());
+                // c.setForeground(getSelectionForeground());
+                // c.setBackground(getSelectionBackground());
             }
             return c;
         }

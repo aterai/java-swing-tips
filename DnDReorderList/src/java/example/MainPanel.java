@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         list.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 Color color = (Color) value;
                 ((JLabel) c).setForeground(color);
@@ -174,7 +174,7 @@ class ListItemTransferHandler extends TransferHandler {
                 model.remove(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

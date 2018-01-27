@@ -16,11 +16,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         CheckableItem[] m = {
-            new CheckableItem("aaa",     false),
-            new CheckableItem("bbbbb",   true),
-            new CheckableItem("111",     false),
-            new CheckableItem("33333",   true),
-            new CheckableItem("2222",    true),
+            new CheckableItem("aaa", false),
+            new CheckableItem("bbbbb", true),
+            new CheckableItem("111", false),
+            new CheckableItem("33333", true),
+            new CheckableItem("2222", true),
             new CheckableItem("ccccccc", false)
         };
 
@@ -83,7 +83,7 @@ class CheckableItem {
 class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<E> {
     private final JLabel label = new JLabel(" ");
     private final JCheckBox check = new JCheckBox(" ");
-    @Override public Component getListCellRendererComponent(JList list, CheckableItem value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index < 0) {
             label.setText(getCheckedItemString(list.getModel()));
             return label;

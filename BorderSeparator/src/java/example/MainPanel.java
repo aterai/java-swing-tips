@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
 
         JComboBox<MyItem> combo = new JComboBox<>(model);
         combo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 MyItem item = (MyItem) value;
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, item, index, isSelected, cellHasFocus);
                 if (index != -1 && item.hasSeparator()) {
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MyItem {
-    private final String  item;
+    private final String item;
     private final boolean flag;
     protected MyItem(String str) {
         this(str, false);

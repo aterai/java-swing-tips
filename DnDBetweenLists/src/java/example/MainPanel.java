@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         listModel.addElement(Color.MAGENTA);
         JList<Color> list = new JList<>(listModel);
         list.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 ((JLabel) c).setForeground((Color) value);
                 return c;
@@ -170,7 +170,7 @@ class ListItemTransferHandler extends TransferHandler {
                 model.remove(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }

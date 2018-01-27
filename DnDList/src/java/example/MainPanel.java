@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         list.setModel(model);
         list.setCellRenderer(new DefaultListCellRenderer() {
             private final Color ec = new Color(240, 240, 240);
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (isSelected) {
                     setForeground(list.getSelectionForeground());
@@ -69,7 +69,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private final Rectangle targetLine = new Rectangle();
     protected int draggedIndex = -1;
-    protected int targetIndex  = -1;
+    protected int targetIndex = -1;
     protected DnDList() {
         super();
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
@@ -88,7 +88,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         Rectangle rect = getCellBounds(0, 0);
         int cellHeight = rect.height;
         int lineHeight = 2;
-        int modelSize  = getModel().getSize();
+        int modelSize = getModel().getSize();
         targetIndex = -1;
         targetLine.setSize(rect.width, lineHeight);
         for (int i = 0; i < modelSize; i++) {
@@ -210,7 +210,7 @@ class ListDragSourceListener implements DragSourceListener {
     @Override public void dragExit(DragSourceEvent e) {
         e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
     }
-    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
+    @Override public void dragOver(DragSourceDragEvent e) { /* not needed */ }
     @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
-    @Override public void dragDropEnd(DragSourceDropEvent e)       { /* not needed */ }
+    @Override public void dragDropEnd(DragSourceDropEvent e) { /* not needed */ }
 }
