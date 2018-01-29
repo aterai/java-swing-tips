@@ -145,7 +145,10 @@
   </target>
 
   <target name="run" depends="compile">
-    <java classname="${main.class}" classpathref="project.class.path" fork="true" />
+    <java classname="${main.class}" classpathref="project.class.path" fork="true">
+      <jvmarg value="-Dfile.encoding=${compile.encoding}" />
+      <jvmarg value="-Duser.language=${user.language}" />
+    </java>
   </target>
 
   <!-- =================================================================== -->
@@ -336,6 +339,7 @@
 
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
     <javac srcdir="${build.src}"
+           excludes="**/module-info.java"
            includes="**/*.java"
            destdir="${build.dest}"
            encoding="${compile.encoding}"
@@ -402,12 +406,12 @@
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}">
+    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}" cacheLocation="${build.reports}/pmd.cache">
       <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
-      <fileset dir="${src.dir}" includes="**/*.java" />
+      <fileset dir="${src.dir}" excludes="**/module-info.java" includes="**/*.java" />
     </pmd>
   </target>
 
@@ -425,7 +429,7 @@
     <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
-      <fileset dir="${src.dir}" includes="**/*.java" />
+      <fileset dir="${src.dir}" excludes="**/module-info.java" includes="**/*.java" />
     </checkstyle>
   </target>
 
