@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import java.util.stream.*;
 import javax.swing.*;
 
@@ -12,14 +13,15 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         Point pt = new Point();
+        Class<?> clz = getClass();
         Toolkit tk = Toolkit.getDefaultToolkit();
-        Cursor[] list = Stream.of("00", "01", "02")
-            .map(s -> tk.createCustomCursor(tk.createImage(MainPanel.class.getResource(s + ".png")), pt, s))
-            .toArray(Cursor[]::new);
+        List<Cursor> list = Stream.of("00", "01", "02")
+            .map(s -> tk.createCustomCursor(tk.createImage(clz.getResource(s + ".png")), pt, s))
+            .collect(Collectors.toList());
 
         Timer animator = new Timer(100, null);
         JButton button = new JButton("Start");
-        button.setCursor(list[0]);
+        button.setCursor(list.get(0));
         button.addActionListener(e -> {
             JButton b = (JButton) e.getSource();
             if (animator.isRunning()) {
@@ -35,7 +37,7 @@ public final class MainPanel extends JPanel {
                 animator.stop();
             }
         });
-        animator.addActionListener(new CursorActionListener(list));
+        animator.addActionListener(new CursorActionListener(button, list));
 
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
@@ -70,12 +72,14 @@ public final class MainPanel extends JPanel {
 
 class CursorActionListener implements ActionListener {
     private int counter;
-    private Cursor[] frames;
-    protected CursorActionListener(Cursor[] frames) {
+    private final Component comp;
+    private final List<Cursor> frames;
+    protected CursorActionListener(Component comp, List<Cursor> frames) {
+        this.comp = comp;
         this.frames = frames;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        ((Component) e.getSource()).setCursor(frames[counter]);
-        counter = (counter + 1) % frames.length;
+        comp.setCursor(frames.get(counter));
+        counter = (counter + 1) % frames.size();
     }
 }
