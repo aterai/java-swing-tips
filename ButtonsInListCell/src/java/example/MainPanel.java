@@ -65,12 +65,12 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         this.list = list;
     }
     @Override public void mouseMoved(MouseEvent e) {
-        // JList list = (JList) e.getComponent();
+        // JList<?> list = (JList<?>) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (!list.getCellBounds(index, index).contains(pt)) {
             if (prevIndex >= 0) {
-                listRepaint(list, list.getCellBounds(prevIndex, prevIndex));
+                rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
             }
             index = -1;
             prevButton = null;
@@ -84,7 +84,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
                 button.getModel().setRollover(true);
                 renderer.rolloverIndex = index;
                 if (!button.equals(prevButton)) {
-                    listRepaint(list, list.getCellBounds(prevIndex, index));
+                    rectRepaint(list, list.getCellBounds(prevIndex, index));
                 }
             } else {
                 renderer.rolloverIndex = -1;
@@ -96,7 +96,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
                 } else {
                     r = list.getCellBounds(index, index);
                 }
-                listRepaint(list, r);
+                rectRepaint(list, r);
                 prevIndex = -1;
             }
             prevButton = button;
@@ -104,7 +104,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         prevIndex = index;
     }
     @Override public void mousePressed(MouseEvent e) {
-        // JList list = (JList) e.getComponent();
+        // JList<?> list = (JList<?>) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (index >= 0) {
@@ -113,12 +113,12 @@ class CellButtonsMouseListener extends MouseInputAdapter {
                 ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
                 renderer.pressedIndex = index;
                 renderer.button = button;
-                listRepaint(list, list.getCellBounds(index, index));
+                rectRepaint(list, list.getCellBounds(index, index));
             }
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        // JList list = (JList) e.getComponent();
+        // JList<?> list = (JList<?>) e.getComponent();
         Point pt = e.getPoint();
         int index = list.locationToIndex(pt);
         if (index >= 0) {
@@ -128,15 +128,12 @@ class CellButtonsMouseListener extends MouseInputAdapter {
                 renderer.pressedIndex = -1;
                 renderer.button = null;
                 button.doClick();
-                listRepaint(list, list.getCellBounds(index, index));
+                rectRepaint(list, list.getCellBounds(index, index));
             }
         }
     }
-    private static void listRepaint(JList list, Rectangle rect) {
-        Optional.ofNullable(rect).ifPresent(list::repaint);
-//         if (Objects.nonNull(rect)) {
-//             list.repaint(rect);
-//         }
+    private static void rectRepaint(JComponent c, Rectangle rect) {
+        Optional.ofNullable(rect).ifPresent(c::repaint);
     }
     private static JButton getButton(JList<String> list, Point pt, int index) {
         Component c = list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
@@ -162,7 +159,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected final JButton copyButton = new JButton("copy");
     protected final DefaultListModel<E> model;
     protected int targetIndex;
-    public int pressedIndex  = -1;
+    public int pressedIndex = -1;
     public int rolloverIndex = -1;
     public JButton button;
 
