@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         model.addElement("hjklgkghkghk");
         model.addElement("zxcvzxcvbvnvbmvbmbm");
         JList<String> list = new JList<>(model);
-        list.setCellRenderer(new AnimeListCellRenderer(list));
+        list.setCellRenderer(new AnimeListCellRenderer<>(list));
         return list;
     }
     public static void main(String... args) {
@@ -58,16 +58,16 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, HierarchyListener {
+class AnimeListCellRenderer<E extends String> extends JPanel implements ListCellRenderer<E>, HierarchyListener {
     private static final Color SELECTEDCOLOR = new Color(230, 230, 255);
     protected final AnimeIcon icon = new AnimeIcon();
     private final MarqueeLabel label = new MarqueeLabel();
     private final Timer animator;
-    protected final JList list;
+    protected final JList<E> list;
     private boolean running;
     private int animateIndex = -1;
 
-    protected AnimeListCellRenderer(JList l) {
+    protected AnimeListCellRenderer(JList<E> l) {
         super(new BorderLayout());
         this.list = l;
         animator = new Timer(80, e -> {
@@ -94,7 +94,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             }
         }
     }
-    @Override public Component getListCellRendererComponent(JList<? extends String> l, String value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> l, E value, int index, boolean isSelected, boolean cellHasFocus) {
         setBackground(isSelected ? SELECTEDCOLOR : l.getBackground());
         label.setText(Objects.toString(value, ""));
         animateIndex = index;
