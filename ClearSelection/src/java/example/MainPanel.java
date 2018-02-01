@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
                 addMouseMotionListener(listener);
             }
         };
-        //list.putClientProperty("List.isFileList", Boolean.TRUE);
+        // list.putClientProperty("List.isFileList", Boolean.TRUE);
 //     list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 //     list.setFixedCellWidth(64);
 //     list.setFixedCellHeight(64);
@@ -77,12 +77,12 @@ public final class MainPanel extends JPanel {
 
 class ClearSelectionListener extends MouseInputAdapter {
     private boolean startOutside;
-    private static void clearSelectionAndFocus(JList list) {
+    private static void clearSelectionAndFocus(JList<?> list) {
         list.clearSelection();
         list.getSelectionModel().setAnchorSelectionIndex(-1);
         list.getSelectionModel().setLeadSelectionIndex(-1);
     }
-    private static boolean contains(JList list, Point pt) {
+    private static boolean contains(JList<?> list, Point pt) {
         for (int i = 0; i < list.getModel().getSize(); i++) {
             Rectangle r = list.getCellBounds(i, i);
             if (r.contains(pt)) {
@@ -92,7 +92,7 @@ class ClearSelectionListener extends MouseInputAdapter {
         return false;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList) e.getComponent();
+        JList<?> list = (JList<?>) e.getComponent();
         startOutside = !contains(list, e.getPoint());
         if (startOutside) {
             clearSelectionAndFocus(list);
@@ -102,7 +102,7 @@ class ClearSelectionListener extends MouseInputAdapter {
         startOutside = false;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList) e.getComponent();
+        JList<?> list = (JList<?>) e.getComponent();
         if (contains(list, e.getPoint())) {
             startOutside = false;
         } else if (startOutside) {

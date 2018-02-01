@@ -158,14 +158,14 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implemen
     }
     @Override public void mouseExited(MouseEvent e) {
         if (rollOverRowIndex >= 0) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             l.repaint(l.getCellBounds(rollOverRowIndex, rollOverRowIndex));
             rollOverRowIndex = -1;
         }
     }
     @Override public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             Point p = e.getPoint();
             int index = l.locationToIndex(p);
             if (index >= 0) {
@@ -178,7 +178,7 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implemen
         }
     }
     @Override public void mouseMoved(MouseEvent e) {
-        JList l = (JList) e.getComponent();
+        JList<?> l = (JList<?>) e.getComponent();
         int index = l.locationToIndex(e.getPoint());
         if (index != rollOverRowIndex) {
             rollOverRowIndex = index;

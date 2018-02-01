@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(makeList(m, true)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JList makeList(ListModel<String> model, boolean hasTextAreaRenderer) {
+    private static JList<String> makeList(ListModel<String> model, boolean hasTextAreaRenderer) {
         return new JList<String>(model) {
             @Override public void updateUI() {
                 setCellRenderer(null);

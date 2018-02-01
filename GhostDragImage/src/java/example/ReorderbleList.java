@@ -74,7 +74,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
     private class RubberBandingListener extends MouseInputAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             if (l.getDragEnabled()) {
                 return;
             }
@@ -91,7 +91,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             l.setFocusable(true);
             // if (Objects.isNull(srcPoint) || !getDragEnabled()) {
             //     Component glassPane = l.getRootPane().getGlassPane();
@@ -102,7 +102,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             int index = l.locationToIndex(e.getPoint());
             Rectangle rect = l.getCellBounds(index, index);
             if (rect.contains(e.getPoint())) {

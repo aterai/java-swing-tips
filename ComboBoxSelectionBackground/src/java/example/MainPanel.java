@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
                 super.updateUI();
                 Object o = getAccessibleContext().getAccessibleChild(0);
                 if (o instanceof ComboPopup) {
-                    JList list = ((ComboPopup) o).getList();
+                    JList<?> list = ((ComboPopup) o).getList();
                     list.setSelectionForeground(Color.WHITE);
                     list.setSelectionBackground(Color.ORANGE);
                 }

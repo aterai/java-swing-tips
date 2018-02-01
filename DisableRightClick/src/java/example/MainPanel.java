@@ -167,8 +167,8 @@ class BasicComboPopup3 extends BasicComboPopup {
 //         return sp;
 //     }
     @SuppressWarnings("unchecked")
-    @Override protected JList createList() {
-        return new JList(comboBox.getModel()) {
+    @Override protected JList<?> createList() {
+        return new JList<Object>(comboBox.getModel()) {
             @Override protected void processMouseEvent(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     return;

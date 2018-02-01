@@ -150,7 +150,7 @@ class SingleClickSelectList<E> extends JList<E> {
     }
     protected class SelectionHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
-            // JList list = (JList) e.getComponent();
+            // JList<?> list = (JList<?>) e.getComponent();
             startOutside = !cellsContains(e.getPoint());
             startIndex = locationToIndex(e.getPoint());
             if (startOutside) {
@@ -164,7 +164,7 @@ class SingleClickSelectList<E> extends JList<E> {
             startIndex = -1;
         }
         @Override public void mouseDragged(MouseEvent e) {
-            // JList list = (JList) e.getComponent();
+            // JList<?> list = (JList<?>) e.getComponent();
             if (!isDragging && startIndex == locationToIndex(e.getPoint())) {
                 isCellInsideDragging = true;
             } else {

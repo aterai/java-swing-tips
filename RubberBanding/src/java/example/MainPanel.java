@@ -116,15 +116,15 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     private class RubberBandingListener extends MouseAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             l.setFocusable(true);
             Point destPoint = e.getPoint();
             Path2D rb = getRubberBand();
             rb.reset();
-            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.moveTo(srcPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, destPoint.y);
-            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.lineTo(srcPoint.x, destPoint.y);
             rb.closePath();
             // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());
@@ -137,7 +137,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             c.repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             int index = l.locationToIndex(e.getPoint());
             Rectangle rect = l.getCellBounds(index, index);
             if (rect.contains(e.getPoint())) {

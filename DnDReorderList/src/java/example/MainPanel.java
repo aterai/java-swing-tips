@@ -131,7 +131,7 @@ class ListItemTransferHandler extends TransferHandler {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
-        JList target = (JList) info.getComponent();
+        JList<?> target = (JList<?>) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         // boolean insert = dl.isInsert();
         int max = listModel.getSize();
@@ -168,7 +168,7 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
-            JList source = (JList) c;
+            JList<?> source = (JList<?>) c;
             DefaultListModel model = (DefaultListModel) source.getModel();
             for (int i = indices.length - 1; i >= 0; i--) {
                 model.remove(indices[i]);

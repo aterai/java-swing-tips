@@ -125,7 +125,7 @@ class ListItemTransferHandler extends TransferHandler {
         System.out.println("getSourceActions");
         c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
         if (c instanceof JList) {
-            JList source = (JList) c;
+            JList<?> source = (JList<?>) c;
             setDragImage(createDragImage(source));
             // Point pt = c.getMousePosition();
             // if (Objects.nonNull(pt)) {
@@ -136,7 +136,7 @@ class ListItemTransferHandler extends TransferHandler {
         }
         return TransferHandler.NONE;
     }
-    private static BufferedImage createDragImage(JList source) {
+    private static BufferedImage createDragImage(JList<?> source) {
         int w = source.getWidth();
         int h = source.getHeight();
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -158,7 +158,7 @@ class ListItemTransferHandler extends TransferHandler {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
-        JList target = (JList) info.getComponent();
+        JList<?> target = (JList<?>) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         // boolean insert = dl.isInsert();
         int max = listModel.getSize();
@@ -199,13 +199,13 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
-            JList source = (JList) c;
+            JList<?> source = (JList<?>) c;
             DefaultListModel model = (DefaultListModel) source.getModel();
             for (int i = indices.length - 1; i >= 0; i--) {
                 model.remove(indices[i]);
             }
         }
-        indices  = null;
+        indices = null;
         addCount = 0;
         addIndex = -1;
     }
@@ -219,14 +219,14 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         if (!(c instanceof JList)) {
             return TransferHandler.NONE;
         }
-        JList source = (JList) c;
+        JList<?> source = (JList<?>) c;
         int w = source.getFixedCellWidth();
         int h = source.getFixedCellHeight() - 20; // TODO
         setDragImage(createCompactDragImage(source, w, h));
         setDragImageOffset(new Point(w / 2, h));
         return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
-    private static BufferedImage createCompactDragImage(JList source, int w, int h) {
+    private static BufferedImage createCompactDragImage(JList<?> source, int w, int h) {
         if (w <= 0 || h <= 0) {
             return null;
         }

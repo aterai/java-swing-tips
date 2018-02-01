@@ -158,7 +158,7 @@ class CellIconTransferHandler extends TransferHandler {
         if (!canImport(info)) {
             return false;
         }
-        JList l = (JList) info.getComponent();
+        JList<?> l = (JList<?>) info.getComponent();
         try {
             Object o = info.getTransferable().getTransferData(localObjectFlavor);
             if (o instanceof Icon) {

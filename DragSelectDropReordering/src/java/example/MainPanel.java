@@ -121,24 +121,24 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     private class RubberBandingListener extends MouseInputAdapter {
         private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             if (l.getDragEnabled()) {
                 return;
             }
             Point destPoint = e.getPoint();
             Path2D rb = getRubberBand();
             rb.reset();
-            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.moveTo(srcPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, destPoint.y);
-            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.lineTo(srcPoint.x, destPoint.y);
             rb.closePath();
             // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
             l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());
             l.repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             l.setFocusable(true);
             // if (Objects.isNull(srcPoint) || !getDragEnabled()) {
             //     Component glassPane = l.getRootPane().getGlassPane();
@@ -149,7 +149,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
-            JList l = (JList) e.getComponent();
+            JList<?> l = (JList<?>) e.getComponent();
             int index = l.locationToIndex(e.getPoint());
             Rectangle rect = l.getCellBounds(index, index);
             if (rect.contains(e.getPoint())) {
@@ -333,7 +333,7 @@ class ListItemTransferHandler extends TransferHandler {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
-        JList target = (JList) info.getComponent();
+        JList<?> target = (JList<?>) info.getComponent();
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         // boolean insert = dl.isInsert();
         int max = listModel.getSize();
@@ -374,7 +374,7 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
-            JList source = (JList) c;
+            JList<?> source = (JList<?>) c;
             DefaultListModel model = (DefaultListModel) source.getModel();
             for (int i = indices.length - 1; i >= 0; i--) {
                 model.remove(indices[i]);

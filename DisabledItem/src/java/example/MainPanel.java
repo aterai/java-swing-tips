@@ -11,7 +11,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     protected final Set<Integer> disableIndexSet = new HashSet<>();
     protected final JTextField field = new JTextField("1, 2, 5");
-    protected final JList list = makeList(disableIndexSet);
+    protected final JList<String> list = makeList(disableIndexSet);
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JList makeList(Set<Integer> disableIndexSet) {
+    private static JList<String> makeList(Set<Integer> disableIndexSet) {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbbbbbbbbbbbbbbb");
