@@ -160,7 +160,8 @@ class AnimeIcon implements Icon {
     private boolean running;
     public void next() {
         if (running) {
-            list.add(list.remove(0));
+            // list.add(list.remove(0));
+            Collections.rotate(list, 1);
         }
     }
     public void setRunning(boolean running) {
