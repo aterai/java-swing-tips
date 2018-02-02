@@ -118,7 +118,7 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
             if (e.getStateChange() != ItemEvent.SELECTED) {
                 return;
             }
-            JComboBox cb = (JComboBox) e.getItemSelectable();
+            JComboBox<?> cb = (JComboBox<?>) e.getItemSelectable();
             Color rc = getAlternateRowColor(cb.getSelectedIndex());
             if (cb.isEditable()) {
                 JTextField field = (JTextField) cb.getEditor().getEditorComponent();

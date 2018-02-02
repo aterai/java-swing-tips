@@ -3,58 +3,53 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field      = new JTextField(20);
-    private final JPasswordField passwd = new JPasswordField(20);
-    private final JComboBox combo1      = new JComboBox();
-    private final JComboBox combo2      = new JComboBox();
-    private final JComboBox combo3      = new JComboBox();
-    private final JSpinner spinner      = new JSpinner();
+    private MainPanel() {
+        super(new BorderLayout());
+        JTextField field = new JTextField(20);
+        field.setToolTipText("setColumns(20)");
 
-    public MainPanel() {
-        super();
-        SpringLayout layout = new SpringLayout();
-        setLayout(layout);
+        JPasswordField passwd = new JPasswordField(20);
+        passwd.setToolTipText("setColumns(20)");
 
+        JSpinner spinner = new JSpinner();
+        spinner.setToolTipText("setColumns(20)");
         ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setColumns(20);
 
+        JComboBox<String> combo1 = new JComboBox<>();
         combo1.setEditable(true);
+        combo1.setToolTipText("setEditable(true), setColumns(20)");
         ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
 
+        JComboBox<String> combo2 = new JComboBox<>();
+        combo2.setToolTipText("setEditable(true), default");
         combo2.setEditable(true);
 
-        layout.putConstraint(SpringLayout.WEST, field,    10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, passwd,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, spinner,  10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo1,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo2,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.WEST, combo3,   10, SpringLayout.WEST,  this);
-        layout.putConstraint(SpringLayout.NORTH, field,   10, SpringLayout.NORTH, this);
-        layout.putConstraint(SpringLayout.NORTH, passwd,  10, SpringLayout.SOUTH, field);
-        layout.putConstraint(SpringLayout.NORTH, spinner, 10, SpringLayout.SOUTH, passwd);
-        layout.putConstraint(SpringLayout.NORTH, combo1,  10, SpringLayout.SOUTH, spinner);
-        layout.putConstraint(SpringLayout.NORTH, combo2,  10, SpringLayout.SOUTH, combo1);
-        layout.putConstraint(SpringLayout.NORTH, combo3,  10, SpringLayout.SOUTH, combo2);
-
-        field.setToolTipText("setColumns(20)");
-        passwd.setToolTipText("setColumns(20)");
-        spinner.setToolTipText("setColumns(20)");
-        combo1.setToolTipText("setEditable(true), setColumns(20)");
-        combo2.setToolTipText("setEditable(true), default");
+        JComboBox<String> combo3 = new JComboBox<>();
         combo3.setToolTipText("setEditable(false), default");
 
-        add(field);
-        add(passwd);
-        add(spinner);
-        add(combo1);
-        add(combo2);
-        add(combo3);
+        SpringLayout layout = new SpringLayout();
+        JPanel p = new JPanel(layout);
+        layout.putConstraint(SpringLayout.WEST, field, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.WEST, passwd, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.WEST, spinner, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, p);
+        layout.putConstraint(SpringLayout.NORTH, field, 10, SpringLayout.NORTH, p);
+        layout.putConstraint(SpringLayout.NORTH, passwd, 10, SpringLayout.SOUTH, field);
+        layout.putConstraint(SpringLayout.NORTH, spinner, 10, SpringLayout.SOUTH, passwd);
+        layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.SOUTH, spinner);
+        layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
+        layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
 
+        Arrays.asList(field, passwd, spinner, combo1, combo2, combo3).forEach(p::add);
+        add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

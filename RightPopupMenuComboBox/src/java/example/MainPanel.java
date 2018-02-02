@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initComboBox(JComboBox combo) {
+    private void initComboBox(JComboBox<?> combo) {
         if (combo.getUI() instanceof WindowsComboBoxUI) {
             combo.setUI(new RightPopupWindowsComboBoxUI());
         } else {
@@ -71,9 +71,9 @@ public final class MainPanel extends JPanel {
 class RightPopupMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         EventQueue.invokeLater(() -> {
-            JComboBox combo = (JComboBox) e.getSource();
+            JComboBox<?> combo = (JComboBox<?>) e.getSource();
             Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
-            //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+            // Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
             if (a instanceof JPopupMenu) {
                 JPopupMenu pop = (JPopupMenu) a;
                 Point p = new Point(combo.getSize().width, 0);
@@ -105,7 +105,7 @@ class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
             new float[] {0f, 0f, 0f, 0f}, null);
         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
-        //g.drawImage(srcIcon.getImage(), 0, 0, null);
+        // g.drawImage(srcIcon.getImage(), 0, 0, null);
         srcIcon.paintIcon(null, g, 0, 0);
         g.dispose();
         return new ImageIcon(op.filter(img, null));

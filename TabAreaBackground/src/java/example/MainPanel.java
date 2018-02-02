@@ -12,35 +12,35 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //Insets
-        //UIManager.put("TabbedPane.tabInsets",            new Insets(8, 8, 8, 8));
-        //UIManager.put("TabbedPane.tabAreaInsets",        new Insets(8, 8, 8, 8));
-        //UIManager.put("TabbedPane.contentBorderInsets",  new Insets(8, 8, 8, 8));
-        //UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8, 8, 8, 8));
+        // Insets
+        // UIManager.put("TabbedPane.tabInsets",            new Insets(8, 8, 8, 8));
+        // UIManager.put("TabbedPane.tabAreaInsets",        new Insets(8, 8, 8, 8));
+        // UIManager.put("TabbedPane.contentBorderInsets",  new Insets(8, 8, 8, 8));
+        // UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8, 8, 8, 8));
 
-        //Color
-        //UIManager.put("TabbedPane.shadow",                Color.GRAY);
-        //UIManager.put("TabbedPane.darkShadow",            Color.GRAY);
-        //UIManager.put("TabbedPane.light",                 Color.GRAY);
-        //UIManager.put("TabbedPane.highlight",             Color.GRAY);
-        //UIManager.put("TabbedPane.tabAreaBackground",     Color.GRAY);
-        //UIManager.put("TabbedPane.unselectedBackground",  Color.GRAY);
-        //UIManager.put("TabbedPane.background",            Color.GRAY);
-        //UIManager.put("TabbedPane.foreground",            Color.WHITE);
-        //UIManager.put("TabbedPane.focus",                 Color.WHITE);
-        //UIManager.put("TabbedPane.contentAreaColor",      Color.WHITE);
-        //UIManager.put("TabbedPane.selected",              Color.WHITE);
-        //UIManager.put("TabbedPane.selectHighlight",       Color.WHITE);
-        //UIManager.put("TabbedPane.borderHightlightColor", Color.WHITE);
+        // Color
+        // UIManager.put("TabbedPane.shadow",                Color.GRAY);
+        // UIManager.put("TabbedPane.darkShadow",            Color.GRAY);
+        // UIManager.put("TabbedPane.light",                 Color.GRAY);
+        // UIManager.put("TabbedPane.highlight",             Color.GRAY);
+        // UIManager.put("TabbedPane.tabAreaBackground",     Color.GRAY);
+        // UIManager.put("TabbedPane.unselectedBackground",  Color.GRAY);
+        // UIManager.put("TabbedPane.background",            Color.GRAY);
+        // UIManager.put("TabbedPane.foreground",            Color.WHITE);
+        // UIManager.put("TabbedPane.focus",                 Color.WHITE);
+        // UIManager.put("TabbedPane.contentAreaColor",      Color.WHITE);
+        // UIManager.put("TabbedPane.selected",              Color.WHITE);
+        // UIManager.put("TabbedPane.selectHighlight",       Color.WHITE);
+        // UIManager.put("TabbedPane.borderHightlightColor", Color.WHITE);
 
-        //Opaque
-        //UIManager.put("TabbedPane.tabsOpaque",    Boolean.FALSE);
-        //UIManager.put("TabbedPane.contentOpaque", Boolean.FALSE);
+        // Opaque
+        // UIManager.put("TabbedPane.tabsOpaque",    Boolean.FALSE);
+        // UIManager.put("TabbedPane.contentOpaque", Boolean.FALSE);
 
-        //???
-        //UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
-        //UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
-        ////UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
+        // ???
+        // UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
+        // UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
+        // // UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
         HashMap<String, Color> map = new HashMap<>();
         map.put("TabbedPane.darkShadow",            Color.GRAY);
         map.put("TabbedPane.light",                 Color.GRAY);
@@ -48,20 +48,20 @@ public final class MainPanel extends JPanel {
         map.put("TabbedPane.unselectedBackground",  Color.GRAY);
         map.put("TabbedPane.shadow",                Color.GRAY);
         map.put("TabbedPane.highlight",             Color.GRAY);
-        //map.put("TabbedPane.background",            Color.RED);
-        //map.put("TabbedPane.foreground",            Color.BLUE);
+        // map.put("TabbedPane.background",            Color.RED);
+        // map.put("TabbedPane.foreground",            Color.BLUE);
         map.put("TabbedPane.focus",                 Color.WHITE);
         map.put("TabbedPane.contentAreaColor",      Color.WHITE);
         map.put("TabbedPane.selected",              Color.WHITE);
         map.put("TabbedPane.selectHighlight",       Color.WHITE);
         map.put("TabbedPane.borderHightlightColor", Color.WHITE);
-        //for (Map.Entry<String, Color> entry: map.entrySet()) {
-        //    UIManager.put(entry.getKey(), entry.getValue());
-        //}
+        // for (Map.Entry<String, Color> entry: map.entrySet()) {
+        //     UIManager.put(entry.getKey(), entry.getValue());
+        // }
         map.forEach(UIManager::put);
 
         JTabbedPane tabs = makeTabbedPane();
-        JComboBox combo  = makeComboBox(map);
+        JComboBox<String> combo = makeComboBox(map);
         JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx = GridBagConstraints.REMAINDER;
         p.add(opaque, c);
-        p.add(combo,  c);
+        p.add(combo, c);
 
         opaque.addActionListener(e -> {
             tabs.setOpaque(((JCheckBox) e.getSource()).isSelected());
@@ -83,16 +83,16 @@ public final class MainPanel extends JPanel {
             if (combo.getSelectedIndex() > 0) {
                 UIManager.put(combo.getSelectedItem(), Color.GREEN);
             }
-            //XXX: JComboBox: by UP/DOWN keys
-            //XXX: NullPointerException at javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
-            //SwingUtilities.updateComponentTreeUI(tabs);
+            // XXX: JComboBox: by UP/DOWN keys
+            // XXX: NullPointerException at javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
+            // SwingUtilities.updateComponentTreeUI(tabs);
             tabs.updateUI();
         });
 
-        tabs.addTab("JTree",     new JScrollPane(new JTree()));
+        tabs.addTab("JTree", new JScrollPane(new JTree()));
         tabs.addTab("JTextArea", new JScrollPane(new JTextArea()));
-        tabs.addTab("JButton",   new JButton("button"));
-        tabs.addTab("JPanel",    p);
+        tabs.addTab("JButton", new JButton("button"));
+        tabs.addTab("JPanel", p);
 
         tabs.setMnemonicAt(0, KeyEvent.VK_T);
         tabs.setMnemonicAt(1, KeyEvent.VK_A);
@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
 
     private static JTabbedPane makeTabbedPane() {
         JTabbedPane tabs = new JTabbedPane();
-        //tabs.setBackground(Color.GREEN);
+        // tabs.setBackground(Color.GREEN);
         tabs.setOpaque(true);
         tabs.addChangeListener(e -> {
             JTabbedPane t = (JTabbedPane) e.getSource();

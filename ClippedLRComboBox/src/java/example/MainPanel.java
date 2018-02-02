@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JComboBox<LRItem> combo = new JComboBox<LRItem>(makeModel()) {
             @Override public void updateUI() {
-                //setRenderer(null);
+                // setRenderer(null);
                 super.updateUI();
                 setRenderer(new MultiColumnCellRenderer<>());
             }
@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
         add(makeTitledBox("DefaultComboBox", new JComboBox<>(makeModel())), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Box makeTitledBox(String title, JComboBox combo) {
-        final JTextField leftTextField  = new JTextField();
-        final JTextField rightTextField = new JTextField();
+    private static Box makeTitledBox(String title, JComboBox<?> combo) {
+        JTextField leftTextField = new JTextField();
+        JTextField rightTextField = new JTextField();
         leftTextField.setEditable(false);
         rightTextField.setEditable(false);
         Box box = Box.createVerticalBox();
@@ -108,10 +108,10 @@ class MultiColumnCellRenderer<E extends LRItem> implements ListCellRenderer<E> {
         @Override public void updateUI() {
             super.updateUI();
             setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-            //TEST:
-            //setName("List.cellRenderer");
-            //setName("ComboBox.renderer");
-            //setName("ComboBox.listRenderer");
+            // TEST:
+            // setName("List.cellRenderer");
+            // setName("ComboBox.renderer");
+            // setName("ComboBox.listRenderer");
         }
     };
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {

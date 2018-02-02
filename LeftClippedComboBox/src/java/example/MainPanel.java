@@ -9,16 +9,17 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
+        ComboBoxModel<String> model = makeComboBoxModel();
 
-        JComboBox<String> combo = makeComboBox();
+        JComboBox<String> combo = new JComboBox<>(model);
         initComboBoxRenderer(combo);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        add(makeTitledBox("Left Clip JComboBox", combo), BorderLayout.NORTH);
-        add(makeTitledBox("Default JComboBox", makeComboBox()), BorderLayout.SOUTH);
+        add(makeTitledPanel("Left Clip JComboBox", combo), BorderLayout.NORTH);
+        add(makeTitledPanel("Default JComboBox", new JComboBox<>(model)), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JButton getArrowButton(JComboBox box) {
+    private static JButton getArrowButton(Container box) {
         for (Component c: box.getComponents()) {
             if (c instanceof JButton) { // && "ComboBox.arrowButton".equals(c.getName())) {
                 // System.out.println(c.getName());
@@ -27,22 +28,22 @@ public final class MainPanel extends JPanel {
         }
         return null;
     }
-    private static Box makeTitledBox(String title, JComboBox combo) {
+    private static Component makeTitledPanel(String title, Component c) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
         box.add(Box.createVerticalStrut(2));
-        box.add(combo);
+        box.add(c);
         return box;
     }
-    private static JComboBox<String> makeComboBox() {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        model.addElement("1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
-        model.addElement("aaaa.tif");
-        model.addElement("\\asdfsadfs\\afsdfasdf\\asdfasdfasd.avi");
-        model.addElement("aaaabbbcc.pdf");
-        model.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
-        model.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
-        return new JComboBox<>(model);
+    private static ComboBoxModel<String> makeComboBoxModel() {
+        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
+        m.addElement("1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
+        m.addElement("aaaa.tif");
+        m.addElement("\\asdfsadfs\\afsdfasdf\\asdfasdfasd.avi");
+        m.addElement("aaaabbbcc.pdf");
+        m.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
+        m.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
+        return m;
     }
     private static void initComboBoxRenderer(JComboBox<String> combo) {
         JButton arrowButton = getArrowButton(combo);

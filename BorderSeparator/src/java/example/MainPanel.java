@@ -8,8 +8,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JComboBox combobox1 = makeComboBox();
-        JComboBox combobox2 = makeComboBox();
+        JComboBox<MyItem> combobox1 = makeComboBox();
+        JComboBox<MyItem> combobox2 = makeComboBox();
         combobox2.setEditable(true);
 
         Box box1 = Box.createVerticalBox();
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         add(box2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComboBox makeComboBox() {
+    private static JComboBox<MyItem> makeComboBox() {
         DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();
         model.addElement(new MyItem("aaaa"));
         model.addElement(new MyItem("aaaabbb"));

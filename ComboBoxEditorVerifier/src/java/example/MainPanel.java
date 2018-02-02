@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 getActionMap().put(ENTER_PRESSED, null);
                 super.updateUI();
-                final JComboBox<String> cb = this;
-                final Action defaultEnterPressedAction = getActionMap().get(ENTER_PRESSED);
+                JComboBox<String> cb = this;
+                Action defaultEnterPressedAction = getActionMap().get(ENTER_PRESSED);
                 getActionMap().put(ENTER_PRESSED, new AbstractAction() {
                     @Override public void actionPerformed(ActionEvent e) {
                         boolean isPopupVisible = isPopupVisible();
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
 
 class SelectItemMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        JComboBox c = (JComboBox) e.getSource();
+        JComboBox<?> c = (JComboBox<?>) e.getSource();
         c.setSelectedItem(c.getEditor().getItem());
     }
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
@@ -115,10 +115,10 @@ class SelectItemMenuListener implements PopupMenuListener {
 class ValidationLayerUI<V extends JTextComponent> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        //JTextComponent tc = ((JLayer) c).getView();
+        // JTextComponent tc = ((JLayer) c).getView();
         Container p = SwingUtilities.getAncestorOfClass(JComboBox.class, c);
         if (p instanceof JComboBox) {
-            JComboBox cb = (JComboBox) p;
+            JComboBox<?> cb = (JComboBox<?>) p;
             getInputVerifier(cb).filter(iv -> !iv.verify(cb)).ifPresent(iv -> {
                 int w = c.getWidth();
                 int h = c.getHeight();
@@ -147,7 +147,7 @@ class LengthInputVerifier extends InputVerifier {
     private static final int MAX_LEN = 6;
     @Override public boolean verify(JComponent c) {
         if (c instanceof JComboBox) {
-            JComboBox cb = (JComboBox) c;
+            JComboBox<?> cb = (JComboBox<?>) c;
             String str = Objects.toString(cb.getEditor().getItem(), "");
             return MAX_LEN - str.length() >= 0;
         }

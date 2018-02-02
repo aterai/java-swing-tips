@@ -9,7 +9,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = makeComboBox();
         UIManager.put("ComboBox.font", combo.getFont());
 
         JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");

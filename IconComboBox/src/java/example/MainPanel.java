@@ -131,7 +131,7 @@ final class ComboBoxUtil {
 //         Border b3 = BorderFactory.createCompoundBorder(b1, b2);
 //         return BorderFactory.createCompoundBorder(comp.getBorder(), b3);
 //     }
-    public static void initIconComboBorder1(JComboBox comboBox, ImageIcon icon) {
+    public static void initIconComboBorder1(JComboBox<?> comboBox, ImageIcon icon) {
         JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
         Icon wrappedIcon = new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -155,7 +155,7 @@ final class ComboBoxUtil {
         Border b3 = BorderFactory.createCompoundBorder(b1, b2);
         comp.setBorder(BorderFactory.createCompoundBorder(comp.getBorder(), b3));
     }
-    public static void initIconComboBorder2(JComboBox comboBox, ImageIcon icon) {
+    public static void initIconComboBorder2(JComboBox<?> comboBox, ImageIcon icon) {
         EventQueue.invokeLater(() -> {
             JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
             Insets is = c.getInsets();

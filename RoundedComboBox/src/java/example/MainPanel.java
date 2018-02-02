@@ -169,8 +169,8 @@ public final class MainPanel extends JPanel {
 
 class ComboRolloverHandler extends MouseAdapter {
     private static ButtonModel getButtonModel(MouseEvent e) {
-        JComboBox cb = (JComboBox) e.getComponent();
-        JButton b = (JButton) cb.getComponent(0);
+        Container c = (Container) e.getComponent();
+        JButton b = (JButton) c.getComponent(0);
         return b.getModel();
     }
     @Override public void mouseEntered(MouseEvent e) {

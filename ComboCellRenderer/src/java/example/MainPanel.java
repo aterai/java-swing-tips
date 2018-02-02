@@ -9,35 +9,35 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"Integer", "String", "Boolean"};
-    private final Object[][] data = {
-        {12, "Name 0", true}, {5, "Name 2", false},
-        {92, "Name 1", true}, {0, "Name 0", false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(240, 240, 250);
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if (isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            } else {
-                c.setForeground(getForeground());
-                c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-            }
-            return c;
-        }
-    };
     private MainPanel() {
         super(new BorderLayout());
+        String[] columnNames = {"Integer", "String", "Boolean"};
+        Object[][] data = {
+            {12, "Name 0", true}, {5, "Name 2", false},
+            {92, "Name 1", true}, {0, "Name 0", false}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model) {
+            private final Color evenColor = new Color(240, 240, 250);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+                }
+                return c;
+            }
+        };
 
         UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(new String[] {"Name 0", "Name 1", "Name 2"}));
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComboBox<String> makeComboBox() {
-        JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
+    private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
+        JComboBox<E> combo = new JComboBox<E>(model) {
             @Override public void updateUI() {
                 super.updateUI();
                 setBorder(BorderFactory.createEmptyBorder());

@@ -16,14 +16,14 @@ public final class MainPanel extends JPanel {
 
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox c = (JComboBox) e.getSource();
+                JComboBox<?> c = (JComboBox<?>) e.getSource();
                 int i = c.getSelectedIndex();
                 c.setSelectedIndex(i == 0 ? c.getItemCount() - 1 : i - 1);
             }
         };
         Action down = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox c = (JComboBox) e.getSource();
+                JComboBox<?> c = (JComboBox<?>) e.getSource();
                 int i = c.getSelectedIndex();
                 c.setSelectedIndex(i == c.getItemCount() - 1 ? 0 : i + 1);
             }

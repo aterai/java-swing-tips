@@ -213,7 +213,7 @@ class ComboBoxLayout implements LayoutManager {
         if (!(parent instanceof JComboBox)) {
             return;
         }
-        JComboBox cb = (JComboBox) parent;
+        JComboBox<?> cb = (JComboBox<?>) parent;
         int width = cb.getWidth();
         int height = cb.getHeight();
         Insets insets = cb.getInsets();

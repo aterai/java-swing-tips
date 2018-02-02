@@ -80,8 +80,8 @@ class ColorItem implements Serializable {
 
 class ComboForegroundRenderer extends DefaultListCellRenderer {
     private final Color sbgc = new Color(240, 245, 250);
-    private final JComboBox combo;
-    protected ComboForegroundRenderer(JComboBox combo) {
+    private final JComboBox<?> combo;
+    protected ComboForegroundRenderer(JComboBox<?> combo) {
         super();
         this.combo = combo;
     }

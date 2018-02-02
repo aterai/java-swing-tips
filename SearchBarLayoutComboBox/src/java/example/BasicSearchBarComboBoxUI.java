@@ -48,11 +48,11 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
             popupMenuListener = new PopupMenuListener() {
                 private String str;
                 @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                    JComboBox combo = (JComboBox) e.getSource();
+                    JComboBox<?> combo = (JComboBox<?>) e.getSource();
                     str = combo.getEditor().getItem().toString();
                 }
                 @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                    JComboBox combo = (JComboBox) e.getSource();
+                    JComboBox<?> combo = (JComboBox<?>) e.getSource();
                     Object o = listBox.getSelectedValue();
                     if (o instanceof SearchEngine) {
                         SearchEngine se = (SearchEngine) o;
@@ -209,7 +209,7 @@ class SearchBarLayout implements LayoutManager {
         if (!(parent instanceof JComboBox)) {
             return;
         }
-        JComboBox cb = (JComboBox) parent;
+        JComboBox<?> cb = (JComboBox<?>) parent;
         int width = cb.getWidth();
         int height = cb.getHeight();
         Insets insets = cb.getInsets();

@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         ActionMap am = combo.getActionMap();
         am.put("selectPrevious3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox) e.getSource();
+                JComboBox<?> cb = (JComboBox<?>) e.getSource();
                 int index = cb.getSelectedIndex();
                 if (index == 0) {
                     return;
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         });
         am.put("selectNext3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox) e.getSource();
+                JComboBox<?> cb = (JComboBox<?>) e.getSource();
                 int index = cb.getSelectedIndex();
                 if (index == cb.getItemCount() - 1) {
                     return;

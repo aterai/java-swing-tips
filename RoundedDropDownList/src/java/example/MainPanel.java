@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
 
         UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
         UIManager.put("ComboBox.buttonBackground", FOREGROUND);
-        UIManager.put("ComboBox.buttonHighlight",  FOREGROUND);
-        UIManager.put("ComboBox.buttonShadow",     FOREGROUND);
+        UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
+        UIManager.put("ComboBox.buttonShadow", FOREGROUND);
 
         JComboBox<String> combo0 = new JComboBox<String>(makeModel()) {
             @Override public void updateUI() {
@@ -145,7 +145,7 @@ class HeavyWeightContainerListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                JComboBox combo = (JComboBox) e.getSource();
+                JComboBox<?> combo = (JComboBox<?>) e.getSource();
                 Accessible a = combo.getUI().getAccessibleChild(combo, 0);
                 if (a instanceof JPopupMenu) {
                     JPopupMenu pop = (JPopupMenu) a;
@@ -165,8 +165,8 @@ class HeavyWeightContainerListener implements PopupMenuListener {
 
 class ComboRolloverHandler extends MouseAdapter {
     private static ButtonModel getButtonModel(MouseEvent e) {
-        JComboBox cb = (JComboBox) e.getComponent();
-        JButton b = (JButton) cb.getComponent(0);
+        Container c = (Container) e.getComponent();
+        JButton b = (JButton) c.getComponent(0);
         return b.getModel();
     }
     @Override public void mouseEntered(MouseEvent e) {
@@ -290,7 +290,7 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-//         //TEST: WindowsLookAndFeel
+//         // TEST: WindowsLookAndFeel
 //         if (c instanceof JPopupMenu) {
 //             Container top = ((JPopupMenu) c).getTopLevelAncestor();
 //             if (top instanceof JWindow) {

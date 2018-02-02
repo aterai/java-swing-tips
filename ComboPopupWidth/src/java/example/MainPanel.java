@@ -75,7 +75,7 @@ class WidePopupMenuListener implements PopupMenuListener {
     private static final int POPUP_MIN_WIDTH = 300;
     private boolean adjusting;
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        JComboBox combo = (JComboBox) e.getSource();
+        JComboBox<?> combo = (JComboBox<?>) e.getSource();
         Dimension size = combo.getSize();
         if (size.width >= POPUP_MIN_WIDTH) {
             return;

@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
 
 class SelectItemMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        JComboBox c = (JComboBox) e.getSource();
+        JComboBox<?> c = (JComboBox<?>) e.getSource();
         c.setSelectedItem(c.getEditor().getItem());
     }
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
