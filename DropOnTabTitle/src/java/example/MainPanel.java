@@ -90,9 +90,9 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
         return this;
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        DefaultListModel m = (DefaultListModel) getModel();
-        DataFlavor[] f = new DataFlavor[m.size()];
-        for (int i = 0; i < m.size(); i++) {
+        int size = getModel().getSize();
+        DataFlavor[] f = new DataFlavor[size];
+        for (int i = 0; i < size; i++) {
             // f[i] = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
             f[i] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
         }
