@@ -20,11 +20,20 @@ public final class MainPanel extends JPanel {
 
         JComboBox<ColorItem> combo00 = new JComboBox<>(model);
 
-        JComboBox<ColorItem> combo01 = new JComboBox<>(model);
-        combo01.setRenderer(new ComboForegroundRenderer(combo01));
+        JComboBox<ColorItem> combo01 = new JComboBox<ColorItem>(model) {
+            @Override public void updateUI() {
+                setRenderer(null);
+                super.updateUI();
+                setRenderer(new ComboForegroundRenderer<>(this));
+            }
+        };
 
-        JComboBox<ColorItem> combo02 = new JComboBox<>(model);
-        combo02.setRenderer(new ComboHtmlRenderer());
+        JComboBox<ColorItem> combo02 = new JComboBox<ColorItem>(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setRenderer(new ComboHtmlRenderer<>());
+            }
+        };
 
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("default:", combo00));
@@ -78,44 +87,39 @@ class ColorItem implements Serializable {
     }
 }
 
-class ComboForegroundRenderer extends DefaultListCellRenderer {
+class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
     private final Color sbgc = new Color(240, 245, 250);
-    private final JComboBox<?> combo;
-    protected ComboForegroundRenderer(JComboBox<?> combo) {
+    private final JComboBox<E> combo;
+    protected ComboForegroundRenderer(JComboBox<E> combo) {
         super();
         this.combo = combo;
     }
-    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (value instanceof ColorItem) {
-            ColorItem item = (ColorItem) value;
-            Color ic = item.color;
-            if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
-                combo.setForeground(ic); // Windows, Motif Look&Feel
-                list.setSelectionForeground(ic);
-                list.setSelectionBackground(sbgc);
-            }
-            JLabel l = (JLabel) super.getListCellRendererComponent(list, item.description, index, isSelected, cellHasFocus);
-            l.setForeground(ic);
-            l.setBackground(isSelected ? sbgc : list.getBackground());
-            // l.setText(item.description);
-            return l;
-        } else {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            return this;
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        Color ic = value.color;
+        if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
+            combo.setForeground(ic); // Windows, Motif Look&Feel
+            list.setSelectionForeground(ic);
+            list.setSelectionBackground(sbgc);
         }
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value.description, index, isSelected, cellHasFocus);
+        l.setForeground(ic);
+        l.setBackground(isSelected ? sbgc : list.getBackground());
+        // l.setText(item.description);
+        return l;
     }
 }
 
-class ComboHtmlRenderer extends DefaultListCellRenderer {
+class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
     private final Color sbgc = new Color(240, 245, 250);
-    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        ColorItem item = (ColorItem) value;
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index < 0) {
             list.setSelectionBackground(sbgc);
         }
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         // l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
-        l.setText(String.format("<html><font color='#%06X'>%s", item.color.getRGB() & 0xFFFFFF, item.description));
+        l.setText(String.format("<html><font color='#%06X'>%s", value.color.getRGB() & 0xFFFFFF, value.description));
         l.setBackground(isSelected ? sbgc : list.getBackground());
         return l;
     }

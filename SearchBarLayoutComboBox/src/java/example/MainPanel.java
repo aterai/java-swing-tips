@@ -18,13 +18,13 @@ public final class MainPanel extends JPanel {
 
         DefaultComboBoxModel<SearchEngine> model = new SearchEngineComboBoxModel<>();
         model.addElement(new SearchEngine("Google", "http://www.google.com/", new ImageIcon(getClass().getResource("google.png"))));
-        model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/",  new ImageIcon(getClass().getResource("yahoo.png"))));
-        model.addElement(new SearchEngine("Bing",   "http://www.bing.com/",   new ImageIcon(getClass().getResource("bing.png"))));
+        model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/", new ImageIcon(getClass().getResource("yahoo.png"))));
+        model.addElement(new SearchEngine("Bing", "http://www.bing.com/", new ImageIcon(getClass().getResource("bing.png"))));
 
         JComboBox<SearchEngine> combo = new JSearchBar(model);
         combo.getEditor().setItem("java swing");
 
-//         final JComboBox combo = new JComboBox(model);
+//         JComboBox combo = new JComboBox(model);
 //         combo.setUI(new BasicSearchBarComboBoxUI());
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
 //         });
 
         p.add(combo);
-        //p.add(new SearchBarComboBox(makeModel()));
+        // p.add(new SearchBarComboBox(makeModel()));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -70,8 +70,8 @@ class SearchEngine {
     public final String url;
     public final ImageIcon favicon;
     protected SearchEngine(String name, String url, ImageIcon icon) {
-        this.name    = name;
-        this.url     = url;
+        this.name = name;
+        this.url = url;
         this.favicon = icon;
     }
     @Override public String toString() {
@@ -81,7 +81,7 @@ class SearchEngine {
 
 class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxModel<E> {
     @Override public void setSelectedItem(Object anObject) {
-        //System.out.println("model: " + anObject);
+        // System.out.println("model: " + anObject);
     }
 }
 
@@ -103,7 +103,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
         } else {
             setUI(new BasicSearchBarComboBoxUI());
         }
-        UIManager.put("ComboBox.font", getFont()); //XXX: ???
+        UIManager.put("ComboBox.font", getFont()); // XXX: ???
         JButton arrowButton = (JButton) getComponent(0);
         SearchEngine se = getItemAt(0);
         if (Objects.nonNull(se)) {
@@ -121,13 +121,13 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //     }
     protected JSearchBar(ComboBoxModel<SearchEngine> model) {
         super(model);
-        //setModel(model);
-        //init();
+        // setModel(model);
+        // init();
     }
     protected JSearchBar(SearchEngine... items) {
         super(items);
-        //setModel(new DefaultComboBoxModel<>(items));
-        //init();
+        // setModel(new DefaultComboBoxModel<>(items));
+        // init();
     }
 //     protected JSearchBar(Vector<?> items) {
 //         super();
@@ -136,7 +136,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //     }
 //     private void init() {
 //         installAncestorListener();
-//         //setUIProperty("opaque", true);
+//         // setUIProperty("opaque", true);
 //         updateUI();
 //     }
     @Override protected void processFocusEvent(FocusEvent e) {

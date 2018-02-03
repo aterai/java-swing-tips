@@ -36,7 +36,7 @@ public class TriangleArrowButton extends JButton {
         Insets i = getInsets();
         Icon favicon = getIcon();
         int fw = Objects.nonNull(favicon) ? favicon.getIconWidth() : 16;
-        int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
+        int w = fw + triangleIcon.getIconWidth() + i.left + i.right;
         return new Dimension(w, w);
     }
     @Override public void setBorder(Border border) {

@@ -23,26 +23,35 @@ public final class MainPanel extends JPanel {
         model.addElement("1234567890-+*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         model.addElement("bbb123");
 
-        JList<String> list = new JList<String>(model) {
+        JList<String> list1 = new JList<String>(model) {
             @Override public JToolTip createToolTip() {
                 JToolTip tip = new BalloonToolTip();
                 tip.setComponent(this);
                 return tip;
             }
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new TooltipListCellRenderer<>());
+            }
         };
 
-        add(makeTitledPanel("BalloonToolTip", list));
-        add(makeTitledPanel("Default JToolTip", new JList<>(model)));
+        JList<String> list2 = new JList<String>(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new TooltipListCellRenderer<>());
+            }
+        };
+
+        add(makeTitledPanel("BalloonToolTip", list1));
+        add(makeTitledPanel("Default JToolTip", list2));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledPanel(String title, JList<String> list) {
-        list.setCellRenderer(new TooltipListCellRenderer());
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        p.add(new JScrollPane(c, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -66,9 +75,10 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TooltipListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
         Rectangle rect = c.getBounds();

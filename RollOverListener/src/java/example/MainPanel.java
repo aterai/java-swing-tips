@@ -66,9 +66,10 @@ class RollOverList<E> extends JList<E> {
         addMouseListener(rollOverListener);
         setCellRenderer(new RollOverCellRenderer());
     }
-    private class RollOverCellRenderer extends DefaultListCellRenderer {
-        @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    private class RollOverCellRenderer implements ListCellRenderer<E> {
+        private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+        @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (index == rollOverRowIndex) {
                 c.setBackground(ROLLOVER_BACKGROUND);
                 if (isSelected) {

@@ -9,15 +9,18 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected final JComboBox<String> combo;
+    protected final JComboBox<String> combo = new JComboBox<String>() {
+        @Override public void updateUI() {
+            super.updateUI();
+            setRenderer(new ProgressCellRenderer<>());
+        }
+    };
     protected final JButton button = new JButton("load");
     protected transient SwingWorker<String[], Integer> worker;
     protected int counter;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
-        combo = new JComboBox<>();
-        combo.setRenderer(new ProgressCellRenderer());
         button.addActionListener(e -> {
             button.setEnabled(false);
             combo.setEnabled(false);
@@ -68,26 +71,17 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private class ProgressCellRenderer extends DefaultListCellRenderer {
-        private final JProgressBar bar = new JProgressBar() {
-            @Override public Dimension getPreferredSize() {
-                return ProgressCellRenderer.this.getPreferredSize();
-            }
-        };
-        @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    private class ProgressCellRenderer<E extends String> implements ListCellRenderer<E> {
+        private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+        private final JProgressBar bar = new JProgressBar();
+        @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
             if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
                 bar.setFont(list.getFont());
                 bar.setBorder(BorderFactory.createEmptyBorder());
                 bar.setValue(counter);
                 return bar;
             }
-            return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        }
-        @Override public void updateUI() {
-            super.updateUI();
-            if (Objects.nonNull(bar)) {
-                SwingUtilities.updateComponentTreeUI(bar);
-            }
+            return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         }
     }
 

@@ -4,14 +4,14 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final DefaultListModel<String> model = new DefaultListModel<>();
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 3));
 
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -22,19 +22,40 @@ public final class MainPanel extends JPanel {
         model.addElement("1234567890-+*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         model.addElement("bbb123");
 
-        add(makeTitledPanel("CellBounds", new TooltipList<>(model)));
-        add(makeTitledPanel("ListCellRenderer", new CellRendererTooltipList<>(model)));
-        add(makeTitledPanel("Default location", new JList<>(model)));
+        JList<String> list1 = new TooltipList<String>(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new TooltipListCellRenderer<>());
+            }
+        };
+
+        JList<String> list2 = new CellRendererTooltipList<String>(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new TooltipListCellRenderer<>());
+            }
+        };
+
+        JList<String> list3 = new JList<String>(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setCellRenderer(new TooltipListCellRenderer<>());
+            }
+        };
+
+        HashMap<String, Component> map = new HashMap<>();
+        map.put("CellBounds", list1);
+        map.put("ListCellRenderer", list2);
+        map.put("Default location", list3);
+        map.forEach((title, c) -> add(makeTitledPanel(title, c)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledPanel(String title, JList<String> list) {
-        list.setCellRenderer(new TooltipListCellRenderer());
+    private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        p.add(new JScrollPane(c, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -121,9 +142,10 @@ class CellRendererTooltipList<E> extends JList<E> {
     }
 }
 
-class TooltipListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
         Rectangle rect = c.getBounds();

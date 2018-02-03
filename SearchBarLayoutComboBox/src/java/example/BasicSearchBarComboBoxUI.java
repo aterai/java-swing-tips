@@ -165,8 +165,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
             // loupeButton.removeMouseMotionListener(popup.getMouseMotionListener());
         }
     }
-    @Override protected ListCellRenderer<Object> createRenderer() {
-        return new SearchEngineListCellRenderer();
+    @Override protected ListCellRenderer<SearchEngine> createRenderer() {
+        return new SearchEngineListCellRenderer<SearchEngine>();
     }
     @Override protected LayoutManager createLayoutManager() {
         return new SearchBarLayout();
@@ -184,13 +184,13 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     }
 }
 
-class SearchEngineListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (value instanceof SearchEngine) {
-            SearchEngine se = (SearchEngine) value;
-            l.setIcon(se.favicon);
-            l.setToolTipText(se.url);
+class SearchEngineListCellRenderer<E extends SearchEngine> implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if (Objects.nonNull(value)) {
+            l.setIcon(value.favicon);
+            l.setToolTipText(value.url);
         }
         return l;
     }
