@@ -163,9 +163,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
             //     e.rejectDrag();
             // }
         }
-        @SuppressWarnings("unchecked")
         @Override public void drop(DropTargetDropEvent e) {
-            DefaultListModel model = (DefaultListModel) getModel();
+            DefaultListModel<E> model = (DefaultListModel<E>) getModel();
 //             Transferable t = e.getTransferable();
 //             DataFlavor[] f = t.getTransferDataFlavors();
 //             try {
@@ -174,7 +173,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
 //                 e.dropComplete(false);
 //             }
             if (isDropAcceptable(e)) {
-                Object str = model.get(draggedIndex);
+                E str = model.get(draggedIndex);
                 if (targetIndex == draggedIndex) {
                     setSelectedIndex(targetIndex);
                 } else if (targetIndex < draggedIndex) {
