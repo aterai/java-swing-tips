@@ -117,12 +117,12 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
             return check;
         }
     }
-    private static String getCheckedItemString(ListModel model) {
+    private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
         List<String> sl = new ArrayList<>();
         for (int i = 0; i < model.getSize(); i++) {
-            Object o = model.getElementAt(i);
-            if (o instanceof CheckableItem && ((CheckableItem) o).selected) {
-                sl.add(o.toString());
+            E v = model.getElementAt(i);
+            if (v.selected) {
+                sl.add(v.toString());
             }
         }
         if (sl.isEmpty()) {
