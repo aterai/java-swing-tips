@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;
         monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MMMM").withLocale(Locale.getDefault())));
-        monthTable.setModel(new CalendarViewTableModel<LocalDate>(localDate));
+        monthTable.setModel(new CalendarViewTableModel<>(localDate));
     }
     private class CalendarTableRenderer extends DefaultTableCellRenderer {
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
