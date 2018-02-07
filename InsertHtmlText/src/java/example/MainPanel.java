@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         insertAfterStart.addActionListener(e -> {
             HTMLDocument doc = (HTMLDocument) editor.getDocument();
             Element element = doc.getElement("log");
-            Date d = new Date();
-            String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", d.toString());
+            String date = LocalDateTime.now().toString();
+            String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", date);
             try {
                 doc.insertAfterStart(element, tag);
             } catch (BadLocationException | IOException ex) {
@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
         insertBeforeEnd.addActionListener(e -> {
             HTMLDocument doc = (HTMLDocument) editor.getDocument();
             Element element = doc.getElement("log");
-            Date d = new Date();
-            String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", d.toString());
+            String date = LocalDateTime.now().toString();
+            String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", date);
             try {
                 doc.insertBeforeEnd(element, tag);
             } catch (BadLocationException | IOException ex) {

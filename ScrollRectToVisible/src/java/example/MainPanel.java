@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -22,8 +23,8 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private final DefaultListModel<Date> listModel = new DefaultListModel<>();
-    private final JList<Date> list = new JList<>(listModel);
+    private final DefaultListModel<LocalDateTime> listModel = new DefaultListModel<>();
+    private final JList<LocalDateTime> list = new JList<>(listModel);
     private final JTree tree = new JTree();
     private final Timer timer;
     private transient HierarchyListener hierarchyListener;
@@ -32,38 +33,38 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
-        //table.setComponentPopupMenu(new TablePopupMenu());
+        // table.setComponentPopupMenu(new TablePopupMenu());
 
         JTabbedPane t = new JTabbedPane();
         t.addTab("JTable", new JScrollPane(table));
-        t.addTab("JList",  new JScrollPane(list));
-        t.addTab("JTree",  new JScrollPane(tree));
+        t.addTab("JList", new JScrollPane(list));
+        t.addTab("JTree", new JScrollPane(tree));
 
         timer = new Timer(1000, e -> {
-            Date date = new Date();
+            LocalDateTime date = LocalDateTime.now();
 
-            //JTable
+            // JTable
             model.addRow(new Object[] {date.toString(), model.getRowCount(), false});
             int i = table.convertRowIndexToView(model.getRowCount() - 1);
             Rectangle r = table.getCellRect(i, 0, true);
             table.scrollRectToVisible(r);
 
-            //JList
+            // JList
             listModel.addElement(date);
             int index = listModel.getSize() - 1;
             list.ensureIndexIsVisible(index);
-            //Rectangle cellBounds = list.getCellBounds(index, index);
-            //if (Objects.nonNull(cellBounds)) {
-            //    list.scrollRectToVisible(cellBounds);
-            //}
+            // Rectangle cellBounds = list.getCellBounds(index, index);
+            // if (Objects.nonNull(cellBounds)) {
+            //     list.scrollRectToVisible(cellBounds);
+            // }
 
-            //JTree
+            // JTree
             DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-            DefaultMutableTreeNode parent   = (DefaultMutableTreeNode) treeModel.getRoot();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) treeModel.getRoot();
             DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
             treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
-            //tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
-            //tree.scrollRowToVisible(tree.getRowCount() - 1);
+            // tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
+            // tree.scrollRowToVisible(tree.getRowCount() - 1);
             tree.scrollPathToVisible(new TreePath(newChild.getPath()));
         });
         timer.start();
@@ -97,7 +98,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

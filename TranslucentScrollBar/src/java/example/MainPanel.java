@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.*;
+import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     }
     private static JComponent makeList() {
         DefaultListModel<String> m = new DefaultListModel<>();
-        IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%d: %s", i, Objects.toString(new Date()))));
+        IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%05d: %s", i, LocalDateTime.now().toString())));
         return new JList<>(m);
     }
     private static JScrollPane makeTranslucentScrollBar(JComponent c) {
@@ -68,16 +68,16 @@ class TranslucentScrollPaneLayout extends ScrollPaneLayout {
             JScrollPane scrollPane = (JScrollPane) parent;
 
             Rectangle availR = scrollPane.getBounds();
-            availR.setLocation(0, 0); //availR.x = availR.y = 0;
+            availR.setLocation(0, 0); // availR.x = availR.y = 0;
 
             Insets insets = parent.getInsets();
             availR.x = insets.left;
             availR.y = insets.top;
-            availR.width  -= insets.left + insets.right;
+            availR.width -= insets.left + insets.right;
             availR.height -= insets.top  + insets.bottom;
 
             Rectangle vsbR = new Rectangle();
-            vsbR.width  = 12;
+            vsbR.width = 12;
             vsbR.height = availR.height;
             vsbR.x = availR.x + availR.width - vsbR.width;
             vsbR.y = availR.y;
@@ -101,7 +101,7 @@ class ZeroSizeButton extends JButton {
 }
 
 class TranslucentScrollBarUI extends BasicScrollBarUI {
-    private static final Color DEFAULT_COLOR  = new Color(220, 100, 100, 100);
+    private static final Color DEFAULT_COLOR = new Color(220, 100, 100, 100);
     private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
     private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
 
@@ -112,10 +112,10 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
         return new ZeroSizeButton();
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-        //Graphics2D g2 = (Graphics2D) g.create();
-        //g2.setPaint(new Color(100, 100, 100, 100));
-        //g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-        //g2.dispose();
+        // Graphics2D g2 = (Graphics2D) g.create();
+        // g2.setPaint(new Color(100, 100, 100, 100));
+        // g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
+        // g2.dispose();
     }
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
         JScrollBar sb = (JScrollBar) c;

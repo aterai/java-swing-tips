@@ -4,8 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Date;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
 
         JButton addTabButton = new JButton("add tab");
         addTabButton.addActionListener(e -> {
-            String title = new Date().toString();
+            String title = LocalTime.now().toString();
             for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
                 t.addTab(title, new JLabel(title));
             }

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.logging.*;
 import javax.swing.*;
 
@@ -88,7 +88,7 @@ class EnterAction extends AbstractAction {
         this.textField = textField;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        LOGGER.info(String.format("%s%n    %s%n", new Date().toString(), textField.getText()));
+        LOGGER.info(String.format("%s%n    %s%n", LocalDateTime.now().toString(), textField.getText()));
     }
 }
 
@@ -99,8 +99,8 @@ class EnterAction extends AbstractAction {
 //         this.textComponent = textComponent;
 //     }
 //     @Override public void insertUpdate(DocumentEvent e) {
-//         final Document doc = e.getDocument();
-//         final Element root = doc.getDefaultRootElement();
+//         Document doc = e.getDocument();
+//         Element root = doc.getDefaultRootElement();
 //         if (root.getElementCount() <= MAX_LINES) {
 //             return;
 //         }
@@ -119,7 +119,7 @@ class EnterAction extends AbstractAction {
 //             ex.printStackTrace();
 //         }
 //     }
-//     @Override public void removeUpdate(DocumentEvent e)  {
+//     @Override public void removeUpdate(DocumentEvent e) {
 //         /* not needed */
 //     }
 //     @Override public void changedUpdate(DocumentEvent e) {
@@ -147,7 +147,7 @@ class EnterAction extends AbstractAction {
 //             return;
 //         }
 //         if (b == '\n') {
-//             final String text = buf.toString("UTF-8");
+//             String text = buf.toString("UTF-8");
 //             buf.reset();
 //             EventQueue.invokeLater(new Runnable() {
 //                 @Override public void run() {
@@ -320,8 +320,8 @@ class TextAreaHandler extends StreamHandler {
 // // https://tips4java.wordpress.com/2008/11/08/message-console/
 // try {
 //     PipedOutputStream pos = new PipedOutputStream();
-//     PipedInputStream  pis = new PipedInputStream(pos);
-//     final BufferedReader reader = new BufferedReader(new InputStreamReader(pis, "UTF-8"));
+//     PipedInputStream pis = new PipedInputStream(pos);
+//     BufferedReader reader = new BufferedReader(new InputStreamReader(pis, "UTF-8"));
 //     System.setOut(new PrintStream(pos, true, "UTF-8"));
 //
 //     new Thread(new Runnable() {

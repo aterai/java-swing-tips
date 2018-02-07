@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -12,7 +12,7 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final Timer timer = new Timer(200, e -> {
-        String s = new Date().toString();
+        String s = LocalDateTime.now().toString();
         textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
     });
 
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        JButton stop  = new JButton("Stop");
+        JButton stop = new JButton("Stop");
         stop.addActionListener(e -> timer.stop());
 
         JButton clear = new JButton("Clear");
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -84,8 +84,8 @@ class FifoDocumentListener implements DocumentListener {
         this.textComponent = textComponent;
     }
     @Override public void insertUpdate(DocumentEvent e) {
-        final Document doc = e.getDocument();
-        final Element root = doc.getDefaultRootElement();
+        Document doc = e.getDocument();
+        Element root = doc.getDefaultRootElement();
         if (root.getElementCount() <= MAX_LINES) {
             return;
         }
@@ -100,7 +100,7 @@ class FifoDocumentListener implements DocumentListener {
             ex.printStackTrace();
         }
     }
-    @Override public void removeUpdate(DocumentEvent e)  { /* not needed */ }
+    @Override public void removeUpdate(DocumentEvent e) { /* not needed */ }
     @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
 }
 

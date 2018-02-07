@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -53,13 +54,13 @@ public final class MainPanel extends JPanel {
 
         JButton button1 = new JButton("add tab");
         button1.addActionListener(e -> {
-            String title = new Date().toString();
+            String title = LocalTime.now().toString();
             tabbedPane.addTab(title, new JLabel(title));
         });
 
         JButton button2 = new JButton("add tab with focus");
         button2.addActionListener(e -> {
-            String title = new Date().toString();
+            String title = LocalTime.now().toString();
             tabbedPane.addTab(title, new JLabel(title));
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         });

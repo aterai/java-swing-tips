@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
+import java.time.LocalTime;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JButton button = new JButton("JButton JButton");
 
-        Timer timer = new Timer(4000, e -> printInfo(button, new Date().toString()));
+        Timer timer = new Timer(4000, e -> printInfo(button, LocalTime.now().toString()));
 
         JCheckBox vcheck = new JCheckBox("setVisible", true);
         vcheck.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));

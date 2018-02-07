@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.time.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -67,9 +68,9 @@ public class MainPanel extends JPanel {
                     return "Interrupted";
                 }
                 if (check.isSelected()) {
-                    publish(new Date().toString()); // On EDT
+                    publish(LocalDateTime.now().toString()); // On EDT
                 } else {
-                    test(new Date().toString()); // Not on EDT
+                    test(LocalDateTime.now().toString()); // Not on EDT
                 }
             }
         }
@@ -97,7 +98,7 @@ public class MainPanel extends JPanel {
 //         if (Objects.isNull(thread)) {
 //             thread = new Thread(() -> {
 //                 while (thread != null) {
-//                     test(new Date().toString());
+//                     test(LocalDateTime.now().toString());
 //                     try {
 //                         Thread.sleep(1000);
 //                     } catch (InterruptedException ex) {
@@ -117,9 +118,9 @@ public class MainPanel extends JPanel {
                             return "Interrupted";
                         }
                         if (check.isSelected()) {
-                            publish(new Date().toString()); // On EDT
+                            publish(LocalDateTime.now().toString()); // On EDT
                         } else {
-                            test(new Date().toString()); // Not on EDT
+                            test(LocalDateTime.now().toString()); // Not on EDT
                         }
                     }
                 }

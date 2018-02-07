@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import javax.accessibility.*;
@@ -21,7 +22,7 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("add");
         button.addActionListener(e -> {
-            String str = new Date().toString();
+            String str = LocalDateTime.now().toString();
             for (JComboBox<String> c: Arrays.asList(c0, c1, c2, c3)) {
                 MutableComboBoxModel<String> m = (MutableComboBoxModel<String>) c.getModel();
                 m.insertElementAt(str, m.getSize());

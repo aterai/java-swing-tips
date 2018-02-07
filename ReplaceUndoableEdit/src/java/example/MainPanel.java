@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -53,9 +54,9 @@ public class MainPanel extends JPanel {
             doc.setDocumentFilter(undoManager2.getDocumentFilter());
         }
 
-        JButton button = new JButton("setText(new Date())");
+        JButton button = new JButton("setText(LocalDateTime.now())");
         button.addActionListener(e -> {
-            String str = new Date().toString();
+            String str = LocalDateTime.now().toString();
             for (JTextField tf: Arrays.asList(textField0, textField1, textField2)) {
                 tf.setText(str);
             }
@@ -111,21 +112,21 @@ public class MainPanel extends JPanel {
 class CustomUndoPlainDocument extends PlainDocument {
     private CompoundEdit compoundEdit;
     @Override protected void fireUndoableEditUpdate(UndoableEditEvent e) {
-        //FindBugs: UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR
-        //if (Objects.nonNull(compoundEdit)) {
-        //    compoundEdit.addEdit(e.getEdit());
-        //} else {
-        //    super.fireUndoableEditUpdate(e);
-        //}
+        // FindBugs: UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR
+        // if (Objects.nonNull(compoundEdit)) {
+        //     compoundEdit.addEdit(e.getEdit());
+        // } else {
+        //     super.fireUndoableEditUpdate(e);
+        // }
         Optional.ofNullable(compoundEdit).ifPresent(ce -> ce.addEdit(e.getEdit()));
-        //JDK9: Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
+        // JDK9: Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
     }
     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         if (length == 0) {
-            //System.out.println("insert");
+            // System.out.println("insert");
             super.replace(offset, length, text, attrs);
         } else {
-            //System.out.println("replace");
+            // System.out.println("replace");
             compoundEdit = new CompoundEdit();
             super.replace(offset, length, text, attrs);
             compoundEdit.end();
@@ -165,9 +166,9 @@ class DocumentFilterUndoManager extends UndoManager {
 // //         this.undoManager = undoManager;
 // //     }
 //     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//         if (length == 0) { //insert
+//         if (length == 0) { // insert
 //             super.replace(offset, length, text, attrs);
-//         } else { //replace
+//         } else { // replace
 // //             undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
 //             fireUndoableEditUpdate(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
 //             replaceIgnoringUndo(offset, length, text, attrs);
@@ -202,14 +203,14 @@ class DocumentFilterUndoManager extends UndoManager {
 //             this.newValue = newValue;
 //             this.offset = offset;
 //         }
-//         @Override public void undo() { //throws CannotUndoException {
+//         @Override public void undo() { // throws CannotUndoException {
 //             try {
 //                 replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
 //             } catch (BadLocationException ex) {
 //                 throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //             }
 //         }
-//         @Override public void redo() { //throws CannotRedoException {
+//         @Override public void redo() { // throws CannotRedoException {
 //             try {
 //                 replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
 //             } catch (BadLocationException ex) {

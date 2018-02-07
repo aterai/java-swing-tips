@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.*;
-import java.text.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.imageio.*;
 import javax.swing.*;
@@ -17,10 +18,10 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
-        Timer timer = new Timer(1000, e -> {
-            label.setText(df.format(new Date()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        JLabel label = new JLabel(LocalTime.now().format(formatter), SwingConstants.CENTER);
+        Timer timer = new Timer(100, e -> {
+            label.setText(LocalTime.now().format(formatter));
             Container parent = SwingUtilities.getUnwrappedParent(label);
             if (Objects.nonNull(parent) && parent.isOpaque()) {
                 repaintWindowAncestor(label);

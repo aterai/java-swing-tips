@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.*;
+import java.time.LocalDateTime;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -26,18 +26,18 @@ public final class MainPanel extends JPanel {
 
         JButton addButton = new JButton("add");
         addButton.addActionListener(e -> {
-            Date date = new Date();
+            LocalDateTime date = LocalDateTime.now();
 
             DefaultTreeModel model1 = (DefaultTreeModel) tree1.getModel();
             DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode) model1.getRoot();
-            DefaultMutableTreeNode child1  = new DefaultMutableTreeNode(date);
+            DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(date);
             parent1.add(child1);
             model1.reload(parent1);
             tree1.scrollPathToVisible(new TreePath(child1.getPath()));
 
             DefaultTreeModel model2 = (DefaultTreeModel) tree2.getModel();
             DefaultMutableTreeNode parent2 = (DefaultMutableTreeNode) model2.getRoot();
-            DefaultMutableTreeNode child2  = new DefaultMutableTreeNode(date);
+            DefaultMutableTreeNode child2 = new DefaultMutableTreeNode(date);
             model2.insertNodeInto(child2, parent2, parent2.getChildCount());
             tree2.scrollPathToVisible(new TreePath(child2.getPath()));
         });
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

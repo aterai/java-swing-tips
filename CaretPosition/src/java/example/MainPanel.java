@@ -3,9 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.text.*;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -16,16 +14,14 @@ public final class MainPanel extends JPanel {
     private final JButton startButton = new JButton("Start");
     private final JButton stopButton = new JButton("Stop");
     private final JButton clearButton = new JButton("Clear");
-    private final DateFormat df = DateFormat.getDateTimeInstance();
     private final Timer timer;
 
     private MainPanel() {
         super(new BorderLayout());
-        df.setTimeZone(TimeZone.getDefault());
         jtp.setEditable(false);
         stopButton.setEnabled(false);
 
-        timer = new Timer(200, e -> append(df.format(new Date())));
+        timer = new Timer(200, e -> append(LocalDateTime.now().toString()));
         startButton.addActionListener(e -> timerStart());
         stopButton.addActionListener(e -> timerStop());
         clearButton.addActionListener(e -> {
