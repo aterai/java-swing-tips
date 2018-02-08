@@ -131,10 +131,25 @@ public final class MainPanel extends JPanel {
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+        JLabel label = new JLabel(" ", SwingConstants.CENTER);
+
+        monthList.getSelectionModel().addListSelectionListener(e -> {
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            if (lsm.isSelectionEmpty()) {
+                label.setText(" ");
+            } else {
+                ListModel<LocalDate> model = monthList.getModel();
+                LocalDate from = model.getElementAt(lsm.getMinSelectionIndex());
+                LocalDate to = model.getElementAt(lsm.getMaxSelectionIndex());
+                label.setText(Period.between(from, to).toString());
+            }
+        });
+
         Box box = Box.createVerticalBox();
         box.add(yearMonthPanel);
         box.add(Box.createVerticalStrut(2));
         box.add(scroll);
+        box.add(label);
 
         add(box);
         setPreferredSize(new Dimension(320, 240));
