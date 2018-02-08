@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
 //     private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
-//     private static final String DRAW_DASHED_FOCUS_INDICATOR    = "Tree.drawDashedFocusIndicator";
+//     private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
     private enum TreeDraws {
         DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
         DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
@@ -23,13 +23,13 @@ public class MainPanel extends JPanel {
         }
     }
     private final JCheckBox dfbaiCheck = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
-    private final JCheckBox ddfiCheck  = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
-    private final JTextArea textArea   = new JTextArea();
-    private final JTree tree           = new JTree();
+    private final JCheckBox ddfiCheck = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
+    private final JTextArea textArea = new JTextArea();
+    private final JTree tree = new JTree();
     public MainPanel() {
         super(new BorderLayout());
 
-        log("MainPanel: init");
+        append("MainPanel: init");
         // updateCheckBox("MainPanel: init");
 
         UIManager.addPropertyChangeListener(e -> {
@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
 
         EventQueue.invokeLater(() -> {
             ActionListener al = e -> {
-                log("JMenuItem: actionPerformed");
+                append("JMenuItem: actionPerformed");
                 Object o = e.getSource();
                 if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
                     updateCheckBox("JMenuItem: actionPerformed: invokeLater");
@@ -74,23 +74,23 @@ public class MainPanel extends JPanel {
 
     @Override public void updateUI() {
         super.updateUI();
-        log("JPanel: updateUI");
+        append("JPanel: updateUI");
         updateCheckBox("JPanel: updateUI: invokeLater");
     }
 
-    private void updateCheckBox(final String str) {
+    private void updateCheckBox(String str) {
         EventQueue.invokeLater(() -> {
-            log("--------\n" + str);
+            append("--------\n" + str);
 
-            log(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON + ": " + UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
+            append(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON + ": " + UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
             dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
 
-            log(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR + ": " + UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
+            append(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR + ": " + UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
             ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
         });
     }
 
-    private void log(String str) {
+    private void append(String str) {
         if (Objects.nonNull(textArea)) {
             textArea.append(str + "\n");
         } else {
