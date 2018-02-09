@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         ListModel<IconItem> list = makeIconList();
         TableModel model = makeIconTableModel(list);
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private ListModel<IconItem> makeIconList() {
+    private static ListModel<IconItem> makeIconList() {
         DefaultListModel<IconItem> list = new DefaultListModel<>();
         list.addElement(new IconItem("wi0009"));
         list.addElement(new IconItem("wi0054"));
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         list.addElement(new IconItem("wi0124"));
         return list;
     }
-    private static TableModel makeIconTableModel(ListModel<?> list) {
+    private static <E extends IconItem> TableModel makeIconTableModel(ListModel<E> list) {
         Object[][] data = {
             {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
             {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
@@ -155,10 +155,10 @@ class IconTable extends JTable {
 
         glassPane.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                //Point pt = e.getPoint();
-                //if (!editor.getBounds().contains(pt)) {
-                //    cancelEditing();
-                //}
+                // Point pt = e.getPoint();
+                // if (!editor.getBounds().contains(pt)) {
+                //     cancelEditing();
+                // }
                 cancelEditing();
             }
         });
