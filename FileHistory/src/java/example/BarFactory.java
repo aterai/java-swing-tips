@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 
 public final class BarFactory {
-    private static final String IMAGE_SUFFIX  = "Image";
-    private static final String LABEL_SUFFIX  = "Label";
+    private static final String IMAGE_SUFFIX = "Image";
+    private static final String LABEL_SUFFIX = "Label";
     private static final String ACTION_SUFFIX = "Action";
     private static final String TIP_SUFFIX = "Tooltip";
     private static final String MNE_SUFFIX = "Mnemonic";
@@ -29,7 +29,7 @@ public final class BarFactory {
     public BarFactory(String restr) {
         ResourceBundle res;
         try {
-            res = ResourceBundle.getBundle(restr, new UTF8ResourceBundleControl());
+            res = ResourceBundle.getBundle(restr, new Utf8ResourceBundleControl());
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
             System.err.println("resources/" + restr + " not found");
@@ -224,7 +224,7 @@ public final class BarFactory {
 // https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html
 // [JDK-8027607] (rb) Provide UTF-8 based properties resource bundles - Java Bug System
 // https://bugs.openjdk.java.net/browse/JDK-8027607
-class UTF8ResourceBundleControl extends ResourceBundle.Control {
+class Utf8ResourceBundleControl extends ResourceBundle.Control {
     @Override public List<String> getFormats(String baseName) {
         Objects.requireNonNull(baseName, "baseName must not be null");
         return Arrays.asList("properties");

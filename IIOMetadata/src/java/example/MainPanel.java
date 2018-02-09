@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
         // https://bugs.openjdk.java.net/browse/JDK-8080225
         // try (InputStream is = getClass().getResourceAsStream("test.jpg"); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
         try (InputStream is = Files.newInputStream(Paths.get(getClass().getResource("test.jpg").toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-            //FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
+            // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
             reader.setInput(iis, true);
 
-            //ImageReadParam param = reader.getDefaultReadParam();
+            // ImageReadParam param = reader.getDefaultReadParam();
             buf.append(String.format("Width: %d%n", reader.getWidth(0)));
             buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
             }
 
             root = (IIOMetadataNode) meta.getAsTree("javax_imageio_jpeg_image_1.0");
-            //root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
+            // root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
 
             NodeList com = root.getElementsByTagName("com");
             if (com.getLength() > 0) {
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JTextArea log = new JTextArea(buf.toString());
-        JTree tree = new JTree(new DefaultTreeModel(new XMLTreeNode(root)));
+        JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));
         JTabbedPane tab = new JTabbedPane();
         tab.add("text", new JScrollPane(log));
         tab.add("tree", new JScrollPane(tree));
@@ -100,17 +100,17 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://community.oracle.com/thread/1373824 XMLViewer
-class XMLTreeNode implements TreeNode {
+// https://community.oracle.com/thread/1373824 XmlViewer
+class XmlTreeNode implements TreeNode {
     private Node xmlNode;
-    private XMLTreeNode parent;
-    private List<XMLTreeNode> list;
+    private XmlTreeNode parent;
+    private List<XmlTreeNode> list;
     private Boolean showAttributes;
-    protected XMLTreeNode(Node xmlNode) {
+    protected XmlTreeNode(Node xmlNode) {
         this.xmlNode = xmlNode;
         this.showAttributes = Boolean.TRUE;
     }
-    protected XMLTreeNode(Node xmlNode, XMLTreeNode parent) {
+    protected XmlTreeNode(Node xmlNode, XmlTreeNode parent) {
         this(xmlNode);
         this.parent = parent;
     }
@@ -126,7 +126,7 @@ class XMLTreeNode implements TreeNode {
     public void setShowAttributes(Boolean set) {
         showAttributes = set;
     }
-    private String getXMLTag() {
+    private String getXmlTag() {
         boolean includeAttributes = isShowAttributes();
         if (xmlNode instanceof Element && includeAttributes) {
             Element e = (Element) xmlNode;
@@ -152,7 +152,7 @@ class XMLTreeNode implements TreeNode {
         }
         return xmlNode.getNodeName();
     }
-//     private List<XMLTreeNode> getChildren() {
+//     private List<XmlTreeNode> getChildren() {
 //         if (Objects.isNull(list)) {
 //             loadChildren();
 //         }
@@ -167,19 +167,19 @@ class XMLTreeNode implements TreeNode {
             if (c instanceof Text && c.getNodeValue().isEmpty()) {
                 continue;
             }
-            list.add(new XMLTreeNode(cn.item(i), this));
+            list.add(new XmlTreeNode(cn.item(i), this));
         }
     }
-    @Override public Enumeration<XMLTreeNode> children() {
+    @Override public Enumeration<XmlTreeNode> children() {
         if (Objects.isNull(list)) {
             loadChildren();
         }
-        Iterator<XMLTreeNode> iter = list.iterator();
-        return new Enumeration<XMLTreeNode>() {
+        Iterator<XmlTreeNode> iter = list.iterator();
+        return new Enumeration<XmlTreeNode>() {
             @Override public boolean hasMoreElements() {
                 return iter.hasNext();
             }
-            @Override public XMLTreeNode nextElement() {
+            @Override public XmlTreeNode nextElement() {
                 return iter.next();
             }
         };
@@ -204,7 +204,7 @@ class XMLTreeNode implements TreeNode {
             loadChildren();
         }
         int i = 0;
-        for (XMLTreeNode c: list) {
+        for (XmlTreeNode c: list) {
             if (xmlNode == c.xmlNode) {
                 return i;
             }
@@ -225,6 +225,6 @@ class XMLTreeNode implements TreeNode {
         return list.isEmpty();
     }
     @Override public String toString() {
-        return getXMLTag();
+        return getXmlTag();
     }
 }

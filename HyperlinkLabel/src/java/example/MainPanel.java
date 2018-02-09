@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
         String siteLink = "https://ateraimemo.com/";
 
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", siteLink, siteLink));
-        editor.setOpaque(false); //editor.setBackground(getBackground());
-        editor.setEditable(false); //REQUIRED
+        editor.setOpaque(false); // editor.setBackground(getBackground());
+        editor.setEditable(false); // REQUIRED
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
@@ -42,22 +42,22 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        Border inside  = BorderFactory.createEmptyBorder(2, 5 + 2, 2, 5 + 2);
+        Border inside = BorderFactory.createEmptyBorder(2, 5 + 2, 2, 5 + 2);
         Border outside = BorderFactory.createTitledBorder("HyperlinkLabel");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 0);
 
-        c.gridx  = 0;
+        c.gridx = 0;
         c.anchor = GridBagConstraints.LINE_END;
         add(new JLabel("JLabel+MouseListener: "), c);
         add(new JLabel("JButton: "), c);
         add(new JLabel("JButton+ButtonUI: "), c);
         add(new JLabel("JEditorPane+HyperlinkListener: "), c);
 
-        c.gridx  = 1;
+        c.gridx = 1;
         c.anchor = GridBagConstraints.LINE_START;
-        add(new URILabel(siteLink), c);
+        add(new URLLabel(siteLink), c);
         add(new JButton(browseAction), c);
         add(new HyperlinkButton(browseAction), c);
         add(editor, c);
@@ -86,9 +86,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class URILabel extends JLabel {
+class URLLabel extends JLabel {
     private transient MouseListener handler;
-    protected URILabel(String h) {
+    protected URLLabel(String h) {
         super(String.format("<html><a href='%s'>%s", h, h));
     }
     @Override public void updateUI() {
@@ -181,15 +181,15 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
+            c, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            0); //b.getText() == null ? 0 : b.getIconTextGap());
+            0); // b.getText() == null ? 0 : b.getIconTextGap());
 
         if (c.isOpaque()) {
             g.setColor(b.getBackground());
@@ -199,7 +199,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
-            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+            g.drawLine(viewRect.x,                  viewRect.y + viewRect.height,
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);

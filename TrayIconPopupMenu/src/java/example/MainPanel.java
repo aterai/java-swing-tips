@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
         // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
 
-        //JWindow dummy = new JWindow(); //Ubuntu?
+        // JWindow dummy = new JWindow(); // Ubuntu?
         JDialog dummy = new JDialog();
         dummy.setUndecorated(true);
-        //dummy.setAlwaysOnTop(true);
+        // dummy.setAlwaysOnTop(true);
 
         Image image = new ImageIcon(getClass().getResource("16x16.png")).getImage();
         TrayIcon icon = new TrayIcon(image, "TRAY", null);
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
 
-        //init JPopupMenu
+        // init JPopupMenu
         popup.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -82,9 +82,9 @@ public final class MainPanel extends JPanel {
             for (Frame f: Frame.getFrames()) {
                 f.dispose();
             }
-            //tray.remove(icon);
-            //frame.dispose();
-            //dummy.dispose();
+            // tray.remove(icon);
+            // frame.dispose();
+            // dummy.dispose();
         });
     }
 
@@ -138,7 +138,7 @@ final class TrayIconPopupMenuUtil {
         return gc;
     }
 
-    //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
+    // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
     public static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
         Point p = new Point(xposition, yposition);
         if (GraphicsEnvironment.isHeadless()) {
@@ -196,7 +196,7 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
             Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getX(), e.getY());
             dummy.setLocation(p);
             dummy.setVisible(true);
-            //dummy.toFront();
+            // dummy.toFront();
             popup.show(dummy, 0, 0);
         }
     }
@@ -236,8 +236,8 @@ class ChangeLookAndFeelAction extends AbstractAction {
     private static boolean isAvailableLookAndFeel(String laf) {
         try {
             Class<?> lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel) lnfClass.getConstructor().newInstance();
-            return newLAF.isSupportedLookAndFeel();
+            LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
+            return newLnF.isSupportedLookAndFeel();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }

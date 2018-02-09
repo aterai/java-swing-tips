@@ -69,16 +69,16 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
     protected boolean drawsFocusBorderAroundIcon;
     protected boolean drawDashedFocusIndicator;
     protected boolean fillBackground;
-    protected Color treeBGColor;
-    protected Color focusBGColor;
+    protected Color treeBgsColor;
+    protected Color focusBgsColor;
     // protected boolean selected;
     // protected boolean hasFocus;
 
     @Override public void updateUI() {
         super.updateUI();
         drawsFocusBorderAroundIcon = UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon");
-        drawDashedFocusIndicator   = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
-        fillBackground             = UIManager.getBoolean("Tree.rendererFillBackground");
+        drawDashedFocusIndicator = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
+        fillBackground = UIManager.getBoolean("Tree.rendererFillBackground");
         setOpaque(fillBackground);
     }
 
@@ -135,11 +135,11 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
             g.drawRect(x, y, w - 1, h - 1);
         }
         if (drawDashedFocusIndicator && Objects.nonNull(notColor)) {
-            if (!notColor.equals(treeBGColor)) {
-                treeBGColor = notColor;
-                focusBGColor = new Color(~notColor.getRGB());
+            if (!notColor.equals(treeBgsColor)) {
+                treeBgsColor = notColor;
+                focusBgsColor = new Color(~notColor.getRGB());
             }
-            g.setColor(focusBGColor);
+            g.setColor(focusBgsColor);
             BasicGraphicsUtils.drawDashedRect(g, x, y, w, h);
         }
     }

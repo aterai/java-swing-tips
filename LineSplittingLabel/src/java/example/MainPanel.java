@@ -58,24 +58,24 @@ class TricoloreLabel extends JComponent {
         FontRenderContext frc = g2.getFontRenderContext();
         GlyphVector gv = font.createGlyphVector(frc, text);
         Rectangle2D b = gv.getVisualBounds();
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
+        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
         double d = b.getHeight() / 3d;
-        Rectangle2D clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+        Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
         Rectangle2D clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
         Rectangle2D clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);
 
-        Shape s = toCenterAT.createTransformedShape(gv.getOutline());
+        Shape s = toCenterAtf.createTransformedShape(gv.getOutline());
 
-        g2.setClip(toCenterAT.createTransformedShape(clip1));
+        g2.setClip(toCenterAtf.createTransformedShape(clip1));
         g2.setPaint(Color.BLUE);
         g2.fill(s);
 
-        g2.setClip(toCenterAT.createTransformedShape(clip2));
+        g2.setClip(toCenterAtf.createTransformedShape(clip2));
         g2.setPaint(Color.RED);
         g2.fill(s);
 
-        g2.setClip(toCenterAT.createTransformedShape(clip));
+        g2.setClip(toCenterAtf.createTransformedShape(clip));
         g2.setPaint(Color.BLACK);
         g2.draw(s);
         g2.dispose();
@@ -103,13 +103,13 @@ class LineSplittingLabel extends JComponent {
         FontRenderContext frc = g2.getFontRenderContext();
         Shape shape = new TextLayout(text, font, frc).getOutline(null);
         Rectangle2D b = shape.getBounds2D();
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
+        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
-        Shape s = toCenterAT.createTransformedShape(shape);
+        Shape s = toCenterAtf.createTransformedShape(shape);
         g2.setPaint(Color.BLACK);
         g2.fill(s);
         Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2d);
-        g2.setClip(toCenterAT.createTransformedShape(clip));
+        g2.setClip(toCenterAtf.createTransformedShape(clip));
         g2.setPaint(Color.RED);
         g2.fill(s);
         g2.dispose();

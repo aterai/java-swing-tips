@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         label.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
 
         label.setDropTarget(new DropTarget(label, DnDConstants.ACTION_COPY, new FileDropTargetAdapter(), true));
-        //Test: label.setTransferHandler(new FileTransferHandler());
+        // Test: label.setTransferHandler(new FileTransferHandler());
 
         add(label);
         setPreferredSize(new Dimension(320, 240));
@@ -62,9 +62,9 @@ class DragHereIcon implements Icon {
         ICON_SIZE - 2 * BORDER_WIDTH - 1, ICON_SIZE - 2 * BORDER_WIDTH - 1,
         ARC_SIZE, ARC_SIZE);
     private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
-    //private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
-    //private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); //DOWNWARDS WHITE ARROW
-    //private static final Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW
+    // private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+    // private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); // DOWNWARDS WHITE ARROW
+    // private static final Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); // DOWNWARDS BLACK ARROW
     private static final Color LINE_COLOR = Color.GRAY;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -87,19 +87,19 @@ class DragHereIcon implements Icon {
             g2.drawLine(0, a, m, a);
         }
 
-        //g2.drawLine(1 * v, 0 * v, 1 * v, 4 * v);
-        //g2.drawLine(2 * v, 0 * v, 2 * v, 4 * v);
-        //g2.drawLine(3 * v, 0 * v, 3 * v, 4 * v);
-        //g2.drawLine(0 * v, 1 * v, 4 * v, 1 * v);
-        //g2.drawLine(0 * v, 2 * v, 4 * v, 2 * v);
-        //g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
+        // g2.drawLine(1 * v, 0 * v, 1 * v, 4 * v);
+        // g2.drawLine(2 * v, 0 * v, 2 * v, 4 * v);
+        // g2.drawLine(3 * v, 0 * v, 3 * v, 4 * v);
+        // g2.drawLine(0 * v, 1 * v, 4 * v, 1 * v);
+        // g2.drawLine(0 * v, 2 * v, 4 * v, 2 * v);
+        // g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
 
         FontRenderContext frc = g2.getFontRenderContext();
-        Shape arrow = new TextLayout("\u21E9", FONT, frc).getOutline(null); //DOWNWARDS WHITE ARROW
+        Shape arrow = new TextLayout("\u21E9", FONT, frc).getOutline(null); // DOWNWARDS WHITE ARROW
         g2.setPaint(LINE_COLOR);
         Rectangle2D b = arrow.getBounds2D();
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - b.getCenterX(), ICON_SIZE / 2d - b.getCenterY());
-        g2.fill(toCenterAT.createTransformedShape(arrow));
+        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - b.getCenterX(), ICON_SIZE / 2d - b.getCenterY());
+        g2.fill(toCenterAtf.createTransformedShape(arrow));
         g2.dispose();
     }
     @Override public int getIconWidth() {

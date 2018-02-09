@@ -9,7 +9,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JComboBox<LRItem> combo = new JComboBox<LRItem>(makeModel()) {
+        JComboBox<PairItem> combo = new JComboBox<PairItem>(makeModel()) {
             @Override public void updateUI() {
                 // setRenderer(null);
                 super.updateUI();
@@ -35,24 +35,23 @@ public final class MainPanel extends JPanel {
         box.add(rightTextField);
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                LRItem item = (LRItem) e.getItem();
+                PairItem item = (PairItem) e.getItem();
                 leftTextField.setText(item.getLeftText());
                 rightTextField.setText(item.getRightText());
             }
         });
         return box;
     }
-    private static ComboBoxModel<LRItem> makeModel() {
-        DefaultComboBoxModel<LRItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new LRItem("asdfasdf", "846876"));
-        model.addElement(new LRItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
-        model.addElement(new LRItem("asdfasdf.1234567890.1234567890.1234567890.e",
-                                    "qwerqwer.1234567890.1234567890.1234567890"));
-        model.addElement(new LRItem("14234125", "64345424543523452345234523684"));
-        model.addElement(new LRItem("hjklhjk", "addElement"));
-        model.addElement(new LRItem("aaaaaaaa", "ddd"));
-        model.addElement(new LRItem("bbbbbbbb", "eeeee"));
-        model.addElement(new LRItem("cccccccc", "fffffff"));
+    private static ComboBoxModel<PairItem> makeModel() {
+        DefaultComboBoxModel<PairItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new PairItem("asdfasdf", "846876"));
+        model.addElement(new PairItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
+        model.addElement(new PairItem("asdfasdf.1234567890.1234567890.1234567890.e", "qwerqwer.1234567890.1234567890.1234567890"));
+        model.addElement(new PairItem("14234125", "64345424543523452345234523684"));
+        model.addElement(new PairItem("hjklhjk", "addElement"));
+        model.addElement(new PairItem("aaaaaaaa", "ddd"));
+        model.addElement(new PairItem("bbbbbbbb", "eeeee"));
+        model.addElement(new PairItem("cccccccc", "fffffff"));
 
         return model;
     }
@@ -80,7 +79,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MultiColumnCellRenderer<E extends LRItem> implements ListCellRenderer<E> {
+class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E> {
     private final JLabel leftLabel = new JLabel() {
         @Override public void updateUI() {
             super.updateUI();
@@ -136,10 +135,10 @@ class MultiColumnCellRenderer<E extends LRItem> implements ListCellRenderer<E> {
     }
 }
 
-class LRItem {
+class PairItem {
     private final String leftText;
     private final String rightText;
-    protected LRItem(String strLeft, String strRight) {
+    protected PairItem(String strLeft, String strRight) {
         this.leftText = strLeft;
         this.rightText = strRight;
     }

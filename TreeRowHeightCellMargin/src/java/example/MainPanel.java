@@ -72,8 +72,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     protected CompoundTreeCellRenderer() {
         super();
         Color bsColor = getBorderSelectionColor();
-        Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
-        compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
+        Color focusBgsColor = new Color(~getBackgroundSelectionColor().getRGB());
+        compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), innerBorder);
 
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
         text.setBorder(emptyBorder);

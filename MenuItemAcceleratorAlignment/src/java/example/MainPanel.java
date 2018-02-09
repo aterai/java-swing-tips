@@ -64,9 +64,9 @@ public final class MainPanel {
                 super.updateUI();
                 // System.out.println(getLocale());
                 if (getUI() instanceof WindowsMenuItemUI) {
-                    setUI(new RAAWindowsMenuItemUI());
+                    setUI(new RaaWindowsMenuItemUI());
                 } else {
-                    setUI(new RAABasicMenuItemUI());
+                    setUI(new RaaBasicMenuItemUI());
                 }
                 // XXX: setLocale(Locale.JAPAN);
             }
@@ -78,13 +78,13 @@ public final class MainPanel {
 
 //     // TEST: work Windows 7 only?
 //     private static JMenuItem makeMenuItem2(JMenuItem mi) {
-//         final JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
+//         JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
 //         label.setOpaque(true);
 //         JMenuItem item = new JMenuItem(mi.getText()) {
 // //             @Override public Dimension getPreferredSize() {
 // //                 Dimension d = super.getPreferredSize();
 // //                 label.setText(MenuItemUIHelper.getAccText(this, "+"));
-// //                 //d.width += label.getPreferredSize().width;
+// //                 // d.width += label.getPreferredSize().width;
 // //                 d.height = Math.max(label.getPreferredSize().height, d.height);
 // //                 return d;
 // //                         }
@@ -167,7 +167,7 @@ public final class MainPanel {
 // @see javax/swing/plaf/basic/BasicMenuItemUI.java
 final class MenuItemUIHelper {
     private MenuItemUIHelper() { /* Singleton */ }
-    public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { //, Color holdc) {
+    public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {
         Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
             Icon icon;
             JMenuItem menuItem = lh.getMenuItem();
@@ -216,7 +216,7 @@ final class MenuItemUIHelper {
             return;
         }
         Rectangle viewRect = lh.getViewRect();
-        Rectangle accRect  = lr.getAccRect();
+        Rectangle accRect = lr.getAccRect();
         int ascent = lh.getAccFontMetrics().getAscent();
         JMenuItem menuItem = lh.getMenuItem();
         ButtonModel model = menuItem.getModel();
@@ -271,7 +271,7 @@ final class MenuItemUIHelper {
         Optional.ofNullable(insets).ifPresent(i -> {
             rect.x += i.left;
             rect.y += i.top;
-            rect.width  -= i.right  + rect.x;
+            rect.width -= i.right  + rect.x;
             rect.height -= i.bottom + rect.y;
         });
     }
@@ -296,7 +296,7 @@ final class MenuItemUIHelper {
     }
 }
 
-class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
+class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
 //         // Save original graphics font and color
 //         Font holdf = g.getFont();
@@ -312,13 +312,13 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
-            mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", //acceleratorDelimiter,
+            mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
             true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
         paintBackground(g2, mi, background);
         MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
-        MenuItemUIHelper.paintIcon(g2, lh, lr); //, g.getColor());
+        MenuItemUIHelper.paintIcon(g2, lh, lr); // , g.getColor());
         paintText(g2, lh, lr);
         MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
         MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);
@@ -340,7 +340,7 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
     }
 }
 
-class RAABasicMenuItemUI extends BasicMenuItemUI {
+class RaaBasicMenuItemUI extends BasicMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
 //         // Save original graphics font and color
 //         Font holdf = g.getFont();
@@ -356,13 +356,13 @@ class RAABasicMenuItemUI extends BasicMenuItemUI {
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
-            mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", //acceleratorDelimiter,
+            mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
             true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
         paintBackground(g2, mi, background);
         MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
-        MenuItemUIHelper.paintIcon(g2, lh, lr); //, g.getColor());
+        MenuItemUIHelper.paintIcon(g2, lh, lr); // , g.getColor());
         paintText(g2, lh, lr);
         MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
         MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);

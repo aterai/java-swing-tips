@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
         JTabbedPane tab = new JTabbedPane();
         tab.add("Preview", makePreviewPanel());
-        tab.add("SVG", makeSVGPanel());
+        tab.add("SVG", makeSvgPanel());
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(makePreferencesPanel(), BorderLayout.NORTH);
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
         p.add(vcSpinner, c);
         return p;
     }
-    private JComponent makeSVGPanel() {
+    private JComponent makeSvgPanel() {
         JButton button = new JButton("set");
         button.addActionListener(e -> initStar());
 
@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
 //             if (Objects.isNull(outfile)) {
 //                 return;
 //             }
-//             final File tmpfile = outfile;
+//             File tmpfile = outfile;
 //             Transferable tran = new Transferable() {
 //                 @Override public Object getTransferData(DataFlavor flavor) {
 //                     return Arrays.asList(tmpfile);
@@ -139,10 +139,10 @@ public final class MainPanel extends JPanel {
         int vc = vcModel.getNumber().intValue();
         boolean antialias = check.isSelected();
         // outer.setMinimum(r2 + 1);
-        Path2D star = StarburstSVGMaker.makeStar(r1, r2, vc);
+        Path2D star = StarburstSvgMaker.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
-        StringBuilder sb = StarburstSVGMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
+        StringBuilder sb = StarburstSvgMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
 
 //         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
 //         FontRenderContext frc = new FontRenderContext(null, true, true);
@@ -176,8 +176,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-final class StarburstSVGMaker {
-    private StarburstSVGMaker() { /* Singleton */ }
+final class StarburstSvgMaker {
+    private StarburstSvgMaker() { /* Singleton */ }
     public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n")

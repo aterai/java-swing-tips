@@ -7,20 +7,20 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField leftTextField  = new JTextField();
+    private final JTextField leftTextField = new JTextField();
     private final JTextField rightTextField = new JTextField();
     public MainPanel() {
         super(new BorderLayout());
         leftTextField.setEditable(false);
         rightTextField.setEditable(false);
 
-        DefaultComboBoxModel<LRItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new LRItem("asdfasdf", "846876"));
-        model.addElement(new LRItem("bxcvzx",   "asdfasd"));
-        model.addElement(new LRItem("qwerqwe",  "iop.ioqqadfa"));
-        model.addElement(new LRItem("14234125", "64345424684"));
-        model.addElement(new LRItem("hjklhjk",  "asdfasdfasdfasdfasdfasd"));
-        JComboBox<LRItem> combo = new JComboBox<>(model);
+        DefaultComboBoxModel<PairItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new PairItem("asdfasdf", "846876"));
+        model.addElement(new PairItem("bxcvzx", "asdfasd"));
+        model.addElement(new PairItem("qwerqwe", "iop.ioqqadfa"));
+        model.addElement(new PairItem("14234125", "64345424684"));
+        model.addElement(new PairItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
+        JComboBox<PairItem> combo = new JComboBox<>(model);
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 initTextField(e.getItem());
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private void initTextField(Object obj) {
-        LRItem item = (LRItem) obj;
+        PairItem item = (PairItem) obj;
         leftTextField.setText(item.getLeftText());
         rightTextField.setText(item.getRightText());
     }
@@ -66,11 +66,11 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class LRItem {
+class PairItem {
     private final String leftText;
     private final String rightText;
-    protected LRItem(String strLeft, String strRight) {
-        leftText  = strLeft;
+    protected PairItem(String strLeft, String strRight) {
+        leftText = strLeft;
         rightText = strRight;
     }
     public String getHtmlText() {

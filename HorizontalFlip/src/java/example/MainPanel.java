@@ -24,8 +24,8 @@ public final class MainPanel extends JPanel {
                 // AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
                 Shape copyleft = at.createTransformedShape(copyright);
                 Rectangle2D b = copyleft.getBounds2D();
-                AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
-                g2.fill(toCenterAT.createTransformedShape(copyleft));
+                AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
+                g2.fill(toCenterAtf.createTransformedShape(copyleft));
                 g2.dispose();
             }
         });

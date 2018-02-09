@@ -94,13 +94,13 @@ public class MainPanel extends JPanel {
             Shape mjShape = new TextLayout(str, ipaMj, frc).getOutline(null);
 
             Rectangle2D b = exShape.getBounds2D();
-            AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
+            AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
 
             g2.setPaint(Color.YELLOW);
-            g2.draw(toCenterAT.createTransformedShape(b));
+            g2.draw(toCenterAtf.createTransformedShape(b));
 
-            Shape s1 = toCenterAT.createTransformedShape(exShape);
-            Shape s2 = toCenterAT.createTransformedShape(mjShape);
+            Shape s1 = toCenterAtf.createTransformedShape(exShape);
+            Shape s2 = toCenterAtf.createTransformedShape(mjShape);
 
             if (fontPaintFlag.contains(FontPaint.IPAexMincho)) {
                 g2.setPaint(Color.CYAN);

@@ -101,18 +101,18 @@ public class MainPanel extends JPanel {
     }
     protected final void traverseElementById(Element element) {
         if (element.isLeaf()) {
-            checkID(element);
+            checkId(element);
         } else {
             for (int i = 0; i < element.getElementCount(); i++) {
                 Element child = element.getElement(i);
-                checkID(child);
+                checkId(child);
                 if (!child.isLeaf()) {
                     traverseElementById(child);
                 }
             }
         }
     }
-    protected final void checkID(Element element) {
+    protected final void checkId(Element element) {
         AttributeSet attrs = element.getAttributes();
         Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;

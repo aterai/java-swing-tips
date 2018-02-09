@@ -99,7 +99,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
                     model.removeElement(item);
                     model.insertElementAt(item, 0);
                     label.setIcon(item.favicon);
-                    button.setVisible(item.hasRSS);
+                    button.setVisible(item.hasRss);
                     setSelectedIndex(0);
                 });
             }
@@ -173,7 +173,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
 //             return image2;
 //         }
 //     }
-//     private boolean hasRSS(String url) {
+//     private boolean hasRss(String url) {
 //         return url.startsWith("https://ateraimemo.com/");
 //     }
 //     public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
@@ -260,11 +260,11 @@ class ComboBoxLayout implements LayoutManager {
 class URLItem {
     public final String url;
     public final ImageIcon favicon;
-    public final boolean hasRSS;
-    protected URLItem(String url, ImageIcon icon, boolean hasRSS) {
+    public final boolean hasRss;
+    protected URLItem(String url, ImageIcon icon, boolean hasRss) {
         this.url = url;
         this.favicon = icon;
-        this.hasRSS = hasRSS;
+        this.hasRss = hasRss;
     }
     @Override public String toString() {
         return url;

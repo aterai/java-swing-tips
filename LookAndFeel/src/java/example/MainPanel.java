@@ -88,16 +88,16 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//@see SwingSet2.java
+// @see SwingSet2.java
 final class LookAndFeelUtil {
     // Possible Look & Feels
-    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String MAC = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
     private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    //private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.6.0_10
-    private static final String NIMBUS  = "javax.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.7.0
+    private static final String GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    // private static final String NIMBUS = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.6.0_10
+    private static final String NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.7.0
 
     // The current Look & Feel
     private static String currentLaf = METAL;
@@ -108,7 +108,7 @@ final class LookAndFeelUtil {
         ButtonGroup lafMenuGroup = new ButtonGroup();
         JMenu lafMenu = new JMenu("Look&Feel");
         JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
-        mi.setSelected(true); //this is the default l&f
+        mi.setSelected(true); // this is the default l&f
         createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
         createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
         createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
@@ -126,8 +126,8 @@ final class LookAndFeelUtil {
     private static boolean isAvailableLookAndFeel(String laf) {
         try {
             Class<?> lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel) lnfClass.getConstructor().newInstance();
-            return newLAF.isSupportedLookAndFeel();
+            LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
+            return newLnF.isSupportedLookAndFeel();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }

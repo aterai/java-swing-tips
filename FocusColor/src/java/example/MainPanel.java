@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
     private final JTextField field3 = new JTextField("123465789735");
     public MainPanel() {
         super(new BorderLayout());
-        field1.addFocusListener(new BGFocusListener(new Color(230, 230, 255)));
-        field2.addFocusListener(new BGFocusListener(new Color(255, 255, 230)));
-        field3.addFocusListener(new BGFocusListener(new Color(255, 230, 230)));
+        field1.addFocusListener(new BackgroundFocusListener(new Color(230, 230, 255)));
+        field2.addFocusListener(new BackgroundFocusListener(new Color(255, 255, 230)));
+        field3.addFocusListener(new BackgroundFocusListener(new Color(255, 230, 230)));
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("Color(230, 230, 255)", field1));
         box.add(Box.createVerticalStrut(5));
@@ -55,9 +55,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class BGFocusListener implements FocusListener {
+class BackgroundFocusListener implements FocusListener {
     private final Color color;
-    protected BGFocusListener(Color color) {
+    protected BackgroundFocusListener(Color color) {
         this.color = color;
     }
     @Override public void focusGained(FocusEvent e) {

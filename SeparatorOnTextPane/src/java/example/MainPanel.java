@@ -19,11 +19,11 @@ public final class MainPanel extends JPanel {
         textPane.setDocument(doc);
         textPane.setEditable(false);
         textPane.setText("<html>&lt;hr&gt;:<hr />");
-        //insertBR(kit, doc);
+        // insertBr(kit, doc);
 
         textPane.insertComponent(new JLabel("JSeparator: "));
         textPane.insertComponent(new JSeparator(SwingConstants.HORIZONTAL));
-        insertBR(kit, doc);
+        insertBr(kit, doc);
 
         textPane.insertComponent(new JLabel("MatteBorder1: "));
         textPane.insertComponent(new JLabel() {
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
                 return new Dimension(textPane.getSize().width, 1);
             }
         });
-        insertBR(kit, doc);
+        insertBr(kit, doc);
 
         textPane.insertComponent(new JLabel("MatteBorder2: "));
         textPane.insertComponent(new JLabel() {
@@ -50,14 +50,14 @@ public final class MainPanel extends JPanel {
                 return this.getPreferredSize();
             }
         });
-        insertBR(kit, doc);
+        insertBr(kit, doc);
 
         textPane.insertComponent(new JLabel("SwingConstants.VERTICAL "));
         textPane.insertComponent(new JSeparator(SwingConstants.VERTICAL) {
-            //@Override public void updateUI() {
-            //    super.updateUI();
-            //    setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.ORANGE));
-            //}
+            // @Override public void updateUI() {
+            //     super.updateUI();
+            //     setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.ORANGE));
+            // }
             @Override public Dimension getPreferredSize() {
                 return new Dimension(1, 16);
             }
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void insertBR(HTMLEditorKit kit, HTMLDocument doc) {
+    private static void insertBr(HTMLEditorKit kit, HTMLDocument doc) {
         try {
             kit.insertHTML(doc, doc.getLength(), "<br />", 0, 0, null);
         } catch (BadLocationException | IOException ex) {

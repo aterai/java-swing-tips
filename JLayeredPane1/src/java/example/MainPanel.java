@@ -13,7 +13,7 @@ import javax.swing.border.*;
 */
 public final class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
-    //private static final int FORELAYER = 2;
+    // private static final int FORELAYER = 2;
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     private static final int[] COLORS = {0xDDDDDD, 0xAAAAFF, 0xFFAAAA, 0xAAFFAA, 0xFFFFAA, 0xFFAAFF, 0xAAFFFF};
     private final JLayeredPane layerPane;
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        layerPane = new BGImageLayeredPane(new ImageIcon(getClass().getResource("tokeidai.jpg")).getImage());
+        layerPane = new BackImageLayeredPane(new ImageIcon(getClass().getResource("tokeidai.jpg")).getImage());
         for (int i = 0; i < 7; i++) {
             JPanel p = createPanel(i);
             p.setLocation(i * 70 + 20, i * 50 + 15);
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         Border border = BorderFactory.createLineBorder(col, 1);
         p.setBorder(border);
 
-        //ウインド移動用の処理
+        // ウインド移動用の処理
         DragMouseListener li = new DragMouseListener(layerPane);
         p.addMouseListener(li);
         p.addMouseMotionListener(li);
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//タイトル部分のマウスクリックでパネルを最上位にもってくる。ドラッグで移動。
+// タイトル部分のマウスクリックでパネルを最上位にもってくる。ドラッグで移動。
 class DragMouseListener extends MouseAdapter {
     private final JLayeredPane parent;
     private final Point origin = new Point();
@@ -107,12 +107,12 @@ class DragMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         JComponent panel = (JComponent) e.getComponent();
         origin.setLocation(e.getPoint());
-        //選択された部品を上へ
+        // 選択された部品を上へ
         parent.moveToFront(panel);
     }
     @Override public void mouseDragged(MouseEvent e) {
         JComponent panel = (JComponent) e.getComponent();
-        //ずれた分だけ JPanel を移動させる
+        // ずれた分だけ JPanel を移動させる
         int dx = e.getX() - origin.x;
         int dy = e.getY() - origin.y;
         Point pt = panel.getLocation();
@@ -120,10 +120,10 @@ class DragMouseListener extends MouseAdapter {
     }
 }
 
-//背景画像を描画する JLayeredPane
-class BGImageLayeredPane extends JLayeredPane {
+// 背景画像を描画する JLayeredPane
+class BackImageLayeredPane extends JLayeredPane {
     private final Image bgImage;
-    protected BGImageLayeredPane(Image img) {
+    protected BackImageLayeredPane(Image img) {
         super();
         this.bgImage = img;
     }

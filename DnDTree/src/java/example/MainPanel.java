@@ -90,7 +90,7 @@ class DnDTree extends JTree {
             }
             // System.out.println("start " + path.toString());
             draggedNode = (TreeNode) path.getLastPathComponent();
-            Transferable trans = new RJLTransferable(draggedNode);
+            Transferable trans = new TreeNodeTransferable(draggedNode);
             DragSource.getDefaultDragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
         }
     }
@@ -101,7 +101,7 @@ class DnDTree extends JTree {
         @Override public void dragExit(DropTargetEvent dte) { /* not needed */ }
         @Override public void dragOver(DropTargetDragEvent dtde) {
             DataFlavor[] f = dtde.getCurrentDataFlavors();
-            boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(RJLTransferable.NAME);
+            boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(TreeNodeTransferable.NAME);
             if (!isDataFlavorSupported) {
                 // This DataFlavor is not supported(e.g. files from the desktop)
                 rejectDrag(dtde);
@@ -217,12 +217,12 @@ class DnDTree extends JTree {
     }
 }
 
-class RJLTransferable implements Transferable {
+class TreeNodeTransferable implements Transferable {
     public static final String NAME = "TREE-TEST";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     // private static final DataFlavor[] supportedFlavors = {FLAVOR};
     private final Object object;
-    protected RJLTransferable(Object o) {
+    protected TreeNodeTransferable(Object o) {
         object = o;
     }
     @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
