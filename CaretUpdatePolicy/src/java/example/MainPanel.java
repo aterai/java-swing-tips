@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
     protected final JTextArea textArea0 = new JTextArea();
     protected final JTextArea textArea1 = new JTextArea();
     protected final JTextArea textArea2 = new JTextArea();
-    // TEST: protected final Timer timer = new Timer(500, e -> test(new Date().toString()));
+    // TEST: protected final Timer timer = new Timer(500, e -> test(LocalDateTime.now().toString()));
     // TEST: protected Thread thread;
     protected transient SwingWorker<String, String> worker;
 
