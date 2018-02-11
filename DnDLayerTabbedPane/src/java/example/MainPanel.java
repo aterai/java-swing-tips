@@ -14,7 +14,6 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
-@SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
     public MainPanel(TransferHandler handler, LayerUI<DnDTabbedPane> layerUI) {

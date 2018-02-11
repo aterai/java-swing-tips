@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
-@SuppressWarnings("PMD.GodClass")
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
