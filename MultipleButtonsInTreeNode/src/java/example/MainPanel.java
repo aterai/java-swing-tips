@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
@@ -126,9 +125,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
             return false;
         }
         r.width = panel.getButtonAreaWidth();
-
-        if (r.contains(p)) {
-            return true;
+        return r.contains(p);
+//         if (r.contains(p)) {
 //           panel.setBounds(r);
 //           panel.doLayout();
 //           p.translate(-r.x, -r.y);
@@ -136,8 +134,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 //           if (o instanceof JButton) {
 //               return true;
 //           }
-        }
-        return false;
+//         }
+//         return false;
     }
 }
 
