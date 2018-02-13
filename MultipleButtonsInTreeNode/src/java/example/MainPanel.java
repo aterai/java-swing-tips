@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
                 super.updateUI();
                 setCellRenderer(new ButtonCellRenderer());
                 setCellEditor(new ButtonCellEditor());
-                setRowHeight(-1);
+                setRowHeight(0);
             }
         };
         tree.setEditable(true);
@@ -62,12 +62,12 @@ class ButtonPanel extends JPanel {
         Arrays.asList(b1, b2, b3, c).forEach(this::add);
         return this;
     }
-    public int getButtonAreaWidth() {
-        int hgap = ((FlowLayout) getLayout()).getHgap();
-        return Arrays.asList(b1, b2, b3).stream()
-            .mapToInt(b -> b.getPreferredSize().width + hgap)
-            .sum();
-    }
+//     public int getButtonAreaWidth() {
+//         int hgap = ((FlowLayout) getLayout()).getHgap();
+//         return Arrays.asList(b1, b2, b3).stream()
+//             .mapToInt(b -> b.getPreferredSize().width + hgap)
+//             .sum();
+//     }
 }
 
 class ButtonCellRenderer implements TreeCellRenderer {
@@ -124,18 +124,23 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
         if (Objects.isNull(r)) {
             return false;
         }
-        r.width = panel.getButtonAreaWidth();
-        return r.contains(p);
-//         if (r.contains(p)) {
-//           panel.setBounds(r);
-//           panel.doLayout();
-//           p.translate(-r.x, -r.y);
-//           Component o = SwingUtilities.getDeepestComponentAt(panel, p.x, p.y);
-//           if (o instanceof JButton) {
-//               return true;
-//           }
-//         }
-//         return false;
+        // r.width = panel.getButtonAreaWidth();
+        // return r.contains(p);
+        if (r.contains(p)) {
+            TreeNode node = (TreeNode) path.getLastPathComponent();
+            int row = tree.getRowForLocation(p.x, p.y);
+            Component c = tree.getCellRenderer().getTreeCellRendererComponent(tree, " ", true, true, node.isLeaf(), row, true);
+            c.setBounds(r);
+            c.setLocation(0, 0);
+            // tree.doLayout();
+            tree.revalidate();
+            p.translate(-r.x, -r.y);
+            Component o = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
+            if (o instanceof JButton) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -143,13 +148,16 @@ class ColorButton extends JButton {
     protected ColorButton(ColorIcon icon) {
         super(icon);
         setPressedIcon(new ColorIcon(icon.color.darker()));
-        setContentAreaFilled(false);
+        setFocusable(false);
         setFocusPainted(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        setBorder(BorderFactory.createEmptyBorder());
     }
-    @Override public Dimension getPreferredSize() {
-        Icon icon = getIcon();
-        return new Dimension(icon.getIconWidth(), icon.getIconHeight());
-    }
+//     @Override public Dimension getPreferredSize() {
+//         Icon icon = getIcon();
+//         return new Dimension(icon.getIconWidth(), icon.getIconHeight());
+//     }
 }
 
 class ColorIcon implements Icon {
