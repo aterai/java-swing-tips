@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -91,13 +92,15 @@ class ListItemTransferHandler extends TransferHandler {
     protected ListItemTransferHandler() {
         super();
         // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+        // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+        localObjectFlavor = new DataFlavor(List.class, "List of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         source = (JList<?>) c;
         indices = source.getSelectedIndices();
-        Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+        // Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
+        List<?> transferedObjects = source.getSelectedValuesList();
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] {localObjectFlavor};
@@ -136,13 +139,14 @@ class ListItemTransferHandler extends TransferHandler {
         index = Math.min(index, max);
         addIndex = index;
         try {
-            Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            // Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
             for (Object o: values) {
                 int i = index++;
                 listModel.add(i, o);
                 target.addSelectionInterval(i, i);
             }
-            addCount = target.equals(source) ? values.length : 0;
+            addCount = target.equals(source) ? values.size() : 0;
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();

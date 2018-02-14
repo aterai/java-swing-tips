@@ -10,6 +10,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -21,16 +22,16 @@ public final class MainPanel extends JPanel {
 
         DefaultListModel<ListItem> model = new DefaultListModel<>();
         // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-        model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
-        model.addElement(new ListItem("12345",      "wi0054-32.png"));
+        model.addElement(new ListItem("asdasdfsd", "wi0009-32.png"));
+        model.addElement(new ListItem("12345", "wi0054-32.png"));
         model.addElement(new ListItem("ADFFDF.asd", "wi0062-32.png"));
-        model.addElement(new ListItem("test",       "wi0063-32.png"));
-        model.addElement(new ListItem("32.png",     "wi0064-32.png"));
+        model.addElement(new ListItem("test", "wi0063-32.png"));
+        model.addElement(new ListItem("32.png", "wi0064-32.png"));
         model.addElement(new ListItem("asdfsd.jpg", "wi0096-32.png"));
-        model.addElement(new ListItem("6896",       "wi0111-32.png"));
+        model.addElement(new ListItem("6896", "wi0111-32.png"));
         model.addElement(new ListItem("t467467est", "wi0122-32.png"));
-        model.addElement(new ListItem("test123",    "wi0124-32.png"));
-        model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
+        model.addElement(new ListItem("test123", "wi0124-32.png"));
+        model.addElement(new ListItem("test(1)", "wi0126-32.png"));
 
         ReorderbleList<ListItem> list = new ReorderbleList<>(model);
         add(new JScrollPane(list));
@@ -293,13 +294,13 @@ class ListItemTransferHandler extends TransferHandler {
     protected ListItemTransferHandler() {
         super();
         // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+        localObjectFlavor = new DataFlavor(List.class, "List of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JList<?> source = (JList<?>) c;
         c.getRootPane().getGlassPane().setVisible(true);
         indices = source.getSelectedIndices();
-        Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
+        List<?> transferedObjects = source.getSelectedValuesList();
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
@@ -342,13 +343,13 @@ class ListItemTransferHandler extends TransferHandler {
         index = Math.min(index, max);
         addIndex = index;
         try {
-            Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
             for (Object o: values) {
                 int i = index++;
                 listModel.add(i, o);
                 target.addSelectionInterval(i, i);
             }
-            addCount = values.length;
+            addCount = values.size();
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
