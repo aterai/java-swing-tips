@@ -8,6 +8,8 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -103,7 +105,7 @@ class TableRowTransferHandler extends TransferHandler {
     protected TableRowTransferHandler() {
         super();
         // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-        localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+        localObjectFlavor = new DataFlavor(List.class, "List of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         c.getRootPane().getGlassPane().setVisible(true);
@@ -118,7 +120,7 @@ class TableRowTransferHandler extends TransferHandler {
 //         Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
         @SuppressWarnings("JdkObsolete")
-        Object[] transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).toArray();
+        List<?> transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());
         // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
@@ -167,9 +169,9 @@ class TableRowTransferHandler extends TransferHandler {
         addIndex = index;
         // target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try {
-            Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
             if (Objects.equals(source, target)) {
-                addCount = values.length;
+                addCount = values.size();
             }
             for (Object o: values) {
                 int i = index++;
