@@ -7,14 +7,14 @@ import java.io.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final JTextArea log = new JTextArea();
-    protected final JTextField field = new JTextField(24);
-    protected final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
-    protected final JCheckBox check2 = new JCheckBox("isParent reset?");
-    protected final JFileChooser fc0 = new JFileChooser();
-    protected final JFileChooser fc1 = new JFileChooser();
-    protected final JFileChooser fc2 = new JFileChooser() {
+public final class MainPanel extends JPanel {
+    private final JTextArea log = new JTextArea();
+    private final JTextField field = new JTextField(24);
+    private final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
+    private final JCheckBox check2 = new JCheckBox("isParent reset?");
+    private final JFileChooser fc0 = new JFileChooser();
+    private final JFileChooser fc1 = new JFileChooser();
+    private final JFileChooser fc2 = new JFileChooser() {
         @Override public void setCurrentDirectory(File dir) {
             if (Objects.nonNull(dir) && !dir.exists()) {
                 this.setCurrentDirectory(dir.getParentFile());
@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
             SwingUtilities.updateComponentTreeUI(fc2);
         });
     }
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridBagLayout());
@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
                 log.setText(fc.getSelectedFile().getAbsolutePath());
             }
             if (check2.isSelected()) {
-                fc.setSelectedFile(f.getParentFile()); //XXX: reset???
+                fc.setSelectedFile(f.getParentFile()); // XXX: reset???
             }
         });
 
@@ -102,7 +102,7 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+            // UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

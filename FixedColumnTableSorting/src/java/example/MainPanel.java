@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     private final JButton addButton = new JButton("add");
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTable fixedTable = new JTable(model);
-        JTable table      = new JTable(model);
+        JTable table = new JTable(model);
         fixedTable.setSelectionModel(table.getSelectionModel());
 
         for (int i = model.getColumnCount() - 1; i >= 0; i--) {

@@ -11,15 +11,19 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも";
-    private final JLabel lbl1 = new JLabel(TEXT);
-    private final JLabel lbl2 = new WrappedLabel(TEXT);
-    private final JLabel lbl3 = new WrappingLabel(TEXT);
-    private final JTextArea lbl4 = new JTextArea(TEXT);
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(4, 1, 0, 0));
+        JLabel lbl1 = new JLabel(TEXT);
         lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));
+
+        JLabel lbl2 = new WrappedLabel(TEXT);
         lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 5), "GlyphVector"));
+
+
+        JLabel lbl3 = new WrappingLabel(TEXT);
         lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN, 5), "LineBreakMeasurer"));
+
+        JTextArea lbl4 = new JTextArea(TEXT);
         lbl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
 
         // lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
@@ -34,7 +38,6 @@ public final class MainPanel extends JPanel {
         add(lbl4);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

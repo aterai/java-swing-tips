@@ -9,21 +9,26 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JFormattedTextField field0 = new JFormattedTextField();
-    private final JFormattedTextField field1 = new JFormattedTextField();
-    private final JFormattedTextField field2 = new JFormattedTextField();
-    private final JFormattedTextField field3 = new JFormattedTextField();
-    private final JCheckBox check = new JCheckBox("setCommitsOnValidEdit");
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JFormattedTextField field0 = new JFormattedTextField();
 
+        JFormattedTextField field1 = new JFormattedTextField();
+        field1.setFocusLostBehavior(JFormattedTextField.REVERT);
+
+        JFormattedTextField field2 = new JFormattedTextField();
+        field2.setFocusLostBehavior(JFormattedTextField.COMMIT);
+
+        JFormattedTextField field3 = new JFormattedTextField();
+        field3.setFocusLostBehavior(JFormattedTextField.PERSIST);
+
+        JCheckBox check = new JCheckBox("setCommitsOnValidEdit");
         try {
             MaskFormatter formatter = new MaskFormatter("UUUUUUUUUU");
-            //formatter.setAllowsInvalid(true);
-            //formatter.setCommitsOnValidEdit(true);
-            //formatter.setPlaceholder("_");
-            //formatter.setPlaceholderCharacter('?');
+            // formatter.setAllowsInvalid(true);
+            // formatter.setCommitsOnValidEdit(true);
+            // formatter.setPlaceholder("_");
+            // formatter.setPlaceholderCharacter('?');
             for (JFormattedTextField f: Arrays.asList(field0, field1, field2, field3)) {
                 f.setFormatterFactory(new DefaultFormatterFactory(formatter));
             }
@@ -31,9 +36,6 @@ public final class MainPanel extends JPanel {
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
-        field1.setFocusLostBehavior(JFormattedTextField.REVERT);
-        field2.setFocusLostBehavior(JFormattedTextField.COMMIT);
-        field3.setFocusLostBehavior(JFormattedTextField.PERSIST);
 
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("COMMIT_OR_REVERT(default)", field0));

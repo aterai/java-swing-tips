@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         for (int i = 0; i < 20; i++) {
             model.addRow(new Object[] {"Name:" + i, i, i % 2 == 0});
@@ -63,8 +63,8 @@ class FishEyeRowContext implements Serializable {
     public final Color color;
     protected FishEyeRowContext(int height, Font font, Color color) {
         this.height = height;
-        this.font   = font;
-        this.color  = color;
+        this.font = font;
+        this.color = color;
     }
 }
 
@@ -164,15 +164,15 @@ class FishEyeTable extends JTable {
         Component c = super.prepareRenderer(renderer, row, column);
         int rowCount = getModel().getRowCount();
         Color color = Color.WHITE;
-        Font font   = minFont;
-        int ccRow   = handler.prevRow;
-        int index   = 0;
-        int rd2     = (fishEyeRowList.size() - 1) / 2;
+        Font font = minFont;
+        int ccRow = handler.prevRow;
+        int index = 0;
+        int rd2 = (fishEyeRowList.size() - 1) / 2;
         for (int i = -rd2; i < rowCount; i++) {
             if (ccRow - rd2 <= i && i <= ccRow + rd2) {
                 if (i == row) {
                     color = fishEyeRowList.get(index).color;
-                    font  = fishEyeRowList.get(index).font;
+                    font = fishEyeRowList.get(index).font;
                     break;
                 }
                 index++;
@@ -188,7 +188,7 @@ class FishEyeTable extends JTable {
 
     private int getViewableColoredRowCount(int ridx) {
         int rd2 = (fishEyeRowList.size() - 1) / 2;
-        int rc  = getModel().getRowCount();
+        int rc = getModel().getRowCount();
         if (rd2 - ridx > 0 && ridx < rd2) {
             return rd2 + 1 + ridx;
         } else if (ridx > rc - 1 - rd2 && ridx < rc - 1 + rd2) {
@@ -198,18 +198,18 @@ class FishEyeTable extends JTable {
     }
 
     protected void initRowHeight(int height, int ccRow) {
-        int rd2      = (fishEyeRowList.size() - 1) / 2;
+        int rd2 = (fishEyeRowList.size() - 1) / 2;
         int rowCount = getModel().getRowCount();
-        int viewRc   = getViewableColoredRowCount(ccRow);
-        int viewH    = 0;
+        int viewRc = getViewableColoredRowCount(ccRow);
+        int viewH = 0;
         for (int i = 0; i < viewRc; i++) {
             viewH += fishEyeRowList.get(i).height;
         }
-        int restRc   = rowCount - viewRc;
-        int restH    = height - viewH;
-        int restRh   = Math.max(1, restH / restRc); //restRh = restRh > 0 ? restRh : 1;
-        int restGap  = restH - restRh * restRc;
-        //System.out.println(String.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH));
+        int restRc = rowCount - viewRc;
+        int restH = height - viewH;
+        int restRh = Math.max(1, restH / restRc); // restRh = restRh > 0 ? restRh : 1;
+        int restGap = restH - restRh * restRc;
+        // System.out.println(String.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH));
         int index = -1;
         for (int i = -rd2; i < rowCount; i++) {
             int crh;

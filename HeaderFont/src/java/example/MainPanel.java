@@ -19,13 +19,13 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer());
 
-        //all column
-        //table.getTableHeader().setFont(font);
+        // all column
+        // table.getTableHeader().setFont(font);
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

@@ -6,9 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox checkbox = new JCheckBox("setResizable:", true);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+
+        JCheckBox checkbox = new JCheckBox("setResizable:", true);
         checkbox.addActionListener(e -> {
             Container c = getTopLevelAncestor();
             if (c instanceof JFrame) {
@@ -22,7 +23,6 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

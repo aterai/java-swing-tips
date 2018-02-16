@@ -19,38 +19,38 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTableHeader tableHeader = table.getTableHeader();
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tableHeader.setReorderingAllowed(false);
 
-        //// User can't resize columns by dragging between headers.
-        //tableHeader.setResizingAllowed(false);
+        // // User can't resize columns by dragging between headers.
+        // tableHeader.setResizingAllowed(false);
 
-        //// Disable resizing of the column width(JTable.AUTO_RESIZE_OFF).
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        //col.setPreferredWidth(50);
-        //col.setResizable(false);
+        // // Disable resizing of the column width(JTable.AUTO_RESIZE_OFF).
+        // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // col.setPreferredWidth(50);
+        // col.setResizable(false);
 
-        //// Disable resizing of the column width.
+        // // Disable resizing of the column width.
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
         col.setMaxWidth(60);
 
-        //// Deletes the column from the tableColumns array.
-        //table.removeColumn(col);
+        // // Deletes the column from the tableColumns array.
+        // table.removeColumn(col);
 
-//         //// XXX: focus traversal
+//         // // XXX: focus traversal
 //         col = table.getColumnModel().getColumn(1);
 //         col.setMinWidth(0);
 //         col.setMaxWidth(0);
-//         //<blockquote cite="https://community.oracle.com/thread/1484284"
+//         // <blockquote cite="https://community.oracle.com/thread/1484284"
 //         //           title="JTable skiping the cells disableds">
 //         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-//         final Action oldTabAction = table.getActionMap().get(im.get(tab));
+//         Action oldTabAction = table.getActionMap().get(im.get(tab));
 //         Action tabAction = new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 oldTabAction.actionPerformed(e);
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         };
 //         table.getActionMap().put(im.get(tab), tabAction);
-//         //</blockquote>
+//         // </blockquote>
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

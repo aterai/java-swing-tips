@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
             return c;
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JScrollPane scroll = new JScrollPane(table);
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         // scroll.setComponentPopupMenu(makePop());
         table.setRowSorter(new TableRowSorter<>(model));
 
-        add(makeToolBox(table),  BorderLayout.NORTH);
+        add(makeToolBox(table), BorderLayout.NORTH);
         add(makeColorBox(table), BorderLayout.SOUTH);
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent makeColorBox(final JTable table) {
+    private static JComponent makeColorBox(JTable table) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(new JLabel("table.setBackground: "));
 

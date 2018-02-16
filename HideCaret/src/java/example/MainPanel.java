@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JCheckBox editableCheck = new JCheckBox("Editable", true);
     private final JCheckBox focusableCheck = new JCheckBox("Focusable", true);
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         Caret hidingCaret = new DefaultCaret() {

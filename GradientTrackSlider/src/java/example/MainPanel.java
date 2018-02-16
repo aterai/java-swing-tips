@@ -12,7 +12,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200, 150, 100, 50));
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         UIManager.put("Slider.horizontalThumbIcon", new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
@@ -105,8 +105,8 @@ public final class MainPanel extends JPanel {
 class GradientPalletSliderUI extends MetalSliderUI {
     private static final int[] GRADIENT_PALLET = GradientPalletFactory.makeGradientPallet();
     protected Color controlDarkShadow = new Color(100, 100, 100); // MetalLookAndFeel.getControlDarkShadow();
-    protected Color controlHighlight  = new Color(200, 255, 200); // MetalLookAndFeel.getControlHighlight();
-    protected Color controlShadow     = new Color(0, 100, 0); // MetalLookAndFeel.getControlShadow();
+    protected Color controlHighlight = new Color(200, 255, 200); // MetalLookAndFeel.getControlHighlight();
+    protected Color controlShadow = new Color(0, 100, 0); // MetalLookAndFeel.getControlShadow();
     @Override public void paintTrack(Graphics g) {
         // Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
         // boolean leftToRight = MetalUtils.isLeftToRight(slider);
@@ -164,24 +164,24 @@ class GradientPalletSliderUI extends MetalSliderUI {
 
     protected void paintTrackFill(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
         int middleOfThumb = 0;
-        int fillTop    = 0;
-        int fillLeft   = 0;
+        int fillTop = 0;
+        int fillLeft = 0;
         int fillBottom = 0;
-        int fillRight  = 0;
+        int fillRight = 0;
 
         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-            fillTop    = trackTop + 1;
+            fillTop = trackTop + 1;
             fillBottom = trackBottom - 2;
-            fillLeft   = trackLeft + 1;
-            fillRight  = middleOfThumb - 2;
+            fillLeft = trackLeft + 1;
+            fillRight = middleOfThumb - 2;
         } else {
             middleOfThumb = thumbRect.y + thumbRect.height / 2;
             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-            fillLeft   = trackLeft;
-            fillRight  = trackRight - 1;
-            fillTop    = middleOfThumb;
+            fillLeft = trackLeft;
+            fillRight = trackRight - 1;
+            fillTop = middleOfThumb;
             fillBottom = trackBottom - 1;
         }
 
@@ -241,10 +241,10 @@ final class GradientPalletFactory {
     private GradientPalletFactory() { /* Singleton */ }
     public static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2  = image.createGraphics();
-        Point2D start  = new Point2D.Float();
-        Point2D end    = new Point2D.Float(99, 0);
-        float[] dist   = {.0f, .5f, 1f};
+        Graphics2D g2 = image.createGraphics();
+        Point2D start = new Point2D.Float();
+        Point2D end = new Point2D.Float(99, 0);
+        float[] dist = {.0f, .5f, 1f};
         Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
         g2.fillRect(0, 0, 100, 1);

@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "The quick brown fox jumps over the lazy dog.";
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         Box box = Box.createVerticalBox();
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         add(new JButton("focus dummy"), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    public JComponent makeExpandingTextArea1() {
+    private static JComponent makeExpandingTextArea1() {
         JPanel p = new JPanel(new BorderLayout());
         JTextArea textArea = new JTextArea(TEXT, 1, 10);
         textArea.setLineWrap(true);
@@ -38,12 +38,12 @@ public final class MainPanel extends JPanel {
             }
         });
         JScrollPane scroll = new JScrollPane(textArea);
-        //scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        // scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         p.add(scroll, BorderLayout.NORTH);
         return p;
     }
-    public JComponent makeExpandingTextArea2() {
+    private static JComponent makeExpandingTextArea2() {
         CardLayout cardLayout = new CardLayout();
         JPanel cp = new JPanel(cardLayout);
 

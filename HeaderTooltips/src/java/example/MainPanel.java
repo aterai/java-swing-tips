@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         table.setTableHeader(new JTableHeader(table.getColumnModel()) {

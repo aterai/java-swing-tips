@@ -7,14 +7,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field1 = new JTextField("aaaaaaaaaa");
-    private final JTextField field2 = new JTextField();
-    private final JTextField field3 = new JTextField("123465789735");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextField field1 = new JTextField("aaaaaaaaaa");
         field1.addFocusListener(new BackgroundFocusListener(new Color(230, 230, 255)));
+
+        JTextField field2 = new JTextField();
         field2.addFocusListener(new BackgroundFocusListener(new Color(255, 255, 230)));
+
+        JTextField field3 = new JTextField("123465789735");
         field3.addFocusListener(new BackgroundFocusListener(new Color(255, 230, 230)));
+
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("Color(230, 230, 255)", field1));
         box.add(Box.createVerticalStrut(5));

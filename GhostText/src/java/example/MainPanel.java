@@ -9,12 +9,12 @@ import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field1 = new JTextField("Please enter your E-mail address");
-    private final JTextField field2 = new JTextField("History Search");
-    private final JTextField field3 = new JTextField();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JTextField field1 = new JTextField("Please enter your E-mail address");
         field1.addFocusListener(new PlaceholderFocusListener(field1));
+
+        JTextField field2 = new JTextField("History Search");
         field2.addFocusListener(new PlaceholderFocusListener(field2));
 
         Box box = Box.createVerticalBox();
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(10));
         box.add(makeTitledPanel("Search", field2));
         box.add(Box.createVerticalStrut(10));
-        box.add(makeTitledPanel("JLayer", new JLayer<>(field3, new PlaceholderLayerUI<>("JLayer version"))));
+        box.add(makeTitledPanel("JLayer", new JLayer<>(new JTextField(), new PlaceholderLayerUI<>("JLayer version"))));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
