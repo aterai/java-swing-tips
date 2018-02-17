@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         Object[][] data = {
             {"colors", makeModel("blue", "violet", "red", "yellow")},
             {"sports", makeModel("basketball", "soccer", "football", "hockey")},
-            {"food",   makeModel("hot dogs", "pizza", "ravioli", "bananas")},
+            {"food", makeModel("hot dogs", "pizza", "ravioli", "bananas")},
         };
         TableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
@@ -80,12 +80,10 @@ class ComboCellEditor extends AbstractCellEditor implements TableCellEditor {
     protected ComboCellEditor() {
         super();
         combo.setEditable(true);
-        combo.addActionListener(e -> {
-            fireEditingStopped();
-        });
+        combo.addActionListener(e -> fireEditingStopped());
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        //combo.setBackground(table.getSelectionBackground());
+        // combo.setBackground(table.getSelectionBackground());
         if (value instanceof ComboBoxModel) {
             @SuppressWarnings("unchecked")
             ComboBoxModel<String> m = (ComboBoxModel<String>) value;

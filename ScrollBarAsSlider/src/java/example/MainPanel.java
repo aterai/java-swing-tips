@@ -18,10 +18,7 @@ public final class MainPanel extends JPanel {
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(VALUE, MIN, MAX, STEP));
 
         scrollbar.setUnitIncrement(STEP);
-        scrollbar.getModel().addChangeListener(e -> {
-            BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-            spinner.setValue(m.getValue());
-        });
+        scrollbar.getModel().addChangeListener(e -> spinner.setValue(((BoundedRangeModel) e.getSource()).getValue()));
 
         spinner.addChangeListener(e -> {
             JSpinner source = (JSpinner) e.getSource();
