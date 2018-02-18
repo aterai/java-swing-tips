@@ -7,16 +7,16 @@ import java.util.Collections;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     // https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
-    protected final JTextArea textArea = new JTextArea(1, 1) {
+    private final JTextArea textArea = new JTextArea(1, 1) {
         @Override public void updateUI() {
             super.updateUI();
             setLineWrap(true);
             setWrapStyleWord(true);
             setEditable(false);
             setOpaque(false);
-            //setBorder(BorderFactory.createLineBorder(Color.RED));
+            // setBorder(BorderFactory.createLineBorder(Color.RED));
             setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         }
         @Override public void setText(String t) {
@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
                 // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-
                 // i.e. layout cannot be computed until the component has been sized.
                 // The component does not have to be visible or painted.
-                setSize(super.getPreferredSize()); //setSize: looks like ugly hack...
+                setSize(super.getPreferredSize()); // setSize: looks like ugly hack...
                 System.out.println(super.getPreferredSize());
 
                 Rectangle r = modelToView(t.length());
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         }
     };
 
-    public MainPanel() {
+    private MainPanel() {
         super();
 
         String msgShort = "This is a short error message.";
