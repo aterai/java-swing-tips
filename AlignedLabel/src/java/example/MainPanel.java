@@ -13,22 +13,22 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         AlignedLabel fileNameLabel = new AlignedLabel("File Name:");
-        Box fileNameBox = makeLabelTextComponent(fileNameLabel, new JTextField());
+        Box fileNameBox = makeLabeledBox(fileNameLabel, new JTextField());
 
         AlignedLabel filesOfTypeLabel = new AlignedLabel("Files of Type:");
-        Box filesOfTypeBox = makeLabelTextComponent(filesOfTypeLabel, new JComboBox<String>());
+        Box filesOfTypeBox = makeLabeledBox(filesOfTypeLabel, new JComboBox<String>());
 
         AlignedLabel hostLabel = new AlignedLabel("Host:");
-        Box hostBox = makeLabelTextComponent(hostLabel, new JTextField());
+        Box hostBox = makeLabeledBox(hostLabel, new JTextField());
 
         AlignedLabel portLabel = new AlignedLabel("Port:");
-        Box portBox = makeLabelTextComponent(portLabel, new JTextField());
+        Box portBox = makeLabeledBox(portLabel, new JTextField());
 
         AlignedLabel userLabel = new AlignedLabel("User Name:");
-        Box userBox = makeLabelTextComponent(userLabel, new JTextField());
+        Box userBox = makeLabeledBox(userLabel, new JTextField());
 
         AlignedLabel passwordLabel = new AlignedLabel("Password:");
-        Box passwordBox = makeLabelTextComponent(passwordLabel, new JPasswordField());
+        Box passwordBox = makeLabeledBox(passwordLabel, new JPasswordField());
 
         AlignedLabel.groupLabels(Arrays.asList(fileNameLabel, filesOfTypeLabel, hostLabel, portLabel, userLabel, passwordLabel));
 
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Box makeLabelTextComponent(AlignedLabel label, Component c) {
+    private static Box makeLabeledBox(Component label, Component c) {
         Box box = Box.createHorizontalBox();
         box.add(label);
         box.add(Box.createHorizontalStrut(5));
