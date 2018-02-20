@@ -143,7 +143,7 @@ class ComboKeyHandler extends KeyAdapter {
         super();
         this.comboBox = combo;
         for (int i = 0; i < comboBox.getModel().getSize(); i++) {
-            list.add((String) comboBox.getItemAt(i));
+            list.add(comboBox.getItemAt(i));
         }
     }
     @Override public void keyTyped(KeyEvent e) {
@@ -151,8 +151,7 @@ class ComboKeyHandler extends KeyAdapter {
             String text = ((JTextField) e.getComponent()).getText();
             ComboBoxModel<String> m;
             if (text.isEmpty()) {
-                String[] array = list.toArray(new String[0]);
-                m = new DefaultComboBoxModel<>(array);
+                m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
                 setSuggestionModel(comboBox, m, "");
                 comboBox.hidePopup();
             } else {
@@ -226,7 +225,7 @@ class ComboKeyHandler extends KeyAdapter {
 //         }
 //         editor.addKeyListener(editorKeyListener);
 //         for (int i = 0; i < comboBox.getModel().getSize(); i++) {
-//             list.addElement((String) comboBox.getItemAt(i));
+//             list.addElement(comboBox.getItemAt(i));
 //         }
 //         textField.setText("");
 //     }

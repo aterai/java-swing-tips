@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
 //         combo.setUI(new BasicSearchBarComboBoxUI());
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
-//                 SearchEngine se = (SearchEngine) combo.getItemAt(0);
+//                 SearchEngine se = combo.getItemAt(0);
 //                 JButton arrowButton = (JButton) combo.getComponent(0);
 //                 arrowButton.setIcon(se.favicon);
 //                 combo.getEditor().setItem("java swing");
