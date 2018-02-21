@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/", new ImageIcon(getClass().getResource("yahoo.png"))));
         model.addElement(new SearchEngine("Bing", "http://www.bing.com/", new ImageIcon(getClass().getResource("bing.png"))));
 
-        JComboBox<SearchEngine> combo = new JSearchBar(model);
+        JComboBox<SearchEngine> combo = new JSearchBar<>(model);
         combo.getEditor().setItem("java swing");
 
 //         JComboBox combo = new JComboBox(model);
@@ -85,7 +85,7 @@ class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxM
     }
 }
 
-class JSearchBar extends JComboBox<SearchEngine> {
+class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
     private static final String UI_CLASS_ID = "SearchBarComboBoxUI";
     @Override public String getUIClassID() {
         return UI_CLASS_ID;
@@ -109,7 +109,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
         if (Objects.nonNull(se)) {
             arrowButton.setIcon(se.favicon);
         }
-//         ListCellRenderer renderer = getRenderer();
+//         ListCellRenderer<? super SearchEngine> renderer = getRenderer();
 //         if (renderer instanceof Component) {
 //             SwingUtilities.updateComponentTreeUI((Component) renderer);
 //         }
@@ -119,16 +119,16 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //         setModel(new DefaultComboBoxModel<>());
 //         init();
 //     }
-    protected JSearchBar(ComboBoxModel<SearchEngine> model) {
+    protected JSearchBar(ComboBoxModel<E> model) {
         super(model);
         // setModel(model);
         // init();
     }
-    protected JSearchBar(SearchEngine... items) {
-        super(items);
-        // setModel(new DefaultComboBoxModel<>(items));
-        // init();
-    }
+//     protected JSearchBar(E... items) {
+//         super(items);
+//         // setModel(new DefaultComboBoxModel<>(items));
+//         // init();
+//     }
 //     protected JSearchBar(Vector<?> items) {
 //         super();
 //         setModel(new DefaultComboBoxModel(items));
