@@ -137,14 +137,13 @@ class ListItemTransferHandler extends TransferHandler {
         }
         return TransferHandler.NONE;
     }
-    private static BufferedImage createDragImage(JList<?> source) {
+    private static <E> BufferedImage createDragImage(JList<E> source) {
         int w = source.getWidth();
         int h = source.getHeight();
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bi.createGraphics();
-        ListCellRenderer renderer = source.getCellRenderer();
+        ListCellRenderer<? super E> renderer = source.getCellRenderer();
         for (int i: source.getSelectedIndices()) {
-            @SuppressWarnings("unchecked")
             Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
             Rectangle rect = source.getCellBounds(i, i);
             SwingUtilities.paintComponent(g2, c, source, rect);
@@ -227,17 +226,16 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         setDragImageOffset(new Point(w / 2, h));
         return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
     }
-    private static BufferedImage createCompactDragImage(JList<?> source, int w, int h) {
+    private static <E> BufferedImage createCompactDragImage(JList<E> source, int w, int h) {
         if (w <= 0 || h <= 0) {
             return null;
         }
         int[] selectedIndices = source.getSelectedIndices();
         BufferedImage br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
         Graphics2D g2 = br.createGraphics();
-        ListCellRenderer renderer = source.getCellRenderer();
+        ListCellRenderer<? super E> renderer = source.getCellRenderer();
         int idx = selectedIndices[0];
-        Object valueAt = source.getModel().getElementAt(idx);
-        @SuppressWarnings("unchecked")
+        E valueAt = source.getModel().getElementAt(idx);
         Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
         Rectangle rect = source.getCellBounds(idx, idx);
         SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);

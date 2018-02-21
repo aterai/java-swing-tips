@@ -188,9 +188,8 @@ class CellButtonsMouseListener extends MouseAdapter {
         ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
         renderer.rolloverIndex = -1;
     }
-    @SuppressWarnings("unchecked")
-    private static JButton getButton(JList list, Point pt, int index) {
-        Container c = (Container) list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
+    private static <E> JButton getButton(JList<E> list, Point pt, int index) {
+        Component c = list.getCellRenderer().getListCellRendererComponent(list, null, index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
         // c.doLayout(); // may be needed for mone LayoutManager
@@ -206,11 +205,9 @@ class CellButtonsMouseListener extends MouseAdapter {
 
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
-    protected final RemoveButtonComboBox<E> comboBox;
-    protected MutableComboBoxModel model;
     protected int targetIndex;
     public int rolloverIndex = -1;
-    private final JLabel label = new DefaultListCellRenderer();
+    private final JLabel renderer = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton("x") {
         @Override public Dimension getPreferredSize() {
             return new Dimension(16, 16);
@@ -219,16 +216,16 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
         super(new BorderLayout());
         deleteButton.addActionListener(e -> {
-            boolean isMoreThanOneItem = model.getSize() > 1;
-            if (isMoreThanOneItem) {
-                model.removeElementAt(targetIndex);
+            ComboBoxModel<E> m = comboBox.getModel();
+            boolean isMoreThanOneItem = m.getSize() > 1;
+            if (isMoreThanOneItem && m instanceof MutableComboBoxModel) {
+                ((MutableComboBoxModel) m).removeElementAt(targetIndex);
                 comboBox.showPopup();
             }
         });
-        this.comboBox = comboBox;
-        label.setOpaque(false);
+        renderer.setOpaque(false);
         setOpaque(true);
-        add(label);
+        add(renderer);
         deleteButton.setBorder(BorderFactory.createEmptyBorder());
         deleteButton.setFocusable(false);
         deleteButton.setRolloverEnabled(false);
@@ -236,18 +233,16 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         add(deleteButton, BorderLayout.EAST);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        label.setText(Objects.toString(value, ""));
-        this.model = (MutableComboBoxModel) list.getModel();
+        renderer.setText(Objects.toString(value, ""));
         this.targetIndex = index;
         if (isSelected) {
             setBackground(list.getSelectionBackground());
-            label.setForeground(list.getSelectionForeground());
+            renderer.setForeground(list.getSelectionForeground());
         } else {
             setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
-            label.setForeground(list.getForeground());
+            renderer.setForeground(list.getForeground());
         }
-        MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-        boolean showDeleteButton = index >= 0 && m.getSize() > 1;
+        boolean showDeleteButton = index >= 0 && list.getModel().getSize() > 1;
         if (showDeleteButton) {
             boolean f = index == rolloverIndex;
             setOpaque(true);
@@ -257,7 +252,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         } else {
             setOpaque(false);
             deleteButton.setVisible(false);
-            label.setForeground(list.getForeground());
+            renderer.setForeground(list.getForeground());
         }
         return this;
     }
