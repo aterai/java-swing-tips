@@ -124,11 +124,12 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
         // setModel(model);
         // init();
     }
-//     protected JSearchBar(E... items) {
-//         super(items);
-//         // setModel(new DefaultComboBoxModel<>(items));
-//         // init();
-//     }
+    @SafeVarargs
+    protected JSearchBar(E... items) {
+        super(items);
+        // setModel(new DefaultComboBoxModel<>(items));
+        // init();
+    }
 //     protected JSearchBar(Vector<?> items) {
 //         super();
 //         setModel(new DefaultComboBoxModel(items));
