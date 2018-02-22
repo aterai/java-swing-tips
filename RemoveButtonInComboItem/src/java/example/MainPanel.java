@@ -135,7 +135,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         }
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
-            ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
+            ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) list.getCellRenderer();
             if (Objects.nonNull(button)) {
                 renderer.rolloverIndex = index;
                 if (!button.equals(prevButton)) {
@@ -185,8 +185,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     }
     @Override public void mouseExited(MouseEvent e) {
         JList<?> list = (JList<?>) e.getComponent();
-        ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
-        renderer.rolloverIndex = -1;
+        ((ButtonsRenderer<?>) list.getCellRenderer()).rolloverIndex = -1;
     }
     private static <E> JButton getButton(JList<E> list, Point pt, int index) {
         Component c = list.getCellRenderer().getListCellRendererComponent(list, null, index, false, false);
@@ -203,18 +202,31 @@ class CellButtonsMouseListener extends MouseAdapter {
     }
 }
 
-class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
+class ButtonsRenderer<E> implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     protected int targetIndex;
     public int rolloverIndex = -1;
-    private final JLabel renderer = new DefaultListCellRenderer();
+    private final JPanel panel = new JPanel(new BorderLayout()) {
+        @Override public Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            d.width = 0;
+            return d;
+        }
+    };
+    private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton("x") {
         @Override public Dimension getPreferredSize() {
             return new Dimension(16, 16);
         }
+        @Override public void updateUI() {
+            super.updateUI();
+            setBorder(BorderFactory.createEmptyBorder());
+            setFocusable(false);
+            setRolloverEnabled(false);
+            setContentAreaFilled(false);
+        }
     };
     protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
-        super(new BorderLayout());
         deleteButton.addActionListener(e -> {
             ComboBoxModel<E> m = comboBox.getModel();
             boolean isMoreThanOneItem = m.getSize() > 1;
@@ -223,37 +235,31 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
                 comboBox.showPopup();
             }
         });
-        renderer.setOpaque(false);
-        setOpaque(true);
-        add(renderer);
-        deleteButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteButton.setFocusable(false);
-        deleteButton.setRolloverEnabled(false);
-        deleteButton.setContentAreaFilled(false);
-        add(deleteButton, BorderLayout.EAST);
+        panel.setOpaque(true);
+        panel.add(deleteButton, BorderLayout.EAST);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        renderer.setText(Objects.toString(value, ""));
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if (index < 0) {
+            return l;
+        }
+        l.setOpaque(false);
         this.targetIndex = index;
         if (isSelected) {
-            setBackground(list.getSelectionBackground());
-            renderer.setForeground(list.getSelectionForeground());
+            panel.setBackground(list.getSelectionBackground());
         } else {
-            setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
-            renderer.setForeground(list.getForeground());
+            panel.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
         }
-        boolean showDeleteButton = index >= 0 && list.getModel().getSize() > 1;
+        boolean showDeleteButton = list.getModel().getSize() > 1;
         if (showDeleteButton) {
-            boolean f = index == rolloverIndex;
-            setOpaque(true);
+            boolean isRollover = index == rolloverIndex;
             deleteButton.setVisible(true);
-            deleteButton.getModel().setRollover(f);
-            deleteButton.setForeground(f ? Color.WHITE : list.getForeground());
+            deleteButton.getModel().setRollover(isRollover);
+            deleteButton.setForeground(isRollover ? Color.WHITE : list.getForeground());
         } else {
-            setOpaque(false);
             deleteButton.setVisible(false);
-            renderer.setForeground(list.getForeground());
         }
-        return this;
+        panel.add(l);
+        return panel;
     }
 }
