@@ -143,7 +143,7 @@ class CellRendererTooltipList<E> extends JList<E> {
 }
 
 class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
-    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();

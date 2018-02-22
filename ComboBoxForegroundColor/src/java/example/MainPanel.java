@@ -88,7 +88,7 @@ class ColorItem implements Serializable {
 }
 
 class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E> {
-    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
     private final Color sbgc = new Color(240, 245, 250);
     private final JComboBox<E> combo;
     protected ComboForegroundRenderer(JComboBox<E> combo) {
@@ -102,7 +102,7 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
             list.setSelectionForeground(ic);
             list.setSelectionBackground(sbgc);
         }
-        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value.description, index, isSelected, cellHasFocus);
+        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         l.setForeground(ic);
         l.setBackground(isSelected ? sbgc : list.getBackground());
         // l.setText(item.description);
@@ -111,7 +111,7 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
 }
 
 class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
-    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
     private final Color sbgc = new Color(240, 245, 250);
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index < 0) {

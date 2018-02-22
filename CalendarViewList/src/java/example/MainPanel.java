@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
         header.setFixedCellWidth(size.width);
         header.setFixedCellHeight(size.height);
         header.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, false, false);
                 setHorizontalAlignment(SwingConstants.CENTER);
                 if (value instanceof DayOfWeek) {
@@ -160,7 +160,7 @@ public final class MainPanel extends JPanel {
         monthList.setModel(new CalendarViewListModel(localDate));
     }
     private class CalendarListRenderer<E extends LocalDate> implements ListCellRenderer<E> {
-        private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+        private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
         @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             l.setOpaque(true);

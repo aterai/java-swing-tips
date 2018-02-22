@@ -72,7 +72,7 @@ public class MainPanel extends JPanel {
     }
 
     private class ProgressCellRenderer<E extends String> implements ListCellRenderer<E> {
-        private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+        private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
         private final JProgressBar bar = new JProgressBar();
         @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
             if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
