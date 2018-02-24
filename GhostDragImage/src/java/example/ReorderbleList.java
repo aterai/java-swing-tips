@@ -131,7 +131,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
         //             ll.add(i);
         //         }
         //     }
-        //     // JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
+        //     // JDK 1.8.0: return ll.stream().mapToInt(Integer::intValue).toArray();
         //     int[] il = new int[ll.size()];
         //     for (int i = 0; i < ll.size(); i++) {
         //         il[i] = ll.get(i);

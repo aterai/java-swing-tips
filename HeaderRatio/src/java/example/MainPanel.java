@@ -60,18 +60,18 @@ public final class MainPanel extends JPanel {
     protected static void setTableHeaderColumnRaito(JTable table, String text) {
         TableColumnModel m = table.getColumnModel();
         List<Integer> list = getWidthRaitoArray(text, m.getColumnCount());
-        //System.out.println("a: "+m.getTotalColumnWidth());
-        //System.out.println("b: "+table.getSize().width);
-        int total = table.getSize().width; //m.getTotalColumnWidth();
-        double raito = total / (double) list.stream().mapToInt(i -> i).sum();
+        // System.out.println("a: " + m.getTotalColumnWidth());
+        // System.out.println("b: " + table.getSize().width);
+        int total = table.getSize().width; // m.getTotalColumnWidth();
+        double raito = total / (double) list.stream().mapToInt(Integer::intValue).sum();
         for (int i = 0; i < m.getColumnCount() - 1; i++) {
             TableColumn col = m.getColumn(i);
             int colwidth = (int) (.5 + list.get(i) * raito);
-            //col.setMaxWidth(colwidth);
+            // col.setMaxWidth(colwidth);
             col.setPreferredWidth(colwidth);
             total -= colwidth;
         }
-        //m.getColumn(m.getColumnCount() - 1).setMaxWidth(total);
+        // m.getColumn(m.getColumnCount() - 1).setMaxWidth(total);
         m.getColumn(m.getColumnCount() - 1).setPreferredWidth(total);
         table.revalidate();
     }
