@@ -235,7 +235,7 @@ class AnimeIcon implements Icon {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
         float size = (float) list.size();
-        list.stream().forEach(s -> {
+        list.forEach(s -> {
             float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(s);

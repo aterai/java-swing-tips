@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.add(check);
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        list.stream().forEach(c -> {
+        list.forEach(c -> {
             box.add(Box.createVerticalStrut(10));
             box.add(c);
         });

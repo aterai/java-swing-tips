@@ -27,12 +27,12 @@ public class MainPanel extends JPanel {
 
         JPanel panel = new JPanel(new GridLayout(1, 2, 5, 5));
         List<Component> list = Arrays.asList(p1, p2);
-        list.stream().forEach(c -> {
+        list.forEach(c -> {
             c.setBackground(Color.WHITE);
             panel.add(c);
         });
 
-        spinner.addChangeListener(e -> list.stream().forEach(Component::revalidate));
+        spinner.addChangeListener(e -> list.forEach(Component::revalidate));
 
         JPanel np = new JPanel(new GridLayout(1, 2));
         np.add(new JLabel("BoxLayout.X_AXIS", SwingConstants.CENTER));

@@ -177,7 +177,7 @@ class AnimeIcon implements Icon {
         g2.translate(x, y);
 
         float size = (float) list.size();
-        list.stream().forEach(s -> {
+        list.forEach(s -> {
             float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(s);

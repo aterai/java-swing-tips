@@ -13,7 +13,7 @@ public class JTabbedPaneWithCloseButton extends JTabbedPane {
     private List<JButton> closeButtons;
     @Override public void updateUI() {
         Optional.ofNullable(closeButtons).ifPresent(list -> {
-            list.stream().forEach(this::remove);
+            list.forEach(this::remove);
             list.clear();
         });
         super.updateUI();
