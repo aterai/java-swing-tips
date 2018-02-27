@@ -30,64 +30,7 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super();
-
-        InputMap im = monthList.getInputMap(JComponent.WHEN_FOCUSED);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "selectNextIndex");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "selectPreviousIndex");
-
-        ActionMap am = monthList.getActionMap();
-        am.put("selectPreviousIndex", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int index = monthList.getLeadSelectionIndex();
-                if (index > 0) {
-                    monthList.setSelectedIndex(index - 1);
-                } else {
-                    LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
-                    updateMonthView(currentLocalDate.minusMonths(1));
-                    monthList.setSelectedValue(d, false);
-                }
-            }
-        });
-        am.put("selectNextIndex", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int index = monthList.getLeadSelectionIndex();
-                if (index < monthList.getModel().getSize() - 1) {
-                    monthList.setSelectedIndex(index + 1);
-                } else {
-                    LocalDate d = monthList.getModel().getElementAt(monthList.getModel().getSize() - 1).plusDays(1);
-                    updateMonthView(currentLocalDate.plusMonths(1));
-                    monthList.setSelectedValue(d, false);
-                }
-            }
-        });
-        Action selectPreviousRow = am.get("selectPreviousRow");
-        am.put("selectPreviousRow", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int index = monthList.getLeadSelectionIndex();
-                int dowvl = DayOfWeek.values().length; // 7
-                if (index < dowvl) {
-                    LocalDate d = monthList.getModel().getElementAt(index).minusDays(dowvl);
-                    updateMonthView(currentLocalDate.minusMonths(1));
-                    monthList.setSelectedValue(d, false);
-                } else {
-                    selectPreviousRow.actionPerformed(e);
-                }
-            }
-        });
-        Action selectNextRow = am.get("selectNextRow");
-        am.put("selectNextRow", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int index = monthList.getLeadSelectionIndex();
-                int dowvl = DayOfWeek.values().length; // 7
-                if (index > monthList.getModel().getSize() - dowvl) {
-                    LocalDate d = monthList.getModel().getElementAt(index).plusDays(dowvl);
-                    updateMonthView(currentLocalDate.plusMonths(1));
-                    monthList.setSelectedValue(d, false);
-                } else {
-                    selectNextRow.actionPerformed(e);
-                }
-            }
-        });
+        installActions();
 
         Locale l = Locale.getDefault();
         DefaultListModel<DayOfWeek> weekModel = new DefaultListModel<>();
@@ -153,6 +96,65 @@ public final class MainPanel extends JPanel {
 
         add(box);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private void installActions() {
+        InputMap im = monthList.getInputMap(JComponent.WHEN_FOCUSED);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "selectNextIndex");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "selectPreviousIndex");
+
+        ActionMap am = monthList.getActionMap();
+        am.put("selectPreviousIndex", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = monthList.getLeadSelectionIndex();
+                if (index > 0) {
+                    monthList.setSelectedIndex(index - 1);
+                } else {
+                    LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
+                    updateMonthView(currentLocalDate.minusMonths(1));
+                    monthList.setSelectedValue(d, false);
+                }
+            }
+        });
+        am.put("selectNextIndex", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = monthList.getLeadSelectionIndex();
+                if (index < monthList.getModel().getSize() - 1) {
+                    monthList.setSelectedIndex(index + 1);
+                } else {
+                    LocalDate d = monthList.getModel().getElementAt(monthList.getModel().getSize() - 1).plusDays(1);
+                    updateMonthView(currentLocalDate.plusMonths(1));
+                    monthList.setSelectedValue(d, false);
+                }
+            }
+        });
+        Action selectPreviousRow = am.get("selectPreviousRow");
+        am.put("selectPreviousRow", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = monthList.getLeadSelectionIndex();
+                int dowvl = DayOfWeek.values().length; // 7
+                if (index < dowvl) {
+                    LocalDate d = monthList.getModel().getElementAt(index).minusDays(dowvl);
+                    updateMonthView(currentLocalDate.minusMonths(1));
+                    monthList.setSelectedValue(d, false);
+                } else {
+                    selectPreviousRow.actionPerformed(e);
+                }
+            }
+        });
+        Action selectNextRow = am.get("selectNextRow");
+        am.put("selectNextRow", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = monthList.getLeadSelectionIndex();
+                int dowvl = DayOfWeek.values().length; // 7
+                if (index > monthList.getModel().getSize() - dowvl) {
+                    LocalDate d = monthList.getModel().getElementAt(index).plusDays(dowvl);
+                    updateMonthView(currentLocalDate.plusMonths(1));
+                    monthList.setSelectedValue(d, false);
+                } else {
+                    selectNextRow.actionPerformed(e);
+                }
+            }
+        });
     }
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;

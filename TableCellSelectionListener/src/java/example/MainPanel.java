@@ -13,24 +13,7 @@ public final class MainPanel extends JPanel {
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
 
-        TableModel model = new DefaultTableModel() {
-            @Override public Class<?> getColumnClass(int column) {
-                return Integer.class;
-            }
-            @Override public int getRowCount() {
-                return 6;
-            }
-            @Override public int getColumnCount() {
-                return 7;
-            }
-            @Override public Object getValueAt(int row, int column) {
-                return row * getColumnCount() + column;
-            }
-            @Override public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
+        TableModel model = makeModel();
         JTable table0 = new JTable(model);
         table0.setCellSelectionEnabled(true);
         ListSelectionListener selectionListener0 = new AbstractTableCellSelectionListener() {
@@ -110,6 +93,25 @@ public final class MainPanel extends JPanel {
         add(tabbedPane);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static TableModel makeModel() {
+        return new DefaultTableModel() {
+            @Override public Class<?> getColumnClass(int column) {
+                return Integer.class;
+            }
+            @Override public int getRowCount() {
+                return 6;
+            }
+            @Override public int getColumnCount() {
+                return 7;
+            }
+            @Override public Object getValueAt(int row, int column) {
+                return row * getColumnCount() + column;
+            }
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

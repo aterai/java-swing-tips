@@ -13,40 +13,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        Action cutAction = new DefaultEditorKit.CutAction();
-        Action copyAction = new DefaultEditorKit.CopyAction();
-        Action pasteAction = new DefaultEditorKit.PasteAction();
-
-        JPopupMenu popup1 = new JPopupMenu();
-        popup1.add(cutAction);
-        popup1.add(copyAction);
-        popup1.add(pasteAction);
-        popup1.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
-            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                JPopupMenu pop = (JPopupMenu) e.getSource();
-                JTextComponent tc = (JTextComponent) pop.getInvoker();
-                System.out.println(tc.getClass().getName() + ": " + tc.getName());
-                // TEST:
-                // tc.requestFocusInWindow();
-                // tc.selectAll();
-                boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
-                cutAction.setEnabled(hasSelectedText);
-                copyAction.setEnabled(hasSelectedText);
-            }
-        });
-
-//         // TEST:
-//         JTextField textField0 = new JTextField("Default isPopupTrigger");
-//         textField0.setName("textField0");
-//         textField0.addMouseListener(new MouseAdapter() {
-//             @Override public void mouseReleased(MouseEvent e) {
-//                 if (e.isPopupTrigger()) {
-//                     popup1.show(e.getComponent(), e.getX(), e.getY());
-//                 }
-//             }
-//         });
+        JPopupMenu popup1 = makePopupMenu();
 
         JTextField textField1 = new JTextField("Default setComponentPopupMenu");
         textField1.setComponentPopupMenu(popup1);
@@ -113,6 +80,32 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static JPopupMenu makePopupMenu() {
+        Action cutAction = new DefaultEditorKit.CutAction();
+        Action copyAction = new DefaultEditorKit.CopyAction();
+        Action pasteAction = new DefaultEditorKit.PasteAction();
+
+        JPopupMenu popup1 = new JPopupMenu();
+        popup1.add(cutAction);
+        popup1.add(copyAction);
+        popup1.add(pasteAction);
+        popup1.addPopupMenuListener(new PopupMenuListener() {
+            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                JPopupMenu pop = (JPopupMenu) e.getSource();
+                JTextComponent tc = (JTextComponent) pop.getInvoker();
+                System.out.println(tc.getClass().getName() + ": " + tc.getName());
+                // TEST:
+                // tc.requestFocusInWindow();
+                // tc.selectAll();
+                boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+                cutAction.setEnabled(hasSelectedText);
+                copyAction.setEnabled(hasSelectedText);
+            }
+        });
+        return popup1;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
