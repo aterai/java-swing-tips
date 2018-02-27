@@ -114,10 +114,8 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     // @see SwingUtilities2.pointOutsidePrefSize(...)
     private boolean pointOutsidePrefSize(Point p) {
         int i = locationToIndex(p);
-        DefaultListModel<E> m = (DefaultListModel<E>) getModel();
-        E n = m.get(i);
-        // ListCellRenderer<? super E> r = getCellRenderer();
-        Component c = getCellRenderer().getListCellRendererComponent(this, n, i, false, false);
+        E cbn = getModel().getElementAt(i);
+        Component c = getCellRenderer().getListCellRendererComponent(this, cbn, i, false, false);
         Rectangle rect = getCellBounds(i, i);
         rect.width = c.getPreferredSize().width;
         return i < 0 || !rect.contains(p);
@@ -142,9 +140,9 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
 class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implements ListCellRenderer<E> {
     private final JCheckBox checkBox = new JCheckBox();
     private int rollOverRowIndex = -1;
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean selected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         checkBox.setOpaque(true);
-        if (selected) {
+        if (isSelected) {
             checkBox.setBackground(list.getSelectionBackground());
             checkBox.setForeground(list.getSelectionForeground());
         } else {
