@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
-                .forEach(file -> node.add(new DefaultMutableTreeNode(file)));
+                .map(DefaultMutableTreeNode::new)
+                .forEach(node::add);
         }
 
         JTree tree = new JTree(treeModel);
@@ -33,7 +34,7 @@ public final class MainPanel extends JPanel {
         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
         tree.expandRow(0);
-        //tree.setToggleClickCount(1);
+        // tree.setToggleClickCount(1);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -70,25 +71,25 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        final JTree tree = (JTree) e.getSource();
-        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        JTree tree = (JTree) e.getSource();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 //         if (frame == null) {
 //             frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
 //             frame.setGlassPane(new LockingGlassPane());
 //         }
 //         frame.getGlassPane().setVisible(true);
 
-        //final TreePath path = e.getPath();
+        // TreePath path = e.getPath();
 
         if (!node.isLeaf()) {
             return;
         }
-        final File parent = (File) node.getUserObject();
+        File parent = (File) node.getUserObject();
         if (!parent.isDirectory()) {
             return;
         }
 
-        final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         SwingWorker<String, File> worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if (isCancelled()) {
@@ -100,10 +101,10 @@ class FolderSelectionListener implements TreeSelectionListener {
                 }
                 for (File file: chunks) {
                     model.insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
-                    //node.add(new DefaultMutableTreeNode(file));
+                    // node.add(new DefaultMutableTreeNode(file));
                 }
-                //model.reload(parent); //= model.nodeStructureChanged(parent);
-                //tree.expandPath(path);
+                // model.reload(parent); // = model.nodeStructureChanged(parent);
+                // tree.expandPath(path);
             }
         };
         worker.execute();
@@ -126,7 +127,7 @@ class BackgroundTask extends SwingWorker<String, File> {
 //         for (File child: children) {
 //             if (child.isDirectory()) {
 //                 publish(child);
-// //                 try { //Test
+// //                 try { // Test
 // //                     Thread.sleep(500);
 // //                 } catch (InterruptedException ex) {
 // //                     ex.printStackTrace();
@@ -150,7 +151,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         if (selected) {
             c.setOpaque(false);
             c.setForeground(getTextSelectionColor());
-            //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
+            // c.setBackground(Color.BLUE); // getBackgroundSelectionColor());
         } else {
             c.setOpaque(true);
             c.setForeground(getTextNonSelectionColor());
