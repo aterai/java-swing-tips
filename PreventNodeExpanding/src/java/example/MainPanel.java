@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
-                .forEach(file -> node.add(new DefaultMutableTreeNode(file)));
+                .map(DefaultMutableTreeNode::new)
+                .forEach(node::add);
         }
 
         JTree tree = new JTree(treeModel);
@@ -33,7 +34,7 @@ public final class MainPanel extends JPanel {
         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
         tree.expandRow(0);
-        //tree.setToggleClickCount(1);
+        // tree.setToggleClickCount(1);
 
         tree.addTreeWillExpandListener(new DirectoryExpandVetoListener());
 
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -73,7 +74,7 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
             File file = (File) node.getUserObject();
             String name = file.getName();
-            //System.out.println(name);
+            // System.out.println(name);
             if (!name.isEmpty() && name.codePointAt(0) == '.') {
                 throw new ExpandVetoException(e, "Tree expansion cancelled");
             }
@@ -89,7 +90,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
         if (!node.isLeaf()) {
             return;
         }
@@ -97,7 +98,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         if (!parent.isDirectory()) {
             return;
         }
-        final JTree tree = (JTree) e.getSource();
+        JTree tree = (JTree) e.getSource();
         (new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if (isCancelled()) {
@@ -109,9 +110,9 @@ class FolderSelectionListener implements TreeSelectionListener {
                 }
                 for (File file: chunks) {
                     ((DefaultTreeModel) tree.getModel()).insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
-                    //node.add(new DefaultMutableTreeNode(file));
+                    // node.add(new DefaultMutableTreeNode(file));
                 }
-                //((DefaultTreeModel) tree.getModel()).reload(node);
+                // ((DefaultTreeModel) tree.getModel()).reload(node);
             }
         }).execute();
     }
@@ -161,9 +162,9 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
                 c.setText(fileSystemView.getSystemDisplayName(file));
                 c.setToolTipText(file.getPath());
                 c.setEnabled(!file.getName().startsWith("."));
-                //StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
-                //String name = file.getName();
-                //c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
+                // StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
+                // String name = file.getName();
+                // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
             }
         }
         return c;

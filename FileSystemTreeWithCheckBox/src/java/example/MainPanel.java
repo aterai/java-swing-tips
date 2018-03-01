@@ -24,7 +24,9 @@ public final class MainPanel extends JPanel {
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
-                .forEach(file -> node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED))));
+                .map(file -> new CheckBoxNode(file, Status.DESELECTED))
+                .map(DefaultMutableTreeNode::new)
+                .forEach(node::add);
         }
         treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
@@ -33,7 +35,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(null);
                 setCellEditor(null);
                 super.updateUI();
-                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                // ???#1: JDK 1.6.0 bug??? Nimbus LnF
                 setCellRenderer(new FileTreeCellRenderer(fileSystemView));
                 setCellEditor(new CheckBoxNodeEditor(fileSystemView));
             }
@@ -45,11 +47,11 @@ public final class MainPanel extends JPanel {
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
         tree.expandRow(0);
-        //tree.setToggleClickCount(1);
+        // tree.setToggleClickCount(1);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
-//         //TEST
+//         // TEST
 //         add(new JButton(new AbstractAction("test") {
 //             private void searchTreeForCheckedNode(TreePath path) {
 //                 Object o = path.getLastPathComponent();
@@ -74,15 +76,15 @@ public final class MainPanel extends JPanel {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 System.out.println("------------------");
 //                 searchTreeForCheckedNode(tree.getPathForRow(0));
-//                 //DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-//                 //Enumeration e = root.breadthFirstEnumeration();
-//                 //while (e.hasMoreElements()) {
-//                 //    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-//                 //    CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-//                 //    if (Objects.nonNull(check) && check.status == Status.SELECTED) {
-//                 //        System.out.println(check.file.toString());
-//                 //    }
-//                 //}
+//                 // DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+//                 // Enumeration e = root.breadthFirstEnumeration();
+//                 // while (e.hasMoreElements()) {
+//                 //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+//                 //     CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+//                 //     if (Objects.nonNull(check) && check.status == Status.SELECTED) {
+//                 //         System.out.println(check.file.toString());
+//                 //     }
+//                 // }
 //             }
 //         }), BorderLayout.SOUTH);
 
@@ -104,7 +106,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -125,7 +127,7 @@ class TriStateCheckBox extends JCheckBox {
 }
 
 class IndeterminateIcon implements Icon {
-    private static final Color FOREGROUND = new Color(50, 20, 255, 200); //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final Color FOREGROUND = new Color(50, 20, 255, 200); // TEST: UIManager.getColor("CheckBox.foreground");
     private static final int SIDE_MARGIN = 4;
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
@@ -276,7 +278,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         }
         return false;
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {
 //         return true;
 //     }
@@ -295,8 +297,8 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        final JTree tree = (JTree) e.getSource();
-        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        JTree tree = (JTree) e.getSource();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 
         if (!node.isLeaf()) {
             return;
@@ -305,28 +307,28 @@ class FolderSelectionListener implements TreeSelectionListener {
         if (Objects.isNull(check)) {
             return;
         }
-        final File parent = check.file;
+        File parent = check.file;
         if (!parent.isDirectory()) {
             return;
         }
-        final Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+        Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
 
-        final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
-                //if (isCancelled()) {
-                //    return;
-                //}
-                //if (!tree.isDisplayable()) {
-                //    System.out.println("process: DISPOSE_ON_CLOSE");
-                //    cancel(true);
-                //    return;
-                //}
+                // if (isCancelled()) {
+                //     return;
+                // }
+                // if (!tree.isDisplayable()) {
+                //     System.out.println("process: DISPOSE_ON_CLOSE");
+                //     cancel(true);
+                //     return;
+                // }
                 for (File file: chunks) {
                     model.insertNodeInto(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)), node, node.getChildCount());
-                    //node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)));
+                    // node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)));
                 }
-                //model.reload(parent); //= model.nodeStructureChanged(parent);
+                // model.reload(parent); // = model.nodeStructureChanged(parent);
             }
         };
         worker.execute();
@@ -344,7 +346,7 @@ class BackgroundTask extends SwingWorker<String, File> {
     @Override public String doInBackground() {
         Arrays.stream(fileSystemView.getFiles(parent, true))
             .filter(File::isDirectory)
-            .forEach(file -> publish(file));
+            .forEach(this::publish);
         return "done";
     }
 }
