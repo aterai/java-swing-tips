@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;
         monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MMMM").withLocale(Locale.getDefault())));
-        monthTable.setModel(new CalendarViewTableModel<>(localDate));
+        monthTable.setModel(new CalendarViewTableModel(localDate));
     }
     private class CalendarTableRenderer extends DefaultTableCellRenderer {
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
@@ -114,10 +114,10 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class CalendarViewTableModel<T extends LocalDate> extends DefaultTableModel {
+class CalendarViewTableModel extends DefaultTableModel {
     private final LocalDate startDate;
     private final WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    protected CalendarViewTableModel(T date) {
+    protected CalendarViewTableModel(LocalDate date) {
         super();
         LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1); // date.with(TemporalAdjusters.firstDayOfMonth());
         // int dowv = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
