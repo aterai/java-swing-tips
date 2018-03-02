@@ -77,15 +77,14 @@ public final class MainPanel extends JPanel {
 
 class ClearSelectionListener extends MouseInputAdapter {
     private boolean startOutside;
-    private static void clearSelectionAndFocus(JList<?> list) {
+    private static <E> void clearSelectionAndFocus(JList<E> list) {
         list.clearSelection();
         list.getSelectionModel().setAnchorSelectionIndex(-1);
         list.getSelectionModel().setLeadSelectionIndex(-1);
     }
-    private static boolean contains(JList<?> list, Point pt) {
+    private static <E> boolean contains(JList<E> list, Point pt) {
         for (int i = 0; i < list.getModel().getSize(); i++) {
-            Rectangle r = list.getCellBounds(i, i);
-            if (r.contains(pt)) {
+            if (list.getCellBounds(i, i).contains(pt)) {
                 return true;
             }
         }
