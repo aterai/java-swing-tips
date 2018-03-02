@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
             setVisibleRowCount(CalendarViewListModel.ROW_COUNT); // ensure 6 rows in the list
             setFixedCellWidth(size.width);
             setFixedCellHeight(size.height);
-            setCellRenderer(new CalendarListRenderer<>());
+            setCellRenderer(new CalendarListRenderer());
             getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         }
     };
@@ -161,13 +161,13 @@ public final class MainPanel extends JPanel {
         yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
         monthList.setModel(new CalendarViewListModel(localDate));
     }
-    private class CalendarListRenderer<E extends LocalDate> implements ListCellRenderer<E> {
-        private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
-        @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    private class CalendarListRenderer implements ListCellRenderer<LocalDate> {
+        private final ListCellRenderer<? super LocalDate> renderer = new DefaultListCellRenderer();
+        @Override public Component getListCellRendererComponent(JList<? extends LocalDate> list, LocalDate value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             l.setOpaque(true);
             l.setHorizontalAlignment(SwingConstants.CENTER);
-            l.setText(String.valueOf(value.getDayOfMonth()));
+            l.setText(Objects.toString(value.getDayOfMonth()));
             Color fgc = l.getForeground();
             if (YearMonth.from(value).equals(YearMonth.from(currentLocalDate))) {
                 DayOfWeek dow = value.getDayOfWeek();
