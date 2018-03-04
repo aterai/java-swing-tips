@@ -383,8 +383,8 @@ class TabDragGestureListener implements DragGestureListener {
 
 class TabDropTargetListener implements DropTargetListener {
     private static final Point HIDDEN_POINT = new Point(0, -1000);
-    private static Optional<GhostGlassPane> getGhostGlassPane(Component component) {
-        return Optional.ofNullable(component).filter(c -> c instanceof GhostGlassPane).map(c -> (GhostGlassPane) c);
+    private static Optional<GhostGlassPane> getGhostGlassPane(Component c) {
+        return Optional.ofNullable(c).filter(GhostGlassPane.class::isInstance).map(GhostGlassPane.class::cast);
     }
     @Override public void dragEnter(DropTargetDragEvent e) {
         getGhostGlassPane(e.getDropTargetContext().getComponent()).ifPresent(glassPane -> {
