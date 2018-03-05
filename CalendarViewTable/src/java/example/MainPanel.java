@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
             setHorizontalAlignment(SwingConstants.CENTER);
             if (value instanceof LocalDate) {
                 LocalDate d = (LocalDate) value;
-                setText(String.valueOf(d.getDayOfMonth()));
+                setText(Objects.toString(d.getDayOfMonth()));
                 if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {
                     setForeground(Color.BLACK);
                 } else {
