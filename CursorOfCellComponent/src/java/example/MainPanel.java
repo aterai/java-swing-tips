@@ -10,13 +10,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
         DefaultListModel<String> model = new DefaultListModel<>();
-        for (String t: Arrays.asList("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee")) {
-            model.addElement(t);
-        }
-        JList<String> list = new LinkCellList<>(model);
-        add(new JScrollPane(list));
+        Arrays.asList("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee").forEach(model::addElement);
+
+        add(new JScrollPane(new LinkCellList<>(model)));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -55,7 +52,7 @@ class LinkCellList<E> extends JList<E> {
         super.updateUI();
         setFixedCellHeight(32);
         setCellRenderer(new LinkCellRenderer<>());
-        //TEST: putClientProperty("List.isFileList", Boolean.TRUE);
+        // TEST: putClientProperty("List.isFileList", Boolean.TRUE);
     }
     @Override protected void processMouseMotionEvent(MouseEvent e) {
         Point pt = e.getPoint();

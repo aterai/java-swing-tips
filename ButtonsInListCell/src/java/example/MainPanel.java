@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -157,6 +158,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected final JTextArea textArea = new JTextArea();
     protected final JButton deleteButton = new JButton("delete");
     protected final JButton copyButton = new JButton("copy");
+    protected final List<JButton> buttons = Arrays.asList(deleteButton, copyButton);
     protected final DefaultListModel<E> model;
     protected int targetIndex;
     public int pressedIndex = -1;
@@ -181,12 +183,12 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         copyButton.addActionListener(e -> model.add(targetIndex, model.get(targetIndex)));
 
         Box box = Box.createHorizontalBox();
-        for (JButton b: Arrays.asList(deleteButton, copyButton)) {
+        buttons.forEach(b -> {
             b.setFocusable(false);
             b.setRolloverEnabled(false);
             box.add(b);
             box.add(Box.createHorizontalStrut(5));
-        }
+        });
         add(box, BorderLayout.EAST);
     }
     @Override public Dimension getPreferredSize() {
@@ -204,7 +206,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
             setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
             textArea.setForeground(list.getForeground());
         }
-        resetButtonStatus();
+        buttons.forEach(ButtonsRenderer::resetButtonStatus);
         if (Objects.nonNull(button)) {
             if (index == pressedIndex) {
                 button.getModel().setSelected(true);
@@ -216,13 +218,11 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         }
         return this;
     }
-    private void resetButtonStatus() {
-        for (JButton b: Arrays.asList(deleteButton, copyButton)) {
-            ButtonModel m = b.getModel();
-            m.setRollover(false);
-            m.setArmed(false);
-            m.setPressed(false);
-            m.setSelected(false);
-        }
+    private static void resetButtonStatus(AbstractButton button) {
+        ButtonModel model = button.getModel();
+        model.setRollover(false);
+        model.setArmed(false);
+        model.setPressed(false);
+        model.setSelected(false);
     }
 }

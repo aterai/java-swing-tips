@@ -98,29 +98,29 @@ public final class MainPanel extends JPanel {
         // title.add(iconify, BorderLayout.WEST);
 
         MouseInputListener rwl = new ResizeWindowListener();
-        for (SideLabel l: Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
-            l.addMouseListener(rwl);
-            l.addMouseMotionListener(rwl);
-        }
+        Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright).forEach(c -> {
+            c.addMouseListener(rwl);
+            c.addMouseMotionListener(rwl);
+        });
 
         JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.add(top,           BorderLayout.NORTH);
-        titlePanel.add(title,         BorderLayout.CENTER);
+        titlePanel.add(top, BorderLayout.NORTH);
+        titlePanel.add(title, BorderLayout.CENTER);
 
         JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(topleft,       BorderLayout.WEST);
-        northPanel.add(titlePanel,    BorderLayout.CENTER);
-        northPanel.add(topright,      BorderLayout.EAST);
+        northPanel.add(topleft, BorderLayout.WEST);
+        northPanel.add(titlePanel, BorderLayout.CENTER);
+        northPanel.add(topright, BorderLayout.EAST);
 
         JPanel southPanel = new JPanel(new BorderLayout());
-        southPanel.add(bottomleft,    BorderLayout.WEST);
-        southPanel.add(bottom,        BorderLayout.CENTER);
-        southPanel.add(bottomright,   BorderLayout.EAST);
+        southPanel.add(bottomleft, BorderLayout.WEST);
+        southPanel.add(bottom, BorderLayout.CENTER);
+        southPanel.add(bottomright, BorderLayout.EAST);
 
-        resizePanel.add(left,         BorderLayout.WEST);
-        resizePanel.add(right,        BorderLayout.EAST);
-        resizePanel.add(northPanel,   BorderLayout.NORTH);
-        resizePanel.add(southPanel,   BorderLayout.SOUTH);
+        resizePanel.add(left, BorderLayout.WEST);
+        resizePanel.add(right, BorderLayout.EAST);
+        resizePanel.add(northPanel, BorderLayout.NORTH);
+        resizePanel.add(southPanel, BorderLayout.SOUTH);
         resizePanel.add(contentPanel, BorderLayout.CENTER);
 
         titlePanel.setOpaque(false);
@@ -159,10 +159,10 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-    N(Cursor.N_RESIZE_CURSOR,   0, 4),
-    W(Cursor.W_RESIZE_CURSOR,   4, 0),
-    E(Cursor.E_RESIZE_CURSOR,   4, 0),
-    S(Cursor.S_RESIZE_CURSOR,   0, 4),
+    N(Cursor.N_RESIZE_CURSOR, 0, 4),
+    W(Cursor.W_RESIZE_CURSOR, 4, 0),
+    E(Cursor.E_RESIZE_CURSOR, 4, 0),
+    S(Cursor.S_RESIZE_CURSOR, 0, 4),
     NW(Cursor.NW_RESIZE_CURSOR, 4, 4),
     NE(Cursor.NE_RESIZE_CURSOR, 4, 4),
     SW(Cursor.SW_RESIZE_CURSOR, 4, 4),
@@ -172,7 +172,7 @@ enum Side {
     public final int height;
     Side(int cursor, int width, int height) {
         this.cursor = cursor;
-        this.width  = width;
+        this.width = width;
         this.height = height;
     }
 }
