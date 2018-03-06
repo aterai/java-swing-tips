@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.time.*;
+import java.time.format.*;
 import java.time.temporal.*;
 import java.util.*;
 import java.util.List;
@@ -13,7 +14,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public final Dimension size = new Dimension(10, 10);
-    public final JList<Contribution> weekList = new JList<Contribution>() {
+    public final LocalDate currentLocalDate = LocalDate.now();
+    public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
         @Override public void updateUI() {
             setCellRenderer(null);
             super.updateUI();
@@ -26,31 +28,83 @@ public final class MainPanel extends JPanel {
             setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         }
     };
-    public final LocalDate currentLocalDate = LocalDate.now();
     public final Color color = new Color(50, 200, 50);
-    public final List<Color> activityColors = Arrays.asList(new Color(200, 200, 200), color.brighter(), color, color.darker(), color.darker().darker());
+    public final List<Icon> activityIcons = Arrays.asList(
+        new ColorIcon(new Color(200, 200, 200)),
+        new ColorIcon(color.brighter()),
+        new ColorIcon(color),
+        new ColorIcon(color.darker()),
+        new ColorIcon(color.darker().darker()));
 
     private MainPanel() {
         super(new BorderLayout());
+        Font font = weekList.getFont().deriveFont(9f);
 
-        weekList.setModel(new CalendarViewListModel(currentLocalDate));
+        Locale l = Locale.getDefault();
+        WeekFields weekFields = WeekFields.of(l);
+
+        DefaultListModel<String> weekModel = new DefaultListModel<>();
+        DayOfWeek firstDayOfWeek = weekFields.getFirstDayOfWeek();
+        for (int i = 0; i < DayOfWeek.values().length; i++) {
+            boolean isEven = i % 2 == 0;
+            if (isEven) {
+                weekModel.add(i, "");
+            } else {
+                weekModel.add(i, firstDayOfWeek.plus(i).getDisplayName(TextStyle.SHORT_STANDALONE, l));
+            }
+        }
+        JList<String> rowHeader = new JList<>(weekModel);
+        rowHeader.setEnabled(false);
+        rowHeader.setFont(font);
+        rowHeader.setLayoutOrientation(JList.VERTICAL_WRAP);
+        rowHeader.setVisibleRowCount(DayOfWeek.values().length);
+        rowHeader.setFixedCellHeight(size.height);
+
+        JPanel colHeader = new JPanel(new GridBagLayout());
+        colHeader.setBackground(Color.WHITE);
+        GridBagConstraints cc = new GridBagConstraints();
+        // cc.anchor = GridBagConstraints.LINE_START;
+        JLabel label = null;
+        for (int i = 0; i < CalendarViewListModel.WEEK_VIEW; i++) {
+            cc.gridwidth = 1;
+            cc.gridx = i;
+            cc.gridy = 0;
+            colHeader.add(Box.createHorizontalStrut(size.width), cc); // grid guides
+
+            LocalDate date = weekList.getModel().getElementAt(i * DayOfWeek.values().length).date;
+            // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
+            // System.out.println(weekNumberOfMonth);
+            boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth(); // ignore WeekFields#getMinimalDaysInFirstWeek()
+            cc.gridy = 1;
+            if (isSimplyFirstWeekOfMonth) { // weekNumberOfMonth == 2) {
+                label = makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT_STANDALONE, l), font);
+                cc.gridwidth = 4;
+                colHeader.add(label, cc);
+            } else if (Objects.isNull(label)) {
+                cc.gridwidth = 1;
+                colHeader.add(Box.createHorizontalStrut(size.width), cc);
+            }
+        }
 
         JScrollPane scroll = new JScrollPane(weekList);
         scroll.setBorder(BorderFactory.createEmptyBorder());
+        scroll.setColumnHeaderView(colHeader);
+        scroll.setRowHeaderView(rowHeader);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setBackground(Color.WHITE);
 
         Box box = Box.createHorizontalBox();
-        box.add(new JLabel("Less"));
+        box.add(makeLabel("Less", font));
         box.add(Box.createHorizontalStrut(2));
-        activityColors.forEach(c -> {
-            box.add(new JLabel(new ColorIcon(c)));
+        activityIcons.forEach(icon -> {
+            box.add(new JLabel(icon));
             box.add(Box.createHorizontalStrut(2));
         });
-        box.add(new JLabel("More"));
+        box.add(makeLabel("More", font));
 
         JPanel p = new JPanel(new GridBagLayout());
-        p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 10));
         p.setBackground(Color.WHITE);
         GridBagConstraints c = new GridBagConstraints();
         p.add(scroll, c);
@@ -73,12 +127,18 @@ public final class MainPanel extends JPanel {
                 l.setIcon(new ColorIcon(Color.WHITE));
                 l.setToolTipText(null);
             } else {
-                l.setIcon(new ColorIcon(activityColors.get(value.activity)));
+                l.setIcon(activityIcons.get(value.activity));
                 String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
                 l.setToolTipText(actTxt + " contribution on " + value.date.toString());
             }
             return l;
         }
+    }
+    private static JLabel makeLabel(String title, Font font) {
+        JLabel label = new JLabel(title);
+        label.setFont(font);
+        label.setEnabled(false);
+        return label;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
