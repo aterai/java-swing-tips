@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
         box.repaint();
     }
     private JRadioButton makeRadioButton(int itemsPerPage, int current, int target) {
-        JRadioButton radio = new JRadioButton(String.valueOf(target)) {
+        JRadioButton radio = new JRadioButton(Objects.toString(target)) {
             @Override protected void fireStateChanged() {
                 ButtonModel bm = getModel();
                 if (bm.isEnabled()) {

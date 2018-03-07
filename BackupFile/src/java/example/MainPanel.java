@@ -15,10 +15,10 @@ public final class MainPanel extends JPanel {
     private static final String FILE_NAME = "example.txt";
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 6, 1));
     private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));
-    private final JLabel label      = new JLabel("2", SwingConstants.RIGHT);
-    private final JTextPane jtp     = new JTextPane();
-    private final JButton ok        = new JButton("Create new " + FILE_NAME);
-    private final JButton clear     = new JButton("clear");
+    private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
+    private final JTextPane jtp = new JTextPane();
+    private final JButton ok = new JButton("Create new " + FILE_NAME);
+    private final JButton clear = new JButton("clear");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         // StyleConstants.setForeground(error, Color.BLACK);
         // Style error = doc.addStyle(ERROR, regular);
         StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
-        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  def), Color.BLUE);
+        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
 
         ok.addActionListener(e -> {
             File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
         ChangeListener cl = e -> {
             int i1 = ((Integer) spinner1.getValue()).intValue();
             int i2 = ((Integer) spinner2.getValue()).intValue();
-            label.setText(String.valueOf(i1 + i2));
+            label.setText(Objects.toString(i1 + i2));
         };
         spinner1.addChangeListener(cl);
         spinner2.addChangeListener(cl);

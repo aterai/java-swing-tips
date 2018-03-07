@@ -242,7 +242,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         int selectedCount = selectedIndices.length;
         boolean isMoreThanOneItemSelected = selectedCount > 1;
         if (isMoreThanOneItemSelected) {
-            LABEL.setText(String.valueOf(selectedCount));
+            LABEL.setText(Objects.toString(selectedCount));
             Dimension d = LABEL.getPreferredSize();
             SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
         }

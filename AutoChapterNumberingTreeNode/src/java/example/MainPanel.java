@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -68,13 +69,14 @@ public final class MainPanel extends JPanel {
 }
 
 class ChapterNumberingTreeCellRenderer extends DefaultTreeCellRenderer {
-    private static final String MARK = "\u00a7"; //"§";
+    private static final String MARK = "\u00a7"; // "§";
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if (value instanceof DefaultMutableTreeNode) {
             TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
             String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
-                .mapToObj(i -> String.valueOf(1 + tn[i - 1].getIndex(tn[i])))
+                .map(i -> 1 + tn[i - 1].getIndex(tn[i]))
+                .mapToObj(Objects::toString)
                 .collect(Collectors.joining("."));
             l.setText(String.format("%s%s %s", MARK, s, value));
         }

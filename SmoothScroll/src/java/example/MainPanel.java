@@ -5,14 +5,15 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Collections;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextField textField = new JTextField("100");
-    private final JTextArea textArea   = new JTextArea();
-    private final JScrollPane scroll   = new JScrollPane(textArea);
+    private final JTextArea textArea = new JTextArea();
+    private final JScrollPane scroll = new JScrollPane(textArea);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -40,9 +41,9 @@ public final class MainPanel extends JPanel {
         Element root = doc.getDefaultRootElement();
         int ln = getDestLineNumber(textField, root);
         try {
-            final Element elem = root.getElement(ln - 1);
-            final Rectangle dest = textArea.modelToView(elem.getStartOffset());
-            final Rectangle current = scroll.getViewport().getViewRect();
+            Element elem = root.getElement(ln - 1);
+            Rectangle dest = textArea.modelToView(elem.getStartOffset());
+            Rectangle current = scroll.getViewport().getViewRect();
             new Timer(20, e -> {
                 Timer animator = (Timer) e.getSource();
                 if (dest.y < current.y && animator.isRunning()) {
@@ -95,7 +96,7 @@ class LineNumberView extends JComponent {
     private static final int MARGIN = 5;
     private final JTextArea textArea;
     private final FontMetrics fontMetrics;
-    //private final int topInset;
+    // private final int topInset;
     private final int fontAscent;
     private final int fontHeight;
     private final int fontDescent;
@@ -104,13 +105,13 @@ class LineNumberView extends JComponent {
     protected LineNumberView(JTextArea textArea) {
         super();
         this.textArea = textArea;
-        Font font   = textArea.getFont();
+        Font font = textArea.getFont();
         fontMetrics = getFontMetrics(font);
-        fontHeight  = fontMetrics.getHeight();
-        fontAscent  = fontMetrics.getAscent();
+        fontHeight = fontMetrics.getHeight();
+        fontAscent = fontMetrics.getAscent();
         fontDescent = fontMetrics.getDescent();
         fontLeading = fontMetrics.getLeading();
-        //topInset    = textArea.getInsets().top;
+        // topInset = textArea.getInsets().top;
 
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
@@ -136,13 +137,13 @@ class LineNumberView extends JComponent {
         setFont(font);
     }
     private int getComponentWidth() {
-        Document doc  = textArea.getDocument();
-        Element root  = doc.getDefaultRootElement();
+        Document doc = textArea.getDocument();
+        Element root = doc.getDefaultRootElement();
         int lineCount = root.getElementIndex(doc.getLength());
-        int maxDigits = Math.max(3, String.valueOf(lineCount).length());
+        int maxDigits = Math.max(3, Objects.toString(lineCount).length());
         Insets i = getBorder().getBorderInsets(this);
         return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
-        //return 48;
+        // return 48;
     }
     private int getLineAtPoint(int y) {
         Element root = textArea.getDocument().getDefaultRootElement();
@@ -158,13 +159,13 @@ class LineNumberView extends JComponent {
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         g.setColor(getForeground());
-        int base  = clip.y;
+        int base = clip.y;
         int start = getLineAtPoint(base);
-        int end   = getLineAtPoint(base + clip.height);
-        int y     = start * fontHeight;
-        int rmg   = getBorder().getBorderInsets(this).right;
+        int end = getLineAtPoint(base + clip.height);
+        int y = start * fontHeight;
+        int rmg = getBorder().getBorderInsets(this).right;
         for (int i = start; i <= end; i++) {
-            String text = String.valueOf(i + 1);
+            String text = Objects.toString(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;
             g.drawString(text, x, y);

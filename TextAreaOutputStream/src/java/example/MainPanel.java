@@ -236,7 +236,7 @@ class TextAreaHandler extends StreamHandler {
 //         // sb.append((char) b);
 //         String s;
 //         if (Character.charCount(b) == 1) {
-//             s = String.valueOf((char) b);
+//             s = Objects.toString((char) b);
 //         } else {
 //             s = new String(Character.toChars(b));
 //         }
@@ -279,7 +279,7 @@ class TextAreaHandler extends StreamHandler {
 //     @Override public void write(int i) throws IOException {
 //         String s;
 //         if (Character.charCount(i) == 1) {
-//             s = String.valueOf((char) i);
+//             s = Objects.toString((char) i);
 //         } else {
 //             s = new String(Character.toChars(i));
 //         }
@@ -296,7 +296,7 @@ class TextAreaHandler extends StreamHandler {
 //         this.textArea = textArea;
 //     }
 //     @Override public void write(int i) throws IOException {
-//         textArea.append(String.valueOf((char) i));
+//         textArea.append(Objects.toString((char) i));
 //         textArea.setCaretPosition(textArea.getDocument().getLength());
 //     }
 // }

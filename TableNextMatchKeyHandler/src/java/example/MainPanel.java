@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//@see javax/swing/plaf/basic/BasicListUI.Handler
-//@see javax/swing/plaf/basic/BasicTreeUI.Handler
+// @see javax/swing/plaf/basic/BasicListUI.Handler
+// @see javax/swing/plaf/basic/BasicTreeUI.Handler
 class TableNextMatchKeyHandler extends KeyAdapter {
     private static final int TARGET_COLUMN = 0;
     private static final long TIME_FACTOR = 500L;
@@ -88,7 +88,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     @Override public void keyTyped(KeyEvent e) {
         JTable src = (JTable) e.getComponent();
         int max = src.getRowCount();
-        if (max == 0 || e.isAltDown() || isNavigationKey(e)) { //|| BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
+        if (max == 0 || e.isAltDown() || isNavigationKey(e)) { // || BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
             // Nothing to select
             return;
         }
@@ -108,7 +108,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
             }
         } else {
             startIndex += increment;
-            typedString = String.valueOf(c);
+            typedString = Objects.toString(c);
             prefix = typedString;
         }
         lastTime = time;
@@ -139,8 +139,8 @@ class TableNextMatchKeyHandler extends KeyAdapter {
             }
         }
     }
-    //@see javax/swing/JList#getNextMatch(String prefix, int startIndex, Position.Bias bias)
-    //@see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
+    // @see javax/swing/JList#getNextMatch(String prefix, int startIndex, Position.Bias bias)
+    // @see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
     public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
         int max = table.getRowCount();
         if (Objects.isNull(prefix) || startingRow < 0 || startingRow >= max) {

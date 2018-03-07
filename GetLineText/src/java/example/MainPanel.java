@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         StringBuilder sb = new StringBuilder();
-        String dummy   = "aaaaaaaaaaaaa\n";
+        String dummy = "aaaaaaaaaaaaa\n";
         String comment = "#comment\n";
         IntStream.range(0, 200).forEach(i -> {
             sb.append(dummy);
@@ -37,21 +37,21 @@ public final class MainPanel extends JPanel {
             int count = 0;
             StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
             while (st.hasMoreTokens()) {
-                //if (st.nextToken().startsWith(SHARP)) {
-                //if (st.nextToken().charAt(0) == SHARP) {
+                // if (st.nextToken().startsWith(SHARP)) {
+                // if (st.nextToken().charAt(0) == SHARP) {
                 if (st.nextToken().codePointAt(0) == SHARP) {
                     count++;
                 }
             }
-//             //String#split >>>>
+//             // String#split >>>>
 //             for (String line: textArea.getText().split("\\n")) {
 //                 if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
 //                     count++;
 //                 }
 //             }
-//             //<<<< String#split
+//             // <<<< String#split
 //
-//             //LineNumberReader >>>>
+//             // LineNumberReader >>>>
 //             try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
 //                 String line = null;
 //                 while ((line = lnr.readLine()) != null) {
@@ -62,9 +62,9 @@ public final class MainPanel extends JPanel {
 //             } catch (java.io.IOException ex) {
 //                 ex.printStackTrace();
 //             }
-//             //<<<< LineNumberReader
+//             // <<<< LineNumberReader
 //
-//             //ElementCount >>>>
+//             // ElementCount >>>>
 //             Document doc = textArea.getDocument();
 //             Element root = doc.getDefaultRootElement();
 //             try {
@@ -78,11 +78,11 @@ public final class MainPanel extends JPanel {
 //             } catch (BadLocationException ex) {
 //                 ex.printStackTrace();
 //             }
-//             //<<<< ElementCount
+//             // <<<< ElementCount
 
             JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
         });
-        //frame.getRootPane().setDefaultButton(button);
+        // frame.getRootPane().setDefaultButton(button);
         EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
         add(button, BorderLayout.NORTH);
@@ -116,7 +116,7 @@ class LineNumberView extends JComponent {
     private static final int MARGIN = 5;
     private final JTextArea textArea;
     private final FontMetrics fontMetrics;
-    //private final int topInset;
+    // private final int topInset;
     private final int fontAscent;
     private final int fontHeight;
     private final int fontDescent;
@@ -125,13 +125,13 @@ class LineNumberView extends JComponent {
     protected LineNumberView(JTextArea textArea) {
         super();
         this.textArea = textArea;
-        Font font   = textArea.getFont();
+        Font font = textArea.getFont();
         fontMetrics = getFontMetrics(font);
-        fontHeight  = fontMetrics.getHeight();
-        fontAscent  = fontMetrics.getAscent();
+        fontHeight = fontMetrics.getHeight();
+        fontAscent = fontMetrics.getAscent();
         fontDescent = fontMetrics.getDescent();
         fontLeading = fontMetrics.getLeading();
-        //topInset    = textArea.getInsets().top;
+        // topInset = textArea.getInsets().top;
 
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
@@ -157,13 +157,13 @@ class LineNumberView extends JComponent {
         setFont(font);
     }
     private int getComponentWidth() {
-        Document doc  = textArea.getDocument();
-        Element root  = doc.getDefaultRootElement();
+        Document doc = textArea.getDocument();
+        Element root = doc.getDefaultRootElement();
         int lineCount = root.getElementIndex(doc.getLength());
-        int maxDigits = Math.max(3, String.valueOf(lineCount).length());
+        int maxDigits = Math.max(3, Objects.toString(lineCount).length());
         Insets i = getBorder().getBorderInsets(this);
         return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
-        //return 48;
+        // return 48;
     }
     private int getLineAtPoint(int y) {
         Element root = textArea.getDocument().getDefaultRootElement();
@@ -179,13 +179,13 @@ class LineNumberView extends JComponent {
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         g.setColor(getForeground());
-        int base  = clip.y;
+        int base = clip.y;
         int start = getLineAtPoint(base);
-        int end   = getLineAtPoint(base + clip.height);
-        int y     = start * fontHeight;
-        int rmg   = getBorder().getBorderInsets(this).right;
+        int end = getLineAtPoint(base + clip.height);
+        int y = start * fontHeight;
+        int rmg = getBorder().getBorderInsets(this).right;
         for (int i = start; i <= end; i++) {
-            String text = String.valueOf(i + 1);
+            String text = Objects.toString(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;
             g.drawString(text, x, y);

@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         while (ed.hasMoreElements()) {
             Integer i = (Integer) ed.nextElement();
             JLabel label = (JLabel) labelTable.get(i);
-            label.setText(String.valueOf(i / 100));
+            label.setText(Objects.toString(i / 100));
             // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
         }
         return slider;
