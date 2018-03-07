@@ -63,22 +63,25 @@ public final class MainPanel extends JPanel {
         JPanel colHeader = new JPanel(new GridBagLayout());
         colHeader.setBackground(Color.WHITE);
         GridBagConstraints cc = new GridBagConstraints();
-        // cc.anchor = GridBagConstraints.LINE_START;
-        JLabel label = null;
         for (int i = 0; i < CalendarViewListModel.WEEK_VIEW; i++) {
-            cc.gridwidth = 1;
+            // cc.gridwidth = 1;
             cc.gridx = i;
-            cc.gridy = 0;
+            // cc.gridy = 0;
             colHeader.add(Box.createHorizontalStrut(size.width), cc); // grid guides
-
+        }
+        cc.anchor = GridBagConstraints.LINE_START;
+        JLabel label = null;
+        cc.gridy = 1;
+        int minGridWidth = 4;
+        for (int i = 0; i < CalendarViewListModel.WEEK_VIEW - minGridWidth + 1; i++) {
+            cc.gridx = i;
             LocalDate date = weekList.getModel().getElementAt(i * DayOfWeek.values().length).date;
             // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
             // System.out.println(weekNumberOfMonth);
             boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth(); // ignore WeekFields#getMinimalDaysInFirstWeek()
-            cc.gridy = 1;
             if (isSimplyFirstWeekOfMonth) { // weekNumberOfMonth == 2) {
-                label = makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT_STANDALONE, l), font);
-                cc.gridwidth = 4;
+                label = makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font);
+                cc.gridwidth = minGridWidth;
                 colHeader.add(label, cc);
             } else if (Objects.isNull(label)) {
                 cc.gridwidth = 1;
