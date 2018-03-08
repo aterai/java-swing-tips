@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 setRenderer(new DefaultListCellRenderer() {
-                    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean hasFocus) {
-                        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+                    @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                         if (isSelected) {
                             l.setForeground(Color.WHITE);
                             l.setBackground(Color.ORANGE);
