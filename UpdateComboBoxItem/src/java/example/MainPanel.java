@@ -251,7 +251,7 @@ class CheckedComboBox4<E extends CheckableItem> extends CheckedComboBox<E> {
         if (isPopupVisible()) {
             E item = getItemAt(index);
             item.selected ^= true;
-            ComboBoxModel m = getModel();
+            ComboBoxModel<E> m = getModel();
             if (m instanceof CheckableComboBoxModel) {
                 ((CheckableComboBoxModel) m).fireContentsChanged(index);
             }
