@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new BorderLayout());
-        Font font = weekList.getFont().deriveFont(9f);
+        Font font = weekList.getFont().deriveFont(size.height - 1f);
 
         Locale l = Locale.getDefault();
         WeekFields weekFields = WeekFields.of(l);
