@@ -63,29 +63,19 @@ public final class MainPanel extends JPanel {
         JPanel colHeader = new JPanel(new GridBagLayout());
         colHeader.setBackground(Color.WHITE);
         GridBagConstraints cc = new GridBagConstraints();
-        for (int i = 0; i < CalendarViewListModel.WEEK_VIEW; i++) {
-            // cc.gridwidth = 1;
-            cc.gridx = i;
-            // cc.gridy = 0;
+        for (cc.gridx = 0; cc.gridx < CalendarViewListModel.WEEK_VIEW; cc.gridx++) {
             colHeader.add(Box.createHorizontalStrut(size.width), cc); // grid guides
         }
         cc.anchor = GridBagConstraints.LINE_START;
-        JLabel label = null;
         cc.gridy = 1;
-        int minGridWidth = 4;
-        for (int i = 0; i < CalendarViewListModel.WEEK_VIEW - minGridWidth + 1; i++) {
-            cc.gridx = i;
-            LocalDate date = weekList.getModel().getElementAt(i * DayOfWeek.values().length).date;
+        cc.gridwidth = 4; // use 4 columns to display the name of the month
+        for (cc.gridx = 0; cc.gridx < CalendarViewListModel.WEEK_VIEW - cc.gridwidth + 1; cc.gridx++) {
+            LocalDate date = weekList.getModel().getElementAt(cc.gridx * DayOfWeek.values().length).date;
             // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
             // System.out.println(weekNumberOfMonth);
             boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth(); // ignore WeekFields#getMinimalDaysInFirstWeek()
-            if (isSimplyFirstWeekOfMonth) { // weekNumberOfMonth == 2) {
-                label = makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font);
-                cc.gridwidth = minGridWidth;
-                colHeader.add(label, cc);
-            } else if (Objects.isNull(label)) {
-                cc.gridwidth = 1;
-                colHeader.add(Box.createHorizontalStrut(size.width), cc);
+            if (isSimplyFirstWeekOfMonth) {
+                colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), cc);
             }
         }
 
