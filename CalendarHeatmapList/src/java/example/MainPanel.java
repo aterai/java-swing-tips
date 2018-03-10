@@ -13,7 +13,7 @@ import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public final Dimension size = new Dimension(10, 10);
+    public static final Dimension CELLSZ = new Dimension(10, 10);
     public final LocalDate currentLocalDate = LocalDate.now();
     public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
         @Override public void updateUI() {
@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             setLayoutOrientation(JList.VERTICAL_WRAP);
             setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
-            setFixedCellWidth(size.width);
-            setFixedCellHeight(size.height);
+            setFixedCellWidth(CELLSZ.width);
+            setFixedCellHeight(CELLSZ.height);
             setCellRenderer(new ContributionListRenderer());
             getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
             setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -38,8 +38,36 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new BorderLayout());
-        Font font = weekList.getFont().deriveFont(size.height - 1f);
+        Font font = weekList.getFont().deriveFont(CELLSZ.height - 1f);
+        Component heatmap = makeWeekCalendar(weekList, font);
 
+        Box box = Box.createHorizontalBox();
+        box.add(makeLabel("Less", font));
+        box.add(Box.createHorizontalStrut(2));
+        activityIcons.forEach(icon -> {
+            box.add(new JLabel(icon));
+            box.add(Box.createHorizontalStrut(2));
+        });
+        box.add(makeLabel("More", font));
+
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
+        p.setBackground(Color.WHITE);
+
+        GridBagConstraints c = new GridBagConstraints();
+        p.add(heatmap, c);
+
+        c.insets = new Insets(10, 0, 2, 0);
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.LINE_END;
+        p.add(box, c);
+
+        add(p, BorderLayout.NORTH);
+        add(new JScrollPane(new JTextArea()));
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {
         Locale l = Locale.getDefault();
         WeekFields weekFields = WeekFields.of(l);
 
@@ -58,24 +86,24 @@ public final class MainPanel extends JPanel {
         rowHeader.setFont(font);
         rowHeader.setLayoutOrientation(JList.VERTICAL_WRAP);
         rowHeader.setVisibleRowCount(DayOfWeek.values().length);
-        rowHeader.setFixedCellHeight(size.height);
+        rowHeader.setFixedCellHeight(CELLSZ.height);
 
         JPanel colHeader = new JPanel(new GridBagLayout());
         colHeader.setBackground(Color.WHITE);
-        GridBagConstraints cc = new GridBagConstraints();
-        for (cc.gridx = 0; cc.gridx < CalendarViewListModel.WEEK_VIEW; cc.gridx++) {
-            colHeader.add(Box.createHorizontalStrut(size.width), cc); // grid guides
+        GridBagConstraints c = new GridBagConstraints();
+        for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW; c.gridx++) {
+            colHeader.add(Box.createHorizontalStrut(CELLSZ.width), c); // grid guides
         }
-        cc.anchor = GridBagConstraints.LINE_START;
-        cc.gridy = 1;
-        cc.gridwidth = 4; // use 4 columns to display the name of the month
-        for (cc.gridx = 0; cc.gridx < CalendarViewListModel.WEEK_VIEW - cc.gridwidth + 1; cc.gridx++) {
-            LocalDate date = weekList.getModel().getElementAt(cc.gridx * DayOfWeek.values().length).date;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridy = 1;
+        c.gridwidth = 4; // use 4 columns to display the name of the month
+        for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1; c.gridx++) {
+            LocalDate date = weekList.getModel().getElementAt(c.gridx * DayOfWeek.values().length).date;
             // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
             // System.out.println(weekNumberOfMonth);
             boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth(); // ignore WeekFields#getMinimalDaysInFirstWeek()
             if (isSimplyFirstWeekOfMonth) {
-                colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), cc);
+                colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
             }
         }
 
@@ -87,30 +115,7 @@ public final class MainPanel extends JPanel {
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setBackground(Color.WHITE);
 
-        Box box = Box.createHorizontalBox();
-        box.add(makeLabel("Less", font));
-        box.add(Box.createHorizontalStrut(2));
-        activityIcons.forEach(icon -> {
-            box.add(new JLabel(icon));
-            box.add(Box.createHorizontalStrut(2));
-        });
-        box.add(makeLabel("More", font));
-
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 10));
-        p.setBackground(Color.WHITE);
-        GridBagConstraints c = new GridBagConstraints();
-        p.add(scroll, c);
-
-        c.insets = new Insets(10, 0, 2, 0);
-        c.gridy = 1;
-        c.anchor = GridBagConstraints.LINE_END;
-        p.add(box, c);
-
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(new JTextArea()));
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        setPreferredSize(new Dimension(320, 240));
+        return scroll;
     }
     private class ContributionListRenderer implements ListCellRenderer<Contribution> {
         private final ListCellRenderer<? super Contribution> renderer = new DefaultListCellRenderer();
@@ -201,9 +206,9 @@ class ColorIcon implements Icon {
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return 8;
+        return MainPanel.CELLSZ.width - 2;
     }
     @Override public int getIconHeight() {
-        return 8;
+        return MainPanel.CELLSZ.height - 2;
     }
 }
