@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
                     bar2.setValue((Integer) s.value);
                     break;
                 case LOG:
-                    area.append((String) s.value);
+                    area.append(Objects.toString(s.value));
                     break;
                 default:
                     throw new AssertionError("Unknown Progress");
@@ -183,10 +183,10 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 }
 
 // public final class MainPanel extends JPanel {
-//     private final JTextArea area     = new JTextArea();
+//     private final JTextArea area = new JTextArea();
 //     private final JPanel statusPanel = new JPanel(new BorderLayout());
-//     private final JButton runButton  = new JButton(new RunAction());
-//     private final JButton canButton  = new JButton(new CancelAction());
+//     private final JButton runButton = new JButton(new RunAction());
+//     private final JButton canButton = new JButton(new CancelAction());
 //     private SwingWorker<String, String> worker;
 //
 //     public MainPanel() {

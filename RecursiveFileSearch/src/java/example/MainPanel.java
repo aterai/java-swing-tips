@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         openButton.addActionListener(e -> {
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             // fileChooser.setDialogTitle("...");
-            fileChooser.setSelectedFile(new File((String) dirCombo.getEditor().getItem()));
+            fileChooser.setSelectedFile(new File(Objects.toString(dirCombo.getEditor().getItem())));
             int fcSelected = fileChooser.showOpenDialog(getRootPane());
             String title = "title";
             if (fcSelected == JFileChooser.APPROVE_OPTION) {
@@ -136,7 +136,7 @@ public final class MainPanel extends JPanel {
 
     protected void updateComponentStatus(boolean start) {
         if (start) {
-            addItem(dirCombo, (String) dirCombo.getEditor().getItem(), 4);
+            addItem(dirCombo, Objects.toString(dirCombo.getEditor().getItem()), 4);
             statusPanel.setVisible(true);
             dirCombo.setEnabled(false);
             openButton.setEnabled(false);
@@ -169,7 +169,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected void executeWorker() {
-        File dir = new File((String) dirCombo.getSelectedItem());
+        File dir = new File(dirCombo.getItemAt(dirCombo.getSelectedIndex()));
         worker = new UITask(dir);
         worker.addPropertyChangeListener(new ProgressListener(progress));
         worker.execute();

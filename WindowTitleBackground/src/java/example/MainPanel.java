@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Optional;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
@@ -58,12 +58,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         table.setDefaultRenderer(Color.class, new ColorRenderer());
-        table.setDefaultEditor(Color.class,   new ColorEditor());
+        table.setDefaultEditor(Color.class, new ColorEditor());
 
         model.addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COLIDX) {
                 int row = e.getFirstRow();
-                String key = (String) model.getValueAt(row, KEY_COLIDX);
+                String key = Objects.toString(model.getValueAt(row, KEY_COLIDX));
                 Color color = (Color) model.getValueAt(row, COLOR_COLIDX);
                 UIManager.put(key, new ColorUIResource(color));
                 EventQueue.invokeLater(() -> Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI));
@@ -119,13 +119,13 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
     protected ColorEditor() {
         super();
-        //Set up the editor (from the table's point of view),
-        //which is a button.
-        //This button brings up the color chooser dialog,
-        //which is the editor from the user's point of view.
+        // Set up the editor (from the table's point of view),
+        // which is a button.
+        // This button brings up the color chooser dialog,
+        // which is the editor from the user's point of view.
         button.setActionCommand(EDIT);
         button.addActionListener(this);
-        //button.setBorderPainted(false);
+        // button.setBorderPainted(false);
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -133,7 +133,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-        //Set up the dialog that the button brings up.
+        // Set up the dialog that the button brings up.
         colorChooser = new JColorChooser();
         dialog = JColorChooser.createDialog(button, "Pick a Color", true, colorChooser, this, null);
     }
@@ -143,24 +143,24 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
      */
     @Override public void actionPerformed(ActionEvent e) {
         if (EDIT.equals(e.getActionCommand())) {
-            //The user has clicked the cell, so
-            //bring up the dialog.
+            // The user has clicked the cell, so
+            // bring up the dialog.
             button.setBackground(currentColor);
             button.setIcon(new ColorIcon(currentColor));
             colorChooser.setColor(currentColor);
             dialog.setVisible(true);
 
-            //Make the renderer reappear.
+            // Make the renderer reappear.
             fireEditingStopped();
-        } else { //User pressed dialog's "OK" button.
+        } else { // User pressed dialog's "OK" button.
             currentColor = colorChooser.getColor();
         }
     }
-    //Implement the one CellEditor method that AbstractCellEditor doesn't.
+    // Implement the one CellEditor method that AbstractCellEditor doesn't.
     @Override public Object getCellEditorValue() {
         return currentColor;
     }
-    //Implement the one method defined by TableCellEditor.
+    // Implement the one method defined by TableCellEditor.
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         currentColor = (Color) value;
         button.setIcon(new ColorIcon(currentColor));

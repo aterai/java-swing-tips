@@ -114,7 +114,7 @@ class CustomTooltipEditorPane extends JEditorPane {
                     tooltip = editor.getToolTipText();
                     Optional.ofNullable(e.getSourceElement())
                         .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
-                        .ifPresent(attr -> editor.setToolTipText((String) attr.getAttribute(HTML.Attribute.TITLE)));
+                        .ifPresent(attr -> editor.setToolTipText(Objects.toString(attr.getAttribute(HTML.Attribute.TITLE))));
 //                     Element elem = e.getSourceElement();
 //                     if (Objects.nonNull(elem)) {
 //                         AttributeSet attr = elem.getAttributes();
@@ -154,7 +154,7 @@ class CustomTooltipEditorPane extends JEditorPane {
         // if (elem != null) {
         AttributeSet a = elem.getAttributes();
         AttributeSet span = (AttributeSet) a.getAttribute(HTML.Tag.SPAN);
-        return Optional.ofNullable(span).map(s -> (String) s.getAttribute(HTML.Attribute.TITLE));
+        return Optional.ofNullable(span).map(s -> Objects.toString(s.getAttribute(HTML.Attribute.TITLE)));
     }
 }
 
@@ -172,7 +172,7 @@ class TooltipEditorKit extends HTMLEditorKit {
                             @Override public String getToolTipText(float x, float y, Shape allocation) {
                                 String s = super.getToolTipText(x, y, allocation);
                                 if (Objects.isNull(s)) {
-                                    s = (String) getElement().getAttributes().getAttribute(HTML.Attribute.TITLE);
+                                    s = Objects.toString(getElement().getAttributes().getAttribute(HTML.Attribute.TITLE));
                                 }
                                 return s;
                             }

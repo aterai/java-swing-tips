@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(e -> {
-            String pattern = (String) combo.getEditor().getItem();
+            String pattern = Objects.toString(combo.getEditor().getItem());
             if (addItem(combo, pattern, 4)) {
                 setHighlight(textArea, pattern);
             } else {

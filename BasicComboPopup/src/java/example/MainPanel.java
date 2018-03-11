@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
@@ -25,19 +25,21 @@ public class MainPanel extends JPanel {
         ActionMap amc = popup.getActionMap();
         amc.put("myUp", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                int index = combo.getSelectedIndex();
-                combo.setSelectedIndex(index == 0 ? combo.getItemCount() - 1 : index - 1);
+                int i = combo.getSelectedIndex();
+                combo.setSelectedIndex(i == 0 ? combo.getItemCount() - 1 : i - 1);
             }
         });
         amc.put("myDown", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                int index = combo.getSelectedIndex();
-                combo.setSelectedIndex(index == combo.getItemCount() - 1 ? 0 : index + 1);
+                int i = combo.getSelectedIndex();
+                combo.setSelectedIndex(i == combo.getItemCount() - 1 ? 0 : i + 1);
             }
         });
         amc.put("myEnt", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                append((String) combo.getSelectedItem());
+                int i = combo.getSelectedIndex();
+                Optional.ofNullable(combo.getItemAt(i))
+                    .ifPresent(MainPanel.this::append);
             }
         });
 
@@ -114,7 +116,7 @@ class EditorComboPopup extends BasicComboPopup {
         listener = new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 hide();
-                String str = (String) comboBox.getSelectedItem();
+                String str = Objects.toString(comboBox.getSelectedItem());
                 try {
                     Document doc = textArea.getDocument();
                     doc.insertString(textArea.getCaretPosition(), str, null);

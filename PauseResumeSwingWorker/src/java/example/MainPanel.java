@@ -10,9 +10,9 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private static final String PAUSE  = "pause";
+    private static final String PAUSE = "pause";
     private static final String RESUME = "resume";
-    private final JTextArea area  = new JTextArea();
+    private final JTextArea area = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton = new JButton("run");
     private final JButton cancelButton = new JButton("cancel");
@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
                     bar2.setValue((Integer) s.value);
                     break;
                 case LOG:
-                    area.append((String) s.value);
+                    area.append(Objects.toString(s.value));
                     break;
                 case PAUSE:
                     textProgress((Boolean) s.value);

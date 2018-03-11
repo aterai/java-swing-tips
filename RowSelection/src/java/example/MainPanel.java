@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -22,7 +23,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        //table.setRowSorter(new TableRowSorter<>(model));
+        // table.setRowSorter(new TableRowSorter<>(model));
 
         table.getSelectionModel().addListSelectionListener(e -> {
             if (e.getValueIsAdjusting()) {
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
     }
     private String getInfo() {
         int index = table.convertRowIndexToModel(table.getSelectedRow());
-        String  str = (String) model.getValueAt(index, 0);
+        String str = Objects.toString(model.getValueAt(index, 0));
         Integer idx = (Integer) model.getValueAt(index, 1);
         Boolean flg = (Boolean) model.getValueAt(index, 2);
         return String.format("%s, %d, %s", str, idx, flg);

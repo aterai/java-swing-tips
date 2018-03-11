@@ -250,7 +250,7 @@ class InitAction extends AbstractAction {
             // RowData test = model.getRowData(i);
             Vector<?> v = (Vector<?>) dv.get(i);
             // new RowData((String) v.get(1), (String) v.get(2));
-            nmodel.addRowData(new RowData((String) v.get(1), (String) v.get(2)));
+            nmodel.addRowData(new RowData(Objects.toString(v.get(1)), Objects.toString(v.get(2))));
         }
         JTableHeader h = table.getTableHeader();
         TableCellRenderer tcr = h.getDefaultRenderer();

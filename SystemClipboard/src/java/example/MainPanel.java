@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
                 if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
                 } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    str = (String) t.getTransferData(DataFlavor.stringFlavor);
+                    str = Objects.toString(t.getTransferData(DataFlavor.stringFlavor));
                 }
                 label.setText(str);
                 label.setIcon(image);

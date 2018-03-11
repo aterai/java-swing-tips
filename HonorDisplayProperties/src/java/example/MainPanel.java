@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Enumeration;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
@@ -15,20 +15,20 @@ public final class MainPanel extends JPanel {
         JEditorPane editor = new JEditorPane("text/html", "");
         editor.setFont(new Font("Serif", Font.PLAIN, 16));
 
-        //StyleSheet styleSheet = new StyleSheet();
-        //styleSheet.addRule("body {font-size: 16pt;}");
-        //styleSheet.addRule("h1 {font-size: 64pt;}");
-        //htmlEditorKit.setStyleSheet(styleSheet);
-        //editor.setEditorKit(htmlEditorKit);
+        // StyleSheet styleSheet = new StyleSheet();
+        // styleSheet.addRule("body {font-size: 16pt;}");
+        // styleSheet.addRule("h1 {font-size: 64pt;}");
+        // htmlEditorKit.setStyleSheet(styleSheet);
+        // editor.setEditorKit(htmlEditorKit);
 
         StringBuilder buf = new StringBuilder(300);
         buf.append("<html>JEditorPane#setFont(new Font('Serif', Font.PLAIN, 16));<br />");
         HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
         StyleSheet styles = htmlEditorKit.getStyleSheet();
-        //System.out.println(styles);
+        // System.out.println(styles);
         Enumeration<?> rules = styles.getStyleNames();
         while (rules.hasMoreElements()) {
-            String name = (String) rules.nextElement();
+            String name = Objects.toString(rules.nextElement());
             if ("body".equals(name)) {
                 Style rule = styles.getRule(name);
                 Enumeration<?> attrs = rule.getAttributeNames();
@@ -43,9 +43,9 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("JEditorPane.HONOR_DISPLAY_PROPERTIES");
         check.addActionListener(e -> {
             editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, ((JCheckBox) e.getSource()).isSelected());
-            //HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
-            //StyleSheet styles = htmlEditorKit.getStyleSheet();
-            //styles.addRule("body {font-size: 64pt;}");
+            // HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
+            // StyleSheet styles = htmlEditorKit.getStyleSheet();
+            // styles.addRule("body {font-size: 64pt;}");
         });
 
         add(check, BorderLayout.NORTH);

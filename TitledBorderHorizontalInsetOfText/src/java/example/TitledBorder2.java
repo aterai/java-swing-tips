@@ -609,7 +609,7 @@ public class TitledBorder2 extends AbstractBorder {
                 return i;
             }
         } else if (value instanceof String) {
-            String s = (String) value;
+            String s = Objects.toString(value);
             if ("ABOVE_TOP".equalsIgnoreCase(s)) {
                 return ABOVE_TOP;
             }

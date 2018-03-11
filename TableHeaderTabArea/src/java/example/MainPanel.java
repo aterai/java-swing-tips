@@ -111,7 +111,7 @@ class TableHeaderTabbedPane extends JPanel {
                 return;
             }
             Object title = model.getColumn(idx).getHeaderValue();
-            cardLayout.show(contentsPanel, (String) title);
+            cardLayout.show(contentsPanel, Objects.toString(title));
             selectedColumn = title;
         }
         @Override public void mouseEntered(MouseEvent e) {
