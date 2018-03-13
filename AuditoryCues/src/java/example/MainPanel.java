@@ -7,8 +7,8 @@ import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-// Swing Changes and New Features
-// https://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
+// Auditory Feedback for Swing Components - Swing Changes and New Features
+// https://docs.oracle.com/javase/8/docs/technotes/guides/swing/1.4/SwingChanges.html#bug4290988
 // Magic with Merlin: Swinging audio
 // https://www.ibm.com/developerworks/java/library/j-mer0730/
 public final class MainPanel extends JPanel {
