@@ -49,8 +49,9 @@ public final class MainPanel extends JPanel {
                 setHorizontalAlignment(SwingConstants.CENTER);
                 if (value instanceof DayOfWeek) {
                     DayOfWeek dow = (DayOfWeek) value;
-                    String s = dow.getDisplayName(TextStyle.SHORT_STANDALONE, l);
-                    setText(s.substring(0, Math.min(2, s.length())));
+                    // String s = dow.getDisplayName(TextStyle.SHORT_STANDALONE, l);
+                    // setText(s.substring(0, Math.min(2, s.length())));
+                    setText(dow.getDisplayName(TextStyle.SHORT_STANDALONE, l));
                     setBackground(new Color(220, 220, 220));
                 }
                 return this;
@@ -158,7 +159,7 @@ public final class MainPanel extends JPanel {
     }
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;
-        yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
+        yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MMMM").withLocale(Locale.getDefault())));
         monthList.setModel(new CalendarViewListModel(localDate));
     }
     private class CalendarListRenderer implements ListCellRenderer<LocalDate> {
