@@ -19,6 +19,11 @@ public final class MainPanel extends JPanel {
 
         FileFilter filter = new FileNameExtensionFilter("*.jpg, *.jpeg", "jpg", "jpeg");
         fileChooser.addChoosableFileFilter(filter);
+        fileChooser.setFileFilter(filter);
+
+        // [JDK-4776197] JFileChooser has an easy-to-fix but serious performance bug - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-4776197
+        // fileChooser.setFileFilter(fileChooser.getAcceptAllFileFilter());
 
         JButton button = new JButton("showOpenDialog");
         button.addActionListener(e -> {
