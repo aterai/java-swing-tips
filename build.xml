@@ -433,7 +433,7 @@
     </checkstyle>
   </target>
 
-  <target name="reports" depends="clean,findbugs,pmd,checkstyle">
+  <target name="reports" depends="clean,spotbugs,pmd,checkstyle">
   </target>
 
   <fileset id="ftp.upload.fileset" dir="${build.dir}">
