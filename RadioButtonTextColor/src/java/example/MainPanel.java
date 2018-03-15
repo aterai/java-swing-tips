@@ -23,12 +23,13 @@ public final class MainPanel extends JPanel {
 
         Box box1 = Box.createVerticalBox();
         box1.setBorder(BorderFactory.createTitledBorder("Text Color"));
-        IntStream.range(4, 8).forEach(i -> {
-            JRadioButton b = new ColorRadioButton("Text: " + i);
-            bg.add(b);
-            box1.add(b);
-            box1.add(Box.createVerticalStrut(5));
-        });
+        IntStream.range(4, 8)
+            .mapToObj(i -> new ColorRadioButton("Text: " + i))
+            .forEach(b -> {
+                bg.add(b);
+                box1.add(b);
+                box1.add(Box.createVerticalStrut(5));
+            });
 
         Box box2 = Box.createVerticalBox();
         box2.setBorder(BorderFactory.createTitledBorder("Icon Color"));
@@ -105,8 +106,8 @@ class ColorRadioButton extends JRadioButton {
 }
 
 class DefaultIcon implements Icon {
-    protected static final Color DEFAULT_COLOR  = Color.BLACK;
-    protected static final Color PRESSED_COLOR  = Color.GREEN;
+    protected static final Color DEFAULT_COLOR = Color.BLACK;
+    protected static final Color PRESSED_COLOR = Color.GREEN;
     protected static final Color SELECTED_COLOR = Color.RED;
     protected static final Color ROLLOVER_COLOR = Color.BLUE;
     protected static final int ICON_SIZE = 16;
@@ -114,7 +115,7 @@ class DefaultIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(DEFAULT_COLOR);
-        g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+        g2.drawRect(0, 0, getIconWidth() - 1, getIconHeight() - 1);
         g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
         g2.dispose();
     }
@@ -131,7 +132,7 @@ class PressedIcon extends DefaultIcon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(PRESSED_COLOR);
-        g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+        g2.drawRect(0, 0, getIconWidth() - 1, getIconHeight() - 1);
         g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
         g2.setPaint(SELECTED_COLOR);
@@ -145,7 +146,7 @@ class SelectedIcon extends DefaultIcon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(SELECTED_COLOR);
-        g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+        g2.drawRect(0, 0, getIconWidth() - 1, getIconHeight() - 1);
         g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
         g2.setPaint(PRESSED_COLOR);
@@ -159,7 +160,7 @@ class RolloverIcon extends DefaultIcon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(ROLLOVER_COLOR);
-        g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+        g2.drawRect(0, 0, getIconWidth() - 1, getIconHeight() - 1);
         g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
         g2.dispose();
     }

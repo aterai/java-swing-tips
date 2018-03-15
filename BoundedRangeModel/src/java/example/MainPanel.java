@@ -26,7 +26,10 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i % 19 == 0 || i % 17 == 0 ? PATTERN : "aaaaa", ""}));
+        IntStream.range(0, 100)
+            .mapToObj(i -> i % 19 == 0 || i % 17 == 0 ? PATTERN : "aaaaa")
+            .map(s -> new Object[] {s, ""})
+            .forEach(model::addRow);
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
