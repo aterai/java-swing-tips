@@ -65,10 +65,9 @@ public final class MainPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
-                int maxHeight = 0;
-                for (JButton b: list) {
-                    maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
-                }
+                int maxHeight = list.stream()
+                    .map(b -> b.getPreferredSize().height)
+                    .reduce(0, Integer::max);
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
@@ -92,10 +91,9 @@ public final class MainPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
-                int maxHeight = 0;
-                for (JButton b: list) {
-                    maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
-                }
+                int maxHeight = list.stream()
+                    .map(b -> b.getPreferredSize().height)
+                    .reduce(0, Integer::max);
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
@@ -129,10 +127,9 @@ public final class MainPanel extends JPanel {
                 list.forEach(b -> b.setPreferredSize(null));
                 super.updateUI();
                 EventQueue.invokeLater(() -> {
-                    int maxHeight = 0;
-                    for (JButton b: list) {
-                        maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
-                    }
+                    int maxHeight = list.stream()
+                        .map(b -> b.getPreferredSize().height)
+                        .reduce(0, Integer::max);
                     Dimension d = new Dimension(buttonWidth, maxHeight);
                     list.forEach(b -> b.setPreferredSize(d));
                     revalidate();
