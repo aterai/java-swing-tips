@@ -21,13 +21,13 @@ public final class MainPanel extends JPanel {
         editor.setEditable(false);
         editor.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                BrowserLauncher.openURL(MYSITE);
+                BrowserLauncher.openUrl(MYSITE);
                 textArea.setText(e.toString());
             }
         });
         JPanel p = new JPanel();
         p.add(editor);
-        p.setBorder(BorderFactory.createTitledBorder("BrowserLauncher.openURL(...)"));
+        p.setBorder(BorderFactory.createTitledBorder("BrowserLauncher.openUrl(...)"));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
@@ -62,20 +62,21 @@ public final class MainPanel extends JPanel {
 //  Supports: Mac OS X, GNU/Linux, Unix, Windows XP    //
 //  Example Usage:                                     //
 //     String url = "http://www.centerkey.com/";       //
-//     BareBonesBrowserLaunch.openURL(url);            //
+//     BareBonesBrowserLaunch.openUrl(url);            //
 //  Public Domain Software -- Free to Use as You Like  //
 /////////////////////////////////////////////////////////
 // class BareBonesBrowserLaunch {
 final class BrowserLauncher {
     private static final String ERR_MSG = "Error attempting to launch web browser";
     private BrowserLauncher() { /* Singleton */ }
-    public static void openURL(String url) {
+    public static void openUrl(String url) {
         String osName = System.getProperty("os.name");
         try {
             if (osName.startsWith("Mac OS")) {
                 Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
                 // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
-                @SuppressWarnings("unchecked") Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
+                @SuppressWarnings({"unchecked", "checkstyle:abbreviationaswordinname"})
+                Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
                 openURL.invoke(null, new Object[] {url});
             } else if (osName.startsWith("Windows")) {
                 Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);

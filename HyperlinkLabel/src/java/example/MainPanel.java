@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 
         c.gridx = 1;
         c.anchor = GridBagConstraints.LINE_START;
-        add(new URLLabel(siteLink), c);
+        add(new UrlLabel(siteLink), c);
         add(new JButton(browseAction), c);
         add(new HyperlinkButton(browseAction), c);
         add(editor, c);
@@ -86,9 +86,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class URLLabel extends JLabel {
+class UrlLabel extends JLabel {
     private transient MouseListener handler;
-    protected URLLabel(String h) {
+    protected UrlLabel(String h) {
         super(String.format("<html><a href='%s'>%s", h, h));
     }
     @Override public void updateUI() {

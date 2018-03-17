@@ -337,7 +337,7 @@
             <property name="arrayInitIndent" value="4"/>
         </module>
         <module name="AbbreviationAsWordInName">
-            <property name="allowedAbbreviations" value="URL,GUI,UI"/>
+            <property name="allowedAbbreviations" value="GUI,UI"/>
             <property name="allowedAbbreviationLength" value="1"/>
         </module>
         <module name="OverloadMethodsDeclarationOrder"/>

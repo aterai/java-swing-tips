@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
         ImageIcon image2 = new ImageIcon(getClass().getResource("16x16.png"));
         ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
 
-        JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
+        JComboBox<UrlItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
         initComboBox(combo01);
 
-        JComboBox<URLItem> combo02 = new URLItemComboBox(makeTestModel(image1, image2), rss);
+        JComboBox<UrlItem> combo02 = new UrlItemComboBox(makeTestModel(image1, image2), rss);
         initComboBox(combo02);
 
         Box box = Box.createVerticalBox();
@@ -35,22 +35,22 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static DefaultComboBoxModel<URLItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
-        DefaultComboBoxModel<URLItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new URLItem("https://ateraimemo.com/", image1, true));
-        model.addElement(new URLItem("https://ateraimemo.com/Swing.html", image1, true));
-        model.addElement(new URLItem("https://ateraimemo.com/JavaWebStart.html", image1, true));
-        model.addElement(new URLItem("https://github.com/aterai/java-swing-tips", image2, true));
-        model.addElement(new URLItem("https://java-swing-tips.blogspot.com/", image2, true));
-        model.addElement(new URLItem("http://www.example.com/", image2, false));
+    private static DefaultComboBoxModel<UrlItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
+        DefaultComboBoxModel<UrlItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new UrlItem("https://ateraimemo.com/", image1, true));
+        model.addElement(new UrlItem("https://ateraimemo.com/Swing.html", image1, true));
+        model.addElement(new UrlItem("https://ateraimemo.com/JavaWebStart.html", image1, true));
+        model.addElement(new UrlItem("https://github.com/aterai/java-swing-tips", image2, true));
+        model.addElement(new UrlItem("https://java-swing-tips.blogspot.com/", image2, true));
+        model.addElement(new UrlItem("http://www.example.com/", image2, false));
         return model;
     }
-    private static void initComboBox(JComboBox<URLItem> combo) {
+    private static void initComboBox(JComboBox<UrlItem> combo) {
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                c.setIcon(((URLItem) value).favicon);
+                c.setIcon(((UrlItem) value).favicon);
                 return c;
             }
         });
@@ -78,8 +78,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class URLItemComboBox extends JComboBox<URLItem> {
-    protected URLItemComboBox(DefaultComboBoxModel<URLItem> model, ImageIcon rss) {
+class UrlItemComboBox extends JComboBox<UrlItem> {
+    protected UrlItemComboBox(DefaultComboBoxModel<UrlItem> model, ImageIcon rss) {
         super(model);
 
         JTextField field = (JTextField) getEditor().getEditorComponent();
@@ -95,7 +95,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
                 button.setVisible(false);
             }
             @Override public void focusLost(FocusEvent e) {
-                getURLItemFromModel(model, field.getText()).ifPresent(item -> {
+                getUrlItemFromModel(model, field.getText()).ifPresent(item -> {
                     model.removeElement(item);
                     model.insertElementAt(item, 0);
                     label.setIcon(item.favicon);
@@ -111,8 +111,8 @@ class URLItemComboBox extends JComboBox<URLItem> {
         });
         updateFavicon(model, label);
     }
-    private void updateFavicon(ComboBoxModel<URLItem> model, JLabel l) {
-        EventQueue.invokeLater(() -> getURLItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
+    private void updateFavicon(ComboBoxModel<UrlItem> model, JLabel l) {
+        EventQueue.invokeLater(() -> getUrlItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
     }
     private static JButton makeRssButton(ImageIcon rss) {
         JButton button = new JButton(rss);
@@ -142,19 +142,19 @@ class URLItemComboBox extends JComboBox<URLItem> {
         label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return label;
     }
-    protected Optional<URLItem> getURLItemFromModel(ComboBoxModel<URLItem> model, Object o) {
-        if (o instanceof URLItem) {
-            return Optional.of((URLItem) o);
+    protected Optional<UrlItem> getUrlItemFromModel(ComboBoxModel<UrlItem> model, Object o) {
+        if (o instanceof UrlItem) {
+            return Optional.of((UrlItem) o);
         }
         String str = Objects.toString(o, "");
         return IntStream.range(0, model.getSize())
             .mapToObj(model::getElementAt)
             .filter(ui -> ui.url.equals(str))
             .findFirst();
-//         DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
-//         URLItem item = null;
+//         DefaultComboBoxModel<UrlItem> model = (DefaultComboBoxModel<UrlItem>) getModel();
+//         UrlItem item = null;
 //         for (int i = 0; i < model.getSize(); i++) {
-//             URLItem tmp = model.getElementAt(i);
+//             UrlItem tmp = model.getElementAt(i);
 //             if (tmp.url.equals(text)) {
 //                 item = tmp;
 //                 break;
@@ -257,11 +257,11 @@ class ComboBoxLayout implements LayoutManager {
     }
 }
 
-class URLItem {
+class UrlItem {
     public final String url;
     public final ImageIcon favicon;
     public final boolean hasRss;
-    protected URLItem(String url, ImageIcon icon, boolean hasRss) {
+    protected UrlItem(String url, ImageIcon icon, boolean hasRss) {
         this.url = url;
         this.favicon = icon;
         this.hasRss = hasRss;

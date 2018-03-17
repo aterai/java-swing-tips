@@ -10,7 +10,7 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        URL[] icons = {getIconURL("wi0062-16.png"), getIconURL("wi0063-16.png"), getIconURL("wi0064-16.png")};
+        URL[] icons = {getIconUrl("wi0062-16.png"), getIconUrl("wi0063-16.png"), getIconUrl("wi0064-16.png")};
         String[] columnNames = {"Column1", "Column2", "Column3"};
         JTable table = new JTable(new DefaultTableModel(columnNames, 8));
         TableColumnModel m = table.getColumnModel();
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    private URL getIconURL(String str) {
+    private URL getIconUrl(String str) {
         return getClass().getResource(str);
     }
     public static void main(String... args) {

@@ -14,8 +14,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
-    private final JButton runButton  = new JButton("Load");
-    //private transient SwingWorker<String, Chunk> worker;
+    private final JButton runButton = new JButton("Load");
+    // private transient SwingWorker<String, Chunk> worker;
     private transient ProgressMonitor monitor;
 
     public MainPanel() {
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         b.setEnabled(false);
         textArea.setText("");
 
-        URLConnection urlConnection = getURLConnection();
+        URLConnection urlConnection = getUrlConnection();
         if (Objects.isNull(urlConnection)) {
             return;
         }
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
             InputStream is = urlConnection.getInputStream();
             ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getTopLevelAncestor(), "Loading", is);
             monitor = pmis.getProgressMonitor();
-            monitor.setNote(" "); //Need for JLabel#getPreferredSize
+            monitor.setNote(" "); // Need for JLabel#getPreferredSize
             monitor.setMillisToDecideToPopup(0);
             monitor.setMillisToPopup(0);
             monitor.setMinimum(0);
@@ -80,14 +80,14 @@ public final class MainPanel extends JPanel {
         return cs;
     }
 
-    private static URLConnection getURLConnection() {
-        //Random random = new Random();
-        //Charset cs = Charset.forName("EUC-JP");
-        int index = 19; //1 + random.nextInt(27-1);
+    private static URLConnection getUrlConnection() {
+        // Random random = new Random();
+        // Charset cs = Charset.forName("EUC-JP");
+        int index = 19; // 1 + random.nextInt(27-1);
         String path = String.format("https://docs.oracle.com/javase/8/docs/api/index-files/index-%d.html", index);
-        //String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
-        //String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
-        //String path = "https://ateraimemo.com/";
+        // String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
+        // String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
+        // String path = "https://ateraimemo.com/";
         System.out.println(path);
 
         URLConnection urlConnection = null;
@@ -158,7 +158,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -193,11 +193,11 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
 //             int size = 0;
 //             String line;
 //             while ((line = reader.readLine()) != null) {
-//                 if (i % 50 == 0) { //Wait
+//                 if (i % 50 == 0) { // Wait
 //                     Thread.sleep(10);
 //                 }
 //                 i++;
-//                 size += line.getBytes(cs).length + 1; //+1: \n
+//                 size += line.getBytes(cs).length + 1; // +1: \n
 //                 String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
 //                 publish(new Chunk(line, note));
 //             }
@@ -210,12 +210,12 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
             int i = 0;
             int size = 0;
             while (scanner.hasNextLine()) {
-                if (i % 50 == 0) { //Wait
+                if (i % 50 == 0) { // Wait
                     Thread.sleep(10);
                 }
                 i++;
                 String line = scanner.nextLine();
-                size += line.getBytes(cs).length + 1; //+1: \n
+                size += line.getBytes(cs).length + 1; // +1: \n
                 String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
                 publish(new Chunk(line, note));
             }
