@@ -15,28 +15,27 @@ public final class MainPanel extends JPanel {
 
         JTabbedPane tabbedPane0 = new CloseableTabbedPane();
         JTabbedPane tabbedPane1 = new JTabbedPane();
-        for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
+        Arrays.asList(tabbedPane0, tabbedPane1).forEach(t -> {
             t.addTab("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new JLabel("aaa"));
             t.addTab("bbbbbbbbaa", new JLabel("bbb"));
             t.addTab("ccc", new JLabel("ccc"));
             t.addTab("d", new JLabel("ddd"));
-        }
+        });
 
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 JPanel gp = new CloseableTabbedPaneGlassPane(tabbedPane);
-//                 tabbedPane.getRootPane().setGlassPane(gp);
-//                 gp.setOpaque(false);
-//                 gp.setVisible(true);
-//             }
-//         });
+        // TEST:
+        // EventQueue.invokeLater(new Runnable() {
+        //     @Override public void run() {
+        //         JPanel gp = new CloseableTabbedPaneGlassPane(tabbedPane);
+        //         tabbedPane.getRootPane().setGlassPane(gp);
+        //         gp.setOpaque(false);
+        //         gp.setVisible(true);
+        //     }
+        // });
 
         JButton addTabButton = new JButton("add tab");
         addTabButton.addActionListener(e -> {
             String title = LocalTime.now().toString();
-            for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
-                t.addTab(title, new JLabel(title));
-            }
+            Arrays.asList(tabbedPane0, tabbedPane1).forEach(t -> t.addTab(title, new JLabel(title)));
         });
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -81,12 +80,12 @@ class CloseTabIcon implements Icon {
         } else {
             g2.setPaint(Color.BLACK);
         }
-        g2.drawLine(4,  4, 11, 11);
-        g2.drawLine(4,  5, 10, 11);
-        g2.drawLine(5,  4, 11, 10);
-        g2.drawLine(11, 4,  4, 11);
-        g2.drawLine(11, 5,  5, 11);
-        g2.drawLine(10, 4,  4, 10);
+        g2.drawLine(4, 4, 11, 11);
+        g2.drawLine(4, 5, 10, 11);
+        g2.drawLine(5, 4, 11, 10);
+        g2.drawLine(11, 4, 4, 11);
+        g2.drawLine(11, 5, 5, 11);
+        g2.drawLine(10, 4, 4, 10);
         g2.dispose();
     }
     @Override public int getIconWidth() {

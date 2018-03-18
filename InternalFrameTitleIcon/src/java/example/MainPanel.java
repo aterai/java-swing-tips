@@ -7,12 +7,11 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JDesktopPane desktop = new JDesktopPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
+        JDesktopPane desktop = new JDesktopPane();
         int idx = 0;
-        for (Color c: Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
+        Arrays.asList(Color.RED, Color.GREEN, Color.BLUE).forEach(c -> {
             String s = String.format("Document #%s", ++idx);
             JInternalFrame f = new JInternalFrame(s, true, true, true, true);
             desktop.add(f);
@@ -20,7 +19,7 @@ public final class MainPanel extends JPanel {
             f.setSize(240, 120);
             f.setLocation(10 + 20 * idx, 20 * idx);
             f.setVisible(true);
-        }
+        });
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }

@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
         map.put("Button1", b1);
         map.put("Button2", b2);
         ActionListener al = e -> Optional.ofNullable(box.getRootPane()).ifPresent(r -> r.setDefaultButton(map.get(bg.getSelection().getActionCommand())));
-        for (String key: map.keySet()) {
+        map.keySet().stream().forEach(key -> {
             JRadioButton r = new JRadioButton(key);
             r.setActionCommand(key);
             r.addActionListener(al);
             bg.add(r);
             box.add(r);
-        }
+        });
         box.add(Box.createHorizontalGlue());
         box.setBorder(BorderFactory.createTitledBorder("JRootPane#setDefaultButton: "));
         bg.getElements().nextElement().setSelected(true);

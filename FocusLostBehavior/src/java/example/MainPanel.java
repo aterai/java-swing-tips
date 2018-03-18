@@ -29,9 +29,8 @@ public final class MainPanel extends JPanel {
             // formatter.setCommitsOnValidEdit(true);
             // formatter.setPlaceholder("_");
             // formatter.setPlaceholderCharacter('?');
-            for (JFormattedTextField f: Arrays.asList(field0, field1, field2, field3)) {
-                f.setFormatterFactory(new DefaultFormatterFactory(formatter));
-            }
+            // DefaultFormatterFactory ff = new DefaultFormatterFactory(formatter);
+            Arrays.asList(field0, field1, field2, field3).forEach(f -> f.setFormatterFactory(new DefaultFormatterFactory(formatter)));
             check.addActionListener(e -> formatter.setCommitsOnValidEdit(((JCheckBox) e.getSource()).isSelected()));
         } catch (ParseException ex) {
             ex.printStackTrace();
