@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
         ImageIcon image2 = new ImageIcon(getClass().getResource("16x16.png"));
         ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
 
-        JComboBox<UrlItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
+        JComboBox<SiteItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
         initComboBox(combo01);
 
-        JComboBox<UrlItem> combo02 = new UrlItemComboBox(makeTestModel(image1, image2), rss);
+        JComboBox<SiteItem> combo02 = new SiteItemComboBox(makeTestModel(image1, image2), rss);
         initComboBox(combo02);
 
         Box box = Box.createVerticalBox();
@@ -35,22 +35,22 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static DefaultComboBoxModel<UrlItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
-        DefaultComboBoxModel<UrlItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new UrlItem("https://ateraimemo.com/", image1, true));
-        model.addElement(new UrlItem("https://ateraimemo.com/Swing.html", image1, true));
-        model.addElement(new UrlItem("https://ateraimemo.com/JavaWebStart.html", image1, true));
-        model.addElement(new UrlItem("https://github.com/aterai/java-swing-tips", image2, true));
-        model.addElement(new UrlItem("https://java-swing-tips.blogspot.com/", image2, true));
-        model.addElement(new UrlItem("http://www.example.com/", image2, false));
+    private static DefaultComboBoxModel<SiteItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
+        DefaultComboBoxModel<SiteItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new SiteItem("https://ateraimemo.com/", image1, true));
+        model.addElement(new SiteItem("https://ateraimemo.com/Swing.html", image1, true));
+        model.addElement(new SiteItem("https://ateraimemo.com/JavaWebStart.html", image1, true));
+        model.addElement(new SiteItem("https://github.com/aterai/java-swing-tips", image2, true));
+        model.addElement(new SiteItem("https://java-swing-tips.blogspot.com/", image2, true));
+        model.addElement(new SiteItem("http://www.example.com/", image2, false));
         return model;
     }
-    private static void initComboBox(JComboBox<UrlItem> combo) {
+    private static void initComboBox(JComboBox<SiteItem> combo) {
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                c.setIcon(((UrlItem) value).favicon);
+                c.setIcon(((SiteItem) value).favicon);
                 return c;
             }
         });
@@ -78,41 +78,41 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class UrlItemComboBox extends JComboBox<UrlItem> {
-    protected UrlItemComboBox(DefaultComboBoxModel<UrlItem> model, ImageIcon rss) {
+class SiteItemComboBox extends JComboBox<SiteItem> {
+    protected SiteItemComboBox(DefaultComboBoxModel<SiteItem> model, ImageIcon rss) {
         super(model);
 
         JTextField field = (JTextField) getEditor().getEditorComponent();
-        JButton button = makeRssButton(rss);
-        JLabel label = makeLabel(field);
-        setLayout(new ComboBoxLayout(label, button));
-        add(button);
-        add(label);
+        JButton feedButton = makeRssButton(rss);
+        JLabel favicon = makeLabel(field);
+        setLayout(new SiteComboBoxLayout(favicon, feedButton));
+        add(feedButton);
+        add(favicon);
 
         field.addFocusListener(new FocusListener() {
             @Override public void focusGained(FocusEvent e) {
                 // field.setBorder(BorderFactory.createEmptyBorder(0, 16 + 4, 0, 0));
-                button.setVisible(false);
+                feedButton.setVisible(false);
             }
             @Override public void focusLost(FocusEvent e) {
-                getUrlItemFromModel(model, field.getText()).ifPresent(item -> {
+                getSiteItemFromModel(model, field.getText()).ifPresent(item -> {
                     model.removeElement(item);
                     model.insertElementAt(item, 0);
-                    label.setIcon(item.favicon);
-                    button.setVisible(item.hasRss);
+                    favicon.setIcon(item.favicon);
+                    feedButton.setVisible(item.hasRss);
                     setSelectedIndex(0);
                 });
             }
         });
         addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateFavicon(model, label);
+                updateFavicon(model, favicon);
             }
         });
-        updateFavicon(model, label);
+        updateFavicon(model, favicon);
     }
-    private void updateFavicon(ComboBoxModel<UrlItem> model, JLabel l) {
-        EventQueue.invokeLater(() -> getUrlItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
+    private void updateFavicon(ComboBoxModel<SiteItem> model, JLabel l) {
+        EventQueue.invokeLater(() -> getSiteItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
     }
     private static JButton makeRssButton(ImageIcon rss) {
         JButton button = new JButton(rss);
@@ -142,19 +142,19 @@ class UrlItemComboBox extends JComboBox<UrlItem> {
         label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return label;
     }
-    protected Optional<UrlItem> getUrlItemFromModel(ComboBoxModel<UrlItem> model, Object o) {
-        if (o instanceof UrlItem) {
-            return Optional.of((UrlItem) o);
+    protected Optional<SiteItem> getSiteItemFromModel(ComboBoxModel<SiteItem> model, Object o) {
+        if (o instanceof SiteItem) {
+            return Optional.of((SiteItem) o);
         }
         String str = Objects.toString(o, "");
         return IntStream.range(0, model.getSize())
             .mapToObj(model::getElementAt)
             .filter(ui -> ui.url.equals(str))
             .findFirst();
-//         DefaultComboBoxModel<UrlItem> model = (DefaultComboBoxModel<UrlItem>) getModel();
-//         UrlItem item = null;
+//         DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
+//         SiteItem item = null;
 //         for (int i = 0; i < model.getSize(); i++) {
-//             UrlItem tmp = model.getElementAt(i);
+//             SiteItem tmp = model.getElementAt(i);
 //             if (tmp.url.equals(text)) {
 //                 item = tmp;
 //                 break;
@@ -194,12 +194,12 @@ class UrlItemComboBox extends JComboBox<UrlItem> {
 //     }
 }
 
-class ComboBoxLayout implements LayoutManager {
-    private final JLabel label;
-    private final JButton button;
-    protected ComboBoxLayout(JLabel label, JButton button) {
-        this.label = label;
-        this.button = button;
+class SiteComboBoxLayout implements LayoutManager {
+    private final JLabel favicon;
+    private final JButton feedButton;
+    protected SiteComboBoxLayout(JLabel favicon, JButton feedButton) {
+        this.favicon = favicon;
+        this.feedButton = feedButton;
     }
     @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
     @Override public void removeLayoutComponent(Component comp) { /* not needed */ }
@@ -217,51 +217,58 @@ class ComboBoxLayout implements LayoutManager {
         int width = cb.getWidth();
         int height = cb.getHeight();
         Insets insets = cb.getInsets();
-        int buttonHeight = height - insets.top - insets.bottom;
-        int buttonWidth = buttonHeight;
-        int labelWidth = buttonHeight;
-        int loupeWidth; // = buttonHeight;
+        int arrowHeight = height - insets.top - insets.bottom;
+        int arrowWidth = arrowHeight;
+        int faviconWidth = arrowHeight;
+        int feedWidth; // = arrowHeight;
 
+        // Arrow Icon JButton
         JButton arrowButton = (JButton) cb.getComponent(0);
         if (Objects.nonNull(arrowButton)) {
             Insets arrowInsets = arrowButton.getInsets();
-            buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-            arrowButton.setBounds(width - insets.right - buttonWidth, insets.top, buttonWidth, buttonHeight);
+            arrowWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+            arrowButton.setBounds(width - insets.right - arrowWidth, insets.top, arrowWidth, arrowHeight);
         }
-        if (Objects.nonNull(label)) {
-            Insets labelInsets = label.getInsets();
-            labelWidth = label.getPreferredSize().width + labelInsets.left + labelInsets.right;
-            label.setBounds(insets.left, insets.top, labelWidth, buttonHeight);
+
+        // Favicon JLabel
+        if (Objects.nonNull(favicon)) {
+            Insets faviconInsets = favicon.getInsets();
+            faviconWidth = favicon.getPreferredSize().width + faviconInsets.left + faviconInsets.right;
+            favicon.setBounds(insets.left, insets.top, faviconWidth, arrowHeight);
         }
-        JButton rssButton = button;
+
+        // JButton rssButton = feedButton;
         // for (Component c: cb.getComponents()) {
         //     if ("ComboBox.rssButton".equals(c.getName())) {
         //         rssButton = (JButton) c;
         //         break;
         //     }
         // }
-        if (Objects.nonNull(rssButton) && rssButton.isVisible()) {
-            Insets loupeInsets = rssButton.getInsets();
-            loupeWidth = rssButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
-            rssButton.setBounds(width - insets.right - loupeWidth - buttonWidth, insets.top, loupeWidth, buttonHeight);
+
+        // Feed Icon JButton
+        if (Objects.nonNull(feedButton) && feedButton.isVisible()) {
+            Insets feedInsets = feedButton.getInsets();
+            feedWidth = feedButton.getPreferredSize().width + feedInsets.left + feedInsets.right;
+            feedButton.setBounds(width - insets.right - feedWidth - arrowWidth, insets.top, feedWidth, arrowHeight);
         } else {
-            loupeWidth = 0;
+            feedWidth = 0;
         }
 
+        // JComboBox Editor
         Component editor = cb.getEditor().getEditorComponent();
         if (Objects.nonNull(editor)) {
-            editor.setBounds(insets.left + labelWidth, insets.top,
-                             width  - insets.left - insets.right - buttonWidth - labelWidth - loupeWidth,
+            editor.setBounds(insets.left + faviconWidth, insets.top,
+                             width  - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
                              height - insets.top  - insets.bottom);
         }
     }
 }
 
-class UrlItem {
+class SiteItem {
     public final String url;
     public final ImageIcon favicon;
     public final boolean hasRss;
-    protected UrlItem(String url, ImageIcon icon, boolean hasRss) {
+    protected SiteItem(String url, ImageIcon icon, boolean hasRss) {
         this.url = url;
         this.favicon = icon;
         this.hasRss = hasRss;
