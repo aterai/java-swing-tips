@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
 
 // class TestRenderer extends DefaultTableCellRenderer {
 //     private static final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
-//     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+//     private static final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 //         if (c instanceof JComponent) {
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
 
 class LineFocusTable extends JTable {
     private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
-    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     protected LineFocusTable(TableModel model) {
         super(model);
     }
@@ -146,7 +146,7 @@ class LineFocusTable extends JTable {
         setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
     }
     private void updateBorderType(DotBorder border, int column) {
-        border.type = EnumSet.noneOf(Type.class);
+        border.type.clear(); // = EnumSet.noneOf(Type.class);
         if (column == 0) {
             border.type.add(Type.START);
         }
@@ -188,7 +188,7 @@ enum Type { START, END; }
 class DotBorder extends EmptyBorder {
     private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
     private static final Color DOT_COLOR = new Color(200, 150, 150);
-    public EnumSet<Type> type = EnumSet.noneOf(Type.class);
+    public final EnumSet<Type> type = EnumSet.noneOf(Type.class);
 
     protected DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);
