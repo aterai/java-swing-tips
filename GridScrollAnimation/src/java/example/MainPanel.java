@@ -9,8 +9,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JPanel gp = new GridPanel();
-        for (int i = 0; i < GridPanel.cols * GridPanel.rows; i++) {
+        GridPanel gp = new GridPanel(4, 3);
+        for (int i = 0; i < gp.cols * gp.rows; i++) {
             gp.add(i % 2 == 0 ? new JButton("aa" + i) : new JScrollPane(new JTree()));
         }
         JScrollPane scrollPane = new JScrollPane(gp);
@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.add(scrollPane);
         add(p);
-        add(new JButton(new ScrollAction("right",  scrollPane, new Point(1,  0))), BorderLayout.EAST);
-        add(new JButton(new ScrollAction("left",   scrollPane, new Point(-1, 0))), BorderLayout.WEST);
-        add(new JButton(new ScrollAction("bottom", scrollPane, new Point(0,  1))), BorderLayout.SOUTH);
-        add(new JButton(new ScrollAction("top",    scrollPane, new Point(0, -1))), BorderLayout.NORTH);
+        add(new JButton(new ScrollAction("right", scrollPane, new Point(1,  0))), BorderLayout.EAST);
+        add(new JButton(new ScrollAction("left", scrollPane, new Point(-1, 0))), BorderLayout.WEST);
+        add(new JButton(new ScrollAction("bottom", scrollPane, new Point(0, 1))), BorderLayout.SOUTH);
+        add(new JButton(new ScrollAction("top", scrollPane, new Point(0, -1))), BorderLayout.NORTH);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -52,12 +52,15 @@ public final class MainPanel extends JPanel {
 }
 
 class GridPanel extends JPanel implements Scrollable {
-    public static int cols = 3;
-    public static int rows = 4;
-    public static Dimension size = new Dimension(160 * cols, 120 * rows);
-    protected GridPanel() {
+    public final int rows;
+    public final int cols;
+    public final Dimension size;
+    protected GridPanel(int rows, int cols) {
         super(new GridLayout(rows, cols, 0, 0));
-        //putClientProperty("JScrollBar.fastWheelScrolling", Boolean.FALSE);
+        // putClientProperty("JScrollBar.fastWheelScrolling", Boolean.FALSE);
+        this.rows = rows;
+        this.cols = cols;
+        this.size = new Dimension(160 * cols, 120 * rows);
     }
     @Override public Dimension getPreferredScrollableViewportSize() {
         Dimension d = getPreferredSize();
@@ -102,8 +105,8 @@ class ScrollAction extends AbstractAction {
         }
         JViewport vport = scrollPane.getViewport();
         JComponent v = (JComponent) vport.getView();
-        int w  = vport.getWidth();
-        int h  = vport.getHeight();
+        int w = vport.getWidth();
+        int h = vport.getHeight();
         int sx = vport.getViewPosition().x;
         int sy = vport.getViewPosition().y;
         Rectangle rect = new Rectangle(w, h);
@@ -125,7 +128,7 @@ class ScrollAction extends AbstractAction {
         scroller.start();
     }
     protected static double easeInOut(double t) {
-        //range: 0.0 <= t <= 1.0
+        // range: 0.0 <= t <= 1.0
         boolean isFirstHalf = t < .5;
         if (isFirstHalf) {
             return .5 * pow3(t * 2d);
@@ -134,7 +137,7 @@ class ScrollAction extends AbstractAction {
         }
     }
     protected static double pow3(double a) {
-        //return Math.pow(a, 3d);
+        // return Math.pow(a, 3d);
         return a * a * a;
     }
 }
