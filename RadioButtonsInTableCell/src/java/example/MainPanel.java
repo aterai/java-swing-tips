@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -41,8 +42,8 @@ public final class MainPanel extends JPanel {
 //             @Override public void mouseReleased(MouseEvent e) {
 //                 JTable t = (JTable) e.getComponent();
 //                 Point pt = e.getPoint();
-//                 int row  = t.rowAtPoint(pt);
-//                 int col  = t.columnAtPoint(pt);
+//                 int row = t.rowAtPoint(pt);
+//                 int col = t.columnAtPoint(pt);
 //                 if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
 //                     TableCellEditor ce = t.getCellEditor(row, col);
 //                     // https://tips4java.wordpress.com/2009/07/12/table-button-column/
@@ -87,38 +88,43 @@ public final class MainPanel extends JPanel {
 
 class RadioButtonsPanel extends JPanel {
     private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
-    public JRadioButton[] buttons;
-    public ButtonGroup bg = new ButtonGroup();
+    protected final List<JRadioButton> buttons = new ArrayList<>(answer.length);
+    protected ButtonGroup bg = new ButtonGroup();
     protected RadioButtonsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
     private void initButtons() {
+        buttons.clear();
+        removeAll();
         bg = new ButtonGroup();
-        buttons = new JRadioButton[answer.length];
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new JRadioButton(answer[i]);
-            buttons[i].setActionCommand(answer[i]);
-            buttons[i].setFocusable(false);
-            buttons[i].setRolloverEnabled(false);
-            add(buttons[i]);
-            bg.add(buttons[i]);
+        for (String title: answer) {
+            JRadioButton b = makeButton(title);
+            buttons.add(b);
+            add(b);
+            bg.add(b);
         }
+    }
+    private static JRadioButton makeButton(String title) {
+        JRadioButton b = new JRadioButton(title);
+        b.setActionCommand(title);
+        b.setFocusable(false);
+        b.setRolloverEnabled(false);
+        return b;
     }
     protected void updateSelectedButton(Object v) {
         if (v instanceof Answer) {
-            removeAll();
             initButtons();
             switch ((Answer) v) {
                 case A:
-                    buttons[0].setSelected(true);
+                    buttons.get(0).setSelected(true);
                     break;
                 case B:
-                    buttons[1].setSelected(true);
+                    buttons.get(1).setSelected(true);
                     break;
                 case C:
-                    buttons[2].setSelected(true);
+                    buttons.get(2).setSelected(true);
                     break;
                 default:
                     break;

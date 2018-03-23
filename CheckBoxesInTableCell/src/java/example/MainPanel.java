@@ -5,29 +5,30 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"user", "rwx"};
-    private final Object[][] data = {
-        {"owner", 7}, {"group", 6}, {"other", 5}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model) {
-        @Override public void updateUI() {
-            super.updateUI();
-            getColumnModel().getColumn(1).setCellRenderer(new CheckBoxesRenderer());
-            getColumnModel().getColumn(1).setCellEditor(new CheckBoxesEditor());
-        }
-    };
-
     private MainPanel() {
         super(new BorderLayout());
+
+        String[] columnNames = {"user", "rwx"};
+        Object[][] data = {
+            {"owner", 7}, {"group", 6}, {"other", 5}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                getColumnModel().getColumn(1).setCellRenderer(new CheckBoxesRenderer());
+                getColumnModel().getColumn(1).setCellEditor(new CheckBoxesEditor());
+            }
+        };
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
 //         if (System.getProperty("java.version").startsWith("1.6.0")) {
@@ -84,36 +85,40 @@ public final class MainPanel extends JPanel {
 }
 
 class CheckBoxesPanel extends JPanel {
-    protected static final String[] TITLES = {"r", "w", "x"};
-    public JCheckBox[] buttons;
+    private static final Color BGC = new Color(0x0, true);
+    protected final String[] titles = {"r", "w", "x"};
+    protected final List<JCheckBox> buttons = new ArrayList<>(titles.length);
     @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
-        setBackground(new Color(0x0, true));
+        setBackground(BGC);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        initButtons();
+        EventQueue.invokeLater(() -> initButtons());
     }
     private void initButtons() {
-        Color bgc = new Color(0x0, true);
-        buttons = new JCheckBox[TITLES.length];
-        for (int i = 0; i < buttons.length; i++) {
-            JCheckBox b = new JCheckBox(TITLES[i]);
-            b.setOpaque(false);
-            b.setFocusable(false);
-            b.setRolloverEnabled(false);
-            b.setBackground(bgc);
-            buttons[i] = b;
+        removeAll();
+        buttons.clear();
+        for (String t: titles) {
+            JCheckBox b = makeCheckBox(t);
+            buttons.add(b);
             add(b);
             add(Box.createHorizontalStrut(5));
         }
     }
+    private static JCheckBox makeCheckBox(String title) {
+        JCheckBox b = new JCheckBox(title);
+        b.setOpaque(false);
+        b.setFocusable(false);
+        b.setRolloverEnabled(false);
+        b.setBackground(BGC);
+        return b;
+    }
     protected void updateButtons(Object v) {
-        removeAll();
         initButtons();
         Integer i = v instanceof Integer ? (Integer) v : 0;
-        buttons[0].setSelected((i & (1 << 2)) != 0);
-        buttons[1].setSelected((i & (1 << 1)) != 0);
-        buttons[2].setSelected((i & (1 << 0)) != 0);
+        buttons.get(0).setSelected((i & (1 << 2)) != 0);
+        buttons.get(1).setSelected((i & (1 << 1)) != 0);
+        buttons.get(2).setSelected((i & (1 << 0)) != 0);
     }
 }
 
@@ -138,7 +143,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 //         EventQueue.invokeLater(() -> {
 //             ActionMap am = getActionMap();
 //             for (int i = 0; i < buttons.length; i++) {
-//                 String t = TITLES[i];
+//                 String t = titles[i];
 //                 am.put(t, new AbstractAction(t) {
 //                     @Override public void actionPerformed(ActionEvent e) {
 //                         for (JCheckBox b: buttons) {
@@ -152,9 +157,9 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 //                 });
 //             }
 //             InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), TITLES[0]);
-//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), TITLES[1]);
-//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), TITLES[2]);
+//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
+//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
+//             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
 //         });
 //     }
 //     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -163,12 +168,12 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 //     }
 //     @Override public Object getCellEditorValue() {
 //         int i = 0;
-//         i = buttons[0].isSelected() ? 1 << 2 | i : i;
-//         i = buttons[1].isSelected() ? 1 << 1 | i : i;
-//         i = buttons[2].isSelected() ? 1 << 0 | i : i;
-//         // if (buttons[0].isSelected()) { i |= 1 << 2; }
-//         // if (buttons[1].isSelected()) { i |= 1 << 1; }
-//         // if (buttons[2].isSelected()) { i |= 1 << 0; }
+//         i = buttons.get(0).isSelected() ? 1 << 2 | i : i;
+//         i = buttons.get(1).isSelected() ? 1 << 1 | i : i;
+//         i = buttons.get(2).isSelected() ? 1 << 0 | i : i;
+//         // if (buttons.get(0).isSelected()) { i |= 1 << 2; }
+//         // if (buttons.get(1).isSelected()) { i |= 1 << 1; }
+//         // if (buttons.get(2).isSelected()) { i |= 1 << 0; }
 //         return i;
 //     }
 //
@@ -235,12 +240,12 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
             super.updateUI();
             EventQueue.invokeLater(() -> {
                 ActionMap am = getActionMap();
-                for (int i = 0; i < buttons.length; i++) {
-                    String title = TITLES[i];
-                    am.put(title, new AbstractAction(title) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    String t = titles[i];
+                    am.put(t, new AbstractAction(t) {
                         @Override public void actionPerformed(ActionEvent e) {
-                            Arrays.stream(buttons)
-                                .filter(b -> b.getText().equals(title))
+                            buttons.stream()
+                                .filter(b -> b.getText().equals(t))
                                 .findFirst()
                                 .ifPresent(JCheckBox::doClick);
                             fireEditingStopped();
@@ -248,9 +253,9 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
                     });
                 }
                 InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), TITLES[0]);
-                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), TITLES[1]);
-                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), TITLES[2]);
+                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
+                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
+                im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
             });
         }
     };
@@ -260,9 +265,9 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
     }
     @Override public Object getCellEditorValue() {
         int i = 0;
-        i = panel.buttons[0].isSelected() ? 1 << 2 | i : i;
-        i = panel.buttons[1].isSelected() ? 1 << 1 | i : i;
-        i = panel.buttons[2].isSelected() ? 1 << 0 | i : i;
+        i = panel.buttons.get(0).isSelected() ? 1 << 2 | i : i;
+        i = panel.buttons.get(1).isSelected() ? 1 << 1 | i : i;
+        i = panel.buttons.get(2).isSelected() ? 1 << 0 | i : i;
         return i;
     }
 }
