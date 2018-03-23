@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
         }
         c.anchor = GridBagConstraints.LINE_START;
         c.gridy = 1;
-        c.gridwidth = 4; // use 4 columns to display the name of the month
+        c.gridwidth = 3; // use 3 columns to display the name of the month
         for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1; c.gridx++) {
             LocalDate date = weekList.getModel().getElementAt(c.gridx * DayOfWeek.values().length).date;
             // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
