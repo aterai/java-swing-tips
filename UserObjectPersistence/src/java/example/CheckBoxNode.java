@@ -4,8 +4,8 @@ package example;
 //@homepage@
 
 public final class CheckBoxNode {
-    public String label;
-    public Status status;
+    private String label;
+    private Status status;
     public CheckBoxNode() {
         this.label = "";
         status = Status.INDETERMINATE;

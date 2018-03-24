@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(null);
                 setCellEditor(null);
                 super.updateUI();
-                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                // ???#1: JDK 1.6.0 bug??? Nimbus LnF
                 setCellRenderer(new CheckBoxNodeRenderer());
                 setCellEditor(new CheckBoxNodeEditor());
             }
@@ -46,12 +46,12 @@ public final class MainPanel extends JPanel {
         save.addActionListener(e -> {
             try {
                 File file = File.createTempFile("output", ".xml");
-                //try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+                // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                 try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(new String[] {"label", "status"}));
                     xe.writeObject(tree.getModel());
                 }
-                //try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                 try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                     textArea.read(r, "temp");
                 }
@@ -65,13 +65,13 @@ public final class MainPanel extends JPanel {
             if (text.isEmpty()) {
                 return;
             }
-            //try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("output.xml"))))) {
+            // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("output.xml"))))) {
             try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
                 DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
                 m.addTreeModelListener(new CheckBoxStatusUpdateListener());
                 tree.setModel(m);
-            //} catch (FileNotFoundException ex) {
-            //    ex.printStackTrace();
+            // } catch (FileNotFoundException ex) {
+            //     ex.printStackTrace();
             }
         });
 
@@ -127,7 +127,7 @@ class TriStateCheckBox extends JCheckBox {
 }
 
 class IndeterminateIcon implements Icon {
-    private static final Color FOREGROUND = new Color(50, 20, 255, 200); //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final Color FOREGROUND = new Color(50, 20, 255, 200); // TEST: UIManager.getColor("CheckBox.foreground");
     private static final int SIDE_MARGIN = 4;
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
@@ -148,26 +148,6 @@ class IndeterminateIcon implements Icon {
         return icon.getIconHeight();
     }
 }
-
-//export to Status.java
-//enum Status { SELECTED, DESELECTED, INDETERMINATE }
-//
-//export to CheckBoxNode.java
-//class CheckBoxNode {
-//    public final String label;
-//    public final Status status;
-//    protected CheckBoxNode(String label) {
-//        this.label = label;
-//        status = Status.INDETERMINATE;
-//    }
-//    protected CheckBoxNode(String label, Status status) {
-//        this.label = label;
-//        this.status = status;
-//    }
-//    @Override public String toString() {
-//        return label;
-//    }
-//}
 
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting;
@@ -200,7 +180,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
             node = (DefaultMutableTreeNode) model.getRoot();
             c = (CheckBoxNode) node.getUserObject();
         }
-        updateAllChildrenUserObject(node, c.status);
+        updateAllChildrenUserObject(node, c.getStatus());
         model.nodeChanged(node);
         adjusting = false;
     }
@@ -210,15 +190,15 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
             CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-            if (check.status == Status.INDETERMINATE) {
+            if (check.getStatus() == Status.INDETERMINATE) {
                 selectedCount = -1;
                 break;
             }
-            if (check.status == Status.SELECTED) {
+            if (check.getStatus() == Status.SELECTED) {
                 selectedCount++;
             }
         }
-        String label = ((CheckBoxNode) parent.getUserObject()).label;
+        String label = ((CheckBoxNode) parent.getUserObject()).getLabel();
         if (selectedCount == 0) {
             parent.setUserObject(new CheckBoxNode(label, Status.DESELECTED));
         } else if (selectedCount == parent.getChildCount()) {
@@ -235,11 +215,11 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
                 continue;
             }
             CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-            node.setUserObject(new CheckBoxNode(check.label, status));
+            node.setUserObject(new CheckBoxNode(check.getLabel(), status));
         }
     }
-    @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
-    @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
+    @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+    @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
     @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
 }
 
@@ -262,13 +242,13 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
-                if (node.status == Status.INDETERMINATE) {
+                if (node.getStatus() == Status.INDETERMINATE) {
                     checkBox.setIcon(new IndeterminateIcon());
                 } else {
                     checkBox.setIcon(null);
                 }
-                l.setText(node.label);
-                checkBox.setSelected(node.status == Status.SELECTED);
+                l.setText(node.getLabel());
+                checkBox.setSelected(node.getStatus() == Status.SELECTED);
             }
             panel.add(checkBox, BorderLayout.WEST);
             panel.add(l);
@@ -303,19 +283,19 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             panel.setOpaque(false);
             checkBox.setEnabled(tree.isEnabled());
             checkBox.setFont(tree.getFont());
-            //checkBox.setFocusable(false);
-            //checkBox.setOpaque(false);
+            // checkBox.setFocusable(false);
+            // checkBox.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
-                if (node.status == Status.INDETERMINATE) {
+                if (node.getStatus() == Status.INDETERMINATE) {
                     checkBox.setIcon(new IndeterminateIcon());
                 } else {
                     checkBox.setIcon(null);
                 }
-                l.setText(node.label);
-                checkBox.setSelected(node.status == Status.SELECTED);
-                str = node.label;
+                l.setText(node.getLabel());
+                checkBox.setSelected(node.getStatus() == Status.SELECTED);
+                str = node.getLabel();
             }
             panel.add(checkBox, BorderLayout.WEST);
             panel.add(l);
@@ -350,7 +330,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         }
         return false;
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {
 //         return true;
 //     }

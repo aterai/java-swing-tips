@@ -70,9 +70,15 @@ public final class MainPanel extends JPanel {
 
 class CheckableItem {
     public final String text;
-    public boolean selected;
+    private boolean selected;
     protected CheckableItem(String text, boolean selected) {
         this.text = text;
+        this.selected = selected;
+    }
+    public boolean isSelected() {
+        return selected;
+    }
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
     @Override public String toString() {
@@ -89,7 +95,7 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
             return label;
         } else {
             check.setText(Objects.toString(value, ""));
-            check.setSelected(value.selected);
+            check.setSelected(value.isSelected());
             if (isSelected) {
                 check.setBackground(list.getSelectionBackground());
                 check.setForeground(list.getSelectionForeground());
@@ -104,7 +110,7 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
         List<String> sl = new ArrayList<>();
         for (int i = 0; i < model.getSize(); i++) {
             E v = model.getElementAt(i);
-            if (v.selected) {
+            if (v.isSelected()) {
                 sl.add(v.toString());
             }
         }
@@ -149,8 +155,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
             @Override public void actionPerformed(ActionEvent e) {
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
                 if (a instanceof ComboPopup) {
-                    ComboPopup pop = (ComboPopup) a;
-                    updateItem(pop.getList().getSelectedIndex());
+                    updateItem(((ComboPopup) a).getList().getSelectedIndex());
                 }
             }
         });
@@ -158,7 +163,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     protected void updateItem(int index) {
         if (isPopupVisible()) {
             E item = getItemAt(index);
-            item.selected ^= true;
+            item.setSelected(!item.isSelected());
+            // item.selected ^= true;
 //             ComboBoxModel m = getModel();
 //             if (m instanceof CheckableComboBoxModel) {
 //                 ((CheckableComboBoxModel) m).fireContentsChanged(index);
