@@ -26,8 +26,10 @@ public final class MainPanel extends JPanel {
         }
     };
     public final LocalDate realLocalDate = LocalDate.now();
-    public LocalDate currentLocalDate;
-
+    private LocalDate currentLocalDate;
+    public LocalDate getCurrentLocalDate() {
+        return currentLocalDate;
+    }
     private MainPanel() {
         super();
         installActions();
@@ -60,10 +62,10 @@ public final class MainPanel extends JPanel {
         updateMonthView(realLocalDate);
 
         JButton prev = new JButton("<");
-        prev.addActionListener(e -> updateMonthView(currentLocalDate.minusMonths(1)));
+        prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));
 
         JButton next = new JButton(">");
-        next.addActionListener(e -> updateMonthView(currentLocalDate.plusMonths(1)));
+        next.addActionListener(e -> updateMonthView(getCurrentLocalDate().plusMonths(1)));
 
         JPanel yearMonthPanel = new JPanel(new BorderLayout());
         yearMonthPanel.add(yearMonthLabel);
@@ -111,7 +113,7 @@ public final class MainPanel extends JPanel {
                     monthList.setSelectedIndex(index - 1);
                 } else {
                     LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
-                    updateMonthView(currentLocalDate.minusMonths(1));
+                    updateMonthView(getCurrentLocalDate().minusMonths(1));
                     monthList.setSelectedValue(d, false);
                 }
             }
@@ -123,7 +125,7 @@ public final class MainPanel extends JPanel {
                     monthList.setSelectedIndex(index + 1);
                 } else {
                     LocalDate d = monthList.getModel().getElementAt(monthList.getModel().getSize() - 1).plusDays(1);
-                    updateMonthView(currentLocalDate.plusMonths(1));
+                    updateMonthView(getCurrentLocalDate().plusMonths(1));
                     monthList.setSelectedValue(d, false);
                 }
             }
@@ -135,7 +137,7 @@ public final class MainPanel extends JPanel {
                 int dowvl = DayOfWeek.values().length; // 7
                 if (index < dowvl) {
                     LocalDate d = monthList.getModel().getElementAt(index).minusDays(dowvl);
-                    updateMonthView(currentLocalDate.minusMonths(1));
+                    updateMonthView(getCurrentLocalDate().minusMonths(1));
                     monthList.setSelectedValue(d, false);
                 } else {
                     selectPreviousRow.actionPerformed(e);
@@ -149,7 +151,7 @@ public final class MainPanel extends JPanel {
                 int dowvl = DayOfWeek.values().length; // 7
                 if (index > monthList.getModel().getSize() - dowvl) {
                     LocalDate d = monthList.getModel().getElementAt(index).plusDays(dowvl);
-                    updateMonthView(currentLocalDate.plusMonths(1));
+                    updateMonthView(getCurrentLocalDate().plusMonths(1));
                     monthList.setSelectedValue(d, false);
                 } else {
                     selectNextRow.actionPerformed(e);
@@ -159,7 +161,7 @@ public final class MainPanel extends JPanel {
     }
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;
-        yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MMMM").withLocale(Locale.getDefault())));
+        yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MM").withLocale(Locale.getDefault())));
         monthList.setModel(new CalendarViewListModel(localDate));
     }
     private class CalendarListRenderer implements ListCellRenderer<LocalDate> {
@@ -170,7 +172,7 @@ public final class MainPanel extends JPanel {
             l.setHorizontalAlignment(SwingConstants.CENTER);
             l.setText(Objects.toString(value.getDayOfMonth()));
             Color fgc = l.getForeground();
-            if (YearMonth.from(value).equals(YearMonth.from(currentLocalDate))) {
+            if (YearMonth.from(value).equals(YearMonth.from(getCurrentLocalDate()))) {
                 DayOfWeek dow = value.getDayOfWeek();
                 if (value.isEqual(realLocalDate)) {
                     fgc = new Color(100, 255, 100);

@@ -12,12 +12,14 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    public LocalDate currentLocalDate;
     public final LocalDate realLocalDate = LocalDate.now();
     private final JLabel dateLabel = new JLabel(realLocalDate.toString(), SwingConstants.CENTER);
     private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
     private final JTable monthTable = new JTable();
-
+    private LocalDate currentLocalDate;
+    public LocalDate getCurrentLocalDate() {
+        return currentLocalDate;
+    }
     private MainPanel() {
         super(new BorderLayout());
 
@@ -44,10 +46,10 @@ public final class MainPanel extends JPanel {
         updateMonthView(realLocalDate);
 
         JButton prev = new JButton("<");
-        prev.addActionListener(e -> updateMonthView(currentLocalDate.minusMonths(1)));
+        prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));
 
         JButton next = new JButton(">");
-        next.addActionListener(e -> updateMonthView(currentLocalDate.plusMonths(1)));
+        next.addActionListener(e -> updateMonthView(getCurrentLocalDate().plusMonths(1)));
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(monthLabel);
@@ -62,7 +64,7 @@ public final class MainPanel extends JPanel {
     }
     public void updateMonthView(LocalDate localDate) {
         currentLocalDate = localDate;
-        monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MMMM").withLocale(Locale.getDefault())));
+        monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MM").withLocale(Locale.getDefault())));
         monthTable.setModel(new CalendarViewTableModel(localDate));
     }
     private class CalendarTableRenderer extends DefaultTableCellRenderer {
@@ -72,7 +74,7 @@ public final class MainPanel extends JPanel {
             if (value instanceof LocalDate) {
                 LocalDate d = (LocalDate) value;
                 setText(Objects.toString(d.getDayOfMonth()));
-                if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {
+                if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
                     setForeground(Color.BLACK);
                 } else {
                     setForeground(Color.GRAY);
