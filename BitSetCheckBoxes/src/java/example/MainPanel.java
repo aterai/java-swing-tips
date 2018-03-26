@@ -96,14 +96,13 @@ public class MainPanel extends JPanel {
             updateCheckBoxes(newValue);
         }
     }
-    private static String print(BitSet l) {
-        long[] la = l.toLongArray();
+    private static String print(BitSet bitSet) {
         StringBuilder buf = new StringBuilder();
-        for (int i = la.length - 1; i >=  0; i--) {
-            buf.append(Long.toUnsignedString(la[i], 2));
+        for (long lv: bitSet.toLongArray()) {
+            buf.insert(0, Long.toUnsignedString(lv, 2));
         }
         String b = buf.toString();
-        int count = l.cardinality();
+        int count = bitSet.cardinality();
         return "<html>0b" + ZEROPAD.substring(b.length()) + b + "<br/> count: " + count;
     }
     public static void main(String... args) {
