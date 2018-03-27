@@ -205,7 +205,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 
 class ProgressObject {
     public final String title;
-    public int value;
+    private int value;
     protected ProgressObject() {
         this("", 0);
     }

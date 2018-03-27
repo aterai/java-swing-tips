@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
         ActionListener listener = e -> {
             JCheckBox check = (JCheckBox) e.getSource();
             if (check.isSelected()) {
-                TreeUtil.compareCount.set(0);
-                TreeUtil.swapCount.set(0);
+                TreeUtil.COMPARE_COUNT.set(0);
+                TreeUtil.SWAP_COUNT.set(0);
                 DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
                 if (check.equals(sort0)) {
                     TreeUtil.sortTree0(r);
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
                 } else {
                     TreeUtil.sortTree3(r);
                 }
-                // log(check.getText());
+                log(check.getText());
                 tree.setModel(new DefaultTreeModel(r));
             } else {
                 tree.setModel(new DefaultTreeModel(root));
@@ -58,15 +58,13 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     private static void log(String title) {
-//         if (TreeUtil.swapCount.get() == 0) {
-//             System.out.format("%-24s - compare: %3d, swap: ---%n",
-//                               title, TreeUtil.compareCount.get());
-//         } else {
-//             System.out.format("%-24s - compare: %3d, swap: %3d%n",
-//                               title, TreeUtil.compareCount.get(), TreeUtil.swapCount.get());
-//         }
-//     }
+    private static void log(String title) {
+        if (TreeUtil.SWAP_COUNT.get() == 0) {
+            System.out.format("%-24s - compare: %3d, swap: ---%n", title, TreeUtil.COMPARE_COUNT.get());
+        } else {
+            System.out.format("%-24s - compare: %3d, swap: %3d%n", title, TreeUtil.COMPARE_COUNT.get(), TreeUtil.SWAP_COUNT.get());
+        }
+    }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -93,15 +91,15 @@ public final class MainPanel extends JPanel {
 
 final class TreeUtil {
     private static final boolean DEBUG = true;
-    public static AtomicInteger compareCount = new AtomicInteger();
-    public static AtomicInteger swapCount = new AtomicInteger();
+    public static final AtomicInteger COMPARE_COUNT = new AtomicInteger();
+    public static final AtomicInteger SWAP_COUNT = new AtomicInteger();
 
 //     // JDK 1.7.0
 //     private static TreeNodeComparator tnc = new TreeNodeComparator();
 //     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
 //         private static final long serialVersionUID = 1L;
 //         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-//             compareCount.getAndIncrement();
+//             COMPARE_COUNT.getAndIncrement();
 //             if (a.isLeaf() && !b.isLeaf()) {
 //                 return 1;
 //             } else if (!a.isLeaf() && b.isLeaf()) {
@@ -126,11 +124,11 @@ final class TreeUtil {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
             for (int j = 0; j < i; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-                compareCount.getAndIncrement();
+                COMPARE_COUNT.getAndIncrement();
                 if (tnc.compare(node, prevNode) < 0) {
                     root.insert(node, j);
                     root.insert(prevNode, i);
-                    swapCount.getAndIncrement();
+                    SWAP_COUNT.getAndIncrement();
                     if (DEBUG) {
                         i--;
                         break;
@@ -151,7 +149,7 @@ final class TreeUtil {
             for (int j = i + 1; j < n; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
                 if (tnc.compare(node, prevNode) > 0) {
-                    swapCount.getAndIncrement();
+                    SWAP_COUNT.getAndIncrement();
                     root.insert(node, j);
                     root.insert(prevNode, i);
                     i--;
@@ -175,14 +173,14 @@ final class TreeUtil {
                 }
             }
             if (i != min) {
-                swapCount.getAndIncrement();
+                SWAP_COUNT.getAndIncrement();
                 MutableTreeNode a = (MutableTreeNode) parent.getChildAt(i);
                 MutableTreeNode b = (MutableTreeNode) parent.getChildAt(min);
                 parent.insert(b, i);
                 parent.insert(a, min);
                 // MutableTreeNode node = (MutableTreeNode) parent.getChildAt(min);
                 // parent.insert(node, i);
-                // compareCount++;
+                // COMPARE_COUNT++;
             }
         }
     }
@@ -223,7 +221,7 @@ final class TreeUtil {
 
     public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
         for (int i = 0; i < src.getChildCount(); i++) {
-            DefaultMutableTreeNode node  = (DefaultMutableTreeNode) src.getChildAt(i);
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
             DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); // (DefaultMutableTreeNode) node.clone();
             tgt.add(clone);
             if (!node.isLeaf()) {

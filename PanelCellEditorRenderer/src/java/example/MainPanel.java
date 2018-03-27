@@ -213,7 +213,7 @@ class ButtonsPanel extends JPanel {
             return d;
         }
     };
-    public int counter = -1;
+    protected int counter = -1;
     protected ButtonsPanel() {
         super();
         label.setHorizontalAlignment(SwingConstants.RIGHT);

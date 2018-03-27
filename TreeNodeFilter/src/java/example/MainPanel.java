@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
 
 class FilterableNode {
     public final String label;
-    public boolean status;
+    protected boolean status;
     protected FilterableNode(String label) {
         this.label = label;
         status = false;

@@ -161,9 +161,9 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     protected final List<JButton> buttons = Arrays.asList(deleteButton, copyButton);
     protected final DefaultListModel<E> model;
     protected int targetIndex;
-    public int pressedIndex = -1;
-    public int rolloverIndex = -1;
-    public JButton button;
+    protected int pressedIndex = -1;
+    protected int rolloverIndex = -1;
+    protected JButton button;
 
     protected ButtonsRenderer(DefaultListModel<E> model) {
         super(new BorderLayout());

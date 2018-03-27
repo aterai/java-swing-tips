@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
 }
 
 class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
-    public boolean isPreventing;
+    protected boolean isPreventing;
     private transient BufferedImage buf;
 
     @Override public void paint(Graphics g, JComponent c) {

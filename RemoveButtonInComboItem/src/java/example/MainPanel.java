@@ -205,7 +205,7 @@ class CellButtonsMouseListener extends MouseAdapter {
 class ButtonsRenderer<E> implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     protected int targetIndex;
-    public int rolloverIndex = -1;
+    protected int rolloverIndex = -1;
     private final JPanel panel = new JPanel(new BorderLayout()) {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();

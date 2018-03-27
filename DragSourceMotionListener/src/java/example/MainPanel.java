@@ -69,7 +69,7 @@ public final class MainPanel {
 }
 
 class DragPanel extends JPanel {
-    public JLabel draggingLabel;
+    protected JLabel draggingLabel;
     protected DragPanel() {
         super();
     }

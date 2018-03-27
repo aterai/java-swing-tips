@@ -7,7 +7,7 @@ import javax.swing.*;
 
 //Copied from
 //JTabbedPane with close Icons | Oracle Forums
-//https://community.oracle.com/thread/1356993
+// https://community.oracle.com/thread/1356993
 
 /**
  * The class which generates the 'X' icon for the tabs. The constructor
@@ -43,12 +43,12 @@ public class CloseTabIcon implements Icon {
     /**
      * true whether the mouse is over this icon, false otherwise
      */
-    public boolean mouseover;
+    protected boolean mouseover;
 
     /**
      * true whether the mouse is pressed on this icon, false otherwise
      */
-    public boolean mousepressed;
+    protected boolean mousepressed;
 
     /**
      * Creates a new instance of <code>CloseTabIcon</code>
@@ -70,37 +70,37 @@ public class CloseTabIcon implements Icon {
      * @param y the upper left point of the icon in the y direction
      */
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        //boolean doPaintCloseIcon = true;
-        //// try {
-        ////     JComponent.putClientProperty("isClosable", new Boolean(false));
-        //if (c instanceof JTabbedPane) {
-        //    JTabbedPane tabbedpane = (JTabbedPane) c;
-        //    int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
-        //    JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
-        //    Object prop = curPanel.getClientProperty("isClosable");
-        //    if (Objects.nonNull(prop)) {
-        //        doPaintCloseIcon = ((Boolean) prop).booleanValue();
-        //    }
-        //}
-        ////} catch (Exception ex) {
-        ////    // Could probably be a ClassCastException
-        ////    ex.printStackTrace();
-        ////}
-        //if (doPaintCloseIcon) {
+        // boolean doPaintCloseIcon = true;
+        // // try {
+        // //     JComponent.putClientProperty("isClosable", new Boolean(false));
+        // if (c instanceof JTabbedPane) {
+        //     JTabbedPane tabbedpane = (JTabbedPane) c;
+        //     int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
+        //     JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
+        //     Object prop = curPanel.getClientProperty("isClosable");
+        //     if (Objects.nonNull(prop)) {
+        //         doPaintCloseIcon = ((Boolean) prop).booleanValue();
+        //     }
+        // }
+        // // } catch (Exception ex) {
+        // //     // Could probably be a ClassCastException
+        // //     ex.printStackTrace();
+        // // }
+        // if (doPaintCloseIcon) {
         xpos = x;
         ypos = y;
-        int yp = y + 2; //+2: baseline?
+        int yp = y + 2; // +2: baseline?
 
-        //if (Objects.nonNull(normalCloseIcon) && !mouseover) {
-        //    normalCloseIcon.paintIcon(c, g, x, yp);
-        //} else if (Objects.nonNull(hooverCloseIcon) && mouseover && !mousepressed) {
-        //    hooverCloseIcon.paintIcon(c, g, x, yp);
-        //} else if (Objects.nonNull(pressedCloseIcon) && mousepressed) {
-        //    pressedCloseIcon.paintIcon(c, g, x, yp);
-        //} else {
-        //yp++;
+        // if (Objects.nonNull(normalCloseIcon) && !mouseover) {
+        //     normalCloseIcon.paintIcon(c, g, x, yp);
+        // } else if (Objects.nonNull(hooverCloseIcon) && mouseover && !mousepressed) {
+        //     hooverCloseIcon.paintIcon(c, g, x, yp);
+        // } else if (Objects.nonNull(pressedCloseIcon) && mousepressed) {
+        //     pressedCloseIcon.paintIcon(c, g, x, yp);
+        // } else {
+        // yp++;
 
-        //Color col = g.getColor();
+        // Color col = g.getColor();
 
         Graphics2D g2 = (Graphics2D) g.create();
         if (mousepressed && mouseover) {
@@ -109,7 +109,7 @@ public class CloseTabIcon implements Icon {
         }
 
         g2.setPaint(mouseover ? Color.ORANGE : Color.BLACK);
-        //g2.setPaint(Color.BLACK);
+        // g2.setPaint(Color.BLACK);
         g2.drawLine(x + 1,  yp,      x + 12, yp);
         g2.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
         g2.drawLine(x,      yp + 1,  x,      yp + 12);
@@ -126,11 +126,11 @@ public class CloseTabIcon implements Icon {
         g2.drawLine(x + 9,  yp + 3, x + 3,  yp + 9);
         g2.dispose();
 //         g.setColor(col);
-        //        if (Objects.nonNull(fileIcon)) {
-        //            fileIcon.paintIcon(c, g, x + width, yp);
-        //        }
-        //    }
-        //}
+        //         if (Objects.nonNull(fileIcon)) {
+        //             fileIcon.paintIcon(c, g, x + width, yp);
+        //         }
+        //     }
+        // }
     }
 
     /**

@@ -12,8 +12,8 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
-        JRadioButton r1    = new JRadioButton("scrollRectToVisible", true);
-        JRadioButton r2    = new JRadioButton("setViewPosition");
+        JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
+        JRadioButton r2 = new JRadioButton("setViewPosition");
 
         JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
         // JViewport vport = scroll.getViewport();
@@ -88,12 +88,12 @@ class HandScrollListener extends MouseAdapter {
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Point pp = new Point();
-    public boolean withinRangeMode = true;
+    protected boolean withinRangeMode = true;
 
     @Override public void mouseDragged(MouseEvent e) {
         JViewport vport = (JViewport) e.getComponent();
         Point cp = e.getPoint();
-        Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
+        Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
         vp.translate(pp.x - cp.x, pp.y - cp.y);
         if (withinRangeMode) {
             ((JComponent) SwingUtilities.getUnwrappedView(vport)).scrollRectToVisible(new Rectangle(vp, vport.getSize()));

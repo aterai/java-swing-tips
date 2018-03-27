@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree       = new JTree();
+    private final JTree tree = new JTree();
     private final JTextField field = new JTextField("foo");
     private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
     public MainPanel() {
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
 //*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
-    public String query;
+    protected String query;
     private boolean rollOver;
 
     @Override public void updateUI() {
@@ -133,11 +133,11 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        //DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        // DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         if (selected) {
             c.setOpaque(false);
             c.setForeground(getTextSelectionColor());
-            //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
+            // c.setBackground(Color.BLUE); // getBackgroundSelectionColor());
         } else {
             c.setOpaque(true);
             if (Objects.nonNull(q) && !q.isEmpty() && value.toString().startsWith(q)) {
