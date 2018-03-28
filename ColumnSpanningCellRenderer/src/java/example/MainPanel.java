@@ -34,9 +34,10 @@ public final class MainPanel extends JPanel {
         table.setShowVerticalLines(false);
         table.setIntercellSpacing(new Dimension(0, 1));
         table.setRowHeight(56);
+        TableCellRenderer renderer = new ColumnSpanningCellRenderer();
         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             TableColumn c = table.getColumnModel().getColumn(i);
-            c.setCellRenderer(new ColumnSpanningCellRenderer());
+            c.setCellRenderer(renderer);
             c.setMinWidth(50);
         }
         add(new JScrollPane(table));
