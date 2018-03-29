@@ -45,11 +45,10 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        MainPanel p = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(p);
-        frame.setJMenuBar(p.createMenuBar());
+        frame.getContentPane().add(new MainPanel());
+        frame.setJMenuBar(createMenuBar());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
