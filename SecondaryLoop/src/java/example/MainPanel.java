@@ -85,7 +85,7 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
+            JLayer<?> jlayer = (JLayer<?>) c;
             jlayer.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             jlayer.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
                                    | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
@@ -94,7 +94,7 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }

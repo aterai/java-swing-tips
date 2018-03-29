@@ -88,13 +88,13 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+            ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         }
     }
 
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
@@ -211,7 +211,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
 
     private int getTargetIndex(Rectangle r, Point pt, int i) {
         int ht2 = (int) (.5 + r.height * .5);
-        R1.setBounds(r.x, r.y,       r.width, ht2);
+        R1.setBounds(r.x, r.y, r.width, ht2);
         R2.setBounds(r.x, r.y + ht2, r.width, ht2);
         if (R1.contains(pt)) {
             prevRect.setBounds(R1);

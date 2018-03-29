@@ -76,7 +76,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         return progressBar;
     }
     private static JComponent makeProgressBar2(BoundedRangeModel model) {
-        final JLabel label = new JLabel("000/100");
+        JLabel label = new JLabel("000/100");
         label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         JProgressBar progressBar = new JProgressBar(model) {
             @Override public Dimension getPreferredSize() {
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -162,7 +162,7 @@ class TextLabelProgressBar extends JProgressBar {
 //         changeListener = e -> {
 //             int iv = (int) (100 * getPercentComplete());
 //             label.setText(String.format("%03d/100", iv));
-//             //label.setText(getString());
+//             // label.setText(getString());
 //         };
 //         addChangeListener(changeListener);
         EventQueue.invokeLater(() -> {
@@ -174,7 +174,7 @@ class TextLabelProgressBar extends JProgressBar {
         return e -> {
             int iv = (int) (100 * getPercentComplete());
             label.setText(String.format("%03d/100", iv));
-            //label.setText(getString());
+            // label.setText(getString());
         };
     }
     @Override public Dimension getPreferredSize() {
@@ -195,14 +195,14 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JProgressBar progress = (JProgressBar) ((JLayer) c).getView();
+            JProgressBar progress = (JProgressBar) ((JLayer<?>) c).getView();
             int iv = (int) (100 * progress.getPercentComplete());
             label.setText(String.format("%03d/100", iv));
 
             Dimension d = label.getPreferredSize();
             int x = (c.getWidth()  - d.width)  / 2;
             int y = (c.getHeight() - d.height) / 2;
-            //label.setText(progress.getString());
+            // label.setText(progress.getString());
             SwingUtilities.paintComponent(g, label, rubberStamp, x, y, d.width, d.height);
         }
     }

@@ -219,7 +219,7 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JTextComponent tc = (JTextComponent) ((JLayer) c).getView();
+            JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
             if (!tc.getText().isEmpty()) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(hint.getForeground());

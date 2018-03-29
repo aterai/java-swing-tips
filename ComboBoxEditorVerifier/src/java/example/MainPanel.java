@@ -115,7 +115,7 @@ class SelectItemMenuListener implements PopupMenuListener {
 class ValidationLayerUI<V extends JTextComponent> extends LayerUI<V> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        // JTextComponent tc = ((JLayer) c).getView();
+        // JTextComponent tc = ((JLayer<?>) c).getView();
         Container p = SwingUtilities.getAncestorOfClass(JComboBox.class, c);
         if (p instanceof JComboBox) {
             JComboBox<?> cb = (JComboBox<?>) p;

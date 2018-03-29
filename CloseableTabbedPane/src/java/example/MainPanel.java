@@ -142,7 +142,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JTabbedPane tabbedPane = (JTabbedPane) ((JLayer) c).getView();
+            JTabbedPane tabbedPane = (JTabbedPane) ((JLayer<?>) c).getView();
             for (int i = 0; i < tabbedPane.getTabCount(); i++) {
                 Rectangle r = getTabButtonRect(tabbedPane, i);
                 button.getModel().setRollover(r.contains(pt));
@@ -153,12 +153,12 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+            ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }

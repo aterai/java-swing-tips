@@ -13,9 +13,9 @@ public final class MainPanel extends JPanel {
         super();
 
         UIManager.put("Button.disabledText", Color.RED);
-        final JButton button1 = makeButton("Default");
-        final JButton button2 = makeButton("setForeground");
-        final JButton button3 = makeButton("JLayer");
+        JButton button1 = makeButton("Default");
+        JButton button2 = makeButton("setForeground");
+        JButton button3 = makeButton("JLayer");
 
         DisableInputLayerUI<AbstractButton> layerUI = new DisableInputLayerUI<>();
         JCheckBox check = new JCheckBox("setEnabled", true);
@@ -94,7 +94,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
+            JLayer<?> jlayer = (JLayer<?>) c;
             if (DEBUG_POPUP_BLOCK) {
                 jlayer.getGlassPane().addMouseListener(dmyMouseListener);
                 jlayer.getGlassPane().addKeyListener(dmyKeyListener);
@@ -106,7 +106,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
+            JLayer<?> jlayer = (JLayer<?>) c;
             jlayer.setLayerEventMask(0);
             if (DEBUG_POPUP_BLOCK) {
                 jlayer.getGlassPane().removeMouseListener(dmyMouseListener);
@@ -193,7 +193,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 // }
 
 // class PrintGlassPane extends JPanel {
-//     //TexturePaint texture = TextureFactory.createCheckerTexture(4);
+//     // TexturePaint texture = TextureFactory.createCheckerTexture(4);
 //     protected PrintGlassPane() {
 //         super((LayoutManager) null);
 //         setOpaque(false);
@@ -210,15 +210,15 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //         super.paintComponent(g);
 //         JRootPane rootPane = SwingUtilities.getRootPane(this);
 //         if (rootPane != null) {
-//             //http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
+//             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
 //             // it is important to call print() instead of paint() here
 //             // because print() doesn't affect the frame's double buffer
 //             rootPane.getLayeredPane().print(g);
 //         }
-//         //Graphics2D g2 = (Graphics2D) g.create();
-//         //g2.setPaint(texture);
-//         //g2.fillRect(0, 0, getWidth(), getHeight());
-//         //g2.dispose();
+//         // Graphics2D g2 = (Graphics2D) g.create();
+//         // g2.setPaint(texture);
+//         // g2.fillRect(0, 0, getWidth(), getHeight());
+//         // g2.dispose();
 //     }
 // }
 
@@ -256,7 +256,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

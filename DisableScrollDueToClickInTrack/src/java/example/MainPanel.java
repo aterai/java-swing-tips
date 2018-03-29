@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         JLabel label = new JLabel(" disable scroll due to click in track");
         box.add(label);
         box.add(Box.createVerticalStrut(10));
-        box.add(makeTitledPanel("Override TrackListener#shouldScroll(...): false",  slider1));
+        box.add(makeTitledPanel("Override TrackListener#shouldScroll(...): false", slider1));
         box.add(Box.createVerticalStrut(10));
         box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<>(slider2, new DisableLeftPressedLayerUI<>())));
         box.add(Box.createVerticalGlue());
@@ -99,12 +99,12 @@ class DisableLeftPressedLayerUI<V extends Component> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK);
+            ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
@@ -113,12 +113,12 @@ class DisableLeftPressedLayerUI<V extends Component> extends LayerUI<V> {
             e.getComponent().dispatchEvent(new MouseEvent(
                 e.getComponent(),
                 e.getID(), e.getWhen(),
-                InputEvent.BUTTON3_DOWN_MASK, //e.getModifiers(),
+                InputEvent.BUTTON3_DOWN_MASK, // e.getModifiers(),
                 e.getX(), e.getY(),
                 e.getXOnScreen(), e.getYOnScreen(),
                 e.getClickCount(),
                 e.isPopupTrigger(),
-                MouseEvent.BUTTON3)); //e.getButton());
+                MouseEvent.BUTTON3)); // e.getButton());
             e.consume();
         }
     }

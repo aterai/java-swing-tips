@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         add(new JLayer<>(new JScrollPane(textPane), new WheelScrollLayerUI()));
-        //add(new JScrollPane(textPane));
+        // add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
     protected static JScrollPane createChildScrollPane(Component view) {
@@ -100,12 +100,12 @@ class WheelScrollLayerUI extends LayerUI<JScrollPane> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+            ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
@@ -116,10 +116,10 @@ class WheelScrollLayerUI extends LayerUI<JScrollPane> {
         if (c instanceof JScrollPane && !c.equals(main)) {
             JScrollPane child = (JScrollPane) c;
             BoundedRangeModel m = child.getVerticalScrollBar().getModel();
-            int extent  = m.getExtent();
+            int extent = m.getExtent();
             int minimum = m.getMinimum();
             int maximum = m.getMaximum();
-            int value   = m.getValue();
+            int value = m.getValue();
             if (value + extent >= maximum && dir > 0) {
                 main.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, main));
             } else if (value <= minimum && dir < 0) {

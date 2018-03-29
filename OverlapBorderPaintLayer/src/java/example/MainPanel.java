@@ -18,13 +18,13 @@ public final class MainPanel extends JPanel {
 
         JPanel p1 = new JPanel(new GridLayout(0, 1));
         p1.setBorder(BorderFactory.createTitledBorder("Icon border"));
-        p1.add(makeBreadcrumbList0(list, Color.PINK,  1));
+        p1.add(makeBreadcrumbList0(list, Color.PINK, 1));
         p1.add(makeBreadcrumbList1(list, Color.PINK, 11));
         p1.add(makeBreadcrumbList2(list, Color.PINK, 11));
 
         JPanel p2 = new JPanel(new GridLayout(0, 1));
         p2.setBorder(BorderFactory.createTitledBorder("JLayer border"));
-        p2.add(new JLayer<>(makeBreadcrumbList0(list, Color.ORANGE,  1), layerUI));
+        p2.add(new JLayer<>(makeBreadcrumbList0(list, Color.ORANGE, 1), layerUI));
         p2.add(new JLayer<>(makeBreadcrumbList1(list, Color.ORANGE, 11), layerUI));
         p2.add(new JLayer<>(makeBreadcrumbList2(list, Color.ORANGE, 11), layerUI));
 
@@ -92,9 +92,9 @@ public final class MainPanel extends JPanel {
         b.setIcon(icon);
         b.setContentAreaFilled(false);
         b.setBorder(BorderFactory.createEmptyBorder());
-        //b.setVerticalAlignment(SwingConstants.CENTER);
-        //b.setVerticalTextPosition(SwingConstants.CENTER);
-        //b.setHorizontalAlignment(SwingConstants.CENTER);
+        // b.setVerticalAlignment(SwingConstants.CENTER);
+        // b.setVerticalTextPosition(SwingConstants.CENTER);
+        // b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
         b.setFocusPainted(false);
         b.setOpaque(false);
@@ -124,9 +124,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//https://ateraimemo.com/Swing/ToggleButtonBar.html
+// https://ateraimemo.com/Swing/ToggleButtonBar.html
 class ArrowToggleButtonBarCellIcon implements Icon {
-    public static final int TH = 10; //The height of a triangle
+    public static final int TH = 10; // The height of a triangle
     private static final int HEIGHT = TH * 2 + 1;
     private static final int WIDTH = 100;
     private Shape shape;
@@ -208,15 +208,15 @@ class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
         p.quadTo(w,      0,      w,      h2);
         p.quadTo(w,      0 + h,  w - h2, h);
         if (c == parent.getComponent(0)) {
-            //:first-child
+            // :first-child
             p.lineTo(r, h);
             p.quadTo(0, h, 0, h - r);
             p.lineTo(0, r);
             p.quadTo(0, 0, r, 0);
         } else {
-            p.lineTo(0,  h);
+            p.lineTo(0, h);
             p.quadTo(h2, h, h2, h2);
-            p.quadTo(h2, 0, 0,  0);
+            p.quadTo(h2, 0, 0, 0);
         }
         p.closePath();
         return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
@@ -253,12 +253,12 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+            ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
         if (c instanceof JLayer) {
-            ((JLayer) c).setLayerEventMask(0);
+            ((JLayer<?>) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
