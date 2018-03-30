@@ -27,7 +27,8 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(cardLayout);
         // https://ateraimemo.com/Swing/TraverseAllNodes.html
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration en = root.postorderEnumeration();
+        // JDK 9: Enumeration<TreeNode> en = root.postorderEnumeration();
+        Enumeration<?> en = root.postorderEnumeration();
         while (en.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
             String title = Objects.toString(node.getUserObject());

@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                 isAdjusting = false;
             }
             @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-                //throw new ExpandVetoException(e, "Tree collapse cancelled");
+                // throw new ExpandVetoException(e, "Tree collapse cancelled");
             }
         });
 
@@ -65,7 +65,8 @@ public final class MainPanel extends JPanel {
     public static void collapseFirstHierarchy(JTree tree) {
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        Enumeration e = root.breadthFirstEnumeration();
+        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
+        Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             boolean isOverFirstLevel = node.getLevel() > 1;

@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
         };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // Java 9: Enumeration<TreeNode> en = root.breadthFirstEnumeration();
         Enumeration<?> en = root.breadthFirstEnumeration();
         while (en.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
@@ -70,8 +71,6 @@ public final class MainPanel extends JPanel {
                 DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
                 m.addTreeModelListener(new CheckBoxStatusUpdateListener());
                 tree.setModel(m);
-            // } catch (FileNotFoundException ex) {
-            //     ex.printStackTrace();
             }
         });
 
@@ -186,6 +185,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         int selectedCount = 0;
+        // Java 9: Enumeration<TreeNode> children = parent.children();
         Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
@@ -208,6 +208,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
+        // Java 9: Enumeration<TreeNode> breadth = root.breadthFirstEnumeration();
         Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();

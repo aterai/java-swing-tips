@@ -27,6 +27,7 @@ public final class MainPanel extends JPanel {
     }
     private static void expandTree(JTree tree) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+        // Java 9: Collections.list(root.preorderEnumeration()).stream()
         Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
             .filter(DefaultMutableTreeNode.class::isInstance)
             .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))

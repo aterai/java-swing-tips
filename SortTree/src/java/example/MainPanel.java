@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
         ActionListener listener = e -> {
             JCheckBox check = (JCheckBox) e.getSource();
             if (check.isSelected()) {
-                TreeUtil.COMPARE_COUNT.set(0);
-                TreeUtil.SWAP_COUNT.set(0);
+                TreeUtil.COMPARE_COUNTER.set(0);
+                TreeUtil.SWAP_COUNTER.set(0);
                 DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
                 if (check.equals(sort0)) {
                     TreeUtil.sortTree0(r);
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
     }
 
     private static void log(String title) {
-        if (TreeUtil.SWAP_COUNT.get() == 0) {
-            System.out.format("%-24s - compare: %3d, swap: ---%n", title, TreeUtil.COMPARE_COUNT.get());
+        if (TreeUtil.SWAP_COUNTER.get() == 0) {
+            System.out.format("%-24s - compare: %3d, swap: ---%n", title, TreeUtil.COMPARE_COUNTER.get());
         } else {
-            System.out.format("%-24s - compare: %3d, swap: %3d%n", title, TreeUtil.COMPARE_COUNT.get(), TreeUtil.SWAP_COUNT.get());
+            System.out.format("%-24s - compare: %3d, swap: %3d%n", title, TreeUtil.COMPARE_COUNTER.get(), TreeUtil.SWAP_COUNTER.get());
         }
     }
 
@@ -91,15 +91,15 @@ public final class MainPanel extends JPanel {
 
 final class TreeUtil {
     private static final boolean DEBUG = true;
-    public static final AtomicInteger COMPARE_COUNT = new AtomicInteger();
-    public static final AtomicInteger SWAP_COUNT = new AtomicInteger();
+    public static final AtomicInteger COMPARE_COUNTER = new AtomicInteger();
+    public static final AtomicInteger SWAP_COUNTER = new AtomicInteger();
 
 //     // JDK 1.7.0
 //     private static TreeNodeComparator tnc = new TreeNodeComparator();
 //     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
 //         private static final long serialVersionUID = 1L;
 //         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-//             COMPARE_COUNT.getAndIncrement();
+//             COMPARE_COUNTER.getAndIncrement();
 //             if (a.isLeaf() && !b.isLeaf()) {
 //                 return 1;
 //             } else if (!a.isLeaf() && b.isLeaf()) {
@@ -124,11 +124,11 @@ final class TreeUtil {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
             for (int j = 0; j < i; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-                COMPARE_COUNT.getAndIncrement();
+                COMPARE_COUNTER.getAndIncrement();
                 if (tnc.compare(node, prevNode) < 0) {
                     root.insert(node, j);
                     root.insert(prevNode, i);
-                    SWAP_COUNT.getAndIncrement();
+                    SWAP_COUNTER.getAndIncrement();
                     if (DEBUG) {
                         i--;
                         break;
@@ -149,7 +149,7 @@ final class TreeUtil {
             for (int j = i + 1; j < n; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
                 if (tnc.compare(node, prevNode) > 0) {
-                    SWAP_COUNT.getAndIncrement();
+                    SWAP_COUNTER.getAndIncrement();
                     root.insert(node, j);
                     root.insert(prevNode, i);
                     i--;
@@ -173,18 +173,19 @@ final class TreeUtil {
                 }
             }
             if (i != min) {
-                SWAP_COUNT.getAndIncrement();
+                SWAP_COUNTER.getAndIncrement();
                 MutableTreeNode a = (MutableTreeNode) parent.getChildAt(i);
                 MutableTreeNode b = (MutableTreeNode) parent.getChildAt(min);
                 parent.insert(b, i);
                 parent.insert(a, min);
                 // MutableTreeNode node = (MutableTreeNode) parent.getChildAt(min);
                 // parent.insert(node, i);
-                // COMPARE_COUNT++;
+                // COMPARE_COUNTER++;
             }
         }
     }
     public static void sortTree2(DefaultMutableTreeNode root) {
+        // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
         Enumeration<?> e = root.preorderEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -210,6 +211,7 @@ final class TreeUtil {
         children.forEach(parent::add);
     }
     public static void sortTree3(DefaultMutableTreeNode root) {
+        // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
         Enumeration<?> e = root.preorderEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();

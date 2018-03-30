@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(null);
                 setCellEditor(null);
                 super.updateUI();
-                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                // ???#1: JDK 1.6.0 bug??? Nimbus LnF
                 setCellRenderer(new CheckBoxNodeRenderer());
                 setCellEditor(new CheckBoxNodeEditor());
             }
@@ -24,6 +24,7 @@ public final class MainPanel extends JPanel {
         boolean b = true;
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
         Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -48,24 +49,24 @@ public final class MainPanel extends JPanel {
 //
 //         parent = new DefaultMutableTreeNode("colors");
 //         root.add(parent);
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("blue",   false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("blue", false)));
 //         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("violet", false)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("red",    false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("red", false)));
 //         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("yellow", false)));
 //
 //         parent = new DefaultMutableTreeNode("sports");
 //         root.add(parent);
 //         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("basketball", true)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("soccer",     true)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("football",   true)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hockey",     true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("soccer", true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("football", true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hockey", true)));
 //
 //         parent = new DefaultMutableTreeNode("food");
 //         root.add(parent);
 //         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hot dogs", false)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("pizza",    false)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("ravioli",  false)));
-//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("bananas",  false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("pizza", false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("ravioli", false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("bananas", false)));
 //         return new DefaultTreeModel(root);
 //     }
     public static void main(String... args) {
@@ -112,7 +113,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
     }
 }
 //*
-//delegation pattern
+// delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final JCheckBox checkBox = new JCheckBox() {
         protected transient ActionListener handler;
@@ -154,7 +155,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     }
 }
 /*/
-//inheritence to extend a class
+// inheritence to extend a class
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     private final JTree tree;
     protected CheckBoxNodeEditor(JTree tree) {
@@ -193,9 +194,9 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         super.updateUI();
         setName("Tree.cellEditor");
     }
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
@@ -271,12 +272,12 @@ class CheckBoxNode {
     }
 }
 
-//TEST:
+// TEST:
 // class CheckBoxNodeRenderer extends DefaultTreeCellRenderer {
 //     private final JCheckBox leafRenderer = new JCheckBox();
 //     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //         this.tree = tree;
-//         //String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
+//         // String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
 //         if (leaf && value instanceof DefaultMutableTreeNode) {
 //             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //             if (userObject instanceof CheckBoxNode) {
@@ -291,7 +292,7 @@ class CheckBoxNode {
 // //                     leafRenderer.setBackground(getBackgroundNonSelectionColor());
 // //                 }
 //                 CheckBoxNode node = (CheckBoxNode) userObject;
-//                 leafRenderer.setText(node.text); //leafRenderer.setText(stringValue);
+//                 leafRenderer.setText(node.text); // leafRenderer.setText(stringValue);
 //                 leafRenderer.setSelected(node.selected);
 //                 return leafRenderer;
 //             }
@@ -304,7 +305,7 @@ class CheckBoxNode {
 // //             c.setForeground(getTextNonSelectionColor());
 // //             c.setBackground(getBackgroundNonSelectionColor());
 // //         }
-//         //c.setOpaque(false);
+//         // c.setOpaque(false);
 //         return c;
 //     }
 //     private JTree tree = null;
@@ -319,7 +320,7 @@ class CheckBoxNode {
 //             leafRenderer.updateUI();
 //         }
 //
-//         //setLeafIcon(getDefaultLeafIcon());
+//         // setLeafIcon(getDefaultLeafIcon());
 //         setOpenIcon(getDefaultOpenIcon());
 //         setClosedIcon(getDefaultClosedIcon());
 //
@@ -344,11 +345,11 @@ class CheckBoxNode {
 // //         Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
 // //         if (Objects.nonNull(margins)) {
 // //             setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
-// //             //if (Objects.nonNull(leafRenderer)) {
-// //             //    leafRenderer.setBorder(getBorder());
-// //             //}
+// //             // if (Objects.nonNull(leafRenderer)) {
+// //             //     leafRenderer.setBorder(getBorder());
+// //             // }
 // //         }
 //         setName("Tree.cellRenderer");
-//         //if (Objects.nonNull(tree)) tree.revalidate();
+//         // if (Objects.nonNull(tree)) tree.revalidate();
 //     }
 // }

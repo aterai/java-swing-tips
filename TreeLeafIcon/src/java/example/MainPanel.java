@@ -84,13 +84,10 @@ public final class MainPanel extends JPanel {
     private static void allNodesChanged(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // Java 9: Collections.list(root.preorderEnumeration()).stream()
         Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
             .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
             .forEach(model::nodeChanged);
-//         Enumeration<?> e = root.preorderEnumeration();
-//         while (e.hasMoreElements()) {
-//             model.nodeChanged((TreeNode) e.nextElement());
-//         }
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

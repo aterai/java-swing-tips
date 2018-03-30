@@ -45,6 +45,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         int selectedCount = 0;
+        // Java 9: Enumeration<TreeNode> children = parent.children();
         Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
@@ -70,6 +71,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
+        // Java 9: Enumeration<TreeNode> breadth = root.breadthFirstEnumeration();
         Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
@@ -80,7 +82,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
             node.setUserObject(new CheckBoxNode(check.file, status));
         }
     }
-    @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
-    @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
+    @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+    @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
     @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
 }

@@ -19,6 +19,7 @@ public final class MainPanel extends JPanel {
         JButton depthFirst = new JButton("<html>depthFirst<br>postorder");
         depthFirst.addActionListener(ev -> {
             textArea.setText("");
+            // Java 9: Enumeration<TreeNode> e = root.depthFirstEnumeration();
             Enumeration<?> e = root.depthFirstEnumeration();
             while (e.hasMoreElements()) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -29,6 +30,7 @@ public final class MainPanel extends JPanel {
 //         JButton postorder = new JButton("postorder");
 //         postorder.addActionListener(ev -> {
 //             textArea.setText("");
+//             // Java 9: Enumeration<TreeNode> e = root.postorderEnumeration();
 //             Enumeration<?> e = root.postorderEnumeration();
 //             while (e.hasMoreElements()) {
 //                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -39,6 +41,7 @@ public final class MainPanel extends JPanel {
         JButton breadthFirst = new JButton("breadthFirst");
         breadthFirst.addActionListener(ev -> {
             textArea.setText("");
+            // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
             Enumeration<?> e = root.breadthFirstEnumeration();
             while (e.hasMoreElements()) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -49,6 +52,7 @@ public final class MainPanel extends JPanel {
         JButton preorder = new JButton("preorder");
         preorder.addActionListener(ev -> {
             textArea.setText("");
+            // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
             Enumeration<?> e = root.preorderEnumeration();
             while (e.hasMoreElements()) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();

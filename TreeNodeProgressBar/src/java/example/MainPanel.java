@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
                 @Override protected Boolean doInBackground() throws InterruptedException {
                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+                    // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
                     Enumeration<?> e = root.breadthFirstEnumeration();
                     while (e.hasMoreElements()) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();

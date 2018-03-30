@@ -50,6 +50,7 @@ public final class MainPanel extends JPanel {
                 tree.addSelectionPath(path);
             }
             if (!node.isLeaf() && node.getChildCount() >= 0) {
+                // Java 9: Enumeration<TreeNode> e = node.children();
                 Enumeration<?> e = node.children();
                 while (e.hasMoreElements()) {
                     searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

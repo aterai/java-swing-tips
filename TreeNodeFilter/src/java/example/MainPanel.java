@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
         tree.setRowHeight(-1);
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
         Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -136,6 +137,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         FilterableNode uo = (FilterableNode) parent.getUserObject();
+        // Java 9: Enumeration<TreeNode> children = parent.children();
         Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
@@ -192,6 +194,7 @@ final class TreeUtil {
                 tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
             }
             if (!uo.status && !node.isLeaf() && node.getChildCount() >= 0) {
+                // Java 9: Enumeration<TreeNode> e = node.children();
                 Enumeration<?> e = node.children();
                 while (e.hasMoreElements()) {
                     searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
@@ -204,6 +207,7 @@ final class TreeUtil {
         FilterableNode uo = (FilterableNode) node.getUserObject();
         uo.status = match;
         if (!node.isLeaf() && node.getChildCount() >= 0) {
+            // Java 9: Enumeration<TreeNode> e = node.children();
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
                 resetAll(tree, parent.pathByAddingChild(e.nextElement()), match);
@@ -213,6 +217,7 @@ final class TreeUtil {
     public static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
+            // Java 9: Enumeration<TreeNode> e = node.children();
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
                 visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);

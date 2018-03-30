@@ -83,6 +83,7 @@ public final class MainPanel extends JPanel {
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
+            // Java 9: Enumeration<TreeNode> e = node.children();
             Enumeration<?> e = node.children();
             while (e.hasMoreElements()) {
                 visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
@@ -172,7 +173,7 @@ public final class MainPanel extends JPanel {
 //         if (!node.isLeaf()) {
 //             return;
 //         }
-//         final File parent = (File) node.getUserObject();
+//         File parent = (File) node.getUserObject();
 //         if (!parent.isDirectory()) {
 //           return;
 //         }

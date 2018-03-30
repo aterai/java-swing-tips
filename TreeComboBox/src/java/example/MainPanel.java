@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
         DefaultComboBoxModel<DefaultMutableTreeNode> model2 = new DefaultComboBoxModel<>();
         TreeModel tm = makeModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tm.getRoot();
+//         // Java 9: Enumeration<TreeNode> depth = root.depthFirstEnumeration();
 //         Enumeration<?> depth = root.depthFirstEnumeration();
 //         while (depth.hasMoreElements()) {
 //             DefaultMutableTreeNode node = (DefaultMutableTreeNode) depth.nextElement();
@@ -42,6 +43,7 @@ public final class MainPanel extends JPanel {
             model.addElement(node);
         }
         if (!node.isLeaf() && node.getChildCount() > 0) {
+            // Java 9: Collections.list(node.children()).stream()
             Collections.list((Enumeration<?>) node.children()).stream()
                 .filter(DefaultMutableTreeNode.class::isInstance)
                 .map(DefaultMutableTreeNode.class::cast)

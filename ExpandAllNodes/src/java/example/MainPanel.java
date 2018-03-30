@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTree tree = new JTree();
-        //tree.setModel(makeModel());
+        // tree.setModel(makeModel());
 
         JButton button1 = new JButton("expand A");
         button1.addActionListener(e -> expandAll(tree));
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         button3.addActionListener(e -> {
             TreeNode root = (TreeNode) tree.getModel().getRoot();
             visitAll(tree, new TreePath(root), true);
-            //expandAPath(new TreePath(root));
+            // expandAPath(new TreePath(root));
         });
 
         JButton button4 = new JButton("collapse B");
@@ -64,16 +64,18 @@ public final class MainPanel extends JPanel {
 //     }
 
     public static Stream<TreeNode> children(TreeNode node) {
+        // Java 9: return Collections.list(node.children())
         return Collections.list((Enumeration<?>) node.children())
             .stream().filter(TreeNode.class::isInstance).map(TreeNode.class::cast);
     }
 
-    //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
-    //http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
+    // Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
+    // http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         children(node).forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
 //         if (!node.isLeaf() && node.getChildCount() >= 0) {
+//             // Java 9: Enumeration<TreeNode> e = node.children();
 //             Enumeration<?> e = node.children();
 //             while (e.hasMoreElements()) {
 //                 visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
@@ -86,8 +88,8 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    //Expand or collapse a JTree - Real's Java How-to
-    //http://www.rgagnon.com/javadetails/java-0210.html
+    // Expand or collapse a JTree - Real's Java How-to
+    // http://www.rgagnon.com/javadetails/java-0210.html
     protected static void expandAll(JTree tree) {
         int row = 0;
         while (row < tree.getRowCount()) {

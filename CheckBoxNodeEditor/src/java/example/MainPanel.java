@@ -17,13 +17,14 @@ public final class MainPanel extends JPanel {
                 setCellRenderer(null);
                 setCellEditor(null);
                 super.updateUI();
-                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                // ???#1: JDK 1.6.0 bug??? Nimbus LnF
                 setCellRenderer(new CheckBoxNodeRenderer());
                 setCellEditor(new CheckBoxNodeEditor());
             }
         };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
         Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
@@ -35,7 +36,7 @@ public final class MainPanel extends JPanel {
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
         tree.expandRow(0);
-        //tree.setToggleClickCount(1);
+        // tree.setToggleClickCount(1);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
@@ -77,7 +78,7 @@ class TriStateCheckBox extends JCheckBox {
 }
 
 class IndeterminateIcon implements Icon {
-    private static final Color FOREGROUND = new Color(50, 20, 255, 200); //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final Color FOREGROUND = new Color(50, 20, 255, 200); // TEST: UIManager.getColor("CheckBox.foreground");
     private static final int SIDE_MARGIN = 4;
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
@@ -157,6 +158,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         int selectedCount = 0;
+        // Java 9: Enumeration<TreeNode> children = parent.children();
         Enumeration<?> children = parent.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
@@ -179,6 +181,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
+        // Java 9: Enumeration<TreeNode> breadth = root.breadthFirstEnumeration();
         Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
@@ -189,8 +192,8 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
             node.setUserObject(new CheckBoxNode(check.label, status));
         }
     }
-    @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
-    @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
+    @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+    @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
     @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
 }
 
@@ -254,8 +257,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             panel.setOpaque(false);
             checkBox.setEnabled(tree.isEnabled());
             checkBox.setFont(tree.getFont());
-            //checkBox.setFocusable(false);
-            //checkBox.setOpaque(false);
+            // checkBox.setFocusable(false);
+            // checkBox.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
@@ -301,7 +304,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         }
         return false;
     }
-//     //AbstractCellEditor
+//     // AbstractCellEditor
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {
 //         return true;
 //     }
@@ -321,12 +324,12 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     private final JPanel panel = new JPanel(new BorderLayout());
 //     protected CheckBoxNodeRenderer() {
 //         super();
-//         //Fixed?
-//         //String uiName = getUI().getClass().getName();
-//         //if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
-//         //    System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
-//         //    renderer.setBackgroundSelectionColor(new Color(0x0, true));
-//         //}
+//         // Fixed?
+//         // String uiName = getUI().getClass().getName();
+//         // if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
+//         //     System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
+//         //     renderer.setBackgroundSelectionColor(new Color(0x0, true));
+//         // }
 //         panel.setFocusable(false);
 //         panel.setRequestFocusEnabled(false);
 //         panel.setOpaque(false);
@@ -350,26 +353,26 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 l.setText(node.label);
 //                 setSelected(node.status == Status.SELECTED);
 //             }
-//             //panel.add(this, BorderLayout.WEST);
+//             // panel.add(this, BorderLayout.WEST);
 //             panel.add(l);
 //             return panel;
 //         }
 //         return l;
 //     }
-//     //Fixed?
-//     //@Override public void updateUI() {
-//     //    super.updateUI();
-//     //    if (Objects.nonNull(panel)) {
-//     //        //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
-//     //        panel.updateUI();
-//     //        //panel.add(this, BorderLayout.WEST);
-//     //    }
-//     //    setName("Tree.cellRenderer");
-//     //    //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-//     //    //if (System.getProperty("java.version").startsWith("1.6.0")) {
-//     //    //    renderer = new DefaultTreeCellRenderer();
-//     //    //}
-//     //}
+//     // Fixed?
+//     // @Override public void updateUI() {
+//     //     super.updateUI();
+//     //     if (Objects.nonNull(panel)) {
+//     //         // panel.removeAll(); // ??? Change to Nimbus LnF, JDK 1.6.0
+//     //         panel.updateUI();
+//     //         // panel.add(this, BorderLayout.WEST);
+//     //     }
+//     //     setName("Tree.cellRenderer");
+//     //     // ???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+//     //     // if (System.getProperty("java.version").startsWith("1.6.0")) {
+//     //     //     renderer = new DefaultTreeCellRenderer();
+//     //     // }
+//     // }
 // }
 //
 // class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
@@ -387,7 +390,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         this.setOpaque(false);
 //     }
 //     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-//         //JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//         // JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
 //         l.setFont(tree.getFont());
 //         if (value instanceof DefaultMutableTreeNode) {
@@ -405,7 +408,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 setSelected(node.status == Status.SELECTED);
 //                 str = node.label;
 //             }
-//             //panel.add(this, BorderLayout.WEST);
+//             // panel.add(this, BorderLayout.WEST);
 //             panel.add(l);
 //             return panel;
 //         }
@@ -426,34 +429,34 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //             Dimension d = getPreferredSize();
 //             r.setSize(new Dimension(d.width, r.height));
 //             if (r.contains(me.getX(), me.getY())) {
-//                 //Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
-//                 //       https://bugs.openjdk.java.net/browse/JDK-8023474
-//                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
-//                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-//                 //    setBounds(new Rectangle(d.width, r.height));
-//                 //}
-//                 //System.out.println(getBounds());
+//                 // Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//                 //        https://bugs.openjdk.java.net/browse/JDK-8023474
+//                 // if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
+//                 //     System.out.println("XXX: Java 7, only on first run\n" + getBounds());
+//                 //     setBounds(new Rectangle(d.width, r.height));
+//                 // }
+//                 // System.out.println(getBounds());
 //                 return true;
 //             }
 //         }
 //         return false;
 //     }
-//     //Fixed?
-//     //@Override public void updateUI() {
-//     //    super.updateUI();
-//     //    setName("Tree.cellEditor");
-//     //    if (Objects.nonNull(panel)) {
-//     //        //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
-//     //        panel.updateUI();
-//     //        //panel.add(this, BorderLayout.WEST);
-//     //    }
-//     //    //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-//     //    //if (System.getProperty("java.version").startsWith("1.6.0")) {
-//     //    //    renderer = new DefaultTreeCellRenderer();
-//     //    //}
-//     //}
+//     // Fixed?
+//     // @Override public void updateUI() {
+//     //     super.updateUI();
+//     //     setName("Tree.cellEditor");
+//     //     if (Objects.nonNull(panel)) {
+//     //         // panel.removeAll(); // ??? Change to Nimbus LnF, JDK 1.6.0
+//     //         panel.updateUI();
+//     //         // panel.add(this, BorderLayout.WEST);
+//     //     }
+//     //     // ???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+//     //     // if (System.getProperty("java.version").startsWith("1.6.0")) {
+//     //     //     renderer = new DefaultTreeCellRenderer();
+//     //     // }
+//     // }
 //
-//     //Copied from AbstractCellEditor
+//     // Copied from AbstractCellEditor
 // //     protected EventListenerList listenerList = new EventListenerList();
 // //     protected transient ChangeEvent changeEvent;
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {
@@ -541,7 +544,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 l.setText(node.label);
 //                 check.setSelected(node.status == Status.SELECTED);
 //             }
-//             //add(this, BorderLayout.WEST);
+//             // add(this, BorderLayout.WEST);
 //             add(l);
 //             return this;
 //         }
@@ -550,15 +553,15 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     @Override public void updateUI() {
 //         super.updateUI();
 //         if (Objects.nonNull(check)) {
-//             //removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+//             // removeAll(); // ??? Change to Nimbus LnF, JDK 1.6.0
 //             check.updateUI();
-//             //add(check, BorderLayout.WEST);
+//             // add(check, BorderLayout.WEST);
 //         }
 //         setName("Tree.cellRenderer");
-//         //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-//         //if (System.getProperty("java.version").startsWith("1.6.0")) {
-//         //    renderer = new DefaultTreeCellRenderer();
-//         //}
+//         // ???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+//         // if (System.getProperty("java.version").startsWith("1.6.0")) {
+//         //     renderer = new DefaultTreeCellRenderer();
+//         // }
 //     }
 // }
 //
@@ -576,7 +579,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         check.setOpaque(false);
 //     }
 //     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-//         //JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//         // JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
 //         l.setFont(tree.getFont());
 //         if (value instanceof DefaultMutableTreeNode) {
@@ -594,7 +597,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 check.setSelected(node.status == Status.SELECTED);
 //                 str = node.label;
 //             }
-//             //add(this, BorderLayout.WEST);
+//             // add(this, BorderLayout.WEST);
 //             add(l);
 //             return this;
 //         }
@@ -615,13 +618,13 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //             Dimension d = check.getPreferredSize();
 //             r.setSize(new Dimension(d.width, r.height));
 //             if (r.contains(me.getPoint())) {
-//                 //Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
-//                 //       https://bugs.openjdk.java.net/browse/JDK-8023474
-//                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
-//                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-//                 //    check.setBounds(new Rectangle(d.width, r.height));
-//                 //}
-//                 //System.out.println(getBounds());
+//                 // Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//                 //        https://bugs.openjdk.java.net/browse/JDK-8023474
+//                 // if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
+//                 //     System.out.println("XXX: Java 7, only on first run\n" + getBounds());
+//                 //     check.setBounds(new Rectangle(d.width, r.height));
+//                 // }
+//                 // System.out.println(getBounds());
 //                 return true;
 //             }
 //         }
@@ -631,17 +634,17 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         super.updateUI();
 //         setName("Tree.cellEditor");
 //         if (Objects.nonNull(check)) {
-//             //removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+//             // removeAll(); // ??? Change to Nimbus LnF, JDK 1.6.0
 //             check.updateUI();
-//             //add(check, BorderLayout.WEST);
+//             // add(check, BorderLayout.WEST);
 //         }
-//         //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-//         //if (System.getProperty("java.version").startsWith("1.6.0")) {
-//         //    renderer = new DefaultTreeCellRenderer();
-//         //}
+//         // ???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+//         // if (System.getProperty("java.version").startsWith("1.6.0")) {
+//         //     renderer = new DefaultTreeCellRenderer();
+//         // }
 //     }
 //
-//     //Copied from AbstractCellEditor
+//     // Copied from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
 //     protected transient ChangeEvent changeEvent;
 //     @Override public boolean shouldSelectCell(EventObject anEvent) {

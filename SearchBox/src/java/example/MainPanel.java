@@ -11,9 +11,9 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    protected final JTree tree       = new JTree(makeModel());
+    protected final JTree tree = new JTree(makeModel());
     protected final JTextField field = new JTextField("asd", 10);
-    protected final JButton button   = new JButton();
+    protected final JButton button = new JButton();
     protected final JButton showHideButton = new JButton();
     protected final List<TreePath> rollOverPathLists = new ArrayList<>();
     protected boolean isHidden = true;
@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         protected int controlsHeight;
         protected int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {
-            //synchronized (target.getTreeLock()) {
+            // synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
             if (animator.isRunning()) {
@@ -135,6 +135,7 @@ public class MainPanel extends JPanel {
                 tree.expandPath(path.getParentPath());
             }
             if (!node.isLeaf() && node.getChildCount() >= 0) {
+                // Java 9: Enumeration<TreeNode> e = node.children();
                 Enumeration<?> e = node.children();
                 while (e.hasMoreElements()) {
                     searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
@@ -143,7 +144,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-//     //<blockquote cite="https://community.oracle.com/thread/1357454"
+//     // <blockquote cite="https://community.oracle.com/thread/1357454"
 //     //           title="how to get everything in DefaultTreeNode">
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();
@@ -167,7 +168,7 @@ public class MainPanel extends JPanel {
 //             }
 //         }
 //     }
-//     //<blockquote />
+//     // <blockquote />
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -183,7 +184,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

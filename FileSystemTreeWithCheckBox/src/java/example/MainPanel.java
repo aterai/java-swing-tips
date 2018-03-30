@@ -67,7 +67,8 @@ public final class MainPanel extends JPanel {
 //                 if (check.status == Status.SELECTED) {
 //                     System.out.println(check.file.toString());
 //                 } else if (check.status == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
-//                     Enumeration e = node.children();
+//                     // Java 9: Enumeration<TreeNode> e = node.children();
+//                     Enumeration<?> e = node.children();
 //                     while (e.hasMoreElements()) {
 //                         searchTreeForCheckedNode(path.pathByAddingChild(e.nextElement()));
 //                     }
@@ -77,7 +78,8 @@ public final class MainPanel extends JPanel {
 //                 System.out.println("------------------");
 //                 searchTreeForCheckedNode(tree.getPathForRow(0));
 //                 // DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-//                 // Enumeration e = root.breadthFirstEnumeration();
+//                 // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
+//                 // Enumeration<?> e = root.breadthFirstEnumeration();
 //                 // while (e.hasMoreElements()) {
 //                 //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
 //                 //     CheckBoxNode check = (CheckBoxNode) node.getUserObject();
