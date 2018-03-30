@@ -79,9 +79,9 @@ class ZeroSizeButtonUI extends BasicComboBoxUI {
             @Override public void updateUI() {
                 super.updateUI();
                 setBorder(BorderFactory.createEmptyBorder());
-                //setVisible(false);
+                // setVisible(false);
             }
-        }; //.createArrowButton();
+        }; // .createArrowButton();
         return button;
     }
 }
@@ -94,7 +94,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
             putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
             setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             setOpaque(false);
-            setRenderer(new LocalDateTimeCellRenderer<>());
+            setRenderer(new LocalDateTimeCellRenderer());
             setUI(new ZeroSizeButtonUI());
         }
     };
@@ -104,11 +104,11 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
         if (value instanceof LocalDateTime) {
             comboBox.setModel(new DefaultComboBoxModel<LocalDateTime>() {
                 @Override public LocalDateTime getElementAt(int index) {
-                    //if (index >= 0 && index < getSize()) {
+                    // if (index >= 0 && index < getSize()) {
                     return LocalDateTime.now().plusDays(index);
                 }
                 @Override public int getSize() {
-                    return 7; //in a week
+                    return 7; // in a week
                 }
                 @Override public Object getSelectedItem() {
                     return selectedDate;
@@ -144,10 +144,10 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
     }
 }
 
-class LocalDateTimeCellRenderer<E extends LocalDateTime> extends JLabel implements ListCellRenderer<E> {
+class LocalDateTimeCellRenderer extends JLabel implements ListCellRenderer<LocalDateTime> {
     private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
     private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
         if (Objects.nonNull(value)) {
             setText(dateTimeFormatter.format((TemporalAccessor) value));
         }
