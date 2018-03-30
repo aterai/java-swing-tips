@@ -120,7 +120,7 @@ public final class MainPanel extends JPanel {
     private class ContributionListRenderer implements ListCellRenderer<Contribution> {
         private final ListCellRenderer<? super Contribution> renderer = new DefaultListCellRenderer();
         @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel l = (JLabel) renderer.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+            JLabel l = (JLabel) renderer.getListCellRendererComponent(list, list.getPrototypeCellValue(), index, isSelected, cellHasFocus);
             if (value.date.isAfter(currentLocalDate)) {
                 l.setIcon(new ColorIcon(Color.WHITE));
                 l.setToolTipText(null);

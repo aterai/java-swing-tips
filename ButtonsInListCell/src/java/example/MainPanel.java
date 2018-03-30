@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
                 removeMouseMotionListener(cbml);
                 super.updateUI();
                 setFixedCellHeight(-1);
-                cbml = new CellButtonsMouseListener(this);
+                cbml = new CellButtonsMouseListener<>(this);
                 addMouseListener(cbml);
                 addMouseMotionListener(cbml);
                 setCellRenderer(new ButtonsRenderer<>(model));
@@ -57,11 +57,11 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class CellButtonsMouseListener extends MouseInputAdapter {
+class CellButtonsMouseListener<E> extends MouseInputAdapter {
     private int prevIndex = -1;
     private JButton prevButton;
-    private final JList<String> list;
-    protected CellButtonsMouseListener(JList<String> list) {
+    private final JList<E> list;
+    protected CellButtonsMouseListener(JList<E> list) {
         super();
         this.list = list;
     }
@@ -79,7 +79,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         }
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
-            ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
+            ButtonsRenderer<? super E> renderer = (ButtonsRenderer<? super E>) list.getCellRenderer();
             renderer.button = button;
             if (Objects.nonNull(button)) {
                 button.getModel().setRollover(true);
@@ -111,7 +111,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
             if (Objects.nonNull(button)) {
-                ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
+                ButtonsRenderer<? super E> renderer = (ButtonsRenderer<? super E>) list.getCellRenderer();
                 renderer.pressedIndex = index;
                 renderer.button = button;
                 rectRepaint(list, list.getCellBounds(index, index));
@@ -125,7 +125,7 @@ class CellButtonsMouseListener extends MouseInputAdapter {
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
             if (Objects.nonNull(button)) {
-                ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
+                ButtonsRenderer<? super E> renderer = (ButtonsRenderer<? super E>) list.getCellRenderer();
                 renderer.pressedIndex = -1;
                 renderer.button = null;
                 button.doClick();
@@ -136,8 +136,8 @@ class CellButtonsMouseListener extends MouseInputAdapter {
     private static void rectRepaint(JComponent c, Rectangle rect) {
         Optional.ofNullable(rect).ifPresent(c::repaint);
     }
-    private static JButton getButton(JList<String> list, Point pt, int index) {
-        Component c = list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
+    private static <E> JButton getButton(JList<E> list, Point pt, int index) {
+        Component c = list.getCellRenderer().getListCellRendererComponent(list, list.getPrototypeCellValue(), index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
         // c.doLayout(); // may be needed for mone LayoutManager

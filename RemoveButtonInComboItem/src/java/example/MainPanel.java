@@ -105,7 +105,7 @@ class RemoveButtonComboBox<E> extends JComboBox<E> {
             list.addMouseMotionListener(cbml);
         });
     }
-    protected Optional<? extends JList> getList() {
+    protected Optional<JList<?>> getList() {
         Accessible a = getAccessibleContext().getAccessibleChild(0);
         if (a instanceof ComboPopup) {
             return Optional.of(((ComboPopup) a).getList());
@@ -188,7 +188,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         ((ButtonsRenderer<?>) list.getCellRenderer()).rolloverIndex = -1;
     }
     private static <E> JButton getButton(JList<E> list, Point pt, int index) {
-        Component c = list.getCellRenderer().getListCellRendererComponent(list, null, index, false, false);
+        Component c = list.getCellRenderer().getListCellRendererComponent(list, list.getPrototypeCellValue(), index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
         // c.doLayout(); // may be needed for mone LayoutManager
@@ -231,7 +231,7 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
             ComboBoxModel<E> m = comboBox.getModel();
             boolean isMoreThanOneItem = m.getSize() > 1;
             if (isMoreThanOneItem && m instanceof MutableComboBoxModel) {
-                ((MutableComboBoxModel) m).removeElementAt(targetIndex);
+                ((MutableComboBoxModel<?>) m).removeElementAt(targetIndex);
                 comboBox.showPopup();
             }
         });
