@@ -22,7 +22,7 @@ public class SortableTableModel extends DefaultTableModel {
     }
 }
 
-class ColumnComparator implements Comparator, Serializable {
+class ColumnComparator implements Comparator<Object>, Serializable {
     private static final long serialVersionUID = 1L;
     protected final int index;
     protected final boolean ascending;
@@ -33,9 +33,9 @@ class ColumnComparator implements Comparator, Serializable {
     @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
     @Override public int compare(Object one, Object two) {
         if (one instanceof Vector && two instanceof Vector) {
-            Comparable o1 = (Comparable) ((Vector) one).get(index);
-            Comparable o2 = (Comparable) ((Vector) two).get(index);
-            int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.<Comparable>naturalOrder()));
+            Comparable<Object> o1 = (Comparable<Object>) ((Vector<Object>) one).get(index);
+            Comparable<Object> o2 = (Comparable<Object>) ((Vector<Object>) two).get(index);
+            int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.<Comparable<Object>>naturalOrder()));
             return c * (ascending ? 1 : -1);
         }
         return 0;
@@ -76,7 +76,7 @@ class ColumnComparator implements Comparator, Serializable {
 class SortButtonRenderer extends JButton implements TableCellRenderer {
     public static final int NONE = 0;
     public static final int DOWN = 1;
-    public static final int UP   = 2;
+    public static final int UP = 2;
     // private transient Icon ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
     // private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
     // private transient Icon noneSortIcon = new EmptyIcon(ascendingSortIcon);
@@ -89,12 +89,17 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     protected SortButtonRenderer(JTableHeader header) {
         super();
         this.header = header;
-        setHorizontalTextPosition(SwingConstants.LEFT);
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        // ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
+        // descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+        // noneSortIcon = new EmptyIcon(ascendingSortIcon);
         Icon i = UIManager.getIcon("Table.ascendingSortIcon");
         iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
         setIcon(new EmptyIcon(iconSize));
+        setHorizontalTextPosition(SwingConstants.LEFT);
     }
-
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setText(Objects.toString(value, ""));
         setIcon(new EmptyIcon(iconSize));
@@ -120,14 +125,6 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         getModel().setPressed(isPressed);
         getModel().setArmed(isPressed);
         return this;
-    }
-    @Override public void updateUI() {
-        super.updateUI();
-        // ascendingSortIcon = UIManager.getIcon("Table.ascendingSortIcon");
-        // descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-        // noneSortIcon = new EmptyIcon(ascendingSortIcon);
-        Icon i = UIManager.getIcon("Table.ascendingSortIcon");
-        iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
     }
     public void setPressedColumn(int col) {
         pushedColumn = col;
