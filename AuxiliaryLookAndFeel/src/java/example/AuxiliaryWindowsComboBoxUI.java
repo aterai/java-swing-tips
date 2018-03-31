@@ -11,26 +11,26 @@ import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
-//???: Don't extend visual look and feels.
+// ???: Don't extend visual look and feels.
 public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
     public static ComponentUI createUI(JComponent c) {
         return new AuxiliaryWindowsComboBoxUI();
     }
     @Override protected ComboPopup createPopup() {
-        //System.out.println("AuxiliaryWindowsComboBoxUI#createPopup");
+        // System.out.println("AuxiliaryWindowsComboBoxUI#createPopup");
         return new BasicComboPopup2(comboBox);
     }
-//     //???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
+//     // ???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
 //     @Override public void installUI(JComponent c) {
-//         //super.installUI(c);
+//         // super.installUI(c);
 //     }
 //     @Override public void uninstallUI(JComponent c) {
-//         //super.uninstallUI(c);
+//         // super.uninstallUI(c);
 //     }
-    //Override all UI-specific methods your UI classes inherit.
-    @Override protected void configureEditor()   { /* Override all UI-specific methods your UI classes inherit. */ }
+    // Override all UI-specific methods your UI classes inherit.
+    @Override protected void configureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override protected void unconfigureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
-    @Override public void removeEditor()         { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void removeEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void addEditor() {
         removeEditor();
         Optional.ofNullable(comboBox.getEditor()).ifPresent(cbe -> {
@@ -48,14 +48,14 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
 //     @Override public void unconfigureArrowButton() {}
 //     @Override public void configureArrowButton() {}
     @Override public void update(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
-    @Override public void paint(Graphics g, JComponent c)  { /* Override all UI-specific methods your UI classes inherit. */ }
-    @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus)           { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void paint(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
 }
 
 class BasicComboPopup2 extends BasicComboPopup {
     private transient MouseListener handler2;
-    protected BasicComboPopup2(JComboBox combo) {
+    protected BasicComboPopup2(JComboBox<?> combo) {
         super(combo);
     }
     @Override public void uninstallingUI() {

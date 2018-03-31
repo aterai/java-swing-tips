@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
 
         JLabel label4 = new JLabel("ComboBox:", SwingConstants.RIGHT);
         label4.setDisplayedMnemonic('C');
-        JComponent comboBox = new JComboBox();
+        JComponent comboBox = new JComboBox<String>();
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         addRow(label1, textField1, p, c);
         addRow(label2, textField2, p, c);
         addRow(label3, textField3, p, c);
-        addRow(label4, comboBox,   p, c);
+        addRow(label4, comboBox, p, c);
 
         JButton button = new JButton("JComboBox#requestFocusInWindow() Test");
         button.addActionListener(e -> comboBox.requestFocusInWindow());

@@ -22,14 +22,14 @@ public final class MainPanel extends JPanel {
         combo1.setSelectedIndex(-1);
         combo1.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                //XXX: String str = index < 0 ? "- Select Item -" : value.toString();
+                // XXX: String str = index < 0 ? "- Select Item -" : value.toString();
                 String str = Objects.toString(value, "- Select Item -");
                 super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
                 return this;
             }
         });
         combo1.addActionListener(e -> {
-            int i = ((JComboBox) e.getSource()).getSelectedIndex();
+            int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
             if (i < 0) {
                 combo2.setModel(new DefaultComboBoxModel<>());
             } else {

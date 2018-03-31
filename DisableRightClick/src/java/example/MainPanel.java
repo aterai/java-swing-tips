@@ -108,7 +108,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         super.uninstallingUI();
         handler2 = null;
     }
-    protected BasicComboPopup2(JComboBox combo) {
+    protected BasicComboPopup2(JComboBox<?> combo) {
         super(combo);
     }
     @Override protected MouseListener createListMouseListener() {
@@ -144,7 +144,7 @@ class BasicComboPopup2 extends BasicComboPopup {
 }
 
 class BasicComboPopup3 extends BasicComboPopup {
-    protected BasicComboPopup3(JComboBox combo) {
+    protected BasicComboPopup3(JComboBox<?> combo) {
         super(combo);
     }
 //     // Fixed 8u60: mouse wheel scroll closes combobox popup

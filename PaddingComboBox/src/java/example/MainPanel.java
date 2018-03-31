@@ -30,39 +30,39 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void layoutComboBoxPanel(JPanel p2, List<JComboBox> list) {
+    private void layoutComboBoxPanel(JPanel p2, List<JComboBox<?>> list) {
         p2.removeAll();
         p2.setLayout(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
+        Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 0);
         c.anchor = GridBagConstraints.LINE_END;
         for (int i = 0; i < list.size(); i++) {
-            c.gridx   = 0;
+            c.gridx = 0;
             c.weightx = 0d;
-            c.fill    = GridBagConstraints.NONE;
+            c.fill = GridBagConstraints.NONE;
             p2.add(new JLabel(String.format("%d:", i)), c);
-            c.gridx   = 1;
+            c.gridx = 1;
             c.weightx = 1d;
-            c.fill    = GridBagConstraints.HORIZONTAL;
+            c.fill = GridBagConstraints.HORIZONTAL;
             p2.add(list.get(i), c);
         }
-        p2.revalidate(); //??? JDK 1.7.0 Nimbus ???
+        p2.revalidate(); // ??? JDK 1.7.0 Nimbus ???
     }
 
-    private List<JComboBox> initComboBoxes(boolean isColor) {
+    private List<JComboBox<?>> initComboBoxes(boolean isColor) {
 //         if (uiCheck.isSelected()) {
 //             // [JDK-7158712] Synth Property "ComboBox.popupInsets" is ignored - Java Bug System
 //             // https://bugs.openjdk.java.net/browse/JDK-7158712
 //             UIManager.put("ComboBox.padding", new InsetsUIResource(1, 15, 1, 1));
 //         }
-        List<JComboBox> list = new ArrayList<>();
+        List<JComboBox<?>> list = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             list.add(makeComboBox());
         }
-        JComboBox combo;
+        JComboBox<?> combo;
         JTextField editor;
 
         // ---- 00 ----
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
 
         if (isColor) {
             Color c = new Color(.8f, 1f, .8f);
-            for (JComboBox cb: list) {
+            for (JComboBox<?> cb: list) {
                 cb.setOpaque(true);
                 cb.setBackground(c);
                 editor = (JTextField) cb.getEditor().getEditorComponent();
@@ -142,7 +142,7 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 setRenderer(null);
                 super.updateUI();
-                final ListCellRenderer<? super String> lcr = getRenderer();
+                ListCellRenderer<? super String> lcr = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
                         JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -150,8 +150,8 @@ public final class MainPanel extends JPanel {
                         return l;
                     }
                 });
-                //???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0, 5, 0, 0));
-                //???: ((JLabel) lcr).setBorder(getPaddingBorder(false));
+                // ???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0, 5, 0, 0));
+                // ???: ((JLabel) lcr).setBorder(getPaddingBorder(false));
             }
         };
         return combo;
@@ -217,7 +217,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

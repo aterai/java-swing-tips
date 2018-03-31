@@ -107,7 +107,7 @@ class EditorComboPopup extends BasicComboPopup {
     protected final JTextComponent textArea;
     protected transient MouseListener listener;
 
-    protected EditorComboPopup(JTextComponent textArea, JComboBox cb) {
+    protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
         super(cb);
         this.textArea = textArea;
     }
