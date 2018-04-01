@@ -15,12 +15,12 @@ public final class MainPanel extends JPanel {
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
 
-        JComboBox<? extends Enum> verticalAlignmentChoices      = new JComboBox<>(Vertical.values());
-        JComboBox<? extends Enum> verticalTextPositionChoices   = new JComboBox<>(Vertical.values());
-        JComboBox<? extends Enum> horizontalAlignmentChoices    = new JComboBox<>(Horizontal.values());
-        JComboBox<? extends Enum> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
+        JComboBox<? extends Enum<?>> verticalAlignmentChoices = new JComboBox<>(Vertical.values());
+        JComboBox<? extends Enum<?>> verticalTextPositionChoices = new JComboBox<>(Vertical.values());
+        JComboBox<? extends Enum<?>> horizontalAlignmentChoices = new JComboBox<>(Horizontal.values());
+        JComboBox<? extends Enum<?>> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
 
-        //default
+        // default
         verticalAlignmentChoices.setSelectedItem(Vertical.CENTER);
         verticalTextPositionChoices.setSelectedItem(Vertical.CENTER);
         horizontalAlignmentChoices.setSelectedItem(Horizontal.CENTER);
@@ -49,17 +49,17 @@ public final class MainPanel extends JPanel {
         JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx = 0;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.LINE_END;
         p2.add(new JLabel("setVerticalAlignment:"), c);
         p2.add(new JLabel("setVerticalTextPosition:"), c);
         p2.add(new JLabel("setHorizontalAlignment:"), c);
         p2.add(new JLabel("setHorizontalTextPosition:"), c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.HORIZONTAL;
         p2.add(verticalAlignmentChoices, c);
         p2.add(verticalTextPositionChoices, c);
         p2.add(horizontalAlignmentChoices, c);

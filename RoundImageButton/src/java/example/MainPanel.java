@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComboBox<? extends Enum> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
+        JComboBox<? extends Enum<?>> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
 
         List<? extends JButton> buttons = Arrays.asList(
             new RoundButton(new ImageIcon(getClass().getResource("005.png")), "005d.png", "005g.png"),

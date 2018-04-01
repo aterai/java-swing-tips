@@ -31,10 +31,10 @@ public class MainPanel extends JPanel {
             return c;
         }
     };
-    protected final JComboBox<? extends Enum> combobox = new JComboBox<>(AutoResizeMode.values());
-    protected final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
+    protected final JComboBox<? extends Enum<?>> combobox = new JComboBox<>(AutoResizeMode.values());
+    protected final JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
     protected final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
-    protected final JCheckBox teoflCheck  = new JCheckBox("terminateEditOnFocusLost", true);
+    protected final JCheckBox teoflCheck = new JCheckBox("terminateEditOnFocusLost", true);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-        //table.setSurrendersFocusOnKeystroke(true);
+        // table.setSurrendersFocusOnKeystroke(true);
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {

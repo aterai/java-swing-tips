@@ -24,8 +24,8 @@ public class MainPanel extends JPanel {
     private double factory;
     private transient SwingWorker<String, Rectangle> worker;
 
-    private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
-    private final JComboBox<? extends Enum> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
+    private final JComboBox<? extends Enum<?>> distributionsChoices = new JComboBox<>(GenerateInputs.values());
+    private final JComboBox<? extends Enum<?>> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
     private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
     private final JSpinner spinner = new JSpinner(model);
     private final JButton startButton = new JButton("Start");

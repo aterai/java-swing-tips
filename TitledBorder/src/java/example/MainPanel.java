@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<? extends Enum> verticalOrientationChoices = new JComboBox<>(VerticalOrientation.values());
-    private final JComboBox<? extends Enum> justificationChoices       = new JComboBox<>(Justification.values());
+    private final JComboBox<? extends Enum<?>> verticalOrientationChoices = new JComboBox<>(VerticalOrientation.values());
+    private final JComboBox<? extends Enum<?>> justificationChoices = new JComboBox<>(Justification.values());
     private final TitledBorder border = BorderFactory.createTitledBorder("Test Test");
     private final JPanel panel = new JPanel();
 
@@ -29,15 +29,15 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx  = 0;
+        c.gridx = 0;
         c.insets = new Insets(5, 5, 5, 5);
         c.anchor = GridBagConstraints.LINE_END;
         p2.add(new JLabel("TitlePosition:"), c);
         p2.add(new JLabel("TitleJustification:"), c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.HORIZONTAL;
         p2.add(verticalOrientationChoices, c);
         p2.add(justificationChoices, c);
 

@@ -9,7 +9,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-    private final JComboBox<? extends Enum> comboBox = new JComboBox<>(TabPlacements.values());
+    private final JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     public MainPanel() {
@@ -77,14 +77,14 @@ enum TabPlacements {
 class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
     private static final int TAB_AREA_HEIGHT = 32;
     @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-        return TAB_AREA_HEIGHT; //super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
+        return TAB_AREA_HEIGHT; // super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
     }
-    //@Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
-    //    Rectangle tabRect = super.getTabBounds(pane, i);
-    //    tabRect.translate(0, -16);
-    //    tabRect.height = 16;
-    //    return tabRect;
-    //}
+    // @Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
+    //     Rectangle tabRect = super.getTabBounds(pane, i);
+    //     tabRect.translate(0, -16);
+    //     tabRect.height = 16;
+    //     return tabRect;
+    // }
     @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
         if (tabPane.getSelectedIndex() != tabIndex && tabPlacement != JTabbedPane.LEFT && tabPlacement != JTabbedPane.RIGHT) {
             int tabHeight = TAB_AREA_HEIGHT / 2 + 3;

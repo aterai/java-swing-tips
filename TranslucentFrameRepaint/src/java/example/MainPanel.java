@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         digitalClock.pack();
         digitalClock.setLocationRelativeTo(null);
 
-        JComboBox<Enum> combo = new JComboBox<Enum>(TexturePaints.values()) {
+        JComboBox<Enum<?>> combo = new JComboBox<Enum<?>>(TexturePaints.values()) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
                 d.width = Math.max(150, d.width);

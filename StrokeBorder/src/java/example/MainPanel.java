@@ -8,8 +8,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final float[] DEFAULT_DASHARRAY = {1f};
-    private final JComboBox<? extends Enum> joinCombo   = new JComboBox<>(JoinStyle.values());
-    private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
+    private final JComboBox<? extends Enum<?>> joinCombo = new JComboBox<>(JoinStyle.values());
+    private final JComboBox<? extends Enum<?>> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
     private final JButton button = new JButton("Change");
