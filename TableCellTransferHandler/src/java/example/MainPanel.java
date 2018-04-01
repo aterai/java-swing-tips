@@ -162,7 +162,7 @@ class CellIconTransferHandler extends TransferHandler {
         try {
             Object o = info.getTransferable().getTransferData(localObjectFlavor);
             if (o instanceof Icon) {
-                ((DefaultListModel) l.getModel()).addElement(o);
+                ((DefaultListModel<Object>) l.getModel()).addElement(o);
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {
