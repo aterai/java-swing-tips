@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    protected final WorkerModel model = new WorkerModel();
+    protected final WorkerModel<ProgressValue> model = new WorkerModel<>();
     protected final JTable table = new JTable(model);
     protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     protected final Set<Integer> deleteRowSet = new TreeSet<>();
@@ -89,7 +89,7 @@ public class MainPanel extends JPanel {
         int[] selection = table.getSelectedRows();
         for (int i: selection) {
             int midx = table.convertRowIndexToModel(i);
-            SwingWorker worker = model.getSwingWorker(midx);
+            SwingWorker<Integer, ProgressValue> worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
         for (int i: selection) {
             int midx = table.convertRowIndexToModel(i);
             deleteRowSet.add(midx);
-            SwingWorker worker = model.getSwingWorker(midx);
+            SwingWorker<Integer, ProgressValue> worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -189,15 +189,15 @@ class BackgroundTask extends SwingWorker<Integer, ProgressValue> {
     }
 }
 
-class WorkerModel extends DefaultTableModel {
+class WorkerModel<E extends ProgressValue> extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.", Integer.class, false),
         new ColumnContext("Name", String.class, false),
         new ColumnContext("Progress", ProgressValue.class, false)
     };
-    private final Map<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
+    private final Map<Integer, SwingWorker<Integer, E>> swmap = new ConcurrentHashMap<>();
     private int number;
-    public void addProgressValue(String name, ProgressValue t, SwingWorker worker) {
+    public void addProgressValue(String name, E t, SwingWorker<Integer, E> worker) {
         Object[] obj = {number, name, t.getProgress()};
         super.addRow(obj);
         if (Objects.nonNull(worker)) {
@@ -205,7 +205,7 @@ class WorkerModel extends DefaultTableModel {
         }
         number++;
     }
-    public SwingWorker getSwingWorker(int identifier) {
+    public SwingWorker<Integer, E> getSwingWorker(int identifier) {
         Integer key = (Integer) getValueAt(identifier, 0);
         return swmap.get(key);
     }

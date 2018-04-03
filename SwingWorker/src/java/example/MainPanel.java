@@ -163,7 +163,7 @@ class ProgressListener implements PropertyChangeListener {
     @Override public void propertyChange(PropertyChangeEvent e) {
         if (!progressBar.isDisplayable() && e.getSource() instanceof SwingWorker) {
             System.out.println("progress: DISPOSE_ON_CLOSE");
-            ((SwingWorker) e.getSource()).cancel(true);
+            ((SwingWorker<?, ?>) e.getSource()).cancel(true);
         }
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

@@ -9,9 +9,9 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected final JTextArea area    = new JTextArea();
+    protected final JTextArea area = new JTextArea();
     protected final JButton runButton = new JButton("run");
-    //protected transient SwingWorker<String, String> worker;
+    // protected transient SwingWorker<String, String> worker;
     protected final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
 
     public MainPanel() {
@@ -20,12 +20,12 @@ public class MainPanel extends JPanel {
         area.setEditable(false);
 
         runButton.addActionListener(e -> {
-            //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
+            // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             monitor.setProgress(0);
             SwingWorker<String, String> worker = new BackgroundTask() {
                 @Override protected void process(List<String> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     if (isCancelled()) {
                         return;
                     }
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
                     }
                 }
                 @Override public void done() {
-                    //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+                    // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
                     runButton.setEnabled(true);
                     monitor.close();
                     try {
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -92,9 +92,9 @@ public class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<String, String> {
     @Override public String doInBackground() {
-        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
-        int lengthOfTask = 120; //list.size();
+        int lengthOfTask = 120; // list.size();
         while (current < lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(50);
@@ -121,7 +121,7 @@ class ProgressListener implements PropertyChangeListener {
             monitor.setProgress((Integer) e.getNewValue());
             Object o = e.getSource();
             if (o instanceof SwingWorker) {
-                SwingWorker task = (SwingWorker) o;
+                SwingWorker<?, ?> task = (SwingWorker<?, ?>) o;
                 if (task.isDone() || monitor.isCanceled()) {
                     task.cancel(true);
                 }

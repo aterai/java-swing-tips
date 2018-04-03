@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
         int[] selection = table.getSelectedRows();
         for (int i: selection) {
             int midx = table.convertRowIndexToModel(i);
-            SwingWorker worker = model.getSwingWorker(midx);
+            SwingWorker<Integer, Integer> worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
         for (int i: selection) {
             int midx = table.convertRowIndexToModel(i);
             deleteRowSet.add(midx);
-            SwingWorker worker = model.getSwingWorker(midx);
+            SwingWorker<Integer, Integer> worker = model.getSwingWorker(midx);
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
                 // executor.remove(worker);
@@ -194,9 +194,9 @@ class WorkerModel extends DefaultTableModel {
         new ColumnContext("Name", String.class, false),
         new ColumnContext("Progress", Integer.class, false)
     };
-    private final Map<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
+    private final Map<Integer, SwingWorker<Integer, Integer>> swmap = new ConcurrentHashMap<>();
     private int number;
-    public void addProgressValue(String name, Integer iv, SwingWorker worker) {
+    public void addProgressValue(String name, Integer iv, SwingWorker<Integer, Integer> worker) {
         Object[] obj = {number, name, iv};
         super.addRow(obj);
         if (Objects.nonNull(worker)) {
@@ -204,7 +204,7 @@ class WorkerModel extends DefaultTableModel {
         }
         number++;
     }
-    public SwingWorker getSwingWorker(int identifier) {
+    public SwingWorker<Integer, Integer> getSwingWorker(int identifier) {
         Integer key = (Integer) getValueAt(identifier, 0);
         return swmap.get(key);
     }
