@@ -49,17 +49,17 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
-        box.add(makeTitledPanel("Long.valueOf",               makeJSpinnerListPanel(list2)));
+        box.add(makeTitledPanel("Long.valueOf", makeJSpinnerListPanel(list2)));
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static Box makeJSpinnerListPanel(List<SpinnerNumberModel> list) {
         Box box = Box.createVerticalBox();
-        for (SpinnerNumberModel m: list) {
-            box.add(new JSpinner(m));
+        list.stream().map(JSpinner::new).forEach(spinner -> {
+            box.add(spinner);
             box.add(Box.createVerticalStrut(2));
-        }
+        });
         return box;
     }
     private static Component makeTitledPanel(String title, Component c) {

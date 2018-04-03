@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -22,12 +22,10 @@ public final class MainPanel extends JPanel {
     private static Component makeTitledPanel(String title, ButtonGroup bg) {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(title));
-        for (String s: Arrays.asList("aaa", "bbb", "ccc")) {
-            // AbstractButton r = new JRadioButton(s);
-            AbstractButton r = new JToggleButton(s);
+        Stream.of("aaa", "bbb", "ccc").map(JToggleButton::new).forEach(r -> {
             p.add(r);
             bg.add(r);
-        }
+        });
         return p;
     }
     public static void main(String... args) {
