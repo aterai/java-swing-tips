@@ -12,6 +12,7 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
+    @SuppressWarnings("JdkObsolete")
     private MainPanel() {
         super(new BorderLayout());
 
