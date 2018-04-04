@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
             }
         };
         JTable table = new JTable(model);
-        //table.setAutoCreateRowSorter(true);
-        //TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+        // table.setAutoCreateRowSorter(true);
+        // TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(new TableRowSorter<>(model));
-        //sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+        // sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
 
         TableCellRenderer renderer = new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                 JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 RowSorter<? extends TableModel> rs = table.getRowSorter();
                 if (rs instanceof DefaultRowSorter) {
-                    l.setForeground(((DefaultRowSorter<? extends TableModel, ?>) rs).isSortable(table.convertColumnIndexToModel(column)) ? Color.BLACK : Color.GRAY);
+                    l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(table.convertColumnIndexToModel(column)) ? Color.BLACK : Color.GRAY);
                 }
                 return l;
             }
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
             RowSorter<? extends TableModel> rs = table.getRowSorter();
             if (rs instanceof DefaultRowSorter) {
                 JCheckBox cb = (JCheckBox) e.getSource();
-                ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortable(1, !cb.isSelected());
+                ((DefaultRowSorter<?, ?>) rs).setSortable(1, !cb.isSelected());
                 table.getTableHeader().repaint();
             }
         });

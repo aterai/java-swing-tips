@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"aaa", 12, true}, {"bbb", 5, false},
-            {null,  15, true}, {"", null, false},
+            {null, 15, true}, {"", null, false},
             {"CCC", 92, true}, {"DDD", 0, false}
         };
         TableModel model = new DefaultTableModel(data, columnNames) {

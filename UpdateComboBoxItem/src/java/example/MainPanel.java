@@ -259,7 +259,7 @@ class CheckedComboBox4<E extends CheckableItem> extends CheckedComboBox<E> {
             item.setSelected(!item.isSelected());
             ComboBoxModel<E> m = getModel();
             if (m instanceof CheckableComboBoxModel) {
-                ((CheckableComboBoxModel) m).fireContentsChanged(index);
+                ((CheckableComboBoxModel<E>) m).fireContentsChanged(index);
             }
         }
     }

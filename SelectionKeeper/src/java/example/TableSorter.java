@@ -32,7 +32,7 @@ package example;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//package components;
+// package components;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -113,7 +113,7 @@ public class TableSorter extends AbstractTableModel {
     protected final List<Directive> sortingColumns = new ArrayList<>();
 
     private JTableHeader tableHeader;
-    private final transient Map<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
+    private final transient Map<Class<?>, Comparator<?>> columnComparators = new ConcurrentHashMap<>();
     private final transient RowComparator<Row> rowComparator = new RowComparator<>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;
@@ -241,7 +241,7 @@ public class TableSorter extends AbstractTableModel {
         sortingStatusChanged();
     }
 
-    public void setColumnComparator(Class type, Comparator comparator) {
+    public void setColumnComparator(Class<?> type, Comparator<?> comparator) {
         if (comparator == null) {
             columnComparators.remove(type);
         } else {
@@ -251,7 +251,7 @@ public class TableSorter extends AbstractTableModel {
 
     protected Comparator getComparator(int column) {
         Class<?> columnType = tableModel.getColumnClass(column);
-        Comparator comparator = columnComparators.get(columnType);
+        Comparator<?> comparator = columnComparators.get(columnType);
         if (comparator != null) {
             return comparator;
         }

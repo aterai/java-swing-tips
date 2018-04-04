@@ -114,7 +114,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -160,7 +160,7 @@ class VerticalFlipLayerUI<V extends Component> extends LayerUI<V> {
 
     @Override public void paint(Graphics g, JComponent c) {
         if (c instanceof JLayer) {
-            Dimension d = ((JLayer) c).getView().getSize();
+            Dimension d = ((JLayer<?>) c).getView().getSize();
             buf = Optional.ofNullable(buf)
                 .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
                 .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));

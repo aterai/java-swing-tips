@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         check.addActionListener(e -> {
             RowSorter<? extends TableModel> rs = table.getRowSorter();
             if (rs instanceof DefaultRowSorter) {
-                ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
+                ((DefaultRowSorter<?, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
             }
         });
 

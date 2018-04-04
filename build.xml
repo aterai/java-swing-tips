@@ -357,6 +357,27 @@
     </javac>
   </target>
 
+  <target name="ecj" depends="prepare-src, prepare-resource, prepare-web">
+    <javac srcdir="${build.src}"
+           excludes="**/module-info.java"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           compiler="org.eclipse.jdt.core.JDTCompilerAdapter"
+           source="1.8"
+           target="1.8"
+           includeAntRuntime="false"
+           classpathref="project.class.path">
+      <compilerclasspath>
+        <fileset dir="${env.ECJ_HOME}" includes="*.jar" />
+      </compilerclasspath>
+      <compilerarg line="-warn:-serial,-warningToken" />
+    </javac>
+  </target>
+
   <condition property="have.findbugs">
     <available file="${env.FINDBUGS_HOME}" />
   </condition>

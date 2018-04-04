@@ -68,7 +68,7 @@ class ComboCellRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         combo.removeAllItems();
         if (value instanceof DefaultComboBoxModel) {
-            combo.addItem(Objects.toString(((DefaultComboBoxModel) value).getSelectedItem()));
+            combo.addItem(Objects.toString(((DefaultComboBoxModel<?>) value).getSelectedItem()));
         }
         return combo;
     }
