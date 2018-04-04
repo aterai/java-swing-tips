@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeCheckBoxPanel() {
+    private Component makeCheckBoxPanel() {
         JCheckBox tcheck = new JCheckBox("Top", true);
         tcheck.addActionListener(e -> tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
         JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
@@ -129,7 +129,7 @@ class DnDTabbedPane extends JTabbedPane {
     private static final Rectangle RECT_FORWARD = new Rectangle();
     private final DropMode dropMode = DropMode.INSERT;
     protected int dragTabIndex = -1;
-    private transient DropLocation dropLocation;
+    private transient DnDTabbedPane.DropLocation dropLocation;
 
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
@@ -208,7 +208,8 @@ class DnDTabbedPane extends JTabbedPane {
         addMouseMotionListener(h);
         addPropertyChangeListener(h);
     }
-    public DropLocation dropLocationForPoint(Point p) {
+    // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
+    public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
         if (dropMode != DropMode.INSERT) {
             assert false : "Unexpected drop mode";
         }
@@ -241,15 +242,26 @@ class DnDTabbedPane extends JTabbedPane {
 //         }
 //         return new DropLocation(p, -1);
     }
-    public final DropLocation getDropLocation() {
+    public final DnDTabbedPane.DropLocation getDropLocation() {
         return dropLocation;
     }
-    public Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+    // WARNING: The method DnDTabbedPane.setDropLocation(TransferHandler.DropLocation, Object, boolean) does not override the inherited method from JComponent since it is private to a different package
+    // @Override Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+    //     DropLocation old = dropLocation;
+    //     if (Objects.isNull(location) || !forDrop) {
+    //         dropLocation = new DropLocation(new Point(), -1);
+    //     } else if (location instanceof DropLocation) {
+    //         dropLocation = (DropLocation) location;
+    //     }
+    //     firePropertyChange("dropLocation", old, dropLocation);
+    //     return null;
+    // }
+    public Object setTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
         if (Objects.isNull(location) || !forDrop) {
             dropLocation = new DropLocation(new Point(), -1);
-        } else if (location instanceof DropLocation) {
-            dropLocation = (DropLocation) location;
+        } else {
+            dropLocation = location;
         }
         firePropertyChange("dropLocation", old, dropLocation);
         return null;
@@ -400,7 +412,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
     private void clearDropLocationPaint(Component c) {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane t = (DnDTabbedPane) c;
-            t.setDropLocation(null, null, false);
+            t.setTabDropLocation(null, null, false);
             t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
@@ -497,7 +509,7 @@ class TabTransferHandler extends TransferHandler {
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = (DnDTabbedPane.DropLocation) target.dropLocationForPoint(pt);
+        DnDTabbedPane.DropLocation dl = target.tabDropLocationForPoint(pt);
         int idx = dl.getIndex();
 
 //         if (!isWebStart()) {
@@ -525,7 +537,7 @@ class TabTransferHandler extends TransferHandler {
 
         support.setShowDropLocation(isDroppable);
         dl.setDroppable(isDroppable);
-        target.setDropLocation(dl, null, isDroppable);
+        target.setTabDropLocation(dl, null, isDroppable);
         return isDroppable;
     }
 //     private static boolean isWebStart() {
@@ -600,7 +612,7 @@ class TabTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
         DnDTabbedPane src = (DnDTabbedPane) c;
-        src.setDropLocation(null, null, false);
+        src.setTabDropLocation(null, null, false);
         src.repaint();
         if (mode == DragImageMode.Heavyweight) {
             dialog.setVisible(false);
@@ -614,7 +626,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JLayer layer = (JLayer) c;
+            JLayer<?> layer = (JLayer<?>) c;
             DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
             Optional.ofNullable(tabbedPane.getDropLocation())
                 .filter(loc -> loc.isDroppable() && loc.getIndex() >= 0)
