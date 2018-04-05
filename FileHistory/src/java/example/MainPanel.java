@@ -55,11 +55,11 @@ public final class MainPanel extends JPanel {
             fm.remove(noFile);
             for (int i = 0; i < fileHistoryCache.size(); i++) {
                 String name = fileHistoryCache.get(i);
-                String num  = Integer.toString(i + 1);
-                JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
+                String num = Integer.toString(i + 1);
+                JMenuItem mi = fileHistoryMenu.add(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": " + name);
                 mi.setMnemonic(num.codePointAt(0));
-                fileHistoryMenu.add(mi);
+                // fileHistoryMenu.add(mi);
             }
         }
     }
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
         }
         for (int i = 0; i < fileHistoryCache.size(); i++) {
             String name = fileHistoryCache.get(i);
-            String num  = Integer.toString(i + 1);
+            String num = Integer.toString(i + 1);
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
             mi.setText(num + ": " + name);
@@ -227,7 +227,7 @@ class VersionAction extends AbstractAction {
     public static final String APP_NAME = "@title@";
     private static final String COPYRIGHT = "Copyright(C) 2006";
     private static final String VERSION = "0.0";
-    private static final int    RELEASE = 1;
+    private static final int RELEASE = 1;
     protected VersionAction() {
         super("version");
     }
