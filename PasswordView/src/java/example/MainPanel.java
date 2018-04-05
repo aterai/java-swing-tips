@@ -90,15 +90,14 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
         }
         // Java 9
         // warning: [deprecation] drawEchoCharacter(Graphics,int,int,char) in PasswordView has been deprecated
-        // @Override
-        protected float drawEchoCharacter(Graphics2D g, float x, float y, char c) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            FontMetrics fm = g2.getFontMetrics();
-            g2.translate(x, y - fm.getAscent());
-            ICON.paintIcon(null, g, 0, 0);
-            g2.dispose();
-            return x + ICON.getIconWidth();
-        }
+        // @Override protected float drawEchoCharacter(Graphics2D g, float x, float y, char c) {
+        //     Graphics2D g2 = (Graphics2D) g.create();
+        //     FontMetrics fm = g2.getFontMetrics();
+        //     g2.translate(x, y - fm.getAscent());
+        //     ICON.paintIcon(null, g, 0, 0);
+        //     g2.dispose();
+        //     return x + ICON.getIconWidth();
+        // }
         protected MyPasswordView(Element element) {
             super(element);
         }
