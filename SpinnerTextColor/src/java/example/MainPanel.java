@@ -29,6 +29,20 @@ public final class MainPanel extends JPanel {
         p2.add(makeColorSpinner(items));
         p2.setBorder(BorderFactory.createTitledBorder("ColorSpinner(JComboBox)"));
 
+//         // TEST:
+//         JPanel p3 = new JPanel(new BorderLayout(5, 5));
+//         JSpinner spinner = new JSpinner(new SpinnerListModel(items)) {
+//             @Override public void setEditor(JComponent editor) {
+//                 JComponent oldEditor = getEditor();
+//                 if (!editor.equals(oldEditor) && oldEditor instanceof HTMLListEditor) {
+//                     ((HTMLListEditor) oldEditor).dismiss(this);
+//                 }
+//                 super.setEditor(editor);
+//             }
+//         };
+//         spinner.setEditor(new HTMLListEditor(spinner));
+//         p3.add(spinner);
+
         JPanel panel = new JPanel(new BorderLayout(25, 25));
         panel.add(p1, BorderLayout.NORTH);
         panel.add(p2, BorderLayout.SOUTH);
@@ -42,6 +56,7 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 setUI(new NoPopupComboBoxUI());
+                setFocusable(false);
                 ListCellRenderer<? super String> r = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -118,25 +133,63 @@ public final class MainPanel extends JPanel {
 
 class NoPopupComboBoxUI extends BasicComboBoxUI {
     @Override protected JButton createArrowButton() {
-        JButton button = new JButton(); //.createArrowButton();
+        JButton button = new JButton(); // .createArrowButton();
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setVisible(false);
         return button;
     }
-    @Override public void setPopupVisible(JComboBox c, boolean v) {
-        System.out.println("setPopupVisible: " + v);
-        if (v) {
-            popup.show();
-        } else {
-            popup.hide();
-        }
-    }
+//     @Override public void setPopupVisible(JComboBox c, boolean v) {
+//         System.out.println("setPopupVisible: " + v);
+//         if (v) {
+//             popup.show();
+//         } else {
+//             popup.hide();
+//         }
+//     }
     @Override protected ComboPopup createPopup() {
         return new BasicComboPopup(comboBox) {
             @Override public void show() {
                 System.out.println("togglePopup");
-                //super.show();
+                // super.show();
             }
         };
     }
 }
+
+// // TEST:
+// class HTMLListEditor extends JLabel implements ChangeListener {
+//     @Override public Dimension getPreferredSize() {
+//         Dimension d = super.getPreferredSize();
+//         d.width = 200;
+//         return d;
+//     }
+//     private final JSpinner spinner;
+//
+//     protected HTMLListEditor(JSpinner spinner) {
+//         super();
+//
+//         if (!(spinner.getModel() instanceof SpinnerListModel)) {
+//             throw new IllegalArgumentException("model not a SpinnerListModel");
+//         }
+//         this.spinner = spinner;
+//         spinner.addChangeListener(this);
+//
+//         setText(Objects.toString(spinner.getValue()));
+//         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+//         setOpaque(true);
+//         setBackground(Color.WHITE);
+//         setInheritsPopupMenu(true);
+//
+//         String toolTipText = spinner.getToolTipText();
+//         if (toolTipText != null) {
+//             setToolTipText(toolTipText);
+//         }
+//     }
+//     @Override public void stateChanged(ChangeEvent e) {
+//         JSpinner spinner = (JSpinner) e.getSource();
+//         setText(Objects.toString(spinner.getValue()));
+//     }
+//     public void dismiss(JSpinner spinner) {
+//         spinner.removeChangeListener(this);
+//     }
+// }
