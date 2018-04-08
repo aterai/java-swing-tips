@@ -64,9 +64,9 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        componentChoices.setRenderer(new ListCellRenderer<JComponent>() {
+        componentChoices.setRenderer(new ListCellRenderer<Component>() {
             private final JLabel renderer = new JLabel();
-            @Override public Component getListCellRendererComponent(JList<? extends JComponent> list, JComponent value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<? extends Component> list, Component value, int index, boolean isSelected, boolean cellHasFocus) {
                 renderer.setOpaque(index >= 0);
                 renderer.setText(value.getClass().getName());
                 if (isSelected) {

@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         comboBox.setEditable(isEditable);
         return comboBox;
     }
-    private static Component makeTitledPanel(String title, List<? extends JComponent> list) {
+    private static Component makeTitledPanel(String title, List<? extends Component> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

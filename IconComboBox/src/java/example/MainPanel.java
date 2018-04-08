@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         model.addElement("bbb12");
         return model;
     }
-    private static Component makeTitledPanel(String title, List<? extends JComponent> list) {
+    private static Component makeTitledPanel(String title, List<? extends Component> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        List<? extends JComponent> list = Arrays.asList(check1, check2);
+        List<? extends Component> list = Arrays.asList(check1, check2);
         Font font0 = check1.getFont();
         Font font1 = font0.deriveFont(20f);
 

@@ -226,8 +226,8 @@ enum LookAndFeelEnum {
 
 class ChangeLookAndFeelAction extends AbstractAction {
     private final String lnf;
-    private final List<? extends JComponent> list;
-    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<? extends JComponent> list) {
+    private final List<? extends Component> list;
+    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<? extends Component> list) {
         super(lnfe.toString());
         this.list = list;
         this.lnf = lnfe.getClassName();
