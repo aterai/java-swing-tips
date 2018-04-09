@@ -113,12 +113,12 @@ class ImageCaptionLabel extends JLabel {
 
 class LabelHandler extends MouseAdapter implements HierarchyListener {
     private final Timer animator = new Timer(5, e -> updateTextAreaLocation());
-    private final JComponent textArea;
+    private final Component textArea;
     private int txah;
     private int count;
     private int direction;
 
-    protected LabelHandler(JComponent textArea) {
+    protected LabelHandler(Component textArea) {
         super();
         this.textArea = textArea;
     }
@@ -139,7 +139,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
                 animator.stop();
             }
         }
-        JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
+        Container p = SwingUtilities.getUnwrappedParent(textArea);
         p.revalidate();
         p.repaint();
     }
@@ -157,8 +157,8 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
         if (animator.isRunning()) {
             return;
         }
-        JComponent parent = (JComponent) e.getComponent();
-        if (parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
+        Component c = e.getComponent();
+        if (c.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
             return;
         }
         this.direction = -1;

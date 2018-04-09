@@ -5,13 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.event.*;
+// import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
         JScrollPane scroll = new JScrollPane(label);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -61,8 +61,8 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     private static final int DELAY = 10;
     private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Point startPt  = new Point();
-    private final Point move     = new Point();
+    private final Point startPt = new Point();
+    private final Point move = new Point();
     private final Timer scroller = new Timer(DELAY, null);
     private transient ActionListener listener;
 
@@ -98,9 +98,9 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
             JViewport vport = (JViewport) c;
             JComponent label = (JComponent) vport.getView();
             listener = event -> {
-                Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
+                Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
                 vp.translate(move.x, move.y);
-                label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); //vport.setViewPosition(vp);
+                label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); // vport.setViewPosition(vp);
             };
             scroller.addActionListener(listener);
             scroller.start();
@@ -119,8 +119,8 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     private static final int DELAY = 10;
     private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Point startPt  = new Point();
-    private final Point move     = new Point();
+    private final Point startPt = new Point();
+    private final Point move = new Point();
     private final Timer scroller = new Timer(DELAY, null);
     private transient ActionListener listener;
 
@@ -151,13 +151,12 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         scroller.stop();
         scroller.removeActionListener(listener);
         move.setLocation(0, 0);
-        JComponent jc = (JComponent) e.getComponent();
-        jc.setCursor(HC);
-        Container c = jc.getParent();
-        if (c instanceof JViewport) {
-            JViewport vport = (JViewport) c;
-            Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), vport);
-            startPt.setLocation(cp);
+        Component c = e.getComponent();
+        c.setCursor(HC);
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if (p instanceof JViewport) {
+            JViewport vport = (JViewport) p;
+            startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), vport));
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
