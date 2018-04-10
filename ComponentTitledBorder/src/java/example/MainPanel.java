@@ -10,8 +10,8 @@ import javax.swing.border.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(3, 1, 5, 5));
-        final JTree tree = new JTree();
-        final JCheckBox c = new JCheckBox("CheckBox", true);
+        JTree tree = new JTree();
+        JCheckBox c = new JCheckBox("CheckBox", true);
         c.addActionListener(e -> tree.setEnabled(c.isSelected()));
         c.setFocusPainted(false);
         JScrollPane l1 = new JScrollPane(tree);
@@ -60,9 +60,9 @@ class ComponentTitledBorder extends MouseAdapter implements Border, SwingConstan
     private final Component comp;
     private final Border border;
 
-    protected ComponentTitledBorder(Component comp, JComponent container, Border border) {
+    protected ComponentTitledBorder(Component comp, Container container, Border border) {
         super();
-        this.comp   = comp;
+        this.comp = comp;
         this.border = border;
         if (comp instanceof JComponent) {
             ((JComponent) comp).setOpaque(true);

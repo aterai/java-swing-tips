@@ -14,7 +14,7 @@ import javax.swing.tree.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JPanel breadcrumb = makePanel(10 + 1);
+        Container breadcrumb = makeContainer(10 + 1);
 
         JTree tree = new JTree();
         tree.setSelectionRow(0);
@@ -30,12 +30,12 @@ public final class MainPanel extends JPanel {
         initBreadcrumbList(breadcrumb, tree);
         add(new JLayer<>(breadcrumb, new BreadcrumbLayerUI<>()), BorderLayout.NORTH);
 
-        JComponent c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
+        Component c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
         add(c, BorderLayout.SOUTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(int overlap) {
+    private static Container makeContainer(int overlap) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0)) {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false;
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         p.setOpaque(false);
         return p;
     }
-    private static void initBreadcrumbList(JPanel p, JTree tree) {
+    private static void initBreadcrumbList(Container p, JTree tree) {
         p.removeAll();
         ButtonGroup bg = new ButtonGroup();
         Object[] paths = tree.getSelectionPath().getPath();
@@ -56,8 +56,8 @@ public final class MainPanel extends JPanel {
             bg.add(b);
         }
     }
-    private static JComponent makeBreadcrumbList(List<String> list) {
-        JPanel p = makePanel(5 + 1);
+    private static Component makeBreadcrumbList(List<String> list) {
+        Container p = makeContainer(5 + 1);
         ButtonGroup bg = new ButtonGroup();
         list.forEach(title -> {
             AbstractButton b = makeButton(null, new TreePath(title), Color.PINK);

@@ -117,7 +117,7 @@ class CloseableTabbedPane extends JTabbedPane {
 
 class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     public static final int GAP = 2;
-    private final JComponent rubberStamp = new JPanel();
+    private final Container rubberStamp = new JPanel();
     private final Point pt = new Point();
     private final JButton button = new JButton(new CloseTabIcon()) {
         @Override public void updateUI() {

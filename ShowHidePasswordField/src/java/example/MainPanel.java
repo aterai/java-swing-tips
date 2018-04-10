@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
             AbstractButton c = (AbstractButton) e.getSource();
             pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
         });
-        JPanel p1 = new JPanel(new BorderLayout());
+        Container p1 = new JPanel(new BorderLayout());
         p1.add(pf1);
         p1.add(b1, BorderLayout.SOUTH);
         add(makeTitledPanel("BorderLayout + JCheckBox", p1));
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
             pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
         });
         initEyeButton(b2);
-        JPanel p2 = makeOverlayLayoutPanel();
+        Container p2 = makeOverlayLayoutPanel();
         p2.add(b2);
         p2.add(pf2);
         add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         tf3.setDocument(doc);
 
         CardLayout cardLayout = new CardLayout();
-        JPanel p3 = new JPanel(cardLayout);
+        Container p3 = new JPanel(cardLayout);
         p3.setAlignmentX(Component.RIGHT_ALIGNMENT);
         p3.add(pf3, PasswordField.HIDE.toString());
         p3.add(tf3, PasswordField.SHOW.toString());
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         });
         initEyeButton(b3);
 
-        JPanel pp3 = makeOverlayLayoutPanel();
+        Container pp3 = makeOverlayLayoutPanel();
         pp3.add(b3);
         pp3.add(p3);
         add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", pp3));
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
             }
         });
         initEyeButton(b4);
-        JPanel p4 = makeOverlayLayoutPanel();
+        Container p4 = makeOverlayLayoutPanel();
         p4.add(b4);
         p4.add(pf4);
         add(makeTitledPanel("press and hold down the mouse button", p4));
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
         b.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
         b.setToolTipText("show/hide passwords");
     }
-    private static JPanel makeOverlayLayoutPanel() {
+    private static Container makeOverlayLayoutPanel() {
         JPanel p = new JPanel() {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false;

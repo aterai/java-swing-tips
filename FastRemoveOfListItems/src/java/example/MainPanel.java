@@ -200,14 +200,14 @@ class ArrayListModel<E> extends AbstractListModel<E> {
 
 final class SpringLayoutUtil {
     private SpringLayoutUtil() { /* Singleton */ }
-    public static void setScaleAndAdd(JComponent parent, SpringLayout layout, JComponent child, float sx, float sy, float sw, float sh) {
-        Spring panelw = layout.getConstraint(SpringLayout.WIDTH,  parent);
+    public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float sx, float sy, float sw, float sh) {
+        Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
         Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
 
         SpringLayout.Constraints c = layout.getConstraints(child);
         c.setX(Spring.scale(panelw, sx));
         c.setY(Spring.scale(panelh, sy));
-        c.setWidth(Spring.scale(panelw,  sw));
+        c.setWidth(Spring.scale(panelw, sw));
         c.setHeight(Spring.scale(panelh, sh));
 
         parent.add(child);

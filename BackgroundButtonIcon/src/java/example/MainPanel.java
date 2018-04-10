@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(0, 1));
         setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 0));
-        add(makeBreadcrumbList(0, Color.PINK,   Arrays.asList("overlap:", "0px", TXT)));
-        add(makeBreadcrumbList(5, Color.CYAN,   Arrays.asList("overlap:", "5px", TXT)));
+        add(makeBreadcrumbList(0, Color.PINK, Arrays.asList("overlap:", "0px", TXT)));
+        add(makeBreadcrumbList(5, Color.CYAN, Arrays.asList("overlap:", "5px", TXT)));
         add(makeBreadcrumbList(9, Color.ORANGE, Arrays.asList("overlap:", "9px", TXT)));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         return b;
     }
 
-    private static JPanel makePanel(int overlap) {
+    private static Container makeContainer(int overlap) {
         // https://java-swing-tips.blogspot.com/2013/12/breadcrumb-navigation-with-jradiobutton.html
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0)) {
             @Override public boolean isOptimizedDrawingEnabled() {
@@ -76,8 +76,8 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-    private static JComponent makeBreadcrumbList(int overlap, Color color, List<String> list) {
-        JPanel p = makePanel(overlap + LINE_WIDTH);
+    private static Component makeBreadcrumbList(int overlap, Color color, List<String> list) {
+        Container p = makeContainer(overlap + LINE_WIDTH);
         ButtonGroup bg = new ButtonGroup();
         boolean f = true;
         for (String title: list) {
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
 
 // https://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
 class ArrowToggleButtonBarCellIcon implements Icon {
-    public static final int TH = 10; //The height of a triangle
+    public static final int TH = 10; // The height of a triangle
     private static final int HEIGHT = TH * 2 + 1;
     private static final int WIDTH = 100;
     private Shape shape;

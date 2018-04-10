@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
 //                 ActionListener al = new ActionListener() {
-//                     @Override public void actionPerformed(final ActionEvent e) {
+//                     @Override public void actionPerformed(ActionEvent e) {
 //                         EventQueue.invokeLater(new Runnable() {
 //                             @Override public void run() {
 //                                 Object o = e.getSource();
@@ -144,7 +144,7 @@ final class ManuBarUtil {
         }
         return menu;
     }
-    public static void initMenu(JComponent p) {
+    public static void initMenu(Container p) {
         JMenuItem item = new JMenuItem("Open(disabled)");
         item.setEnabled(false);
         p.add(item);
@@ -201,7 +201,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

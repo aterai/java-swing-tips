@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(5));
 
         ButtonGroup bg2 = new ButtonGroup();
-        JPanel buttons = makeButtonGroupPanel("FocusTraversalPolicy", bg2);
+        Container buttons = makeButtonGroupPanel("FocusTraversalPolicy", bg2);
         buttons.setFocusTraversalPolicyProvider(true);
         buttons.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override public Component getDefaultComponent(Container focusCycleRoot) {
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makeButtonGroupPanel(String title, ButtonGroup bg) {
+    private static Container makeButtonGroupPanel(String title, ButtonGroup bg) {
         JPanel p = new JPanel();
         Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee").forEach(s -> {
             JRadioButton rb = new JRadioButton(s, "ccc".equals(s));

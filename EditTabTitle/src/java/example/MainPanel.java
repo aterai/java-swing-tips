@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-    protected final JComponent glassPane = new EditorGlassPane();
+    protected final Container glassPane = new EditorGlassPane();
     protected final JTextField editor = new JTextField();
     protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {

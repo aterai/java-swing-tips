@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
-//import com.sun.java.swing.Painter; // 1.6.0
 
 public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
@@ -15,7 +14,7 @@ public final class MainPanel extends JPanel {
         p1.setOpaque(false);
         JPanel p2 = new JPanel() {
             @Override protected void paintComponent(Graphics g) {
-                //super.paintComponent(g);
+                // super.paintComponent(g);
                 g.setColor(new Color(100, 50, 50, 100));
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
@@ -34,23 +33,23 @@ public final class MainPanel extends JPanel {
 //                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
 //             }
 //         });
-        createFrame(initPanel(p1), 0);
-        createFrame(initPanel(p2), 1);
+        createFrame(initContainer(p1), 0);
+        createFrame(initContainer(p2), 1);
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
 //     private final UIDefaults d = new UIDefaults();
 
-    private static JPanel initPanel(JPanel p) {
+    private static Container initContainer(Container p) {
         p.add(new JLabel("label"));
         p.add(new JButton("button"));
         return p;
     }
 
-    protected JInternalFrame createFrame(JPanel panel, int idx) {
+    protected JInternalFrame createFrame(Container panel, int idx) {
         JInternalFrame frame = new MyInternalFrame();
 //         frame.putClientProperty("Nimbus.Overrides", d);
-//         //frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+//         // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
         frame.setContentPane(panel);
         frame.getRootPane().setOpaque(false);
         frame.setOpaque(false);
@@ -69,7 +68,7 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             SynthLookAndFeel.setStyleFactory(new MySynthStyleFactory(SynthLookAndFeel.getStyleFactory()));
         } catch (ClassNotFoundException | InstantiationException
@@ -100,7 +99,7 @@ class MySynthStyleFactory extends SynthStyleFactory {
     }
     @Override public SynthStyle getStyle(JComponent c, Region id) {
         SynthStyle s = wrappedFactory.getStyle(c, id);
-        //if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
+        // if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
         if (id == Region.INTERNAL_FRAME) {
             s = new TranslucentSynthStyle(s);
         }
@@ -138,7 +137,7 @@ class TranslucentSynthStyle extends SynthStyle {
     @Override public int getInt(SynthContext context, Object key, int defaultValue) {
         return style.getInt(context, key, defaultValue);
     }
-    @Override public SynthPainter getPainter(final SynthContext context) {
+    @Override public SynthPainter getPainter(SynthContext context) {
         return new SynthPainter() {
             @Override public void paintInternalFrameBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
                 g.setColor(new Color(100, 200, 100, 100));
@@ -164,9 +163,9 @@ class TranslucentSynthStyle extends SynthStyle {
         }
     }
     @Override public Color getColorForState(SynthContext context, ColorType type) {
-        return null; //Color.RED;
+        return null; // Color.RED;
     }
     @Override public Font getFontForState(SynthContext context) {
-        return null; //new Font(Font.MONOSPACED, Font.ITALIC, 24);
+        return null; // new Font(Font.MONOSPACED, Font.ITALIC, 24);
     }
 }

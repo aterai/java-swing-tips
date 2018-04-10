@@ -70,13 +70,13 @@ public class MainPanel extends JPanel {
                 UIManager.put(o, fontUIResource);
             }
         }
-        recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
+        recursiveUpdateUI(this); // SwingUtilities.updateComponentTreeUI(this);
         Container c = getTopLevelAncestor();
         if (c instanceof Window) {
             ((Window) c).pack();
         }
     }
-    private static void recursiveUpdateUI(JComponent p) {
+    private static void recursiveUpdateUI(Container p) {
         for (Component c: p.getComponents()) {
             if (c instanceof JToolBar) {
                 continue;
