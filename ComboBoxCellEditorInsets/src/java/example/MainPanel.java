@@ -214,7 +214,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
-        JComponent editor = (JComponent) getEditor().getEditorComponent();
+        Component editor = getEditor().getEditorComponent();
         if (isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());
