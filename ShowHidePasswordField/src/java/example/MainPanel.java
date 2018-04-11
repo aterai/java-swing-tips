@@ -45,8 +45,12 @@ public final class MainPanel extends JPanel {
         tf3.setDocument(doc);
 
         CardLayout cardLayout = new CardLayout();
-        Container p3 = new JPanel(cardLayout);
-        p3.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        Container p3 = new JPanel(cardLayout) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setAlignmentX(Component.RIGHT_ALIGNMENT);
+            }
+        };
         p3.add(pf3, PasswordField.HIDE.toString());
         p3.add(tf3, PasswordField.SHOW.toString());
 
