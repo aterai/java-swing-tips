@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -11,37 +12,43 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         String[][] arrays = {
-            {"One-A", "One-B", "One-C", "One-D"},
-            {"Two-A", "Two-B", "Two-C", "Two-D"},
-            {"Three-A", "Three-B", "Three-C", "Three-D"},
-            {"Four-A", "Four-B", "Four-C", "Four-D"}
+            {"blue", "violet", "red", "yellow"},
+            {"basketball", "soccer", "football", "hockey"},
+            {"hot dogs", "pizza", "ravioli", "bananas"}
         };
-        JComboBox<String> combo1 = new JComboBox<>(new String[] {"One", "Two", "Three", "Four"});
+        JComboBox<String> combo1 = new JComboBox<>(new String[] {"colors", "sports", "food"});
         JComboBox<String> combo2 = new JComboBox<>();
 
         combo1.setSelectedIndex(-1);
         combo1.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                // XXX: String str = index < 0 ? "- Select Item -" : value.toString();
-                String str = Objects.toString(value, "- Select Item -");
+                // XXX: String str = index < 0 ? "- Select category -" : value.toString();
+                String str = Objects.toString(value, "- Select category -");
                 super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
                 return this;
             }
         });
-        combo1.addActionListener(e -> {
-            int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
-            if (i < 0) {
-                combo2.setModel(new DefaultComboBoxModel<>());
-            } else {
-                int prev = combo2.getSelectedIndex();
-                combo2.setModel(new DefaultComboBoxModel<>(arrays[i]));
-                combo2.setSelectedIndex(Math.max(prev, 0));
+//         combo1.addActionListener(e -> {
+//             int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+//             if (i < 0) {
+//                 combo2.setModel(new DefaultComboBoxModel<>());
+//             } else {
+//                 int prev = combo2.getSelectedIndex();
+//                 combo2.setModel(new DefaultComboBoxModel<>(arrays[i]));
+//                 combo2.setSelectedIndex(Math.max(prev, 0));
+//             }
+//         });
+        combo1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                int idx = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+                combo2.setModel(new DefaultComboBoxModel<>(arrays[idx]));
+                combo2.setSelectedIndex(-1);
             }
         });
 
         combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                String str = Objects.toString(value, "- SubComboBox -");
+                String str = Objects.toString(value, "- Select type -");
                 super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
                 return this;
             }
@@ -49,13 +56,16 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
         setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
-        p.add(new JLabel("Default JComboBox"));
+        p.add(new JLabel("Category"));
         p.add(combo1);
-        p.add(new JLabel("SearchBar JComboBox"));
+        p.add(new JLabel("Type"));
         p.add(combo2);
 
         JButton button = new JButton("clear");
-        button.addActionListener(e -> combo1.setSelectedIndex(-1));
+        button.addActionListener(e -> {
+            combo1.setSelectedIndex(-1);
+            combo2.setModel(new DefaultComboBoxModel<>());
+        });
 
         add(p, BorderLayout.NORTH);
         add(button, BorderLayout.SOUTH);
@@ -71,8 +81,6 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.put("example.SearchBarComboBox", "SearchBarComboBoxUI");
-            UIManager.put("SearchBarComboBoxUI", "example.BasicSearchBarComboBoxUI");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
