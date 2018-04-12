@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 
         DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
         JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
-        check.addItemListener(e -> layerUI.setLocked(((JCheckBox) e.getItemSelectable()).isSelected()));
+        check.addActionListener(e -> layerUI.setLocked(((JCheckBox) e.getSource()).isSelected()));
 
         JScrollPane scroll = new JScrollPane(table);
 

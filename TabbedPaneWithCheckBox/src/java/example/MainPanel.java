@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab  = new JTabbedPane();
-    private final JCheckBox cbox   = new JCheckBox("Details");
+    private final JTabbedPane tab = new JTabbedPane();
+    private final JCheckBox cbox = new JCheckBox("Details");
     private final JComponent panel = new JLabel("Preferences");
 
     public MainPanel() {
@@ -21,11 +21,11 @@ public final class MainPanel extends JPanel {
                 cb.setSelected(!cb.isSelected());
             }
         });
-        cbox.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
+        cbox.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
                 tab.addTab("Preferences", panel);
                 tab.setSelectedComponent(panel);
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            } else {
                 tab.remove(panel);
             }
         });
@@ -69,7 +69,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
 
     protected TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
         this.cbox = cbox;
-        this.tab  = tab;
+        this.tab = tab;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Dimension size = cbox.getPreferredSize();

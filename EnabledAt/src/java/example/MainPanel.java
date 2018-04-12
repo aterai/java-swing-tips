@@ -3,28 +3,25 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab    = new JTabbedPane();
-    private final JCheckBox checkbox = new JCheckBox("Enable Advanced");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        tab.addTab("Preferences", checkbox);
-        tab.addTab("Advanced", new JScrollPane(new JTree()));
-        tab.setEnabledAt(1, false);
-        checkbox.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                tab.setEnabledAt(1, true);
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                tab.setEnabledAt(1, false);
-            }
-        });
-        add(tab);
+        int tgtIndex = 1;
+
+        JTabbedPane tabs = new JTabbedPane();
+
+        JCheckBox check = new JCheckBox("Enable Advanced");
+        check.addActionListener(e -> tabs.setEnabledAt(tgtIndex, ((JCheckBox) e.getSource()).isSelected()));
+
+        tabs.addTab("Preferences", check);
+        tabs.addTab("Advanced", new JScrollPane(new JTree()));
+        tabs.setEnabledAt(tgtIndex, false);
+
+        add(tabs);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

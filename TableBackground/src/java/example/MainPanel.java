@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -51,12 +50,8 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setOpaque(true);
         // scroll.getViewport().setBackground(Color.WHITE);
 
-        check.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                scroll.getViewport().setOpaque(true);
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                scroll.getViewport().setOpaque(false);
-            }
+        check.addActionListener(e -> {
+            scroll.getViewport().setOpaque(((JCheckBox) e.getSource()).isSelected());
             scroll.repaint();
         });
 
