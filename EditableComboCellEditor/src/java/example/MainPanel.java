@@ -78,6 +78,7 @@ class ComboCellEditor extends AbstractCellEditor implements TableCellEditor {
     private final JComboBox<String> combo = new JComboBox<>();
     protected ComboCellEditor() {
         super();
+        combo.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
         combo.setEditable(true);
         combo.addActionListener(e -> fireEditingStopped());
     }
