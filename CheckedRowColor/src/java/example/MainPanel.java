@@ -8,32 +8,31 @@ import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    protected static final int BOOLEAN_COLUMN = 2;
-    protected final String[] columnNames = {"String", "Number", "Boolean"};
-    protected final Object[][] data = {
-        {"aaa", 1, false}, {"bbb", 20, false},
-        {"ccc", 2, false}, {"ddd", 3,  false},
-        {"aaa", 1, false}, {"bbb", 20, false},
-        {"ccc", 2, false}, {"ddd", 3,  false},
-    };
-    protected final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-        @Override public boolean isCellEditable(int row, int col) {
-            return col == BOOLEAN_COLUMN;
-        }
-    };
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    public static final int BOOLEAN_COLUMN = 2;
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"String", "Number", "Boolean"};
+        Object[][] data = {
+            {"aaa", 1, false}, {"bbb", 20, false},
+            {"ccc", 2, false}, {"ddd", 3, false},
+            {"aaa", 1, false}, {"bbb", 20, false},
+            {"ccc", 2, false}, {"ddd", 3, false},
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+            @Override public boolean isCellEditable(int row, int col) {
+                return col == BOOLEAN_COLUMN;
+            }
+        };
         JTable table = makeTable(model);
-        //TEST: final JTable table = makeTable2(model);
+        // TEST: JTable table = makeTable2(model);
         model.addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE) {
-                //System.out.println("TableModel: tableChanged");
+                // System.out.println("TableModel: tableChanged");
                 rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
             }
         });
@@ -42,8 +41,8 @@ public class MainPanel extends JPanel {
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension());
         table.setRowSelectionAllowed(true);
-        //table.setSurrendersFocusOnKeystroke(true);
-        //table.putClientProperty("JTable.autoStartsEdit", false);
+        // table.setSurrendersFocusOnKeystroke(true);
+        // table.putClientProperty("JTable.autoStartsEdit", false);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -67,7 +66,7 @@ public class MainPanel extends JPanel {
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component cmp = super.prepareEditor(editor, row, column);
                 if (convertColumnIndexToModel(column) == BOOLEAN_COLUMN) {
-                    //System.out.println("JTable: prepareEditor");
+                    // System.out.println("JTable: prepareEditor");
                     JCheckBox c = (JCheckBox) cmp;
                     c.setBackground(c.isSelected() ? Color.ORANGE : getBackground());
                 }
@@ -82,29 +81,29 @@ public class MainPanel extends JPanel {
             }
         };
     }
-//     //TEST:
-//     public static JTable makeTable2(TableModel model) {
-//         final JTable table = new JTable(model);
-//         TableColumnModel columns = table.getColumnModel();
-//         TableCellRenderer r = new RowColorTableRenderer();
-//         for (int i = 0; i < columns.getColumnCount(); i++) {
-//             columns.getColumn(i).setCellRenderer(r);
-//         }
-//         return table;
-//     }
-//     private static class RowColorTableRenderer extends DefaultTableCellRenderer {
-//         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//             TableModel model = table.getModel();
-//             Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
-//             c.setForeground(table.getForeground());
-//             c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
-//             return c;
-//         }
-//     }
+    // // TEST:
+    // public static JTable makeTable2(TableModel model) {
+    //     JTable table = new JTable(model);
+    //     TableColumnModel columns = table.getColumnModel();
+    //     TableCellRenderer r = new RowColorTableRenderer();
+    //     for (int i = 0; i < columns.getColumnCount(); i++) {
+    //         columns.getColumn(i).setCellRenderer(r);
+    //     }
+    //     return table;
+    // }
+    // private static class RowColorTableRenderer extends DefaultTableCellRenderer {
+    //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    //         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    //         TableModel model = table.getModel();
+    //         Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
+    //         c.setForeground(table.getForeground());
+    //         c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
+    //         return c;
+    //     }
+    // }
     private static void rowRepaint(JTable table, int row) {
         Rectangle r = table.getCellRect(row, 0, true);
-        //r.height = table.getRowHeight();
+        // r.height = table.getRowHeight();
         r.width = table.getWidth();
         table.repaint(r);
     }

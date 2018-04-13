@@ -8,21 +8,19 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    protected final ImageIcon orgImage;
-
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new GridLayout(0, 1));
-        orgImage = new ImageIcon(MainPanel.class.getResource("i03-10.gif"));
+        ImageIcon orgImage = new ImageIcon(getClass().getResource("i03-10.gif"));
 
         JPanel p1 = new JPanel(new GridLayout(1, 2));
-        p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), "ColorConvertOp"));
-        p1.add(makeLabel(makeGrayImageIcon2(orgImage.getImage()), "TYPE_BYTE_GRAY"));
+        p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), orgImage, "ColorConvertOp"));
+        p1.add(makeLabel(makeGrayImageIcon2(orgImage.getImage()), orgImage, "TYPE_BYTE_GRAY"));
         add(p1);
-        add(makeLabel(makeGrayImageIcon3(orgImage.getImage()), "GrayFilter.createDisabledImage"));
+        add(makeLabel(makeGrayImageIcon3(orgImage.getImage()), orgImage, "GrayFilter.createDisabledImage"));
         JPanel p3 = new JPanel(new GridLayout(1, 2));
-        p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), "GrayFilter(true, 50)"));
-        p3.add(makeLabel(makeGrayImageIcon5(orgImage.getImage()), "GrayImageFilter"));
+        p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), orgImage, "GrayFilter(true, 50)"));
+        p3.add(makeLabel(makeGrayImageIcon5(orgImage.getImage()), orgImage, "GrayImageFilter"));
         add(p3);
 
         p1.setBackground(Color.WHITE);
@@ -31,7 +29,8 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JLabel makeLabel(final ImageIcon image, String str) {
+
+    private static JLabel makeLabel(ImageIcon image, ImageIcon orgImage, String str) {
         JLabel label = new JLabel(str, image, SwingConstants.LEFT);
         label.addMouseListener(new MouseAdapter() {
             private boolean isGray;
@@ -59,27 +58,27 @@ public class MainPanel extends JPanel {
         int h = img.getHeight(null);
         BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = destination.createGraphics();
-        ////g.setColor(Color.WHITE);
+        // // g.setColor(Color.WHITE);
         // https://community.oracle.com/thread/1373262 Color to Grayscale to Binary
-        //g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
+        // g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
         g.drawImage(img, 0, 0, null);
         g.dispose();
         return new ImageIcon(destination);
     }
 
     private static ImageIcon makeGrayImageIcon3(Image img) {
-        //GrayFilter1
+        // GrayFilter1
         return new ImageIcon(GrayFilter.createDisabledImage(img));
     }
 
     private static ImageIcon makeGrayImageIcon4(Image img) {
-        //GrayFilter2
+        // GrayFilter2
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true, 50));
         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
 
     private static ImageIcon makeGrayImageIcon5(Image img) {
-        //RGBImageFilter
+        // RGBImageFilter
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
@@ -108,16 +107,16 @@ public class MainPanel extends JPanel {
 }
 
 class GrayImageFilter extends RGBImageFilter {
-    //public GrayImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public GrayImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
-        //int a = (argb >> 24) & 0xFF;
+        // int a = (argb >> 24) & 0xFF;
         int r = (argb >> 16) & 0xFF;
         int g = (argb >>  8) & 0xFF;
         int b = (argb)       & 0xFF;
-        int m = (2 * r + 4 * g + b) / 7; //NTSC Coefficients
-        //return new Color(m, m, m, a).getRGB();
+        int m = (2 * r + 4 * g + b) / 7; // NTSC Coefficients
+        // return new Color(m, m, m, a).getRGB();
         return (argb & 0xFF000000) | (m << 16) | (m << 8) | (m);
     }
 }

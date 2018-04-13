@@ -6,14 +6,13 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final MyJTabbedPane tab = new MyJTabbedPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        tab.setComponentPopupMenu(new TabbedPanePopupMenu());
-        tab.addTab("JLabel", new JLabel("JDK 6"));
-        tab.addTab("JTree",  new JScrollPane(new JTree()));
-        add(tab);
+        JTabbedPane tabs = new CloseableTabbedPane();
+        tabs.setComponentPopupMenu(new TabbedPanePopupMenu());
+        tabs.addTab("JLabel", new JLabel("JDK 6"));
+        tabs.addTab("JTree", new JScrollPane(new JTree()));
+        add(tabs);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -39,20 +38,20 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyJTabbedPane extends JTabbedPane {
+class CloseableTabbedPane extends JTabbedPane {
     private static final Icon CLOSE_ICON = new CloseTabIcon();
-    @Override public void addTab(String title, final Component content) {
+    @Override public void addTab(String title, Component content) {
         JPanel tab = new JPanel(new BorderLayout());
         tab.setOpaque(false);
         JLabel label = new JLabel(title);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
         JButton button = new JButton(CLOSE_ICON);
-        //button.setBorderPainted(false);
-        //button.setFocusPainted(false);
-        //button.setContentAreaFilled(false);
+        // button.setBorderPainted(false);
+        // button.setFocusPainted(false);
+        // button.setContentAreaFilled(false);
         button.setBorder(BorderFactory.createEmptyBorder());
         button.addActionListener(e -> removeTabAt(indexOfComponent(content)));
-        tab.add(label,  BorderLayout.WEST);
+        tab.add(label, BorderLayout.WEST);
         tab.add(button, BorderLayout.EAST);
         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
         super.addTab(title, content);
@@ -65,12 +64,12 @@ class CloseTabIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(Color.BLACK);
-        g2.drawLine(4,  4, 11, 11);
-        g2.drawLine(4,  5, 10, 11);
-        g2.drawLine(5,  4, 11, 10);
-        g2.drawLine(11, 4,  4, 11);
-        g2.drawLine(11, 5,  5, 11);
-        g2.drawLine(10, 4,  4, 10);
+        g2.drawLine(4, 4, 11, 11);
+        g2.drawLine(4, 5, 10, 11);
+        g2.drawLine(5, 4, 11, 10);
+        g2.drawLine(11, 4, 4, 11);
+        g2.drawLine(11, 5, 5, 11);
+        g2.drawLine(10, 4, 4, 10);
         g2.dispose();
     }
     @Override public int getIconWidth() {

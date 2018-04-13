@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 //         frame.setJMenuBar(createMenuBar());
 //         addComponentListener(new ComponentAdapter() {
@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 //         frame.addWindowStateListener(new WindowStateListener() {
-//             @Override public void windowStateChanged(final WindowEvent e) {
+//             @Override public void windowStateChanged(WindowEvent e) {
 //                 EventQueue.invokeLater(new Runnable() {
 //                     @Override public void run() {
 //                         System.out.println("windowStateChanged");
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JMenuBar createMenuBar() {
+    private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2) {
             @Override public Dimension preferredLayoutSize(Container target) {
@@ -38,13 +38,13 @@ public final class MainPanel extends JPanel {
                     int targetWidth = target.getSize().width;
                     targetWidth = targetWidth == 0 ? Integer.MAX_VALUE : targetWidth;
                     Insets insets = target.getInsets();
-                    int hgap      = getHgap();
-                    int vgap      = getVgap();
-                    int maxWidth  = targetWidth - insets.left - insets.right;
-                    int height    = vgap;
-                    int rowWidth  = hgap;
+                    int hgap = getHgap();
+                    int vgap = getVgap();
+                    int maxWidth = targetWidth - insets.left - insets.right;
+                    int height = vgap;
+                    int rowWidth = hgap;
                     int rowHeight = 0;
-                    int nmembers  = target.getComponentCount();
+                    int nmembers = target.getComponentCount();
                     for (int i = 0; i < nmembers; i++) {
                         Component m = target.getComponent(i);
                         if (m.isVisible()) {
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
         }
         return menuBar;
     }
-    private JMenu createMenu(String key) {
+    private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key);
         menu.add("dummy1");
         menu.add("dummy2");

@@ -9,7 +9,7 @@ public final class MainPanel extends JPanel {
     private final Box box = Box.createVerticalBox();
     private final Component glue = Box.createVerticalGlue();
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         box.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
         JScrollPane scroll = new JScrollPane(box);
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         addComp(MakeComponentUtil.makeLabel());
         setPreferredSize(new Dimension(320, 240));
     }
-    protected void addComp(final JComponent comp) {
+    private void addComp(JComponent comp) {
         comp.setMaximumSize(new Dimension(Short.MAX_VALUE, comp.getPreferredSize().height));
         box.remove(glue);
         box.add(Box.createVerticalStrut(5));

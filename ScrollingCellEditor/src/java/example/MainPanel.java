@@ -10,21 +10,20 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"JTextField", "JTextArea"};
-    private final Object[][] data = {
-        {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-        {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private final JTable table = new JTable(model);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
+        String[] columnNames = {"JTextField", "JTextArea"};
+        Object[][] data = {
+            {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
+            {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
+        };
+        TableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
         table.setRowHeight(64);
@@ -36,7 +35,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -69,7 +67,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         super();
         scroll = new JScrollPane(this);
         scroll.setBorder(BorderFactory.createEmptyBorder());
-        //scroll.setViewportBorder(BorderFactory.createEmptyBorder());
+        // scroll.setViewportBorder(BorderFactory.createEmptyBorder());
 
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
@@ -96,7 +94,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         });
         return scroll;
     }
-    @Override public boolean isCellEditable(final EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         if (e instanceof MouseEvent) {
             return ((MouseEvent) e).getClickCount() >= 2;
         }
@@ -114,9 +112,9 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         return true;
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject e) {
         return true;
     }
@@ -173,7 +171,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         super.updateUI();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
-        //setName("Table.cellRenderer");
+        // setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
@@ -187,7 +185,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         setText(Objects.toString(value, ""));
         return this;
     }
-//     //Overridden for performance reasons. ---->
+//     // Overridden for performance reasons. ---->
 //     @Override public boolean isOpaque() {
 //         Color back = getBackground();
 //         Component p = getParent();
@@ -198,8 +196,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 //         return !colorMatch && super.isOpaque();
 //     }
 //     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-//         //String literal pool
-//         //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+//         // String literal pool
+//         // if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
 //         if ("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
 //             super.firePropertyChange(propertyName, oldValue, newValue);
 //         }
@@ -207,9 +205,9 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 //     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void repaint() { /* Overridden for performance reasons. */ }
 //     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     @Override public void validate() { /* Overridden for performance reasons. */ }
 //     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-//     //<---- Overridden for performance reasons.
+//     // <---- Overridden for performance reasons.
 }

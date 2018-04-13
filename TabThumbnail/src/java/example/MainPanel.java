@@ -10,17 +10,16 @@ import java.net.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-48.png"));
+        JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
         tabbedPane.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
-        //addImageTab(tab, getClass().getResource("wi0124-48.png"));
+        // addImageTab(tab, getClass().getResource("wi0124-48.png"));
         addImageTab(tabbedPane, getClass().getResource("tokeidai.jpg"));
-        addImageTab(tabbedPane, getClass().getResource("CRW_3857_JFR.jpg")); //http://sozai-free.com/
+        addImageTab(tabbedPane, getClass().getResource("CRW_3857_JFR.jpg")); // http://sozai-free.com/
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -81,7 +80,7 @@ class TabThumbnailTabbedPane extends JTabbedPane {
             return null;
         }
 
-        final JPanel p = new JPanel(new BorderLayout());
+        JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder());
         p.add(new JLabel(getTitleAt(index)), BorderLayout.NORTH);
         p.add(getTabThumbnail(index));
