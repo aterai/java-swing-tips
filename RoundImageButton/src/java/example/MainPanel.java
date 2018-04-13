@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         p.add(check);
         alignmentsChoices.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                ButtonAlignments ba = (ButtonAlignments) alignmentsChoices.getSelectedItem();
+                ButtonAlignments ba = (ButtonAlignments) e.getItem();
                 buttons.forEach(b -> b.setAlignmentY(ba.alingment));
                 box.revalidate();
             }

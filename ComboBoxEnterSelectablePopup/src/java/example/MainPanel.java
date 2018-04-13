@@ -38,8 +38,12 @@ public class MainPanel extends JPanel {
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
         });
-        combo.addActionListener(e -> append("ActionListener: " + combo.getSelectedItem()));
-        // TEST: combo.addItemListener(e -> append("ItemListener: " + combo.getSelectedItem()));
+        // combo.addActionListener(e -> append("ActionListener: " + combo.getSelectedItem()));
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                append("ItemListener: " + e.getItem());
+            }
+        });
         return combo;
     }
     protected final void append(String text) {

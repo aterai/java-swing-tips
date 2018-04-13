@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 //         });
         combo1.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                int idx = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+                int idx = ((JComboBox<?>) e.getItemSelectable()).getSelectedIndex();
                 combo2.setModel(new DefaultComboBoxModel<>(arrays[idx]));
                 combo2.setSelectedIndex(-1);
             }

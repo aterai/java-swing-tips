@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-//import javax.swing.plaf.*;
+// import javax.swing.plaf.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -76,17 +76,14 @@ public final class MainPanel extends JPanel {
             tabs.repaint();
         });
         combo.addItemListener(e -> {
-            if (e.getStateChange() != ItemEvent.SELECTED) {
-                return;
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                map.forEach(UIManager::put);
+                UIManager.put(e.getItem(), Color.GREEN);
+                // XXX: JComboBox: by UP/DOWN keys
+                // XXX: NullPointerException at javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
+                // SwingUtilities.updateComponentTreeUI(tabs);
+                tabs.updateUI();
             }
-            map.forEach(UIManager::put);
-            if (combo.getSelectedIndex() > 0) {
-                UIManager.put(combo.getSelectedItem(), Color.GREEN);
-            }
-            // XXX: JComboBox: by UP/DOWN keys
-            // XXX: NullPointerException at javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
-            // SwingUtilities.updateComponentTreeUI(tabs);
-            tabs.updateUI();
         });
 
         tabs.addTab("JTree", new JScrollPane(new JTree()));
