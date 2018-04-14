@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -13,8 +14,8 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        String[] m1 = {"Disabled", "Enabled", "Debug mode"};
-        String[] m2 = {"Disabled", "Enabled"};
+        List<String> m1 = Arrays.asList("Disabled", "Enabled", "Debug mode");
+        List<String> m2 = Arrays.asList("Disabled", "Enabled");
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new PluginNode("Plugins"));
         root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 1", m1)));
         root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 2", m1)));
@@ -40,7 +41,7 @@ public final class MainPanel extends JPanel {
                     Object userObject = node.getUserObject();
                     if (userObject instanceof PluginNode) {
                         PluginNode uo = (PluginNode) userObject;
-                        textArea.append(String.format("%s %s%n", uo, uo.plugins[uo.getSelectedIndex()]));
+                        textArea.append(String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex())));
                     }
                 }
             }
@@ -77,12 +78,14 @@ public final class MainPanel extends JPanel {
 
 class PluginNode {
     protected final String name;
-    protected final String[] plugins;
+    protected final List<String> plugins;
     private int selectedIndex;
-
-    protected PluginNode(String name, String... plugins) {
+    protected PluginNode(String name, List<String> plugins) {
         this.name = name;
         this.plugins = plugins;
+    }
+    protected PluginNode(String name) {
+        this(name, Collections.emptyList());
     }
     public int getSelectedIndex() {
         return selectedIndex;
@@ -114,14 +117,14 @@ class PluginPanel extends JPanel {
                 pluginName.setText(node.toString());
                 DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
                 model.removeAllElements();
-                if (node.plugins.length > 0) {
+                if (node.plugins.isEmpty()) {
+                    remove(comboBox);
+                } else {
                     add(comboBox);
                     for (String s: node.plugins) {
                         model.addElement(s);
                     }
                     comboBox.setSelectedIndex(node.getSelectedIndex());
-                } else {
-                    remove(comboBox);
                 }
                 return node;
             }
