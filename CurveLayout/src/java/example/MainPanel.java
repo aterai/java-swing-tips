@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent initPanel(String title, JComponent p) {
+    private static Component initPanel(String title, JComponent p) {
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JCheckBox("aaaaaaaaaaaaaaa"));
         p.add(new JCheckBox("bbbbbbbb"));

@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         add(new JLayer<>(splitPane, new DividerLocationDragLayerUI()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeTestBox() {
+    private static Component makeTestBox() {
         JTree tree = new JTree();
         tree.setVisibleRowCount(3);
 

@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createToolBarButton(URL url) {
+    private static Component createToolBarButton(URL url) {
         JComponent b = new JLabel(new ImageIcon(url));
         b.setOpaque(false);
         return b;
@@ -94,7 +94,7 @@ class DragHandler extends MouseAdapter {
         parent.remove(remove);
         parent.add(add, idx);
         parent.revalidate();
-        //parent.repaint();
+        // parent.repaint();
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();

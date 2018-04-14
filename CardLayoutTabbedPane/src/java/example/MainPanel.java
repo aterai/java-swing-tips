@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         tab3.addTab("bbbb", new JLabel("iiii"));
         tab3.addTab("cccc", new JButton("jjjjjj"));
 
-        //add(tab1);
+        // add(tab1);
         add(tab2);
         add(tab3);
         setPreferredSize(new Dimension(320, 240));
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -71,7 +71,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final ButtonGroup bg = new ButtonGroup();
     protected CardLayoutTabbedPane() {
         super(new BorderLayout());
-        int left  = 1;
+        int left = 1;
         int right = 3;
         tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
         contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
@@ -80,7 +80,7 @@ class CardLayoutTabbedPane extends JPanel {
         add(wrapPanel, BorderLayout.NORTH);
         add(contentsPanel);
     }
-    protected JComponent createTabComponent(final String title, final Component comp) {
+    protected Component createTabComponent(String title, Component comp) {
         TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
@@ -89,24 +89,24 @@ class CardLayoutTabbedPane extends JPanel {
             }
         });
         tab.setLayout(new BorderLayout());
-        //tab.setLayout(new OverlayLayout(tab));
+        // tab.setLayout(new OverlayLayout(tab));
         JButton close = new JButton(new CloseTabIcon(Color.GRAY)) {
             @Override public Dimension getPreferredSize() {
                 return new Dimension(12, 12);
             }
         };
         close.addActionListener(e -> {
-            //@See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
+            // @See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
             System.out.println("dummy action: close button");
-            //tabPanel.remove(tab);
-            //contentsPanel.remove(comp);
-            //if (tabPanel.getComponentCount() > 1) {
-            //    tabPanel.revalidate();
-            //    TabButton b = (TabButton) tabPanel.getComponent(0);
-            //    b.setSelected(true);
-            //    cardLayout.first(contentsPanel);
-            //}
-            //tabPanel.revalidate();
+            // tabPanel.remove(tab);
+            // contentsPanel.remove(comp);
+            // if (tabPanel.getComponentCount() > 1) {
+            //     tabPanel.revalidate();
+            //     TabButton b = (TabButton) tabPanel.getComponent(0);
+            //     b.setSelected(true);
+            //     cardLayout.first(contentsPanel);
+            // }
+            // tabPanel.revalidate();
         });
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);

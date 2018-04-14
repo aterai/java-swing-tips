@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createToolBarButton(int i, Component c) {
+    private static Component createToolBarButton(int i, Component c) {
         JLabel l = new JLabel(String.format(" %04d ", i));
         l.setOpaque(true);
         l.setBackground(Color.RED);

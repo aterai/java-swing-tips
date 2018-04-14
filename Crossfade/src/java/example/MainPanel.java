@@ -16,8 +16,8 @@ public class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("Crossfade Type?", true);
         ImageIcon icon1 = new ImageIcon(clz.getResource("test.png"));
         ImageIcon icon2 = new ImageIcon(clz.getResource("test.jpg"));
-        JButton button  = new JButton("change");
-        JComponent crossfade = new JComponent() {
+        JButton button = new JButton("change");
+        Component crossfade = new JComponent() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(getBackground());
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 
         add(crossfade);
         add(button, BorderLayout.NORTH);
-        add(check,  BorderLayout.SOUTH);
+        add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {

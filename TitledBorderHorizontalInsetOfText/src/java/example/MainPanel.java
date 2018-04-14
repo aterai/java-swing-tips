@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
 
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeComp(String str, Border border) {
+    private static Component makeComp(String str, Border border) {
         JLabel l = new JLabel();
         l.setBorder(border);
         l.putClientProperty("html.disable", Boolean.TRUE);
@@ -71,7 +71,7 @@ class ComponentTitledBorder implements Border, SwingConstants {
     protected final Border border;
 
     protected ComponentTitledBorder(Component comp, Border border) {
-        this.comp   = comp;
+        this.comp = comp;
         this.border = border;
         if (comp instanceof JComponent) {
             ((JComponent) comp).setOpaque(true);

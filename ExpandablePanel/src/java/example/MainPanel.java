@@ -12,14 +12,14 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        Box northBox  = Box.createVerticalBox();
+        Box northBox = Box.createVerticalBox();
         Box centerBox = Box.createVerticalBox();
-        Box southBox  = Box.createVerticalBox();
+        Box southBox = Box.createVerticalBox();
         List<? extends AbstractExpansionPanel> panelList = makeList();
 
         ExpansionListener rl = e -> {
             setVisible(false);
-            JComponent source = (JComponent) e.getSource();
+            Component source = (Component) e.getSource();
             centerBox.removeAll();
             northBox.removeAll();
             southBox.removeAll();

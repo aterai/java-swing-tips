@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         add(makeUI2());
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeUI1() {
+    private static Component makeUI1() {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("Override JToggleButton#getPreferredSize(...)"));
         GridBagConstraints c = new GridBagConstraints();
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         });
         return p;
     }
-    private static JComponent makeUI2() {
+    private static Component makeUI2() {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("Override FlowLayout#layoutContainer(...)"));
         p.setLayout(new FlowLayout() {
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
                         return;
                     }
                     Insets insets = target.getInsets();
-                    //int vgap = getVgap();
+                    // int vgap = getVgap();
                     int hgap = getHgap();
                     int rowh = target.getHeight();
                     int x = insets.left + hgap;

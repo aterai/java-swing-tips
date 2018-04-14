@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         add(new JButton("focus dummy"), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeExpandingTextArea1() {
+    private static Component makeExpandingTextArea1() {
         JPanel p = new JPanel(new BorderLayout());
         JTextArea textArea = new JTextArea(TEXT, 1, 10);
         textArea.setLineWrap(true);
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         p.add(scroll, BorderLayout.NORTH);
         return p;
     }
-    private static JComponent makeExpandingTextArea2() {
+    private static Component makeExpandingTextArea2() {
         CardLayout cardLayout = new CardLayout();
         JPanel cp = new JPanel(cardLayout);
 

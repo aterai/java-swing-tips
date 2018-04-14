@@ -69,13 +69,13 @@ public class MainPanel extends JPanel implements HierarchyListener {
             worker = null;
         }
     }
-    private static JProgressBar makeProgressBar1(BoundedRangeModel model) {
+    private static Component makeProgressBar1(BoundedRangeModel model) {
         JProgressBar progressBar = new TextLabelProgressBar(model);
         progressBar.setOrientation(SwingConstants.VERTICAL);
         progressBar.setStringPainted(false);
         return progressBar;
     }
-    private static JComponent makeProgressBar2(BoundedRangeModel model) {
+    private static Component makeProgressBar2(BoundedRangeModel model) {
         JLabel label = new JLabel("000/100");
         label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         JProgressBar progressBar = new JProgressBar(model) {

@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        JComponent fade = new JComponent() {
+        Component fade = new JComponent() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(Color.BLACK);

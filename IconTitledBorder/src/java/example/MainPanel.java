@@ -16,21 +16,21 @@ public final class MainPanel extends JPanel {
         ImageIcon image = new ImageIcon(url);
         String title1 = String.format("<html><img src='%s' />test", path);
         String title2 = String.format("<html><table cellpadding='0'><tr><td><img src='%s'></td><td>test</td></tr></table></html>", path);
-        JLabel label  = new JLabel("test", image, SwingConstants.LEFT);
+        JLabel label = new JLabel("test", image, SwingConstants.LEFT);
 
-        add(makeComp(title1, BorderFactory.createTitledBorder(title1)));
-        add(makeComp(title2, BorderFactory.createTitledBorder(title2)));
-        add(makeComp("TitledBorder#paintBorder(...)", new TitledBorder("    test") {
+        add(makeComponent(title1, BorderFactory.createTitledBorder(title1)));
+        add(makeComponent(title2, BorderFactory.createTitledBorder(title2)));
+        add(makeComponent("TitledBorder#paintBorder(...)", new TitledBorder("    test") {
             @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
                 super.paintBorder(c, g, x, y, width, height);
                 g.drawImage(image.getImage(), 5, 0, c);
             }
         }));
-        add(makeComp("ComponentTitledBorder", new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"))));
+        add(makeComponent("ComponentTitledBorder", new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"))));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeComp(String str, Border border) {
+    private static Component makeComponent(String str, Border border) {
         JLabel l = new JLabel();
         l.setBorder(border);
         l.putClientProperty("html.disable", Boolean.TRUE);
@@ -66,7 +66,7 @@ class ComponentTitledBorder implements Border, SwingConstants {
     private final Border border;
 
     protected ComponentTitledBorder(Component comp, Border border) {
-        this.comp   = comp;
+        this.comp = comp;
         this.border = border;
         if (comp instanceof JComponent) {
             ((JComponent) comp).setOpaque(true);

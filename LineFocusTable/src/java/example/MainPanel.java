@@ -234,7 +234,7 @@ class DotBorder extends EmptyBorder {
 //       return getValueAt(0, column).getClass();
 //     }
 //   };
-//   public JComponent makeUI() {
+//   public Component makeUI() {
 //     UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2, 2, 2, 2));
 //     JTable table = new JTable(model) {
 //       private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);

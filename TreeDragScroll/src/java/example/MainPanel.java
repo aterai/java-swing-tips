@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
         tree2.addMouseMotionListener(ma);
         tree2.addMouseListener(ma);
 
-        add(makeTitledComponent(tree1, "Default"));
-        add(makeTitledComponent(tree2, "Drag scroll"));
+        add(makeTitledPanel("Default", tree1));
+        add(makeTitledPanel("Drag scroll", tree2));
         setPreferredSize(new Dimension(320, 240));
     }
     private static void expandTree(JTree tree) {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
             .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
     }
-    private static JComponent makeTitledComponent(JComponent c, String title) {
+    private static Component makeTitledPanel(String title, Component c) {
         JScrollPane scroll = new JScrollPane(c);
         scroll.setBorder(BorderFactory.createTitledBorder(title));
         return scroll;

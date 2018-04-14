@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent makeToolBox(JTable table) {
+    private static Component makeToolBox(JTable table) {
         JCheckBox check = new JCheckBox("FillsViewportHeight");
         check.addActionListener(e -> table.setFillsViewportHeight(((JCheckBox) e.getSource()).isSelected()));
 
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent makeColorBox(JTable table) {
+    private static Component makeColorBox(JTable table) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(new JLabel("table.setBackground: "));
 

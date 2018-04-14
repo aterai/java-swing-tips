@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         EventQueue.invokeLater(() -> {
-            JComponent gp = new LockingGlassPane();
+            Component gp = new LockingGlassPane();
             gp.setVisible(false);
             getRootPane().setGlassPane(gp);
         });

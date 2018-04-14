@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeUI() {
+    private static Component makeUI() {
         JProgressBar progressBar = new JProgressBar();
         progressBar.setOpaque(false);
         progressBar.setUI(new GradientPalletProgressBarUI());
@@ -119,10 +119,10 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
     }
     private static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2  = image.createGraphics();
-        Point2D start  = new Point2D.Float();
-        Point2D end    = new Point2D.Float(99, 0);
-        float[] dist   = {0f, .5f, 1f};
+        Graphics2D g2 = image.createGraphics();
+        Point2D start = new Point2D.Float();
+        Point2D end = new Point2D.Float(99, 0);
+        float[] dist = {0f, .5f, 1f};
         Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
         g2.fillRect(0, 0, 100, 1);
@@ -146,19 +146,19 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         int max = pallet.length - 1;
         int index = Math.min(Math.max(i, 0), max);
         return new Color(pallet[index] & 0x00FFFFFF);
-        //translucent
-        //int pix = pallet[index] & 0x00FFFFFF | (0x64 << 24);
-        //return new Color(pix), true);
+        // translucent
+        // int pix = pallet[index] & 0x00FFFFFF | (0x64 << 24);
+        // return new Color(pix), true);
     }
     @Override public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth  = progressBar.getWidth()  - b.right - b.left;
+        int barRectWidth = progressBar.getWidth()  - b.right - b.left;
         int barRectHeight = progressBar.getHeight() - b.top   - b.bottom;
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
-        //int cellLength = getCellLength();
-        //int cellSpacing = getCellSpacing();
+        // int cellLength = getCellLength();
+        // int cellSpacing = getCellSpacing();
         // amount of progress to draw
         int amountFull = getAmountFull(b, barRectWidth, barRectHeight);
 

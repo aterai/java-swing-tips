@@ -11,18 +11,18 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComponent box1 = Box.createHorizontalBox();
+        Box box1 = Box.createHorizontalBox();
         box1.add(Box.createHorizontalGlue());
         box1.add(new JButton("default"));
         box1.add(Box.createHorizontalStrut(5));
         box1.add(new JButton("a"));
         box1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
-        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
-        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
-        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
-        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
-        JComponent box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
+        Component box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
+        Component box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
+        Component box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
+        Component box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
+        Component box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
 
         Box box = Box.createVerticalBox();
         for (Component c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createRightAlignButtonBox6(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox6(List<JButton> list, int buttonWidth, int gap) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(0, gap, 0, 0);
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
         return pp;
     }
 
-    private static JComponent createRightAlignButtonBox5(List<JButton> list, int gap) {
+    private static Component createRightAlignButtonBox5(List<JButton> list, int gap) {
         JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap)) {
             @Override public Dimension getMaximumSize() {
                 return super.getPreferredSize();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent createRightAlignButtonBox4(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox4(List<JButton> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-    private static JComponent createRightAlignButtonBox3(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox3(List<JButton> list, int buttonWidth, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent createRightAlignButtonBox2(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox2(List<JButton> list, int buttonWidth, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
                 list.forEach(b -> b.setPreferredSize(null));

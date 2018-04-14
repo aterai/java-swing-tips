@@ -15,12 +15,12 @@ public final class MainPanel extends JPanel {
         add(makeTranslucentScrollBar(makeList()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeList() {
+    private static Component makeList() {
         DefaultListModel<String> m = new DefaultListModel<>();
         IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%05d: %s", i, LocalDateTime.now().toString())));
         return new JList<>(m);
     }
-    private static JScrollPane makeTranslucentScrollBar(JComponent c) {
+    private static Component makeTranslucentScrollBar(Component c) {
         return new JScrollPane(c) {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false; // JScrollBar is overlap

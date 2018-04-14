@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent makeUI() {
+    private static Component makeUI() {
         JInternalFrame internal = new JInternalFrame("@title@");
         BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
         Component title = ui.getNorthPane();
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
             Component c = SwingUtilities.getRoot((Component) e.getSource());
             if (c instanceof Window) {
                 Window w = (Window) c;
-                //w.dispose();
+                // w.dispose();
                 w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
         });
@@ -46,14 +46,14 @@ public final class MainPanel extends JPanel {
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         focusManager.addPropertyChangeListener(e -> {
             String prop = e.getPropertyName();
-            //System.out.println(prop);
+            // System.out.println(prop);
             if ("activeWindow".equals(prop)) {
                 try {
                     internal.setSelected(Objects.nonNull(e.getNewValue()));
                 } catch (PropertyVetoException ex) {
                     ex.printStackTrace();
                 }
-                //System.out.println("---------------------");
+                // System.out.println("---------------------");
             }
         });
 
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 //             } catch (PropertyVetoException ex) {
 //                 ex.printStackTrace();
 //             }
-//             //internal.requestFocusInWindow();
+//             // internal.requestFocusInWindow();
 //         });
         return internal;
     }
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        frame.setBackground(new Color(0x0, true)); //JDK 1.7
+        frame.setBackground(new Color(0x0, true)); // JDK 1.7
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
