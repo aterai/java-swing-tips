@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JPanel createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
+    private static Component createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
         JPanel panel = new JPanel(new BorderLayout(GAP, GAP));
         panel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
         panel.add(new JLabel(str), BorderLayout.WEST);
@@ -35,12 +35,12 @@ public final class MainPanel extends JPanel {
         return panel;
     }
 
-    public static JPanel createCompButtonPanel2(JComponent cmp, JButton btn, String str) {
+    public static Component createCompButtonPanel2(JComponent cmp, JButton btn, String str) {
         GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
 
 //         c.gridheight = 1;
-//         c.gridwidth  = 1;
+//         c.gridwidth = 1;
 //         c.gridy = 0;
 
 //         c.gridx = 0;

@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel() {
-        final JPanel p = new JPanel(new BorderLayout(5, 5));
+    private static Component makePanel() {
+        JPanel p = new JPanel(new BorderLayout(5, 5));
         p.add(new JComboBox<>(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
 
         String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
@@ -31,16 +31,16 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-                UIManager.put("ComboBox.background",   p.getBackground());
+                UIManager.put("ComboBox.background", p.getBackground());
                 setUI(new BasicComboBoxUI() {
                     @Override protected JButton createArrowButton() {
-                        JButton button = new JButton(); //.createArrowButton();
+                        JButton button = new JButton(); // .createArrowButton();
                         button.setBorder(BorderFactory.createEmptyBorder());
                         button.setVisible(false);
                         return button;
                     }
                 });
-                final ListCellRenderer<? super String> r = getRenderer();
+                ListCellRenderer<? super String> r = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     private final Color bgc = UIManager.getColor("ComboBox.background");
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
                     }
                 });
                 setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-                //setBackground(p.getBackground());
+                // setBackground(p.getBackground());
                 setOpaque(false);
                 setFocusable(false);
             }

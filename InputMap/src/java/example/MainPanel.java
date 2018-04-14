@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected static JPanel makePanel(Action act) {
+    protected static Component makePanel(Action act) {
         JPanel p = new JPanel(new GridBagLayout()) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         p.add(new JLabel(new ColorIcon(Color.RED)), c);
 
         c.insets = new Insets(5, 0, 5, 0);
-        //p.add(new JLabel("<html>Message<br>aaaaaa<br>aaaaaaaaaaa<br>aaaaaaaaaaaaaaaa"), c);
+        // p.add(new JLabel("<html>Message<br>aaaaaa<br>aaaaaaaaaaa<br>aaaaaaaaaaaaaaaa"), c);
         p.add(new JLabel("Message"), c);
 
         c.gridwidth = 2;

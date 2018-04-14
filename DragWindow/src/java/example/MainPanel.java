@@ -30,7 +30,7 @@ public final class MainPanel {
             }
         }).start();
     }
-    private static JPanel makeUI() {
+    private static Component makeUI() {
         JLabel label = new JLabel("Draggable Label (@title@)");
         DragWindowListener dwl = new DragWindowListener();
         label.addMouseListener(dwl);

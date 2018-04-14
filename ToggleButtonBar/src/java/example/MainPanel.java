@@ -21,18 +21,18 @@ public final class MainPanel extends JPanel {
     }
     private static AbstractButton makeButton(String title) {
         AbstractButton b = new JRadioButton(title);
-        //b.setVerticalAlignment(SwingConstants.CENTER);
-        //b.setVerticalTextPosition(SwingConstants.CENTER);
-        //b.setHorizontalAlignment(SwingConstants.CENTER);
+        // b.setVerticalAlignment(SwingConstants.CENTER);
+        // b.setVerticalTextPosition(SwingConstants.CENTER);
+        // b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
         b.setBorder(BorderFactory.createEmptyBorder());
         b.setContentAreaFilled(false);
         b.setFocusPainted(false);
-        //b.setBackground(new Color(cc));
+        // b.setBackground(new Color(cc));
         b.setForeground(Color.WHITE);
         return b;
     }
-    private static JPanel makeToggleButtonBar(int cc, boolean round) {
+    private static Component makeToggleButtonBar(int cc, boolean round) {
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(1, 0, 0, 0));
         p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06X", cc)));
@@ -73,8 +73,8 @@ public final class MainPanel extends JPanel {
 }
 
 class CellIcon implements Icon {
-    //http://weboook.blog22.fc2.com/blog-entry-342.html
-    //Webpark 2012.11.15
+    // http://weboook.blog22.fc2.com/blog-entry-342.html
+    // Webpark 2012.11.15
     private static final Color TL = new Color(1f, 1f, 1f, .2f);
     private static final Color BR = new Color(0f, 0f, 0f, .2f);
     private static final Color ST = new Color(1f, 1f, 1f, .4f);
@@ -138,7 +138,7 @@ class ToggleButtonBarCellIcon implements Icon {
 
         Path2D p = new Path2D.Double();
         if (c == parent.getComponent(0)) {
-            //:first-child
+            // :first-child
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
             p.lineTo(x + w, y);
@@ -146,7 +146,7 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
         } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
-            //:last-child
+            // :last-child
             w--;
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);

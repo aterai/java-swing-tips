@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JPanel makeLabelTable(int row, int column) {
+    private static Component makeLabelTable(int row, int column) {
         float length = 5f;
         float spacing = 5f;
         float[] array = {length - 1f, spacing + 1f};

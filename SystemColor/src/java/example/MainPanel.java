@@ -31,20 +31,19 @@ public final class MainPanel extends JPanel {
         box.add(makeSystemColorPanel(SystemColor.controlShadow, "controlShadow"));
         box.add(makeSystemColorPanel(SystemColor.controlDkShadow, "controlDkShadow"));
         box.add(makeSystemColorPanel(SystemColor.controlText, "controlText"));
-//        box.add(makeSystemColorPanel(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
+        // box.add(makeSystemColorPanel(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
         box.add(makeSystemColorPanel(SystemColor.control, "control"));
         box.add(makeSystemColorPanel(SystemColor.scrollbar, "scrollbar"));
         box.add(makeSystemColorPanel(SystemColor.info, "info"));
         box.add(makeSystemColorPanel(SystemColor.infoText, "infoText"));
         box.add(Box.createRigidArea(new Dimension(320, 0)));
-
-    //    box.add(Box.createVerticalStrut(10));
-    //    box.add(makeSystemColorPanel(new Color(0xFF004E98), "test"));
+        // box.add(Box.createVerticalStrut(10));
+        // box.add(makeSystemColorPanel(new Color(0xFF004E98), "test"));
 
         add(new JScrollPane(box));
     }
 
-    private static JPanel makeSystemColorPanel(Color color, String text) {
+    private static Component makeSystemColorPanel(Color color, String text) {
         JPanel p = new JPanel(new BorderLayout());
         JTextField jtext = new JTextField(text + ": 0x" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
         jtext.setEditable(false);

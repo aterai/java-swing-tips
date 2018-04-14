@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JPanel makeTestPanel(String title, JSeparator sp, int indent) {
+    private static Component makeTestPanel(String title, JSeparator sp, int indent) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -110,7 +110,7 @@ class GradientSeparatorUI extends BasicSeparatorUI {
     public static ComponentUI createUI(JComponent c) {
         return new GradientSeparatorUI();
     }
-    private void updateColors(JComponent j) {
+    private void updateColors(Component j) {
         Color c = UIManager.getColor("Panel.background");
         bgc = c instanceof ColorUIResource ? c : j.getBackground();
         c = UIManager.getColor("Separator.shadow");

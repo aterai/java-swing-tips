@@ -21,16 +21,16 @@ public final class MainPanel extends JPanel {
         add(makePanel(new JTable(100, 3)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makePanel(JComponent c) {
-        final JComponent check = new JCheckBox("JCheckBox");
+    private static Component makePanel(Component c) {
+        Component check = new JCheckBox("JCheckBox");
         check.setEnabled(false);
         JPanel p = new JPanel(new BorderLayout());
         JScrollPane scroll = new JScrollPane(c);
         scroll.getVerticalScrollBar().getModel().addChangeListener(e -> {
             BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-            int extent  = m.getExtent();
+            int extent = m.getExtent();
             int maximum = m.getMaximum();
-            int value   = m.getValue();
+            int value = m.getValue();
             // https://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
             // System.out.println("2. Value: " + (value + extent) + " Max: " + maximum);
             // https://ateraimemo.com/Swing/ScrollBarAsSlider.html
