@@ -163,9 +163,7 @@ class ComboTablePopup extends BasicComboPopup {
 
         ListSelectionModel sm = table.getSelectionModel();
         sm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        sm.addListSelectionListener(e -> {
-            combo.setSelectedIndex(table.getSelectedRow());
-        });
+        sm.addListSelectionListener(e -> combo.setSelectedIndex(table.getSelectedRow()));
 
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
