@@ -37,8 +37,7 @@ public class MainPanel extends JPanel {
         JButton button = new JButton("Dialog");
         button.addActionListener(e -> {
             Toolkit.getDefaultToolkit().beep();
-            JComponent c = (JComponent) e.getSource();
-            JOptionPane.showMessageDialog(c.getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
         });
 
         GridBagConstraints c = new GridBagConstraints();
