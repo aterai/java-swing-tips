@@ -10,15 +10,14 @@ import javax.swing.border.*;
 public final class MainPanel extends JPanel {
     private final JTabbedPane tab = new JTabbedPane();
     private final JCheckBox cbox = new JCheckBox("Details");
-    private final JComponent panel = new JLabel("Preferences");
+    private final Component panel = new JLabel("Preferences");
 
     public MainPanel() {
         super(new BorderLayout());
         cbox.setFocusPainted(false);
         cbox.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JCheckBox cb = (JCheckBox) e.getComponent();
-                cb.setSelected(!cb.isSelected());
+                ((AbstractButton) e.getComponent()).doClick();
             }
         });
         cbox.addActionListener(e -> {
@@ -29,7 +28,6 @@ public final class MainPanel extends JPanel {
                 tab.remove(panel);
             }
         });
-
         TabbedPaneWithCompBorder b = new TabbedPaneWithCompBorder(cbox, tab);
         tab.addMouseListener(b);
         tab.setBorder(b);
@@ -64,7 +62,7 @@ public final class MainPanel extends JPanel {
 class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants {
     private final JCheckBox cbox;
     private final JTabbedPane tab;
-    private final JComponent rubberStamp = new JPanel();
+    private final Container rubberStamp = new JPanel();
     private final Rectangle rect = new Rectangle();
 
     protected TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
