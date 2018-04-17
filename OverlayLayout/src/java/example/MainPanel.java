@@ -6,13 +6,13 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
         add(new JButton("Dummy"));
         add(makeOverlayLayoutButton());
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeOverlayLayoutButton() {
+    private static Component makeOverlayLayoutButton() {
         JButton b1 = new JButton("OverlayLayoutButton");
         b1.setLayout(new OverlayLayout(b1));
         b1.addActionListener(e -> Toolkit.getDefaultToolkit().beep());

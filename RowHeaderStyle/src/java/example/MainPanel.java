@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(24);
-        //table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //table.getTableHeader().setReorderingAllowed(false);
+        // table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // table.getTableHeader().setReorderingAllowed(false);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setCellRenderer(new RowHeaderRenderer(table));
@@ -137,17 +137,17 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
 }
 
 class ComponentIcon implements Icon {
-    private final JComponent cmp;
-    protected ComponentIcon(JComponent cmp) {
+    private final Component cmp;
+    protected ComponentIcon(Component cmp) {
         this.cmp = cmp;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
     }
     @Override public int getIconWidth() {
-        return 4000; //Short.MAX_VALUE;
+        return 4000; // Short.MAX_VALUE;
     }
     @Override public int getIconHeight() {
-        return cmp.getPreferredSize().height + 4; //XXX: +4 for Windows 7
+        return cmp.getPreferredSize().height + 4; // XXX: +4 for Windows 7
     }
 }

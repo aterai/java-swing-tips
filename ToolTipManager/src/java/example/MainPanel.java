@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel("label");
     private final JTextField field = new JTextField(20);
     private final JButton button = new JButton("button");
-    private final JRadioButton onRadio  = new JRadioButton("on", true);
+    private final JRadioButton onRadio = new JRadioButton("on", true);
     private final JRadioButton offRadio = new JRadioButton("off");
     private final ButtonGroup group = new ButtonGroup();
 
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JComponent makeToolPanel() {
+    private Component makeToolPanel() {
         JPanel panel = new JPanel();
         group.add(onRadio);
         group.add(offRadio);

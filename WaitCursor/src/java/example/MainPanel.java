@@ -18,9 +18,9 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("Stop 5sec");
         button.addActionListener(e -> {
-            //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
+            // System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
             getRootPane().getGlassPane().setVisible(true);
-            JComponent c = (JComponent) e.getSource();
+            Component c = (Component) e.getSource();
             c.setEnabled(false);
             (new BackgroundTask() {
                 @Override public void done() {
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -130,7 +130,7 @@ class LockingGlassPane extends JPanel {
 // //             Set<AWTKeyStroke> s = Collections.emptySet();
 // //             setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, s);
 // //             setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, s);
-//             //addKeyListener(new KeyAdapter() {});
+//             // addKeyListener(new KeyAdapter() {});
 //             addMouseListener(new MouseAdapter() {});
 //             requestFocusInWindow();
 //             super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         Timer animator = new Timer(5, null);
         ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
-        JComponent wipe = new JComponent() {
+        Component wipe = new JComponent() {
             protected int ww;
             @Override protected void paintComponent(Graphics g) {
                 g.setColor(getBackground());

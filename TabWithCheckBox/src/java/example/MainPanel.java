@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected void addTab(JTabbedPane tabs) {
-        JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
+        Component c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
         tabs.addTab("Title" + count, c);
         tabs.setSelectedIndex(tabs.getTabCount() - 1);
         count++;

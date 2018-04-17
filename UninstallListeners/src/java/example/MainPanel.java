@@ -38,17 +38,17 @@ public final class MainPanel extends JPanel {
     private final JSlider slider3 = new JSlider(0, 100, 50) {
         @Override public void updateUI() {
             super.updateUI();
-            setFocusable(false); //uninstallKeyboardActions
+            setFocusable(false); // uninstallKeyboardActions
             for (MouseListener l: getMouseListeners()) {
                 removeMouseListener(l);
             }
             for (MouseMotionListener l: getMouseMotionListeners()) {
                 removeMouseMotionListener(l);
             }
-            //removeFocusListener(focusListener);
-            //removeComponentListener(componentListener);
-            //removePropertyChangeListener(propertyChangeListener);
-            //getModel().removeChangeListener(changeListener);
+            // removeFocusListener(focusListener);
+            // removeComponentListener(componentListener);
+            // removePropertyChangeListener(propertyChangeListener);
+            // getModel().removeChangeListener(changeListener);
         }
     };
 
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         add(box);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledSeparator(String title, JComponent c) {
+    private static Component makeTitledSeparator(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c, BorderLayout.NORTH);

@@ -226,8 +226,8 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
 }
 
 class ComponentIcon implements Icon {
-    private final JComponent cmp;
-    protected ComponentIcon(JComponent cmp) {
+    private final Component cmp;
+    protected ComponentIcon(Component cmp) {
         this.cmp = cmp;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

@@ -6,39 +6,39 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final Icon HSTRUT = new ColorIcon(new Color(0x0, true)); //MetalLookAndFeel
+    private static final Icon HSTRUT = new ColorIcon(new Color(0x0, true)); // MetalLookAndFeel
     private MainPanel() {
         super(new BorderLayout());
-        //UIManager.put("MenuItem.disabledAreNavigable", Boolean.FALSE);
+        // UIManager.put("MenuItem.disabledAreNavigable", Boolean.FALSE);
         UIManager.put("MenuItem.disabledForeground", Color.BLACK);
 
         JMenuItem item0 = new JMenuItem("JMenuItem.setEnabled(false);");
         item0.setEnabled(false);
 
         JLabel item1 = new JLabel("JLabel + EmptyBorder");
-        //item1.setIcon(HSTRUT);
+        // item1.setIcon(HSTRUT);
         item1.setBorder(BorderFactory.createEmptyBorder(2, 32, 2, 2));
 
         JPanel item2 = new JPanel(new BorderLayout()) {
             @Override public void updateUI() {
                 super.updateUI();
-                setOpaque(false); //NimbusLookAndFeel
+                setOpaque(false); // NimbusLookAndFeel
             }
         };
         item2.add(new JMenuItem("JPanel with JMenuItem", HSTRUT) {
             @Override public boolean contains(int x, int y) {
-                return false; //disable mouse events
+                return false; // disable mouse events
             }
         });
 
-        JMenuItem item3 = new JMenuItem("\u200B"); //, HSTRUT);
-        //item3.setLayout(new BorderLayout());
-        item3.setBorder(BorderFactory.createEmptyBorder()); //NimbusLookAndFeel
+        JMenuItem item3 = new JMenuItem("\u200B"); // , HSTRUT);
+        // item3.setLayout(new BorderLayout());
+        item3.setBorder(BorderFactory.createEmptyBorder()); // NimbusLookAndFeel
         item3.setEnabled(false);
-        //item3.setDisabledIcon(HSTRUT);
+        // item3.setDisabledIcon(HSTRUT);
         item3.add(new JMenuItem("JMenuItem(disabled) with JMenuItem", HSTRUT) {
             @Override public boolean contains(int x, int y) {
-                return false; //disable mouse events
+                return false; // disable mouse events
             }
         });
 
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JMenu makeMenu(String title, JComponent item) {
+    private static JMenu makeMenu(String title, Component item) {
         JMenu menu = new JMenu(title);
         menu.add(item);
         menu.addSeparator();

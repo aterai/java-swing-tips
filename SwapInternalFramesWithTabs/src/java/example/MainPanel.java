@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         JToggleButton swapButton = new JToggleButton("JDesktopPane <-> JTabbedPane");
         swapButton.addActionListener(e -> {
             if (((AbstractButton) e.getSource()).isSelected()) {
-                //tabbedPane.removeAll();
+                // tabbedPane.removeAll();
                 Arrays.stream(desktopPane.getAllFrames())
                     .sorted(Comparator.comparing(JInternalFrame::getTitle))
                     .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             desktopPane.add(f);
             Icon icon = f.getFrameIcon();
             String title = f.getTitle();
-            JComponent c = new JScrollPane(new JTextArea(title));
+            Component c = new JScrollPane(new JTextArea(title));
             if (desktopPane.isShowing()) {
                 f.add(c);
             } else {

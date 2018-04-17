@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         Action addAction = new AbstractAction("Add") {
             protected int count;
             @Override public void actionPerformed(ActionEvent e) {
-                JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
+                Component c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
                 tabbedPane.addTab("Title" + count, c);
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                 count++;
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -59,19 +59,19 @@ public final class MainPanel extends JPanel {
 }
 
 class ProgressJTabbedPane extends JTabbedPane {
-    //private final Executor executor = Executors.newCachedThreadPool();
-    @Override public void addTab(String title, final Component content) {
+    // private final Executor executor = Executors.newCachedThreadPool();
+    @Override public void addTab(String title, Component content) {
         super.addTab(title, new JLabel("Loading..."));
-        final JProgressBar bar = new JProgressBar();
-        final int currentIndex = getTabCount() - 1;
-        final JLabel label = new JLabel(title);
+        JProgressBar bar = new JProgressBar();
+        int currentIndex = getTabCount() - 1;
+        JLabel label = new JLabel(title);
         Dimension dim = label.getPreferredSize();
         int w = Math.max(80, dim.width);
         label.setPreferredSize(new Dimension(w, dim.height));
         Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
         bar.setPreferredSize(new Dimension(w, dim.height - tabInsets.top - 1));
-        //bar.setString(title);
-        //bar.setUI(new BasicProgressBarUI());
+        // bar.setString(title);
+        // bar.setUI(new BasicProgressBarUI());
         setTabComponentAt(currentIndex, bar);
         SwingWorker<String, Integer> worker = new BackgroundTask() {
             @Override protected void process(List<Integer> dummy) {
@@ -99,7 +99,7 @@ class ProgressJTabbedPane extends JTabbedPane {
             }
         };
         worker.addPropertyChangeListener(new ProgressListener(bar));
-        //executor.execute(worker);
+        // executor.execute(worker);
         worker.execute();
     }
 }

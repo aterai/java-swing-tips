@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -55,7 +55,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final ButtonGroup bg = new ButtonGroup();
     private final JButton button = new JButton(new PlusIcon());
 
-    //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+    // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final List<ImageIcon> icons = Arrays.asList(
         new ImageIcon(getClass().getResource("wi0009-16.png")),
         new ImageIcon(getClass().getResource("wi0054-16.png")),
@@ -71,7 +71,7 @@ class CardLayoutTabbedPane extends JPanel {
 
     protected CardLayoutTabbedPane() {
         super(new BorderLayout());
-        int left  = 0;
+        int left = 0;
         int right = 0;
         tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, new Color(20, 30, 50)));
         contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
@@ -82,11 +82,11 @@ class CardLayoutTabbedPane extends JPanel {
         wrapPanel.setOpaque(true);
         wrapPanel.setBackground(new Color(20, 30, 50));
 
-        //contentsPanel.setOpaque(true);
-        //contentsPanel.setBackground(new Color(20, 30, 50));
+        // contentsPanel.setOpaque(true);
+        // contentsPanel.setBackground(new Color(20, 30, 50));
 
         wrapPanel.add(tabPanel);
-        //TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
+        // TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
 
 //         JPanel locPanel = new JPanel();
 //         wrapPanel.add(new JButton("b"), BorderLayout.SOUTH);
@@ -103,13 +103,13 @@ class CardLayoutTabbedPane extends JPanel {
             }
         });
     }
-    protected JComponent createTabComponent(final String title, final Component comp) {
-//         final TabButton tab = new TabButton(new AbstractAction(title) {
+    protected Component createTabComponent(String title, Component comp) {
+//         TabButton tab = new TabButton(new AbstractAction(title) {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 cardLayout.show(contentsPanel, title);
 //             }
 //         });
-        final TabButton tab = new TabButton(title);
+        TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 ((AbstractButton) e.getComponent()).setSelected(true);
@@ -193,12 +193,12 @@ class TabButton extends JRadioButton {
     }
     protected TabButton(Action a) {
         super(a);
-        //super.setAction(a);
-        //updateUI();
+        // super.setAction(a);
+        // updateUI();
     }
     protected TabButton(String text, Icon icon) {
         super(text, icon);
-        //updateUI();
+        // updateUI();
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
@@ -253,7 +253,7 @@ class TabLayout implements LayoutManager, Serializable {
     private static final long serialVersionUID = 1L;
     private static final int TAB_WIDTH = 100;
     @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
-    @Override public void removeLayoutComponent(Component comp)           { /* not needed */ }
+    @Override public void removeLayoutComponent(Component comp) { /* not needed */ }
     @Override public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
@@ -283,8 +283,8 @@ class TabLayout implements LayoutManager, Serializable {
             if (ncomponents == 0) {
                 return;
             }
-            //int nrows = 1;
-            //boolean ltr = parent.getComponentOrientation().isLeftToRight();
+            // int nrows = 1;
+            // boolean ltr = parent.getComponentOrientation().isLeftToRight();
             Insets insets = parent.getInsets();
             int ncols = ncomponents - 1;
             int lastw = parent.getComponent(ncomponents - 1).getPreferredSize().width;

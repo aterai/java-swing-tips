@@ -197,7 +197,7 @@ class TableRowTransferHandler extends TransferHandler {
     protected int[] indices;
     protected int addIndex = -1; // Location where items were added
     protected int addCount; // Number of items added.
-    protected JComponent source;
+    protected Component source;
 
     protected TableRowTransferHandler() {
         super();

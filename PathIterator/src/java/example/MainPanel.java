@@ -50,13 +50,13 @@ public final class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makePreviewPanel() {
+    private Component makePreviewPanel() {
         JPanel p = new JPanel(new BorderLayout());
         p.add(check, BorderLayout.SOUTH);
         p.add(new JScrollPane(label));
         return p;
     }
-    private JComponent makePreferencesPanel() {
+    private Component makePreferencesPanel() {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("Preferences"));
         GridBagConstraints c = new GridBagConstraints();
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
         p.add(vcSpinner, c);
         return p;
     }
-    private JComponent makeSvgPanel() {
+    private Component makeSvgPanel() {
         JButton button = new JButton("set");
         button.addActionListener(e -> initStar());
 
