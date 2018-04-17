@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         // Translucent resize area for mouse cursor >>>
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setBackground(new Color(1f, 1f, 1f, .01f));
-        //<<<
+        // <<<
     }
 //     private ButtonGroup lafRadioGroup;
 //     private String lookAndFeel;
@@ -103,26 +103,25 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        //XXX: JFrame frame = new JFrame();
+        // XXX: JFrame frame = new JFrame();
         frame.setUndecorated(true);
 
         JRootPane root = frame.getRootPane();
         root.setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
         JLayeredPane layeredPane = root.getLayeredPane();
-        Component c = layeredPane.getComponent(1);
-        if (c instanceof JComponent) {
-            JComponent orgTitlePane = (JComponent) c;
-            orgTitlePane.setVisible(false);
-            //layeredPane.remove(orgTitlePane);
-        }
-        //JComponent dummyTitlePane = new JLabel();
-        //layeredPane.add(dummyTitlePane, JLayeredPane.FRAME_CONTENT_LAYER);
-        //dummyTitlePane.setVisible(true);
+        Optional.ofNullable(layeredPane.getComponent(1)).ifPresent(c -> c.setVisible(false));
+        // if (Objects.nonNull(c) {
+        //     c.setVisible(false);
+        //     // layeredPane.remove(c);
+        // }
+        // JComponent dummyTitlePane = new JLabel();
+        // layeredPane.add(dummyTitlePane, JLayeredPane.FRAME_CONTENT_LAYER);
+        // dummyTitlePane.setVisible(true);
 
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        frame.setBackground(new Color(0x0, true)); //JDK 1.7
+        frame.setBackground(new Color(0x0, true)); // JDK 1.7
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -208,7 +207,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

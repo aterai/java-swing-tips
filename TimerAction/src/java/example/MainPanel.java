@@ -128,7 +128,7 @@ class TilePanel extends JPanel {
             add(l);
         });
         Timer timer = new Timer(16, e -> IntStream.range(0, 100).forEach(i -> {
-            JComponent c = (JComponent) getComponent(i);
+            Component c = getComponent(i);
             int red = rnd.nextInt(256);
             c.setBackground(new Color(red, 255 - red, 0));
         }));

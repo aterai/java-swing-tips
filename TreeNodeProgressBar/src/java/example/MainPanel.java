@@ -169,14 +169,14 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
             setBorder(BorderFactory.createEmptyBorder());
         }
     };
-    private final JPanel renderer = new JPanel(new BorderLayout()) {
+    private final Container renderer = new JPanel(new BorderLayout()) {
         @Override public void updateUI() {
             super.updateUI();
             setOpaque(false);
         }
     };
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         Object o = ((DefaultMutableTreeNode) value).getUserObject();
         if (o instanceof ProgressObject) {
             ProgressObject n = (ProgressObject) o;

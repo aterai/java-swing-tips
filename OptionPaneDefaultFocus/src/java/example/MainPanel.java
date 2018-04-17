@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 
 class FocusHierarchyListener implements HierarchyListener {
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent) e.getComponent();
+        Component c = e.getComponent();
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
             EventQueue.invokeLater(() -> c.requestFocusInWindow());
         }
@@ -106,6 +106,6 @@ class FocusAncestorListener implements AncestorListener {
     @Override public void ancestorAdded(AncestorEvent e) {
         e.getComponent().requestFocusInWindow();
     }
-    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+    @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
     @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
 }
