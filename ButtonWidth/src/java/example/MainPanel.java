@@ -25,29 +25,29 @@ public final class MainPanel extends JPanel {
         Component box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
 
         Box box = Box.createVerticalBox();
-        for (Component c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
+        Arrays.asList(box6, box5, box4, box3, box2, box1).forEach(c -> {
             box.add(new JSeparator());
             box.add(c);
-        }
+        });
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static Component createRightAlignButtonBox6(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox6(List<? extends Component> list, int width, int gap) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(0, gap, 0, 0);
-        for (JButton b: list) {
-            c.ipadx = buttonWidth - b.getPreferredSize().width;
+        list.forEach(b -> {
+            c.ipadx = width - b.getPreferredSize().width;
             p.add(b, c);
-        }
+        });
         p.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
         JPanel pp = new JPanel(new BorderLayout());
         pp.add(p, BorderLayout.EAST);
         return pp;
     }
 
-    private static Component createRightAlignButtonBox5(List<JButton> list, int gap) {
+    private static Component createRightAlignButtonBox5(List<? extends Component> list, int gap) {
         JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap)) {
             @Override public Dimension getMaximumSize() {
                 return super.getPreferredSize();
@@ -61,57 +61,57 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static Component createRightAlignButtonBox4(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox4(List<? extends Component> list, int width, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
                 int maxHeight = list.stream()
                     .map(b -> b.getPreferredSize().height)
                     .reduce(0, Integer::max);
-                return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+                return new Dimension(width * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
         Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
         Spring y = Spring.constant(gap);
         Spring g = Spring.minus(Spring.constant(gap));
-        Spring width = Spring.constant(buttonWidth);
-        for (JButton b: list) {
+        Spring w = Spring.constant(width);
+        for (Component b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
             x = Spring.sum(x, g);
             constraints.setConstraint(SpringLayout.EAST, x);
             constraints.setY(y);
-            constraints.setWidth(width);
+            constraints.setWidth(w);
             p.add(b);
-            x = Spring.sum(x, Spring.minus(width));
+            x = Spring.sum(x, Spring.minus(w));
         }
         return p;
     }
 
-    private static Component createRightAlignButtonBox3(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox3(List<? extends Component> list, int width, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
                 int maxHeight = list.stream()
                     .map(b -> b.getPreferredSize().height)
                     .reduce(0, Integer::max);
-                return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+                return new Dimension(width * list.size() + gap + gap, maxHeight + gap + gap);
             }
         };
         SpringLayout.Constraints cons = layout.getConstraints(p);
         // cons.setConstraint(SpringLayout.SOUTH, Spring.constant(p.getPreferredSize().height));
-        cons.setConstraint(SpringLayout.EAST, Spring.constant((buttonWidth + gap) * list.size()));
+        cons.setConstraint(SpringLayout.EAST, Spring.constant((width + gap) * list.size()));
 
         Spring x = Spring.constant(0);
         Spring y = Spring.constant(gap);
         Spring g = Spring.constant(gap);
-        Spring width = Spring.constant(buttonWidth);
-        for (JButton b: list) {
+        Spring w = Spring.constant(width);
+        for (Component b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
             constraints.setX(x);
             constraints.setY(y);
-            constraints.setWidth(width);
+            constraints.setWidth(w);
             p.add(b);
-            x = Spring.sum(x, width);
+            x = Spring.sum(x, w);
             x = Spring.sum(x, g);
         }
 
@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
 
-    private static Component createRightAlignButtonBox2(List<JButton> list, int buttonWidth, int gap) {
+    private static Component createRightAlignButtonBox2(List<? extends Component> list, int width, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
                 list.forEach(b -> b.setPreferredSize(null));
@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
                     int maxHeight = list.stream()
                         .map(b -> b.getPreferredSize().height)
                         .reduce(0, Integer::max);
-                    Dimension d = new Dimension(buttonWidth, maxHeight);
+                    Dimension d = new Dimension(width, maxHeight);
                     list.forEach(b -> b.setPreferredSize(d));
                     revalidate();
                 });
@@ -138,10 +138,10 @@ public final class MainPanel extends JPanel {
         };
         box.setLayout(new BoxLayout(box, BoxLayout.X_AXIS));
         box.add(Box.createHorizontalGlue());
-        for (JButton b: list) {
+        list.forEach(b -> {
             box.add(b);
             box.add(Box.createHorizontalStrut(gap));
-        }
+        });
         box.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0));
         return box;
     }
