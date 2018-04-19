@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor {
-    protected final JComponent renderer = new JPanel(new GridBagLayout()) {
+    protected final Container renderer = new JPanel(new GridBagLayout()) {
         protected transient MouseListener listener;
         @Override public void updateUI() {
             removeMouseListener(listener);

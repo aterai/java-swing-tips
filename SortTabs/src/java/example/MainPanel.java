@@ -45,12 +45,12 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ComparableTab { //implements Comparable<ComparableTab> {
+class ComparableTab { // implements Comparable<ComparableTab> {
     private final String title;
     private final Component comp;
     protected ComparableTab(String title, Component comp) {
         this.title = title;
-        this.comp  = comp;
+        this.comp = comp;
     }
     public String getTitle() {
         return title;
@@ -78,14 +78,14 @@ class ComparableTab { //implements Comparable<ComparableTab> {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-    protected final JComponent glassPane = new EditorGlassPane();
+    protected final Container glassPane = new EditorGlassPane();
     protected final JTextField editor = new JTextField();
     protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getRootPane().setGlassPane(glassPane);
             Rectangle rect = getBoundsAt(getSelectedIndex());
             Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
-            //rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
+            // rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
             rect.setLocation(p);
             rect.grow(-2, -2);
             editor.setBounds(rect);
@@ -208,7 +208,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTabbedPane) {
             JTabbedPane tabbedPane = (JTabbedPane) c;
-            //JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+            // JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
             sortTabs.setEnabled(tabbedPane.getTabCount() > 1);
             closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
             closeAll.setEnabled(tabbedPane.getTabCount() > 0);

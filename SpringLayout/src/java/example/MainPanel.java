@@ -11,36 +11,36 @@ public final class MainPanel extends JPanel {
 
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
-        JLabel  l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
+        JLabel l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
         JButton l2 = new JButton("button: 50%, 65%, 40%, 30%");
-        //JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
+        // JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
 
         panel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
         l1.setOpaque(true);
         l1.setBackground(Color.ORANGE);
         l1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-        //l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+        // l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
 
         setScaleAndAdd(panel, layout, l1, .05f, .05f, .90f, .55f);
         setScaleAndAdd(panel, layout, l2, .50f, .65f, .40f, .30f);
 
-        //addComponentListener(new ComponentAdapter() {
-        //    @Override public void componentResized(ComponentEvent e) {
-        //        initLayout();
-        //    }
-        //});
+        // addComponentListener(new ComponentAdapter() {
+        //     @Override public void componentResized(ComponentEvent e) {
+        //         initLayout();
+        //     }
+        // });
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static void setScaleAndAdd(JComponent parent, SpringLayout layout, JComponent child, float sx, float sy, float sw, float sh) {
-        Spring panelw = layout.getConstraint(SpringLayout.WIDTH,  parent);
+    private static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float sx, float sy, float sw, float sh) {
+        Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
         Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
 
         SpringLayout.Constraints c = layout.getConstraints(child);
         c.setX(Spring.scale(panelw, sx));
         c.setY(Spring.scale(panelh, sy));
-        c.setWidth(Spring.scale(panelw,  sw));
+        c.setWidth(Spring.scale(panelw, sw));
         c.setHeight(Spring.scale(panelh, sh));
 
         parent.add(child);

@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
         // setBackground(BACKGROUND);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledPanel(String title, JComponent cmp, Color bgc) {
+    private static Component makeTitledPanel(String title, Container cmp, Color bgc) {
         JPanel p = new JPanel(new BorderLayout());
         if (cmp.getLayout() instanceof BoxLayout) {
             p.add(cmp, BorderLayout.NORTH);

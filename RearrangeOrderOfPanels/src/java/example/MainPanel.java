@@ -9,7 +9,7 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         Box box = Box.createVerticalBox();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JComponent createSortablePanel(int i, Component c) {
+    private static Component createSortablePanel(int i, Component c) {
         JLabel l = new JLabel(String.format(" %04d ", i));
         l.setOpaque(true);
         l.setBackground(Color.RED);
@@ -79,11 +79,11 @@ class RearrangingHandler extends MouseAdapter {
     private final Point dragOffset = new Point();
 
     @Override public void mousePressed(MouseEvent e) {
-        if (((JComponent) e.getComponent()).getComponentCount() > 0) {
+        if (((Container) e.getComponent()).getComponentCount() > 0) {
             startPt.setLocation(e.getPoint());
         }
     }
-    private void startDragging(JComponent parent, Point pt) {
+    private void startDragging(Container parent, Point pt) {
         Component c = parent.getComponentAt(pt);
         index = parent.getComponentZOrder(c);
         if (Objects.equals(c, parent) || index < 0) {
@@ -100,13 +100,13 @@ class RearrangingHandler extends MouseAdapter {
 
         window.setBackground(new Color(0x0, true));
         window.add(draggingComonent);
-        //window.setSize(d);
+        // window.setSize(d);
         window.pack();
 
         updateWindowLocation(pt, parent);
         window.setVisible(true);
     }
-    private void updateWindowLocation(Point pt, JComponent parent) {
+    private void updateWindowLocation(Point pt, Component parent) {
         if (window.isVisible() && Objects.nonNull(draggingComonent)) {
             Point p = new Point(pt.x - dragOffset.x, pt.y - dragOffset.y);
             SwingUtilities.convertPointToScreen(p, parent);
@@ -115,7 +115,7 @@ class RearrangingHandler extends MouseAdapter {
     }
     private int getTargetIndex(Rectangle r, Point pt, int i) {
         int ht2 = (int) (.5 + r.height * .5);
-        R1.setBounds(r.x, r.y,       r.width, ht2);
+        R1.setBounds(r.x, r.y, r.width, ht2);
         R2.setBounds(r.x, r.y + ht2, r.width, ht2);
         if (R1.contains(pt)) {
             prevRect.setBounds(R1);
@@ -134,7 +134,7 @@ class RearrangingHandler extends MouseAdapter {
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
-        JComponent parent = (JComponent) e.getComponent();
+        Container parent = (Container) e.getComponent();
         if (Objects.isNull(draggingComonent)) {
             if (startPt.distance(pt) > gestureMotionThreshold) {
                 startDragging(parent, pt);
@@ -158,7 +158,7 @@ class RearrangingHandler extends MouseAdapter {
                 return;
             }
         }
-        //System.out.println("outer");
+        // System.out.println("outer");
         parent.remove(gap);
         parent.revalidate();
     }
@@ -172,7 +172,7 @@ class RearrangingHandler extends MouseAdapter {
 //             return;
 //         }
         Point pt = e.getPoint();
-        JComponent parent = (JComponent) e.getComponent();
+        Container parent = (Container) e.getComponent();
         Component cmp = draggingComonent;
         draggingComonent = null;
 

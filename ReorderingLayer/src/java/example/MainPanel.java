@@ -71,7 +71,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     private final Rectangle draggingRect = new Rectangle();
     private final Point startPt = new Point();
     private final Point dragOffset = new Point();
-    private final JComponent rubberStamp = new JPanel();
+    private final Container rubberStamp = new JPanel();
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
 
     private Component draggingComonent;
