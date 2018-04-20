@@ -303,7 +303,6 @@ class TableOfContentsTree extends JTree {
             if (rect.intersects(r)) {
                 TreePath path = getPathForRow(i);
                 TreeCellRenderer tcr = getCellRenderer();
-                JComponent c = (JComponent) tcr;
                 if (isSynth && isRowSelected(i)) {
                     if (tcr instanceof DefaultTreeCellRenderer) {
                         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tcr;
@@ -319,11 +318,11 @@ class TableOfContentsTree extends JTree {
                     String pn = Integer.toString(toc.page);
                     int x = getWidth() - 1 - fm.stringWidth(pn) - ins.right;
                     // int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
-                    int y = r.y + c.getBaseline(r.width, r.height);
+                    int y = r.y + ((Component) tcr).getBaseline(r.width, r.height);
                     g2.drawString(pn, x, y);
 
                     int gap = 5;
-                    int x2  = getWidth() - 1 - pnmaxWidth - ins.right;
+                    int x2 = getWidth() - 1 - pnmaxWidth - ins.right;
                     Stroke s = g2.getStroke();
                     g2.setStroke(READER);
                     g2.drawLine(r.x + r.width + gap, y, x2 - gap, y);
