@@ -81,8 +81,6 @@ class CellIcon implements Icon {
     private static final Color SB = new Color(1f, 1f, 1f, .1f);
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = c.getWidth();
-        int h = c.getHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
@@ -97,6 +95,8 @@ class CellIcon implements Icon {
             }
         }
 
+        int w = c.getWidth();
+        int h = c.getHeight();
         g2.setPaint(c.getBackground());
         g2.fillRect(0, 0, w, h);
 

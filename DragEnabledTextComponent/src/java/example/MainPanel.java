@@ -11,6 +11,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTextField textField0 = new JTextField("Initially has BasicTextUI$TextTransferHandler");
+        textField0.setName("default");
 
         JTextField textField1 = new JTextField("setEditable(false)");
         textField1.setEditable(false);

@@ -36,9 +36,9 @@ public final class MainPanel extends JPanel {
 
         LOGGER.info("test, TEST");
 
-        JTextField textField = new JTextField("aaa");
         JButton button = new JButton("Clear");
         button.addActionListener(e -> textArea.setText(""));
+        JTextField textField = new JTextField("aaa");
 
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

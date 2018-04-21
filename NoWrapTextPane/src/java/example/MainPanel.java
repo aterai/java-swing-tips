@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel {
         JTextArea textArea = new JTextArea();
         JButton editorPaneButton = new JButton("JEditorPane");
         JButton textAreaButton = new JButton("JTextArea");
-        JButton clearButton = new JButton("clear all");
 
 /*
         textPane = new JTextPane() {
@@ -53,6 +52,8 @@ public final class MainPanel extends JPanel {
         };
         editorPaneButton.addActionListener(longTextListener);
         textAreaButton.addActionListener(longTextListener);
+
+        JButton clearButton = new JButton("clear all");
         clearButton.addActionListener(e -> {
             editorPane.setText("");
             textArea.setText("");

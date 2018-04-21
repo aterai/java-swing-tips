@@ -312,9 +312,9 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         try {
             int current = 0;
             while (current < lengthOfTask && !isCancelled()) {
-                Path path = list.get(current);
-                Thread.sleep(50); // dummy
+                Thread.sleep(10); // dummy
                 setProgress(100 * current / lengthOfTask);
+                Path path = list.get(current);
                 current++;
                 publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
             }

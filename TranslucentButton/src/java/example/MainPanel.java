@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
         super();
         // Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
         URL url = getClass().getResource("RECYCLE BIN - EMPTY_16x16-32.png");
-        Icon icon = new ImageIcon(url);
 
         AbstractButton b = makeButton(makeTitleWithIcon(url, "align=top", "top"));
         add(b);
@@ -28,6 +27,7 @@ public final class MainPanel extends JPanel {
         b = makeButton(makeTitleWithIcon(url, "align=bottom", "bottom"));
         add(b);
 
+        Icon icon = new ImageIcon(url);
         JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);

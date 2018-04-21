@@ -39,7 +39,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         Font font = weekList.getFont().deriveFont(CELLSZ.height - 1f);
-        Component heatmap = makeWeekCalendar(weekList, font);
 
         Box box = Box.createHorizontalBox();
         box.add(makeLabel("Less", font));
@@ -55,7 +54,7 @@ public final class MainPanel extends JPanel {
         p.setBackground(Color.WHITE);
 
         GridBagConstraints c = new GridBagConstraints();
-        p.add(heatmap, c);
+        p.add(makeWeekCalendar(weekList, font), c);
 
         c.insets = new Insets(10, 0, 2, 0);
         c.gridy = 1;

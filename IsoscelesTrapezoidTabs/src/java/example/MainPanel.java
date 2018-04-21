@@ -96,12 +96,12 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int textShiftOffset = isSelected ? 0 : 1;
 
         Rectangle clipRect = g2.getClipBounds();
         clipRect.grow(ADJ2 + 1, 0);
         g2.setClip(clipRect);
 
+        int textShiftOffset = isSelected ? 0 : 1;
         GeneralPath trapezoid = new GeneralPath();
         trapezoid.moveTo(x - ADJ2, y + h);
         trapezoid.lineTo(x + ADJ2, y + textShiftOffset);

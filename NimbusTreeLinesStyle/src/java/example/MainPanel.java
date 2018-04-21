@@ -9,11 +9,12 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout());
 
-        JTree tree = new JTree();
         UIDefaults d = new UIDefaults();
         d.put("Tree.drawVerticalLines", Boolean.TRUE);
         d.put("Tree.drawHorizontalLines", Boolean.TRUE);
         d.put("Tree.linesStyle", "dashed");
+
+        JTree tree = new JTree();
         tree.putClientProperty("Nimbus.Overrides", d);
 
         add(makeTitledPanel("Default", new JScrollPane(new JTree())));

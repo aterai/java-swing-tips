@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel {
         int h = iia.getIconHeight();
         int[] pixelsA = getData(iia, w, h);
         int[] pixelsB = getData(iib, w, h);
-        MemoryImageSource source = new MemoryImageSource(w, h, pixelsA, 0, w);
         for (int i = 0; i < pixelsA.length; i++) {
             if (pixelsA[i] == pixelsB[i]) {
                 pixelsA[i] = pixelsA[i] & 0x44FFFFFF;
@@ -41,6 +40,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
+        MemoryImageSource source = new MemoryImageSource(w, h, pixelsA, 0, w);
         JRadioButton rr = new JRadioButton("diff");
         rr.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {

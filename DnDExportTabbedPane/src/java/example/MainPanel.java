@@ -15,13 +15,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        DnDTabbedPane tabbedPane = new DnDTabbedPane();
 
         DnDTabbedPane sub = new DnDTabbedPane();
         sub.addTab("Title aa", new JLabel("aaa"));
         sub.addTab("Title bb", new JScrollPane(new JTree()));
         sub.addTab("Title cc", new JScrollPane(new JTextArea("JTextArea cc")));
 
+        DnDTabbedPane tabbedPane = new DnDTabbedPane();
         tabbedPane.addTab("JTree 00", new JScrollPane(new JTree()));
         tabbedPane.addTab("JLabel 01", new JLabel("Test"));
         tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));

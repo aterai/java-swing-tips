@@ -117,7 +117,6 @@ class LightboxGlassPane extends JPanel {
     @Override protected void paintComponent(Graphics g) {
         Optional.ofNullable(getRootPane()).ifPresent(r -> r.getLayeredPane().print(g));
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
 
         if (curimgh < image.getIconHeight() + BW + BW) {
             curimgh += image.getIconHeight() / 16;
@@ -136,6 +135,7 @@ class LightboxGlassPane extends JPanel {
         Point centerPt = new Point(screen.x + screen.width / 2, screen.y + screen.height / 2);
         rect.setLocation(centerPt.x - rect.width / 2, centerPt.y - rect.height / 2);
 
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new Color(0x64646464, true));
         g2.fill(screen);
         g2.setPaint(new Color(0xC8FFFFFF, true));

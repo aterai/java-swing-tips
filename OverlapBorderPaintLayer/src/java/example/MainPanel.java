@@ -14,7 +14,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         List<String> list = Arrays.asList("aaa", "bb", "c");
-        BreadcrumbLayerUI<Component> layerUI = new BreadcrumbLayerUI<>();
 
         JPanel p1 = new JPanel(new GridLayout(0, 1));
         p1.setBorder(BorderFactory.createTitledBorder("Icon border"));
@@ -22,6 +21,7 @@ public final class MainPanel extends JPanel {
         p1.add(makeBreadcrumbList1(list, Color.PINK, 11));
         p1.add(makeBreadcrumbList2(list, Color.PINK, 11));
 
+        BreadcrumbLayerUI<Component> layerUI = new BreadcrumbLayerUI<>();
         JPanel p2 = new JPanel(new GridLayout(0, 1));
         p2.setBorder(BorderFactory.createTitledBorder("JLayer border"));
         p2.add(new JLayer<>(makeBreadcrumbList0(list, Color.ORANGE, 1), layerUI));

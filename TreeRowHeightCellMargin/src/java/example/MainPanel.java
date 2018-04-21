@@ -87,7 +87,6 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         renderer.add(wrap);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         Color bgColor;
         Color fgColor;
         if (selected) {
@@ -100,6 +99,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         text.setForeground(fgColor);
         text.setBackground(bgColor);
         text.setBorder(hasFocus ? compoundFocusBorder : emptyBorder);
+
+        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 

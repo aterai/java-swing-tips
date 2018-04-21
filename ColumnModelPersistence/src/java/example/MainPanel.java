@@ -15,8 +15,6 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JTextArea textArea = new JTextArea();
-
         String[] columnNames = {"A", "B"};
         Object[][] data = {
             {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
@@ -24,6 +22,8 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu());
+
+        JTextArea textArea = new JTextArea();
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);
