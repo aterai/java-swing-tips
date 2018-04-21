@@ -11,10 +11,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
-        JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
-        JRadioButton r2 = new JRadioButton("setViewPosition");
-
         JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
         // JViewport vport = scroll.getViewport();
         // JDK 1.7.0
@@ -38,19 +34,22 @@ public final class MainPanel extends JPanel {
             }
         };
         vport.add(label);
+
+        JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
         scroll.setViewport(vport);
 
         HandScrollListener hsl1 = new HandScrollListener();
         vport.addMouseMotionListener(hsl1);
         vport.addMouseListener(hsl1);
 
+        JRadioButton radio = new JRadioButton("scrollRectToVisible", true);
+        radio.addItemListener(e -> hsl1.withinRangeMode = e.getStateChange() == ItemEvent.SELECTED);
+
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
-        ActionListener al = e -> hsl1.withinRangeMode = r1.equals(e.getSource());
-        Arrays.asList(r1, r2).forEach(b -> {
-            box.add(b);
-            bg.add(b);
-            b.addActionListener(al);
+        Arrays.asList(radio, new JRadioButton("setViewPosition")).forEach(r -> {
+            box.add(r);
+            bg.add(r);
         });
 
 //         // TEST:

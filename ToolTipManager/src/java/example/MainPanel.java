@@ -4,26 +4,24 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label1 = new JLabel("label");
-    private final JTextField field = new JTextField(20);
-    private final JButton button = new JButton("button");
-    private final JRadioButton onRadio = new JRadioButton("on", true);
-    private final JRadioButton offRadio = new JRadioButton("off");
-    private final ButtonGroup group = new ButtonGroup();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        label1.setToolTipText("label - ToolTip");
-        field.setToolTipText("aaaaaaaaaaaaaaaaaaaaa");
-        button.setToolTipText("button - ToolTip");
+        JLabel label = new JLabel("label");
+        label.setToolTipText("JLabel - ToolTip");
 
-        ToolTipManager.sharedInstance().unregisterComponent(field);
+        JTextField field = new JTextField(20);
+        field.setToolTipText("JTextField");
+        // TEST: ToolTipManager.sharedInstance().unregisterComponent(field);
+
+        JButton button = new JButton("button");
+        button.setToolTipText("JButton - ToolTip");
 
         JPanel p = new JPanel();
-        p.add(label1);
+        p.add(label);
         p.add(field);
         p.add(button);
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -36,21 +34,20 @@ public final class MainPanel extends JPanel {
         add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
+    private static Component makeToolPanel() {
+        JRadioButton radio = new JRadioButton("on", true);
+        radio.addItemListener(e -> ToolTipManager.sharedInstance().setEnabled(e.getStateChange() == ItemEvent.SELECTED));
 
-    private Component makeToolPanel() {
         JPanel panel = new JPanel();
-        group.add(onRadio);
-        group.add(offRadio);
-        ActionListener al = e -> ToolTipManager.sharedInstance().setEnabled(onRadio.isSelected());
-        onRadio.addActionListener(al);
-        offRadio.addActionListener(al);
-        panel.add(new JLabel("ToolTip enabled:"));
-        panel.add(onRadio);
-        panel.add(offRadio);
         panel.setBorder(BorderFactory.createTitledBorder("ToolTipManager"));
+        panel.add(new JLabel("ToolTip enabled:"));
+        ButtonGroup group = new ButtonGroup();
+        Arrays.asList(radio, new JRadioButton("off")).forEach(r -> {
+            group.add(r);
+            panel.add(r);
+        });
         return panel;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
