@@ -20,7 +20,8 @@ public final class MainPanel extends JPanel {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         JLabel label = new JLabel(LocalTime.now().format(formatter), SwingConstants.CENTER);
-        Timer timer = new Timer(100, e -> {
+        Timer timer = new Timer(100, null);
+        timer.addActionListener(e -> {
             label.setText(LocalTime.now().format(formatter));
             Container parent = SwingUtilities.getUnwrappedParent(label);
             if (Objects.nonNull(parent) && parent.isOpaque()) {
@@ -30,16 +31,16 @@ public final class MainPanel extends JPanel {
         TexturePanel tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
 
         JFrame digitalClock = new JFrame();
+        digitalClock.getContentPane().add(tp);
         digitalClock.setUndecorated(true);
         // digitalClock.setAlwaysOnTop(true);
         // AWTUtilities.setWindowOpaque(digitalClock, false); // JDK 1.6.0
         digitalClock.setBackground(new Color(0x0, true)); // JDK 1.7.0
         digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        digitalClock.getContentPane().add(tp);
         digitalClock.pack();
         digitalClock.setLocationRelativeTo(null);
 
-        JComboBox<Enum<?>> combo = new JComboBox<Enum<?>>(TexturePaints.values()) {
+        JComboBox<TexturePaints> combo = new JComboBox<TexturePaints>(TexturePaints.values()) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
                 d.width = Math.max(150, d.width);
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
         JToggleButton button = new JToggleButton("timer");
         button.addActionListener(e -> {
             if (((AbstractButton) e.getSource()).isSelected()) {
-                TexturePaints t = (TexturePaints) combo.getSelectedItem();
+                TexturePaints t = combo.getItemAt(combo.getSelectedIndex());
                 tp.setTexturePaint(t.getTexturePaint());
                 timer.start();
                 digitalClock.setVisible(true);

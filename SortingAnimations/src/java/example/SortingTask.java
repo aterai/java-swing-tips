@@ -26,9 +26,9 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     public SortingTask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
         super();
         this.sortAlgorithm = sortAlgorithm;
-        this.number  = number;
-        this.array   = array;
-        this.rect    = rect;
+        this.number = number;
+        this.array = array;
+        this.rect = rect;
         this.factorx = factorx;
         this.factory = factory;
         this.repaintArea = new Rectangle(rect);

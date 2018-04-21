@@ -24,8 +24,8 @@ public class MainPanel extends JPanel {
     private double factory;
     private transient SwingWorker<String, Rectangle> worker;
 
-    private final JComboBox<? extends Enum<?>> distributionsChoices = new JComboBox<>(GenerateInputs.values());
-    private final JComboBox<? extends Enum<?>> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
+    private final JComboBox<GenerateInputs> distributionsChoices = new JComboBox<>(GenerateInputs.values());
+    private final JComboBox<SortAlgorithms> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
     private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
     private final JSpinner spinner = new JSpinner(model);
     private final JButton startButton = new JButton("Start");
@@ -103,7 +103,7 @@ public class MainPanel extends JPanel {
         array.clear();
         factorx = (MAXX - MINX) / (double) n;
         factory = MAXY - MINY;
-        GenerateInputs gi = (GenerateInputs) distributionsChoices.getSelectedItem();
+        GenerateInputs gi = distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex());
         for (int i = 0; i < n; i++) {
             switch (gi) {
                 case Random:
@@ -126,7 +126,7 @@ public class MainPanel extends JPanel {
             number = tmp;
             genArray(number);
         }
-        SortAlgorithms sa = (SortAlgorithms) algorithmsChoices.getSelectedItem();
+        SortAlgorithms sa = algorithmsChoices.getItemAt(algorithmsChoices.getSelectedIndex());
         Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
         worker = new UITask(sa, number, array, paintArea, factorx, factory);
         worker.execute();

@@ -34,19 +34,19 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-        //Locale.setDefault(new Locale("en", "US"));
-        //Locale defaultLocale = JFileChooser.getDefaultLocale();
-        //JFileChooser.setDefaultLocale(defaultLocale);
-        //JFileChooser.setDefaultLocale(Locale.ENGLISH);
-        //JFileChooser.setDefaultLocale(new Locale("en", "US"));
-        //fileChooser.setLocale(new Locale("fr", "FR"));
+        // Locale.setDefault(new Locale("en", "US"));
+        // Locale defaultLocale = JFileChooser.getDefaultLocale();
+        // JFileChooser.setDefaultLocale(defaultLocale);
+        // JFileChooser.setDefaultLocale(Locale.ENGLISH);
+        // JFileChooser.setDefaultLocale(new Locale("en", "US"));
+        // fileChooser.setLocale(new Locale("fr", "FR"));
 
         JComboBox<Locale> combo = new JComboBox<>(LOCALE_ARRAY);
         JFileChooser fileChooser = new JFileChooser();
 
         JButton button = new JButton("<-");
         button.addActionListener(e -> {
-            fileChooser.setLocale((Locale) combo.getSelectedItem());
+            fileChooser.setLocale(combo.getItemAt(combo.getSelectedIndex()));
             SwingUtilities.updateComponentTreeUI(fileChooser);
             int retvalue = fileChooser.showOpenDialog(getRootPane());
             System.out.println(retvalue);

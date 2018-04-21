@@ -15,27 +15,24 @@ public final class MainPanel extends JPanel {
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
 
-        JComboBox<? extends Enum<?>> verticalAlignmentChoices = new JComboBox<>(Vertical.values());
-        JComboBox<? extends Enum<?>> verticalTextPositionChoices = new JComboBox<>(Vertical.values());
-        JComboBox<? extends Enum<?>> horizontalAlignmentChoices = new JComboBox<>(Horizontal.values());
-        JComboBox<? extends Enum<?>> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
-
-        // default
+        JComboBox<Vertical> verticalAlignmentChoices = new JComboBox<>(Vertical.values());
         verticalAlignmentChoices.setSelectedItem(Vertical.CENTER);
+
+        JComboBox<Vertical> verticalTextPositionChoices = new JComboBox<>(Vertical.values());
         verticalTextPositionChoices.setSelectedItem(Vertical.CENTER);
+
+        JComboBox<Horizontal> horizontalAlignmentChoices = new JComboBox<>(Horizontal.values());
         horizontalAlignmentChoices.setSelectedItem(Horizontal.CENTER);
+
+        JComboBox<Horizontal> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
         horizontalTextPositionChoices.setSelectedItem(Horizontal.TRAILING);
 
         ItemListener listener = e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                Vertical v1 = (Vertical) verticalAlignmentChoices.getSelectedItem();
-                label.setVerticalAlignment(v1.alignment);
-                Vertical v2 = (Vertical) verticalTextPositionChoices.getSelectedItem();
-                label.setVerticalTextPosition(v2.alignment);
-                Horizontal h1 = (Horizontal) horizontalAlignmentChoices.getSelectedItem();
-                label.setHorizontalAlignment(h1.alignment);
-                Horizontal h2 = (Horizontal) horizontalTextPositionChoices.getSelectedItem();
-                label.setHorizontalTextPosition(h2.alignment);
+                label.setVerticalAlignment(getSelectedItem(verticalAlignmentChoices).alignment);
+                label.setVerticalTextPosition(getSelectedItem(verticalTextPositionChoices).alignment);
+                label.setHorizontalAlignment(getSelectedItem(horizontalAlignmentChoices).alignment);
+                label.setHorizontalTextPosition(getSelectedItem(horizontalTextPositionChoices).alignment);
                 label.repaint();
             }
         };
@@ -46,12 +43,12 @@ public final class MainPanel extends JPanel {
         p1.setBorder(BorderFactory.createTitledBorder("JLabel Test"));
         p1.add(label);
 
-        JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-
         c.gridx = 0;
         c.insets = new Insets(5, 5, 5, 0);
         c.anchor = GridBagConstraints.LINE_END;
+
+        JPanel p2 = new JPanel(new GridBagLayout());
         p2.add(new JLabel("setVerticalAlignment:"), c);
         p2.add(new JLabel("setVerticalTextPosition:"), c);
         p2.add(new JLabel("setHorizontalAlignment:"), c);
@@ -69,6 +66,9 @@ public final class MainPanel extends JPanel {
         add(p2, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static <E> E getSelectedItem(JComboBox<E> combo) {
+        return combo.getItemAt(combo.getSelectedIndex());
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

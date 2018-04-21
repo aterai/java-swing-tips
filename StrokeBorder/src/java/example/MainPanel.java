@@ -8,8 +8,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final float[] DEFAULT_DASHARRAY = {1f};
-    private final JComboBox<? extends Enum<?>> joinCombo = new JComboBox<>(JoinStyle.values());
-    private final JComboBox<? extends Enum<?>> endcapCombo = new JComboBox<>(EndCapStyle.values());
+    private final JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
+    private final JComboBox<EndCapStyle> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
     private final JButton button = new JButton("Change");
@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         button.addActionListener(e -> {
-            int ecs = ((EndCapStyle) endcapCombo.getSelectedItem()).style;
-            int js = ((JoinStyle) joinCombo.getSelectedItem()).style;
+            int ecs = endcapCombo.getItemAt(endcapCombo.getSelectedIndex()).style;
+            int js = joinCombo.getItemAt(joinCombo.getSelectedIndex()).style;
             BasicStroke dashedStroke = new BasicStroke(5f, ecs, js, 5f, getDashArray(), 0f);
             label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
         });

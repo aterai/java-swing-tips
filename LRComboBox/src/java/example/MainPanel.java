@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
         JComboBox<PairItem> combo = new JComboBox<>(model);
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                initTextField(e.getItem());
+                initTextField((PairItem) e.getItem());
             }
         });
-        initTextField(combo.getSelectedItem());
+        initTextField(combo.getItemAt(combo.getSelectedIndex()));
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -38,8 +38,7 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initTextField(Object obj) {
-        PairItem item = (PairItem) obj;
+    private void initTextField(PairItem item) {
         leftTextField.setText(item.getLeftText());
         rightTextField.setText(item.getRightText());
     }
