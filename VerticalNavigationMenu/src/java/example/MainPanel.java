@@ -65,21 +65,21 @@ public final class MainPanel extends JPanel {
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
+        root.add(c1);
 
         DefaultMutableTreeNode c2 = new DefaultMutableTreeNode("2. Chapter");
         c2.add(new DefaultMutableTreeNode("2.1. Section"));
         c2.add(new DefaultMutableTreeNode("2.2. Section"));
         c2.add(new DefaultMutableTreeNode("2.3. Section"));
+        root.add(c2);
 
         DefaultMutableTreeNode c3 = new DefaultMutableTreeNode("3. Chapter");
         c3.add(new DefaultMutableTreeNode("3.1. Section"));
         c3.add(new DefaultMutableTreeNode("3.2. Section"));
         c3.add(new DefaultMutableTreeNode("3.3. Section"));
         c3.add(new DefaultMutableTreeNode("3.4. Section"));
-
-        root.add(c1);
-        root.add(c2);
         root.add(c3);
+
         return new DefaultTreeModel(root);
     }
     public static void main(String... args) {

@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
             setCellRenderer(null);
             setCellEditor(null);
             super.updateUI();
-            //???#1: JDK 1.6.0 bug??? Nimbus LnF
+            // ???#1: JDK 1.6.0 bug??? Nimbus LnF
             setCellRenderer(new SelectionColorTreeCellRenderer());
         }
     };
@@ -26,18 +26,21 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static DefaultTreeModel makeModel() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode(Color.ORANGE);
-        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set1.add(new DefaultMutableTreeNode(Color.RED));
         set1.add(new DefaultMutableTreeNode(Color.GREEN));
         set1.add(new DefaultMutableTreeNode(Color.BLUE));
+
+        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
         set2.add(new DefaultMutableTreeNode("asdf"));
+
+        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set3.add(new DefaultMutableTreeNode("Asdfasdfasdf"));
         set3.add(new DefaultMutableTreeNode("qwerqwer"));
         set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         root.add(set1);
         root.add(set2);
         set2.add(set3);
@@ -77,7 +80,7 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
             c.setForeground(getTextSelectionColor());
             c.setBackground(getBackgroundSelectionColor());
             String str = Objects.toString(value, "");
-            //if (leaf && !str.isEmpty() && str.codePointAt(0) == 'a') {
+            // if (leaf && !str.isEmpty() && str.codePointAt(0) == 'a') {
             if (leaf && pattern.matcher(str).matches()) {
                 c.setOpaque(true);
                 c.setBackground(Color.RED);

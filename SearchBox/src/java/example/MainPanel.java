@@ -109,18 +109,21 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static DefaultTreeModel makeModel() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set1.add(new DefaultMutableTreeNode("111111111"));
         set1.add(new DefaultMutableTreeNode("22222222222"));
         set1.add(new DefaultMutableTreeNode("33333"));
+
+        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
         set2.add(new DefaultMutableTreeNode("asdf"));
+
+        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
         set3.add(new DefaultMutableTreeNode("qwerqwer"));
         set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         root.add(set1);
         root.add(set2);
         set2.add(set3);

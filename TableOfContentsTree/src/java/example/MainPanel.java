@@ -36,20 +36,22 @@ public final class MainPanel extends JPanel {
     }
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+
         DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new TableOfContents("1. Introduction", 1));
+        root.add(s0);
+
         DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new TableOfContents("2. Chapter", 1));
         s1.add(new DefaultMutableTreeNode(new TableOfContents("2.1. Section", 2)));
         s1.add(new DefaultMutableTreeNode(new TableOfContents("2.2. Section", 4)));
         s1.add(new DefaultMutableTreeNode(new TableOfContents("2.3. Section", 8)));
+        root.add(s1);
 
         DefaultMutableTreeNode s2 = new DefaultMutableTreeNode(new TableOfContents("3. Chapter", 10));
         s2.add(new DefaultMutableTreeNode(new TableOfContents("ddddddd", 12)));
         s2.add(new DefaultMutableTreeNode(new TableOfContents("eee", 24)));
         s2.add(new DefaultMutableTreeNode(new TableOfContents("f", 38)));
-
-        root.add(s0);
-        root.add(s1);
         root.add(s2);
+
         return new DefaultTreeModel(root);
     }
     public static void main(String... args) {
@@ -130,20 +132,18 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             .map(DefaultMutableTreeNode::getUserObject)
             .filter(TableOfContents.class::isInstance).map(TableOfContents.class::cast)
             .map(toc -> {
-                int gap = l.getIconTextGap();
-                Dimension d = l.getPreferredSize();
-                Insets ins = tree.getInsets();
-
                 renderer.removeAll();
                 renderer.add(l, BorderLayout.WEST);
                 if (isSynth) {
                     renderer.setForeground(l.getForeground());
                 }
 
+                int gap = l.getIconTextGap();
+                Dimension d = l.getPreferredSize();
                 pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
                 pn = toc.page;
                 rxs = d.width + gap;
-                rxe = tree.getWidth() - ins.right - gap;
+                rxe = tree.getWidth() - tree.getInsets().right - gap;
 
                 renderer.setOpaque(false);
                 return (Component) renderer;
