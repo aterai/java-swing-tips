@@ -221,13 +221,16 @@ final class SpringLayoutUtil {
         box.add(r2lButton);
         box.add(Box.createVerticalGlue());
 
+        JPanel cpn = new JPanel(new GridBagLayout());
+        cpn.add(box);
+
         JScrollPane spl = new JScrollPane(leftList);
         JScrollPane spr = new JScrollPane(rightList);
 
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout);
         setScaleAndAdd(p, layout, spl, .05f, .05f, .40f, .90f);
-        setScaleAndAdd(p, layout, box, .45f, .05f, .10f, .90f);
+        setScaleAndAdd(p, layout, cpn, .45f, .05f, .10f, .90f);
         setScaleAndAdd(p, layout, spr, .55f, .05f, .40f, .90f);
         return p;
     }
