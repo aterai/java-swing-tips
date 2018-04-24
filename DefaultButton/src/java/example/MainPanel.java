@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     private Box makeRadioPane() {
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
-        HashMap<String, JButton> map = new HashMap<>();
+        LinkedHashMap<String, JButton> map = new LinkedHashMap<>();
         map.put("null", null);
         map.put("Button1", b1);
         map.put("Button2", b2);

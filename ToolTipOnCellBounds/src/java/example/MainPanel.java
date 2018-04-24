@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        HashMap<String, Component> map = new HashMap<>();
+        LinkedHashMap<String, Component> map = new LinkedHashMap<>();
         map.put("CellBounds", list1);
         map.put("ListCellRenderer", list2);
         map.put("Default location", list3);

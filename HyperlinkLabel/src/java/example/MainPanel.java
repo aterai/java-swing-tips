@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -16,7 +16,6 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridBagLayout());
-
         String siteLink = "https://ateraimemo.com/";
 
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", siteLink, siteLink));
@@ -42,25 +41,27 @@ public final class MainPanel extends JPanel {
             }
         };
 
+        LinkedHashMap<String, Component> map = new LinkedHashMap<>(4);
+        map.put("JLabel+MouseListener: ", new UrlLabel(siteLink));
+        map.put("JButton: ", new JButton(browseAction));
+        map.put("JButton+ButtonUI: ", new HyperlinkButton(browseAction));
+        map.put("JEditorPane+HyperlinkListener: ", editor);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 5, 5, 0);
+        map.forEach((k, v) -> {
+            c.gridx = 0;
+            c.anchor = GridBagConstraints.LINE_END;
+            add(new JLabel(k), c);
+            c.gridx = 1;
+            c.anchor = GridBagConstraints.LINE_START;
+            add(v, c);
+        });
+
         Border inside = BorderFactory.createEmptyBorder(2, 5 + 2, 2, 5 + 2);
         Border outside = BorderFactory.createTitledBorder("HyperlinkLabel");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 5, 0);
 
-        c.gridx = 0;
-        c.anchor = GridBagConstraints.LINE_END;
-        add(new JLabel("JLabel+MouseListener: "), c);
-        add(new JLabel("JButton: "), c);
-        add(new JLabel("JButton+ButtonUI: "), c);
-        add(new JLabel("JEditorPane+HyperlinkListener: "), c);
-
-        c.gridx = 1;
-        c.anchor = GridBagConstraints.LINE_START;
-        add(new UrlLabel(siteLink), c);
-        add(new JButton(browseAction), c);
-        add(new HyperlinkButton(browseAction), c);
-        add(editor, c);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
