@@ -12,12 +12,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(5, 5));
 
-        UIManager.put("TextArea.caretForeground", Color.ORANGE);
-        JTextArea area = new JTextArea("TextArea.caretForeground: ORANGE");
-        // area.setBackground(Color.GREEN);
-        // area.setFont(area.getFont().deriveFont(15.0f));
-        // area.setCaretColor(Color.RED);
-
         // UIManager.put("TextPane.caretForeground", Color.ORANGE);
         StyleSheet styleSheet = new StyleSheet();
         styleSheet.addRule("body {font-size: 12pt}");
@@ -69,6 +63,12 @@ public final class MainPanel extends JPanel {
             box.add(Box.createHorizontalStrut(2));
         }
         box.add(field);
+
+        UIManager.put("TextArea.caretForeground", Color.ORANGE);
+        JTextArea area = new JTextArea("TextArea.caretForeground: ORANGE");
+        // area.setBackground(Color.GREEN);
+        // area.setFont(area.getFont().deriveFont(15.0f));
+        // area.setCaretColor(Color.RED);
 
         JPanel p = new JPanel(new GridLayout(2, 1, 2, 2));
         p.add(new JScrollPane(area));

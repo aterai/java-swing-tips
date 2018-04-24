@@ -36,13 +36,13 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-        JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(new String[] {"Name 0", "Name 1", "Name 2"}));
-
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
         col.setMaxWidth(60);
         col.setResizable(false);
+
+        UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
+        JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(new String[] {"Name 0", "Name 1", "Name 2"}));
 
         col = table.getColumnModel().getColumn(1);
         col.setCellRenderer(new ComboCellRenderer());

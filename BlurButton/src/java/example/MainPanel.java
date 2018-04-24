@@ -38,27 +38,26 @@ public final class MainPanel extends JPanel {
                 }
             });
 
-        Box box = Box.createVerticalBox();
         JPanel p0 = new JPanel();
         p0.setBorder(BorderFactory.createTitledBorder("Default JButton"));
         p0.add(list.get(0));
         p0.add(list.get(1));
-        box.add(p0);
-        box.add(Box.createVerticalStrut(10));
 
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("Blurred JButton1"));
         p1.add(list.get(2));
         p1.add(list.get(3));
-        box.add(p1);
-        box.add(Box.createVerticalStrut(10));
 
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("Blurred JButton(ConvolveOp.EDGE_NO_OP)"));
         p2.add(list.get(4));
         p2.add(list.get(5));
-        box.add(p2);
-        box.add(Box.createVerticalStrut(10));
+
+        Box box = Box.createVerticalBox();
+        Arrays.asList(p0, p1, p2).forEach(p -> {
+            box.add(p);
+            box.add(Box.createVerticalStrut(10));
+        });
 
         JToggleButton button = new JToggleButton("setEnabled(false)");
         button.addActionListener(e -> {
@@ -93,9 +92,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://shop.oreilly.com/product/9780596009076.do
-//9. Blur Disabled Components
-//http://code.google.com/p/filthy-rich-clients/source/browse/trunk/swing-hacks-examples-20060109/Ch01-JComponents/09/swinghacks/ch01/JComponents/hack09/BlurJButton.java?r=11
+// http://shop.oreilly.com/product/9780596009076.do
+// 9. Blur Disabled Components
+// http://code.google.com/p/filthy-rich-clients/source/browse/trunk/swing-hacks-examples-20060109/Ch01-JComponents/09/swinghacks/ch01/JComponents/hack09/BlurJButton.java?r=11
 class BlurJButton extends JButton {
     private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
         .05f, .05f, .05f,
@@ -105,7 +104,7 @@ class BlurJButton extends JButton {
     private transient BufferedImage buf;
     protected BlurJButton(String label) {
         super(label);
-        //System.out.println(op.getEdgeCondition());
+        // System.out.println(op.getEdgeCondition());
     }
     @Override protected void paintComponent(Graphics g) {
         if (isEnabled()) {
@@ -136,7 +135,7 @@ class BlurButton extends JButton {
     private transient BufferedImage buf;
     protected BlurButton(String label) {
         super(label);
-        //System.out.println(op.getEdgeCondition());
+        // System.out.println(op.getEdgeCondition());
     }
     @Override protected void paintComponent(Graphics g) {
         if (isEnabled()) {

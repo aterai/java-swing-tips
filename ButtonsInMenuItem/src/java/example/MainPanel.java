@@ -18,14 +18,12 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public static JMenuBar makeManuBar() {
-        JMenuBar mb = new JMenuBar();
-        JMenu menu = new JMenu("File");
-
         Component edit = makeEditButtonBar(Arrays.asList(
             makeButton("Cut", new DefaultEditorKit.CutAction()),
             makeButton("Copy", new DefaultEditorKit.CopyAction()),
             makeButton("Paste", new DefaultEditorKit.PasteAction())));
 
+        JMenu menu = new JMenu("File");
         menu.add("aaaaaaaaaa");
         menu.addSeparator();
         menu.add(makeEditMenuItem(edit));
@@ -34,6 +32,7 @@ public final class MainPanel extends JPanel {
         menu.add("cccccc");
         menu.add("ddddd");
 
+        JMenuBar mb = new JMenuBar();
         mb.add(menu);
         return mb;
     }

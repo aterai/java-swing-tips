@@ -11,9 +11,6 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(2, 1));
-        SimpleDateFormat format = new SimpleDateFormat("mm:ss, SSS", Locale.getDefault());
-        DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.clear(Calendar.MINUTE);
@@ -21,6 +18,8 @@ public final class MainPanel extends JPanel {
         calendar.clear(Calendar.MILLISECOND);
         Date d = calendar.getTime();
 
+        SimpleDateFormat format = new SimpleDateFormat("mm:ss, SSS", Locale.getDefault());
+        DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
         JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND));
         ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().setFormatterFactory(factory);
 

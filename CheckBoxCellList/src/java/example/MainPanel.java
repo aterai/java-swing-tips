@@ -12,7 +12,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JPanel p = new JPanel(new GridLayout(1, 3));
         Box list1 = Box.createVerticalBox();
 
         DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
@@ -32,6 +31,11 @@ public final class MainPanel extends JPanel {
             }
         };
 
+        JPanel p = new JPanel(new GridLayout(1, 3));
+        p.add(makeTitledPanel("Box", new JScrollPane(list1)));
+        p.add(makeTitledPanel("JList", new JScrollPane(list2)));
+        p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
+
         for (String title: Arrays.asList(
                 "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
                 "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")) {
@@ -43,9 +47,6 @@ public final class MainPanel extends JPanel {
             root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
         }
         list3.setModel(new DefaultTreeModel(root));
-        p.add(makeTitledPanel("Box", new JScrollPane(list1)));
-        p.add(makeTitledPanel("JList", new JScrollPane(list2)));
-        p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
         add(new JLabel("JCheckBox in ", SwingConstants.CENTER), BorderLayout.NORTH);
         add(p);

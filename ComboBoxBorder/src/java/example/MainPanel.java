@@ -27,10 +27,15 @@ public final class MainPanel extends JPanel {
         UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
         JComboBox<String> combo00 = makeComboBox();
-        JComboBox<String> combo01 = makeComboBox();
-        JComboBox<String> combo02 = makeComboBox();
+        Object o00 = combo00.getAccessibleContext().getAccessibleChild(0);
+        ((JComponent) o00).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
 
+        JComboBox<String> combo01 = makeComboBox();
         combo01.setUI(new BasicComboBoxUI());
+        Object o01 = combo01.getAccessibleContext().getAccessibleChild(0);
+        ((JComponent) o01).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+
+        JComboBox<String> combo02 = makeComboBox();
         combo02.setUI(new BasicComboBoxUI() {
             @Override protected JButton createArrowButton() {
                 JButton b = new JButton(new ArrowIcon()); // .createArrowButton();
@@ -41,7 +46,6 @@ public final class MainPanel extends JPanel {
                 return b;
             }
         });
-
         combo02.addMouseListener(new MouseAdapter() {
             private ButtonModel getButtonModel(MouseEvent e) {
                 JComboBox<?> cb = (JComboBox<?>) e.getComponent();
@@ -61,13 +65,8 @@ public final class MainPanel extends JPanel {
                 getButtonModel(e).setPressed(false);
             }
         });
-
-        Object o = combo00.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
-        o = combo01.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
-        o = combo02.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+        Object o02 = combo02.getAccessibleContext().getAccessibleChild(0);
+        ((JComponent) o02).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
 
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("MetalComboBoxUI:", combo00));

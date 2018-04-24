@@ -16,16 +16,18 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-
         BoundedRangeModel model = new DefaultBoundedRangeModel();
-        JProgressBar progress01 = new JProgressBar(model);
-        JProgressBar progress02 = new JProgressBar(model);
-        JProgressBar progress03 = new JProgressBar(model);
-        JProgressBar progress04 = new JProgressBar(model);
 
+        JProgressBar progress01 = new JProgressBar(model);
         progress01.setStringPainted(true);
+
+        JProgressBar progress02 = new JProgressBar(model);
         progress02.setStringPainted(true);
 
+        JProgressBar progress03 = new JProgressBar(model);
+        progress03.setOpaque(false);
+
+        JProgressBar progress04 = new JProgressBar(model);
         progress04.setOpaque(true); // for NimbusLookAndFeel
 
         BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();

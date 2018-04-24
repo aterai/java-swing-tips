@@ -21,9 +21,7 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model);
     private MainPanel() {
         super(new BorderLayout());
-
         UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-        JComboBox<String> combo = makeComboBox();
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -31,8 +29,8 @@ public final class MainPanel extends JPanel {
         col.setResizable(false);
 
         col = table.getColumnModel().getColumn(1);
-        col.setCellEditor(new DefaultCellEditor(combo));
-        // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
+        col.setCellEditor(new DefaultCellEditor(makeComboBox()));
+        // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(makeComboBox()));
 
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));

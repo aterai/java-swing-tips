@@ -11,23 +11,22 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JSplitPane leftPane   = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        JSplitPane rightPane  = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-        //leftPane.setContinuousLayout(true);
-        //rightPane.setContinuousLayout(true);
-        //centerPane.setContinuousLayout(true);
-
+        JSplitPane leftPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         leftPane.setTopComponent(new JScrollPane(new JTextArea("aaaaaaa")));
         leftPane.setBottomComponent(new JScrollPane(new JTextArea("bbbb")));
+        leftPane.setContinuousLayout(true);
+        leftPane.setResizeWeight(.5);
+
+        JSplitPane rightPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         rightPane.setTopComponent(new JScrollPane(new JTree()));
         rightPane.setBottomComponent(new JScrollPane(new JTree()));
+        rightPane.setContinuousLayout(true);
+        rightPane.setResizeWeight(.5);
+
+        JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         centerPane.setLeftComponent(leftPane);
         centerPane.setRightComponent(rightPane);
-
-        leftPane.setResizeWeight(.5);
-        rightPane.setResizeWeight(.5);
+        centerPane.setContinuousLayout(true);
         centerPane.setResizeWeight(.5);
 
         PropertyChangeListener pcl = e -> {
@@ -43,7 +42,7 @@ public final class MainPanel extends JPanel {
         leftPane.addPropertyChangeListener(pcl);
         rightPane.addPropertyChangeListener(pcl);
 
-        JCheckBox check = new JCheckBox("setContinuousLayout");
+        JCheckBox check = new JCheckBox("setContinuousLayout", true);
         check.addActionListener(e -> {
             boolean flag = ((JCheckBox) e.getSource()).isSelected();
             leftPane.setContinuousLayout(flag);

@@ -15,15 +15,16 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel();
         JButton b1 = new JButton("button");
         JButton b2 = new JButton();
-        List<JButton> list = Arrays.asList(b1, b2);
 
-        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
+        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
         b2.setIcon(rss);
         b2.setRolloverIcon(makeRolloverIcon(rss));
 
         p.add(b1);
         p.add(b2);
         p.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+
+        List<JButton> list = Arrays.asList(b1, b2);
 
         JCheckBox focusPainted = new JCheckBox("setFocusPainted", true);
         focusPainted.addActionListener(e -> {
@@ -67,7 +68,7 @@ public final class MainPanel extends JPanel {
         BufferedImage img = new BufferedImage(
             srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
-        //g2.drawImage(srcIcon.getImage(), 0, 0, null);
+        // g2.drawImage(srcIcon.getImage(), 0, 0, null);
         srcIcon.paintIcon(null, g2, 0, 0);
         g2.dispose();
         return new ImageIcon(op.filter(img, null));
@@ -133,7 +134,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {

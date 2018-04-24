@@ -29,25 +29,23 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
 
-        JLabel label = new JLabel(href);
-
         JEditorPane editor = new JEditorPane("text/html", href);
         editor.setOpaque(false);
         editor.setEditable(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets  = new Insets(5, 5, 5, 0);
+        c.insets = new Insets(5, 5, 5, 0);
 
-        c.gridx   = 0;
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx = 0;
+        c.anchor = GridBagConstraints.LINE_END;
         p.add(new JLabel("JLabel:"), c);
         p.add(new JLabel("JEditorPane:"), c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.anchor  = GridBagConstraints.LINE_START;
-        p.add(label, c);
+        c.anchor = GridBagConstraints.LINE_START;
+        p.add(new JLabel(href), c);
         p.add(editor, c);
 
         return p;
@@ -182,7 +180,7 @@ public final class MainPanel extends JPanel {
 //         ButtonModel model = b.getModel();
 //         if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
 //             g.setColor(Color.BLUE);
-//             g.drawLine(viewRect.x,                  viewRect.y + viewRect.height,
+//             g.drawLine(viewRect.x, viewRect.y + viewRect.height,
 //                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
 //         }
 //         View v = (View) c.getClientProperty(BasicHTML.propertyKey);

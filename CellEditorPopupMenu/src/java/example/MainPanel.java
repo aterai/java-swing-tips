@@ -61,19 +61,23 @@ public final class MainPanel extends JPanel {
 class TextComponentPopupMenu extends JPopupMenu {
     protected TextComponentPopupMenu(JTextComponent tc) {
         super();
+        Action cutAction = new DefaultEditorKit.CutAction();
+        add(cutAction);
+        Action copyAction = new DefaultEditorKit.CopyAction();
+        add(copyAction);
+        Action pasteAction = new DefaultEditorKit.PasteAction();
+        add(pasteAction);
+        Action deleteAction = new DeleteAction();
+        add(deleteAction);
+        addSeparator();
 
         UndoManager manager = new UndoManager();
         Action undoAction = new UndoAction(manager);
+        add(undoAction);
+
         Action redoAction = new RedoAction(manager);
-        Action cutAction = new DefaultEditorKit.CutAction();
-        Action copyAction = new DefaultEditorKit.CopyAction();
-        Action pasteAction = new DefaultEditorKit.PasteAction();
-        Action deleteAction = new DeleteAction();
-//         Action deleteAction = new AbstractAction("delete") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 ((JTextComponent) getInvoker()).replaceSelection(null);
-//             }
-//         };
+        add(redoAction);
+
         tc.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 manager.discardAllEdits();
@@ -88,14 +92,6 @@ class TextComponentPopupMenu extends JPopupMenu {
         InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
-
-        add(cutAction);
-        add(copyAction);
-        add(pasteAction);
-        add(deleteAction);
-        addSeparator();
-        add(undoAction);
-        add(redoAction);
 
         addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }

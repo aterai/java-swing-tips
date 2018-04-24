@@ -13,8 +13,6 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-
         String[] columnNames = {"No.", "Name", "URL"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override public Class<?> getColumnClass(int column) {
@@ -50,6 +48,7 @@ public final class MainPanel extends JPanel {
         table.addMouseListener(renderer);
         table.addMouseMotionListener(renderer);
 
+        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(new JScrollPane(table1));
         sp.setBottomComponent(new JScrollPane(table));
         sp.setResizeWeight(.5);
@@ -128,16 +127,12 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     private boolean isRollover;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-        int mw = table.getColumnModel().getColumnMargin();
-        int rh = table.getRowMargin();
-        int w = table.getColumnModel().getColumn(column).getWidth();
-        int h = table.getRowHeight(row);
 
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
-        lrect.width = w - mw - i.right - lrect.x;
-        lrect.height = h - rh - i.bottom - lrect.y;
+        lrect.width = table.getColumnModel().getColumn(column).getWidth() - table.getColumnModel().getColumnMargin() - i.right - lrect.x;
+        lrect.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - lrect.y;
         irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
         trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
 

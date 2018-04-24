@@ -11,14 +11,15 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(2, 1));
 
-        JSpinner spinner01 = new JSpinner();
-        JSpinner spinner02 = new JSpinner();
-        JSpinner spinner03 = new JSpinner();
-        JSpinner spinner04 = new JSpinner();
         List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
 
+        JSpinner spinner01 = new JSpinner();
         spinner01.setModel(new SpinnerNumberModel(20, 0, 59, 1));
+
+        JSpinner spinner02 = new JSpinner();
         spinner02.setModel(new SpinnerListModel(weeks));
+
+        JSpinner spinner03 = new JSpinner();
         spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
             @Override public Object getNextValue() {
                 Object n = super.getNextValue();
@@ -29,6 +30,8 @@ public final class MainPanel extends JPanel {
                 return Objects.nonNull(n) ? n : getMaximum();
             }
         });
+
+        JSpinner spinner04 = new JSpinner();
         spinner04.setModel(new SpinnerListModel(weeks) {
             @Override public Object getNextValue() {
                 Object o = super.getNextValue();

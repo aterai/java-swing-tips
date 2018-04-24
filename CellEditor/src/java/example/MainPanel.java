@@ -12,11 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
         JCheckBox modelCheck = new JCheckBox("isCellEditable return false");
-        JCheckBox objectCheck = new JCheckBox("setDefaultEditor(Object.class, null)");
-        JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
-
         RowDataModel model = new RowDataModel() {
             @Override public boolean isCellEditable(int row, int col) {
                 return !modelCheck.isSelected();
@@ -37,6 +33,9 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(50);
         col.setResizable(false);
 
+        DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
+        JCheckBox objectCheck = new JCheckBox("setDefaultEditor(Object.class, null)");
+        JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
         ActionListener al = e -> {
             table.clearSelection();
             if (table.isEditing()) {

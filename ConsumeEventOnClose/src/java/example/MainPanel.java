@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JPopupMenu popup  = new JPopupMenu();
+        JPopupMenu popup = new JPopupMenu();
         popup.add("000");
         popup.add("11111");
         popup.add("2222222");
@@ -29,10 +29,9 @@ public final class MainPanel extends JPanel {
             System.out.println("Beep button clicked");
         });
 
-        JComboBox<String> combo1 = new JComboBox<>(new String[] {"00000", "111", "2"});
-        JComboBox<String> combo2 = new JComboBox<>(new String[] {"00000", "111", "2"});
-        combo2.setEditable(true);
-        JTextField textField = new JTextField(16);
+        String[] model = {"00000", "111", "2"};
+        JComboBox<String> combo = new JComboBox<>(model);
+        combo.setEditable(true);
 
         String key = "PopupMenu.consumeEventOnClose";
         JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
@@ -54,9 +53,9 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         p.add(beep);
-        p.add(combo1);
-        p.add(combo2);
-        p.add(textField);
+        p.add(new JComboBox<>(model));
+        p.add(combo);
+        p.add(new JTextField(16));
 
         add(toolbar, BorderLayout.NORTH);
         add(p);

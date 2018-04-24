@@ -11,18 +11,18 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
+    private final List<String> model1 = Arrays.asList("Disabled", "Enabled", "Debug mode");
+    private final List<String> model2 = Arrays.asList("Disabled", "Enabled");
     private MainPanel() {
         super(new BorderLayout());
 
-        List<String> m1 = Arrays.asList("Disabled", "Enabled", "Debug mode");
-        List<String> m2 = Arrays.asList("Disabled", "Enabled");
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new PluginNode("Plugins"));
-        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 1", m1)));
-        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 2", m1)));
+        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 1", model1)));
+        root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 2", model1)));
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new PluginNode("Plugin 3"));
         root.add(leaf);
-        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3A", m2)));
-        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3B", m2)));
+        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3A", model2)));
+        leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3B", model2)));
 
         JTree tree = new JTree(root);
         tree.setRowHeight(0);

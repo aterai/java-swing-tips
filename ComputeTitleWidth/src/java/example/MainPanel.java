@@ -44,9 +44,6 @@ public final class MainPanel extends JPanel {
                 String title = f.getTitle();
                 Font font = getFont();
                 if (Objects.nonNull(font)) {
-                    FontMetrics fm = getFontMetrics(font);
-                    int titleW = SwingUtilities.computeStringWidth(fm, title);
-
                     testWidth();
 
                     // @see javax/swing/plaf/basic/BasicInternalFrameTitlePane.java Handler#minimumLayoutSize(Container)
@@ -63,6 +60,8 @@ public final class MainPanel extends JPanel {
                     }
                     // buttonsW = Math.max(buttonsW, buttonsW2);
 
+                    FontMetrics fm = getFontMetrics(font);
+                    int titleW = SwingUtilities.computeStringWidth(fm, title);
                     Insets i = getInsets();
                     d.width = buttonsW + i.left + i.right + titleW + 2 + 2 + 2; // 2: Magic number of gap between icons
                     d.height = Math.min(27, d.height); // 27: Magic number for NimbusLookAndFeel

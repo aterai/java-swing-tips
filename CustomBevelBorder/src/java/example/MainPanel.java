@@ -80,18 +80,17 @@ class CustomBevelBorder extends BevelBorder {
         }
         if (bevelType == RAISED && !isPressed) {
             paintRaisedBevel(c, g, x, y, width, height);
-        } else { //if (bevelType == LOWERED) {
+        } else { // if (bevelType == LOWERED) {
             paintLoweredBevel(c, g, x, y, width, height);
         }
     }
-    @Override protected void paintRaisedBevel(Component c, Graphics g, int x, int y, int width, int height)  {
-        int w = width  - 1;
-        int h = height - 1;
-
+    @Override protected void paintRaisedBevel(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
 
+        int w = width - 1;
+        int h = height - 1;
         g2.setPaint(getHighlightInnerColor(c));
         fillTopLeft(g2, w, h, ins);
 
@@ -103,14 +102,13 @@ class CustomBevelBorder extends BevelBorder {
 
         g2.dispose();
     }
-    @Override protected void paintLoweredBevel(Component c, Graphics g, int x, int y, int width, int height)  {
-        int w = width  - 1;
-        int h = height - 1;
-
+    @Override protected void paintLoweredBevel(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
 
+        int w = width - 1;
+        int h = height - 1;
         g2.setPaint(getShadowInnerColor(c));
         fillTopLeft(g2, w, h, ins);
 
