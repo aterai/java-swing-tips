@@ -10,9 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
-
-        JLabel label1 = makeLabel("Default: ToolTipText", Color.ORANGE);
-        JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
+        JLabel label = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
 
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
@@ -21,15 +19,15 @@ public final class MainPanel extends JPanel {
                     Field field;
                     if (System.getProperty("java.version").startsWith("1.6.0")) {
                         // https://community.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
-                        //Class<?> clazz = Class.forName("javax.swing.PopupFactory"); //errorprone: LiteralClassName
-                        //field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+                        // Class<?> clazz = Class.forName("javax.swing.PopupFactory"); // errorprone: LiteralClassName
+                        // field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
                         field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
-                    } else { //JDK 1.7.0, 1.8.0
+                    } else { // JDK 1.7.0, 1.8.0
                         Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
                         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                     }
                     field.setAccessible(true);
-                    label2.putClientProperty(field.get(null), Boolean.TRUE);
+                    label.putClientProperty(field.get(null), Boolean.TRUE);
                 } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
                     ex.printStackTrace();
                 }
@@ -46,8 +44,8 @@ public final class MainPanel extends JPanel {
             }
         };
         glass.setOpaque(false);
-        glass.add(label1, BorderLayout.WEST);
-        glass.add(label2, BorderLayout.EAST);
+        glass.add(makeLabel("Default: ToolTipText", Color.ORANGE), BorderLayout.WEST);
+        glass.add(label, BorderLayout.EAST);
         glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
         EventQueue.invokeLater(() -> {
             getRootPane().setGlassPane(glass);

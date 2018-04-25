@@ -157,15 +157,9 @@ final class ComboBoxUtil {
     }
     public static void initIconComboBorder2(JComboBox<?> comboBox, ImageIcon icon) {
         EventQueue.invokeLater(() -> {
-            JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
-            Insets is = c.getInsets();
-
-            int ih = icon.getIconHeight();
-            int ch = comboBox.getPreferredSize().height;
-            // int ch = c.getPreferredSize().height; // Nimbus???
-            int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); // ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
-
             Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
+
+            JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
             c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
 
             JLabel label = new JLabel(icon);
@@ -173,7 +167,11 @@ final class ComboBoxUtil {
             label.setBorder(BorderFactory.createEmptyBorder());
             c.add(label);
 
-            label.setBounds(is.left, yy, icon.getIconWidth(), icon.getIconHeight());
+            int ih = icon.getIconHeight();
+            int ch = comboBox.getPreferredSize().height;
+            // int ch = c.getPreferredSize().height; // Nimbus???
+            int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); // ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
+            label.setBounds(c.getInsets().left, yy, icon.getIconWidth(), icon.getIconHeight());
         });
     }
     public static void initComboBoxRenderer(JComboBox<String> combo, ImageIcon icon) {

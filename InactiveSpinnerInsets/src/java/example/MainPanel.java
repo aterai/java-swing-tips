@@ -11,10 +11,12 @@ import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(5, 5));
-        //UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
+        // UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
         JSpinner spinner0 = new JSpinner();
+        spinner0.setEnabled(false);
 
         JSpinner spinner1 = new JSpinner();
+        spinner1.setEnabled(false);
         JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) spinner1.getEditor();
         editor1.setOpaque(false);
         JTextField field1 = editor1.getTextField();
@@ -27,6 +29,7 @@ public final class MainPanel extends JPanel {
 //                 UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
 
         JSpinner spinner2 = new JSpinner();
+        spinner2.setEnabled(false);
         spinner2.setBorder(BorderFactory.createEmptyBorder());
         JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor) spinner2.getEditor();
         editor2.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(127, 157, 185)));
@@ -34,9 +37,7 @@ public final class MainPanel extends JPanel {
         field2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
         JSpinner spinner3 = new SimpleBorderSpinner();
-
-        List<JSpinner> list = Arrays.asList(spinner0, spinner1, spinner2, spinner3);
-        list.forEach(s -> s.setEnabled(false));
+        spinner3.setEnabled(false);
 
         Box box = Box.createVerticalBox();
         addTestSpinner(box, spinner0, "Default");
@@ -44,6 +45,7 @@ public final class MainPanel extends JPanel {
         addTestSpinner(box, spinner2, "setBorder(...)");
         addTestSpinner(box, spinner3, "paintComponent, paintChildren");
 
+        List<Component> list = Arrays.asList(spinner0, spinner1, spinner2, spinner3);
         JCheckBox check = new JCheckBox("setEnabled");
         check.addActionListener(e -> {
             boolean flg = ((JCheckBox) e.getSource()).isSelected();
@@ -98,12 +100,13 @@ class SimpleBorderSpinner extends JSpinner {
     @Override protected void paintChildren(Graphics g) {
         super.paintChildren(g);
         if (!isEnabled() && getUI() instanceof WindowsSpinnerUI) {
-            Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = getComponent(0).getBounds();
             r.add(getComponent(1).getBounds());
             r.width--;
             r.height--;
-            //r.grow(-1, -1);
+            // r.grow(-1, -1);
+
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
             g2.draw(r);
             g2.dispose();

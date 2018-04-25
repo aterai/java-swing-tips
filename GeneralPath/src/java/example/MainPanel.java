@@ -10,11 +10,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(2, 3));
-        add(makeTitledPanel("GeneralPath",   new StarPanel1()));
-        add(makeTitledPanel("Polygon",       new StarPanel2()));
+        add(makeTitledPanel("GeneralPath", new StarPanel1()));
+        add(makeTitledPanel("Polygon", new StarPanel2()));
         add(makeTitledPanel("Font(Outline)", new StarPanel3()));
-        add(makeTitledPanel("Icon",          new JLabel(new StarIcon0())));
-        add(makeTitledPanel("Icon(R=40)",    new JLabel(new StarIcon1())));
+        add(makeTitledPanel("Icon", new JLabel(new StarIcon0())));
+        add(makeTitledPanel("Icon(R=40)", new JLabel(new StarIcon1())));
         add(makeTitledPanel("Icon(R=20,40)", new JLabel(new StarIcon2())));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -49,7 +49,6 @@ public final class MainPanel extends JPanel {
 
 class StarPanel1 extends JPanel {
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
         // <blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
@@ -61,6 +60,8 @@ class StarPanel1 extends JPanel {
         p.lineTo(+w / 6f,  h / 4f);
         p.closePath();
         // </blockquote>
+
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(w / 2, h / 2);
         g2.setPaint(Color.YELLOW);
         g2.fill(p);
@@ -72,7 +73,6 @@ class StarPanel1 extends JPanel {
 
 class StarPanel2 extends JPanel {
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
         Polygon p = new Polygon();
@@ -81,6 +81,8 @@ class StarPanel2 extends JPanel {
         p.addPoint(Math.round(-w / 6f), Math.round(+h / 4f));
         p.addPoint(0,                   Math.round(-h / 4f));
         p.addPoint(Math.round(+w / 6f), Math.round(+h / 4f));
+
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(w / 2, h / 2);
         g2.setPaint(Color.YELLOW);
         g2.fill(p);

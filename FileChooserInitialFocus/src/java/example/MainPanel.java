@@ -15,8 +15,6 @@ public final class MainPanel extends JPanel {
         JFileChooser fileChooser = new JFileChooser();
         JTextField field = new JTextField("C:/temp/test.txt");
         JTextArea log = new JTextArea();
-        JRadioButton r1 = new JRadioButton("default", false);
-        JRadioButton r2 = new JRadioButton("set initial focus on JTextField", true);
 
 //         // TEST: PropertyChangeListener
 //         fileChooser.addPropertyChangeListener(e -> {
@@ -61,10 +59,18 @@ public final class MainPanel extends JPanel {
 //             }
 //         };
 
+        JRadioButton radio = new JRadioButton("set initial focus on JTextField", true);
+        ButtonGroup bg = new ButtonGroup();
+        JPanel p2 = new JPanel();
+        for (AbstractButton b: Arrays.asList(new JRadioButton("default"), radio)) {
+            bg.add(b);
+            p2.add(b);
+        }
+
         JButton button = new JButton("JFileChooser");
         button.addActionListener(e -> {
             fileChooser.setSelectedFile(new File(field.getText().trim()));
-            if (r2.isSelected()) {
+            if (radio.isSelected()) {
                 EventQueue.invokeLater(() -> {
 //                     findFileNameTextField(fileChooser).ifPresent(c -> {
 //                         ((JTextField) c).selectAll();
@@ -89,13 +95,6 @@ public final class MainPanel extends JPanel {
         p1.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p1.add(field);
         p1.add(button, BorderLayout.EAST);
-
-        ButtonGroup bg = new ButtonGroup();
-        JPanel p2 = new JPanel();
-        for (AbstractButton b: Arrays.asList(r1, r2)) {
-            bg.add(b);
-            p2.add(b);
-        }
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(p1, BorderLayout.NORTH);

@@ -32,25 +32,23 @@ public class MainPanel extends JPanel {
             toolbar.add(b);
         }
 
-        JLabel label = new JLabel("Test:");
-        JComboBox<String> combo = new JComboBox<>(new String[] {"Test"});
         JButton button = new JButton("Dialog");
         button.addActionListener(e -> {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
         });
 
-        GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
 
+        GridBagConstraints c = new GridBagConstraints();
         c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 0);
-        c.anchor = GridBagConstraints.LINE_START;
-        panel.add(label, c);
+        // c.anchor = GridBagConstraints.LINE_START;
+        panel.add(new JLabel("Test:"), c);
 
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(combo, c);
+        panel.add(new JComboBox<>(new String[] {"Test"}), c);
 
         c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 5);

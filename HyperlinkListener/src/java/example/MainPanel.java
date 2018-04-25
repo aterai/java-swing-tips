@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         try {
             doc.insertString(doc.getLength(), "\n----\nJButton:\n", null);
             doc.insertString(doc.getLength(), LINK + "\n", doc.getStyle("button"));
-            //doc.insertString(doc.getLength(), "\n", null);
+            // doc.insertString(doc.getLength(), "\n", null);
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
@@ -172,7 +172,6 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
-        FontMetrics fm = c.getFontMetrics(f);
 
         Insets i = c.getInsets();
         b.getSize(size);
@@ -180,15 +179,15 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
+            c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            0); //b.getText() == null ? 0 : b.getIconTextGap());
+            0); // b.getText() == null ? 0 : b.getIconTextGap());
 
         if (c.isOpaque()) {
             g.setColor(b.getBackground());
@@ -198,7 +197,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
-            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+            g.drawLine(viewRect.x,                  viewRect.y + viewRect.height,
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);

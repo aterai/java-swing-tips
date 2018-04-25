@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
     protected final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
 
     protected final Action minAction = new AbstractAction("Min:Action") {
-        @Override public void actionPerformed(final ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             splitPane.requestFocusInWindow();
             EventQueue.invokeLater(() -> {
                 Action selectMinAction = splitPane.getActionMap().get("selectMin");
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
         }
     };
     protected final Action maxAction = new AbstractAction("Max:Action") {
-        @Override public void actionPerformed(final ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             splitPane.requestFocusInWindow();
             EventQueue.invokeLater(() -> {
                 Action selectMaxAction = splitPane.getActionMap().get("selectMax");
@@ -52,7 +52,6 @@ public class MainPanel extends JPanel {
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
 
-        Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
         JPanel north = new JPanel(new GridLayout(0, 2, 5, 5));
         north.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -71,7 +70,7 @@ public class MainPanel extends JPanel {
                     int v = Objects.nonNull(i) ? i.right : 0;
                     splitPane.setDividerLocation(splitPane.getWidth() - v);
                 }
-//                 int lastLoc    = splitPane.getLastDividerLocation();
+//                 int lastLoc = splitPane.getLastDividerLocation();
 //                 int currentLoc = splitPane.getDividerLocation();
 //                 int newLoc;
 //                 BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
@@ -80,10 +79,10 @@ public class MainPanel extends JPanel {
 //                 if (currentLoc == insets.top) {
 //                     int maxLoc = splitPane.getMaximumDividerLocation();
 //                     newLoc = Math.min(lastLoc, maxLoc);
-//                     //splitPaneUI.setKeepHidden(false);
+//                     // splitPaneUI.setKeepHidden(false);
 //                 } else {
 //                     newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
-//                     //splitPaneUI.setKeepHidden(true);
+//                     // splitPaneUI.setKeepHidden(true);
 //                 }
 //                 if (currentLoc != newLoc) {
 //                     splitPane.setDividerLocation(newLoc);
@@ -97,6 +96,7 @@ public class MainPanel extends JPanel {
 
         JButton smin = new JButton("Min:keepHidden");
         JButton smax = new JButton("Max:keepHidden");
+        Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
         initDividerButtonModel(divider, smin, smax);
         north.add(smin);
         north.add(smax);

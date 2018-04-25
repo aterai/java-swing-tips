@@ -11,13 +11,11 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
-
         UIManager.put("Button.disabledText", Color.RED);
         JButton button1 = makeButton("Default");
         JButton button2 = makeButton("setForeground");
-        JButton button3 = makeButton("JLayer");
-
         DisableInputLayerUI<AbstractButton> layerUI = new DisableInputLayerUI<>();
+
         JCheckBox check = new JCheckBox("setEnabled", true);
         check.addActionListener(e -> {
             boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
@@ -31,7 +29,7 @@ public final class MainPanel extends JPanel {
         p1.setBorder(BorderFactory.createTitledBorder("setEnabled"));
         p1.add(button1);
         p1.add(button2);
-        p1.add(new JLayer<>(button3, layerUI));
+        p1.add(new JLayer<>(makeButton("JLayer"), layerUI));
 
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("Focus dummy"));

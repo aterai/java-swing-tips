@@ -127,11 +127,11 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         int cellHeight = getRowHeight();
         int lineWidth = getWidth();
         int lineHeight = 2;
-        int modelSize = getRowCount();
         rect.setSize(lineWidth, cellHeight);
         targetLine.setSize(lineWidth, lineHeight);
         targetIndex = -1;
-        for (int i = 0; i < modelSize; i++) {
+        int rowCount = getRowCount();
+        for (int i = 0; i < rowCount; i++) {
             rect.setLocation(0, cellHeight * i - cellHeight / 2);
             if (rect.contains(p)) {
                 targetIndex = i;
@@ -140,7 +140,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             }
         }
         if (targetIndex < 0) {
-            targetIndex = modelSize;
+            targetIndex = rowCount;
             targetLine.setLocation(0, targetIndex * cellHeight - lineHeight);
         }
     }

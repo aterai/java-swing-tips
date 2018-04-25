@@ -62,11 +62,7 @@ class DropcapLabel extends JLabel {
         Font font = getFont();
         String txt = getText();
 
-        AttributedString as = new AttributedString(txt.substring(1));
-        as.addAttribute(TextAttribute.FONT, font);
-        AttributedCharacterIterator aci = as.getIterator();
         FontRenderContext frc = g2.getFontRenderContext();
-
         Shape shape = new TextLayout(txt.substring(0, 1), font, frc).getOutline(null);
 
         AffineTransform at1 = AffineTransform.getScaleInstance(5d, 5d);
@@ -85,6 +81,10 @@ class DropcapLabel extends JLabel {
         float y = y0;
         int w0 = getWidth() - i.left - i.right;
         int w = w0 - rw;
+
+        AttributedString as = new AttributedString(txt.substring(1));
+        as.addAttribute(TextAttribute.FONT, font);
+        AttributedCharacterIterator aci = as.getIterator();
         LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
         while (lbm.getPosition() < aci.getEndIndex()) {
             TextLayout tl = lbm.nextLayout(w);

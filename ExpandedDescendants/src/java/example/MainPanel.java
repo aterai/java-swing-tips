@@ -97,29 +97,30 @@ public final class MainPanel extends JPanel {
     }
 
     protected static DefaultMutableTreeNode makeTreeRoot() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
+        set4.add(new DefaultMutableTreeNode("22222222222"));
+        set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
+        set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+        set4.add(new DefaultMutableTreeNode("zzzzzzz"));
 
+        DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
         set1.add(new DefaultMutableTreeNode("3333333333333333"));
         set1.add(new DefaultMutableTreeNode("111111111"));
         set1.add(new DefaultMutableTreeNode("22222222222"));
         set1.add(set4);
         set1.add(new DefaultMutableTreeNode("222222"));
         set1.add(new DefaultMutableTreeNode("222222222"));
+
+        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
         set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
         set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+
+        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set3.add(new DefaultMutableTreeNode("zzzzzzz"));
         set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
         set3.add(new DefaultMutableTreeNode("ccccccccc"));
 
-        set4.add(new DefaultMutableTreeNode("22222222222"));
-        set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-        set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
-        set4.add(new DefaultMutableTreeNode("zzzzzzz"));
-
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxx"));
         root.add(set3);
         root.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));

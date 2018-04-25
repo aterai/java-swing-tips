@@ -9,9 +9,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
-        int w = image.getIconWidth();
-        int h = image.getIconHeight();
-
         JLabel label1 = new JLabel(image);
         JTextField field1 = new JTextField("bbbbbbbbbb") {
             @Override public void updateUI() {
@@ -19,11 +16,13 @@ public final class MainPanel extends JPanel {
                 add(label1);
             }
         };
+
+        int w = image.getIconWidth();
         Insets m = field1.getMargin();
         field1.setMargin(new Insets(m.top, m.left + w, m.bottom, m.right));
         label1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         label1.setBorder(BorderFactory.createEmptyBorder());
-        label1.setBounds(m.left, m.top, w, h);
+        label1.setBounds(m.left, m.top, w, image.getIconHeight());
 
         JLabel label2 = new JLabel(image);
         label2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -34,10 +33,10 @@ public final class MainPanel extends JPanel {
                 removeAll();
                 SpringLayout l = new SpringLayout();
                 setLayout(l);
-                Spring fw = l.getConstraint(SpringLayout.WIDTH,  this);
+                Spring fw = l.getConstraint(SpringLayout.WIDTH, this);
                 Spring fh = l.getConstraint(SpringLayout.HEIGHT, this);
                 SpringLayout.Constraints c = l.getConstraints(label2);
-                c.setConstraint(SpringLayout.WEST,  fw);
+                c.setConstraint(SpringLayout.WEST, fw);
                 c.setConstraint(SpringLayout.SOUTH, fh);
                 add(label2);
             }

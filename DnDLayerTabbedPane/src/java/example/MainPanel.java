@@ -90,8 +90,6 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         TabTransferHandler handler = new TabTransferHandler();
-        LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
-
         JCheckBoxMenuItem check = new JCheckBoxMenuItem("Ghost image: Heavyweight");
         check.addActionListener(e -> {
             JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
@@ -104,7 +102,7 @@ public final class MainPanel extends JPanel {
 
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(handler, layerUI));
+        frame.getContentPane().add(new MainPanel(handler, new DropLocationLayerUI()));
         frame.setJMenuBar(menubar);
         frame.pack();
         frame.setLocationRelativeTo(null);

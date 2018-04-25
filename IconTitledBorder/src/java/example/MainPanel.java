@@ -16,7 +16,8 @@ public final class MainPanel extends JPanel {
         ImageIcon image = new ImageIcon(url);
         String title1 = String.format("<html><img src='%s' />test", path);
         String title2 = String.format("<html><table cellpadding='0'><tr><td><img src='%s'></td><td>test</td></tr></table></html>", path);
-        JLabel label = new JLabel("test", image, SwingConstants.LEFT);
+        JLabel label = new JLabel("test");
+        label.setIcon(image);
 
         add(makeComponent(title1, BorderFactory.createTitledBorder(title1)));
         add(makeComponent(title2, BorderFactory.createTitledBorder(title2)));

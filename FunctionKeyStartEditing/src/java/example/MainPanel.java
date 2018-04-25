@@ -11,9 +11,9 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
         JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-", true);
         JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
+        textarea.setEditable(false);
 
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
@@ -79,11 +79,9 @@ public final class MainPanel extends JPanel {
 //             if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
 //                 im.put(KeyStroke.getKeyStroke(ks, 0), "none");
 //             }
-//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK),  "none");
+//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK), "none");
 //             im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");
 //         }
-
-        textarea.setEditable(false);
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(check, BorderLayout.NORTH);

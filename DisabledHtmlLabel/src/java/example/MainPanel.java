@@ -12,9 +12,14 @@ public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html>Html <font color='red'>label</font><br/> Test";
     private MainPanel() {
         super(new BorderLayout());
+        JPanel p = new JPanel(new GridLayout(2, 3));
 
         JLabel label0 = new JLabel("Default JLabel");
+        p.add(initTitledBorder("JLabel", label0));
+
         JLabel label1 = new JLabel(HTML_TEXT);
+        p.add(initTitledBorder("JLabel+Html", label1));
+
         JLabel label2 = new JLabel(HTML_TEXT) {
             // JLabel with html tag can not be disabled or setForegroud?!
             // https://community.oracle.com/thread/1377943
@@ -23,24 +28,21 @@ public final class MainPanel extends JPanel {
                 setForeground(b ? UIManager.getColor("Label.foreground") : UIManager.getColor("Label.disabledForeground"));
             }
         };
+        p.add(initTitledBorder("JLabel+Html+", label2));
+
         JLabel label3 = new DisabledHtmlLabel(HTML_TEXT);
+        p.add(initTitledBorder("JLabel+Html++", label3));
 
         JEditorPane editor1 = new JEditorPane("text/html", HTML_TEXT);
         editor1.setOpaque(false);
         editor1.setEditable(false);
+        p.add(initTitledBorder("JEditorPane", editor1));
 
         JEditorPane editor2 = new JEditorPane("text/html", HTML_TEXT);
         editor2.setOpaque(false);
         editor2.setEditable(false);
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setFont(UIManager.getFont("Label.font"));
-
-        JPanel p = new JPanel(new GridLayout(2, 3));
-        p.add(initTitledBorder("JLabel", label0));
-        p.add(initTitledBorder("JLabel+Html", label1));
-        p.add(initTitledBorder("JLabel+Html+", label2));
-        p.add(initTitledBorder("JLabel+Html++", label3));
-        p.add(initTitledBorder("JEditorPane", editor1));
         p.add(initTitledBorder("JEditorPane+", editor2));
 
         JCheckBox check = new JCheckBox("setEnabled", true);

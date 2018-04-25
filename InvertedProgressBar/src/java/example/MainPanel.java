@@ -7,17 +7,18 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-public class MainPanel extends JPanel implements HierarchyListener {
-    protected transient SwingWorker<String, Void> worker;
-
-    public MainPanel() {
+public final class MainPanel extends JPanel implements HierarchyListener {
+    private transient SwingWorker<String, Void> worker;
+    private MainPanel() {
         super(new BorderLayout());
 
         BoundedRangeModel m = new DefaultBoundedRangeModel();
         JProgressBar progress0 = new JProgressBar(m);
+        progress0.setStringPainted(false);
 
         JProgressBar progress1 = new JProgressBar(m);
         progress1.setStringPainted(true);
@@ -29,11 +30,10 @@ public class MainPanel extends JPanel implements HierarchyListener {
         progress3.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         progress3.setStringPainted(true);
 
+        List<Component> list1 = Arrays.asList(progress0, progress1, progress2, progress3);
         JPanel p1 = new JPanel(new GridLayout(2, 2, 10, 10));
         p1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        for (Component c: Arrays.asList(progress0, progress1, progress2, progress3)) {
-            p1.add(c);
-        }
+        list1.forEach(p1::add);
 
         JProgressBar progress4 = new JProgressBar(m);
         progress4.setOrientation(SwingConstants.VERTICAL);
@@ -63,13 +63,14 @@ public class MainPanel extends JPanel implements HierarchyListener {
         progress8.setOrientation(SwingConstants.VERTICAL);
         JLayer<JProgressBar> layer = new JLayer<>(progress8, new VerticalFlipLayerUI<>());
 
+        List<Component> list2 = Arrays.asList(progress4, progress5, progress6, progress7, layer);
         Box p2 = Box.createHorizontalBox();
         p2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         p2.add(Box.createHorizontalGlue());
-        for (Component c: Arrays.asList(progress4, progress5, progress6, progress7, layer)) {
+        list2.forEach(c -> {
             p2.add(c);
             p2.add(Box.createHorizontalStrut(25));
-        }
+        });
 
         JButton button = new JButton("Test");
         button.addActionListener(e -> {

@@ -134,13 +134,11 @@ class IndeterminateIcon implements Icon {
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = getIconWidth();
-        int h = getIconHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         icon.paintIcon(c, g2, 0, 0);
         g2.setPaint(FOREGROUND);
-        g2.fillRect(SIDE_MARGIN, (h - HEIGHT) / 2, w - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
+        g2.fillRect(SIDE_MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
         g2.dispose();
     }
     @Override public int getIconWidth() {
@@ -299,9 +297,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        JTree tree = (JTree) e.getSource();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-
         if (!node.isLeaf()) {
             return;
         }
@@ -313,9 +309,9 @@ class FolderSelectionListener implements TreeSelectionListener {
         if (!parent.isDirectory()) {
             return;
         }
-        Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
 
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+        DefaultTreeModel model = (DefaultTreeModel) ((JTree) e.getSource()).getModel();
         BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 // if (isCancelled()) {
