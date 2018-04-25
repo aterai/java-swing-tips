@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HoverCloseButtonTabbedPane extends JTabbedPane {
-    //private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
+    // private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
     private transient MouseMotionListener hoverHandler;
     protected HoverCloseButtonTabbedPane() {
         super(TOP, SCROLL_TAB_LAYOUT);
@@ -56,7 +56,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
     @Override public void updateUI() {
         removeMouseMotionListener(hoverHandler);
         super.updateUI();
-        //setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        // setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         hoverHandler = new MouseAdapter() {
             private int prev = -1;
             @Override public void mouseMoved(MouseEvent e) {
@@ -74,7 +74,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
         };
         addMouseMotionListener(hoverHandler);
     }
-    @Override public void addTab(String title, final Component content) {
+    @Override public void addTab(String title, Component content) {
         super.addTab(title, content);
         setTabComponentAt(getTabCount() - 1, new TabPanel(this, title, content));
     }

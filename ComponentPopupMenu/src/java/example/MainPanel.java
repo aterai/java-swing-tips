@@ -16,18 +16,18 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     //Another way:
+//     // Another way:
 //     private static JPopupMenu makePopupMenu() {
 //         JPopupMenu popup = new JPopupMenu();
-//         final Action cutAction = new DefaultEditorKit.CutAction();
-//         final Action copyAction = new DefaultEditorKit.CopyAction();
-//         final Action pasteAction = new DefaultEditorKit.PasteAction();
-//         final Action deleteAction = new AbstractAction("delete") {
+//         Action cutAction = new DefaultEditorKit.CutAction();
+//         Action copyAction = new DefaultEditorKit.CopyAction();
+//         Action pasteAction = new DefaultEditorKit.PasteAction();
+//         Action deleteAction = new AbstractAction("delete") {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 ((JTextComponent) getInvoker()).replaceSelection(null);
 //             }
 //         };
-//         final Action selectAllAction = new AbstractAction("select all") {
+//         Action selectAllAction = new AbstractAction("select all") {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 JPopupMenu p = (JPopupMenu) e.getSource();
 //                 ((JTextComponent) p.getInvoker()).selectAll();

@@ -185,12 +185,12 @@ class DnDTabbedPane extends JTabbedPane {
             // This check is needed if tab content is null.
             return;
         }
-        Component cmp = getComponentAt(prev);
-        Component tab = getTabComponentAt(prev);
-        String title = getTitleAt(prev);
-        Icon icon = getIconAt(prev);
-        String tip = getToolTipTextAt(prev);
-        boolean isEnabled = isEnabledAt(prev);
+        final Component cmp = getComponentAt(prev);
+        final Component tab = getTabComponentAt(prev);
+        final String title = getTitleAt(prev);
+        final Icon icon = getIconAt(prev);
+        final String tip = getToolTipTextAt(prev);
+        final boolean isEnabled = isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
         remove(prev);
         insertTab(title, icon, cmp, tip, tgtindex);

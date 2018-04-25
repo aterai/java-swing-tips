@@ -20,10 +20,10 @@ public final class MainPanel extends JPanel {
     private final JScrollPane scroll = new JScrollPane(new JTree());
     protected MainPanel() {
         super(new BorderLayout());
-//         //Test
+//         // Test
 //         JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {
 //             @Override public void actionPerformed(ActionEvent e) {
-//                 //PersistenceService persistenceService = ...
+//                 // PersistenceService persistenceService = ...
 //                 persistenceService.delete(codebase);
 //                 Window frame = SwingUtilities.getWindowAncestor((Component) e.getSource());
 //                 frame.dispose();
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        final WindowState windowState = new WindowState();
+        WindowState windowState = new WindowState();
         SwingWorker<WindowAdapter, Void> worker = new LoadSaveTask(windowState) {
             @Override public void done() {
                 WindowAdapter windowListener = null;
@@ -83,23 +83,23 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
             ps = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
         } catch (UnavailableServiceException ex) {
-            //ex.printStackTrace();
+            // ex.printStackTrace();
             ps = null;
             bs = null;
         }
         if (Objects.nonNull(ps) && Objects.nonNull(bs)) {
-            final PersistenceService persistenceService = ps;
-            final URL codebase = bs.getCodeBase();
+            PersistenceService persistenceService = ps;
+            URL codebase = bs.getCodeBase();
             loadWindowState(persistenceService, codebase, windowState);
             return new WindowAdapter() {
                 @Override public void windowClosing(WindowEvent e) {
                     JFrame f = (JFrame) e.getComponent();
                     if (f.getExtendedState() == Frame.NORMAL) {
                         windowState.setSize(f.getSize());
-                        //Point pt = f.getLocationOnScreen();
-                        //if (pt.x < 0 || pt.y < 0) {
-                        //    return;
-                        //}
+                        // Point pt = f.getLocationOnScreen();
+                        // if (pt.x < 0 || pt.y < 0) {
+                        //     return;
+                        // }
                         windowState.setLocation(f.getLocationOnScreen());
                     }
                     saveWindowState(persistenceService, codebase, windowState);
@@ -114,24 +114,24 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             FileContents fc = ps.get(codebase);
             try (XMLDecoder d = new XMLDecoder(new BufferedInputStream(fc.getInputStream()))) {
                 @SuppressWarnings("unchecked") Map<String, Serializable> map = (Map<String, Serializable>) d.readObject();
-                //d.close();
+                // d.close();
                 windowState.setSize((Dimension) map.get("size"));
                 windowState.setLocation((Point) map.get("location"));
-                ////Test:
-                ////ObjectInputStream d = new ObjectInputStream(appSettings.getInputStream());
-                ////WindowState cache = (WindowState) d.readObject();
-                ////Test:
-                //WindowState cache = (WindowState) map.get("setting");
-                //System.out.println("aaa: " + cache.getSize());
-                //System.out.println("aaa: " + cache.getLocation());
+                // // Test:
+                // // ObjectInputStream d = new ObjectInputStream(appSettings.getInputStream());
+                // // WindowState cache = (WindowState) d.readObject();
+                // // Test:
+                // WindowState cache = (WindowState) map.get("setting");
+                // System.out.println("aaa: " + cache.getSize());
+                // System.out.println("aaa: " + cache.getLocation());
             }
         } catch (IOException ex) {
-            //create the cache
+            // create the cache
             try {
                 long size = ps.create(codebase, 64000);
                 System.out.println("Cache created - size: " + size);
             } catch (IOException ioex) {
-                //System.err.println("Application codebase is not a valid URL?!");
+                // System.err.println("Application codebase is not a valid URL?!");
                 ioex.printStackTrace();
             }
         }
@@ -140,17 +140,17 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
         try {
             FileContents fc = ps.get(codebase);
             try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
-                //Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxxxxx-xxxxx.muf
-                //ps.delete(codebase);
-                //ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
+                // Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxxxxx-xxxxx.muf
+                // ps.delete(codebase);
+                // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("size", (Serializable) windowState.getSize());
                 map.put("location", (Serializable) windowState.getLocation());
-                //Test1: map.put("setting", (Serializable) windowState);
-                //Test2: e.writeObject(windowState);
+                // Test1: map.put("setting", (Serializable) windowState);
+                // Test2: e.writeObject(windowState);
                 e.writeObject(map);
                 e.flush();
-                //e.close();
+                // e.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();

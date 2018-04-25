@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("JFileChooser setMinimumSize"));
         p2.add(new JButton(new MinimumSizeFileChooserAction()));
-        //p2.add(new JButton(new CustomSizeFileChooserAction()));
+        // p2.add(new JButton(new CustomSizeFileChooserAction()));
         add(p1);
         add(p2);
         setPreferredSize(new Dimension(320, 240));
@@ -64,7 +64,7 @@ class FixedSizeFileChooserAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser() {
-            @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
+            @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
                 JDialog dialog = super.createDialog(parent);
                 dialog.setResizable(false);
                 return dialog;
@@ -82,7 +82,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser() {
-            @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
+            @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
                 JDialog dialog = super.createDialog(parent);
                 dialog.setMinimumSize(new Dimension(640, 480));
                 return dialog;
@@ -100,8 +100,8 @@ class MinimumSizeFileChooserAction extends AbstractAction {
 //     }
 //     @Override public void actionPerformed(ActionEvent e) {
 //         JFileChooser fileChooser = new JFileChooser() {
-//             @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
-//                  final JDialog dialog = super.createDialog(parent);
+//             @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
+//                  JDialog dialog = super.createDialog(parent);
 //                  dialog.addComponentListener(new ComponentAdapter() {
 //                      @Override public void componentResized(ComponentEvent e) {
 //                          int mw = 640;

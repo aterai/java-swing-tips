@@ -182,9 +182,9 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
         Point pt = e.getPoint();
-        int prevRow = vrow;
-        int prevCol = vcol;
-        boolean prevRollover = isRollover;
+        final int prevRow = vrow;
+        final int prevCol = vcol;
+        final boolean prevRollover = isRollover;
         vrow = table.rowAtPoint(pt);
         vcol = table.columnAtPoint(pt);
         isRollover = isUrlColumn(table, vcol); // && pointInsidePrefSize(table, pt);

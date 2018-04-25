@@ -29,13 +29,13 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JFrame frame = new JFrame("@title@");
+        JFrame frame = new JFrame("@title@");
         try {
             SingleInstanceService singleInstanceService = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
             singleInstanceService.addSingleInstanceListener(new SingleInstanceListener() {
                 private int count;
                 @Override public void newActivation(String[] args) {
-                    //System.out.println(EventQueue.isDispatchThread());
+                    // System.out.println(EventQueue.isDispatchThread());
                     EventQueue.invokeLater(() -> {
                         JOptionPane.showMessageDialog(frame, "already running: " + count);
                         frame.setTitle("title:" + count);

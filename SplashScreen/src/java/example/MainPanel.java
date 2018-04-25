@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 //             ex.printStackTrace();
 //         }
 //         System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
-//         final JWindow splashScreen = new JWindow();
+//         JWindow splashScreen = new JWindow();
 //         ImageIcon img = new ImageIcon(MainPanel.class.getResource("splash.png"));
 //         splashScreen.getContentPane().add(new JLabel(img));
 //         splashScreen.pack();
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
 //         splashScreen.setVisible(true);
 //         System.out.println("splashScreen show end");
 //
-//         final JFrame frame = new JFrame("@title@");
+//         JFrame frame = new JFrame("@title@");
 //         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //         new SwingWorker() {
 //             @Override public Object doInBackground() {

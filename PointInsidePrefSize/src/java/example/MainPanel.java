@@ -108,17 +108,12 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 
-        int mw = table.getColumnModel().getColumnMargin();
-        int rh = table.getRowMargin();
-        int w = table.getColumnModel().getColumn(column).getWidth();
-        int h = table.getRowHeight(row);
-
         // TEST: this.setBorder(BorderFactory.createMatteBorder(0, 16, 0, 16, Color.RED));
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
-        lrect.width = w - mw - i.right  - lrect.x;
-        lrect.height = h - rh - i.bottom - lrect.y;
+        lrect.width = table.getColumnModel().getColumn(column).getWidth() - table.getColumnModel().getColumnMargin() - i.right  - lrect.x;
+        lrect.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - lrect.y;
         irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
         trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
 
@@ -168,9 +163,9 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
         Point pt = e.getPoint();
-        int prevRow = vrow;
-        int prevCol = vcol;
-        boolean prevRollover = isRollover;
+        final int prevRow = vrow;
+        final int prevCol = vcol;
+        final boolean prevRollover = isRollover;
         vrow = table.rowAtPoint(pt);
         vcol = table.columnAtPoint(pt);
         isRollover = isUrlColumn(table, vcol) && pointInsidePrefSize(table, pt);

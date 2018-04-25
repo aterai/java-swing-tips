@@ -93,9 +93,9 @@ class HighlightListener extends MouseAdapter {
     }
     @Override public void mouseMoved(MouseEvent e) {
         getTable(e).ifPresent(table -> {
-            int prevRow = vrow;
-            int prevCol = vcol;
             Point pt = e.getPoint();
+            final int prevRow = vrow;
+            final int prevCol = vcol;
             vrow = table.rowAtPoint(pt);
             vcol = table.columnAtPoint(pt);
             if (vrow < 0 || vcol < 0) {

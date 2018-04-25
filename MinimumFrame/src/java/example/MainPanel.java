@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final int MW  = 320;
+    private static final int MW = 320;
     private static final int MH1 = 100;
     private static final int MH2 = 150;
 
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-//         final int MAX = 500;
-//         //frame.setMaximumSize(new Dimension(MAX, MAX));
+//         int MAX = 500;
+//         // frame.setMaximumSize(new Dimension(MAX, MAX));
 //         Robot r;
-//         final Robot r2;
+//         Robot r2;
 //         try {
 //             r = new Robot();
 //         } catch (AWTException ex) {
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 //         r2 = r;
 //         frame.getRootPane().addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
-//                 Point loc   = frame.getLocationOnScreen();
+//                 Point loc = frame.getLocationOnScreen();
 //                 Point mouse = MouseInfo.getPointerInfo().getLocation();
 //                 if (Objects.nonNull(r2) && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
 //                     r2.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);

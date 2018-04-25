@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea(TEXT)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static TrayIcon makeTrayIcon(final JFrame frame) {
+    private static TrayIcon makeTrayIcon(JFrame frame) {
         MenuItem open = new MenuItem("Option");
         open.addActionListener(e -> frame.setVisible(true));
 

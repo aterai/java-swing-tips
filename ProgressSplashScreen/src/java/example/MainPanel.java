@@ -9,7 +9,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         try {
-            Thread.sleep(3000); //dummy task
+            Thread.sleep(3000); // dummy task
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JFrame frame = new JFrame("@title@");
-        final JDialog splashScreen  = new JDialog(frame, Dialog.ModalityType.DOCUMENT_MODAL);
-        final JProgressBar progress = new JProgressBar();
+        JFrame frame = new JFrame("@title@");
+        JDialog splashScreen = new JDialog(frame, Dialog.ModalityType.DOCUMENT_MODAL);
+        JProgressBar progress = new JProgressBar();
 
         System.out.println(splashScreen.getModalityType());
 

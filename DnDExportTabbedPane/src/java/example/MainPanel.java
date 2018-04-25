@@ -246,12 +246,12 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
-        Component cmp = getComponentAt(dragIndex);
-        Component tab = getTabComponentAt(dragIndex);
-        String title = getTitleAt(dragIndex);
-        Icon icon = getIconAt(dragIndex);
-        String tip = getToolTipTextAt(dragIndex);
-        boolean isEnabled = isEnabledAt(dragIndex);
+        final Component cmp = getComponentAt(dragIndex);
+        final Component tab = getTabComponentAt(dragIndex);
+        final String title = getTitleAt(dragIndex);
+        final Icon icon = getIconAt(dragIndex);
+        final String tip = getToolTipTextAt(dragIndex);
+        final boolean isEnabled = isEnabledAt(dragIndex);
         remove(dragIndex);
         target.insertTab(title, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, isEnabled);
@@ -272,12 +272,12 @@ class DnDTabbedPane extends JTabbedPane {
 //         if (next < 0 || prev == next) {
 //             return;
 //         }
-        Component cmp = getComponentAt(prev);
-        Component tab = getTabComponentAt(prev);
-        String title = getTitleAt(prev);
-        Icon icon = getIconAt(prev);
-        String tip = getToolTipTextAt(prev);
-        boolean isEnabled = isEnabledAt(prev);
+        final Component cmp = getComponentAt(prev);
+        final Component tab = getTabComponentAt(prev);
+        final String title = getTitleAt(prev);
+        final Icon icon = getIconAt(prev);
+        final String tip = getToolTipTextAt(prev);
+        final boolean isEnabled = isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
         remove(prev);
         insertTab(title, icon, cmp, tip, tgtindex);

@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
 // class MyJTabbedPane extends JTabbedPane {
 //     private static final Icon icon = new CloseTabIcon();
-//     @Override public void addTab(String title, final Component content) {
+//     @Override public void addTab(String title, Component content) {
 //         JPanel tab = new JPanel(new BorderLayout());
 //         tab.setOpaque(false);
 //         JLabel label = new JLabel(title);
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 //         label.setDisplayedMnemonic(KeyEvent.VK_A);
-//         tab.add(label,  BorderLayout.WEST);
+//         tab.add(label, BorderLayout.WEST);
 //         tab.add(button, BorderLayout.EAST);
 //         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
 //         super.addTab(title, content);

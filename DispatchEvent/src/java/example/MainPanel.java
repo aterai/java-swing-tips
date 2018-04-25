@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final int DELAY = 10 * 1000; //10s
+    private static final int DELAY = 10 * 1000; // 10s
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox<String> combo = makeComboBox();
     private final JTextField textField = new JTextField(20);
@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-//         final EventQueue eventQueue = new EventQueue() {
+//         EventQueue eventQueue = new EventQueue() {
 //             @Override protected void dispatchEvent(AWTEvent e) {
 //                 super.dispatchEvent(e);
 //                 if (e instanceof InputEvent && Objects.nonNull(timer) && timer.isRunning()) {
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
         button.addActionListener(e -> {
             setTestConnected(true);
             Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
-            //Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
+            // Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
             timer.setRepeats(false);
             timer.start();
         });
@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

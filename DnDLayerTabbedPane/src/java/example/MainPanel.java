@@ -100,6 +100,7 @@ public final class MainPanel extends JPanel {
         JMenuBar menubar = new JMenuBar();
         menubar.add(menu);
 
+        LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(handler, new DropLocationLayerUI()));
@@ -266,21 +267,19 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
+        boolean isEnabled = isEnabledAt(dragIndex);
         Component cmp = getComponentAt(dragIndex);
-        Component tab = getTabComponentAt(dragIndex);
         String title = getTitleAt(dragIndex);
         Icon icon = getIconAt(dragIndex);
         String tip = getToolTipTextAt(dragIndex);
-        boolean isEnabled = isEnabledAt(dragIndex);
-        remove(dragIndex);
-        target.insertTab(title, icon, cmp, tip, targetIndex);
-        target.setEnabledAt(targetIndex, isEnabled);
-
-        // ButtonTabComponent
+        Component tab = getTabComponentAt(dragIndex);
         if (tab instanceof ButtonTabComponent) {
             tab = new ButtonTabComponent(target);
         }
 
+        remove(dragIndex);
+        target.insertTab(title, icon, cmp, tip, targetIndex);
+        target.setEnabledAt(targetIndex, isEnabled);
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
         if (tab instanceof JComponent) {
@@ -292,12 +291,12 @@ class DnDTabbedPane extends JTabbedPane {
 //         if (next < 0 || prev == next) {
 //             return;
 //         }
-        Component cmp = getComponentAt(prev);
-        Component tab = getTabComponentAt(prev);
-        String title = getTitleAt(prev);
-        Icon icon = getIconAt(prev);
-        String tip = getToolTipTextAt(prev);
-        boolean isEnabled = isEnabledAt(prev);
+        final Component cmp = getComponentAt(prev);
+        final Component tab = getTabComponentAt(prev);
+        final String title = getTitleAt(prev);
+        final Icon icon = getIconAt(prev);
+        final String tip = getToolTipTextAt(prev);
+        final boolean isEnabled = isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
         remove(prev);
         insertTab(title, icon, cmp, tip, tgtindex);

@@ -27,14 +27,14 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void insertQuestion(final JTextPane textPane, String str) {
+    private static void insertQuestion(JTextPane textPane, String str) {
         Document doc = textPane.getDocument();
         try {
             doc.insertString(doc.getLength(), str, null);
 
-            final int pos = doc.getLength();
+            int pos = doc.getLength();
             System.out.println(pos);
-            final JTextField field = new JTextField(4) {
+            JTextField field = new JTextField(4) {
                 @Override public Dimension getMaximumSize() {
                     return getPreferredSize();
                 }
@@ -46,8 +46,8 @@ public final class MainPanel extends JPanel {
                         Rectangle rect = textPane.modelToView(pos);
                         rect.grow(0, 4);
                         rect.setSize(field.getSize());
-                        //System.out.println(rect);
-                        //System.out.println(field.getLocation());
+                        // System.out.println(rect);
+                        // System.out.println(field.getLocation());
                         textPane.scrollRectToVisible(rect);
                     } catch (BadLocationException ex) {
                         ex.printStackTrace();
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
             int baseline = field.getBaseline(d.width, d.height);
             field.setAlignmentY(baseline / (float) d.height);
 
-            //MutableAttributeSet a = new SimpleAttributeSet();
+            // MutableAttributeSet a = new SimpleAttributeSet();
             MutableAttributeSet a = textPane.getStyle(StyleContext.DEFAULT_STYLE);
             StyleConstants.setLineSpacing(a, 1.5f);
             textPane.setParagraphAttributes(a, true);

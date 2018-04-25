@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 class ButtonTabComponent extends JPanel {
     protected final JTabbedPane tabbedPane;
 
-    protected ButtonTabComponent(final JTabbedPane tabbedPane) {
+    protected ButtonTabComponent(JTabbedPane tabbedPane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
@@ -101,7 +101,7 @@ class ButtonTabComponent extends JPanel {
 }
 
 class TabButton extends JButton {
-    private static final int SIZE  = 17;
+    private static final int SIZE = 17;
     private static final int DELTA = 6;
 
     protected TabButton() {
@@ -118,7 +118,7 @@ class TabButton extends JButton {
         return new Dimension(SIZE, SIZE);
     }
     @Override public void updateUI() {
-        //we don't want to update UI for this button
+        // we don't want to update UI for this button
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -177,7 +177,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add(renameAction);
@@ -197,7 +197,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 // class TabTitleEditListener extends MouseAdapter implements ChangeListener {
 //     protected final JTextField editor = new JTextField();
 //     protected final JTabbedPane tabbedPane;
-//     protected TabTitleEditListener(final JTabbedPane tabbedPane) {
+//     protected TabTitleEditListener(JTabbedPane tabbedPane) {
 //         super();
 //         this.tabbedPane = tabbedPane;
 //         editor.setBorder(BorderFactory.createEmptyBorder());
@@ -240,10 +240,10 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     private int editing_idx = -1;
 //     private int len = -1;
 //     private Dimension dim;
-//     private Component tabComponent = null; //<----add----
+//     private Component tabComponent = null; // <----add----
 //     private void startEditing() {
 //         editing_idx = tabbedPane.getSelectedIndex();
-//         tabComponent = tabbedPane.getTabComponentAt(editing_idx); //<----add----
+//         tabComponent = tabbedPane.getTabComponentAt(editing_idx); // <----add----
 //         tabbedPane.setTabComponentAt(editing_idx, editor);
 //         editor.setVisible(true);
 //         editor.setText(tabbedPane.getTitleAt(editing_idx));
@@ -255,7 +255,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     }
 //     private void cancelEditing() {
 //         if (editing_idx >= 0) {
-//             tabbedPane.setTabComponentAt(editing_idx, tabComponent); //<----add----
+//             tabbedPane.setTabComponentAt(editing_idx, tabComponent); // <----add----
 //             editor.setVisible(false);
 //             editing_idx = -1;
 //             len = -1;
