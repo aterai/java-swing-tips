@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
         LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(handler, new DropLocationLayerUI()));
+        frame.getContentPane().add(new MainPanel(handler, layerUI));
         frame.setJMenuBar(menubar);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -267,11 +267,11 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
-        boolean isEnabled = isEnabledAt(dragIndex);
-        Component cmp = getComponentAt(dragIndex);
-        String title = getTitleAt(dragIndex);
-        Icon icon = getIconAt(dragIndex);
-        String tip = getToolTipTextAt(dragIndex);
+        final Component cmp = getComponentAt(dragIndex);
+        final String title = getTitleAt(dragIndex);
+        final Icon icon = getIconAt(dragIndex);
+        final String tip = getToolTipTextAt(dragIndex);
+        final boolean isEnabled = isEnabledAt(dragIndex);
         Component tab = getTabComponentAt(dragIndex);
         if (tab instanceof ButtonTabComponent) {
             tab = new ButtonTabComponent(target);
