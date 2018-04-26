@@ -58,14 +58,15 @@ public final class MainPanel extends JPanel {
             sb0.append(TEXT);
             sb1.append(TEXT);
         });
-        String st0 = sb0.toString();
-        String st1 = sb1.toString();
 
+        String st0 = sb0.toString();
         editor0.setEditorKit(new HTMLEditorKit());
-        editor0.setText(sb0.toString());
+        editor0.setText(st0);
         tabs.addTab("default", new JScrollPane(editor0));
 
+        String st1 = sb1.toString();
         editor1.setEditorKit(new HTMLEditorKit());
+        editor1.setText(st1);
         tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
         editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());

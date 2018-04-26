@@ -21,6 +21,7 @@ public final class MainPanel extends JPanel {
             }
             b.setMnemonic(mnemonic);
         };
+
         JButton button1 = new JButton("Hello World");
         button1.addPropertyChangeListener(e -> {
             String prop = e.getPropertyName();
@@ -30,6 +31,11 @@ public final class MainPanel extends JPanel {
                 b.setToolTipText("tooltip (Alt+" + str + ")");
             }
         });
+        button1.addActionListener(al);
+        button1.setMnemonic(KeyEvent.VK_E);
+        String str = KeyEvent.getKeyText(button1.getMnemonic());
+        button1.setToolTipText("tooltip (Alt+" + str + ")");
+
         JButton button2 = new JButton("abcdefghijk") {
             @Override public JToolTip createToolTip() {
                 JToolTip tip = new MnemonicToolTip();
@@ -37,12 +43,6 @@ public final class MainPanel extends JPanel {
                 return tip;
             }
         };
-
-        button1.addActionListener(al);
-        button1.setMnemonic(KeyEvent.VK_E);
-        String str = KeyEvent.getKeyText(button1.getMnemonic());
-        button1.setToolTipText("tooltip (Alt+" + str + ")");
-
         button2.addActionListener(al);
         button2.setMnemonic(KeyEvent.VK_A);
         button2.setToolTipText("tooltip");
@@ -86,7 +86,7 @@ class MnemonicToolTip extends JToolTip {
     protected MnemonicToolTip() {
         super();
         setLayout(new BorderLayout());
-        //LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+        // LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
         mnemonicLabel.setForeground(Color.GRAY);
         mnemonicLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
         add(mnemonicLabel, BorderLayout.EAST);

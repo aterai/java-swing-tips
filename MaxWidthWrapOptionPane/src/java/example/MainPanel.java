@@ -52,21 +52,19 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super();
-
-        String msgShort = "This is a short error message.";
-        String msgLong = String.join(" ", Collections.nCopies(10, "This is a long error message. 1, 22, 333, 4444, 55555."));
-
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        String msgLong = String.join(" ", Collections.nCopies(10, "This is a long error message. 1, 22, 333, 4444, 55555."));
         JButton longButton = new JButton("JOptionPane: long");
         longButton.addActionListener(e -> {
             textArea.setText(msgLong);
             JOptionPane.showMessageDialog(getRootPane(), scroll, "Error", JOptionPane.ERROR_MESSAGE);
         });
 
+        String msgShort = "This is a short error message.";
         JButton shortButton = new JButton("JOptionPane: short");
         shortButton.addActionListener(e -> {
             textArea.setText(msgShort);

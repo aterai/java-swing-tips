@@ -11,9 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComboBox<String> combo01 = new JComboBox<>(makeModel());
-        JComboBox<String> combo02 = new JComboBox<>(makeModel());
-
+        JComboBox<String> combo = new JComboBox<>(makeModel());
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox<?> c = (JComboBox<?>) e.getSource();
@@ -28,18 +26,18 @@ public final class MainPanel extends JPanel {
                 c.setSelectedIndex(i == c.getItemCount() - 1 ? 0 : i + 1);
             }
         };
-        ActionMap am = combo02.getActionMap();
+        ActionMap am = combo.getActionMap();
         am.put("myUp", up);
         am.put("myDown", down);
 
-        InputMap im = combo02.getInputMap();
+        InputMap im = combo.getInputMap();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "myUp");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
 
         Box box = Box.createVerticalBox();
-        box.add(makeTitledPanel("default:", combo01));
+        box.add(makeTitledPanel("default:", new JComboBox<>(makeModel())));
         box.add(Box.createVerticalStrut(5));
-        box.add(makeTitledPanel("loop:", combo02));
+        box.add(makeTitledPanel("loop:", combo));
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

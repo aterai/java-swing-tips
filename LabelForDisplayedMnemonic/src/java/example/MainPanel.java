@@ -9,28 +9,28 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
+        JPanel p = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
         JLabel label1 = new JLabel("Mail Adress:", SwingConstants.RIGHT);
         label1.setDisplayedMnemonic('M');
-        JComponent textField1 = new JTextField(12);
+        Component textField1 = new JTextField(12);
         label1.setLabelFor(textField1);
+        addRow(label1, textField1, p, c);
 
         JLabel label2 = new JLabel("Password:", SwingConstants.RIGHT);
         label2.setDisplayedMnemonic('P');
-        JComponent textField2 = new JPasswordField(12);
+        Component textField2 = new JPasswordField(12);
         label2.setLabelFor(textField2);
+        addRow(label2, textField2, p, c);
 
         JLabel label3 = new JLabel("Dummy:", SwingConstants.RIGHT);
-        JComponent textField3 = new JTextField(12);
+        Component textField3 = new JTextField(12);
+        addRow(label3, textField3, p, c);
 
         JLabel label4 = new JLabel("ComboBox:", SwingConstants.RIGHT);
         label4.setDisplayedMnemonic('C');
-        JComponent comboBox = new JComboBox<String>();
-
-        JPanel p = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        addRow(label1, textField1, p, c);
-        addRow(label2, textField2, p, c);
-        addRow(label3, textField3, p, c);
+        Component comboBox = new JComboBox<String>();
         addRow(label4, comboBox, p, c);
 
         JButton button = new JButton("JComboBox#requestFocusInWindow() Test");
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void addRow(JComponent c1, JComponent c2, JPanel p, GridBagConstraints c) {
+    private static void addRow(Component c1, Component c2, Container p, GridBagConstraints c) {
         c.gridx = 0;
         c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 0);

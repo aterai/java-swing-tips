@@ -8,32 +8,32 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JDesktopPane desktop          = new JDesktopPane();
-        JInternalFrame magneticFrame1 = createFrame("Frame");
-        JInternalFrame magneticFrame2 = createFrame("Frame");
-
+        JDesktopPane desktop = new JDesktopPane();
         desktop.setBackground(Color.GRAY.brighter());
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         desktop.setDesktopManager(new MagneticDesktopManager());
 
-//         BasicInternalFrameUI ui = (BasicInternalFrameUI) magneticFrame.getUI();
-//         Component north = ui.getNorthPane();
-//         MouseInputListener mml = new MagneticListener(magneticFrame);
-//         north.addMouseMotionListener(mml);
-//         north.addMouseListener(mml);
-
+        JInternalFrame magneticFrame1 = createFrame("Frame");
         desktop.add(magneticFrame1);
         magneticFrame1.setLocation(30, 10);
         magneticFrame1.setVisible(true);
+
+        JInternalFrame magneticFrame2 = createFrame("Frame");
         desktop.add(magneticFrame2);
         magneticFrame2.setLocation(50, 30);
         magneticFrame2.setVisible(true);
+
+        // BasicInternalFrameUI ui = (BasicInternalFrameUI) magneticFrame.getUI();
+        // Component north = ui.getNorthPane();
+        // MouseInputListener mml = new MagneticListener(magneticFrame);
+        // north.addMouseMotionListener(mml);
+        // north.addMouseListener(mml);
 
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JInternalFrame createFrame(String title) {
-        //title, resizable, closable, maximizable, iconifiable
+        // title, resizable, closable, maximizable, iconifiable
         JInternalFrame frame = new JInternalFrame(title, false, false, true, true);
         frame.setSize(200, 100);
         return frame;

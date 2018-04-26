@@ -26,13 +26,15 @@ public class MainPanel extends JPanel {
 
         runButton.addActionListener(e -> executeWorker((Component) e.getSource()));
 
-        JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.insets = new Insets(5, 5, 5, 0);
         c.anchor = GridBagConstraints.LINE_END;
+
+        JPanel p = new JPanel(new GridBagLayout());
         p.add(new JLabel("MillisToDecideToPopup:"), c);
         p.add(new JLabel("MillisToPopup:"), c);
+
         c.gridx = 1;
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -53,7 +55,6 @@ public class MainPanel extends JPanel {
         Window w = SwingUtilities.getWindowAncestor(c);
         int toDecideToPopup = (int) millisToDecide.getValue();
         int toPopup = (int) millisToPopup.getValue();
-        int lengthOfTask = Math.max(10000, toDecideToPopup * 5);
         ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
         monitor.setMillisToDecideToPopup(toDecideToPopup);
         monitor.setMillisToPopup(toPopup);
@@ -61,6 +62,7 @@ public class MainPanel extends JPanel {
         // System.out.println(monitor.getMillisToDecideToPopup());
         // System.out.println(monitor.getMillisToPopup());
 
+        int lengthOfTask = Math.max(10000, toDecideToPopup * 5);
         runButton.setEnabled(false);
         SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
             @Override protected void process(List<String> chunks) {

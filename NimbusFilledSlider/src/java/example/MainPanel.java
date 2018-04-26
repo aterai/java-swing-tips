@@ -45,9 +45,8 @@ public final class MainPanel extends JPanel {
                 float pixelsPerValue = (float) trackLength / valueRange;
                 int trackLeft = trackRect.x;
                 int trackRight = trackRect.x + trackRect.width - 1;
-                int xpos;
 
-                xpos = trackLeft;
+                int xpos = trackLeft;
                 xpos += Math.round(pixelsPerValue * ((float) value - min));
 
                 xpos = Math.max(trackLeft, xpos);

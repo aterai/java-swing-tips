@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
-    //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+    // private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
     private static final int CLOSEICON_WIDTH = 12;
     private final Dimension size = new Dimension();
     private final Rectangle viewRect = new Rectangle();
@@ -40,13 +40,8 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton) c;
-
-        Graphics2D g2 = (Graphics2D) g.create();
         Font f = c.getFont();
         g.setFont(f);
-        FontMetrics fm = c.getFontMetrics(f);
-        Icon icon = b.getIcon();
 
         Insets i = c.getInsets();
         c.getSize(size);
@@ -54,17 +49,20 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
-        iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
-        textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
+        iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
+        textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 
-        //g2.setPaint(Color.CYAN); //c.getBackground());
-        //g2.fillRect(0, 0, size.width - 1, size.height);
-        //g2.fill(viewRect);
+        Graphics2D g2 = (Graphics2D) g.create();
+        // g2.setPaint(Color.CYAN); // c.getBackground());
+        // g2.fillRect(0, 0, size.width - 1, size.height);
+        // g2.fill(viewRect);
         tabPainter(g2, viewRect);
 
+        AbstractButton b = (AbstractButton) c;
+        Icon icon = b.getIcon();
         viewRect.width = size.width - i.right - viewRect.x - CLOSEICON_WIDTH;
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), icon, //altIcon != null ? altIcon : getDefaultIcon(),
+            c, c.getFontMetrics(f), b.getText(), icon, // altIcon != null ? altIcon : getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
@@ -85,7 +83,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {
             g2.setPaint(new Color(0x64000000, true));
             g2.fillRect(0, 0, size.width, size.height);
-            //g2.fill(viewRect);
+            // g2.fill(viewRect);
         }
         g2.dispose();
     }
@@ -102,19 +100,19 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30),   0, r3.y + r3.height, new Color(0, 0, 0, 5),    true));
         g2.fill(r3);
 
-        g2.setPaint(new Color(39, 56, 67)); //g2.setPaint(Color.GREEN);
+        g2.setPaint(new Color(39, 56, 67)); // g2.setPaint(Color.GREEN);
         g2.drawLine(r.x, r.y, r.x + r.width, r.y);
 
-        g2.setPaint(new Color(255, 255, 255, 30)); //g2.setPaint(Color.RED);
+        g2.setPaint(new Color(255, 255, 255, 30)); // g2.setPaint(Color.RED);
         g2.drawLine(r.x + 1, r.y + 1, r.x + r.width, r.y + 1);
 
-        g2.setPaint(new Color(255, 255, 255, 60)); //g2.setPaint(Color.BLUE);
+        g2.setPaint(new Color(255, 255, 255, 60)); // g2.setPaint(Color.BLUE);
         g2.drawLine(r.x, r.y, r.x, r.y + r.height);
 
-        g2.setPaint(new Color(39, 56, 67, 250)); //g2.setPaint(Color.YELLOW);
+        g2.setPaint(new Color(39, 56, 67, 250)); // g2.setPaint(Color.YELLOW);
         g2.drawLine(r.x + r.width - 1, r.y, r.x + r.width - 1, r.y + r.height);
 
-        //g2.setPaint(Color.PINK);
+        // g2.setPaint(Color.PINK);
         g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
     }
 }
