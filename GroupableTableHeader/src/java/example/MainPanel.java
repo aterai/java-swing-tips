@@ -54,12 +54,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
@@ -69,11 +69,12 @@ public final class MainPanel extends JPanel {
     }
 }
 
-/** GroupableTableHeader
+/**
+ * GroupableTableHeader.
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeader</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
- * modified by aterai aterai@outlook.com
+ * @author aterai aterai@outlook.com
  */
 class GroupableTableHeader extends JTableHeader {
     private transient List<ColumnGroup> columnGroups;
@@ -113,11 +114,12 @@ class GroupableTableHeader extends JTableHeader {
     }
 }
 
-/** GroupableTableHeaderUI
+/**
+ * GroupableTableHeaderUI.
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeaderUI</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
- * modified by aterai aterai@outlook.com
+ * @author aterai aterai@outlook.com
  */
 class GroupableTableHeaderUI extends BasicTableHeaderUI {
     @Override public void paint(Graphics g, JComponent c) {
@@ -151,7 +153,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
                 paintCellGroup(g, groupRect, cg);
                 groupHeight += groupRect.height;
                 cellRect.height = headerHeight - groupHeight;
-                cellRect.y      = groupHeight;
+                cellRect.y = groupHeight;
             }
             paintCell(g, cellRect, column);
             cellRect.x += cellRect.width;
@@ -207,21 +209,22 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
     @Override public Dimension getPreferredSize(JComponent c) {
         long width = Collections.list(header.getColumnModel().getColumns()).stream()
             .mapToLong(TableColumn::getPreferredWidth).sum();
-//         long width = 0;
-//         Enumeration<TableColumn> enumeration = header.getColumnModel().getColumns();
-//         while (enumeration.hasMoreElements()) {
-//             TableColumn tc = (TableColumn) enumeration.nextElement();
-//             width += tc.getPreferredWidth();
-//         }
+        // long width = 0;
+        // Enumeration<TableColumn> enumeration = header.getColumnModel().getColumns();
+        // while (enumeration.hasMoreElements()) {
+        //     TableColumn tc = (TableColumn) enumeration.nextElement();
+        //     width += tc.getPreferredWidth();
+        // }
         return createHeaderSize(width);
     }
 }
 
-/** ColumnGroup
+/**
+ * ColumnGroup.
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">ColumnGroup</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
- * modified by aterai aterai@outlook.com
+ * @author aterai aterai@outlook.com
  */
 class ColumnGroup {
     protected final List<Object> list = new ArrayList<>();
@@ -231,6 +234,7 @@ class ColumnGroup {
     }
 
     /**
+     * Add TableColumn or ColumnGroup.
      * @param obj TableColumn or ColumnGroup
      */
     public void add(Object obj) {
