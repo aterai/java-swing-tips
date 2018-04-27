@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
     protected final JTextArea textArea = new JTextArea();
     protected final JEditorPane editorPane = new JEditorPane();
     protected final JTextField field = new JTextField("3");
-    protected final Action elementIDAction = new AbstractAction("Element#getElement(id)") {
+    protected final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
             String id = field.getText().trim();
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(field);
-        p.add(new JButton(elementIDAction));
+        p.add(new JButton(elementIdAction));
         p.add(new JToggleButton(highlightAction));
         p.add(new JButton(parserAction));
         add(sp);
