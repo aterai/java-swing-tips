@@ -17,9 +17,9 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 /**
  * A JTabbedPane which has a close ('X') icon on each tab.
  *
- * To add a tab, use the method addTab(String, Component)
+ * <p>To add a tab, use the method addTab(String, Component)
  *
- * To have an extra icon on each tab (e.g. like in JBuilder, showing the file
+ * <p>To have an extra icon on each tab (e.g. like in JBuilder, showing the file
  * type) use the method addTab(String, Component, Icon). Only clicking the 'X'
  * closes the tab.
  */
@@ -170,8 +170,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
     /**
      * Returns an array of all the <code>SearchListener</code>s added to this
      * <code>SearchPane</code> with addSearchListener().
-     * @return all of the <code>SearchListener</code>s added or an empty array if
-     * no listeners have been added
+     * @return all of the <code>SearchListener</code>s added or an empty array if no listeners have been added
      */
     public CloseableTabbedPaneListener[] getCloseableTabbedPaneListener() {
         return (CloseableTabbedPaneListener[]) eventListenerList.getListeners(CloseableTabbedPaneListener.class);
@@ -400,8 +399,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 
     /**
      * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-     * @param horizontalTextPosition the horizontal position of the text (e.g.
-     * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+     * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
     protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
         super();
@@ -472,8 +470,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     /**
      * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-     * @param horizontalTextPosition the horizontal position of the text (e.g.
-     * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+     * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
     protected CloseableTabbedPaneUI(int horizontalTextPosition) {
         super();

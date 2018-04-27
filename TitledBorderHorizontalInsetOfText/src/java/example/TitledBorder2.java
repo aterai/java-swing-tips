@@ -16,8 +16,8 @@ import javax.swing.plaf.basic.BasicHTML;
  * A class which implements an arbitrary border
  * with the addition of a String title in a
  * specified position and justification.
- * <p>
- * If the border, font, or color property values are not
+ *
+ * <p>If the border, font, or color property values are not
  * specified in the constructor or by invoking the appropriate
  * set methods, the property values will be defined by the current
  * look and feel, using the following property names in the
@@ -27,8 +27,8 @@ import javax.swing.plaf.basic.BasicHTML;
  * <li>&quot;TitledBorder.font&quot;
  * <li>&quot;TitledBorder.titleColor&quot;
  * </ul>
- * <p>
- * <strong>Warning:</strong>
+ *
+ * <p><strong>Warning:</strong>
  * Serialized objects of this class will not be compatible with
  * future Swing releases. The current serialization support is
  * appropriate for short term storage or RMI between applications running
@@ -292,16 +292,14 @@ public class TitledBorder2 extends AbstractBorder {
                 if (position != TOP && position != BOTTOM) {
                     border.paintBorder(c, g, borderX, borderY, borderW, borderH);
                 } else {
-                    Graphics g2 = g.create();
-                    if (g2 instanceof Graphics2D) {
-                        Graphics2D g2d = (Graphics2D) g2;
-                        Path2D path = new Path2D.Float();
-                        path.append(new Rectangle(borderX, borderY, borderW, labelY - borderY), false);
-                        path.append(new Rectangle(borderX, labelY, labelX - borderX - TEXT_SPACING, labelH), false);
-                        path.append(new Rectangle(labelX + labelW + TEXT_SPACING, labelY, borderX - labelX + borderW - labelW - TEXT_SPACING, labelH), false);
-                        path.append(new Rectangle(borderX, labelY + labelH, borderW, borderY - labelY + borderH - labelH), false);
-                        g2d.clip(path);
-                    }
+                    Path2D path = new Path2D.Float();
+                    path.append(new Rectangle(borderX, borderY, borderW, labelY - borderY), false);
+                    path.append(new Rectangle(borderX, labelY, labelX - borderX - TEXT_SPACING, labelH), false);
+                    path.append(new Rectangle(labelX + labelW + TEXT_SPACING, labelY, borderX - labelX + borderW - labelW - TEXT_SPACING, labelH), false);
+                    path.append(new Rectangle(borderX, labelY + labelH, borderW, borderY - labelY + borderH - labelH), false);
+
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.clip(path);
                     border.paintBorder(c, g2, borderX, borderY, borderW, borderH);
                     g2.dispose();
                 }
