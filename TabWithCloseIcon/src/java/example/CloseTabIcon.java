@@ -5,8 +5,8 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 
-//Copied from
-//JTabbedPane with close Icons | Oracle Forums
+// Copied from
+// JTabbedPane with close Icons | Oracle Forums
 // https://community.oracle.com/thread/1356993
 
 /**
@@ -16,42 +16,42 @@ import javax.swing.*;
  */
 public class CloseTabIcon implements Icon {
     /**
-     * the x position of the icon
+     * the x position of the icon.
      */
     private int xpos;
 
     /**
-     * the y position of the icon
+     * the y position of the icon.
      */
     private int ypos;
 
     /**
-     * the width the icon
+     * the width the icon.
      */
     private final int width;
 
     /**
-     * the height the icon
+     * the height the icon.
      */
     private final int height;
 
     /**
-     * the additional fileicon
+     * the additional fileicon.
      */
     private final Icon fileIcon;
 
     /**
-     * true whether the mouse is over this icon, false otherwise
+     * true whether the mouse is over this icon, false otherwise.
      */
     protected boolean mouseover;
 
     /**
-     * true whether the mouse is pressed on this icon, false otherwise
+     * true whether the mouse is pressed on this icon, false otherwise.
      */
     protected boolean mousepressed;
 
     /**
-     * Creates a new instance of <code>CloseTabIcon</code>
+     * Creates a new instance of <code>CloseTabIcon</code>.
      * @param fileIcon the additional fileicon, if there is one set
      */
     public CloseTabIcon(Icon fileIcon) {

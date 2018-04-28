@@ -9,8 +9,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 /**
-@author Taka
-*/
+ * JLayeredPane1.
+ * @author Taka
+ */
 public final class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
     // private static final int FORELAYER = 2;

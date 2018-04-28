@@ -371,8 +371,7 @@ class CloseableTabIconHandler extends MouseAdapter {
  */
 interface CloseableTabbedPaneListener extends EventListener {
     /**
-     * Informs all <code>CloseableTabbedPaneListener</code>s when a tab should be
-     * closed
+     * Informs all <code>CloseableTabbedPaneListener</code>s when a tab should be closed.
      * @param tabIndexToClose the index of the tab which should be closed
      * @return true if the tab can be closed, false otherwise
      */
@@ -386,19 +385,19 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     private static final String HTML = "html";
 
     /**
-     * the horizontal position of the text
+     * the horizontal position of the text.
      */
     private int horizontalTextPosition = SwingUtilities.LEFT;
 
     /**
-     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
      */
     protected CloseableWindowsTabbedPaneUI() {
         super();
     }
 
     /**
-     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
      * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
     protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
@@ -407,7 +406,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     }
 
     /**
-     * Layouts the label
+     * Layouts the label.
      * @param tabPlacement the placement of the tabs
      * @param metrics the font metrics
      * @param tabIndex the index of the tab
@@ -457,19 +456,19 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     private static final String HTML = "html";
 
     /**
-     * the horizontal position of the text
+     * the horizontal position of the text.
      */
     private int horizontalTextPosition = SwingUtilities.LEFT;
 
     /**
-     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
      */
     protected CloseableTabbedPaneUI() {
         super();
     }
 
     /**
-     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
      * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
     protected CloseableTabbedPaneUI(int horizontalTextPosition) {
@@ -478,7 +477,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     /**
-     * Layouts the label
+     * Layouts the label.
      * @param tabPlacement the placement of the tabs
      * @param metrics the font metrics
      * @param tabIndex the index of the tab

@@ -139,7 +139,7 @@ class BasicTransferable implements Transferable {
 
     protected boolean isRicherFlavor(DataFlavor flavor) {
 //         DataFlavor[] richerFlavors = getRicherFlavors();
-//         int nFlavors = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+//         int nFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
 //         for (int i = 0; i < nFlavors; i++) {
 //             if (richerFlavors[i].equals(flavor)) {
 //                 return true;
@@ -155,7 +155,7 @@ class BasicTransferable implements Transferable {
      * placed at the start of the array of supported flavors.
      */
     protected DataFlavor[] getRicherFlavors() {
-        return new DataFlavor[0]; //null;
+        return new DataFlavor[0]; // null;
     }
 
     protected Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
@@ -190,7 +190,7 @@ class BasicTransferable implements Transferable {
     }
 
     /**
-     * Fetch the data in a text/html format
+     * Fetch the data in a text/html format.
      */
     protected String getHTMLData() {
         return htmlData;
