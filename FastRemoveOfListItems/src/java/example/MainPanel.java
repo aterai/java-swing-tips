@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         ListSelectionModel sm = from.getSelectionModel();
         int[] selectedIndices = from.getSelectedIndices();
 
-        DefaultListModel<E> fromModel = (DefaultListModel<E>) from.getModel();
+        DefaultListModel<E>  = (DefaultListModel<E>) from.getModel();
         DefaultListModel<E> toModel = (DefaultListModel<E>) to.getModel();
         List<E> unselectedValues = new ArrayList<>();
         for (int i = 0; i < fromModel.getSize(); i++) {
@@ -50,8 +50,12 @@ public final class MainPanel extends JPanel {
             // if (from.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {
             //     fromModel.removeRange(selectedIndices[0], selectedIndices[selectedIndices.length - 1]);
             // }
-            fromModel.clear();
-            unselectedValues.forEach(fromModel::addElement);
+            // TEST: Moving the first item is very slow.
+            // fromModel.clear();
+            // unselectedValues.forEach(fromModel::addElement);
+            DefaultListModel<E> model = new DefaultListModel<>();
+            unselectedValues.forEach(model::addElement);
+            from.setModel(model);
         }
     }
     private static <E> void move2(JList<E> from, JList<E> to) {
