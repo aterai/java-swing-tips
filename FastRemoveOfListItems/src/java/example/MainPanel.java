@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         ListSelectionModel sm = from.getSelectionModel();
         int[] selectedIndices = from.getSelectedIndices();
 
-        DefaultListModel<E>  = (DefaultListModel<E>) from.getModel();
+        DefaultListModel<E> fromModel = (DefaultListModel<E>) from.getModel();
         DefaultListModel<E> toModel = (DefaultListModel<E>) to.getModel();
         List<E> unselectedValues = new ArrayList<>();
         for (int i = 0; i < fromModel.getSize(); i++) {
@@ -176,12 +176,12 @@ class ArrayListModel<E> extends AbstractListModel<E> {
         return rv;
     }
 
-//   public boolean removeAll(Collection<?> c) {
-//     int max = delegate.size();
-//     boolean b = delegate.removeAll(c);
-//     fireIntervalRemoved(this, 0, max);
-//     return b;
-//   }
+    // public boolean removeAll(Collection<?> c) {
+    //     int max = delegate.size();
+    //     boolean b = delegate.removeAll(c);
+    //     fireIntervalRemoved(this, 0, max);
+    //     return b;
+    // }
 
     public void remove(int... selectedIndices) {
         if (selectedIndices.length > 0) {
