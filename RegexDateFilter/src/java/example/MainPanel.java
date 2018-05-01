@@ -24,6 +24,37 @@ public final class MainPanel extends JPanel {
 
         System.out.println(date.toString()); // --> Tue Dec 31 10:30:15 JST 2002
 
+        Object[][] data = {
+            {date}, {start}, {end}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date"}) {
+            @Override public Class<?> getColumnClass(int column) {
+                return Date.class;
+            }
+        };
+
+        // // LocalDateTime test:
+        // LocalDateTime d = LocalDateTime.of(2002, 12, 31, 0, 0);
+        // Object[][] data = {
+        //     {date, d},
+        //     {start, d.minus(2, ChronoUnit.DAYS)},
+        //     {end, d.plus(7, ChronoUnit.DAYS)}
+        // };
+        // DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date", "LocalDateTime"}) {
+        //     @Override public Class<?> getColumnClass(int column) {
+        //         return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
+        //     }
+        // };
+
+        JTable table = new JTable(model) {
+            @Override public String getToolTipText(MouseEvent e) {
+                int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
+                return getModel().getValueAt(row, 0).toString();
+            }
+        };
+        TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+
         // RowFilter.regexFilter
         Matcher m1 = Pattern.compile("12").matcher(date.toString());
         System.out.println(m1.find()); // --> false
@@ -34,37 +65,6 @@ public final class MainPanel extends JPanel {
         // a customized RegexFilter
         Matcher m3 = Pattern.compile("12").matcher(DateFormat.getDateInstance().format(date));
         System.out.println(m3.find()); // --> true
-
-        //// LocalDateTime test:
-        //LocalDateTime d = LocalDateTime.of(2002, 12, 31, 0, 0);
-        //Object[][] data = {
-        //    {date,  d},
-        //    {start, d.minus(2, ChronoUnit.DAYS)},
-        //    {end,   d.plus(7, ChronoUnit.DAYS)}
-        //};
-        //DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date", "LocalDateTime"}) {
-        //    @Override public Class<?> getColumnClass(int column) {
-        //        return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
-        //    }
-        //};
-
-        Object[][] data = {
-            {date}, {start}, {end}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date"}) {
-            @Override public Class<?> getColumnClass(int column) {
-                return Date.class;
-            }
-        };
-
-        JTable table = new JTable(model) {
-            @Override public String getToolTipText(MouseEvent e) {
-                int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-                return getModel().getValueAt(row, 0).toString();
-            }
-        };
-        TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-        table.setRowSorter(sorter);
 
         JTextField field = new JTextField("(?i)12");
 
@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        Box box = Box.createVerticalBox(); //new JPanel(new GridLayout(2, 1, 5, 5));
+        Box box = Box.createVerticalBox(); // new JPanel(new GridLayout(2, 1, 5, 5));
         box.setBorder(BorderFactory.createEmptyBorder(5, 2, 5, 2));
 
         JPanel p1 = new JPanel(new BorderLayout());
@@ -140,8 +140,8 @@ class RegexDateFilter extends RowFilter<TableModel, Integer> {
         this.matcher = pattern.matcher("");
     }
     @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        //TableModel m = entry.getModel();
-        //for (int i = 0; i < m.getColumnCount(); i++) {
+        // TableModel m = entry.getModel();
+        // for (int i = 0; i < m.getColumnCount(); i++) {
         for (int i = entry.getValueCount() - 1; i >= 0; i--) {
             Object v = entry.getValue(i);
             if (v instanceof Date) {

@@ -8,15 +8,13 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
+    private static final String DUMMY = "Hello";
+    private final JTextField textField1 = new JTextField(DUMMY);
+    private final JTextField textField2 = new JTextField(DUMMY);
+    private final JTextField textField3 = new JTextField(DUMMY);
+    private final JTextField textField4 = new JTextField(DUMMY);
     private MainPanel() {
         super(new BorderLayout());
-
-        String dummy = "Hello";
-        JTextField textField1 = new JTextField(dummy);
-        JTextField textField2 = new JTextField(dummy);
-        JTextField textField3 = new JTextField(dummy);
-        JTextField textField4 = new JTextField(dummy);
-
         textField3.addHierarchyListener(new FocusHierarchyListener());
         textField4.addAncestorListener(new FocusAncestorListener());
 

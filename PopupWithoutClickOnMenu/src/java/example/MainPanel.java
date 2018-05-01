@@ -25,12 +25,12 @@ public final class MainPanel extends JPanel {
             }
         });
 
-//         EventQueue.invokeLater(() -> {
-//             Component c = SwingUtilities.getRoot(this);
-//             if (c instanceof JFrame) {
-//                 ((JFrame) c).setJMenuBar(bar);
-//             }
-//         });
+        // EventQueue.invokeLater(() -> {
+        //     Component c = SwingUtilities.getRoot(this);
+        //     if (c instanceof JFrame) {
+        //         ((JFrame) c).setJMenuBar(bar);
+        //     }
+        // });
         EventQueue.invokeLater(() -> getRootPane().setJMenuBar(bar));
 
         add(check, BorderLayout.SOUTH);
@@ -39,13 +39,12 @@ public final class MainPanel extends JPanel {
     private static JMenuBar makeMenuBar() {
         JMenuBar bar = new JMenuBar();
 
-        JMenu menu = new JMenu("File");
+        JMenu menu = bar.add(new JMenu("File"));
         menu.add("Open");
         menu.add("Save");
         menu.add("Exit");
-        bar.add(menu);
 
-        menu = new JMenu("Edit");
+        menu = bar.add(new JMenu("Edit"));
         menu.add("Undo");
         menu.add("Redo");
         menu.addSeparator();
@@ -53,9 +52,8 @@ public final class MainPanel extends JPanel {
         menu.add("Copy");
         menu.add("Paste");
         menu.add("Delete");
-        bar.add(menu);
 
-        menu = new JMenu("Test");
+        menu = bar.add(new JMenu("Test"));
         menu.add("JMenuItem1");
         menu.add("JMenuItem2");
         JMenu sub = new JMenu("JMenu");
@@ -63,7 +61,7 @@ public final class MainPanel extends JPanel {
         sub.add("JMenuItem5");
         menu.add(sub);
         menu.add("JMenuItem3");
-        bar.add(menu);
+
         return bar;
     }
     private static void visitAll(Container p, MouseListener l) {
@@ -71,15 +69,15 @@ public final class MainPanel extends JPanel {
             if (comp instanceof JMenu) {
                 ((JMenu) comp).addMouseListener(l);
             }
-//             if (comp instanceof Container) {
-//                 Container c = (Container) comp;
-//                 if (c.getComponentCount() > 0) {
-//                     visitAll(c, l);
-//                 }
-//                 if (c instanceof JMenu) {
-//                     c.addMouseListener(l);
-//                 }
-//             }
+            // if (comp instanceof Container) {
+            //     Container c = (Container) comp;
+            //     if (c.getComponentCount() > 0) {
+            //         visitAll(c, l);
+            //     }
+            //     if (c instanceof JMenu) {
+            //         c.addMouseListener(l);
+            //     }
+            // }
         }
     }
     public static void main(String... args) {

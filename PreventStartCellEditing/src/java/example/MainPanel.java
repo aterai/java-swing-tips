@@ -12,7 +12,6 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JRadioButton r0 = new JRadioButton("default", true);
         JRadioButton r1 = new JRadioButton("prevent KeyStroke autoStartsEdit");
         JRadioButton r2 = new JRadioButton("prevent mouse from starting edit");
         JRadioButton r3 = new JRadioButton("start cell editing only F2");
@@ -34,18 +33,18 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        // //System.out.println(table.getActionMap().get("startEditing"));
-        //InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        //for (KeyStroke ks: im.allKeys()) {
-        //    Object actionMapKey = im.get(ks);
-        //    if ("startEditing".equals(actionMapKey.toString())) {
-        //        System.out.println("startEditing: "+ ks.toString());
-        //    }
-        //}
+        // // System.out.println(table.getActionMap().get("startEditing"));
+        // InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // for (KeyStroke ks: im.allKeys()) {
+        //     Object actionMapKey = im.get(ks);
+        //     if ("startEditing".equals(actionMapKey.toString())) {
+        //         System.out.println("startEditing: "+ ks.toString());
+        //     }
+        // }
 
         DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
         ActionListener al = e -> {
@@ -56,7 +55,7 @@ public final class MainPanel extends JPanel {
 
         Box p = Box.createVerticalBox();
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(r0, r1, r2, r3, r4)) {
+        for (AbstractButton b: Arrays.asList(new JRadioButton("default", true), r1, r2, r3, r4)) {
             b.addActionListener(al);
             bg.add(b);
             p.add(b);

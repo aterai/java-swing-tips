@@ -17,21 +17,22 @@ public final class MainPanel extends JPanel {
                 return RowData.class;
             }
         };
+
         String colors = "colors";
+        addRowData(model, new RowData(colors, "blue", 1));
+        addRowData(model, new RowData(colors, "violet", 2));
+        addRowData(model, new RowData(colors, "red", 3));
+        addRowData(model, new RowData(colors, "yellow", 4));
         String sports = "sports";
-        String food   = "food";
-        addRowData(model, new RowData(colors, "blue",     1));
-        addRowData(model, new RowData(colors, "violet",   2));
-        addRowData(model, new RowData(colors, "red",      3));
-        addRowData(model, new RowData(colors, "yellow",   4));
         addRowData(model, new RowData(sports, "baseball", 23));
-        addRowData(model, new RowData(sports, "soccer",   22));
+        addRowData(model, new RowData(sports, "soccer", 22));
         addRowData(model, new RowData(sports, "football", 21));
-        addRowData(model, new RowData(sports, "hockey",   20));
-        addRowData(model, new RowData(food,   "hot dogs", 10));
-        addRowData(model, new RowData(food,   "pizza",    11));
-        addRowData(model, new RowData(food,   "ravioli",  12));
-        addRowData(model, new RowData(food,   "bananas",  13));
+        addRowData(model, new RowData(sports, "hockey", 20));
+        String food = "food";
+        addRowData(model, new RowData(food, "hot dogs", 10));
+        addRowData(model, new RowData(food, "pizza", 11));
+        addRowData(model, new RowData(food, "ravioli", 12));
+        addRowData(model, new RowData(food, "bananas", 13));
 
         JTable table = new JTable(model) {
             @Override public void updateUI() {
@@ -87,7 +88,7 @@ class RowData {
     private final int count;
     protected RowData(String group, String name, int count) {
         this.group = group;
-        this.name  = name;
+        this.name = name;
         this.count = count;
     }
     public String getGroup() {

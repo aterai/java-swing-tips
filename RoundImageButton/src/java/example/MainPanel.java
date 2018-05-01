@@ -13,17 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
-        JComboBox<? extends Enum<?>> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
-
-        List<? extends JButton> buttons = Arrays.asList(
-            new RoundButton(new ImageIcon(getClass().getResource("005.png")), "005d.png", "005g.png"),
-            new RoundButton(new ImageIcon(getClass().getResource("003.png")), "003d.png", "003g.png"),
-            new RoundButton(new ImageIcon(getClass().getResource("001.png")), "001d.png", "001g.png"),
-            new RoundButton(new ImageIcon(getClass().getResource("002.png")), "002d.png", "002g.png"),
-            new RoundButton(new ImageIcon(getClass().getResource("004.png")), "004d.png", "004g.png"));
-        // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
-
         Box box = Box.createHorizontalBox();
         // JDK 5
         // new Box(BoxLayout.X_AXIS) {
@@ -40,6 +29,14 @@ public final class MainPanel extends JPanel {
         box.setBackground(new Color(120, 120, 160));
         box.add(Box.createHorizontalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
+
+        List<? extends JButton> buttons = Arrays.asList(
+            new RoundButton(new ImageIcon(getClass().getResource("005.png")), "005d.png", "005g.png"),
+            new RoundButton(new ImageIcon(getClass().getResource("003.png")), "003d.png", "003g.png"),
+            new RoundButton(new ImageIcon(getClass().getResource("001.png")), "001d.png", "001g.png"),
+            new RoundButton(new ImageIcon(getClass().getResource("002.png")), "002d.png", "002g.png"),
+            new RoundButton(new ImageIcon(getClass().getResource("004.png")), "004d.png", "004g.png"));
+        // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
         buttons.forEach(b -> {
             box.add(b);
             box.add(Box.createHorizontalStrut(5));
@@ -56,6 +53,8 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         p.add(check);
+
+        JComboBox<? extends Enum<?>> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
         alignmentsChoices.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 ButtonAlignments ba = (ButtonAlignments) e.getItem();
@@ -70,35 +69,35 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     // TEST:
-//     public static List<JButton> makeButtonArray2(Class clazz) {
-//         return Arrays.asList(
-//             new JButton(new ImageIcon(clazz.getResource("005.png"))) {{
-//                 setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
-//                 setRolloverIcon(new ImageIcon(clazz.getResource("005g.png")));
-//                 setUI(new RoundImageButtonUI());
-//             }},
-//             new JButton(new ImageIcon(clazz.getResource("003.png"))) {{
-//                 setPressedIcon(new ImageIcon(clazz.getResource("003d.png")));
-//                 setRolloverIcon(new ImageIcon(clazz.getResource("003g.png")));
-//                 setUI(new RoundImageButtonUI());
-//             }},
-//             new JButton(new ImageIcon(clazz.getResource("001.png"))) {{
-//                 setPressedIcon(new ImageIcon(clazz.getResource("001d.png")));
-//                 setRolloverIcon(new ImageIcon(clazz.getResource("001g.png")));
-//                 setUI(new RoundImageButtonUI());
-//             }},
-//             new JButton(new ImageIcon(clazz.getResource("002.png"))) {{
-//                 setPressedIcon(new ImageIcon(clazz.getResource("002d.png")));
-//                 setRolloverIcon(new ImageIcon(clazz.getResource("002g.png")));
-//                 setUI(new RoundImageButtonUI());
-//             }},
-//             new JButton(new ImageIcon(clazz.getResource("004.png"))) {{
-//                 setPressedIcon(new ImageIcon(clazz.getResource("004d.png")));
-//                 setRolloverIcon(new ImageIcon(clazz.getResource("004g.png")));
-//                 setUI(new RoundImageButtonUI());
-//             }});
-//     }
+    // // TEST:
+    // public static List<JButton> makeButtonArray2(Class clazz) {
+    //     return Arrays.asList(
+    //         new JButton(new ImageIcon(clazz.getResource("005.png"))) {{
+    //             setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
+    //             setRolloverIcon(new ImageIcon(clazz.getResource("005g.png")));
+    //             setUI(new RoundImageButtonUI());
+    //         }},
+    //         new JButton(new ImageIcon(clazz.getResource("003.png"))) {{
+    //             setPressedIcon(new ImageIcon(clazz.getResource("003d.png")));
+    //             setRolloverIcon(new ImageIcon(clazz.getResource("003g.png")));
+    //             setUI(new RoundImageButtonUI());
+    //         }},
+    //         new JButton(new ImageIcon(clazz.getResource("001.png"))) {{
+    //             setPressedIcon(new ImageIcon(clazz.getResource("001d.png")));
+    //             setRolloverIcon(new ImageIcon(clazz.getResource("001g.png")));
+    //             setUI(new RoundImageButtonUI());
+    //         }},
+    //         new JButton(new ImageIcon(clazz.getResource("002.png"))) {{
+    //             setPressedIcon(new ImageIcon(clazz.getResource("002d.png")));
+    //             setRolloverIcon(new ImageIcon(clazz.getResource("002g.png")));
+    //             setUI(new RoundImageButtonUI());
+    //         }},
+    //         new JButton(new ImageIcon(clazz.getResource("004.png"))) {{
+    //             setPressedIcon(new ImageIcon(clazz.getResource("004d.png")));
+    //             setRolloverIcon(new ImageIcon(clazz.getResource("004g.png")));
+    //             setUI(new RoundImageButtonUI());
+    //         }});
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -126,24 +125,24 @@ public final class MainPanel extends JPanel {
 class RoundButton extends JButton {
     protected Shape shape;
     protected Shape base;
-//     protected RoundButton() {
-//         super();
-//     }
-//     protected RoundButton(Icon icon) {
-//         super(icon);
-//     }
-//     protected RoundButton(String text) {
-//         super(text);
-//     }
-//     protected RoundButton(Action a) {
-//         super(a);
-//         // setAction(a);
-//     }
-//     protected RoundButton(String text, Icon icon) {
-//         super(text, icon);
-//         // setModel(new DefaultButtonModel());
-//         // init(text, icon);
-//     }
+    // protected RoundButton() {
+    //     super();
+    // }
+    // protected RoundButton(Icon icon) {
+    //     super(icon);
+    // }
+    // protected RoundButton(String text) {
+    //     super(text);
+    // }
+    // protected RoundButton(Action a) {
+    //     super(a);
+    //     // setAction(a);
+    // }
+    // protected RoundButton(String text, Icon icon) {
+    //     super(text, icon);
+    //     // setModel(new DefaultButtonModel());
+    //     // init(text, icon);
+    // }
     protected RoundButton(Icon icon, String i2, String i3) {
         super(icon);
         setPressedIcon(new ImageIcon(getClass().getResource(i2)));

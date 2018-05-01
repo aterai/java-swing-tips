@@ -62,62 +62,60 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < 7; i++) {
             list.add(makeComboBox());
         }
-        JComboBox<?> combo;
-        JTextField editor;
 
         // ---- 00 ----
-        combo = list.get(0);
-        combo.setEditable(false);
-        combo.setToolTipText("combo.setEditable(false);");
+        JComboBox<?> combo00 = list.get(0);
+        combo00.setEditable(false);
+        combo00.setToolTipText("combo.setEditable(false);");
 
         // ---- 01 ----
-        combo = list.get(1);
-        combo.setEditable(true);
-        editor = (JTextField) combo.getEditor().getEditorComponent();
-        editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), getPaddingBorder(isColor)));
-        combo.setToolTipText("editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), padding));");
+        JComboBox<?> combo01 = list.get(1);
+        combo01.setEditable(true);
+        JTextField editor01 = (JTextField) combo01.getEditor().getEditorComponent();
+        editor01.setBorder(BorderFactory.createCompoundBorder(editor01.getBorder(), getPaddingBorder(isColor)));
+        combo01.setToolTipText("editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), padding));");
 
         // ---- 02 ----
-        combo = list.get(2);
-        combo.setEditable(true);
-        editor = (JTextField) combo.getEditor().getEditorComponent();
-        editor.setBorder(getPaddingBorder(isColor));
-        combo.setToolTipText("editor.setBorder(padding);");
+        JComboBox<?> combo02 = list.get(2);
+        combo02.setEditable(true);
+        JTextField editor02 = (JTextField) combo02.getEditor().getEditorComponent();
+        editor02.setBorder(getPaddingBorder(isColor));
+        combo02.setToolTipText("editor.setBorder(padding);");
 
         // ---- 03 ----
-        combo = list.get(3);
-        combo.setEditable(true);
-        editor = (JTextField) combo.getEditor().getEditorComponent();
-        Insets i = editor.getInsets();
-        editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));
-        combo.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));");
+        JComboBox<?> combo03 = list.get(3);
+        combo03.setEditable(true);
+        JTextField editor03 = (JTextField) combo03.getEditor().getEditorComponent();
+        Insets i = editor03.getInsets();
+        editor03.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));
+        combo03.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));");
 
         // ---- 04 ----
-        combo = list.get(4);
-        combo.setEditable(true);
-        editor = (JTextField) combo.getEditor().getEditorComponent();
-        Insets m = editor.getMargin();
-        editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));
-        combo.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));");
+        JComboBox<?> combo04 = list.get(4);
+        combo04.setEditable(true);
+        JTextField editor04 = (JTextField) combo04.getEditor().getEditorComponent();
+        Insets m = editor04.getMargin();
+        editor04.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));
+        combo04.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));");
 
         // ---- 05 ----
-        combo = list.get(5);
-        combo.setEditable(true);
-        combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), getPaddingBorder(isColor)));
-        combo.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), padding));");
+        JComboBox<?> combo05 = list.get(5);
+        combo05.setEditable(true);
+        combo05.setBorder(BorderFactory.createCompoundBorder(combo05.getBorder(), getPaddingBorder(isColor)));
+        combo05.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), padding));");
 
         // ---- 06 ----
-        combo = list.get(6);
-        combo.setEditable(true);
-        combo.setBorder(BorderFactory.createCompoundBorder(getPaddingBorder(isColor), combo.getBorder()));
-        combo.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(padding, combo.getBorder()));");
+        JComboBox<?> combo06 = list.get(6);
+        combo06.setEditable(true);
+        combo06.setBorder(BorderFactory.createCompoundBorder(getPaddingBorder(isColor), combo06.getBorder()));
+        combo06.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(padding, combo.getBorder()));");
 
         if (isColor) {
             Color c = new Color(.8f, 1f, .8f);
             for (JComboBox<?> cb: list) {
                 cb.setOpaque(true);
                 cb.setBackground(c);
-                editor = (JTextField) cb.getEditor().getEditorComponent();
+                JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
                 editor.setOpaque(true);
                 editor.setBackground(c);
             }

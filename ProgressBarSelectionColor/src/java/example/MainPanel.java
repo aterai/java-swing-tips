@@ -17,14 +17,17 @@ public final class MainPanel extends JPanel {
 
         BoundedRangeModel model = new DefaultBoundedRangeModel();
         JProgressBar progressBar0 = new JProgressBar(model);
+        progressBar0.setStringPainted(true);
 
         UIManager.put("ProgressBar.foreground", Color.RED);
         UIManager.put("ProgressBar.selectionForeground", Color.ORANGE);
         UIManager.put("ProgressBar.background", Color.WHITE);
         UIManager.put("ProgressBar.selectionBackground", Color.RED);
         JProgressBar progressBar1 = new JProgressBar(model);
+        progressBar1.setStringPainted(true);
 
         JProgressBar progressBar2 = new JProgressBar(model);
+        progressBar2.setStringPainted(true);
         progressBar2.setForeground(Color.BLUE);
         progressBar2.setBackground(Color.CYAN.brighter());
         progressBar2.setUI(new BasicProgressBarUI() {
@@ -35,10 +38,6 @@ public final class MainPanel extends JPanel {
                 return Color.BLUE;
             }
         });
-
-        progressBar0.setStringPainted(true);
-        progressBar1.setStringPainted(true);
-        progressBar2.setStringPainted(true);
 
         JPanel p = new JPanel(new GridLayout(5, 1));
         p.add(makePanel(progressBar0));
@@ -75,11 +74,12 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static Component makePanel(Component cmp) {
-        JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
+
+        JPanel p = new JPanel(new GridBagLayout());
         p.add(cmp, c);
         return p;
     }
@@ -91,12 +91,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
