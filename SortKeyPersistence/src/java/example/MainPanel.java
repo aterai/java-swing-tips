@@ -14,15 +14,14 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
-        JTextArea textArea = new JTextArea();
-
         String[] columnNames = {"A", "B"};
         Object[][] data = {
             {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
         };
         JTable table = new JTable(new DefaultTableModel(data, columnNames));
         table.setAutoCreateRowSorter(true);
+
+        JTextArea textArea = new JTextArea();
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);

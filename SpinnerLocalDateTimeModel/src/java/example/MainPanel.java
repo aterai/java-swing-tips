@@ -15,8 +15,6 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(0, 1));
-        String dateFormat = "yyyy/MM/dd";
-
         Calendar cal = Calendar.getInstance();
         cal.clear(Calendar.MILLISECOND);
         cal.clear(Calendar.SECOND);
@@ -31,6 +29,8 @@ public final class MainPanel extends JPanel {
         System.out.println(date);
         System.out.println(start);
         System.out.println(end);
+
+        String dateFormat = "yyyy/MM/dd";
 
         JSpinner spinner0 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
         spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
@@ -49,14 +49,14 @@ public final class MainPanel extends JPanel {
         JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
         spinner2.setEditor(new LocalDateTimeEditor(spinner2, dateFormat));
 
-//         JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
-//         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(dateFormat).toFormat());
-//         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
-//         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
-//         ftf.setHorizontalAlignment(SwingConstants.LEFT);
-//         ftf.setColumns(10);
-//         ftf.setEditable(true);
-//         ftf.setFormatterFactory(factory);
+        // JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
+        // DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(dateFormat).toFormat());
+        // DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+        // JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+        // ftf.setHorizontalAlignment(SwingConstants.LEFT);
+        // ftf.setColumns(10);
+        // ftf.setEditable(true);
+        // ftf.setFormatterFactory(factory);
 
         add(makeTitledPanel("SpinnerDateModel", spinner0));
         add(makeTitledPanel("SpinnerDateModel / toInstant", spinner1));
@@ -108,9 +108,9 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
 
     protected SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
         super();
-//         if (Objects.nonNull(start) && start.compareTo(value) >= 0 || Objects.nonNull(end) && end.compareTo(value) <= 0) {
-//             throw new IllegalArgumentException("(start <= value <= end) is false");
-//         }
+        // if (Objects.nonNull(start) && start.compareTo(value) >= 0 || Objects.nonNull(end) && end.compareTo(value) <= 0) {
+        //     throw new IllegalArgumentException("(start <= value <= end) is false");
+        // }
         this.value = Optional.ofNullable(value).orElseThrow(() -> new IllegalArgumentException("value is null"));
         this.start = start;
         this.end = end;
@@ -202,7 +202,6 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
 
         EventQueue.invokeLater(() -> {
             formatter.setValueClass(LocalDateTime.class);
-            DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
             JFormattedTextField ftf = (JFormattedTextField) getTextField();
             try {
                 String maxString = formatter.valueToString(model.getStart());
@@ -214,7 +213,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
             }
             ftf.setHorizontalAlignment(SwingConstants.LEFT);
             ftf.setEditable(true);
-            ftf.setFormatterFactory(factory);
+            ftf.setFormatterFactory(new DefaultFormatterFactory(formatter));
         });
     }
 

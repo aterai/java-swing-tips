@@ -94,23 +94,23 @@ final class TreeUtil {
     public static final AtomicInteger COMPARE_COUNTER = new AtomicInteger();
     public static final AtomicInteger SWAP_COUNTER = new AtomicInteger();
 
-//     // JDK 1.7.0
-//     private static TreeNodeComparator tnc = new TreeNodeComparator();
-//     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
-//         private static final long serialVersionUID = 1L;
-//         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-//             COMPARE_COUNTER.getAndIncrement();
-//             if (a.isLeaf() && !b.isLeaf()) {
-//                 return 1;
-//             } else if (!a.isLeaf() && b.isLeaf()) {
-//                 return -1;
-//             } else {
-//                 String sa = a.getUserObject().toString();
-//                 String sb = b.getUserObject().toString();
-//                 return sa.compareToIgnoreCase(sb);
-//             }
-//         }
-//     }
+    // // JDK 1.7.0
+    // private static TreeNodeComparator tnc = new TreeNodeComparator();
+    // private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
+    //     private static final long serialVersionUID = 1L;
+    //     @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+    //         COMPARE_COUNTER.getAndIncrement();
+    //         if (a.isLeaf() && !b.isLeaf()) {
+    //             return 1;
+    //         } else if (!a.isLeaf() && b.isLeaf()) {
+    //             return -1;
+    //         } else {
+    //             String sa = a.getUserObject().toString();
+    //             String sb = b.getUserObject().toString();
+    //             return sa.compareToIgnoreCase(sb);
+    //         }
+    //     }
+    // }
 
     // JDK 1.8.0
     private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
@@ -196,9 +196,9 @@ final class TreeUtil {
     }
 
     private static void sort3(DefaultMutableTreeNode parent) {
-//         @SuppressWarnings("unchecked")
-//         Enumeration<DefaultMutableTreeNode> e = parent.children();
-//         ArrayList<DefaultMutableTreeNode> children = Collections.list(e);
+        // @SuppressWarnings("unchecked")
+        // Enumeration<DefaultMutableTreeNode> e = parent.children();
+        // ArrayList<DefaultMutableTreeNode> children = Collections.list(e);
 
         int n = parent.getChildCount();
         List<DefaultMutableTreeNode> children = new ArrayList<>(n);
@@ -234,20 +234,20 @@ final class TreeUtil {
     }
 
     public static DefaultMutableTreeNode makeTreeRoot() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
-
         set1.add(new DefaultMutableTreeNode("3333333333333333"));
         set1.add(new DefaultMutableTreeNode("111111111"));
         set1.add(new DefaultMutableTreeNode("22222222222"));
         set1.add(set4);
         set1.add(new DefaultMutableTreeNode("222222"));
         set1.add(new DefaultMutableTreeNode("222222222"));
+
+        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
         set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
         set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+
+        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
         set3.add(new DefaultMutableTreeNode("zzzzzzz"));
         set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
         set3.add(new DefaultMutableTreeNode("ccccccccc"));
@@ -257,6 +257,7 @@ final class TreeUtil {
         set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
         set4.add(new DefaultMutableTreeNode("zzzzzzz"));
 
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxx"));
         root.add(set3);
         root.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));

@@ -8,17 +8,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
         SpringLayout layout = new SpringLayout();
-        JPanel panel = new JPanel(layout);
-        JLabel l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
-        JButton l2 = new JButton("button: 50%, 65%, 40%, 30%");
-        // JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
 
+        JPanel panel = new JPanel(layout);
         panel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
+
+        JLabel l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
         l1.setOpaque(true);
         l1.setBackground(Color.ORANGE);
         l1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+
+        JButton l2 = new JButton("button: 50%, 65%, 40%, 30%");
+        // JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
         // l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
 
         setScaleAndAdd(panel, layout, l1, .05f, .05f, .90f, .55f);
@@ -46,23 +47,23 @@ public final class MainPanel extends JPanel {
         parent.add(child);
     }
 
-//     public void initLayout() {
-//         SpringLayout layout = new SpringLayout();
-//         Insets i = panel.getInsets();
-//         int w = panel.getWidth()  - i.left - i.right;
-//         int h = panel.getHeight() - i.top  - i.bottom;
-//
-//         l1.setPreferredSize(new Dimension(w * 90 / 100, h * 55 / 100));
-//         l2.setPreferredSize(new Dimension(w * 40 / 100, h * 30 / 100));
-//
-//         layout.putConstraint(SpringLayout.WEST,  l1,  w *  5 / 100, SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.NORTH, l1,  h *  5 / 100, SpringLayout.NORTH, panel);
-//         layout.putConstraint(SpringLayout.WEST,  l2,  w * 50 / 100, SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.SOUTH, l2, -h *  5 / 100, SpringLayout.SOUTH, panel);
-//
-//         panel.setLayout(layout);
-//         panel.revalidate();
-//     }
+    // public void initLayout() {
+    //     SpringLayout layout = new SpringLayout();
+    //     Insets i = panel.getInsets();
+    //     int w = panel.getWidth() - i.left - i.right;
+    //     int h = panel.getHeight() - i.top - i.bottom;
+    //
+    //     l1.setPreferredSize(new Dimension(w * 90 / 100, h * 55 / 100));
+    //     l2.setPreferredSize(new Dimension(w * 40 / 100, h * 30 / 100));
+    //
+    //     layout.putConstraint(SpringLayout.WEST, l1, w * 5 / 100, SpringLayout.WEST, panel);
+    //     layout.putConstraint(SpringLayout.NORTH, l1, h * 5 / 100, SpringLayout.NORTH, panel);
+    //     layout.putConstraint(SpringLayout.WEST, l2, w * 50 / 100, SpringLayout.WEST, panel);
+    //     layout.putConstraint(SpringLayout.SOUTH, l2, -h * 5 / 100, SpringLayout.SOUTH, panel);
+    //
+    //     panel.setLayout(layout);
+    //     panel.revalidate();
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

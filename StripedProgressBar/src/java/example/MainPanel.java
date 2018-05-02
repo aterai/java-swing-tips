@@ -6,53 +6,46 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
     private transient SwingWorker<String, Void> worker;
-
     private MainPanel() {
         super(new BorderLayout());
         UIManager.put("ProgressBar.cycleTime", 1000);
         UIManager.put("ProgressBar.repaintInterval", 10);
 
         BoundedRangeModel model = new DefaultBoundedRangeModel();
-        JProgressBar progressBar0 = new JProgressBar(model);
         JProgressBar progressBar1 = new JProgressBar(model);
-        JProgressBar progressBar2 = new JProgressBar(model);
-        JProgressBar progressBar3 = new JProgressBar(model);
-        JProgressBar progressBar4 = new JProgressBar(model);
+        progressBar1.setUI(new StripedProgressBarUI(true, true));
 
-        progressBar1.setUI(new StripedProgressBarUI(true,  true));
-        progressBar2.setUI(new StripedProgressBarUI(true,  false));
+        JProgressBar progressBar2 = new JProgressBar(model);
+        progressBar2.setUI(new StripedProgressBarUI(true, false));
+
+        JProgressBar progressBar3 = new JProgressBar(model);
         progressBar3.setUI(new StripedProgressBarUI(false, true));
+
+        JProgressBar progressBar4 = new JProgressBar(model);
         progressBar4.setUI(new StripedProgressBarUI(false, false));
 
+        List<JProgressBar> list = Arrays.asList(new JProgressBar(model), progressBar1, progressBar2, progressBar3, progressBar4);
+
         JPanel p = new JPanel(new GridLayout(5, 1));
-        p.add(makePanel(progressBar0));
-        p.add(makePanel(progressBar1));
-        p.add(makePanel(progressBar2));
-        p.add(makePanel(progressBar3));
-        p.add(makePanel(progressBar4));
+        list.forEach(bar -> p.add(makePanel(bar)));
 
         JButton button = new JButton("Test start");
         button.addActionListener(e -> {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
-            progressBar0.setIndeterminate(true);
-            progressBar1.setIndeterminate(true);
-            progressBar2.setIndeterminate(true);
-            progressBar3.setIndeterminate(true);
-            progressBar4.setIndeterminate(true);
             worker = new BackgroundTask();
-            worker.addPropertyChangeListener(new ProgressListener(progressBar0));
-            worker.addPropertyChangeListener(new ProgressListener(progressBar1));
-            worker.addPropertyChangeListener(new ProgressListener(progressBar2));
-            worker.addPropertyChangeListener(new ProgressListener(progressBar3));
-            worker.addPropertyChangeListener(new ProgressListener(progressBar4));
+            list.forEach(bar -> {
+                bar.setIndeterminate(true);
+                worker.addPropertyChangeListener(new ProgressListener(bar));
+            });
             worker.execute();
         });
 
@@ -74,13 +67,13 @@ public final class MainPanel extends JPanel implements HierarchyListener {
             worker = null;
         }
     }
-
     private static Component makePanel(Component cmp) {
-        JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
+
+        JPanel p = new JPanel(new GridBagLayout());
         p.add(cmp, c);
         return p;
     }
@@ -124,7 +117,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
         // }
 
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth  = progressBar.getWidth() - b.right - b.left;
+        int barRectWidth = progressBar.getWidth() - b.right - b.left;
         int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
 
         if (barRectWidth <= 0 || barRectHeight <= 0) {
