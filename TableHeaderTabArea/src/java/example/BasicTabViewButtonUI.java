@@ -28,7 +28,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         b.setRolloverEnabled(true);
         b.setOpaque(true);
         Border out = BorderFactory.createMatteBorder(2, 0, 0, 0, b.getBackground());
-        Border in  = BorderFactory.createMatteBorder(1, 1, 0, 1, Color.RED);
+        Border in = BorderFactory.createMatteBorder(1, 1, 0, 1, Color.RED);
         b.setBorder(BorderFactory.createCompoundBorder(out, in));
         // b.setForeground(Color.GREEN);
         if (b instanceof TabButton) {
@@ -53,7 +53,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
-        FontMetrics fm = c.getFontMetrics(f);
 
         Insets i = c.getInsets();
         b.getSize(size);
@@ -65,7 +64,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
+            c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,

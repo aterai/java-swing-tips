@@ -60,17 +60,17 @@ public final class MainPanel extends JPanel {
         // }
         map.forEach(UIManager::put);
 
-        JTabbedPane tabs = makeTabbedPane();
-        JComboBox<String> combo = makeComboBox(map);
-        JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
-
         GridBagConstraints c = new GridBagConstraints();
-        JPanel p = new JPanel(new GridBagLayout());
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx = GridBagConstraints.REMAINDER;
+
+        JComboBox<String> combo = makeComboBox(map);
+        JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
+        JPanel p = new JPanel(new GridBagLayout());
         p.add(opaque, c);
         p.add(combo, c);
 
+        JTabbedPane tabs = makeTabbedPane();
         opaque.addActionListener(e -> {
             tabs.setOpaque(((JCheckBox) e.getSource()).isSelected());
             tabs.repaint();
@@ -141,12 +141,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

@@ -10,19 +10,16 @@ import javax.swing.plaf.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
-        JComboBox<String> combo1 = makeComboBox();
-        combo1.setEditable(true);
-
-        JComboBox<String> combo2 = makeComboBox();
+        JComboBox<String> combo = makeComboBox();
+        combo.setEditable(true);
 
         JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
         setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         p.add(new JLabel("setEditable(true)"));
-        p.add(new JLayer<>(combo1, new ToolTipLayerUI<>()));
+        p.add(new JLayer<>(combo, new ToolTipLayerUI<>()));
         p.add(Box.createVerticalStrut(10));
         p.add(new JLabel("setEditable(false)"));
-        p.add(new JLayer<>(combo2, new ToolTipLayerUI<>()));
+        p.add(new JLayer<>(makeComboBox(), new ToolTipLayerUI<>()));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
