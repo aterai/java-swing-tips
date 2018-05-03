@@ -15,23 +15,6 @@ import javax.swing.plaf.basic.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-
-        // CheckableItem displayValue = new CheckableItem("MMMMMMMMMM", false);
-        CheckableItem[] m = {
-            new CheckableItem("aaa",     false),
-            new CheckableItem("bbbbb",   true),
-            new CheckableItem("111",     false),
-            new CheckableItem("33333",   true),
-            new CheckableItem("2222",    true),
-            new CheckableItem("ccccccc", false)
-        };
-
-        JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
-        JComboBox<CheckableItem> combo1 = new CheckedComboBox1<>(new DefaultComboBoxModel<>(m));
-        JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
-        JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
-        JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
-
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -53,9 +36,26 @@ public final class MainPanel extends JPanel {
         c.gridx = 1;
         c.weightx = 1.0;
         c.fill = GridBagConstraints.HORIZONTAL;
-        for (JComboBox<CheckableItem> combo: Arrays.asList(combo0, combo1, combo2, combo3, combo4)) {
-            // combo.setPrototypeDisplayValue(displayValue);
-            p.add(combo, c);
+
+        // CheckableItem displayValue = new CheckableItem("MMMMMMMMMM", false);
+        CheckableItem[] m = {
+            new CheckableItem("aaa",     false),
+            new CheckableItem("bbbbb",   true),
+            new CheckableItem("111",     false),
+            new CheckableItem("33333",   true),
+            new CheckableItem("2222",    true),
+            new CheckableItem("ccccccc", false)
+        };
+
+        JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo1 = new CheckedComboBox1<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
+        JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
+        List<Component> list = Arrays.asList(combo0, combo1, combo2, combo3, combo4);
+        for (Component cmp: list) {
+            // cmp.setPrototypeDisplayValue(displayValue);
+            p.add(cmp, c);
             c.gridy += 1;
         }
 
@@ -149,9 +149,9 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     protected CheckedComboBox(ComboBoxModel<E> model) {
         super(model);
     }
-//     protected CheckedComboBox(E[] m) {
-//         super(m);
-//     }
+    // protected CheckedComboBox(E[] m) {
+    //     super(m);
+    // }
     @Override public Dimension getPreferredSize() {
         return new Dimension(200, 20);
     }

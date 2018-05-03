@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
+
 import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 
 public final class MainPanel extends JPanel {
@@ -116,7 +117,6 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
 
         Font f = c.getFont();
         g.setFont(f);
-        FontMetrics fm = g.getFontMetrics(f);
 
         Insets i = c.getInsets();
         size = b.getSize(size);
@@ -128,17 +128,17 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
         textRect.setBounds(0, 0, 0, 0); // textRect.x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), getDefaultIcon(),
+            c, c.getFontMetrics(f), b.getText(), getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
             Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
-//         // fill background
-//         if (c.isOpaque()) {
-//             g.setColor(b.getBackground());
-//             g.fillRect(0, 0, size.width, size.height);
-//         }
+        // // fill background
+        // if (c.isOpaque()) {
+        //     g.setColor(b.getBackground());
+        //     g.fillRect(0, 0, size.width, size.height);
+        // }
 
         // Paint the radio button
         int y = HtmlViewUtil.getFirstLineCenterY(text, b, iconRect);
@@ -180,7 +180,6 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
 
         Font f = c.getFont();
         g.setFont(f);
-        FontMetrics fm = g.getFontMetrics(f);
 
         Insets i = c.getInsets();
         size = b.getSize(size);
@@ -192,17 +191,17 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
         textRect.setBounds(0, 0, 0, 0); // textRect.x = textRect.y = textRect.width = textRect.height = 0;
 
         String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), getDefaultIcon(),
+            c, c.getFontMetrics(f), b.getText(), getDefaultIcon(),
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
             Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
-//         // fill background
-//         if (c.isOpaque()) {
-//             g.setColor(b.getBackground());
-//             g.fillRect(0, 0, size.width, size.height);
-//         }
+        // // fill background
+        // if (c.isOpaque()) {
+        //     g.setColor(b.getBackground());
+        //     g.fillRect(0, 0, size.width, size.height);
+        // }
 
         // Paint the radio button
         int y = HtmlViewUtil.getFirstLineCenterY(text, b, iconRect);
