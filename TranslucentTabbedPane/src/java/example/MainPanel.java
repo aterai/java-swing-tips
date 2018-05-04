@@ -7,27 +7,24 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final Image bgImage = new ImageIcon(getClass().getResource("test.png")).getImage();
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-
         Color bgc = new Color(110, 110, 0, 100);
         Color fgc = new Color(255, 255, 0, 100);
 
-        UIManager.put("TabbedPane.shadow",                fgc);
-        UIManager.put("TabbedPane.darkShadow",            fgc);
-        UIManager.put("TabbedPane.light",                 fgc);
-        UIManager.put("TabbedPane.highlight",             fgc);
-        UIManager.put("TabbedPane.tabAreaBackground",     fgc);
-        UIManager.put("TabbedPane.unselectedBackground",  fgc);
-        UIManager.put("TabbedPane.background",            bgc);
-        UIManager.put("TabbedPane.foreground",            Color.WHITE);
-        UIManager.put("TabbedPane.focus",                 fgc);
-        UIManager.put("TabbedPane.contentAreaColor",      fgc);
-        UIManager.put("TabbedPane.selected",              fgc);
-        UIManager.put("TabbedPane.selectHighlight",       fgc);
+        UIManager.put("TabbedPane.shadow", fgc);
+        UIManager.put("TabbedPane.darkShadow", fgc);
+        UIManager.put("TabbedPane.light", fgc);
+        UIManager.put("TabbedPane.highlight", fgc);
+        UIManager.put("TabbedPane.tabAreaBackground", fgc);
+        UIManager.put("TabbedPane.unselectedBackground", fgc);
+        UIManager.put("TabbedPane.background", bgc);
+        UIManager.put("TabbedPane.foreground", Color.WHITE);
+        UIManager.put("TabbedPane.focus", fgc);
+        UIManager.put("TabbedPane.contentAreaColor", fgc);
+        UIManager.put("TabbedPane.selected", fgc);
+        UIManager.put("TabbedPane.selectHighlight", fgc);
         UIManager.put("TabbedPane.borderHightlightColor", fgc);
-
-        JTabbedPane tabs = new JTabbedPane();
 
         JPanel tab1panel = new JPanel();
         tab1panel.setBackground(new Color(0, 220, 220, 50));
@@ -44,6 +41,7 @@ public final class MainPanel extends JPanel {
         tab3panel.add(cb);
         tab3panel.add(new JCheckBox("setOpaque(true)"));
 
+        JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Tab 1", tab1panel);
         tabs.addTab("Tab 2", tab2panel);
         tabs.addTab("Tab 3", new AlphaContainer(tab3panel));
@@ -86,7 +84,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//https://tips4java.wordpress.com/2009/05/31/backgrounds-with-transparency/
+// https://tips4java.wordpress.com/2009/05/31/backgrounds-with-transparency/
 class AlphaContainer extends JPanel {
     private final JComponent component;
     protected AlphaContainer(JComponent component) {
@@ -139,7 +137,7 @@ final class LookAndFeelUtil {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
     private static void updateLookAndFeel() {
