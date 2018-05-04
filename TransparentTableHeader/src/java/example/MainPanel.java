@@ -70,6 +70,14 @@ public class MainPanel extends JPanel {
         table.setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
         table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
 
+        Color alphaZero = new Color(0x0, true);
+        table.setOpaque(false);
+        table.setBackground(alphaZero);
+        // table.setGridColor(alphaZero);
+        table.getTableHeader().setDefaultRenderer(new TransparentHeader());
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(alphaZero);
+
         JScrollPane scroll = new JScrollPane(table) {
             @Override protected void paintComponent(Graphics g) {
                 if (Objects.nonNull(TEXTURE)) {
@@ -81,15 +89,6 @@ public class MainPanel extends JPanel {
                 super.paintComponent(g);
             }
         };
-
-        Color alphaZero = new Color(0x0, true);
-        table.setOpaque(false);
-        table.setBackground(alphaZero);
-        // table.setGridColor(alphaZero);
-        table.getTableHeader().setDefaultRenderer(new TransparentHeader());
-        table.getTableHeader().setOpaque(false);
-        table.getTableHeader().setBackground(alphaZero);
-
         scroll.setOpaque(false);
         scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         scroll.setBackground(alphaZero);
@@ -220,9 +219,9 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void validate() { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
     // <---- Overridden for performance reasons.
 }

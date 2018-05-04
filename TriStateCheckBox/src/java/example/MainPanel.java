@@ -116,15 +116,15 @@ class HeaderRenderer implements TableCellRenderer {
         }
         l.setIcon(new ComponentIcon(check));
         l.setText(null); // XXX: Nimbus???
-//         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-//         System.out.println("getPreferredSize: " + l.getPreferredSize());
-//         System.out.println("getMaximunSize: " + l.getMaximumSize());
-//         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-//             System.out.println(l.getPreferredSize().height);
-//             Rectangle rect = table.getTableHeader().getHeaderRect(column);
-//             l.setPreferredSize(new Dimension(0, rect.height));
-//         }
+        // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
+        // System.out.println("getPreferredSize: " + l.getPreferredSize());
+        // System.out.println("getMaximunSize: " + l.getMaximumSize());
+        // System.out.println("----");
+        // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
+        //     System.out.println(l.getPreferredSize().height);
+        //     Rectangle rect = table.getTableHeader().getHeaderRect(column);
+        //     l.setPreferredSize(new Dimension(0, rect.height));
+        // }
         return l;
     }
 }
@@ -172,15 +172,14 @@ class TriStateCheckBox extends JCheckBox {
         }
     }
     @Override public void updateUI() {
-        Icon oi = getIcon();
-        removeActionListener(listener);
         setIcon(null);
+        removeActionListener(listener);
         super.updateUI();
         listener = new TriStateActionListener();
         icon = new IndeterminateIcon();
         listener.setIcon(icon);
         addActionListener(listener);
-        if (Objects.nonNull(oi)) {
+        if (Objects.nonNull(getIcon())) {
             setIcon(icon);
         }
     }
@@ -192,13 +191,11 @@ class IndeterminateIcon implements Icon {
     private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = getIconWidth();
-        int h = getIconHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         icon.paintIcon(c, g2, 0, 0);
         g2.setPaint(FOREGROUND);
-        g2.fillRect(SIDE_MARGIN, (h - HEIGHT) / 2, w - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
+        g2.fillRect(SIDE_MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
         g2.dispose();
     }
     @Override public int getIconWidth() {
