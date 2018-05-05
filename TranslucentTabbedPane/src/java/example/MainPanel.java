@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
     }
@@ -64,12 +64,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                  | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
 
         JMenuBar mb = new JMenuBar();
         mb.add(LookAndFeelUtil.createLookAndFeelMenu());
