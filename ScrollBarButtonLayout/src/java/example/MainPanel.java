@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
 
 // Copied from javax.swing.plaf.basic.BasicScrollBarUI
 class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
-    @SuppressWarnings("checkstyle:variabledeclarationusagedistance")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "checkstyle:variabledeclarationusagedistance"})
     @Override protected void layoutVScrollbar(JScrollBar sb) {
         Dimension sbSize = sb.getSize();
         Insets sbInsets = sb.getInsets();
@@ -156,7 +156,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 }
 
 class MetalCustomScrollBarUI extends MetalScrollBarUI {
-    @SuppressWarnings("checkstyle:variabledeclarationusagedistance")
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "checkstyle:variabledeclarationusagedistance"})
     @Override protected void layoutVScrollbar(JScrollBar sb) {
         Dimension sbSize = sb.getSize();
         Insets sbInsets = sb.getInsets();
