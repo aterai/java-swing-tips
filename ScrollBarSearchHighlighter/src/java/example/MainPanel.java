@@ -9,6 +9,7 @@ import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.text.*;
+
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {
@@ -36,13 +37,13 @@ public final class MainPanel extends JPanel {
         textArea.setText(INIT_TXT + INIT_TXT + INIT_TXT);
 
         JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
-//         JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
-//             @Override public Dimension getPreferredSize() {
-//                 Dimension d = super.getPreferredSize();
-//                 d.width += 4; // getInsets().left;
-//                 return d;
-//             }
-//         };
+        // JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
+        //     @Override public Dimension getPreferredSize() {
+        //         Dimension d = super.getPreferredSize();
+        //         d.width += 4; // getInsets().left;
+        //         return d;
+        //     }
+        // };
         if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
         } else {
@@ -57,20 +58,18 @@ public final class MainPanel extends JPanel {
         // label.setBorder(BorderFactory.createLineBorder(Color.RED));
         scroll.setRowHeaderView(label);
 
-        /*
-        // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling - Java Bug System
-        // https://bugs.openjdk.java.net/browse/JDK-6826074
-        // Affected Versions: 6u12, 6u16, 7
-        // Fixed Versions: 7 (b134)
-        JViewport vp = new JViewport() {
-            @Override public void setViewPosition(Point p) {
-                super.setViewPosition(p);
-                revalidate();
-            }
-        };
-        vp.setView(new JLabel(new HighlightIcon(textArea, scrollbar)));
-        scroll.setRowHeader(vp);
-        */
+        // // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling - Java Bug System
+        // // https://bugs.openjdk.java.net/browse/JDK-6826074
+        // // Affected Versions: 6u12, 6u16, 7
+        // // Fixed Versions: 7 (b134)
+        // JViewport vp = new JViewport() {
+        //     @Override public void setViewPosition(Point p) {
+        //         super.setViewPosition(p);
+        //         revalidate();
+        //     }
+        // };
+        // vp.setView(new JLabel(new HighlightIcon(textArea, scrollbar)));
+        // scroll.setRowHeader(vp);
 
         JCheckBox check = new JCheckBox("LineWrap");
         check.addActionListener(e -> textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected()));

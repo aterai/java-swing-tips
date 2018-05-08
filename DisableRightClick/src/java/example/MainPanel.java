@@ -8,23 +8,24 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
+
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-//         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-//             @Override public void eventDispatched(AWTEvent event) {
-//                 if (event instanceof MouseWheelEvent) {
-//                     Object source = event.getSource();
-//                     if (source instanceof JScrollPane) {
-//                         System.out.println("JScrollPane");
-//                         return;
-//                     }
-//                     ((MouseWheelEvent) event).consume();
-//                 }
-//             }
-//         }, AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+        // Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+        //     @Override public void eventDispatched(AWTEvent event) {
+        //         if (event instanceof MouseWheelEvent) {
+        //             Object source = event.getSource();
+        //             if (source instanceof JScrollPane) {
+        //                 System.out.println("JScrollPane");
+        //                 return;
+        //             }
+        //             ((MouseWheelEvent) event).consume();
+        //         }
+        //     }
+        // }, AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
         JComboBox<String> combo1 = makeComboBox(5);
         if (combo1.getUI() instanceof WindowsComboBoxUI) {
@@ -147,25 +148,25 @@ class BasicComboPopup3 extends BasicComboPopup {
     protected BasicComboPopup3(JComboBox<?> combo) {
         super(combo);
     }
-//     // Fixed 8u60: mouse wheel scroll closes combobox popup
-//     // https://bugs.openjdk.java.net/browse/JDK-8033069
-//     @Override protected JScrollPane createScroller() {
-//         JScrollPane sp = new JScrollPane(list) {
-//             @Override protected void processEvent(AWTEvent e) {
-//                 if (e instanceof MouseWheelEvent) {
-//                     JScrollBar toScroll = getVerticalScrollBar();
-//                     if (Objects.isNull(toScroll) || !toScroll.isVisible()) {
-//                         ((MouseWheelEvent) e).consume();
-//                         return;
-//                     }
-//                 }
-//                 super.processEvent(e);
-//             }
-//         };
-//         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//         sp.setHorizontalScrollBar(null);
-//         return sp;
-//     }
+    // // Fixed 8u60: mouse wheel scroll closes combobox popup
+    // // https://bugs.openjdk.java.net/browse/JDK-8033069
+    // @Override protected JScrollPane createScroller() {
+    //     JScrollPane sp = new JScrollPane(list) {
+    //         @Override protected void processEvent(AWTEvent e) {
+    //             if (e instanceof MouseWheelEvent) {
+    //                 JScrollBar toScroll = getVerticalScrollBar();
+    //                 if (Objects.isNull(toScroll) || !toScroll.isVisible()) {
+    //                     ((MouseWheelEvent) e).consume();
+    //                     return;
+    //                 }
+    //             }
+    //             super.processEvent(e);
+    //         }
+    //     };
+    //     sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    //     sp.setHorizontalScrollBar(null);
+    //     return sp;
+    // }
     @SuppressWarnings("unchecked")
     @Override protected JList<?> createList() {
         return new JList<Object>(comboBox.getModel()) {

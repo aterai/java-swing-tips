@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
+
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 // Copied from
@@ -36,38 +37,38 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
     protected transient CloseableTabIconHandler handler;
 
-//     /**
-//      * The normal closeicon.
-//      */
-//     private Icon normalCloseIcon;
-//
-//     /**
-//      * The closeicon when the mouse is over.
-//      */
-//     private Icon hooverCloseIcon;
-//
-//     /**
-//      * The closeicon when the mouse is pressed.
-//      */
-//     private Icon pressedCloseIcon;
-//
-//     /**
-//      * Creates a new instance of <code>CloseableTabbedPane</code>
-//      */
-//     public CloseableTabbedPane() {
-//         super();
-//         init(SwingUtilities.LEFT);
-//     }
-//
-//     /**
-//      * Creates a new instance of <code>CloseableTabbedPane</code>
-//      * @param horizontalTextPosition the horizontal position of the text (e.g.
-//      * SwingUtilities.TRAILING or SwingUtilities.LEFT)
-//      */
-//     public CloseableTabbedPane(int horizontalTextPosition) {
-//         super();
-//         init(horizontalTextPosition);
-//     }
+    // /**
+    //  * The normal closeicon.
+    //  */
+    // private Icon normalCloseIcon;
+    //
+    // /**
+    //  * The closeicon when the mouse is over.
+    //  */
+    // private Icon hooverCloseIcon;
+    //
+    // /**
+    //  * The closeicon when the mouse is pressed.
+    //  */
+    // private Icon pressedCloseIcon;
+    //
+    // /**
+    //  * Creates a new instance of <code>CloseableTabbedPane</code>.
+    //  */
+    // public CloseableTabbedPane() {
+    //     super();
+    //     init(SwingUtilities.LEFT);
+    // }
+    //
+    // /**
+    //  * Creates a new instance of <code>CloseableTabbedPane</code>.
+    //  * @param horizontalTextPosition the horizontal position of the text (e.g.
+    //  * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+    //  */
+    // public CloseableTabbedPane(int horizontalTextPosition) {
+    //     super();
+    //     init(horizontalTextPosition);
+    // }
 
     @Override public void updateUI() {
         removeMouseListener(handler);
@@ -85,17 +86,17 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
         }
     }
 
-//     /**
-//      * Allows setting own closeicons.
-//      * @param normal the normal closeicon
-//      * @param hoover the closeicon when the mouse is over
-//      * @param pressed the closeicon when the mouse is pressed
-//      */
-//     public void setCloseIcons(Icon normal, Icon hoover, Icon pressed) {
-//         normalCloseIcon = normal;
-//         hooverCloseIcon = hoover;
-//         pressedCloseIcon = pressed;
-//     }
+    // /**
+    //  * Allows setting own closeicons.
+    //  * @param normal the normal closeicon
+    //  * @param hoover the closeicon when the mouse is over
+    //  * @param pressed the closeicon when the mouse is pressed
+    //  */
+    // public void setCloseIcons(Icon normal, Icon hoover, Icon pressed) {
+    //     normalCloseIcon = normal;
+    //     hooverCloseIcon = hoover;
+    //     pressedCloseIcon = pressed;
+    // }
 
     /**
      * Adds a <code>Component</code> represented by a title and no icon.
@@ -106,50 +107,50 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
         // addTab(title, component, null);
         super.addTab(title, new CloseTabIcon(null), component);
 
-//         if (Objects.isNull(headerViewport)) {
-//             for (Component c: getComponents()) {
-//                 if ("TabbedPane.scrollableViewport".equals(c.getName())) {
-//                     headerViewport = (JViewport) c;
-//                     break;
-//                 }
-//             }
-//         }
+        // if (Objects.isNull(headerViewport)) {
+        //     for (Component c: getComponents()) {
+        //         if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+        //             headerViewport = (JViewport) c;
+        //             break;
+        //         }
+        //     }
+        // }
     }
 
-//     /**
-//      * Adds a <code>Component</code> represented by a title and an icon.
-//      * @param title the title to be displayed in this tab
-//      * @param component the component to be displayed when this tab is clicked
-//      * @param extraIcon the icon to be displayed in this tab
-//      */
-//     public void addTab(String title, Component component, Icon extraIcon) {
-// //         boolean doPaintCloseIcon = true;
-// //         if (component instanceof JComponent) {
-// //             Object prop = ((JComponent) component).getClientProperty("isClosable");
-// //             if (Objects.nonNull(prop)) {
-// //                 doPaintCloseIcon = ((Boolean) prop).booleanValue();
-// //             }
-// //         }
-// //
-// //         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
-//         super.addTab(title, new CloseTabIcon(extraIcon), component);
-//
-//         if (Objects.isNull(headerViewport)) {
-//             // for (Component c: getComponents()) {
-//             //     if ("TabbedPane.scrollableViewport".equals(c.getName())) {
-//             //         headerViewport = (JViewport) c;
-//             //     }
-//             // }
-//
-//             Component[] list = getComponents();
-//             for (int i = 0; i < list.length; i++) {
-//                 Component c = list[i];
-//                 if ("TabbedPane.scrollableViewport".equals(c.getName())) {
-//                     headerViewport = (JViewport) c;
-//                 }
-//             }
-//         }
-//     }
+    // /**
+    //  * Adds a <code>Component</code> represented by a title and an icon.
+    //  * @param title the title to be displayed in this tab
+    //  * @param component the component to be displayed when this tab is clicked
+    //  * @param extraIcon the icon to be displayed in this tab
+    //  */
+    // public void addTab(String title, Component component, Icon extraIcon) {
+    //     // boolean doPaintCloseIcon = true;
+    //     // if (component instanceof JComponent) {
+    //     //     Object prop = ((JComponent) component).getClientProperty("isClosable");
+    //     //     if (Objects.nonNull(prop)) {
+    //     //         doPaintCloseIcon = ((Boolean) prop).booleanValue();
+    //     //     }
+    //     // }
+    //     //
+    //     //         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
+    //     super.addTab(title, new CloseTabIcon(extraIcon), component);
+    //
+    //     if (Objects.isNull(headerViewport)) {
+    //         // for (Component c: getComponents()) {
+    //         //     if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+    //         //         headerViewport = (JViewport) c;
+    //         //     }
+    //         // }
+    //
+    //         Component[] list = getComponents();
+    //         for (int i = 0; i < list.length; i++) {
+    //             Component c = list[i];
+    //             if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+    //                 headerViewport = (JViewport) c;
+    //             }
+    //         }
+    //     }
+    // }
 
     /**
      * Adds an <code>CloseableTabbedPaneListener</code> to the tabbedpane.
@@ -201,12 +202,12 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
             .findFirst()
             .map(c -> ((JViewport) c).getViewPosition())
             .orElseGet(Point::new);
-//         for (Component c: getComponents()) {
-//             if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
-//                 return ((JViewport) c).getViewPosition();
-//             }
-//         }
-//         return new Point();
+        // for (Component c: getComponents()) {
+        //     if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
+        //         return ((JViewport) c).getViewPosition();
+        //     }
+        // }
+        // return new Point();
     }
 }
 

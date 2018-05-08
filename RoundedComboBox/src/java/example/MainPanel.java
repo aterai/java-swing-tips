@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
+
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
@@ -228,7 +229,7 @@ class RoundedCornerBorder extends AbstractBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = 12;
-        int w = width  - 1;
+        int w = width - 1;
         int h = height - 1;
 
         Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
@@ -254,31 +255,31 @@ class RoundedCornerBorder extends AbstractBorder {
 }
 
 class KamabokoBorder extends RoundedCornerBorder {
-//     private static TexturePaint makeCheckerTexture() {
-//         int cs = 6;
-//         int sz = cs * cs;
-//         BufferedImage bi = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
-//         Graphics2D g2 = bi.createGraphics();
-//         g2.setPaint(new Color(200, 150, 100, 50));
-//         g2.fillRect(0, 0, sz, sz);
-//         for (int i = 0; i * cs < sz; i++) {
-//             for (int j = 0; j * cs < sz; j++) {
-//                 if ((i + j) % 2 == 0) {
-//                     g2.fillRect(i * cs, j * cs, cs, cs);
-//                 }
-//             }
-//         }
-//         g2.dispose();
-//         return new TexturePaint(bi, new Rectangle(sz, sz));
-//     }
-//     private static TexturePaint tp = makeCheckerTexture();
+    // private static TexturePaint makeCheckerTexture() {
+    //     int cs = 6;
+    //     int sz = cs * cs;
+    //     BufferedImage bi = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
+    //     Graphics2D g2 = bi.createGraphics();
+    //     g2.setPaint(new Color(200, 150, 100, 50));
+    //     g2.fillRect(0, 0, sz, sz);
+    //     for (int i = 0; i * cs < sz; i++) {
+    //         for (int j = 0; j * cs < sz; j++) {
+    //             if ((i + j) % 2 == 0) {
+    //                 g2.fillRect(i * cs, j * cs, cs, cs);
+    //             }
+    //         }
+    //     }
+    //     g2.dispose();
+    //     return new TexturePaint(bi, new Rectangle(sz, sz));
+    // }
+    // private static TexturePaint tp = makeCheckerTexture();
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = 12;
-        int w = width  - 1;
+        int w = width - 1;
         int h = height - 1;
-//*/
+
         Path2D p = new Path2D.Double();
         p.moveTo(x, y + h);
         p.lineTo(x, y + r);
@@ -288,12 +289,12 @@ class KamabokoBorder extends RoundedCornerBorder {
         p.lineTo(x + w, y + h);
         p.closePath();
         Area round = new Area(p);
-/*/
-        Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
-        Rectangle b = round.getBounds();
-        b.setBounds(b.x, b.y + r, b.width, b.height - r);
-        round.add(new Area(b));
-//*/
+
+        // Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
+        // Rectangle b = round.getBounds();
+        // b.setBounds(b.x, b.y + r, b.width, b.height - r);
+        // round.add(new Area(b));
+
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
             g2.setPaint(parent.getBackground());
@@ -301,8 +302,8 @@ class KamabokoBorder extends RoundedCornerBorder {
             corner.subtract(round);
             g2.fill(corner);
         }
-//         g2.setPaint(tp);
-//         g2.fill(round);
+        // g2.setPaint(tp);
+        // g2.fill(round);
         g2.setPaint(c.getForeground());
         g2.draw(round);
         g2.dispose();
