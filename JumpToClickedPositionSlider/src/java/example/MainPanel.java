@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
+
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
@@ -43,9 +44,9 @@ public final class MainPanel extends JPanel {
         } else {
             slider.setUI(new MetalJumpToClickedPositionSliderUI());
         }
-//         slider.setSnapToTicks(false);
-//         slider.setPaintTicks(true);
-//         slider.setPaintLabels(true);
+        // slider.setSnapToTicks(false);
+        // slider.setPaintTicks(true);
+        // slider.setPaintLabels(true);
     }
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -80,18 +81,18 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     protected WindowsJumpToClickedPositionSliderUI(JSlider slider) {
         super(slider);
     }
-//     // JSlider question: Position after leftclick - Stack Overflow
-//     // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
-//     // TEST:
-//     protected void scrollDueToClickInTrack(int direction) {
-//         int value = slider.getValue();
-//         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
-//             value = this.valueForXPosition(slider.getMousePosition().x);
-//         } else if (slider.getOrientation() == SwingConstants.VERTICAL) {
-//             value = this.valueForYPosition(slider.getMousePosition().y);
-//         }
-//         slider.setValue(value);
-//     }
+    // // JSlider question: Position after leftclick - Stack Overflow
+    // // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
+    // // TEST:
+    // protected void scrollDueToClickInTrack(int direction) {
+    //     int value = slider.getValue();
+    //     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
+    //         value = this.valueForXPosition(slider.getMousePosition().x);
+    //     } else if (slider.getOrientation() == SwingConstants.VERTICAL) {
+    //         value = this.valueForYPosition(slider.getMousePosition().y);
+    //     }
+    //     slider.setValue(value);
+    // }
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {

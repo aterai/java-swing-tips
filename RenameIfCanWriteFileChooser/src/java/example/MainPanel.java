@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.MetalFileChooserUI;
+
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {
@@ -39,20 +40,19 @@ public final class MainPanel extends JPanel {
                 }
             };
 
-//             ActionMap am = fc.getActionMap();
-//             //WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
-//             Action editFileNameAction = am.get("editFileName");
-//             am.put("editFileName", new AbstractAction("editFileName2") {
-//                 @Override public void actionPerformed(ActionEvent e) {
-//                     File file = fc.getSelectedFile();
-//                     if (file != null && file.canWrite()) {
-//                         editFileNameAction.actionPerformed(e);
-//                     }
-//                 }
-//             });
-//
-//             Action newFolder = am.get("New Folder");
-//             newFolder.setEnabled(false);
+            // ActionMap am = fc.getActionMap();
+            // // WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
+            // Action editFileNameAction = am.get("editFileName");
+            // am.put("editFileName", new AbstractAction("editFileName2") {
+            //     @Override public void actionPerformed(ActionEvent e) {
+            //         File file = fc.getSelectedFile();
+            //         if (file != null && file.canWrite()) {
+            //             editFileNameAction.actionPerformed(e);
+            //         }
+            //     }
+            // });
+            // Action newFolder = am.get("New Folder");
+            // newFolder.setEnabled(false);
 
             int retvalue = fileChooser.showOpenDialog(getRootPane());
             if (retvalue == JFileChooser.APPROVE_OPTION) {

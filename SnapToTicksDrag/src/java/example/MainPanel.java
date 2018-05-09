@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
+
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
@@ -112,8 +113,8 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                 // case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
                 int trackLength = trackRect.width;
-                int trackLeft   = trackRect.x - halfThumbWidth;
-                int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+                int trackLeft = trackRect.x - halfThumbWidth;
+                int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
                 int xpos = e.getX();
                 int snappedPos = xpos;
                 if (xpos <= trackLeft) {
@@ -137,13 +138,13 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                 }
                 e.translatePoint(snappedPos - e.getX(), 0);
                 super.mouseDragged(e);
-//                 MouseEvent me = new MouseEvent(
-//                     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
-//                     snappedPos, e.getY(),
-//                     e.getXOnScreen(), e.getYOnScreen(),
-//                     e.getClickCount(), e.isPopupTrigger(), e.getButton());
-//                 e.consume();
-//                 super.mouseDragged(me);
+                // MouseEvent me = new MouseEvent(
+                //     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+                //     snappedPos, e.getY(),
+                //     e.getXOnScreen(), e.getYOnScreen(),
+                //     e.getClickCount(), e.isPopupTrigger(), e.getButton());
+                // e.consume();
+                // super.mouseDragged(me);
             }
         };
     }
@@ -160,8 +161,8 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                 // case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
                 int trackLength = trackRect.width;
-                int trackLeft   = trackRect.x - halfThumbWidth;
-                int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+                int trackLeft = trackRect.x - halfThumbWidth;
+                int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
                 int xpos = e.getX();
                 int snappedPos = xpos;
                 if (xpos <= trackLeft) {
@@ -187,12 +188,12 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                 }
                 e.translatePoint(snappedPos - e.getX(), 0);
                 super.mouseDragged(e);
-//                 MouseEvent me = new MouseEvent(
-//                     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
-//                     snappedPos, e.getY(),
-//                     e.getXOnScreen(), e.getYOnScreen(),
-//                     e.getClickCount(), e.isPopupTrigger(), e.getButton());
-//                 super.mouseDragged(me);
+                // MouseEvent me = new MouseEvent(
+                //     e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+                //     snappedPos, e.getY(),
+                //     e.getXOnScreen(), e.getYOnScreen(),
+                //     e.getClickCount(), e.isPopupTrigger(), e.getButton());
+                // super.mouseDragged(me);
             }
         };
     }

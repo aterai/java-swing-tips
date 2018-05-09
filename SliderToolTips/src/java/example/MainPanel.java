@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
+
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
@@ -90,16 +91,16 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
                     } else { // SwingConstants.HORIZONTAL
                         slider.setValue(valueForXPosition(e.getX()));
                     }
-//                     switch (slider.getOrientation()) {
-//                       case SwingConstants.VERTICAL:
-//                         slider.setValue(valueForYPosition(e.getY()));
-//                         break;
-//                       case SwingConstants.HORIZONTAL:
-//                         slider.setValue(valueForXPosition(e.getX()));
-//                         break;
-//                       default:
-//                         throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
-//                     }
+                    // switch (slider.getOrientation()) {
+                    //     case SwingConstants.VERTICAL:
+                    //         slider.setValue(valueForYPosition(e.getY()));
+                    //         break;
+                    //     case SwingConstants.HORIZONTAL:
+                    //         slider.setValue(valueForXPosition(e.getX()));
+                    //         break;
+                    //     default:
+                    //         throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                    // }
                     super.mousePressed(e); // isDragging = true;
                     super.mouseDragged(e);
                 } else {

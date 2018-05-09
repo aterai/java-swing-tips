@@ -8,6 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
@@ -20,13 +21,13 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
         // System.out.println("AuxiliaryWindowsComboBoxUI#createPopup");
         return new BasicComboPopup2(comboBox);
     }
-//     // ???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
-//     @Override public void installUI(JComponent c) {
-//         // super.installUI(c);
-//     }
-//     @Override public void uninstallUI(JComponent c) {
-//         // super.uninstallUI(c);
-//     }
+    // // ???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
+    // @Override public void installUI(JComponent c) {
+    //     // super.installUI(c);
+    // }
+    // @Override public void uninstallUI(JComponent c) {
+    //     // super.uninstallUI(c);
+    // }
     // Override all UI-specific methods your UI classes inherit.
     @Override protected void configureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override protected void unconfigureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
@@ -45,8 +46,8 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
             });
         });
     }
-//     @Override public void unconfigureArrowButton() {}
-//     @Override public void configureArrowButton() {}
+    // @Override public void unconfigureArrowButton() {}
+    // @Override public void configureArrowButton() {}
     @Override public void update(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void paint(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
@@ -63,9 +64,9 @@ class BasicComboPopup2 extends BasicComboPopup {
         handler2 = null;
     }
     @Override protected MouseListener createListMouseListener() {
-//         if (Objects.isNull(handler2)) {
-//             handler2 = new Handler2();
-//         }
+        // if (Objects.isNull(handler2)) {
+        //     handler2 = new Handler2();
+        // }
         handler2 = Optional.ofNullable(handler2).orElseGet(Handler2::new);
         return handler2;
     }

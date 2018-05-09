@@ -13,6 +13,7 @@ import javax.imageio.metadata.*;
 import javax.imageio.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
+
 import org.w3c.dom.*;
 
 public final class MainPanel extends JPanel {
@@ -152,12 +153,12 @@ class XmlTreeNode implements TreeNode {
         }
         return xmlNode.getNodeName();
     }
-//     private List<XmlTreeNode> getChildren() {
-//         if (Objects.isNull(list)) {
-//             loadChildren();
-//         }
-//         return new ArrayList<>(list);
-//     }
+    // private List<XmlTreeNode> getChildren() {
+    //     if (Objects.isNull(list)) {
+    //         loadChildren();
+    //     }
+    //     return new ArrayList<>(list);
+    // }
     private void loadChildren() {
         NodeList cn = xmlNode.getChildNodes();
         int count = cn.getLength();

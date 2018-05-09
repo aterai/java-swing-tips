@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+
 import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 
 public final class MainPanel extends JPanel {
@@ -22,11 +23,10 @@ public final class MainPanel extends JPanel {
         JTextField field1 = editor1.getTextField();
         field1.setOpaque(false);
 
-//         JSpinner s2 = new JSpinner();
-//         s2.setBorder(BorderFactory.createCompoundBorder(
-//             BorderFactory.createLineBorder(new Color(127, 157, 185)),
-//             BorderFactory.createLineBorder(
-//                 UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
+        // JSpinner s2 = new JSpinner();
+        // s2.setBorder(BorderFactory.createCompoundBorder(
+        //     BorderFactory.createLineBorder(new Color(127, 157, 185)),
+        //     BorderFactory.createLineBorder(UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
 
         JSpinner spinner2 = new JSpinner();
         spinner2.setEnabled(false);
