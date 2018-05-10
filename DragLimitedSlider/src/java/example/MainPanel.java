@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
+
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
         @Override protected TrackListener createTrackListener(JSlider slider) {
             return new TrackListener() {
                 @Override public void mouseDragged(MouseEvent e) {
-                    //case HORIZONTAL:
+                    // case HORIZONTAL:
                     int halfThumbWidth = thumbRect.width / 2;
                     int thumbLeft = e.getX() - offset;
                     int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
@@ -73,7 +74,7 @@ public final class MainPanel extends JPanel {
         @Override protected TrackListener createTrackListener(JSlider slider) {
             return new TrackListener() {
                 @Override public void mouseDragged(MouseEvent e) {
-                    //case HORIZONTAL:
+                    // case HORIZONTAL:
                     int halfThumbWidth = thumbRect.width / 2;
                     int thumbLeft = e.getX() - offset;
                     int maxPos = xPositionForValue(MAXI) - halfThumbWidth;

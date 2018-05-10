@@ -11,6 +11,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.plaf.synth.*;
 import javax.swing.text.View;
+
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
@@ -261,7 +262,7 @@ class ButtonTabComponent extends JPanel {
 }
 
 class TabButton extends JButton {
-    private static final int SIZE  = 17;
+    private static final int SIZE = 17;
     private static final int DELTA = 6;
 
     protected TabButton() {

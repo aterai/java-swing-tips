@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
@@ -16,9 +17,9 @@ public final class MainPanel extends JPanel {
 
         JTabbedPane tabbedPane = new JTabbedPane();
         Arrays.asList(new JTabbedPane(), tabbedPane).forEach(tab -> {
-            tab.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));
+            tab.addTab("aaaaaa", new JLabel("aaaaaaaaaaa"));
             tab.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
-            tab.addTab("c",               new JLabel("cccccccccc"));
+            tab.addTab("c", new JLabel("cccccccccc"));
             add(tab);
         });
 
@@ -37,10 +38,10 @@ public final class MainPanel extends JPanel {
         }
         setPreferredSize(new Dimension(320, 240));
     }
-//     //TEST
-//     public String makeTitle(String title) {
-//         return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
-//     }
+    // // TEST
+    // public String makeTitle(String title) {
+    //     return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

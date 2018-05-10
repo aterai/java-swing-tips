@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+
 import com.sun.java.swing.plaf.windows.*;
 
 public final class MainPanel extends JPanel {
@@ -67,7 +68,7 @@ class WindowsIconScrollBarUI extends WindowsScrollBarUI {
             oc = SystemColor.activeCaption;
             ic = SystemColor.inactiveCaptionText;
         }
-        paintCircle(g2, thumbBounds,  6, oc);
+        paintCircle(g2, thumbBounds, 6, oc);
         paintCircle(g2, thumbBounds, 10, ic);
         g2.dispose();
     }
@@ -98,7 +99,7 @@ class BasicIconScrollBarUI extends BasicScrollBarUI {
             oc = SystemColor.activeCaption;
             ic = SystemColor.inactiveCaptionText;
         }
-        paintCircle(g2, thumbBounds,  6, oc);
+        paintCircle(g2, thumbBounds, 6, oc);
         paintCircle(g2, thumbBounds, 10, ic);
         g2.dispose();
     }
