@@ -17,6 +17,11 @@ public final class MainPanel extends JPanel {
         menu.add("Item 1");
         menu.add("Item 2");
         menu.add("Item 3");
+        // // NimbusLookAndFeel
+        // UIDefaults d = new UIDefaults();
+        // d.put("Menu.arrowIcon", new ArrowIcon());
+        // menu.putClientProperty("Nimbus.Overrides", d);
+        // menu.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
         return menu;
     }
     public static void main(String... args) {
@@ -29,7 +34,9 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // BUG? UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // // NimbusLookAndFeel
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", new ArrowIcon());
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -52,8 +59,13 @@ public final class MainPanel extends JPanel {
 
 class ArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
+        // // NimbusLookAndFeel
+        // Container parent = SwingUtilities.getUnwrappedParent(c);
+        // if (parent instanceof JMenuBar) {
+        //     return;
+        // }
 
+        Graphics2D g2 = (Graphics2D) g.create();
         if (c instanceof AbstractButton && ((AbstractButton) c).getModel().isSelected()) {
             g2.setPaint(Color.WHITE);
         } else {
