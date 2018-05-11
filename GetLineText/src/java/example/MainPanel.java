@@ -43,42 +43,42 @@ public final class MainPanel extends JPanel {
                     count++;
                 }
             }
-//             // String#split >>>>
-//             for (String line: textArea.getText().split("\\n")) {
-//                 if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
-//                     count++;
-//                 }
-//             }
-//             // <<<< String#split
-//
-//             // LineNumberReader >>>>
-//             try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
-//                 String line = null;
-//                 while ((line = lnr.readLine()) != null) {
-//                     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
-//                         count++;
-//                     }
-//                 }
-//             } catch (java.io.IOException ex) {
-//                 ex.printStackTrace();
-//             }
-//             // <<<< LineNumberReader
-//
-//             // ElementCount >>>>
-//             Document doc = textArea.getDocument();
-//             Element root = doc.getDefaultRootElement();
-//             try {
-//                 for (int i = 0; i < root.getElementCount(); i++) {
-//                     Element elem = root.getElement(i);
-//                     String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
-//                     if (line.codePointAt(0) == SHARP) {
-//                         count++;
-//                     }
-//                 }
-//             } catch (BadLocationException ex) {
-//                 ex.printStackTrace();
-//             }
-//             // <<<< ElementCount
+            // // String#split >>>>
+            // for (String line: textArea.getText().split("\\n")) {
+            //     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
+            //         count++;
+            //     }
+            // }
+            // // <<<< String#split
+
+            // // LineNumberReader >>>>
+            // try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
+            //     String line = null;
+            //     while ((line = lnr.readLine()) != null) {
+            //         if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
+            //             count++;
+            //         }
+            //     }
+            // } catch (java.io.IOException ex) {
+            //     ex.printStackTrace();
+            // }
+            // // <<<< LineNumberReader
+
+            // // ElementCount >>>>
+            // Document doc = textArea.getDocument();
+            // Element root = doc.getDefaultRootElement();
+            // try {
+            //     for (int i = 0; i < root.getElementCount(); i++) {
+            //         Element elem = root.getElement(i);
+            //         String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
+            //         if (line.codePointAt(0) == SHARP) {
+            //             count++;
+            //         }
+            //     }
+            // } catch (BadLocationException ex) {
+            //     ex.printStackTrace();
+            // }
+            // // <<<< ElementCount
 
             JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -157,9 +157,10 @@ class LineNumberView extends JComponent {
         setFont(font);
     }
     private int getComponentWidth() {
-        Document doc = textArea.getDocument();
-        Element root = doc.getDefaultRootElement();
-        int lineCount = root.getElementIndex(doc.getLength());
+        // Document doc = textArea.getDocument();
+        // Element root = doc.getDefaultRootElement();
+        // int lineCount = root.getElementIndex(doc.getLength());
+        int lineCount = textArea.getLineCount();
         int maxDigits = Math.max(3, Objects.toString(lineCount).length());
         Insets i = getBorder().getBorderInsets(this);
         return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;

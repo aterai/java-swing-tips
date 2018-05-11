@@ -91,9 +91,10 @@ class LineNumberView extends JComponent {
         setFont(font);
     }
     private int getComponentWidth() {
-        Document doc = textArea.getDocument();
-        Element root = doc.getDefaultRootElement();
-        int lineCount = root.getElementIndex(doc.getLength());
+        // Document doc = textArea.getDocument();
+        // Element root = doc.getDefaultRootElement();
+        // int lineCount = root.getElementIndex(doc.getLength());
+        int lineCount = textArea.getLineCount();
         int maxDigits = Math.max(3, Objects.toString(lineCount).length());
         Insets i = getBorder().getBorderInsets(this);
         return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
