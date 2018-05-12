@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalFileChooserUI;
+
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {

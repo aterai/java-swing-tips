@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {

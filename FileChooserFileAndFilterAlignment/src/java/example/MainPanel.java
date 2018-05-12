@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
+
 import com.sun.java.swing.plaf.windows.*;
 
 public final class MainPanel extends JPanel {

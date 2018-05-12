@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
 import static javax.swing.GroupLayout.Alignment;
 
 public final class MainPanel extends JPanel {

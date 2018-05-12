@@ -8,6 +8,7 @@ import javax.accessibility.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
+
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {

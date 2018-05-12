@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
+
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 public final class MainPanel extends JPanel {

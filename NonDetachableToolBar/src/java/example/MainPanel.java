@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
+
 import com.sun.java.swing.plaf.windows.WindowsToolBarUI;
 
 public class MainPanel extends JPanel {
