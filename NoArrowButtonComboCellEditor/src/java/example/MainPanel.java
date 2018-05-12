@@ -69,7 +69,7 @@ class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
 
 class ZeroSizeButtonUI extends BasicComboBoxUI {
     @Override protected JButton createArrowButton() {
-        JButton button = new JButton() {
+        return new JButton() {
             @Override public Dimension getPreferredSize() {
                 return new Dimension();
             }
@@ -81,8 +81,7 @@ class ZeroSizeButtonUI extends BasicComboBoxUI {
                 setBorder(BorderFactory.createEmptyBorder());
                 // setVisible(false);
             }
-        }; // .createArrowButton();
-        return button;
+        };
     }
 }
 

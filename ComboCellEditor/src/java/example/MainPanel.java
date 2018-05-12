@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox() {
-        JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
+        return new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
             @Override public void updateUI() {
                 super.updateUI();
                 setBorder(BorderFactory.createEmptyBorder());
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
                         return button;
                     }
                 });
-//                 JTextField editor = (JTextField) getEditor().getEditorComponent();
-//                 editor.setBorder(BorderFactory.createEmptyBorder());
-//                 editor.setOpaque(true);
-//                 editor.setEditable(false);
+                // JTextField editor = (JTextField) getEditor().getEditorComponent();
+                // editor.setBorder(BorderFactory.createEmptyBorder());
+                // editor.setOpaque(true);
+                // editor.setEditable(false);
             }
         };
         // combo.setBorder(BorderFactory.createEmptyBorder());
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         // combo.setBackground(Color.WHITE);
         // combo.setOpaque(true);
         // combo.setEditable(true);
-        return combo;
+        // return combo;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
