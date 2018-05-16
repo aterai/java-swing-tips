@@ -59,45 +59,45 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
-// import java.security.*;
-//     private byte[] loadAudioData(String soundFile) {
-//         if (soundFile == null) {
-//           return null;
-//         }
-//         byte[] buffer = (byte[]) AccessController.doPrivileged(new PrivilegedAction<?>() {
-//             @Override public Object run() {
-//                 try {
-//                     InputStream resource = getClass().getResourceAsStream(soundFile);
-//                     if (resource == null) {
-//                         return null;
-//                     }
-//                     BufferedInputStream in = new BufferedInputStream(resource);
-//                     ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-//                     byte[] buffer = new byte[1024];
-//                     int n;
-//                     while ((n = in.read(buffer)) > 0) {
-//                         out.write(buffer, 0, n);
-//                     }
-//                     in.close();
-//                     out.flush();
-//                     buffer = out.toByteArray();
-//                     return buffer;
-//                 } catch (IOException ex) {
-//                     ex.printStackTrace();
-//                     return null;
-//                 }
-//             }
-//         });
-//         if (buffer == null) {
-//             System.err.println(getClass().getName() + "/" + soundFile + " not found.");
-//             return null;
-//         }
-//         if (buffer.length == 0) {
-//             System.err.println("warning: " + soundFile + " is zero-length");
-//             return null;
-//         }
-//         return buffer;
-//     }
+    // import java.security.*;
+    // private byte[] loadAudioData(String soundFile) {
+    //     if (soundFile == null) {
+    //       return null;
+    //     }
+    //     byte[] buffer = (byte[]) AccessController.doPrivileged(new PrivilegedAction<?>() {
+    //         @Override public Object run() {
+    //             try {
+    //                 InputStream resource = getClass().getResourceAsStream(soundFile);
+    //                 if (resource == null) {
+    //                     return null;
+    //                 }
+    //                 BufferedInputStream in = new BufferedInputStream(resource);
+    //                 ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+    //                 byte[] buffer = new byte[1024];
+    //                 int n;
+    //                 while ((n = in.read(buffer)) > 0) {
+    //                     out.write(buffer, 0, n);
+    //                 }
+    //                 in.close();
+    //                 out.flush();
+    //                 buffer = out.toByteArray();
+    //                 return buffer;
+    //             } catch (IOException ex) {
+    //                 ex.printStackTrace();
+    //                 return null;
+    //             }
+    //         }
+    //     });
+    //     if (buffer == null) {
+    //         System.err.println(getClass().getName() + "/" + soundFile + " not found.");
+    //         return null;
+    //     }
+    //     if (buffer.length == 0) {
+    //         System.err.println("warning: " + soundFile + " is zero-length");
+    //         return null;
+    //     }
+    //     return buffer;
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

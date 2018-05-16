@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
                 at.translate(-w, 0);
                 AffineTransformOp atOp = new AffineTransformOp(at, null);
                 g.drawImage(atOp.filter(bufferedImage, null), 0, 0, w, h, this);
-            } else { //if (mode == Flip.NONE) {
+            } else { // if (mode == Flip.NONE) {
                 g.drawImage(bufferedImage, 0, 0, w, h, this);
             }
         }

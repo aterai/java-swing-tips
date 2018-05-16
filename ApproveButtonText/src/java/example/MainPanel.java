@@ -31,16 +31,16 @@ public final class MainPanel extends JPanel {
         JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
         showSaveDialog.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-//             fileChooser.addPropertyChangeListener(e -> {
-//                 String prop = e.getPropertyName();
-//                 System.out.println("----\n" + prop);
-//                 if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
-//                     prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
-//                     System.out.println("sss");
-//                     fileChooser.setApproveButtonText("保存(S)");
-//                     fileChooser.setApproveButtonMnemonic('S');
-//                 }
-//             });
+            // fileChooser.addPropertyChangeListener(e -> {
+            //     String prop = e.getPropertyName();
+            //     System.out.println("----\n" + prop);
+            //     if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
+            //         prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
+            //         System.out.println("sss");
+            //         fileChooser.setApproveButtonText("保存(S)");
+            //         fileChooser.setApproveButtonMnemonic('S');
+            //     }
+            // });
             int retvalue = fileChooser.showSaveDialog(p);
             System.out.println(retvalue);
         });
@@ -67,26 +67,26 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-//     private String saveButtonText = null;
-//     private String openButtonText = null;
-//     private String cancelButtonText = null;
-//     private void initDefaultButtonText(boolean default) {
-//         if (default) {
-//             if (saveButtonText == null) {
-//                 Locale l = fc.getLocale();
-//                 saveButtonText = UIManager.getString("FileChooser.saveButtonText", l);
-//                 openButtonText = UIManager.getString("FileChooser.openButtonText", l);
-//                 cancelButtonText = UIManager.getString("FileChooser.cancelButtonText", l);
-//             }
-//             UIManager.put("FileChooser.saveButtonText", saveButtonText);
-//             UIManager.put("FileChooser.openButtonText", openButtonText);
-//             UIManager.put("FileChooser.cancelButtonText", cancelButtonText);
-//         } else {
-//             UIManager.put("FileChooser.saveButtonText", "保存(S)");
-//             UIManager.put("FileChooser.openButtonText", "開く(O)");
-//             UIManager.put("FileChooser.cancelButtonText", "キャンセル");
-//         }
-//     }
+    // private String saveButtonText = null;
+    // private String openButtonText = null;
+    // private String cancelButtonText = null;
+    // private void initDefaultButtonText(boolean default) {
+    //     if (default) {
+    //         if (saveButtonText == null) {
+    //             Locale l = fc.getLocale();
+    //             saveButtonText = UIManager.getString("FileChooser.saveButtonText", l);
+    //             openButtonText = UIManager.getString("FileChooser.openButtonText", l);
+    //             cancelButtonText = UIManager.getString("FileChooser.cancelButtonText", l);
+    //         }
+    //         UIManager.put("FileChooser.saveButtonText", saveButtonText);
+    //         UIManager.put("FileChooser.openButtonText", openButtonText);
+    //         UIManager.put("FileChooser.cancelButtonText", cancelButtonText);
+    //     } else {
+    //         UIManager.put("FileChooser.saveButtonText", "保存(S)");
+    //         UIManager.put("FileChooser.openButtonText", "開く(O)");
+    //         UIManager.put("FileChooser.cancelButtonText", "キャンセル");
+    //     }
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

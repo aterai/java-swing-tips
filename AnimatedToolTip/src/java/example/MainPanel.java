@@ -92,13 +92,13 @@ class AnimatedToolTip extends JToolTip {
     @Override public Dimension getPreferredSize() {
         return getLayout().preferredLayoutSize(this);
     }
-//     @Override public Dimension getPreferredSize() {
-//         Insets i = getInsets();
-//         Dimension d = iconlabel.getPreferredSize();
-//         d.width += i.left + i.right;
-//         d.height += i.top + i.bottom;
-//         return d;
-//     }
+    // @Override public Dimension getPreferredSize() {
+    //     Insets i = getInsets();
+    //     Dimension d = iconlabel.getPreferredSize();
+    //     d.width += i.left + i.right;
+    //     d.height += i.top + i.bottom;
+    //     return d;
+    // }
     @Override public void setTipText(String tipText) {
         String oldValue = iconlabel.getText();
         iconlabel.setText(tipText);
@@ -183,12 +183,12 @@ class AnimeIcon implements Icon {
             g2.fill(s);
         });
 
-//         int size = list.size();
-//         for (int i = 0; i < size; i++) {
-//             float alpha = running ? (i + 1) / (float) size : .5f;
-//             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-//             g2.fill(list.get(i));
-//         }
+        // int size = list.size();
+        // for (int i = 0; i < size; i++) {
+        //     float alpha = running ? (i + 1) / (float) size : .5f;
+        //     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        //     g2.fill(list.get(i));
+        // }
         g2.dispose();
     }
     @Override public int getIconWidth() {

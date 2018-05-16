@@ -30,8 +30,7 @@ public final class MainPanel extends JPanel {
                 // InputEvent.SHIFT_MASK @Deprecated(since="9")
                 // boolean shiftActive = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
                 boolean shiftActive = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
-                if (e.getKeyCode() == KeyEvent.VK_N && shiftActive) {
-                // or: if (e.getKeyCode() == KeyEvent.VK_N && e.isShiftDown()) {
+                if (e.getKeyCode() == KeyEvent.VK_N && shiftActive) { // or: if (e.getKeyCode() == KeyEvent.VK_N && e.isShiftDown()) {
                     Toolkit.getDefaultToolkit().beep();
                 }
             }

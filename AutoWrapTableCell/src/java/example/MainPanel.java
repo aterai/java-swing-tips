@@ -34,41 +34,41 @@ public final class MainPanel extends JPanel {
                 }
                 return c;
             }
-//             @Override public void doLayout() {
-//                 // System.out.println("doLayout");
-//                 initPreferredHeight();
-//                 super.doLayout();
-//             }
-//             @Override public void columnMarginChanged(ChangeEvent e) {
-//                 // System.out.println("columnMarginChanged");
-//                 super.columnMarginChanged(e);
-//                 initPreferredHeight();
-//             }
-//             private void initPreferredHeight() {
-//                 for (int row = 0; row < getRowCount(); row++) {
-//                     int maximum_height = 0;
-//                     for (int col = 0; col < getColumnModel().getColumnCount(); col++) {
-//                         Component c = prepareRenderer(getCellRenderer(row, col), row, col);
-//                         if (c instanceof JTextArea) {
-//                             JTextArea a = (JTextArea) c;
-//                             int h = getPreferredHeight(a); // + getIntercellSpacing().height;
-//                             maximum_height = Math.max(maximum_height, h);
-//                         }
-//                     }
-//                     setRowHeight(row, maximum_height);
-//                 }
-//             }
-//             // https://tips4java.wordpress.com/2008/10/26/text-utilities/
-//             private int getPreferredHeight(JTextComponent c) {
-//                 Insets insets = c.getInsets();
-//                 // Insets margin = c.getMargin();
-//                 // System.out.println(insets);
-//                 View view = c.getUI().getRootView(c).getView(0);
-//                 float f = view.getPreferredSpan(View.Y_AXIS);
-//                 // System.out.println(f);
-//                 int preferredHeight = (int) f;
-//                 return preferredHeight + insets.top + insets.bottom;
-//             }
+            // @Override public void doLayout() {
+            //     // System.out.println("doLayout");
+            //     initPreferredHeight();
+            //     super.doLayout();
+            // }
+            // @Override public void columnMarginChanged(ChangeEvent e) {
+            //     // System.out.println("columnMarginChanged");
+            //     super.columnMarginChanged(e);
+            //     initPreferredHeight();
+            // }
+            // private void initPreferredHeight() {
+            //     for (int row = 0; row < getRowCount(); row++) {
+            //         int maximum_height = 0;
+            //         for (int col = 0; col < getColumnModel().getColumnCount(); col++) {
+            //             Component c = prepareRenderer(getCellRenderer(row, col), row, col);
+            //             if (c instanceof JTextArea) {
+            //                 JTextArea a = (JTextArea) c;
+            //                 int h = getPreferredHeight(a); // + getIntercellSpacing().height;
+            //                 maximum_height = Math.max(maximum_height, h);
+            //             }
+            //         }
+            //         setRowHeight(row, maximum_height);
+            //     }
+            // }
+            // // https://tips4java.wordpress.com/2008/10/26/text-utilities/
+            // private int getPreferredHeight(JTextComponent c) {
+            //     Insets insets = c.getInsets();
+            //     // Insets margin = c.getMargin();
+            //     // System.out.println(insets);
+            //     View view = c.getUI().getRootView(c).getView(0);
+            //     float f = view.getPreferredSpan(View.Y_AXIS);
+            //     // System.out.println(f);
+            //     int preferredHeight = (int) f;
+            //     return preferredHeight + insets.top + insets.bottom;
+            // }
         };
         table.setEnabled(false);
         table.setShowGrid(false);
@@ -177,9 +177,9 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void validate() { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
     // <---- Overridden for performance reasons.
 }

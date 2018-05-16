@@ -16,18 +16,18 @@ public final class MainPanel extends JPanel {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-//*
         ViewportDragScrollListener l = new ViewportDragScrollListener();
         JViewport v = scroll.getViewport();
         v.addMouseMotionListener(l);
         v.addMouseListener(l);
         v.addHierarchyListener(l);
-/*/
-        ComponentDragScrollListener l = new ComponentDragScrollListener();
-        label.addMouseMotionListener(l);
-        label.addMouseListener(l);
-        label.addHierarchyListener(l);
-//*/
+
+        // // TEST:
+        // ComponentDragScrollListener l = new ComponentDragScrollListener();
+        // label.addMouseMotionListener(l);
+        // label.addMouseListener(l);
+        // label.addHierarchyListener(l);
+
         add(scroll);
         scroll.setPreferredSize(new Dimension(320, 240));
     }

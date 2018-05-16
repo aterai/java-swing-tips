@@ -47,9 +47,9 @@ class TreePopupMenu extends JPopupMenu {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
             model.insertNodeInto(child, parent, parent.getChildCount());
-            tree.scrollPathToVisible(new TreePath(child.getPath())); //https://ateraimemo.com/Swing/ScrollRectToVisible.html
+            tree.scrollPathToVisible(new TreePath(child.getPath())); // https://ateraimemo.com/Swing/ScrollRectToVisible.html
         }
     };
     private final Action addReloadAction = new AbstractAction("add & reload") {
@@ -57,9 +57,9 @@ class TreePopupMenu extends JPopupMenu {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
             parent.add(child);
-            model.reload(parent); //= model.nodeStructureChanged(parent);
+            model.reload(parent); // = model.nodeStructureChanged(parent);
             tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
     };
@@ -73,7 +73,7 @@ class TreePopupMenu extends JPopupMenu {
                     @Override public void ancestorAdded(AncestorEvent e) {
                         requestFocusInWindow();
                     }
-                    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+                    @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
                     @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
                 };
                 addAncestorListener(listener);
@@ -94,8 +94,8 @@ class TreePopupMenu extends JPopupMenu {
                     .ifPresent(str -> {
                         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                         model.valueForPathChanged(path, str);
-                        //leaf.setUserObject(str);
-                        //model.nodeChanged(leaf);
+                        // leaf.setUserObject(str);
+                        // model.nodeChanged(leaf);
                     });
             }
         }
@@ -121,9 +121,9 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
-            //TreePath[] tsp = tree.getSelectionPaths();
+            // TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
-            //if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
+            // if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
             Optional.ofNullable(path).ifPresent(p -> {
                 tree.setSelectionPath(p);
                 super.show(c, x, y);

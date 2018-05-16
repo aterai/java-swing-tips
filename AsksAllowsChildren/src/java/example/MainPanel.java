@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         DefaultTreeModel model = makeDefaultTreeModel();
         JTree tree = new JTree(model);
         tree.setComponentPopupMenu(new TreePopupMenu());
-        //model.setAsksAllowsChildren(true);
+        // model.setAsksAllowsChildren(true);
 
         JCheckBox check = new JCheckBox("setAsksAllowsChildren");
         check.addActionListener(e -> {
@@ -102,7 +102,7 @@ class TreePopupMenu extends JPopupMenu {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New Folder", true);
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Folder", true);
             model.insertNodeInto(child, parent, parent.getChildCount());
             tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
@@ -112,7 +112,7 @@ class TreePopupMenu extends JPopupMenu {
             JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New Item", false);
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Item", false);
             model.insertNodeInto(child, parent, parent.getChildCount());
             tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
@@ -127,7 +127,7 @@ class TreePopupMenu extends JPopupMenu {
                     @Override public void ancestorAdded(AncestorEvent e) {
                         requestFocusInWindow();
                     }
-                    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+                    @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
                     @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
                 };
                 addAncestorListener(listener);

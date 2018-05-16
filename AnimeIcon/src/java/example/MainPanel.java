@@ -96,9 +96,9 @@ public class MainPanel extends JPanel {
         area.setCaretPosition(area.getDocument().getLength());
     }
 
-//     private boolean isCancelled() {
-//         return Objects.isNull(worker) && worker.isCancelled();
-//     }
+    // private boolean isCancelled() {
+    //     return Objects.isNull(worker) && worker.isCancelled();
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -15,21 +15,21 @@ public final class MainPanel extends JPanel {
         ActionMap am = pf1.getActionMap();
         Action beep = new DefaultEditorKit.BeepAction();
 
-        am.put(DefaultEditorKit.cutAction,   beep);
-        am.put(DefaultEditorKit.copyAction,  beep);
+        am.put(DefaultEditorKit.cutAction, beep);
+        am.put(DefaultEditorKit.copyAction, beep);
         am.put(DefaultEditorKit.pasteAction, beep);
         pf1.setActionMap(am);
 
         JTextField pf2 = new JTextField() {
             @Override public void copy() {
-                //System.out.println("copy");
+                // System.out.println("copy");
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                //Toolkit.getDefaultToolkit().beep();
+                // Toolkit.getDefaultToolkit().beep();
             }
             @Override public void cut() {
-                //System.out.println("cut");
+                // System.out.println("cut");
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                //Toolkit.getDefaultToolkit().beep();
+                // Toolkit.getDefaultToolkit().beep();
             }
         };
         am = pf2.getActionMap();

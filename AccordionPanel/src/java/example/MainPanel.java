@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     public void addComp(Component comp) {
-//         box.remove(glue);
-//         box.add(Box.createVerticalStrut(5));
-//         box.add(comp);
-//         box.add(glue);
-//         box.revalidate();
-//     }
+    // public void addComp(Component comp) {
+    //     box.remove(glue);
+    //     box.add(Box.createVerticalStrut(5));
+    //     box.add(comp);
+    //     box.add(glue);
+    //     box.revalidate();
+    // }
 
     private List<AbstractExpansionPanel> makeExpansionPanelList() {
         return Arrays.asList(
@@ -170,24 +170,24 @@ abstract class AbstractExpansionPanel extends JPanel {
         EventQueue.invokeLater(() -> panel.scrollRectToVisible(panel.getBounds()));
     }
 
-//     protected Vector<ExpansionListener> expansionListenerList = new Vector<>();
-//     public void addExpansionListener(ExpansionListener listener) {
-//         if (!expansionListenerList.contains(listener)) {
-//             expansionListenerList.add(listener);
-//         }
-//     }
-//     public void removeExpansionListener(ExpansionListener listener) {
-//         expansionListenerList.remove(listener);
-//     }
-//     public void fireExpansionEvent() {
-//         Vector list = (Vector) expansionListenerList.clone();
-//         Enumeration enm = list.elements();
-//         ExpansionEvent e = new ExpansionEvent(this);
-//         while (enm.hasMoreElements()) {
-//             ExpansionListener listener = (ExpansionListener) enm.nextElement();
-//             listener.expansionStateChanged(e);
-//         }
-//     }
+    // protected Vector<ExpansionListener> expansionListenerList = new Vector<>();
+    // public void addExpansionListener(ExpansionListener listener) {
+    //     if (!expansionListenerList.contains(listener)) {
+    //         expansionListenerList.add(listener);
+    //     }
+    // }
+    // public void removeExpansionListener(ExpansionListener listener) {
+    //     expansionListenerList.remove(listener);
+    // }
+    // public void fireExpansionEvent() {
+    //     Vector list = (Vector) expansionListenerList.clone();
+    //     Enumeration enm = list.elements();
+    //     ExpansionEvent e = new ExpansionEvent(this);
+    //     while (enm.hasMoreElements()) {
+    //         ExpansionListener listener = (ExpansionListener) enm.nextElement();
+    //         listener.expansionStateChanged(e);
+    //     }
+    // }
 }
 
 // class ExpansionEvent extends EventObject {
