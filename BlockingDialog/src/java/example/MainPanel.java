@@ -67,7 +67,7 @@ class BackgroundTask extends SwingWorker<String, Void> {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
-            //ex.printStackTrace();
+            // ex.printStackTrace();
             System.out.println("Interrupted");
         }
         return "Done";

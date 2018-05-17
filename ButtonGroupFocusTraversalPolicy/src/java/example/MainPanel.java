@@ -24,13 +24,13 @@ public final class MainPanel extends JPanel {
         buttons.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override public Component getDefaultComponent(Container focusCycleRoot) {
                 ButtonModel selection = bg2.getSelection();
-//                 for (Component c: focusCycleRoot.getComponents()) {
-//                     JRadioButton r = (JRadioButton) c;
-//                     if (r.getModel().equals(selection)) {
-//                         return r;
-//                     }
-//                 }
-//                 return super.getDefaultComponent(focusCycleRoot);
+                // for (Component c: focusCycleRoot.getComponents()) {
+                //     JRadioButton r = (JRadioButton) c;
+                //     if (r.getModel().equals(selection)) {
+                //         return r;
+                //     }
+                // }
+                // return super.getDefaultComponent(focusCycleRoot);
                 return Stream.of(focusCycleRoot.getComponents())
                     .filter(c -> ((JRadioButton) c).getModel().equals(selection))
                     .findFirst().orElse(super.getDefaultComponent(focusCycleRoot));

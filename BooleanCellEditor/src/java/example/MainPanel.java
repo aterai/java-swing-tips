@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
                 if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
                     if (editingRow % 2 == 0) {
                         cb.setOpaque(false);
-                        //cb.setBackground(getBackground());
+                        // cb.setBackground(getBackground());
                     } else {
                         cb.setOpaque(true);
                         cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
                 }
             }
             @Override public void mouseExited(MouseEvent e) {
-                //in order to drag table row selection
+                // in order to drag table row selection
                 if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
                     table.getCellEditor().cancelCellEditing();
                 }

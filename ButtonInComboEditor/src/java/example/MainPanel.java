@@ -151,47 +151,47 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
             .mapToObj(model::getElementAt)
             .filter(ui -> ui.url.equals(str))
             .findFirst();
-//         DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
-//         SiteItem item = null;
-//         for (int i = 0; i < model.getSize(); i++) {
-//             SiteItem tmp = model.getElementAt(i);
-//             if (tmp.url.equals(text)) {
-//                 item = tmp;
-//                 break;
-//             }
-//         }
-//         if (Objects.nonNull(item)) {
-//             model.removeElement(item);
-//             model.insertElementAt(item, 0);
-//         }
-//         return item;
+        // DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
+        // SiteItem item = null;
+        // for (int i = 0; i < model.getSize(); i++) {
+        //     SiteItem tmp = model.getElementAt(i);
+        //     if (tmp.url.equals(text)) {
+        //         item = tmp;
+        //         break;
+        //     }
+        // }
+        // if (Objects.nonNull(item)) {
+        //     model.removeElement(item);
+        //     model.insertElementAt(item, 0);
+        // }
+        // return item;
     }
-//     private ImageIcon getFavicon(String url) {
-//         if (url.startsWith("https://ateraimemo.com/")) {
-//             return image1;
-//         } else {
-//             return image2;
-//         }
-//     }
-//     private boolean hasRss(String url) {
-//         return url.startsWith("https://ateraimemo.com/");
-//     }
-//     public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
-//         ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
-//         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
-//     }
-//     // Test:
-//     public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
-//         RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
-//         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//         // TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
-//         // BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-//         Graphics g = img.getGraphics();
-//         // g.drawImage(srcIcon.getImage(), 0, 0, null);
-//         srcIcon.paintIcon(null, g, 0, 0);
-//         g.dispose();
-//         return new ImageIcon(op.filter(img, null));
-//     }
+    // private ImageIcon getFavicon(String url) {
+    //     if (url.startsWith("https://ateraimemo.com/")) {
+    //         return image1;
+    //     } else {
+    //         return image2;
+    //     }
+    // }
+    // private boolean hasRss(String url) {
+    //     return url.startsWith("https://ateraimemo.com/");
+    // }
+    // public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
+    //     ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
+    //     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+    // }
+    // // Test:
+    // public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
+    //     RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
+    //     BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    //     // TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
+    //     // BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+    //     Graphics g = img.getGraphics();
+    //     // g.drawImage(srcIcon.getImage(), 0, 0, null);
+    //     srcIcon.paintIcon(null, g, 0, 0);
+    //     g.dispose();
+    //     return new ImageIcon(op.filter(img, null));
+    // }
 }
 
 class SiteComboBoxLayout implements LayoutManager {
@@ -258,8 +258,8 @@ class SiteComboBoxLayout implements LayoutManager {
         Component editor = cb.getEditor().getEditorComponent();
         if (Objects.nonNull(editor)) {
             editor.setBounds(insets.left + faviconWidth, insets.top,
-                             width  - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
-                             height - insets.top  - insets.bottom);
+                             width - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
+                             height - insets.top - insets.bottom);
         }
     }
 }

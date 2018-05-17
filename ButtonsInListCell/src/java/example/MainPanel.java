@@ -142,12 +142,12 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
         c.setBounds(r);
         // c.doLayout(); // may be needed for mone LayoutManager
         pt.translate(-r.x, -r.y);
-//         Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-//         if (b instanceof JButton) {
-//             return (JButton) b;
-//         } else {
-//             return null;
-//         }
+        // Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
+        // if (b instanceof JButton) {
+        //     return (JButton) b;
+        // } else {
+        //     return null;
+        // }
         return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
             .filter(JButton.class::isInstance).map(JButton.class::cast).orElse(null);
     }

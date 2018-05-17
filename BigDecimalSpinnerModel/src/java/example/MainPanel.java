@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         box.add(p2);
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        //TEST:
+        // TEST:
         StringBuilder sb = new StringBuilder();
         double d = 29.7 - 29.6 - .1;
         sb.append(String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, .1, d >= 0))
@@ -72,7 +72,7 @@ class BigDecimalSpinnerModel extends SpinnerNumberModel {
         return incrValue(+1);
     }
     private Number incrValue(int dir) {
-        BigDecimal value    = BigDecimal.valueOf((Double) getNumber());
+        BigDecimal value = BigDecimal.valueOf((Double) getNumber());
         BigDecimal stepSize = BigDecimal.valueOf((Double) getStepSize());
         BigDecimal newValue = dir > 0 ? value.add(stepSize) : value.subtract(stepSize);
 

@@ -110,11 +110,11 @@ class BlurJButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-//             if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
-//                 iw = getWidth();
-//                 ih = getHeight();
-//                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
-//             }
+            // if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
+            //     iw = getWidth();
+            //     ih = getHeight();
+            //     buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
+            // }
             buf = Optional.ofNullable(buf)
                 .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
                 .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
@@ -150,9 +150,9 @@ class BlurButton extends JButton {
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
         }
     }
-//     @Override public Dimension getPreferredSize() {
-//         Dimension d = super.getPreferredSize();
-//         d.width += 3 * 3;
-//         return d;
-//     }
+    // @Override public Dimension getPreferredSize() {
+    //     Dimension d = super.getPreferredSize();
+    //     d.width += 3 * 3;
+    //     return d;
+    // }
 }

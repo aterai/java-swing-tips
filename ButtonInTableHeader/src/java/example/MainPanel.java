@@ -149,11 +149,11 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(pop));
     }
 
-//     JButton button = new JButton(new AbstractAction() {
-//         @Override public void actionPerformed(ActionEvent e) {
-//             System.out.println("clicked");
-//         }
-//     });
+    // JButton button = new JButton(new AbstractAction() {
+    //     @Override public void actionPerformed(ActionEvent e) {
+    //         System.out.println("clicked");
+    //     }
+    // });
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -177,10 +177,10 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             setOpaque(true);
             setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
         }
-//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus
-//             System.out.println(l.getPreferredSize().height);
-//             l.setPreferredSize(new Dimension(0, h));
-//         }
+        // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus
+        //     System.out.println(l.getPreferredSize().height);
+        //     l.setPreferredSize(new Dimension(0, h));
+        // }
         return l;
     }
 }
