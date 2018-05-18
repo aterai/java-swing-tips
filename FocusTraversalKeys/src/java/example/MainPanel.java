@@ -36,28 +36,28 @@ public final class MainPanel extends JPanel {
         box.add(new JButton("333"));
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-        //Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
-        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,  0));
-        //frame.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
+        // frame.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
         focusManager.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 
-        //Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         Set<AWTKeyStroke> backwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
-        backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP,   0));
-        //frame.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+        backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
+        // frame.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
         focusManager.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
 
         setFocusCycleRoot(true);
         setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override protected boolean accept(Component c) {
-                //return !Objects.equals(c, textarea) && super.accept(c);
+                // return !Objects.equals(c, textarea) && super.accept(c);
                 return !JTextArea.class.isInstance(c) && super.accept(c);
             }
             @Override public Component getDefaultComponent(Container container) {
-                //return button;
+                // return button;
                 return getRootPane().getDefaultButton();
             }
         });
@@ -67,46 +67,46 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     // %JAVA_HOME%/src_b23/javax/swing/JOptionPane.java
-//     public static int showOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
-//         JOptionPane pane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
-//         pane.setInitialValue(initialValue);
-//         pane.setComponentOrientation((parentComponent == null ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
-//
-//         //int style = JOptionPane.styleFromMessageType(messageType);
-//         //JDialog dialog = pane.createDialog(parentComponent, title, style);
-//         JDialog dialog = pane.createDialog(parentComponent, title);
-//
-//         Set<AWTKeyStroke> forwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-//         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
-//         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,  0));
-//         dialog.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-//
-//         Set<AWTKeyStroke> backwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-//         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
-//         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP,   0));
-//         dialog.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
-//
-//         pane.selectInitialValue();
-//         //dialog.show();
-//         dialog.setVisible(true);
-//         dialog.dispose();
-//
-//         Object selectedValue = pane.getValue();
-//         if (selectedValue == null)
-//             return JOptionPane.CLOSED_OPTION;
-//         if (options == null) {
-//             if (selectedValue instanceof Integer)
-//               return ((Integer) selectedValue).intValue();
-//             return JOptionPane.CLOSED_OPTION;
-//         }
-//         for (int counter = 0, maxCounter = options.length;
-//             counter < maxCounter; counter++) {
-//             if (options[counter].equals(selectedValue))
-//               return counter;
-//         }
-//         return JOptionPane.CLOSED_OPTION;
-//     }
+    // // %JAVA_HOME%/src_b23/javax/swing/JOptionPane.java
+    // public static int showOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
+    //     JOptionPane pane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
+    //     pane.setInitialValue(initialValue);
+    //     pane.setComponentOrientation((parent == null ? JOptionPane.getRootFrame() : parent).getComponentOrientation());
+    //
+    //     // int style = JOptionPane.styleFromMessageType(messageType);
+    //     // JDialog dialog = pane.createDialog(parent, title, style);
+    //     JDialog dialog = pane.createDialog(parent, title);
+    //
+    //     Set<AWTKeyStroke> forwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+    //     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
+    //     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
+    //     dialog.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+    //
+    //     Set<AWTKeyStroke> backwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+    //     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
+    //     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
+    //     dialog.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+    //
+    //     pane.selectInitialValue();
+    //     // dialog.show();
+    //     dialog.setVisible(true);
+    //     dialog.dispose();
+    //
+    //     Object selectedValue = pane.getValue();
+    //     if (selectedValue == null)
+    //         return JOptionPane.CLOSED_OPTION;
+    //     if (options == null) {
+    //         if (selectedValue instanceof Integer)
+    //           return ((Integer) selectedValue).intValue();
+    //         return JOptionPane.CLOSED_OPTION;
+    //     }
+    //     for (int counter = 0, maxCounter = options.length;
+    //         counter < maxCounter; counter++) {
+    //         if (options[counter].equals(selectedValue))
+    //           return counter;
+    //     }
+    //     return JOptionPane.CLOSED_OPTION;
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

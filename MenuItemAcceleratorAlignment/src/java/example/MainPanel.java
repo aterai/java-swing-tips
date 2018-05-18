@@ -211,7 +211,7 @@ final class MenuItemUIHelper {
         });
     }
 
-    public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledForeground, Color acceleratorForeground, Color acceleratorSelectionForeground) {
+    public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledFg, Color accFg, Color accSelectionFg) {
         String text = lh.getAccText();
         if (text.isEmpty()) {
             return;
@@ -225,17 +225,17 @@ final class MenuItemUIHelper {
         if (model.isEnabled()) {
             // *** paint the accText normally
             if (model.isArmed()) {
-                g.setColor(acceleratorSelectionForeground);
+                g.setColor(accSelectionFg);
             } else if (menuItem instanceof JMenu && model.isSelected()) {
-                g.setColor(acceleratorSelectionForeground);
+                g.setColor(accSelectionFg);
             } else {
-                g.setColor(acceleratorForeground);
+                g.setColor(accFg);
             }
             drawString(menuItem, g, text, viewRect.x + viewRect.width - menuItem.getIconTextGap() - accRect.width, accRect.y + ascent);
         } else {
             // *** paint the accText disabled
-            if (Objects.nonNull(disabledForeground)) {
-                g.setColor(disabledForeground);
+            if (Objects.nonNull(disabledFg)) {
+                g.setColor(disabledFg);
                 drawString(menuItem, g, text, accRect.x, accRect.y + ascent);
             } else {
                 g.setColor(menuItem.getBackground().brighter());

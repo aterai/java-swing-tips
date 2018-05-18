@@ -12,12 +12,16 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "List<Icon>"};
+    private final Icon informationIcon = getOptionPaneIcon("OptionPane.informationIcon");
+    private final Icon errorIcon = getOptionPaneIcon("OptionPane.errorIcon");
+    private final Icon questionIcon = getOptionPaneIcon("OptionPane.questionIcon");
+    private final Icon warningIcon = getOptionPaneIcon("OptionPane.warningIcon");
     private final Object[][] data = {
-        {"aa", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},
-        {"bb", Arrays.asList(getOptionPaneIcon("OptionPane.errorIcon"), getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))},
-        {"cc", Arrays.asList(getOptionPaneIcon("OptionPane.questionIcon"), getOptionPaneIcon("OptionPane.errorIcon"), getOptionPaneIcon("OptionPane.warningIcon"))},
-        {"dd", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"))},
-        {"ee", Arrays.asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
+        {"aa", Arrays.asList(informationIcon, errorIcon)},
+        {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
+        {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
+        {"dd", Arrays.asList(informationIcon)},
+        {"ee", Arrays.asList(warningIcon, questionIcon)}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
