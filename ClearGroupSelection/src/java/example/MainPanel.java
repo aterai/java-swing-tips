@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-        ImageIcon nicon  = new ImageIcon(getClass().getResource("wi0063-32.png"));
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        ImageIcon nicon = new ImageIcon(getClass().getResource("wi0063-32.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-        ImageIcon sicon  = new ImageIcon(createImage(ip));
+        ImageIcon sicon = new ImageIcon(createImage(ip));
         JToggleButton t1 = new JToggleButton(nicon);
         JToggleButton t2 = new JToggleButton(nicon, true);
         t1.setSelectedIcon(sicon);
@@ -63,14 +63,14 @@ public final class MainPanel extends JPanel {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    //public SelectedImageFilter() {
-    //    canFilterIndexColorModel = false;
-    //}
+    // public SelectedImageFilter() {
+    //     canFilterIndexColorModel = false;
+    // }
     @Override public int filterRGB(int x, int y, int argb) {
-        //Color color = new Color(argb, true);
-        //float[] a = new float[4];
-        //color.getComponents(a);
-        //return new Color(a[0], a[1], a[2] * .5f, a[3]).getRGB();
+        // Color color = new Color(argb, true);
+        // float[] a = new float[4];
+        // color.getComponents(a);
+        // return new Color(a[0], a[1], a[2] * .5f, a[3]).getRGB();
         return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }

@@ -99,7 +99,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTabbedPane) {
             JTabbedPane tabbedPane = (JTabbedPane) c;
-            //JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+            // JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
             closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
             closeAll.setEnabled(tabbedPane.getTabCount() > 0);
             closeAllButActive.setEnabled(tabbedPane.getTabCount() > 0);

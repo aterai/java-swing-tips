@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
             //     return f;
             // }
             @Override public Component getEditorComponent() {
-//                 if (Objects.isNull(editorComponent)) {
-//                     JTextComponent tc = (JTextComponent) super.getEditorComponent();
-//                     editorComponent = new JLayer<>(tc, new ValidationLayerUI<>());
-//                 }
+                // if (Objects.isNull(editorComponent)) {
+                //     JTextComponent tc = (JTextComponent) super.getEditorComponent();
+                //     editorComponent = new JLayer<>(tc, new ValidationLayerUI<>());
+                // }
                 editorComponent = Optional.ofNullable(editorComponent).orElseGet(() -> new JLayer<>((JTextComponent) super.getEditorComponent(), new ValidationLayerUI<>()));
                 return editorComponent;
             }

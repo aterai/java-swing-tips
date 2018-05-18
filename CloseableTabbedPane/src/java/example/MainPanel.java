@@ -182,20 +182,6 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
             l.repaint(repaintRect);
         }
     }
-//         System.out.format("%d : %d%n", prevIndex, index);
-//         if (index >= 0) {
-//             if (prevIndex >= 0 && prevIndex != index) {
-//                 Rectangle rect = tabbedPane.getBoundsAt(prevIndex);
-//                 rect.add(tabbedPane.getBoundsAt(index));
-//                 System.out.println(rect);
-//                 tabbedPane.repaint(rect);
-//             } else {
-//                 tabbedPane.repaint(tabbedPane.getBoundsAt(index));
-//             }
-//         }
-//         prevIndex = index;
-//     }
-//     private int prevIndex;
 }
 
 // class CloseableTabbedPaneGlassPane extends JPanel {

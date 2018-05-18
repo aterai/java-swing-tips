@@ -28,16 +28,16 @@ public final class MainPanel extends JPanel {
                 return this;
             }
         });
-//         combo1.addActionListener(e -> {
-//             int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
-//             if (i < 0) {
-//                 combo2.setModel(new DefaultComboBoxModel<>());
-//             } else {
-//                 int prev = combo2.getSelectedIndex();
-//                 combo2.setModel(new DefaultComboBoxModel<>(arrays[i]));
-//                 combo2.setSelectedIndex(Math.max(prev, 0));
-//             }
-//         });
+        // combo1.addActionListener(e -> {
+        //     int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+        //     if (i < 0) {
+        //         combo2.setModel(new DefaultComboBoxModel<>());
+        //     } else {
+        //         int prev = combo2.getSelectedIndex();
+        //         combo2.setModel(new DefaultComboBoxModel<>(arrays[i]));
+        //         combo2.setSelectedIndex(Math.max(prev, 0));
+        //     }
+        // });
         combo1.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 int idx = ((JComboBox<?>) e.getItemSelectable()).getSelectedIndex();

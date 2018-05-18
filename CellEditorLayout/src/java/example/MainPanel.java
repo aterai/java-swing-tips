@@ -84,10 +84,10 @@ class CustomComponentCellEditor extends DefaultCellEditor {
         panel.add(button, BorderLayout.EAST);
         panel.setFocusable(false);
     }
-//     public Object getCellEditorValue() {
-//         // System.out.println("  " + field.getText());
-//         return field.getText();
-//     }
+    // public Object getCellEditorValue() {
+    //     // System.out.println("  " + field.getText());
+    //     return field.getText();
+    // }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         // System.out.println("getTableCellEditorComponent");
         field.setText(Objects.toString(value, ""));
@@ -99,17 +99,17 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     }
     @Override public boolean isCellEditable(EventObject e) {
         // System.out.println("isCellEditable");
-//         if (e instanceof KeyEvent) {
-//             // System.out.println("KeyEvent");
-//             EventQueue.invokeLater(() -> {
-//                 char kc = ((KeyEvent) e).getKeyChar();
-//                 if (!Character.isIdentifierIgnorable(kc)) {
-//                     field.setText(field.getText() + kc);
-//                 }
-//                 field.setCaretPosition(field.getText().length());
-//                 // field.requestFocusInWindow();
-//             });
-//         }
+        // if (e instanceof KeyEvent) {
+        //     // System.out.println("KeyEvent");
+        //     EventQueue.invokeLater(() -> {
+        //         char kc = ((KeyEvent) e).getKeyChar();
+        //         if (!Character.isIdentifierIgnorable(kc)) {
+        //             field.setText(field.getText() + kc);
+        //         }
+        //         field.setCaretPosition(field.getText().length());
+        //         // field.requestFocusInWindow();
+        //     });
+        // }
         EventQueue.invokeLater(() -> {
             if (e instanceof KeyEvent) {
                 KeyEvent ke = (KeyEvent) e;
@@ -128,12 +128,12 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 }
 
 class CustomComponent extends JPanel {
-//     static class CustomTextField extends JTextField {
-//         @Override protected boolean processKeyBinding (KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-//             return super.processKeyBinding(ks, e, condition, pressed);
-//         }
-//     }
-//     public final CustomTextField field = new CustomTextField();
+    // static class CustomTextField extends JTextField {
+    //     @Override protected boolean processKeyBinding (KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+    //         return super.processKeyBinding(ks, e, condition, pressed);
+    //     }
+    // }
+    // public final CustomTextField field = new CustomTextField();
     public final JTextField field = new JTextField();
     protected JButton button;
     protected CustomComponent() {
@@ -149,8 +149,8 @@ class CustomComponent extends JPanel {
             EventQueue.invokeLater(() -> KeyboardFocusManager.getCurrentKeyboardFocusManager().redispatchEvent(field, e));
         }
         return super.processKeyBinding(ks, e, condition, pressed);
-//         field.requestFocusInWindow();
-//         return field.processKeyBinding(ks, e, condition, pressed);
+        // field.requestFocusInWindow();
+        // return field.processKeyBinding(ks, e, condition, pressed);
     }
 }
 

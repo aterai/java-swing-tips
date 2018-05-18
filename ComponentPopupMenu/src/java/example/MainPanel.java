@@ -16,44 +16,44 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     // Another way:
-//     private static JPopupMenu makePopupMenu() {
-//         JPopupMenu popup = new JPopupMenu();
-//         Action cutAction = new DefaultEditorKit.CutAction();
-//         Action copyAction = new DefaultEditorKit.CopyAction();
-//         Action pasteAction = new DefaultEditorKit.PasteAction();
-//         Action deleteAction = new AbstractAction("delete") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 ((JTextComponent) getInvoker()).replaceSelection(null);
-//             }
-//         };
-//         Action selectAllAction = new AbstractAction("select all") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 JPopupMenu p = (JPopupMenu) e.getSource();
-//                 ((JTextComponent) p.getInvoker()).selectAll();
-//             }
-//         };
-//         popup.add(cutAction);
-//         popup.add(copyAction);
-//         popup.add(pasteAction);
-//         popup.addSeparator();
-//         popup.add(deleteAction);
-//         popup.addSeparator();
-//         popup.add(selectAllAction);
-//         popup.addPopupMenuListener(new PopupMenuListener() {
-//             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
-//             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-//             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//                 JPopupMenu p = (JPopupMenu) e.getSource();
-//                 JTextComponent tc = (JTextComponent) p.getInvoker();
-//                 boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
-//                 cutAction.setEnabled(hasSelectedText);
-//                 copyAction.setEnabled(hasSelectedText);
-//                 deleteAction.setEnabled(hasSelectedText);
-//             }
-//         });
-//         return popup;
-//     }
+    // // Another way:
+    // private static JPopupMenu makePopupMenu() {
+    //     JPopupMenu popup = new JPopupMenu();
+    //     Action cutAction = new DefaultEditorKit.CutAction();
+    //     Action copyAction = new DefaultEditorKit.CopyAction();
+    //     Action pasteAction = new DefaultEditorKit.PasteAction();
+    //     Action deleteAction = new AbstractAction("delete") {
+    //         @Override public void actionPerformed(ActionEvent e) {
+    //             ((JTextComponent) getInvoker()).replaceSelection(null);
+    //         }
+    //     };
+    //     Action selectAllAction = new AbstractAction("select all") {
+    //         @Override public void actionPerformed(ActionEvent e) {
+    //             JPopupMenu p = (JPopupMenu) e.getSource();
+    //             ((JTextComponent) p.getInvoker()).selectAll();
+    //         }
+    //     };
+    //     popup.add(cutAction);
+    //     popup.add(copyAction);
+    //     popup.add(pasteAction);
+    //     popup.addSeparator();
+    //     popup.add(deleteAction);
+    //     popup.addSeparator();
+    //     popup.add(selectAllAction);
+    //     popup.addPopupMenuListener(new PopupMenuListener() {
+    //         @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+    //         @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+    //         @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    //             JPopupMenu p = (JPopupMenu) e.getSource();
+    //             JTextComponent tc = (JTextComponent) p.getInvoker();
+    //             boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
+    //             cutAction.setEnabled(hasSelectedText);
+    //             copyAction.setEnabled(hasSelectedText);
+    //             deleteAction.setEnabled(hasSelectedText);
+    //         }
+    //     });
+    //     return popup;
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

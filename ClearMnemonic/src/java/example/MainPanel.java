@@ -19,14 +19,14 @@ public final class MainPanel extends JPanel {
             if (str.isEmpty()) {
                 str = button.getText();
             }
-            //button.setMnemonic(str.charAt(0));
+            // button.setMnemonic(str.charAt(0));
             button.setMnemonic(str.codePointAt(0));
         });
         JButton btnClearMnemonic = new JButton("clear Mnemonic");
         btnClearMnemonic.addActionListener(e -> {
             button.setMnemonic(0);
-            //button.setMnemonic('\u0000');
-            //button.setMnemonic('\0');
+            // button.setMnemonic('\u0000');
+            // button.setMnemonic('\0');
         });
 
         JPanel p = new JPanel();

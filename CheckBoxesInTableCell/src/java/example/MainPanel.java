@@ -31,32 +31,32 @@ public final class MainPanel extends JPanel {
         };
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-//         if (System.getProperty("java.version").startsWith("1.6.0")) {
-//             // 1.6.0_xx bug? column header click -> edit cancel?
-//             table.getTableHeader().addMouseListener(new MouseAdapter() {
-//                 @Override public void mousePressed(MouseEvent e) {
-//                     if (table.isEditing()) {
-//                         table.getCellEditor().stopCellEditing();
-//                     }
-//                 }
-//             });
-//         }
+        // if (System.getProperty("java.version").startsWith("1.6.0")) {
+        //     // 1.6.0_xx bug? column header click -> edit cancel?
+        //     table.getTableHeader().addMouseListener(new MouseAdapter() {
+        //         @Override public void mousePressed(MouseEvent e) {
+        //             if (table.isEditing()) {
+        //                 table.getCellEditor().stopCellEditing();
+        //             }
+        //         }
+        //     });
+        // }
 
-        // https://ateraimemo.com/Swing/TerminateEdit.html
-        // table.getTableHeader().setReorderingAllowed(false);
-        // frame.setResizeable(false);
-        // or
-//         table.addMouseListener(new MouseAdapter() {
-//             @Override public void mouseReleased(MouseEvent e) {
-//                 JTable t = (JTable) e.getComponent();
-//                 Point p = e.getPoint();
-//                 int row = t.rowAtPoint(p);
-//                 int col = t.columnAtPoint(p);
-//                 if (t.convertColumnIndexToModel(col) == 1) {
-//                     t.getCellEditor(row, col).stopCellEditing();
-//                 }
-//             }
-//         });
+        // // https://ateraimemo.com/Swing/TerminateEdit.html
+        // // table.getTableHeader().setReorderingAllowed(false);
+        // // frame.setResizeable(false);
+        // // or
+        // table.addMouseListener(new MouseAdapter() {
+        //     @Override public void mouseReleased(MouseEvent e) {
+        //         JTable t = (JTable) e.getComponent();
+        //         Point p = e.getPoint();
+        //         int row = t.rowAtPoint(p);
+        //         int col = t.columnAtPoint(p);
+        //         if (t.convertColumnIndexToModel(col) == 1) {
+        //             t.getCellEditor(row, col).stopCellEditing();
+        //         }
+        //     }
+        // });
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

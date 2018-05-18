@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
                 Point pt = ((Window) c).getLocation();
                 f.setLocation(pt.x, pt.y + f.getSize().height);
             }
-            //f.setLocationByPlatform(true);
+            // f.setLocationByPlatform(true);
             f.setVisible(true);
         });
         add(button);
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        JFrame frame = createFrame("@title@"); //new JFrame("@title@");
+        JFrame frame = createFrame("@title@"); // new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

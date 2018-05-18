@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
                 int column = columnModel.getColumn(viewColumn).getModelIndex();
 
                 if (column != -1 && e.isShiftDown()) {
-                    //if (column != -1 && e.isControlDown()) {
+                    // if (column != -1 && e.isControlDown()) {
                     EventQueue.invokeLater(() -> sorter.setSortKeys(null));
                 }
             }

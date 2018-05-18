@@ -27,39 +27,39 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
 
-//         TreeMap fontMap = new TreeMap();
-//         fontMap.put(font.getFamily(), font);
-//         StyleContext sc = new StyleContext();
-//         Style style = sc.addStyle("Mona Style", null);
-//         StyleConstants.setFontFamily(style, font.getFamily());
-//         StyleConstants.setFontSize(style, 12);
-//         FontDocument doc = new FontDocument(sc);
-//         doc.setLogicalStyle(0, style);
-//         textPane.setDocument(doc);
+        // TreeMap fontMap = new TreeMap();
+        // fontMap.put(font.getFamily(), font);
+        // StyleContext sc = new StyleContext();
+        // Style style = sc.addStyle("Mona Style", null);
+        // StyleConstants.setFontFamily(style, font.getFamily());
+        // StyleConstants.setFontSize(style, 12);
+        // FontDocument doc = new FontDocument(sc);
+        // doc.setLogicalStyle(0, style);
+        // textPane.setDocument(doc);
 
         add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
     }
-//     private static Font makeFontOld(URL url) {
-//         Font font = null;
-//         InputStream is = null;
-//         try {
-//             is = url.openStream();
-//             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
-//             is.close();
-//         } catch (IOException | FontFormatException ex) {
-//             ex.printStackTrace();
-//         } finally {
-//             if (is != null) {
-//                 try {
-//                     is.close();
-//                 } catch (IOException ex) {
-//                     ex.printStackTrace();
-//                 }
-//             }
-//         }
-//         return font;
-//     }
+    // private static Font makeFontOld(URL url) {
+    //     Font font = null;
+    //     InputStream is = null;
+    //     try {
+    //         is = url.openStream();
+    //         font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+    //         is.close();
+    //     } catch (IOException | FontFormatException ex) {
+    //         ex.printStackTrace();
+    //     } finally {
+    //         if (is != null) {
+    //             try {
+    //                 is.close();
+    //             } catch (IOException ex) {
+    //                 ex.printStackTrace();
+    //             }
+    //         }
+    //     }
+    //     return font;
+    // }
     private static Optional<Font> makeFont(URL url) {
         try (InputStream is = url.openStream()) {
             return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
@@ -68,24 +68,24 @@ public final class MainPanel extends JPanel {
         }
         return Optional.empty();
     }
-//     private static Document makeDocument(URL url, String encoding) {
-//         DefaultStyledDocument doc = new DefaultStyledDocument();
-//         try (Reader reader = new InputStreamReader(url.openStream(), encoding);
-//              Scanner scanner = new Scanner(reader)) {
-//             while (scanner.hasNextLine()) {
-//                 doc.insertString(doc.getLength(), String.format("%s%n", scanner.nextLine()), null);
-//             }
-// //             char[] buff = new char[4096];
-// //             int nch;
-// //             while ((nch = reader.read(buff, 0, buff.length)) != -1) {
-// //                 doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
-// //             }
-//             // reader.close();
-//         } catch (IOException | BadLocationException ex) {
-//             ex.printStackTrace();
-//         }
-//         return doc;
-//     }
+    // private static Document makeDocument(URL url, String encoding) {
+    //     DefaultStyledDocument doc = new DefaultStyledDocument();
+    //     try (Reader reader = new InputStreamReader(url.openStream(), encoding);
+    //          Scanner scanner = new Scanner(reader)) {
+    //         while (scanner.hasNextLine()) {
+    //             doc.insertString(doc.getLength(), String.format("%s%n", scanner.nextLine()), null);
+    //         }
+    //         // char[] buff = new char[4096];
+    //         // int nch;
+    //         // while ((nch = reader.read(buff, 0, buff.length)) != -1) {
+    //         //     doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
+    //         // }
+    //         // reader.close();
+    //     } catch (IOException | BadLocationException ex) {
+    //         ex.printStackTrace();
+    //     }
+    //     return doc;
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

@@ -132,9 +132,9 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     protected CheckedComboBox(ComboBoxModel<E> model) {
         super(model);
     }
-//     protected CheckedComboBox(E[] m) {
-//         super(m);
-//     }
+    // protected CheckedComboBox(E[] m) {
+    //     super(m);
+    // }
     @Override public Dimension getPreferredSize() {
         return new Dimension(200, 20);
     }
@@ -165,10 +165,10 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
             E item = getItemAt(index);
             item.setSelected(!item.isSelected());
             // item.selected ^= true;
-//             ComboBoxModel m = getModel();
-//             if (m instanceof CheckableComboBoxModel) {
-//                 ((CheckableComboBoxModel) m).fireContentsChanged(index);
-//             }
+            // ComboBoxModel m = getModel();
+            // if (m instanceof CheckableComboBoxModel) {
+            //     ((CheckableComboBoxModel) m).fireContentsChanged(index);
+            // }
             // removeItemAt(index);
             // insertItemAt(item, index);
             setSelectedIndex(-1);

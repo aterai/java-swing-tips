@@ -124,20 +124,18 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         iconLabel.setIcon(d.icon);
 
         Rectangle cr = table.getCellRect(row, column, false);
-/*/ // Flickering on first visible row ?
-        if (column == TARGET_COLIDX) {
-            cr.x = 0;
-            cr.width -= iconLabel.getPreferredSize().width;
-        } else {
-            cr.x -= iconLabel.getPreferredSize().width;
-        }
-        textArea.scrollRectToVisible(cr);
-/*/
+        // // Flickering on first visible row ?
+        // if (column == TARGET_COLIDX) {
+        //     cr.x = 0;
+        //     cr.width -= iconLabel.getPreferredSize().width;
+        // } else {
+        //     cr.x -= iconLabel.getPreferredSize().width;
+        // }
+        // textArea.scrollRectToVisible(cr);
         if (column != TARGET_COLIDX) {
             cr.x -= iconLabel.getPreferredSize().width;
         }
         scroll.getViewport().setViewPosition(cr.getLocation());
-//*/
         if (isSelected) {
             setBackground(Color.ORANGE);
         } else {

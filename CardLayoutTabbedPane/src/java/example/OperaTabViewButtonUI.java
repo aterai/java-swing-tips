@@ -20,9 +20,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }
-//     @Override public void installUI(JComponent c) {
-//         super.installUI(c);
-//     }
+    // @Override public void installUI(JComponent c) {
+    //     super.installUI(c);
+    // }
     @Override protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         b.setBorder(BorderFactory.createEmptyBorder());
@@ -77,9 +77,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         }
 
         Optional.ofNullable(icon).ifPresent(ic -> ic.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2));
-//         if (Objects.nonNull(icon)) {
-//             icon.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2);
-//         }
+        // if (Objects.nonNull(icon)) {
+        //     icon.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2);
+        // }
 
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {

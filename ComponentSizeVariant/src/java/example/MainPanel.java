@@ -94,12 +94,12 @@ final class SizeVariantUtil {
     private static void setSizeVariantAllComponents(Container me, String key) {
         if (me instanceof JComponent) {
             JComponent jc = (JComponent) me;
-//             if (jc instanceof JTable) {
-//                 JTable table = (JTable) jc;
-//                 JCheckBox cb = (JCheckBox) table.getDefaultRenderer(Boolean.class);
-//                 cb.setFont(new FontUIResource(new Font(null)));
-//                 cb.putClientProperty("JComponent.sizeVariant", key);
-//             }
+            // if (jc instanceof JTable) {
+            //     JTable table = (JTable) jc;
+            //     JCheckBox cb = (JCheckBox) table.getDefaultRenderer(Boolean.class);
+            //     cb.setFont(new FontUIResource(new Font(null)));
+            //     cb.putClientProperty("JComponent.sizeVariant", key);
+            // }
             jc.setFont(new FontUIResource(jc.getFont()));
             jc.putClientProperty("JComponent.sizeVariant", key);
         }

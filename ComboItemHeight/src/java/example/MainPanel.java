@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-//import javax.swing.plaf.basic.BasicComboBoxUI;
+// import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -68,18 +68,18 @@ public final class MainPanel extends JPanel {
         p.add(makeTitledPanel("icon", combo4));
         p.add(Box.createVerticalStrut(5));
 
-//         JComboBox<String> combo5 = new JComboBox<>(items);
-//         combo5.setUI(new BasicComboBoxUI() {
-//             @Override protected ComboPopup createPopup() {
-//                 return new BasicComboPopup(combo) {
-//                     @Override protected void configureList() {
-//                         super.configureList();
-//                         list.setFixedCellHeight(60);
-//                     }
-//                 };
-//             }
-//         });
-//         p.add(makeTitledPanel("BasicComboBoxUI", combo5));
+        // JComboBox<String> combo5 = new JComboBox<>(items);
+        // combo5.setUI(new BasicComboBoxUI() {
+        //     @Override protected ComboPopup createPopup() {
+        //         return new BasicComboPopup(combo) {
+        //             @Override protected void configureList() {
+        //                 super.configureList();
+        //                 list.setFixedCellHeight(60);
+        //             }
+        //         };
+        //     }
+        // });
+        // p.add(makeTitledPanel("BasicComboBoxUI", combo5));
 
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

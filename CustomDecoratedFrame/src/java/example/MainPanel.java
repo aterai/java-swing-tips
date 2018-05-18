@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             g2.dispose();
         }
     };
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
@@ -64,15 +64,15 @@ public final class MainPanel extends JPanel {
         return button;
     }
 
-//     private static JButton makeIconifyButton() {
-//         JButton iconify = new JButton("_");
-//         iconify.setContentAreaFilled(false);
-//         iconify.setFocusPainted(false);
-//         iconify.setBorder(BorderFactory.createEmptyBorder());
-//         iconify.setOpaque(true);
-//         iconify.setBackground(Color.ORANGE);
-//         iconify.addActionListener(e -> frame.setExtendedState(state | Frame.ICONIFIED));
-//     }
+    // private static JButton makeIconifyButton() {
+    //     JButton iconify = new JButton("_");
+    //     iconify.setContentAreaFilled(false);
+    //     iconify.setFocusPainted(false);
+    //     iconify.setBorder(BorderFactory.createEmptyBorder());
+    //     iconify.setOpaque(true);
+    //     iconify.setBackground(Color.ORANGE);
+    //     iconify.addActionListener(e -> frame.setExtendedState(state | Frame.ICONIFIED));
+    // }
     protected Container getMainContentPane() {
         return contentPanel;
     }

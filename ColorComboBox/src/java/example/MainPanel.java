@@ -10,23 +10,23 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JComboBox<String> combo01 = new AlternateRowColorComboBox<>(makeModel());
-//         // MetalLookAndFeel
-//         combo01.setUI(new MetalComboBoxUI() {
-//             @Override public PropertyChangeListener createPropertyChangeListener() {
-//                 return new MetalPropertyChangeListener() {
-//                     @Override public void propertyChange(PropertyChangeEvent e) {
-//                         String propertyName = e.getPropertyName();
-//                         if (propertyName == "background") {
-//                             Color color = (Color) e.getNewValue();
-//                             // arrowButton.setBackground(color);
-//                             listBox.setBackground(color);
-//                         } else {
-//                             super.propertyChange(e);
-//                         }
-//                     }
-//                 };
-//             }
-//         });
+        // // MetalLookAndFeel
+        // combo01.setUI(new MetalComboBoxUI() {
+        //     @Override public PropertyChangeListener createPropertyChangeListener() {
+        //         return new MetalPropertyChangeListener() {
+        //             @Override public void propertyChange(PropertyChangeEvent e) {
+        //                 String propertyName = e.getPropertyName();
+        //                 if (propertyName == "background") {
+        //                     Color color = (Color) e.getNewValue();
+        //                     // arrowButton.setBackground(color);
+        //                     listBox.setBackground(color);
+        //                 } else {
+        //                     super.propertyChange(e);
+        //                 }
+        //             }
+        //         };
+        //     }
+        // });
 
         JComboBox<String> combo02 = new AlternateRowColorComboBox<>(makeModel());
         combo02.setEditable(true);

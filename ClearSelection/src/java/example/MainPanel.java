@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
             }
         };
         // list.putClientProperty("List.isFileList", Boolean.TRUE);
-//     list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-//     list.setFixedCellWidth(64);
-//     list.setFixedCellHeight(64);
-//     list.setVisibleRowCount(0);
+        // list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        // list.setFixedCellWidth(64);
+        // list.setFixedCellHeight(64);
+        // list.setVisibleRowCount(0);
         return list;
     }
     private static Component makeTitledPanel(String title, Component c) {

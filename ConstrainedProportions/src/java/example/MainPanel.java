@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
             Container c = getTopLevelAncestor();
             if (c instanceof JFrame) {
                 JFrame frame = (JFrame) c;
-                frame.setMinimumSize(new Dimension(MW, MH)); //JDK 1.6.0
+                frame.setMinimumSize(new Dimension(MW, MH)); // JDK 1.6.0
                 frame.addComponentListener(new ComponentAdapter() {
                     @Override public void componentResized(ComponentEvent e) {
                         initFrameSize(frame);
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                 initFrameSize((JFrame) c);
             }
         });
-        //checkbox.setSelected(true);
+        // checkbox.setSelected(true);
 
         JLabel label = new JLabel();
         label.addComponentListener(new ComponentAdapter() {

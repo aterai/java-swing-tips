@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         model.addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE) {
                 sorter.allRowsChanged();
-                //sorter.modelStructureChanged();
+                // sorter.modelStructureChanged();
             }
         });
 

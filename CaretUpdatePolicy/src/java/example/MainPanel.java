@@ -90,24 +90,24 @@ public class MainPanel extends JPanel {
         insertText(textArea2, s);
     }
     private void startTest() {
-//         // TEST:
-//         if (!timer.isRunning()) {
-//             timer.start();
-//         }
-//         // TEST:
-//         if (Objects.isNull(thread)) {
-//             thread = new Thread(() -> {
-//                 while (thread != null) {
-//                     test(LocalDateTime.now().toString());
-//                     try {
-//                         Thread.sleep(1000);
-//                     } catch (InterruptedException ex) {
-//                         ex.printStackTrace();
-//                     }
-//                 }
-//             });
-//             thread.start();
-//         }
+        // // TEST:
+        // if (!timer.isRunning()) {
+        //     timer.start();
+        // }
+        // // TEST:
+        // if (Objects.isNull(thread)) {
+        //     thread = new Thread(() -> {
+        //         while (thread != null) {
+        //             test(LocalDateTime.now().toString());
+        //             try {
+        //                 Thread.sleep(1000);
+        //             } catch (InterruptedException ex) {
+        //                 ex.printStackTrace();
+        //             }
+        //         }
+        //     });
+        //     thread.start();
+        // }
         if (Objects.isNull(worker)) {
             worker = new BackgroundTask() {
                 @Override public String doInBackground() {

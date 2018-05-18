@@ -48,24 +48,24 @@ public final class MainPanel extends JPanel {
         field.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         table.setDefaultEditor(Object.class, new DefaultCellEditor(field));
 
-//         JTextField tf2 = new JTextField();
-//         tf2.setHorizontalAlignment(SwingConstants.RIGHT);
-//         tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-//         table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
-//             @Override public boolean stopCellEditing() {
-//                 return Objects.nonNull(getCellEditorValue()) && super.stopCellEditing();
-//             }
-//             @Override public Object getCellEditorValue() {
-//                 Object o = super.getCellEditorValue();
-//                 Integer iv;
-//                 try {
-//                     iv = Integer.valueOf(o.toString());
-//                 } catch (NumberFormatException ex) {
-//                     iv = null;
-//                 }
-//                 return iv;
-//             }
-//         });
+        // JTextField tf2 = new JTextField();
+        // tf2.setHorizontalAlignment(SwingConstants.RIGHT);
+        // tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        // table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
+        //     @Override public boolean stopCellEditing() {
+        //         return Objects.nonNull(getCellEditorValue()) && super.stopCellEditing();
+        //     }
+        //     @Override public Object getCellEditorValue() {
+        //         Object o = super.getCellEditorValue();
+        //         Integer iv;
+        //         try {
+        //             iv = Integer.valueOf(o.toString());
+        //         } catch (NumberFormatException ex) {
+        //             iv = null;
+        //         }
+        //         return iv;
+        //     }
+        // });
 
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);

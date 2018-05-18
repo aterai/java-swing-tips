@@ -21,20 +21,20 @@ public final class MainPanel extends JPanel {
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(combo));
 
-//         InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enterPressed2");
-//         combo.getActionMap().put("enterPressed2", new AbstractAction() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 String text = field.getText();
-//                 if (!model.contains(text)) {
-//                     model.addElement(text);
-//                     Collections.sort(model);
-//                     setModel(getSuggestedModel(model, text), text);
-//                 }
-//                 combo.hidePopup();
-//                 // hide_flag = true;
-//             }
-//         });
+        // InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enterPressed2");
+        // combo.getActionMap().put("enterPressed2", new AbstractAction() {
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         String text = field.getText();
+        //         if (!model.contains(text)) {
+        //             model.addElement(text);
+        //             Collections.sort(model);
+        //             setModel(getSuggestedModel(model, text), text);
+        //         }
+        //         combo.hidePopup();
+        //         // hide_flag = true;
+        //     }
+        // });
 
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("Auto-Completion ComboBox"));
@@ -50,37 +50,37 @@ public final class MainPanel extends JPanel {
     }
     private static JComboBox<String> makeComboBox(String... model) {
         return new JComboBox<>(model);
-//         // Test: Remove ArrowButtn(look like a JTextField)
-//         // UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-//         return new JComboBox(model) {
-//             @Override public void updateUI() {
-//                 super.updateUI();
-//                 setUI(new BasicComboBoxUI() {
-//                     @Override protected JButton createArrowButton() {
-//                         JButton button = new JButton() {
-//                             @Override public int getWidth() {
-//                                 return 0;
-//                             }
-//                         };
-//                         button.setBorder(BorderFactory.createEmptyBorder());
-//                         button.setVisible(false);
-//                         return button;
-//                     }
-//                     @Override public void configureArrowButton() {}
-//                 });
-// //                 // Remove click on a JComboBox Border
-// //                 for (MouseListener ml: getMouseListeners()) {
-// //                     removeMouseListener(ml);
-// //                 }
-//             }
-//             // Remove click on a JComboBox Border
-//             @Override public boolean contains(int x, int y) {
-//                 Insets i = getInsets();
-//                 int w = getWidth()  - i.left - i.right;
-//                 int h = getHeight() - i.top - i.bottom;
-//                 return (x >= i.left) && (x < w) && (y >= i.top) && (y < h);
-//             }
-//         };
+        // // Test: Remove ArrowButtn(look like a JTextField)
+        // // UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+        // return new JComboBox(model) {
+        //     @Override public void updateUI() {
+        //         super.updateUI();
+        //         setUI(new BasicComboBoxUI() {
+        //             @Override protected JButton createArrowButton() {
+        //                 JButton button = new JButton() {
+        //                     @Override public int getWidth() {
+        //                         return 0;
+        //                     }
+        //                 };
+        //                 button.setBorder(BorderFactory.createEmptyBorder());
+        //                 button.setVisible(false);
+        //                 return button;
+        //             }
+        //             @Override public void configureArrowButton() {}
+        //         });
+        //         // // Remove click on a JComboBox Border
+        //         // for (MouseListener ml: getMouseListeners()) {
+        //         //     removeMouseListener(ml);
+        //         // }
+        //     }
+        //     // Remove click on a JComboBox Border
+        //     @Override public boolean contains(int x, int y) {
+        //         Insets i = getInsets();
+        //         int w = getWidth() - i.left - i.right;
+        //         int h = getHeight() - i.top - i.bottom;
+        //         return (x >= i.left) && (x < w) && (y >= i.top) && (y < h);
+        //     }
+        // };
     }
     private static Component makeHelpPanel() {
         JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));

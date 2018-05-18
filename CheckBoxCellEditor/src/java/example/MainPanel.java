@@ -126,13 +126,13 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
                 .filter(clz::isInstance).map(clz::cast)
                 .filter(table -> table.isEditing() && !table.getCellEditor().stopCellEditing())
                 .ifPresent(table -> table.getCellEditor().cancelCellEditing());
-//             Container c = SwingUtilities.getAncestorOfClass(JTable.class, e.getComponent());
-//             if (c instanceof JTable) {
-//                 JTable table = (JTable) c;
-//                 if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
-//                     table.getCellEditor().cancelCellEditing();
-//                 }
-//             }
+            // Container c = SwingUtilities.getAncestorOfClass(JTable.class, e.getComponent());
+            // if (c instanceof JTable) {
+            //     JTable table = (JTable) c;
+            //     if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+            //         table.getCellEditor().cancelCellEditing();
+            //     }
+            // }
         }
     }
 }

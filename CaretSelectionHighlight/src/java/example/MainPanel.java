@@ -91,15 +91,15 @@ class FocusCaret extends DefaultCaret {
         // repaint();
     }
     @Override protected Highlighter.HighlightPainter getSelectionPainter() {
-//         JComponent c = getComponent();
-//         boolean selected = c.hasFocus();
-//         Container f = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
-//         if (f instanceof JInternalFrame) {
-//             System.out.println("bbbbbbbbbbbbbb");
-//             JInternalFrame frame = (JInternalFrame) f;
-//             selected = frame.isSelected();
-//         }
-//         return selected ? DefaultHighlighter.DefaultPainter : nonFocusHighlightPainter;
+        // JComponent c = getComponent();
+        // boolean selected = c.hasFocus();
+        // Container f = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
+        // if (f instanceof JInternalFrame) {
+        //     System.out.println("bbbbbbbbbbbbbb");
+        //     JInternalFrame frame = (JInternalFrame) f;
+        //     selected = frame.isSelected();
+        // }
+        // return selected ? DefaultHighlighter.DefaultPainter : nonFocusHighlightPainter;
         return getComponent().hasFocus() ? DefaultHighlighter.DefaultPainter : NON_FOCUS_HIGHLIGHT_PAINTER;
     }
 }

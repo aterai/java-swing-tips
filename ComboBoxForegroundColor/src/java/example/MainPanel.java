@@ -123,7 +123,7 @@ class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
         l.setBackground(isSelected ? sbgc : list.getBackground());
         return l;
     }
-//     private static String hex(Color c) {
-//         return String.format("#%06X", c.getRGB() & 0xFFFFFF);
-//     }
+    // private static String hex(Color c) {
+    //     return String.format("#%06X", c.getRGB() & 0xFFFFFF);
+    // }
 }

@@ -48,7 +48,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setCellSelectionEnabled(true);
-        //table.setAutoCreateRowSorter(true);
+        // table.setAutoCreateRowSorter(true);
 
         rowField = new JSpinner(new SpinnerNumberModel(1, 0, model.getRowCount() - 1, 1));
         colField = new JSpinner(new SpinnerNumberModel(2, 0, model.getColumnCount() - 1, 1));
@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
             int col = Integer.parseInt(colField.getValue().toString());
 
             table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
-            //table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
+            // table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
             table.requestFocusInWindow();
             table.repaint();
         });

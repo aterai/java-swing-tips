@@ -64,9 +64,9 @@ public final class MainPanel extends JPanel {
         //             table.getCellEditor().stopCellEditing();
         //         }
         //         if (check.isSelected()) {
-        //             //table.getSelectionModel().clearSelection();
-        //             //table.getSelectionModel().setAnchorSelectionIndex(-1);
-        //             //table.getSelectionModel().setLeadSelectionIndex(-1);
+        //             // table.getSelectionModel().clearSelection();
+        //             // table.getSelectionModel().setAnchorSelectionIndex(-1);
+        //             // table.getSelectionModel().setLeadSelectionIndex(-1);
         //             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(-1);
         //             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(-1);
         //         }

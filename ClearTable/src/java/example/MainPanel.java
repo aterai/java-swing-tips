@@ -38,13 +38,13 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("remove all rows");
         button.addActionListener(e -> {
-//             if (DEBUG) {
-//                 // ArrayIndexOutOfBoundsException: 0 >= 0
-//                 // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-//                 // https://bugs.openjdk.java.net/browse/JDK-6967479
-//                 table.setRowSorter(null);
-//                 table.getTableHeader().repaint();
-//             }
+            // if (DEBUG) {
+            //     // ArrayIndexOutOfBoundsException: 0 >= 0
+            //     // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+            //     // https://bugs.openjdk.java.net/browse/JDK-6967479
+            //     table.setRowSorter(null);
+            //     table.getTableHeader().repaint();
+            // }
             model.setRowCount(0);
             // table.setAutoCreateColumnsFromModel(false);
             // table.setModel(new DefaultTableModel());

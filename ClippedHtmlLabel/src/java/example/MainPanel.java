@@ -194,8 +194,8 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         if (!isRollover && !prevRollover) {
             return;
         }
-// >>>> HyperlinkCellRenderer.java
-// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        // >>>> HyperlinkCellRenderer.java
+        // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         Rectangle repaintRect;
         if (isRollover) {
             Rectangle r = table.getCellRect(vrow, vcol, false);
@@ -204,7 +204,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
-// <<<<
+        // <<<<
         // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {

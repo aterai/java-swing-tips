@@ -59,16 +59,16 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-//     private BufferedImage makeBI(String str) {
-//         BufferedImage image;
-//         try {
-//             image = ImageIO.read(getClass().getResource(str));
-//         } catch (IOException ex) {
-//             ex.printStackTrace();
-//             return null;
-//         }
-//         return image;
-//     }
+    // private BufferedImage makeBI(String str) {
+    //     BufferedImage image;
+    //     try {
+    //         image = ImageIO.read(getClass().getResource(str));
+    //     } catch (IOException ex) {
+    //         ex.printStackTrace();
+    //         return null;
+    //     }
+    //     return image;
+    // }
     private static int[] getData(ImageIcon imageIcon, int w, int h) {
         Image img = imageIcon.getImage();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -76,13 +76,13 @@ public final class MainPanel extends JPanel {
         g.drawImage(img, 0, 0, null);
         g.dispose();
         return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-//         int[] pixels = new int[w * h];
-//         try {
-//             new PixelGrabber(image, 0, 0, width, height, pixels, 0, width).grabPixels();
-//         } catch (InterruptedException ex) {
-//             ex.printStackTrace();
-//         }
-//         return pixels;
+        // int[] pixels = new int[w * h];
+        // try {
+        //     new PixelGrabber(image, 0, 0, width, height, pixels, 0, width).grabPixels();
+        // } catch (InterruptedException ex) {
+        //     ex.printStackTrace();
+        // }
+        // return pixels;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

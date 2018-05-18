@@ -26,17 +26,17 @@ public final class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-//     JTable table = new JTable(model) {
-//         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//             Component c = super.prepareRenderer(tcr, row, column);
-//             if (1 == convertColumnIndexToModel(column)) {
-//                 initLabel((JLabel) c, row);
-//             } else {
-//                 ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
-//             }
-//             return c;
-//         }
-//     };
+        // JTable table = new JTable(model) {
+        //     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        //         Component c = super.prepareRenderer(tcr, row, column);
+        //         if (1 == convertColumnIndexToModel(column)) {
+        //             initLabel((JLabel) c, row);
+        //         } else {
+        //             ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
+        //         }
+        //         return c;
+        //     }
+        // };
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 

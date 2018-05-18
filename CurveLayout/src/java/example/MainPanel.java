@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
                             int hgap = getHgap();
                             int rowh = (target.getHeight() - insets.top - insets.bottom - vgap * 2) / nmembers;
                             int x = insets.left + hgap;
-                            int y = insets.top  + vgap;
+                            int y = insets.top + vgap;
                             for (int i = 0; i < nmembers; i++) {
                                 Component m = target.getComponent(i);
                                 if (m.isVisible()) {

@@ -35,11 +35,11 @@ public final class MainPanel extends JPanel {
         lbl2.setBorder(BorderFactory.createTitledBorder(b, "LineBreakMeasurer(condensed: 0.9)"));
 
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18).deriveFont(AffineTransform.getScaleInstance(.9, 1d));
-//         // TEST:
-//         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
-//         if (font.isTransformed()) {
-//             font = font.deriveFont(AffineTransform.getScaleInstance(.9, 1d));
-//         }
+        // // TEST:
+        // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
+        // if (font.isTransformed()) {
+        //     font = font.deriveFont(AffineTransform.getScaleInstance(.9, 1d));
+        // }
         for (Component c: Arrays.asList(textArea, lbl1, lbl2)) {
             c.setFont(font);
             add(c);

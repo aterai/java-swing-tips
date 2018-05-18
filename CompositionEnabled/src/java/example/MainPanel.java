@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model) {
         @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-            //System.out.println("key: " + ks.toString());
+            // System.out.println("key: " + ks.toString());
             boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
             if (!check.isSelected()) {
                 return retValue;
@@ -46,10 +46,10 @@ public class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        //table.setSurrendersFocusOnKeystroke(true);
-        //table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
+        // table.setSurrendersFocusOnKeystroke(true);
+        // table.setShowGrid(false);
+        // table.setShowHorizontalLines(false);
+        // table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         add(check, BorderLayout.NORTH);
         add(new JScrollPane(table));

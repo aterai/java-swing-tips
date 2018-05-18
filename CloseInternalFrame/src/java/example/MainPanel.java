@@ -140,7 +140,7 @@ class TestInternalFrameListener implements InternalFrameListener {
         System.out.println("internalFrameDeiconified: " + e.getInternalFrame().getTitle());
     }
     @Override public void internalFrameActivated(InternalFrameEvent e) {
-        //System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
+        // System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
     }
     @Override public void internalFrameDeactivated(InternalFrameEvent e) {
         System.out.println("internalFrameDeactivated: " + e.getInternalFrame().getTitle());

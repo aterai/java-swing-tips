@@ -9,10 +9,10 @@ import javax.swing.plaf.metal.MetalCheckBoxIcon;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        //System.setProperty("swing.noxp", "true");
-        //UIManager.put("CheckBox.interiorBackground", new ColorUIResource(Color.GREEN));
-        //UIManager.put("CheckBox.darkShadow", new ColorUIResource(Color.RED));
-        //UIManager.put("CheckBox.icon", new IconUIResource(new CheckBoxIcon()));
+        // System.setProperty("swing.noxp", "true");
+        // UIManager.put("CheckBox.interiorBackground", new ColorUIResource(Color.GREEN));
+        // UIManager.put("CheckBox.darkShadow", new ColorUIResource(Color.RED));
+        // UIManager.put("CheckBox.icon", new IconUIResource(new CheckBoxIcon()));
 
         JCheckBox cb1 = new JCheckBox("bbbbbbbbbb");
         cb1.setIcon(new CheckBoxIcon());
@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("Default", new JCheckBox("aaaaaaaaaaaaa")));
-        box.add(makeTitledPanel("WindowsIconFactory",     cb1));
-        box.add(makeTitledPanel("CheckBox.icon+RED",      cb2));
+        box.add(makeTitledPanel("WindowsIconFactory", cb1));
+        box.add(makeTitledPanel("CheckBox.icon+RED", cb2));
         box.add(makeTitledPanel("MetalCheckBoxIcon+GRAY", cb3));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -114,7 +114,7 @@ class CheckBoxIcon2 implements Icon {
 }
 
 class CheckBoxIcon implements Icon {
-    //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
+    // com/sun/java/swing/plaf/windows/WindowsIconFactory.java
     private static final int CSIZE = 13;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (!(c instanceof JCheckBox)) {
@@ -160,20 +160,20 @@ class CheckBoxIcon implements Icon {
             // inside box
             Color color = new Color(255, 155, 155);
             if (model.isPressed() && model.isArmed()) {
-                //g2.setColor(UIManager.getColor("CheckBox.background"));
+                // g2.setColor(UIManager.getColor("CheckBox.background"));
                 g2.setColor(color.brighter());
             } else {
-                //g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
+                // g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                 g2.setColor(color);
             }
             g2.fillRect(2, 2, CSIZE - 4, CSIZE - 4);
         }
 
-//         if (model.isEnabled()) {
-//             g2.setColor(UIManager.getColor("CheckBox.foreground"));
-//         } else {
-//             g2.setColor(UIManager.getColor("CheckBox.shadow"));
-//         }
+        // if (model.isEnabled()) {
+        //     g2.setColor(UIManager.getColor("CheckBox.foreground"));
+        // } else {
+        //     g2.setColor(UIManager.getColor("CheckBox.shadow"));
+        // }
 
         // paint check
         if (model.isSelected()) {

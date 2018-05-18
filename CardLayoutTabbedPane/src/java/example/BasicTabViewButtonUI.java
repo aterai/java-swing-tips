@@ -40,11 +40,11 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             tabViewButton.setSelectedTextColor(Color.BLACK);
         }
     }
-//     @Override public void uninstallUI(JComponent c) {
-//         super.uninstallUI(c);
-//         this.tabViewButton = null;
-//     }
-//     @Override public void installDefaults() {}
+    // @Override public void uninstallUI(JComponent c) {
+    //     super.uninstallUI(c);
+    //     this.tabViewButton = null;
+    // }
+    // @Override public void installDefaults() {}
 
     @Override public void paint(Graphics g, JComponent c) {
         if (!(c instanceof AbstractButton)) {

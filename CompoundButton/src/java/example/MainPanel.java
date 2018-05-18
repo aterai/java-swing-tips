@@ -132,8 +132,8 @@ class CompoundButton extends JButton {
             if (ButtonLocation.CENTER == bl) {
                 shape = inner;
             } else {
-                //TEST: parent.isOptimizedDrawingEnabled: false
-                //shape = new Arc2D.Double(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
+                // TEST: parent.isOptimizedDrawingEnabled: false
+                // shape = new Arc2D.Double(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
                 Shape outer = new Arc2D.Double(1, 1d, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
                 Area area = new Area(outer);
                 area.subtract(new Area(inner));
