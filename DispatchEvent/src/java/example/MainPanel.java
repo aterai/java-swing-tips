@@ -15,14 +15,14 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-//         EventQueue eventQueue = new EventQueue() {
-//             @Override protected void dispatchEvent(AWTEvent e) {
-//                 super.dispatchEvent(e);
-//                 if (e instanceof InputEvent && Objects.nonNull(timer) && timer.isRunning()) {
-//                     timer.restart();
-//                 }
-//             }
-//         };
+        // EventQueue eventQueue = new EventQueue() {
+        //     @Override protected void dispatchEvent(AWTEvent e) {
+        //         super.dispatchEvent(e);
+        //         if (e instanceof InputEvent && Objects.nonNull(timer) && timer.isRunning()) {
+        //             timer.restart();
+        //         }
+        //     }
+        // };
         Timer timer = new Timer(DELAY, null);
         AWTEventListener awtEvent = e -> {
             if (timer.isRunning()) {

@@ -13,23 +13,22 @@ public final class MainPanel extends JPanel {
     private final JButton button = new JButton("button");
     private MainPanel() {
         super(new BorderLayout());
-/*
-        toolbar.setUI(new BasicToolBarUI() {
-            @Override public boolean canDock(Component c, Point p) {
-                return super.canDock(c, p) && isHorizontalDockingConstraint(c, p);
-            }
-            private boolean isHorizontalDockingConstraint(Component c, Point p) {
-                if (!c.contains(p)) {
-                    return false;
-                }
-                int iv = toolBar.getOrientation() == JToolBar.HORIZONTAL ? toolBar.getSize().height : toolBar.getSize().width;
-                return p.x < c.getWidth() - iv && p.x >= iv;
-            }
-        });
-/*/
+
+        // toolbar.setUI(new BasicToolBarUI() {
+        //     @Override public boolean canDock(Component c, Point p) {
+        //         return super.canDock(c, p) && isHorizontalDockingConstraint(c, p);
+        //     }
+        //     private boolean isHorizontalDockingConstraint(Component c, Point p) {
+        //         if (!c.contains(p)) {
+        //             return false;
+        //         }
+        //         int iv = toolBar.getOrientation() == JToolBar.HORIZONTAL ? toolBar.getSize().height : toolBar.getSize().width;
+        //         return p.x < c.getWidth() - iv && p.x >= iv;
+        //     }
+        // });
+
         add(Box.createRigidArea(new Dimension()), BorderLayout.WEST);
         add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
-//*/
 
         button.setFocusable(false);
         toolbar.add(new JLabel("label"));

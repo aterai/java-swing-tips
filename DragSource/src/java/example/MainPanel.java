@@ -27,23 +27,23 @@ public final class MainPanel extends JPanel {
         label.setBorder(BorderFactory.createTitledBorder("Drag Source JLabel"));
         clearFile();
 
-//         //JDK 1.5.0
-//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
-//             @Override public void dragGestureRecognized(DragGestureEvent dge) {
-//                 File tmpfile = getFile();
-//                 if (Objects.isNull(tmpfile)) {
-//                     return;
-//                 }
-//                 DragSourceAdapter dsa = new DragSourceAdapter() {
-//                     @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-//                         if (dsde.getDropSuccess()) {
-//                             clearFile();
-//                         }
-//                     }
-//                 };
-//                 dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
-//             }
-//         });
+        // // JDK 1.5.0
+        // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
+        //     @Override public void dragGestureRecognized(DragGestureEvent dge) {
+        //         File tmpfile = getFile();
+        //         if (Objects.isNull(tmpfile)) {
+        //             return;
+        //         }
+        //         DragSourceAdapter dsa = new DragSourceAdapter() {
+        //             @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+        //                 if (dsde.getDropSuccess()) {
+        //                     clearFile();
+        //                 }
+        //             }
+        //         };
+        //         dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
+        //     }
+        // });
 
         label.setTransferHandler(new TransferHandler() {
             @Override public int getSourceActions(JComponent c) {

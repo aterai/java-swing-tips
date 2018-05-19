@@ -26,13 +26,13 @@ public final class MainPanel extends JPanel {
         JButton detailsView = new JButton("Details View");
         detailsView.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
-//             sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
-//             filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
+            // sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
+            // filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
 
-//             if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
-//                 Dimension d = chooser.getPreferredSize();
-//                 chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
-//             }
+            // if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
+            //     Dimension d = chooser.getPreferredSize();
+            //     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
+            // }
 
             // java - How can I start the JFileChooser in the Details view? - Stack Overflow
             // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
 
             Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
                 .ifPresent(a -> a.actionPerformed(null));
-//             Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-//             if (Objects.nonNull(detailsAction)) {
-//                 detailsAction.actionPerformed(null);
-//             }
+            // Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
+            // if (Objects.nonNull(detailsAction)) {
+            //     detailsAction.actionPerformed(null);
+            // }
             int retvalue = chooser.showOpenDialog(p);
             if (retvalue == JFileChooser.APPROVE_OPTION) {
                 log.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -58,54 +58,54 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
     }
-//     public static boolean searchAndClick(Container parent, Icon icon) {
-//         for (Component c: parent.getComponents()) {
-//             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
-//                 ((AbstractButton) c).doClick();
-//                 return true;
-//             } else {
-//                 if (searchAndClick((Container) c, icon)) {
-//                     return true;
-//                 }
-//             }
-//         }
-//         return false;
-//     }
-//         AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
-//         if (Objects.nonNull(b)) {
-//             Dimension d = chooser.getPreferredSize();
-//             chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
-//             b.doClick();
-//         };
-//     private static AbstractButton getDetailsViewButton(Container parent, Icon icon) {
-//         AbstractButton b = null;
-//         for (Component c: parent.getComponents()) {
-//             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
-//                 b = (AbstractButton) c;
-//                 break;
-//             } else {
-//                 if (Objects.nonNull(b = getDetailsViewButton((Container) c, icon))) {
-//                     break;
-//                 }
-//             }
-//         }
-//         return b;
-//     }
-//     private Component findChildComponent(Container container, Class<?> cls) {
-//         int n = container.getComponentCount();
-//         for (int i = 0; i < n; i++) {
-//             Component comp = container.getComponent(i);
-//             if (cls.isInstance(comp)) {
-//                 return comp;
-//             } else if (comp instanceof Container) {
-//                 Component c = findChildComponent((Container) comp, cls);
-//                 if (Objects.nonNull(c)) {
-//                     return c;
-//                 }
-//             }
-//         }
-//         return null;
-//     }
+    // public static boolean searchAndClick(Container parent, Icon icon) {
+    //     for (Component c: parent.getComponents()) {
+    //         if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
+    //             ((AbstractButton) c).doClick();
+    //             return true;
+    //         } else {
+    //             if (searchAndClick((Container) c, icon)) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
+    //     AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
+    //     if (Objects.nonNull(b)) {
+    //         Dimension d = chooser.getPreferredSize();
+    //         chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
+    //         b.doClick();
+    //     };
+    // private static AbstractButton getDetailsViewButton(Container parent, Icon icon) {
+    //     AbstractButton b = null;
+    //     for (Component c: parent.getComponents()) {
+    //         if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
+    //             b = (AbstractButton) c;
+    //             break;
+    //         } else {
+    //             if (Objects.nonNull(b = getDetailsViewButton((Container) c, icon))) {
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return b;
+    // }
+    // private Component findChildComponent(Container container, Class<?> cls) {
+    //     int n = container.getComponentCount();
+    //     for (int i = 0; i < n; i++) {
+    //         Component comp = container.getComponent(i);
+    //         if (cls.isInstance(comp)) {
+    //             return comp;
+    //         } else if (comp instanceof Container) {
+    //             Component c = findChildComponent((Container) comp, cls);
+    //             if (Objects.nonNull(c)) {
+    //                 return c;
+    //             }
+    //         }
+    //     }
+    //     return null;
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

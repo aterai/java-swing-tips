@@ -83,11 +83,11 @@ public class MainPanel extends JPanel {
             }
         });
 
-//         list.setSelectionModel(new DefaultListSelectionModel() {
-//             @Override public boolean isSelectedIndex(int index) {
-//                 return !disableIndexSet.contains(index) && super.isSelectedIndex(index);
-//             }
-//         });
+        // list.setSelectionModel(new DefaultListSelectionModel() {
+        //     @Override public boolean isSelectedIndex(int index) {
+        //         return !disableIndexSet.contains(index) && super.isSelectedIndex(index);
+        //     }
+        // });
 
         return list;
     }

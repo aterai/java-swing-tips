@@ -205,17 +205,17 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             // }
         }
         @Override public void drop(DropTargetDropEvent e) {
-//             Transferable t = e.getTransferable();
-//             DataFlavor[] f = t.getTransferDataFlavors();
-//             Component c = null;
-//             try {
-//                 c = (Component) t.getTransferData(f[0]);
-//             } catch (UnsupportedFlavorException | IOException ex) {
-//                 e.dropComplete(false);
-//             }
-//             if (c instanceof JTable) {
-//                 JTable table = (JTable) c;
-//                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+            // Transferable t = e.getTransferable();
+            // DataFlavor[] f = t.getTransferDataFlavors();
+            // Component c = null;
+            // try {
+            //     c = (Component) t.getTransferData(f[0]);
+            // } catch (UnsupportedFlavorException | IOException ex) {
+            //     e.dropComplete(false);
+            // }
+            // if (c instanceof JTable) {
+            //     JTable table = (JTable) c;
+            //     DefaultTableModel model = (DefaultTableModel) table.getModel();
             DefaultTableModel model = (DefaultTableModel) getModel();
             if (isDropAcceptable(e)) {
                 if (targetIndex == draggedIndex) {

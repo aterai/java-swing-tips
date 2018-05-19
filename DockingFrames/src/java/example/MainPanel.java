@@ -28,14 +28,14 @@ public final class MainPanel extends JPanel {
         JFrame frame1 = new JFrame("@title@");
         frame1.getContentPane().add(new MainPanel());
         frame1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame1.setResizable(false);
+        // frame1.setResizable(false);
         frame1.pack();
         frame1.setLocationRelativeTo(null);
 
         JFrame frame2 = new JFrame("sub frame");
         frame2.getContentPane().add(new MainPanel());
-        //frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame2.setResizable(false);
+        // frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame2.setResizable(false);
         frame2.pack();
 
         new DockingListener(frame1, frame2);

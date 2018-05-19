@@ -28,37 +28,37 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(ta));
         setPreferredSize(new Dimension(320, 240));
 
-//         frame.addWindowListener(new WindowAdapter() {
-//             @Override public void windowOpened(WindowEvent e) {
-//                 System.out.println("windowOpened");
-//                 field.requestFocus();
-//             }
-//         });
+        // frame.addWindowListener(new WindowAdapter() {
+        //     @Override public void windowOpened(WindowEvent e) {
+        //         System.out.println("windowOpened");
+        //         field.requestFocus();
+        //     }
+        // });
 
-//         frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-//             @Override public Component getInitialComponent(Window w) {
-//                 System.out.println("getInitialComponent");
-//                 return field;
-//             }
-//         });
+        // frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
+        //     @Override public Component getInitialComponent(Window w) {
+        //         System.out.println("getInitialComponent");
+        //         return field;
+        //     }
+        // });
 
-//         frame.addComponentListener(new ComponentAdapter() {
-//             @Override public void componentShown(ComponentEvent e) {
-//                 System.out.println("componentShown");
-//                 field.requestFocusInWindow();
-//             }
-//         });
+        // frame.addComponentListener(new ComponentAdapter() {
+        //     @Override public void componentShown(ComponentEvent e) {
+        //         System.out.println("componentShown");
+        //         field.requestFocusInWindow();
+        //     }
+        // });
 
-//         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-//         focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-//             @Override public void propertyChange(PropertyChangeEvent e) {
-//                 String prop = e.getPropertyName();
-//                 if ("activeWindow".equals(prop) && e.getNewValue() != null) {
-//                     System.out.println("activeWindow");
-//                     field.requestFocusInWindow();
-//                 }
-//             }
-//         });
+        // KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        // focusManager.addPropertyChangeListener(new PropertyChangeListener() {
+        //     @Override public void propertyChange(PropertyChangeEvent e) {
+        //         String prop = e.getPropertyName();
+        //         if ("activeWindow".equals(prop) && e.getNewValue() != null) {
+        //             System.out.println("activeWindow");
+        //             field.requestFocusInWindow();
+        //         }
+        //     }
+        // });
 
         EventQueue.invokeLater(() -> {
             System.out.println("invokeLater");

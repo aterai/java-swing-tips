@@ -26,18 +26,18 @@ public final class MainPanel extends JPanel {
                 Object[] obj = {ex.getMessage()};
                 JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-//             JFileChooser fileChooser = new JFileChooser();
-//             int retvalue = fileChooser.showOpenDialog(getRootPane());
-//             if (retvalue == JFileChooser.APPROVE_OPTION) {
-//                 File file = fileChooser.getSelectedFile();
-//                 System.out.println(file.getAbsolutePath());
-//                 try {
-//                     file.createNewFile();
-//                     file.deleteOnExit();
-//                 } catch (IOException ex) {
-//                     ex.printStackTrace();
-//                 }
-//             }
+            // JFileChooser fileChooser = new JFileChooser();
+            // int retvalue = fileChooser.showOpenDialog(getRootPane());
+            // if (retvalue == JFileChooser.APPROVE_OPTION) {
+            //     File file = fileChooser.getSelectedFile();
+            //     System.out.println(file.getAbsolutePath());
+            //     try {
+            //         file.createNewFile();
+            //         file.deleteOnExit();
+            //     } catch (IOException ex) {
+            //         ex.printStackTrace();
+            //     }
+            // }
         });
         Component p1 = makeTitledPanel("IOException: before 1.5", b1);
 

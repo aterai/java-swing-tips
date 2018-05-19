@@ -116,17 +116,17 @@ class LabelTransferHandler extends TransferHandler {
         System.out.println("createTransferable" + localObjectFlavor.getMimeType());
         DragPanel p = (DragPanel) c;
         return new LabelTransferable(localObjectFlavor, p);
-//         DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
-//         return Optional.ofNullable(l.getText())
-//             // .map(text -> (Transferable) new LabelTransferable(dh, localObjectFlavor, text))
-//             .<Transferable>map(text -> new LabelTransferable(dh, localObjectFlavor, text));
-//             .orElse(dh);
-// //         String text = l.getText();
-// //         if (Objects.nonNull(text)) {
-// //             return new LabelTransferable(dh, localObjectFlavor, text);
-// //         } else {
-// //             return dh;
-// //         }
+        //  DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
+        //  return Optional.ofNullable(l.getText())
+        //      // .map(text -> (Transferable) new LabelTransferable(dh, localObjectFlavor, text))
+        //      .<Transferable>map(text -> new LabelTransferable(dh, localObjectFlavor, text));
+        //      .orElse(dh);
+        //  // String text = l.getText();
+        //  // if (Objects.nonNull(text)) {
+        //  //     return new LabelTransferable(dh, localObjectFlavor, text);
+        //  // } else {
+        //  //     return dh;
+        //  // }
     }
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         return support.isDrop() && support.isDataFlavorSupported(localObjectFlavor);
@@ -198,11 +198,11 @@ class LabelTransferable implements Transferable {
                 list.add(f);
             }
         }
-//         for (DataFlavor f: dh.getTransferDataFlavors()) {
-//             list.add(f);
-//         }
+        // for (DataFlavor f: dh.getTransferDataFlavors()) {
+        //     list.add(f);
+        // }
         list.add(localObjectFlavor);
-//         return list.toArray(dh.getTransferDataFlavors());
+        // return list.toArray(dh.getTransferDataFlavors());
         return list.toArray(new DataFlavor[0]);
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -219,14 +219,14 @@ class LabelTransferable implements Transferable {
         } else {
             return ss.getTransferData(flavor);
         }
-//                 if (flavor.equals(DataFlavor.stringFlavor)) {
-//                     return ss.getTransferData(flavor);
-//                 } else if (flavor.equals(DataFlavor.plainTextFlavor)) {
-//                     return ss.getTransferData(flavor);
-//                 } else if (flavor.equals(localObjectFlavor)) {
-//                     return dh.getTransferData(flavor);
-//                 } else {
-//                     throw new UnsupportedFlavorException(flavor);
-//                 }
+        // if (flavor.equals(DataFlavor.stringFlavor)) {
+        //     return ss.getTransferData(flavor);
+        // } else if (flavor.equals(DataFlavor.plainTextFlavor)) {
+        //     return ss.getTransferData(flavor);
+        // } else if (flavor.equals(localObjectFlavor)) {
+        //     return dh.getTransferData(flavor);
+        // } else {
+        //     throw new UnsupportedFlavorException(flavor);
+        // }
     }
 }

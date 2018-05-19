@@ -25,32 +25,32 @@ public final class MainPanel extends JPanel {
         };
         disabledAreNavigableCheck.addActionListener(e -> UIManager.put(disabledAreNavigable, ((JCheckBox) e.getSource()).isSelected()));
 
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 ActionListener al = new ActionListener() {
-//                     @Override public void actionPerformed(ActionEvent e) {
-//                         EventQueue.invokeLater(new Runnable() {
-//                             @Override public void run() {
-//                                 Object o = e.getSource();
-//                                 if (o instanceof JRadioButtonMenuItem) {
-//                                     JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
-//                                     if (rbmi.isSelected()) {
-//                                         Boolean b = UIManager.getBoolean(disabledAreNavigable);
-//                                         System.out.println(rbmi.getText() + ": " + b);
-//                                         disabledAreNavigableCheck.setSelected(b);
-//                                     }
-//                                 }
-//                             }
-//                         });
-//                     }
-//                 };
-//                 List<JRadioButtonMenuItem> list = new ArrayList<>();
-//                 ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
-//                 for (JRadioButtonMenuItem mi: list) {
-//                     mi.addActionListener(al);
-//                 }
-//             }
-//         });
+        // EventQueue.invokeLater(new Runnable() {
+        //     @Override public void run() {
+        //         ActionListener al = new ActionListener() {
+        //             @Override public void actionPerformed(ActionEvent e) {
+        //                 EventQueue.invokeLater(new Runnable() {
+        //                     @Override public void run() {
+        //                         Object o = e.getSource();
+        //                         if (o instanceof JRadioButtonMenuItem) {
+        //                             JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
+        //                             if (rbmi.isSelected()) {
+        //                                 Boolean b = UIManager.getBoolean(disabledAreNavigable);
+        //                                 System.out.println(rbmi.getText() + ": " + b);
+        //                                 disabledAreNavigableCheck.setSelected(b);
+        //                             }
+        //                         }
+        //                     }
+        //                 });
+        //             }
+        //         };
+        //         List<JRadioButtonMenuItem> list = new ArrayList<>();
+        //         ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+        //         for (JRadioButtonMenuItem mi: list) {
+        //             mi.addActionListener(al);
+        //         }
+        //     }
+        // });
 
         JPopupMenu popup = new JPopupMenu();
         ManuBarUtil.initMenu(popup);
@@ -66,22 +66,22 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JMenuBar menuBar = ManuBarUtil.createMenuBar();
 
-//         Stream.of(menuBar)
-//           .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
-//               @Override public Stream<MenuElement> apply(MenuElement me) {
-//                   return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(e -> apply(e)));
-//               }
-//           })
-//           .filter(mi -> mi instanceof JRadioButtonMenuItem)
-//           .forEach(mi -> System.out.println("----\n" + mi.getClass()));
+        // Stream.of(menuBar)
+        //     .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
+        //         @Override public Stream<MenuElement> apply(MenuElement me) {
+        //             return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(e -> apply(e)));
+        //         }
+        //     })
+        //     .filter(mi -> mi instanceof JRadioButtonMenuItem)
+        //     .forEach(mi -> System.out.println("----\n" + mi.getClass()));
 
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

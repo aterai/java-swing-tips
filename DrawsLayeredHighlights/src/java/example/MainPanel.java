@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
             int pos = 0;
             while (matcher.find(pos)) {
                 int start = matcher.start();
-                int end   = matcher.end();
+                int end = matcher.end();
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }

@@ -50,13 +50,13 @@ public final class MainPanel extends JPanel {
     }
     private static Icon makeDisabledIcon(ImageIcon icon) {
         Image img = icon.getImage();
-//         BufferedImage source = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-//         Graphics g = source.createGraphics();
-//         g.drawImage(img, 0, 0, null);
-//         g.dispose();
-//         ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-//         BufferedImage destination = colorConvert.filter(source, null);
-//         return new ImageIcon(destination);
+        // BufferedImage source = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        // Graphics g = source.createGraphics();
+        // g.drawImage(img, 0, 0, null);
+        // g.dispose();
+        // ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+        // BufferedImage destination = colorConvert.filter(source, null);
+        // return new ImageIcon(destination);
         return new ImageIcon(GrayFilter.createDisabledImage(img));
     }
     public static void main(String... args) {

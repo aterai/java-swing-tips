@@ -165,13 +165,13 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         }
         @Override public void drop(DropTargetDropEvent e) {
             DefaultListModel<E> model = (DefaultListModel<E>) getModel();
-//             Transferable t = e.getTransferable();
-//             DataFlavor[] f = t.getTransferDataFlavors();
-//             try {
-//                 Component comp = (Component) t.getTransferData(f[0]);
-//             } catch (UnsupportedFlavorException | IOException ex) {
-//                 e.dropComplete(false);
-//             }
+            // Transferable t = e.getTransferable();
+            // DataFlavor[] f = t.getTransferDataFlavors();
+            // try {
+            //     Component comp = (Component) t.getTransferData(f[0]);
+            // } catch (UnsupportedFlavorException | IOException ex) {
+            //     e.dropComplete(false);
+            // }
             if (isDropAcceptable(e)) {
                 E str = model.get(draggedIndex);
                 if (targetIndex == draggedIndex) {

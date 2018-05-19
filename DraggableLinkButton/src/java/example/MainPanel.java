@@ -18,16 +18,16 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JButton label = new JButton(MYSITE);
-//         label.addActionListener(e -> {
-//             System.out.println(e);
-//             if (Desktop.isDesktopSupported()) {
-//                 try {
-//                     Desktop.getDesktop().browse(new URI(MYSITE));
-//                 } catch (IOException | URISyntaxException ex) {
-//                     ex.printStackTrace();
-//                 }
-//             }
-//         });
+        // label.addActionListener(e -> {
+        //     System.out.println(e);
+        //     if (Desktop.isDesktopSupported()) {
+        //         try {
+        //             Desktop.getDesktop().browse(new URI(MYSITE));
+        //         } catch (IOException | URISyntaxException ex) {
+        //             ex.printStackTrace();
+        //         }
+        //     }
+        // });
         label.setUI(LinkViewButtonUI.createUI(label, MYSITE));
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
@@ -39,51 +39,51 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }
-//         // TransferHandler
-//         DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
-//         JLabel label = new JLabel(MYSITE);
-//         label.setTransferHandler(new TransferHandler("text") {
-//             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-//                 return (flavors.length > 0 && flavors[0].equals(uriflavor));
-//             }
-//             @Override protected Transferable createTransferable(JComponent c) {
-//                 return new Transferable() {
-//                     @Override public Object getTransferData(DataFlavor flavor) {
-//                         return MYSITE;
-//                     }
-//                     @Override public DataFlavor[] getTransferDataFlavors() {
-//                         return new DataFlavor[] {uriflavor};
-//                     }
-//                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-//                         return flavor.equals(uriflavor);
-//                     }
-//                 };
-//             }
-//         });
-//         label.addMouseListener(new MouseAdapter() {
-//             @Override public void mousePressed(MouseEvent e) {
-//                 JComponent l = (JComponent) e.getSource();
-//                 TransferHandler handler = l.getTransferHandler();
-//                 handler.exportAsDrag(l, e, TransferHandler.COPY);
-//             }
-//         });
-//         // DragGestureListener
-//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY, new DragGestureListener() {
-//             @Override public void dragGestureRecognized(DragGestureEvent dge) {
-//                 Transferable t = new Transferable() {
-//                     @Override public Object getTransferData(DataFlavor flavor) {
-//                         return MYSITE;
-//                     }
-//                     @Override public DataFlavor[] getTransferDataFlavors() {
-//                         return new DataFlavor[] {uriflavor};
-//                     }
-//                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-//                         return flavor.equals(uriflavor);
-//                     }
-//                 };
-//                 dge.startDrag(DragSource.DefaultCopyDrop, t, null);
-//             }
-//         });
+    // // TransferHandler
+    // DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
+    // JLabel label = new JLabel(MYSITE);
+    // label.setTransferHandler(new TransferHandler("text") {
+    //     @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
+    //         return (flavors.length > 0 && flavors[0].equals(uriflavor));
+    //     }
+    //     @Override protected Transferable createTransferable(JComponent c) {
+    //         return new Transferable() {
+    //             @Override public Object getTransferData(DataFlavor flavor) {
+    //                 return MYSITE;
+    //             }
+    //             @Override public DataFlavor[] getTransferDataFlavors() {
+    //                 return new DataFlavor[] {uriflavor};
+    //             }
+    //             @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+    //                 return flavor.equals(uriflavor);
+    //             }
+    //         };
+    //     }
+    // });
+    // label.addMouseListener(new MouseAdapter() {
+    //     @Override public void mousePressed(MouseEvent e) {
+    //         JComponent l = (JComponent) e.getSource();
+    //         TransferHandler handler = l.getTransferHandler();
+    //         handler.exportAsDrag(l, e, TransferHandler.COPY);
+    //     }
+    // });
+    // // DragGestureListener
+    // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY, new DragGestureListener() {
+    //     @Override public void dragGestureRecognized(DragGestureEvent dge) {
+    //         Transferable t = new Transferable() {
+    //             @Override public Object getTransferData(DataFlavor flavor) {
+    //                 return MYSITE;
+    //             }
+    //             @Override public DataFlavor[] getTransferDataFlavors() {
+    //                 return new DataFlavor[] {uriflavor};
+    //             }
+    //             @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+    //                 return flavor.equals(uriflavor);
+    //             }
+    //         };
+    //         dge.startDrag(DragSource.DefaultCopyDrop, t, null);
+    //     }
+    // });
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

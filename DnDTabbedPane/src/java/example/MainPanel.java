@@ -116,18 +116,18 @@ class DnDTabbedPane extends JTabbedPane {
             .filter(JButton::isEnabled)
             .ifPresent(JButton::doClick);
 
-//         // ArrayIndexOutOfBoundsException
-//         Optional.ofNullable(getActionMap())
-//             .map(am -> am.get(actionKey))
-//             .filter(Action::isEnabled)
-//             .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
-// //         ActionMap map = getActionMap();
-// //         if (Objects.nonNull(map)) {
-// //             Action action = map.get(actionKey);
-// //             if (Objects.nonNull(action) && action.isEnabled()) {
-// //                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-// //             }
-// //         }
+        // // ArrayIndexOutOfBoundsException
+        // Optional.ofNullable(getActionMap())
+        //     .map(am -> am.get(actionKey))
+        //     .filter(Action::isEnabled)
+        //     .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+        // // ActionMap map = getActionMap();
+        // // if (Objects.nonNull(map)) {
+        // //     Action action = map.get(actionKey);
+        // //     if (Objects.nonNull(action) && action.isEnabled()) {
+        // //         action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+        // //     }
+        // // }
     }
 
     public void autoScrollTest(Point glassPt) {
@@ -233,28 +233,28 @@ class DnDTabbedPane extends JTabbedPane {
             SwingUtilities.paintComponent(g2, c, glassPane, 0, 0, d.width, d.height);
             g2.dispose();
             glassPane.setImage(image);
-//             Rectangle rect = getBoundsAt(dragTabIndex);
-//             BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-//             Graphics2D g2 = image.createGraphics();
-//             paint(g2);
-//             g2.dispose();
-//             if (rect.x < 0) {
-//                 rect.translate(-rect.x, 0);
-//             }
-//             if (rect.y < 0) {
-//                 rect.translate(0, -rect.y);
-//             }
-//             if (rect.x + rect.width > image.getWidth()) {
-//                 rect.width = image.getWidth() - rect.x;
-//             }
-//             if (rect.y + rect.height > image.getHeight()) {
-//                 rect.height = image.getHeight() - rect.y;
-//             }
-//             glassPane.setImage(image.getSubimage(rect.x, rect.y, rect.width, rect.height));
-// //             rect.x = Math.max(0, rect.x); // rect.x < 0 ? 0 : rect.x;
-// //             rect.y = Math.max(0, rect.y); // rect.y < 0 ? 0 : rect.y;
-// //             image = image.getSubimage(rect.x, rect.y, rect.width, rect.height);
-// //             glassPane.setImage(image);
+            // Rectangle rect = getBoundsAt(dragTabIndex);
+            // BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            // Graphics2D g2 = image.createGraphics();
+            // paint(g2);
+            // g2.dispose();
+            // if (rect.x < 0) {
+            //     rect.translate(-rect.x, 0);
+            // }
+            // if (rect.y < 0) {
+            //     rect.translate(0, -rect.y);
+            // }
+            // if (rect.x + rect.width > image.getWidth()) {
+            //     rect.width = image.getWidth() - rect.x;
+            // }
+            // if (rect.y + rect.height > image.getHeight()) {
+            //     rect.height = image.getHeight() - rect.y;
+            // }
+            // glassPane.setImage(image.getSubimage(rect.x, rect.y, rect.width, rect.height));
+            // // rect.x = Math.max(0, rect.x); // rect.x < 0 ? 0 : rect.x;
+            // // rect.y = Math.max(0, rect.y); // rect.y < 0 ? 0 : rect.y;
+            // // image = image.getSubimage(rect.x, rect.y, rect.width, rect.height);
+            // // glassPane.setImage(image);
         }
         Point glassPt = SwingUtilities.convertPoint(this, tabPt, glassPane);
         glassPane.setPoint(glassPt);
@@ -274,14 +274,14 @@ class DnDTabbedPane extends JTabbedPane {
         Rectangle compRect = Optional.ofNullable(getSelectedComponent())
             .map(Component::getBounds)
             .orElseGet(Rectangle::new);
-//         // TEST:
-//         Rectangle compRect = Optional.ofNullable(getSelectedComponent())
-//             .map(Component::getBounds)
-//             .orElseGet(() -> IntStream.range(0, getTabCount())
-//                 .mapToObj(this::getComponentAt)
-//                 .map(Component::getBounds)
-//                 .findFirst()
-//                 .orElseGet(Rectangle::new));
+        // // TEST:
+        // Rectangle compRect = Optional.ofNullable(getSelectedComponent())
+        //     .map(Component::getBounds)
+        //     .orElseGet(() -> IntStream.range(0, getTabCount())
+        //         .mapToObj(this::getComponentAt)
+        //         .map(Component::getBounds)
+        //         .findFirst()
+        //         .orElseGet(Rectangle::new));
         int tabPlacement = getTabPlacement();
         if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
@@ -294,17 +294,17 @@ class DnDTabbedPane extends JTabbedPane {
                 tabbedRect.x += compRect.x + compRect.width;
             }
         }
-//         if (tabPlacement == TOP) {
-//             tabbedRect.height = tabbedRect.height - compRect.height;
-//         } else if (tabPlacement == BOTTOM) {
-//             tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
-//             tabbedRect.height = tabbedRect.height - compRect.height;
-//         } else if (tabPlacement == LEFT) {
-//             tabbedRect.width = tabbedRect.width - compRect.width;
-//         } else if (tabPlacement == RIGHT) {
-//             tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
-//             tabbedRect.width = tabbedRect.width - compRect.width;
-//         }
+        // if (tabPlacement == TOP) {
+        //     tabbedRect.height = tabbedRect.height - compRect.height;
+        // } else if (tabPlacement == BOTTOM) {
+        //     tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
+        //     tabbedRect.height = tabbedRect.height - compRect.height;
+        // } else if (tabPlacement == LEFT) {
+        //     tabbedRect.width = tabbedRect.width - compRect.width;
+        // } else if (tabPlacement == RIGHT) {
+        //     tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
+        //     tabbedRect.width = tabbedRect.width - compRect.width;
+        // }
         tabbedRect.grow(2, 2);
         return tabbedRect;
     }

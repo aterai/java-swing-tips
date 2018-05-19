@@ -109,12 +109,12 @@ class TableRowTransferHandler extends TransferHandler {
         c.getRootPane().getGlassPane().setVisible(true);
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-//         List<Object> list = new ArrayList<>();
-//         indices = table.getSelectedRows();
-//         for (int i: indices) {
-//             list.add(model.getDataVector().get(i));
-//         }
-//         Object[] transferedObjects = list.toArray();
+        // List<Object> list = new ArrayList<>();
+        // indices = table.getSelectedRows();
+        // for (int i: indices) {
+        //     list.add(model.getDataVector().get(i));
+        // }
+        // Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
         @SuppressWarnings("JdkObsolete")
         List<?> transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());

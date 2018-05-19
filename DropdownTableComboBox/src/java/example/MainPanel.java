@@ -42,11 +42,11 @@ public final class MainPanel extends JPanel {
         };
 
         DropdownTableComboBox<Vector<Object>> combo = new DropdownTableComboBox<>(aseries, model);
-//         combo.addActionListener(e -> {
-//             List<Object> rowData = combo.getSelectedRow();
-//             wtf.setText(Objects.toString(rowData.get(1)));
-//             htf.setText(Objects.toString(rowData.get(2)));
-//         });
+        // combo.addActionListener(e -> {
+        //     List<Object> rowData = combo.getSelectedRow();
+        //     wtf.setText(Objects.toString(rowData.get(1)));
+        //     htf.setText(Objects.toString(rowData.get(2)));
+        // });
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 List<Object> rowData = combo.getSelectedRow();

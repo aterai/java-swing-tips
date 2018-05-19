@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JInternalFrame f0 = new JInternalFrame("metal(default)", true, true, true, true);
-        //TEST: f0.setUI(new BasicInternalFrameUI(f0));
+        // TEST: f0.setUI(new BasicInternalFrameUI(f0));
         f0.setSize(240, 100);
         f0.setLocation(20, 10);
         f0.setVisible(true);

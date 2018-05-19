@@ -107,9 +107,9 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     protected DisableItemComboBox(ComboBoxModel<E> model) {
         super(model);
     }
-//     protected DisableItemComboBox(E[] items) {
-//         super(items);
-//     }
+    // protected DisableItemComboBox(E[] items) {
+    //     super(items);
+    // }
     @Override public void updateUI() {
         super.updateUI();
         setRenderer(new DefaultListCellRenderer() {

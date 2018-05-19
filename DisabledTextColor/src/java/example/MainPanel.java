@@ -8,19 +8,6 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-// RadioButton.disabledText
-// ComboBox.disabledForeground
-// ComboBox.disabledBackground
-// Label.disabledForeground
-// CheckBoxMenuItem.disabledForeground
-// CheckBox.disabledText
-// Label.disabledShadow
-// ToggleButton.disabledText
-// RadioButtonMenuItem.disabledForeground
-// Button.disabledToolBarBorderBackground
-// Menu.disabledForeground
-// MenuItem.disabledForeground
-// Button.disabledText
     protected final JCheckBox cbx1 = new JCheckBox("default", true);
     protected final JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
     protected final JLabel label = new JLabel("label disabledForeground");
@@ -33,6 +20,20 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
+        // RadioButton.disabledText
+        // ComboBox.disabledForeground
+        // ComboBox.disabledBackground
+        // Label.disabledForeground
+        // CheckBoxMenuItem.disabledForeground
+        // CheckBox.disabledText
+        // Label.disabledShadow
+        // ToggleButton.disabledText
+        // RadioButtonMenuItem.disabledForeground
+        // Button.disabledToolBarBorderBackground
+        // Menu.disabledForeground
+        // MenuItem.disabledForeground
+        // Button.disabledText
+
         UIManager.put("CheckBox.disabledText", Color.RED);
         UIManager.put("ComboBox.disabledForeground", Color.GREEN);
         UIManager.put("Button.disabledText", Color.YELLOW);

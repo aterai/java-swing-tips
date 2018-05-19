@@ -140,7 +140,7 @@ class TreeTransferHandler extends TransferHandler {
     }
     private static DefaultMutableTreeNode deepCopyTreeNode(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
         for (int i = 0; i < src.getChildCount(); i++) {
-            DefaultMutableTreeNode node  = (DefaultMutableTreeNode) src.getChildAt(i);
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
             DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
             tgt.add(clone);
             if (!node.isLeaf()) {

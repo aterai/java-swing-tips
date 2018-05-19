@@ -175,7 +175,7 @@ class ShadowBorder extends AbstractBorder {
     }
 }
 /*/
-//JDK 1.7.0: JPopupMenu#setBackground(new Color(0x0, true));
+// JDK 1.7.0: JPopupMenu#setBackground(new Color(0x0, true));
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
     private final Dimension dim = new Dimension();

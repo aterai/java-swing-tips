@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
+// class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
     protected final JSpinner.DateEditor editor;
@@ -69,12 +69,12 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(SwingConstants.LEFT);
 
-//         addFocusListener(new FocusAdapter() {
-//             @Override public void focusGained(FocusEvent e) {
-//                 // System.out.println("spinner");
-//                 editor.getTextField().requestFocusInWindow();
-//             }
-//         });
+        // addFocusListener(new FocusAdapter() {
+        //     @Override public void focusGained(FocusEvent e) {
+        //         // System.out.println("spinner");
+        //         editor.getTextField().requestFocusInWindow();
+        //     }
+        // });
         editor.getTextField().addFocusListener(new FocusListener() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);
@@ -121,9 +121,9 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
-//             // Edited value is invalid, spinner.getValue() will return
-//             // the last valid value, you could revert the spinner to show that:
-//             editor.getTextField().setValue(getValue());
+            // // Edited value is invalid, spinner.getValue() will return
+            // // the last valid value, you could revert the spinner to show that:
+            // editor.getTextField().setValue(getValue());
         }
         fireEditingStopped();
         return true;

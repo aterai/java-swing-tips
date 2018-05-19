@@ -81,34 +81,34 @@ public final class MainPanel {
         frame.setVisible(true);
     }
 
-//     public static JMenuBar createMenuBar() {
-//         JMenuBar menuBar = new JMenuBar();
-//         JMenu menu = new JMenu("FFFFFF");
-//         menu.setMnemonic(KeyEvent.VK_F);
-//         menuBar.add(menu);
-//
-//         JMenuItem menuItem = new JMenuItem("NNNNNNNNN");
-//         menuItem.setMnemonic(KeyEvent.VK_N);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
-//         menu.add(menuItem);
-//
-//         menuItem = new JMenuItem("MMMMMMMM");
-//         menuItem.setMnemonic(KeyEvent.VK_M);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
-//         menu.add(menuItem);
-//
-//         menuItem = new JMenuItem("UUUUUU");
-//         menuItem.setMnemonic(KeyEvent.VK_U);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
-//         menu.add(menuItem);
-//
-//         menuItem = new JMenuItem("IIIIIIIIII");
-//         menuItem.setMnemonic(KeyEvent.VK_I);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_DOWN_MASK));
-//         menu.add(menuItem);
-//
-//         return menuBar;
-//     }
+    // public static JMenuBar createMenuBar() {
+    //     JMenuBar menuBar = new JMenuBar();
+    //     JMenu menu = new JMenu("FFFFFF");
+    //     menu.setMnemonic(KeyEvent.VK_F);
+    //     menuBar.add(menu);
+    //
+    //     JMenuItem menuItem = new JMenuItem("NNNNNNNNN");
+    //     menuItem.setMnemonic(KeyEvent.VK_N);
+    //     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
+    //     menu.add(menuItem);
+    //
+    //     menuItem = new JMenuItem("MMMMMMMM");
+    //     menuItem.setMnemonic(KeyEvent.VK_M);
+    //     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
+    //     menu.add(menuItem);
+    //
+    //     menuItem = new JMenuItem("UUUUUU");
+    //     menuItem.setMnemonic(KeyEvent.VK_U);
+    //     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
+    //     menu.add(menuItem);
+    //
+    //     menuItem = new JMenuItem("IIIIIIIIII");
+    //     menuItem.setMnemonic(KeyEvent.VK_I);
+    //     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_DOWN_MASK));
+    //     menu.add(menuItem);
+    //
+    //     return menuBar;
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

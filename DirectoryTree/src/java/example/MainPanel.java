@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 }
 
 class FolderSelectionListener implements TreeSelectionListener {
-//     private JFrame frame = null;
+    // private JFrame frame = null;
     private final FileSystemView fileSystemView;
     protected FolderSelectionListener(FileSystemView fileSystemView) {
         this.fileSystemView = fileSystemView;
@@ -73,11 +73,11 @@ class FolderSelectionListener implements TreeSelectionListener {
     @Override public void valueChanged(TreeSelectionEvent e) {
         JTree tree = (JTree) e.getSource();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-//         if (frame == null) {
-//             frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
-//             frame.setGlassPane(new LockingGlassPane());
-//         }
-//         frame.getGlassPane().setVisible(true);
+        // if (frame == null) {
+        //     frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
+        //     frame.setGlassPane(new LockingGlassPane());
+        // }
+        // frame.getGlassPane().setVisible(true);
 
         // TreePath path = e.getPath();
 
@@ -123,17 +123,17 @@ class BackgroundTask extends SwingWorker<String, File> {
         Arrays.stream(fileSystemView.getFiles(parent, true))
             .filter(File::isDirectory)
             .forEach(this::publish);
-//         File[] children = fileSystemView.getFiles(parent, true);
-//         for (File child: children) {
-//             if (child.isDirectory()) {
-//                 publish(child);
-// //                 try { // Test
-// //                     Thread.sleep(500);
-// //                 } catch (InterruptedException ex) {
-// //                     ex.printStackTrace();
-// //                 }
-//             }
-//         }
+        // File[] children = fileSystemView.getFiles(parent, true);
+        // for (File child: children) {
+        //     if (child.isDirectory()) {
+        //         publish(child);
+        //         // try { // Test
+        //         //     Thread.sleep(500);
+        //         // } catch (InterruptedException ex) {
+        //         //     ex.printStackTrace();
+        //         // }
+        //     }
+        // }
         return "done";
     }
 }
