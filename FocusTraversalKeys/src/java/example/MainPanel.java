@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
     }
 
     // // %JAVA_HOME%/src_b23/javax/swing/JOptionPane.java
-    // public static int showOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
+    // public static int showOptionDialog(
+    //         Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
     //     JOptionPane pane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
     //     pane.setInitialValue(initialValue);
     //     pane.setComponentOrientation((parent == null ? JOptionPane.getRootFrame() : parent).getComponentOrientation());

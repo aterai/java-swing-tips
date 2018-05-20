@@ -208,8 +208,8 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
         <module name="LineLength">
-            <property name="max" value="250"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+            <property name="max" value="180"/>
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|@Override.*"/>
         </module>
         <!-- module name="AvoidStarImport"/ -->
         <!-- module name="OneTopLevelClass"/ -->

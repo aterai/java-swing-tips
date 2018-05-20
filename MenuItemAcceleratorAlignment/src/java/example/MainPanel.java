@@ -211,7 +211,7 @@ final class MenuItemUIHelper {
         });
     }
 
-    public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledFg, Color accFg, Color accSelectionFg) {
+    public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledFg, Color accFg, Color accSelFg) {
         String text = lh.getAccText();
         if (text.isEmpty()) {
             return;
@@ -225,9 +225,9 @@ final class MenuItemUIHelper {
         if (model.isEnabled()) {
             // *** paint the accText normally
             if (model.isArmed()) {
-                g.setColor(accSelectionFg);
+                g.setColor(accSelFg);
             } else if (menuItem instanceof JMenu && model.isSelected()) {
-                g.setColor(accSelectionFg);
+                g.setColor(accSelFg);
             } else {
                 g.setColor(accFg);
             }

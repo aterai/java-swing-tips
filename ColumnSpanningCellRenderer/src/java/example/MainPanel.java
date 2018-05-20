@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel {
     private static final String SEE = "See Also: Constan Field Values";
     private final String[] columnNames = {"AAA", "BBB"};
     private final Object[][] data = {
-        {new OptionPaneDescription("errorIcon", UIManager.getIcon("OptionPane.errorIcon"), "public static final int ERROR_MESSAGE\nUsed for error messages."), SEE},
-        {new OptionPaneDescription("informationIcon", UIManager.getIcon("OptionPane.informationIcon"), "public static final int INFORMATION_MESSAGE\nUsed for information messages."), SEE},
-        {new OptionPaneDescription("questionIcon", UIManager.getIcon("OptionPane.questionIcon"), "public static final int QUESTION_MESSAGE\nUsed for questions."), SEE},
-        {new OptionPaneDescription("warningIcon", UIManager.getIcon("OptionPane.warningIcon"), "public static final int WARNING_MESSAGE\nUsed for warning messages."), SEE},
+        {makeOptionPaneDescription("error"), SEE},
+        {makeOptionPaneDescription("information"), SEE},
+        {makeOptionPaneDescription("question"), SEE},
+        {makeOptionPaneDescription("warning"), SEE},
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
@@ -42,6 +42,12 @@ public final class MainPanel extends JPanel {
         }
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static OptionPaneDescription makeOptionPaneDescription(String type) {
+        String key = type + "Icon";
+        Icon icon = UIManager.getIcon("OptionPane." + key);
+        String msg = String.format("public static final int %s_MESSAGE%nUsed for %s messages.", type.toUpperCase(Locale.ENGLISH), type);
+        return new OptionPaneDescription(key, icon, msg);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

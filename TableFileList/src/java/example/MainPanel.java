@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-//     private static int getStringWidth(JTable table, int row, int column) {
-//         FontMetrics fm = table.getFontMetrics(table.getFont());
-//         Object o = table.getValueAt(row, column);
-//         return fm.stringWidth(o.toString()) + ICON_SIZE + 2 + 2;
-//     }
-//     private static boolean isOnLabel(JTable table, Point pt, int row, int col) {
-//         Rectangle rect = table.getCellRect(row, col, true);
-//         rect.setSize(getStringWidth(table, row, col), rect.height);
-//         return(rect.contains(pt));
-//     }
+    // private static int getStringWidth(JTable table, int row, int column) {
+    //     FontMetrics fm = table.getFontMetrics(table.getFont());
+    //     Object o = table.getValueAt(row, column);
+    //     return fm.stringWidth(o.toString()) + ICON_SIZE + 2 + 2;
+    // }
+    // private static boolean isOnLabel(JTable table, Point pt, int row, int col) {
+    //     Rectangle rect = table.getCellRect(row, col, true);
+    //     rect.setSize(getStringWidth(table, row, col), rect.height);
+    //     return(rect.contains(pt));
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -216,13 +216,13 @@ class FileNameRenderer implements TableCellRenderer {
 //         return !colorMatch && super.isOpaque();
 //     }
 //     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) { /* Overridden for performance reasons. */ }
-//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue)  { /* Overridden for performance reasons. */ }
+//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void repaint() { /* Overridden for performance reasons. */ }
 //     @Override public void revalidate() { /* Overridden for performance reasons. */ }
 //     // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     // @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     // @Override public void validate() { /* Overridden for performance reasons. */ }
 //     // <---- Overridden for performance reasons.
 // }
 //
@@ -278,16 +278,17 @@ class FileNameRenderer implements TableCellRenderer {
 // //      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 // //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
 //         if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
-//               || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)) || "foreground".equals(propertyName))) {
+//               || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey))
+//               || "foreground".equals(propertyName))) {
 //             super.firePropertyChange(propertyName, oldValue, newValue);
 //         }
 //     }
 //     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
 //     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void repaint() { /* Overridden for performance reasons. */ }
 //     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     @Override public void validate() { /* Overridden for performance reasons. */ }
 //     @Override public void revalidate() { /* Overridden for performance reasons. */ }
 //     // <---- Overridden for performance reasons.
 // }
@@ -336,8 +337,8 @@ class FileListTable extends JTable {
     }
     @Override public String getToolTipText(MouseEvent e) {
         Point pt = e.getPoint();
-        int row  = rowAtPoint(pt);
-        int col  = columnAtPoint(pt);
+        int row = rowAtPoint(pt);
+        int col = columnAtPoint(pt);
         if (convertColumnIndexToModel(col) != 0 || row < 0 || row > getRowCount()) {
             return null;
         }
@@ -360,10 +361,10 @@ class FileListTable extends JTable {
             Point destPoint = e.getPoint();
             Path2D rb = getRubberBand();
             rb.reset();
-            rb.moveTo(srcPoint.x,  srcPoint.y);
+            rb.moveTo(srcPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, srcPoint.y);
             rb.lineTo(destPoint.x, destPoint.y);
-            rb.lineTo(srcPoint.x,  destPoint.y);
+            rb.lineTo(srcPoint.x, destPoint.y);
             rb.closePath();
             clearSelection();
             int col = convertColumnIndexToView(0);
@@ -413,20 +414,20 @@ class FileListTable extends JTable {
         g2.fill(rubberBand);
         g2.dispose();
     }
-//     private int[] getIntersectedIndices(Path2D path) {
-//         TableModel model = getModel();
-//         List<Integer> list = new ArrayList<>(model.getRowCount());
-//         for (int i = 0; i < getRowCount(); i++) {
-//             if (path.intersects(getCellRect2(FileListTable.this, i, convertColumnIndexToView(0)))) {
-//                 list.add(i);
-//             }
-//         }
-//         int[] il = new int[list.size()];
-//         for (int i = 0; i < list.size(); i++) {
-//             il[i] = list.get(i);
-//         }
-//         return il;
-//     }
+    // private int[] getIntersectedIndices(Path2D path) {
+    //     TableModel model = getModel();
+    //     List<Integer> list = new ArrayList<>(model.getRowCount());
+    //     for (int i = 0; i < getRowCount(); i++) {
+    //         if (path.intersects(getCellRect2(FileListTable.this, i, convertColumnIndexToView(0)))) {
+    //             list.add(i);
+    //         }
+    //     }
+    //     int[] il = new int[list.size()];
+    //     for (int i = 0; i < list.size(); i++) {
+    //         il[i] = list.get(i);
+    //     }
+    //     return il;
+    // }
     private static Color makeColor(Color c) {
         int r = c.getRed();
         int g = c.getGreen();
