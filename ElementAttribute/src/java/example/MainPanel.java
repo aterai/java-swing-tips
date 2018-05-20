@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
             } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                 tooltip = editorPane.getToolTipText();
                 editorPane.setToolTipText(Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null));
-//                 URL url = e.getURL();
-//                 editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+                // URL url = e.getURL();
+                // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
             } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                 editorPane.setToolTipText(tooltip);
             }
@@ -81,26 +81,26 @@ public final class MainPanel extends JPanel {
 class CustomTooltipEditorPane extends JEditorPane {
     private final transient Position.Bias[] bias = new Position.Bias[1];
     private transient HyperlinkListener listener;
-//     private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
-//         if (e != null && offset > 0 && e.getStartOffset() == offset) {
-//             try {
-//                 TextUI ui = editor.getUI();
-//                 Shape s1 = ui.modelToView(editor, offset, Position.Bias.Forward);
-//                 if (s1 == null) {
-//                     return false;
-//                 }
-//                 Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
-//                 Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
-//                 if (s2 != null) {
-//                     Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
-//                 }
-//                 return r1.contains(x, y);
-//             } catch (BadLocationException ex) {
-//                 ex.printStackTrace();
-//             }
-//         }
-//         return true;
-//     }
+    // private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
+    //     if (e != null && offset > 0 && e.getStartOffset() == offset) {
+    //         try {
+    //             TextUI ui = editor.getUI();
+    //             Shape s1 = ui.modelToView(editor, offset, Position.Bias.Forward);
+    //             if (s1 == null) {
+    //                 return false;
+    //             }
+    //             Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
+    //             Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
+    //             if (s2 != null) {
+    //                 Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
+    //             }
+    //             return r1.contains(x, y);
+    //         } catch (BadLocationException ex) {
+    //             ex.printStackTrace();
+    //         }
+    //     }
+    //     return true;
+    // }
     @Override public void updateUI() {
         removeHyperlinkListener(listener);
         super.updateUI();
@@ -115,14 +115,14 @@ class CustomTooltipEditorPane extends JEditorPane {
                     Optional.ofNullable(e.getSourceElement())
                         .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
                         .ifPresent(attr -> editor.setToolTipText(Objects.toString(attr.getAttribute(HTML.Attribute.TITLE))));
-//                     Element elem = e.getSourceElement();
-//                     if (Objects.nonNull(elem)) {
-//                         AttributeSet attr = elem.getAttributes();
-//                         AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
-//                         if (Objects.nonNull(a)) {
-//                             editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
-//                         }
-//                     }
+                    // Element elem = e.getSourceElement();
+                    // if (Objects.nonNull(elem)) {
+                    //     AttributeSet attr = elem.getAttributes();
+                    //     AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
+                    //     if (Objects.nonNull(a)) {
+                    //         editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
+                    //     }
+                    // }
                 } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editor.setToolTipText(tooltip);
                 }

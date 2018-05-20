@@ -44,24 +44,24 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     private static DefaultTreeModel makeModel() {
-//         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-//         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-//         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-//         DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-//         set1.add(new DefaultMutableTreeNode("111111111"));
-//         set1.add(new DefaultMutableTreeNode("22222222222"));
-//         set1.add(new DefaultMutableTreeNode("33333"));
-//         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-//         set2.add(new DefaultMutableTreeNode("asdf"));
-//         set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-//         set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
-//         set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
-//         root.add(set1);
-//         root.add(set2);
-//         set2.add(set3);
-//         return new DefaultTreeModel(root);
-//     }
+    // private static DefaultTreeModel makeModel() {
+    //     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+    //     DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
+    //     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
+    //     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
+    //     set1.add(new DefaultMutableTreeNode("111111111"));
+    //     set1.add(new DefaultMutableTreeNode("22222222222"));
+    //     set1.add(new DefaultMutableTreeNode("33333"));
+    //     set2.add(new DefaultMutableTreeNode("asdfasdfas"));
+    //     set2.add(new DefaultMutableTreeNode("asdf"));
+    //     set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
+    //     set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
+    //     set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
+    //     root.add(set1);
+    //     root.add(set2);
+    //     set2.add(set3);
+    //     return new DefaultTreeModel(root);
+    // }
 
     public static Stream<TreeNode> children(TreeNode node) {
         // Java 9: return Collections.list(node.children())
@@ -74,13 +74,13 @@ public final class MainPanel extends JPanel {
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         children(node).forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
-//         if (!node.isLeaf() && node.getChildCount() >= 0) {
-//             // Java 9: Enumeration<TreeNode> e = node.children();
-//             Enumeration<?> e = node.children();
-//             while (e.hasMoreElements()) {
-//                 visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
-//             }
-//         }
+        // if (!node.isLeaf() && node.getChildCount() >= 0) {
+        //     // Java 9: Enumeration<TreeNode> e = node.children();
+        //     Enumeration<?> e = node.children();
+        //     while (e.hasMoreElements()) {
+        //         visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
+        //     }
+        // }
         if (expand) {
             tree.expandPath(parent);
         } else {
@@ -104,14 +104,14 @@ public final class MainPanel extends JPanel {
             row--;
         }
     }
-//     // https://community.oracle.com/thread/1393385 How to Expand a JTree completely
-//     private void expandAPath(TreePath p) {
-//         tree.expandPath(p);
-//         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
-//         for (int i = 0; i < n.getChildCount(); i++) {
-//             expandAPath(p.pathByAddingChild(n.getChildAt(i)));
-//         }
-//     }
+    // // https://community.oracle.com/thread/1393385 How to Expand a JTree completely
+    // private void expandAPath(TreePath p) {
+    //     tree.expandPath(p);
+    //     DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
+    //     for (int i = 0; i < n.getChildCount(); i++) {
+    //         expandAPath(p.pathByAddingChild(n.getChildAt(i)));
+    //     }
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

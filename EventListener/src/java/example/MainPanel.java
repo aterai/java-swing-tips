@@ -5,16 +5,15 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-//import javax.swing.event.EventListenerList;
+// import javax.swing.event.EventListenerList;
 
 public final class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-    private final MyButton button  = new MyButton("dummy");
-    private final MyLabel label    = new MyLabel("test");
+    private final MyButton button = new MyButton("dummy");
+    private final MyLabel label = new MyLabel("test");
     private final MyComboBox combo = new MyComboBox();
 
-//*
     // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/EventListenerList.html
     // OvershadowingSubclassFields: JComponent: private final EventListenerList listenerList = new EventListenerList();
     // FontChangeEvent fontChangeEvent = null;
@@ -36,38 +35,39 @@ public final class MainPanel extends JPanel {
         // those that are interested in this event
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == FontChangeListener.class) {
-                // Lazily create the event:
-//                 if (fontChangeEvent == null)
-//                   fontChangeEvent = new FontChangeEvent(this);
+                // // Lazily create the event:
+                // if (fontChangeEvent == null) {
+                //     fontChangeEvent = new FontChangeEvent(this);
+                // }
                 ((FontChangeListener) listeners[i + 1]).fontStateChanged(e);
             }
         }
     }
-/*/
-    // http://www.asahi-net.or.jp/~dp8t-asm/java/tips/Event.html
-    private final Vector<FontChangeListener> listenerList = new Vector<>();
-    public void addFontChangeListener(FontChangeListener listener) {
-        if (!listenerList.contains(listener)) { listenerList.add(listener); }
-    }
-    public void removeFontChangeListener(FontChangeListener listener) {
-        listenerList.remove(listener);
-    }
-    public void fireFontChangeEvent(String cmd, Font font) {
-        Vector list = (Vector) listenerList.clone();
-        Enumeration e = list.elements();
-        FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
-        while (e.hasMoreElements()) {
-            FontChangeListener listener = (FontChangeListener) e.nextElement();
-            listener.fontStateChanged(evt);
-        }
-        revalidate();
-    }
-//*/
-    public MainPanel() {
+
+    // // http://www.asahi-net.or.jp/~dp8t-asm/java/tips/Event.html
+    // private final Vector<FontChangeListener> listenerList = new Vector<>();
+    // public void addFontChangeListener(FontChangeListener listener) {
+    //     if (!listenerList.contains(listener)) { listenerList.add(listener); }
+    // }
+    // public void removeFontChangeListener(FontChangeListener listener) {
+    //     listenerList.remove(listener);
+    // }
+    // public void fireFontChangeEvent(String cmd, Font font) {
+    //     Vector list = (Vector) listenerList.clone();
+    //     Enumeration e = list.elements();
+    //     FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
+    //     while (e.hasMoreElements()) {
+    //         FontChangeListener listener = (FontChangeListener) e.nextElement();
+    //         listener.fontStateChanged(evt);
+    //     }
+    //     revalidate();
+    // }
+
+    private MainPanel() {
         super(new BorderLayout());
 
         addFontChangeListener(button);
-        //addFontChangeListener(combo);
+        // addFontChangeListener(combo);
         addFontChangeListener(label);
 
         JMenu menu = new JMenu("Font");

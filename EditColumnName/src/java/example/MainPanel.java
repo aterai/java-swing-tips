@@ -23,11 +23,11 @@ public final class MainPanel extends JPanel {
             }
         };
         JTable table = new JTable(model);
-        //table.setAutoCreateColumnsFromModel(true);
+        // table.setAutoCreateColumnsFromModel(true);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setComponentPopupMenu(new TablePopupMenu(columnNames));
-        //table.getTableHeader().setReorderingAllowed(false);
-        //table.getTableHeader().setDraggedDistance(4);
+        // table.getTableHeader().setReorderingAllowed(false);
+        // table.getTableHeader().setDraggedDistance(4);
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -104,7 +104,7 @@ class TablePopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add(editAction1);
@@ -114,10 +114,10 @@ class TablePopupMenu extends JPopupMenu {
         if (c instanceof JTableHeader) {
             JTableHeader header = (JTableHeader) c;
             header.setDraggedColumn(null); // bookmark_1
-            //if (header.getDraggedColumn() != null) remain dirty area >>>
+            // if (header.getDraggedColumn() != null) remain dirty area >>>
             header.repaint();
             header.getTable().repaint();
-            //<<<
+            // <<<
             index = header.columnAtPoint(new Point(x, y));
             super.show(c, x, y);
         }

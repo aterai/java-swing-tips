@@ -28,16 +28,16 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(model);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-//         if (System.getProperty("java.version").startsWith("1.6.0")) {
-//             // 1.6.0_xx bug? column header click -> edit cancel?
-//             table.getTableHeader().addMouseListener(new MouseAdapter() {
-//                 @Override public void mousePressed(MouseEvent e) {
-//                     if (table.isEditing()) {
-//                         table.getCellEditor().stopCellEditing();
-//                     }
-//                 }
-//             });
-//         }
+        // if (System.getProperty("java.version").startsWith("1.6.0")) {
+        //     // 1.6.0_xx bug? column header click -> edit cancel?
+        //     table.getTableHeader().addMouseListener(new MouseAdapter() {
+        //         @Override public void mousePressed(MouseEvent e) {
+        //             if (table.isEditing()) {
+        //                 table.getCellEditor().stopCellEditing();
+        //             }
+        //         }
+        //     });
+        // }
 
         TableColumn c = table.getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());

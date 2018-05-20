@@ -16,24 +16,24 @@ public final class MainPanel extends JPanel {
         DefaultMutableTreeNode root = makeTreeRoot();
         JTree tree = new JTree(new DefaultTreeModel(root));
 
-//         // TEST:
-//         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-//         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-//         for (File fileSystemRoot: fileSystemView.getRoots()) {
-//             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
-//             root.add(node);
-//             for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
-//                 if (file.isDirectory()) {
-//                     node.add(new DefaultMutableTreeNode(file));
-//                 }
-//             }
-//         }
-//         tree.setModel(treeModel);
-//         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-//         tree.setRootVisible(false);
-//         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
-//         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
-//         tree.expandRow(0);
+        // // TEST:
+        // FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+        // DefaultTreeModel treeModel = new DefaultTreeModel(root);
+        // for (File fileSystemRoot: fileSystemView.getRoots()) {
+        //     DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
+        //     root.add(node);
+        //     for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
+        //         if (file.isDirectory()) {
+        //             node.add(new DefaultMutableTreeNode(file));
+        //         }
+        //     }
+        // }
+        // tree.setModel(treeModel);
+        // tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        // tree.setRootVisible(false);
+        // tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
+        // tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
+        // tree.expandRow(0);
 
         TreePath rootPath = new TreePath(root);
 
