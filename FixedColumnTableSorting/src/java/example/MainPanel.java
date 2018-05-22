@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         JScrollPane scroll = new JScrollPane(table);
-//         JViewport viewport = new JViewport();
-//         viewport.setView(fixedTable);
-//         viewport.setPreferredSize(fixedTable.getPreferredSize());
-//         scroll.setRowHeader(viewport);
+        // JViewport viewport = new JViewport();
+        // viewport.setView(fixedTable);
+        // viewport.setPreferredSize(fixedTable.getPreferredSize());
+        // scroll.setRowHeader(viewport);
 
         fixedTable.setPreferredScrollableViewportSize(fixedTable.getPreferredSize());
         scroll.setRowHeaderView(fixedTable);

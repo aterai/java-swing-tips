@@ -42,9 +42,9 @@ public final class MainPanel extends JPanel {
         table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(FileSystemView.getFileSystemView()));
 
         TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) table.getRowSorter();
-//         RowSorter<? extends TableModel> rs = table.getRowSorter();
-//         if (rs instanceof TableRowSorter) {
-//             TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
+        // RowSorter<? extends TableModel> rs = table.getRowSorter();
+        // if (rs instanceof TableRowSorter) {
+        //     TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
         IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new DefaultFileComparator(i)));
 
         JRadioButton check1 = new JRadioButton("Default", true);
@@ -162,31 +162,31 @@ class FileTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
-//     @Override public boolean importData(JComponent component, Transferable transferable) {
-//         try {
-//             if (canImport(component, transferable.getTransferDataFlavors())) {
-//                 DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
-//                 for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
-//                     if (o instanceof File) {
-//                         File file = (File) o;
-//                         model.addRow(new Object[] {file, file, file});
-//                     }
-//                 }
-//                 return true;
-//             }
-//         } catch (Exception ex) {
-//             ex.printStackTrace();
-//         }
-//         return false;
-//     }
-//     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
-//         for (DataFlavor f: flavors) {
-//             if (DataFlavor.javaFileListFlavor.equals(f)) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     }
+    // @Override public boolean importData(JComponent component, Transferable transferable) {
+    //     try {
+    //         if (canImport(component, transferable.getTransferDataFlavors())) {
+    //             DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
+    //             for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+    //                 if (o instanceof File) {
+    //                     File file = (File) o;
+    //                     model.addRow(new Object[] {file, file, file});
+    //                 }
+    //             }
+    //             return true;
+    //         }
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //     }
+    //     return false;
+    // }
+    // @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
+    //     for (DataFlavor f: flavors) {
+    //         if (DataFlavor.javaFileListFlavor.equals(f)) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
     @Override public int getSourceActions(JComponent component) {
         return TransferHandler.COPY;
     }

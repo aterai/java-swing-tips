@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         };
         TableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
-                return Integer.class; //getValueAt(0, column).getClass();
+                return Integer.class; // getValueAt(0, column).getClass();
             }
             @Override public boolean isCellEditable(int row, int column) {
                 return row > 0 && row != getRowCount() - 1;
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
             }
         };
         s.setRowFilter(filter);
-        //s.setSortsOnUpdates(true);
+        // s.setSortsOnUpdates(true);
         s.toggleSortOrder(1);
         table.setRowSorter(s);
 
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
                 JLabel l;
                 TableModel m = table.getModel();
                 if (row == m.getRowCount() - 2) {
-                    //int total = getSum(model, table.convertColumnIndexToModel(column));
+                    // int total = getSum(model, table.convertColumnIndexToModel(column));
                     int total = IntStream.range(1, m.getRowCount() - 1).map(i -> (Integer) m.getValueAt(i, column)).sum();
                     l = (JLabel) super.getTableCellRendererComponent(table, total, isSelected, hasFocus, row, column);
                     l.setBackground(Color.ORANGE);
@@ -76,13 +76,13 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-//     protected static int getSum(DefaultTableModel model, int column) {
-//         int counter = 0;
-//         for (int i = 1; i < model.getRowCount() - 1; i++) {
-//             counter += (Integer) model.getValueAt(i, column);
-//         }
-//         return counter;
-//     }
+    // protected static int getSum(DefaultTableModel model, int column) {
+    //     int counter = 0;
+    //     for (int i = 1; i < model.getRowCount() - 1; i++) {
+    //         counter += (Integer) model.getValueAt(i, column);
+    //     }
+    //     return counter;
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

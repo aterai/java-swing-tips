@@ -18,12 +18,12 @@ public final class MainPanel extends JPanel {
         JTextField textField1 = new JTextField("Default setComponentPopupMenu");
         textField1.setComponentPopupMenu(popup1);
         textField1.setName("textField1");
-//         // TEST:
-//         textField1.addMouseListener(new MouseAdapter() {
-//             @Override public void mousePressed(MouseEvent e) {
-//                 e.getComponent().requestFocusInWindow();
-//             }
-//         });
+        // // TEST:
+        // textField1.addMouseListener(new MouseAdapter() {
+        //     @Override public void mousePressed(MouseEvent e) {
+        //         e.getComponent().requestFocusInWindow();
+        //     }
+        // });
 
         JPopupMenu popup2 = new TextComponentPopupMenu();
         JTextField textField2 = new JTextField("Override JPopupMenu#show(...)");
@@ -56,16 +56,16 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-//         textField4.addFocusListener(new FocusAdapter() {
-//             @Override public void focusGained(FocusEvent e) {
-//                 System.out.println("focusGained");
-//                 for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
-//                     if (m instanceof JPopupMenu) {
-//                         ((JPopupMenu) m).setVisible(false);
-//                     }
-//                 }
-//             }
-//         });
+        // textField4.addFocusListener(new FocusAdapter() {
+        //     @Override public void focusGained(FocusEvent e) {
+        //         System.out.println("focusGained");
+        //         for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
+        //             if (m instanceof JPopupMenu) {
+        //                 ((JPopupMenu) m).setVisible(false);
+        //             }
+        //         }
+        //     }
+        // });
 
         Box box = Box.createVerticalBox();
         for (Component c: Arrays.asList(textField1, textField2, combo3, combo4)) {

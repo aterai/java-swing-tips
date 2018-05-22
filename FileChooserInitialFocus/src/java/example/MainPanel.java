@@ -16,48 +16,48 @@ public final class MainPanel extends JPanel {
         JTextField field = new JTextField("C:/temp/test.txt");
         JTextArea log = new JTextArea();
 
-//         // TEST: PropertyChangeListener
-//         fileChooser.addPropertyChangeListener(e -> {
-//             String s = e.getPropertyName();
-//             if (s.equals("ancestor")) {
-//                 if (e.getOldValue() == null && e.getNewValue() != null) {
-//                     // Ancestor was added, set initial focus
-//                     findFileNameTextField(fileChooser).ifPresent(c -> {
-//                         ((JTextField) c).selectAll();
-//                         c.requestFocusInWindow();
-//                     });
-//                 }
-//             }
-//         });
+        // // TEST: PropertyChangeListener
+        // fileChooser.addPropertyChangeListener(e -> {
+        //     String s = e.getPropertyName();
+        //     if (s.equals("ancestor")) {
+        //         if (e.getOldValue() == null && e.getNewValue() != null) {
+        //             // Ancestor was added, set initial focus
+        //             findFileNameTextField(fileChooser).ifPresent(c -> {
+        //                 ((JTextField) c).selectAll();
+        //                 c.requestFocusInWindow();
+        //             });
+        //         }
+        //     }
+        // });
 
-//         // TEST: AncestorListener
-//         fileChooser.addAncestorListener(new AncestorListener() {
-//             @Override public void ancestorAdded(AncestorEvent e) {
-//                 findFileNameTextField(fileChooser).ifPresent(c -> {
-//                     ((JTextField) c).selectAll();
-//                     c.requestFocusInWindow();
-//                 });
-//             }
-//             @Override public void ancestorMoved(AncestorEvent e) {}
-//             @Override public void ancestorRemoved(AncestorEvent e) {}
-//         });
+        // // TEST: AncestorListener
+        // fileChooser.addAncestorListener(new AncestorListener() {
+        //     @Override public void ancestorAdded(AncestorEvent e) {
+        //         findFileNameTextField(fileChooser).ifPresent(c -> {
+        //             ((JTextField) c).selectAll();
+        //             c.requestFocusInWindow();
+        //         });
+        //     }
+        //     @Override public void ancestorMoved(AncestorEvent e) {}
+        //     @Override public void ancestorRemoved(AncestorEvent e) {}
+        // });
 
-//         // TEST: doAncestorChanged
-//         fileChooser = new JFileChooser() {
-//             @Override public void updateUI() {
-//                 super.updateUI();
-//                 EventQueue.invokeLater(() -> {
-//                     setUI(new sun.swing.plaf.synth.SynthFileChooserUIImpl(fileChooser) {
-//                         @Override protected void doAncestorChanged(java.beans.PropertyChangeEvent e) {
-//                             findFileNameTextField(fileChooser).ifPresent(c -> {
-//                                 ((JTextField) c).selectAll();
-//                                 c.requestFocusInWindow();
-//                             });
-//                         }
-//                     });
-//                 });
-//             }
-//         };
+        //  // TEST: doAncestorChanged
+        //  fileChooser = new JFileChooser() {
+        //      @Override public void updateUI() {
+        //          super.updateUI();
+        //          EventQueue.invokeLater(() -> {
+        //              setUI(new sun.swing.plaf.synth.SynthFileChooserUIImpl(fileChooser) {
+        //                  @Override protected void doAncestorChanged(java.beans.PropertyChangeEvent e) {
+        //                      findFileNameTextField(fileChooser).ifPresent(c -> {
+        //                          ((JTextField) c).selectAll();
+        //                          c.requestFocusInWindow();
+        //                      });
+        //                  }
+        //              });
+        //          });
+        //      }
+        //  };
 
         JRadioButton radio = new JRadioButton("set initial focus on JTextField", true);
         ButtonGroup bg = new ButtonGroup();
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
             fileChooser.setSelectedFile(new File(field.getText().trim()));
             if (radio.isSelected()) {
                 EventQueue.invokeLater(() -> {
-//                     findFileNameTextField(fileChooser).ifPresent(c -> {
-//                         ((JTextField) c).selectAll();
-//                         c.requestFocusInWindow();
-//                     });
+                    // findFileNameTextField(fileChooser).ifPresent(c -> {
+                    //     ((JTextField) c).selectAll();
+                    //     c.requestFocusInWindow();
+                    // });
                     Class<JTextField> clz = JTextField.class;
                     stream(fileChooser).filter(clz::isInstance).map(clz::cast).findFirst().ifPresent(tf -> {
                         tf.selectAll();
@@ -104,19 +104,19 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setPreferredSize(new Dimension(320, 240));
     }
-// import java.util.function.Function;
-//     private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
-//         return Arrays.stream(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
-//             @Override public Stream<Component> apply(Component c) {
-//                 if (c instanceof Container) {
-//                     Component[] sub = ((Container) c).getComponents();
-//                     return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
-//                 } else {
-//                     return Stream.of(c);
-//                 }
-//             }
-//         }).filter(c -> c instanceof JTextField).findFirst();
-//     }
+    // // import java.util.function.Function;
+    // private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
+    //     return Arrays.stream(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
+    //         @Override public Stream<Component> apply(Component c) {
+    //             if (c instanceof Container) {
+    //                 Component[] sub = ((Container) c).getComponents();
+    //                 return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
+    //             } else {
+    //                 return Stream.of(c);
+    //             }
+    //         }
+    //     }).filter(c -> c instanceof JTextField).findFirst();
+    // }
     public static Stream<Component> stream(Container parent) {
         return Arrays.stream(parent.getComponents())
             .filter(Container.class::isInstance).map(Container.class::cast)

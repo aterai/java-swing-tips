@@ -113,10 +113,10 @@ class FifoDocumentFilter extends DocumentFilter {
             fb.remove(0, root.getElement(0).getEndOffset());
         }
     }
-//     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-//         fb.remove(offset, length);
-//     }
-//     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//         fb.replace(offset, length, text, attrs);
-//     }
+    // @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+    //     fb.remove(offset, length);
+    // }
+    // @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+    //     fb.replace(offset, length, text, attrs);
+    // }
 }

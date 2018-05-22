@@ -51,44 +51,44 @@ public final class MainPanel extends JPanel {
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
-//         // TEST
-//         add(new JButton(new AbstractAction("test") {
-//             private void searchTreeForCheckedNode(TreePath path) {
-//                 Object o = path.getLastPathComponent();
-//                 if (!(o instanceof DefaultMutableTreeNode)) {
-//                     return;
-//                 }
-//                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-//                 o = node.getUserObject();
-//                 if (!(o instanceof CheckBoxNode)) {
-//                     return;
-//                 }
-//                 CheckBoxNode check = (CheckBoxNode) o;
-//                 if (check.status == Status.SELECTED) {
-//                     System.out.println(check.file.toString());
-//                 } else if (check.status == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
-//                     // Java 9: Enumeration<TreeNode> e = node.children();
-//                     Enumeration<?> e = node.children();
-//                     while (e.hasMoreElements()) {
-//                         searchTreeForCheckedNode(path.pathByAddingChild(e.nextElement()));
-//                     }
-//                 }
-//             }
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 System.out.println("------------------");
-//                 searchTreeForCheckedNode(tree.getPathForRow(0));
-//                 // DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-//                 // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-//                 // Enumeration<?> e = root.breadthFirstEnumeration();
-//                 // while (e.hasMoreElements()) {
-//                 //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-//                 //     CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-//                 //     if (Objects.nonNull(check) && check.status == Status.SELECTED) {
-//                 //         System.out.println(check.file.toString());
-//                 //     }
-//                 // }
-//             }
-//         }), BorderLayout.SOUTH);
+        // // TEST
+        // add(new JButton(new AbstractAction("test") {
+        //     private void searchTreeForCheckedNode(TreePath path) {
+        //         Object o = path.getLastPathComponent();
+        //         if (!(o instanceof DefaultMutableTreeNode)) {
+        //             return;
+        //         }
+        //         DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+        //         o = node.getUserObject();
+        //         if (!(o instanceof CheckBoxNode)) {
+        //             return;
+        //         }
+        //         CheckBoxNode check = (CheckBoxNode) o;
+        //         if (check.status == Status.SELECTED) {
+        //             System.out.println(check.file.toString());
+        //         } else if (check.status == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
+        //             // Java 9: Enumeration<TreeNode> e = node.children();
+        //             Enumeration<?> e = node.children();
+        //             while (e.hasMoreElements()) {
+        //                 searchTreeForCheckedNode(path.pathByAddingChild(e.nextElement()));
+        //             }
+        //         }
+        //     }
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         System.out.println("------------------");
+        //         searchTreeForCheckedNode(tree.getPathForRow(0));
+        //         // DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+        //         // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
+        //         // Enumeration<?> e = root.breadthFirstEnumeration();
+        //         // while (e.hasMoreElements()) {
+        //         //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+        //         //     CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+        //         //     if (Objects.nonNull(check) && check.status == Status.SELECTED) {
+        //         //         System.out.println(check.file.toString());
+        //         //     }
+        //         // }
+        //     }
+        // }), BorderLayout.SOUTH);
 
         setPreferredSize(new Dimension(320, 240));
     }
@@ -263,32 +263,32 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
                 r.width = checkBox.getPreferredSize().width;
                 return r.contains(p);
             }).orElse(false);
-//             MouseEvent me = (MouseEvent) e;
-//             JTree tree = (JTree) e.getSource();
-//             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-//             Rectangle r = tree.getPathBounds(path);
-//             if (Objects.isNull(r)) {
-//                 return false;
-//             }
-//             Dimension d = checkBox.getPreferredSize();
-//             r.setSize(new Dimension(d.width, r.height));
-//             if (r.contains(me.getPoint())) {
-//                 return true;
-//             }
+            // MouseEvent me = (MouseEvent) e;
+            // JTree tree = (JTree) e.getSource();
+            // TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+            // Rectangle r = tree.getPathBounds(path);
+            // if (Objects.isNull(r)) {
+            //     return false;
+            // }
+            // Dimension d = checkBox.getPreferredSize();
+            // r.setSize(new Dimension(d.width, r.height));
+            // if (r.contains(me.getPoint())) {
+            //     return true;
+            // }
         }
         return false;
     }
-//     // AbstractCellEditor
-//     @Override public boolean shouldSelectCell(EventObject anEvent) {
-//         return true;
-//     }
-//     @Override public boolean stopCellEditing() {
-//         fireEditingStopped();
-//         return true;
-//     }
-//     @Override public void cancelCellEditing() {
-//         fireEditingCanceled();
-//     }
+    // // AbstractCellEditor
+    // @Override public boolean shouldSelectCell(EventObject anEvent) {
+    //     return true;
+    // }
+    // @Override public boolean stopCellEditing() {
+    //     fireEditingStopped();
+    //     return true;
+    // }
+    // @Override public void cancelCellEditing() {
+    //     fireEditingCanceled();
+    // }
 }
 
 class FolderSelectionListener implements TreeSelectionListener {

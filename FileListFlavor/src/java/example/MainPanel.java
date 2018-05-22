@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
         new DropTarget(table, DnDConstants.ACTION_COPY, dtl, true);
         // new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
 
-//         table.setDropMode(DropMode.INSERT_ROWS);
-//         table.setTransferHandler(new FileTransferHandler());
+        // table.setDropMode(DropMode.INSERT_ROWS);
+        // table.setTransferHandler(new FileTransferHandler());
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);

@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         if (selectedIndices.length > 0) {
             DefaultListModel<E> fromModel = (DefaultListModel<E>) from.getModel();
             DefaultListModel<E> toModel = (DefaultListModel<E>) to.getModel();
-            for (int i : selectedIndices) {
+            for (int i: selectedIndices) {
                 toModel.addElement(fromModel.get(i));
             }
             for (int i = selectedIndices.length - 1; i >= 0; i--) {
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             }
         }
         if (selectedIndices.length > 0) {
-            for (int i : selectedIndices) {
+            for (int i: selectedIndices) {
                 toModel.addElement(fromModel.get(i));
             }
             // if (from.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {

@@ -26,16 +26,16 @@ public final class MainPanel extends JPanel {
             }
         });
 
-//         //TEST: Here is another approach
-//         EventQueue.invokeLater(() -> {
-//             Window w = (Window) getTopLevelAncestor();
-//             Point pt = w.getLocation();
-//             ((BasicToolBarUI) toolbar.getUI()).setFloating(true, null);
-//             Container c = toolbar.getTopLevelAncestor();
-//             if (c instanceof Window) {
-//                 ((Window) c).setLocation(pt.x + 120, pt.y + 160);
-//             }
-//         });
+        // // TEST: Here is another approach
+        // EventQueue.invokeLater(() -> {
+        //     Window w = (Window) getTopLevelAncestor();
+        //     Point pt = w.getLocation();
+        //     ((BasicToolBarUI) toolbar.getUI()).setFloating(true, null);
+        //     Container c = toolbar.getTopLevelAncestor();
+        //     if (c instanceof Window) {
+        //         ((Window) c).setLocation(pt.x + 120, pt.y + 160);
+        //     }
+        // });
 
         add(toolbar, BorderLayout.NORTH);
         add(Box.createHorizontalStrut(0), BorderLayout.WEST);

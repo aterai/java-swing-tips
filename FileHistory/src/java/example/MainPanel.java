@@ -81,11 +81,11 @@ public final class MainPanel extends JPanel {
         }
     }
     private class HistoryAction extends AbstractAction {
-//         private final File file;
-//         protected HistoryAction(File file) {
-//             super();
-//             this.file = file;
-//         }
+        // private final File file;
+        // protected HistoryAction(File file) {
+        //     super();
+        //     this.file = file;
+        // }
         private final String fileName;
         protected HistoryAction(String fileName) {
             super();
@@ -114,13 +114,13 @@ public final class MainPanel extends JPanel {
         };
         // return defaultActions;
     }
-//     private final Action[] defaultActions = {
-//         new NewAction(),
-//         new OpenAction(),
-//         new ExitAction(),
-//         new HelpAction(),
-//         new VersionAction(),
-//     };
+    // private final Action[] defaultActions = {
+    //     new NewAction(),
+    //     new OpenAction(),
+    //     new ExitAction(),
+    //     new HelpAction(),
+    //     new VersionAction(),
+    // };
 
     private class OpenAction extends AbstractAction {
         private int count;

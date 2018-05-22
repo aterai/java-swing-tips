@@ -14,10 +14,10 @@ public final class MainPanel extends JPanel {
             @Override public void approveSelection() {
                 File f = getSelectedFile();
                 if (f.exists() && getDialogType() == SAVE_DIALOG) {
-                    //@see https://community.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
-                    //@see https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
-                    //String m = "Replace file: " + f.getAbsolutePath() + "?";
-                    //String m = "The file exists, overwrite?";
+                    // @see https://community.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
+                    // @see https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
+                    // String m = "Replace file: " + f.getAbsolutePath() + "?";
+                    // String m = "The file exists, overwrite?";
                     String m = String.format("<html>%s already exists.<br>Do you want to replace it?", f.getAbsolutePath());
                     int rv = JOptionPane.showConfirmDialog(this, m, "Save As", JOptionPane.YES_NO_OPTION);
                     if (rv != JOptionPane.YES_OPTION) {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("Override JFileChooser#approveSelection()");
         button.addActionListener(e -> {
-            //int retvalue = fileChooser.showSaveDialog(SwingUtilities.getRoot((Component) e.getSource()));
+            // int retvalue = fileChooser.showSaveDialog(SwingUtilities.getRoot((Component) e.getSource()));
             int retvalue = fileChooser.showOpenDialog(getRootPane());
             if (retvalue == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();

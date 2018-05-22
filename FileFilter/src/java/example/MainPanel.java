@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> {
             int retvalue = fileChooser.showOpenDialog(getRootPane());
             System.out.println(retvalue);
-            //if (retvalue == JFileChooser.APPROVE_OPTION) {
-            //    File file = fileChooser.getSelectedFile();
-            //    ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
-            //    combo1.setSelectedIndex(0);
-            //}
+            // if (retvalue == JFileChooser.APPROVE_OPTION) {
+            //     File file = fileChooser.getSelectedFile();
+            //     ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
+            //     combo1.setSelectedIndex(0);
+            // }
         });
 
         JPanel p = new JPanel(new GridBagLayout());

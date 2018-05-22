@@ -31,16 +31,16 @@ public class MainPanel extends JPanel {
         getActionMap().put("close", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("ESC KeyEvent:");
-//                 int mode = 2;
-//                 if (mode == 0) {
-//                     // dialog.dispose();
-//                     // triggered windowClosed
-//                 } else if (mode == 1) {
-//                     // // When DISPOSE_ON_CLOSE met WebStart > www.pushing-pixels.org/?p=232
-//                     // // Webstart thread is a non-daemon thread so the JVM cannot exit.
-//                     // // JVM shutdown
-//                     // System.exit(0);
-//                 } else {
+                // int mode = 2;
+                // if (mode == 0) {
+                //     // dialog.dispose();
+                //     // triggered windowClosed
+                // } else if (mode == 1) {
+                //     // // When DISPOSE_ON_CLOSE met WebStart > www.pushing-pixels.org/?p=232
+                //     // // Webstart thread is a non-daemon thread so the JVM cannot exit.
+                //     // // JVM shutdown
+                //     // System.exit(0);
+                // } else {
 
                 // // click on the X
                 Component c = SwingUtilities.getRoot(getRootPane());

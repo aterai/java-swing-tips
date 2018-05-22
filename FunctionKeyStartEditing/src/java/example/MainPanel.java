@@ -39,27 +39,26 @@ public final class MainPanel extends JPanel {
                 }
                 return super.editCellAt(row, column, e);
             }
-//             private List<Integer> ignoreKeyList = Arrays.asList(
-//                 KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
-//                 KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12);
-//             @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-//                 if (!check.isSelected()) {
-//                     return super.processKeyBinding(ks, e, condition, pressed);
-//                 }
-//                 if (e instanceof KeyEvent) {
-//                     int c = ((KeyEvent) e).getKeyCode();
-//                     if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
-//                         return false;
-//                     }
-//                 }
-//                 return super.processKeyBinding(ks, e, condition, pressed);
-//
-// //                 if (ignoreKeyList.contains(ks.getKeyCode())) {
-// //                     return false;
-// //                 } else {
-// //                     return super.processKeyBinding(ks, e, condition, pressed);
-// //                 }
-//             }
+            // private List<Integer> ignoreKeyList = Arrays.asList(
+            //     KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
+            //     KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12);
+            // @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+            //     if (!check.isSelected()) {
+            //         return super.processKeyBinding(ks, e, condition, pressed);
+            //     }
+            //     if (e instanceof KeyEvent) {
+            //         int c = ((KeyEvent) e).getKeyCode();
+            //         if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
+            //             return false;
+            //         }
+            //     }
+            //     return super.processKeyBinding(ks, e, condition, pressed);
+            //     // if (ignoreKeyList.contains(ks.getKeyCode())) {
+            //     //     return false;
+            //     // } else {
+            //     //     return super.processKeyBinding(ks, e, condition, pressed);
+            //     // }
+            // }
         };
         table.setAutoCreateRowSorter(true);
 
@@ -72,16 +71,16 @@ public final class MainPanel extends JPanel {
         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "beep");
 
-//         for (int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
-//                                    KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
-//                                    KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12)) {
-//             InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//             if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
-//                 im.put(KeyStroke.getKeyStroke(ks, 0), "none");
-//             }
-//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK), "none");
-//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");
-//         }
+        // for (int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
+        //                            KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
+        //                            KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12)) {
+        //     InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        //     if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
+        //         im.put(KeyStroke.getKeyStroke(ks, 0), "none");
+        //     }
+        //     im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK), "none");
+        //     im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");
+        // }
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(check, BorderLayout.NORTH);

@@ -42,44 +42,44 @@ public final class MainPanel extends JPanel {
         // // Deletes the column from the tableColumns array.
         // table.removeColumn(col);
 
-//         // // XXX: focus traversal
-//         col = table.getColumnModel().getColumn(1);
-//         col.setMinWidth(0);
-//         col.setMaxWidth(0);
-//         // <blockquote cite="https://community.oracle.com/thread/1484284"
-//         //           title="JTable skiping the cells disableds">
-//         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-//         Action oldTabAction = table.getActionMap().get(im.get(tab));
-//         Action tabAction = new AbstractAction() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 oldTabAction.actionPerformed(e);
-//                 JTable table = (JTable) e.getSource();
-//                 int rowCount = table.getRowCount();
-//                 int columnCount = table.getColumnCount();
-//                 int row = table.getSelectedRow();
-//                 int column = table.getSelectedColumn();
-//
-//                 TableColumn col = table.getColumnModel().getColumn(column);
-//                 while (col.getWidth() == 0) {
-//                     column += 1;
-//                     if (column == columnCount) {
-//                         column = 0;
-//                         row +=1;
-//                     }
-//                     if (row == rowCount) {
-//                         row = 0;
-//                     }
-//                     if (row == table.getSelectedRow() && column == table.getSelectedColumn()) {
-//                         break;
-//                     }
-//                     col = table.getColumnModel().getColumn(column);
-//                 }
-//                 table.changeSelection(row, column, false, false);
-//             }
-//         };
-//         table.getActionMap().put(im.get(tab), tabAction);
-//         // </blockquote>
+        // // // XXX: focus traversal
+        // col = table.getColumnModel().getColumn(1);
+        // col.setMinWidth(0);
+        // col.setMaxWidth(0);
+        // // <blockquote cite="https://community.oracle.com/thread/1484284"
+        // //            title="JTable skiping the cells disableds">
+        // InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+        // Action oldTabAction = table.getActionMap().get(im.get(tab));
+        // Action tabAction = new AbstractAction() {
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         oldTabAction.actionPerformed(e);
+        //         JTable table = (JTable) e.getSource();
+        //         int rowCount = table.getRowCount();
+        //         int columnCount = table.getColumnCount();
+        //         int row = table.getSelectedRow();
+        //         int column = table.getSelectedColumn();
+        //
+        //         TableColumn col = table.getColumnModel().getColumn(column);
+        //         while (col.getWidth() == 0) {
+        //             column += 1;
+        //             if (column == columnCount) {
+        //                 column = 0;
+        //                 row +=1;
+        //             }
+        //             if (row == rowCount) {
+        //                 row = 0;
+        //             }
+        //             if (row == table.getSelectedRow() && column == table.getSelectedColumn()) {
+        //                 break;
+        //             }
+        //             col = table.getColumnModel().getColumn(column);
+        //         }
+        //         table.changeSelection(row, column, false, false);
+        //     }
+        // };
+        // table.getActionMap().put(im.get(tab), tabAction);
+        // // </blockquote>
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

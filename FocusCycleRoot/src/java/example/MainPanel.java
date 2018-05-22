@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         p1.add(new JTextField(16));
         p1.add(new JTextField(16));
         p1.add(new JTextField(16));
-        //p1.setFocusTraversalPolicyProvider(true);
+        // p1.setFocusTraversalPolicyProvider(true);
         p1.setFocusCycleRoot(true);
 
         JPanel p2 = new JPanel();
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
 
         add(p1);
-        //p1.add(p2);
+        // p1.add(p2);
         add(p2);
         setPreferredSize(new Dimension(320, 240));
     }

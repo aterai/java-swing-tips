@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
         JCheckBox check2 = new JCheckBox("setDividerSize(0)");
         check2.addActionListener(e -> sp.setDividerSize(((JCheckBox) e.getSource()).isSelected() ? 0 : dividerSize));
 
-//         //TEST:
-//         Component divider = ((BasicSplitPaneUI) sp.getUI()).getDivider();
-//         JCheckBox check3 = new JCheckBox("Divider#setEnabled(...)", true);
-//         check3.addActionListener(e -> divider.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        // // TEST:
+        // Component divider = ((BasicSplitPaneUI) sp.getUI()).getDivider();
+        // JCheckBox check3 = new JCheckBox("Divider#setEnabled(...)", true);
+        // check3.addActionListener(e -> divider.setEnabled(((JCheckBox) e.getSource()).isSelected()));
 
         JPanel p = new JPanel(new GridLayout(1, 0));
         p.setBorder(BorderFactory.createTitledBorder("JSplitPane"));

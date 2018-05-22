@@ -24,9 +24,9 @@ public final class MainPanel extends JPanel {
         JButton button2 = new JButton("setMultiSelectionEnabled(true)");
         button2.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-            //fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            //fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            //fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            // fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            // fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            // fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             fileChooser.setMultiSelectionEnabled(true);
             int retvalue = fileChooser.showOpenDialog(getRootPane());
             if (retvalue == JFileChooser.APPROVE_OPTION) {

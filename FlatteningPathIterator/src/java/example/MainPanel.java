@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        Ellipse2D circle  = new Ellipse2D.Double(0, 0, 100, 100);
+        Ellipse2D circle = new Ellipse2D.Double(0, 0, 100, 100);
         Ellipse2D ellipse = new Ellipse2D.Double(0, 0, 128, 100);
 
         JPanel p = new JPanel();
@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         p.add(makeLabel("Polygon", convertEllipse2Polygon(ellipse)));
         p.add(makeLabel("Polygon", convertEllipse2Polygon(circle)));
         p.add(makeLabel("FlatteningPathIterator", convertEllipse2Polygon(ellipse)));
-        //TEST: p.add(makeLabel("convertShape2Polygon", convertShape2Polygon(ellipse)));
+        // TEST: p.add(makeLabel("convertShape2Polygon", convertShape2Polygon(ellipse)));
 
         add(p);
         setPreferredSize(new Dimension(320, 240));
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         int r2 = b.height / 2;
         int x0 = b.x + r1;
         int y0 = b.y + r2;
-        int v  = 60;
+        int v = 60;
         double a = 0d;
         double d = 2 * Math.PI / v;
         Polygon polygon = new Polygon();
@@ -42,9 +42,9 @@ public final class MainPanel extends JPanel {
     // http://java-sl.com/tip_flatteningpathiterator_moving_shape.html
     // via: https://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
     public static Polygon convertShape2Polygon(Shape s) {
-        PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1d);
+        PathIterator i = new FlatteningPathIterator(s.getPathIterator(null), 1d);
         Polygon polygon = new Polygon();
-        float[] coords  = new float[6];
+        float[] coords = new float[6];
         while (!i.isDone()) {
             i.currentSegment(coords);
             polygon.addPoint((int) coords[0], (int) coords[1]);
