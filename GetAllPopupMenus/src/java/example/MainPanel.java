@@ -25,10 +25,10 @@ public final class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("JTable",     new JScrollPane(table));
-        tabs.addTab("JTree",      new JScrollPane(new JTree()));
+        tabs.addTab("JTable", new JScrollPane(table));
+        tabs.addTab("JTree", new JScrollPane(new JTree()));
         tabs.addTab("JSplitPane", new JSplitPane());
-        tabs.addTab("JButton",    new JButton("button"));
+        tabs.addTab("JButton", new JButton("button"));
 
         JMenu menu = new JMenu("Sub");
         menu.add("Item 1");

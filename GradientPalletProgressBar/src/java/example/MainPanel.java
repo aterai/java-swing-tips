@@ -152,8 +152,8 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
     }
     @Override public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth = progressBar.getWidth()  - b.right - b.left;
-        int barRectHeight = progressBar.getHeight() - b.top   - b.bottom;
+        int barRectWidth = progressBar.getWidth() - b.right - b.left;
+        int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }

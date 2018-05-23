@@ -185,38 +185,38 @@ class GradientPalletSliderUI extends MetalSliderUI {
             fillBottom = trackBottom - 1;
         }
 
-//         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
-//             middleOfThumb = thumbRect.x + thumbRect.width / 2;
-//             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-//             fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
-//             fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
-//
-//             if (drawInverted()) {
-//                 fillLeft = middleOfThumb;
-//                 fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-//             } else {
-//                 fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
-//                 fillRight = middleOfThumb;
-//             }
-//         } else {
-//             middleOfThumb = thumbRect.y + thumbRect.height / 2;
-//             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-//             fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
-//             fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-//
-//             if (drawInverted()) {
-//                 fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
-//                 fillBottom = middleOfThumb;
-//             } else {
-//                 fillTop = middleOfThumb;
-//                 fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
-//             }
-//         }
+        // if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
+        //     middleOfThumb = thumbRect.x + thumbRect.width / 2;
+        //     middleOfThumb -= trackRect.x; // To compensate for the g.translate()
+        //     fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
+        //     fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+        //
+        //     if (drawInverted()) {
+        //         fillLeft = middleOfThumb;
+        //         fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+        //     } else {
+        //         fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
+        //         fillRight = middleOfThumb;
+        //     }
+        // } else {
+        //     middleOfThumb = thumbRect.y + thumbRect.height / 2;
+        //     middleOfThumb -= trackRect.y; // To compensate for the g.translate()
+        //     fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
+        //     fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+        //
+        //     if (drawInverted()) {
+        //         fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
+        //         fillBottom = middleOfThumb;
+        //     } else {
+        //         fillTop = middleOfThumb;
+        //         fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+        //     }
+        // }
 
         if (slider.isEnabled()) {
-//             g.setColor(slider.getBackground());
-//             g.drawLine(fillLeft, fillTop, fillRight, fillTop);
-//             g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
+            // g.setColor(slider.getBackground());
+            // g.drawLine(fillLeft, fillTop, fillRight, fillTop);
+            // g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
             float x = (fillRight - fillLeft) / (float) (trackRight - trackLeft);
             g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
@@ -261,9 +261,9 @@ final class GradientPalletFactory {
         return pallet;
     }
     public static Color getColorFromPallet(int[] pallet, float x, int alpha) {
-//         if (x < 0f || x > 1f) {
-//             throw new IllegalArgumentException("Parameter outside of expected range");
-//         }
+        // if (x < 0f || x > 1f) {
+        //     throw new IllegalArgumentException("Parameter outside of expected range");
+        // }
         int i = (int) (pallet.length * x);
         int max = pallet.length - 1;
         int index = Math.min(Math.max(i, 0), max);

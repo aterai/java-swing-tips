@@ -102,11 +102,11 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
                 Insets i = tc.getInsets();
                 Dimension d = hint.getPreferredSize();
                 SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
-//                 int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
-//                 Font font = tc.getFont();
-//                 FontRenderContext frc = g2.getFontRenderContext();
-//                 TextLayout tl = new TextLayout(hintMessage, font, frc);
-//                 tl.draw(g2, i.left + 2, baseline);
+                // int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
+                // Font font = tc.getFont();
+                // FontRenderContext frc = g2.getFontRenderContext();
+                // TextLayout tl = new TextLayout(hintMessage, font, frc);
+                // tl.draw(g2, i.left + 2, baseline);
                 g2.dispose();
             }
         }

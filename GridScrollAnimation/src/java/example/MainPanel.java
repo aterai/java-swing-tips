@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(gp);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//         scrollPane.getVerticalScrollBar().setEnabled(false);
-//         scrollPane.getHorizontalScrollBar().setEnabled(false);
-//         scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension());
-//         scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
+        // scrollPane.getVerticalScrollBar().setEnabled(false);
+        // scrollPane.getHorizontalScrollBar().setEnabled(false);
+        // scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension());
+        // scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
         JPanel p = new JPanel();
         p.add(scrollPane);
         add(p);
