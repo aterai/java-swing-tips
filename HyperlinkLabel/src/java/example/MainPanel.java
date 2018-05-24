@@ -107,12 +107,12 @@ class UrlLabel extends JLabel {
 
 class HyperlinkButton extends JButton {
     private static final String UI_CLASS_ID = "LinkViewButtonUI";
-//     @Override public String getUIClassID() {
-//         return UI_CLASS_ID;
-//     }
-//     @Override public void setUI(LinkViewButtonUI ui) {
-//         super.setUI(ui);
-//     }
+    // @Override public String getUIClassID() {
+    //     return UI_CLASS_ID;
+    // }
+    // @Override public void setUI(LinkViewButtonUI ui) {
+    //     super.setUI(ui);
+    // }
     @Override public void updateUI() {
         super.updateUI();
         if (Objects.nonNull(UIManager.get(UI_CLASS_ID))) {
@@ -155,9 +155,9 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private final Rectangle textRect;
 
     public static LinkViewButtonUI createUI(JButton b) {
-//         b.setForeground(Color.BLUE);
-//         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
-//         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // b.setForeground(Color.BLUE);
+        // b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
+        // b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return LINKVIEW_BUTTON_UI;
     }
     protected BasicLinkViewButtonUI() {

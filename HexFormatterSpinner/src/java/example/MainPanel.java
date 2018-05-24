@@ -68,15 +68,15 @@ public class MainPanel extends JPanel {
         // int len = Character.charCount(code);
         // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
         return new String(Character.toChars(code)); // , 0, len);
-//         if (code < 0x10000) {
-//             str = Character.toString((char) code);
-//         } else {
-//             int x = code - 0x10000;
-//             char[] ca = new char[2];
-//             ca[0] = (char) (Math.floor(x / 0x400) + 0xD800);
-//             ca[1] = (char) (x % 0x400 + 0xDC00);
-//             str = new String(ca, 0, 2);
-//         }
+        // if (code < 0x10000) {
+        //     str = Character.toString((char) code);
+        // } else {
+        //     int x = code - 0x10000;
+        //     char[] ca = new char[2];
+        //     ca[0] = (char) (Math.floor(x / 0x400) + 0xD800);
+        //     ca[1] = (char) (x % 0x400 + 0xDC00);
+        //     str = new String(ca, 0, 2);
+        // }
     }
     private class GlyphPaintPanel extends JPanel {
         private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
@@ -122,11 +122,11 @@ public class MainPanel extends JPanel {
         DefaultFormatter formatter = new DefaultFormatter() {
             @Override public Object stringToValue(String text) throws ParseException {
                 return Integer.valueOf(text, 16);
-//                 try {
-//                     return Integer.valueOf(text, 16);
-//                 } catch (NumberFormatException ex) {
-//                     throw new ParseException(text, 0);
-//                 }
+                // try {
+                //     return Integer.valueOf(text, 16);
+                // } catch (NumberFormatException ex) {
+                //     throw new ParseException(text, 0);
+                // }
             }
             // private static final String MASK = "000000";
             @Override public String valueToString(Object value) throws ParseException {

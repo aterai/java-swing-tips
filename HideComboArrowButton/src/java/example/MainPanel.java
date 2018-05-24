@@ -80,9 +80,8 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-//         UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.BLUE));
-//         UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
-
+        // UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.BLUE));
+        // UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

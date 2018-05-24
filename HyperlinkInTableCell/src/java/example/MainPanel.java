@@ -99,42 +99,42 @@ public final class MainPanel extends JPanel {
 }
 
 class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-//     private static Rectangle lrect = new Rectangle();
-//     private static Rectangle irect = new Rectangle();
-//     private static Rectangle trect = new Rectangle();
+    // private static Rectangle lrect = new Rectangle();
+    // private static Rectangle irect = new Rectangle();
+    // private static Rectangle trect = new Rectangle();
     private int vrow = -1; // viewRowIndex
     private int vcol = -1; // viewColumnIndex
     private boolean isRollover;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-// >>>> @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
-//         int mw = table.getColumnModel().getColumnMargin();
-//         int rh = table.getRowMargin();
-//         int w = table.getColumnModel().getColumn(column).getWidth();
-//         int h = table.getRowHeight(row);
-//
-//         Insets i = this.getInsets();
-//         lrect.x = i.left;
-//         lrect.y = i.top;
-//         lrect.width = w - (mw + i.right  + lrect.x);
-//         lrect.height = h - (rh + i.bottom + lrect.y);
-//         irect.x = irect.y = irect.width = irect.height = 0;
-//         trect.x = trect.y = trect.width = trect.height = 0;
-//
-//         String str = SwingUtilities.layoutCompoundLabel(
-//             this,
-//             this.getFontMetrics(this.getFont()),
-//             Objects.toString(value, ""), // this.getText(),
-//             this.getIcon(),
-//             this.getVerticalAlignment(),
-//             this.getHorizontalAlignment(),
-//             this.getVerticalTextPosition(),
-//             this.getHorizontalTextPosition(),
-//             lrect,
-//             irect, // icon
-//             trect, // text
-//             this.getIconTextGap());
-// <<<<
+        // >>>> @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
+        // int mw = table.getColumnModel().getColumnMargin();
+        // int rh = table.getRowMargin();
+        // int w = table.getColumnModel().getColumn(column).getWidth();
+        // int h = table.getRowHeight(row);
+        //
+        // Insets i = this.getInsets();
+        // lrect.x = i.left;
+        // lrect.y = i.top;
+        // lrect.width = w - (mw + i.right + lrect.x);
+        // lrect.height = h - (rh + i.bottom + lrect.y);
+        // irect.x = irect.y = irect.width = irect.height = 0;
+        // trect.x = trect.y = trect.width = trect.height = 0;
+        //
+        // String str = SwingUtilities.layoutCompoundLabel(
+        //     this,
+        //     this.getFontMetrics(this.getFont()),
+        //     Objects.toString(value, ""), // this.getText(),
+        //     this.getIcon(),
+        //     this.getVerticalAlignment(),
+        //     this.getHorizontalAlignment(),
+        //     this.getVerticalTextPosition(),
+        //     this.getHorizontalTextPosition(),
+        //     lrect,
+        //     irect, // icon
+        //     trect, // text
+        //     this.getIconTextGap());
+        // <<<<
         String str = Objects.toString(value, "");
 
         if (isRolloverCell(table, row, column)) {
@@ -181,8 +181,8 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         if (!isRollover && !prevRollover) {
             return;
         }
-// >>>> HyperlinkCellRenderer.java
-// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        // >>>> HyperlinkCellRenderer.java
+        // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         Rectangle repaintRect;
         if (isRollover) {
             Rectangle r = table.getCellRect(vrow, vcol, false);
@@ -191,7 +191,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
-// <<<<
+        // <<<<
         // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {

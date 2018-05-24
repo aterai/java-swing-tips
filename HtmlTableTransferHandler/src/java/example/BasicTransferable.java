@@ -87,13 +87,13 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-//         DataFlavor[] flavors = getTransferDataFlavors();
-//         for (int i = 0; i < flavors.length; i++) {
-//             if (flavors[i].equals(flavor)) {
-//                 return true;
-//             }
-//         }
-//         return false;
+        // DataFlavor[] flavors = getTransferDataFlavors();
+        // for (int i = 0; i < flavors.length; i++) {
+        //     if (flavors[i].equals(flavor)) {
+        //         return true;
+        //     }
+        // }
+        // return false;
         return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
     }
 
@@ -138,14 +138,14 @@ class BasicTransferable implements Transferable {
     // --- richer subclass flavors ----------------------------------------------
 
     protected boolean isRicherFlavor(DataFlavor flavor) {
-//         DataFlavor[] richerFlavors = getRicherFlavors();
-//         int nFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
-//         for (int i = 0; i < nFlavors; i++) {
-//             if (richerFlavors[i].equals(flavor)) {
-//                 return true;
-//             }
-//         }
-//         return false;
+        // DataFlavor[] richerFlavors = getRicherFlavors();
+        // int nFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+        // for (int i = 0; i < nFlavors; i++) {
+        //     if (richerFlavors[i].equals(flavor)) {
+        //         return true;
+        //     }
+        // }
+        // return false;
         return Stream.of(getRicherFlavors()).anyMatch(f -> f.equals(flavor));
     }
 
@@ -171,13 +171,13 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isHTMLFlavor(DataFlavor flavor) {
-//         DataFlavor[] flavors = htmlFlavors;
-//         for (int i = 0; i < flavors.length; i++) {
-//             if (flavors[i].equals(flavor)) {
-//                 return true;
-//             }
-//         }
-//         return false;
+        // DataFlavor[] flavors = htmlFlavors;
+        // for (int i = 0; i < flavors.length; i++) {
+        //     if (flavors[i].equals(flavor)) {
+        //         return true;
+        //     }
+        // }
+        // return false;
         return Stream.of(htmlFlavors).anyMatch(f -> f.equals(flavor));
     }
 
@@ -220,13 +220,13 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isPlainFlavor(DataFlavor flavor) {
-//         DataFlavor[] flavors = plainFlavors;
-//         for (int i = 0; i < flavors.length; i++) {
-//             if (flavors[i].equals(flavor)) {
-//                 return true;
-//             }
-//         }
-//         return false;
+        // DataFlavor[] flavors = plainFlavors;
+        // for (int i = 0; i < flavors.length; i++) {
+        //     if (flavors[i].equals(flavor)) {
+        //         return true;
+        //     }
+        // }
+        // return false;
         return Stream.of(plainFlavors).anyMatch(f -> f.equals(flavor));
     }
 
@@ -269,13 +269,13 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isStringFlavor(DataFlavor flavor) {
-//         DataFlavor[] flavors = stringFlavors;
-//         for (int i = 0; i < flavors.length; i++) {
-//             if (flavors[i].equals(flavor)) {
-//                 return true;
-//             }
-//         }
-//         return false;
+        // DataFlavor[] flavors = stringFlavors;
+        // for (int i = 0; i < flavors.length; i++) {
+        //     if (flavors[i].equals(flavor)) {
+        //         return true;
+        //     }
+        // }
+        // return false;
         return Stream.of(stringFlavors).anyMatch(f -> f.equals(flavor));
     }
 }

@@ -57,8 +57,8 @@ public final class MainPanel extends JPanel {
         }
 
         JPanel pp = new JPanel(new GridLayout(0, 1));
-        pp.add(check); //
-        pp.add(box); //, BorderLayout.SOUTH);
+        pp.add(check);
+        pp.add(box);
         pp.add(p);
 
         add(pp, BorderLayout.NORTH);

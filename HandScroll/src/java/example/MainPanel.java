@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
             bg.add(r);
         });
 
-//         // TEST:
-//         MouseAdapter hsl2 = new DragScrollListener();
-//         label.addMouseMotionListener(hsl2);
-//         label.addMouseListener(hsl2);
+        // // TEST:
+        // MouseAdapter hsl2 = new DragScrollListener();
+        // label.addMouseMotionListener(hsl2);
+        // label.addMouseListener(hsl2);
         add(scroll);
         add(box, BorderLayout.NORTH);
         scroll.setPreferredSize(new Dimension(320, 240));

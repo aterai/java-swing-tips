@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
     private final JRadioButton centerRadio = new JRadioButton("CENTER", true);
-    private final JRadioButton topRadio    = new JRadioButton("TOP");
+    private final JRadioButton topRadio = new JRadioButton("TOP");
     private final JRadioButton bottomRadio = new JRadioButton("BOTTOM");
 
     public MainPanel() {

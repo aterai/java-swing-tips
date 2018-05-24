@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         editor.setEditable(false);
-        //@see: BasicEditorPaneUI#propertyChange(PropertyChangeEvent evt) {
+        // @see: BasicEditorPaneUI#propertyChange(PropertyChangeEvent evt) {
         //      if ("foreground".equals(name)) {
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 Toolkit.getDefaultToolkit().beep();
             }
-            //??? call BasicTextUI#modelChanged() ???
+            // ??? call BasicTextUI#modelChanged() ???
             editor.setForeground(Color.WHITE);
             editor.setForeground(Color.BLACK);
         });
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException
-                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

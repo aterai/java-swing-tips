@@ -27,20 +27,20 @@ public final class MainPanel extends JPanel {
         table2.getColumnModel().getColumn(1).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.CENTER));
         table2.getColumnModel().getColumn(2).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.RIGHT));
 
-//         // LnF NullPointerException
-//         JTable table3 = makeTable();
-//         TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
-//         table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-//             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                 JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//                 if (table.convertColumnIndexToModel(column) == 0) {
-//                     l.setHorizontalAlignment(SwingConstants.CENTER);
-//                 } else {
-//                     l.setHorizontalAlignment(SwingConstants.LEFT);
-//                 }
-//                 return l;
-//             }
-//         });
+        // // LnF NullPointerException
+        // JTable table3 = makeTable();
+        // TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
+        // table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+        //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        //         JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        //         if (table.convertColumnIndexToModel(column) == 0) {
+        //             l.setHorizontalAlignment(SwingConstants.CENTER);
+        //         } else {
+        //             l.setHorizontalAlignment(SwingConstants.LEFT);
+        //         }
+        //         return l;
+        //     }
+        // });
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Default", new JScrollPane(makeTable()));

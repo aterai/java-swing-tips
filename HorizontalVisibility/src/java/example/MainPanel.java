@@ -157,7 +157,7 @@ class ZeroSizeButton extends JButton {
 }
 
 class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
-    private static final Color DEFAULT_COLOR  = new Color(220, 100, 100, 100);
+    private static final Color DEFAULT_COLOR = new Color(220, 100, 100, 100);
     private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
     private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
     @Override protected JButton createDecreaseButton(int orientation) {
@@ -167,10 +167,10 @@ class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
         return new ZeroSizeButton();
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-        //Graphics2D g2 = (Graphics2D) g.create();
-        //g2.setPaint(new Color(100, 100, 100, 100));
-        //g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-        //g2.dispose();
+        // Graphics2D g2 = (Graphics2D) g.create();
+        // g2.setPaint(new Color(100, 100, 100, 100));
+        // g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
+        // g2.dispose();
     }
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
         JScrollBar sb = (JScrollBar) c;

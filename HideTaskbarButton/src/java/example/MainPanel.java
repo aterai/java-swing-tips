@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
                         e.getWindow().dispose();
                     }
                 });
-                //or
-                //((JFrame) c).addWindowListener(new WindowAdapter() {
-                //    @Override public void windowIconified(WindowEvent e) {
-                //        if (check.isSelected()) {
-                //            e.getWindow().dispose();
-                //        }
-                //    }
-                //});
+                // or
+                // ((JFrame) c).addWindowListener(new WindowAdapter() {
+                //     @Override public void windowIconified(WindowEvent e) {
+                //         if (check.isSelected()) {
+                //             e.getWindow().dispose();
+                //         }
+                //     }
+                // });
             }
         });
 
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
             }
             for (Frame frame: Frame.getFrames()) {
                 frame.dispose();
-                //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                // frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         });
 
@@ -94,8 +94,8 @@ public final class MainPanel extends JPanel {
             makeBufferedImage(new StarIcon(), 16, 16),
             makeBufferedImage(new StarIcon(16, 8, 5), 40, 40)));
         if (SystemTray.isSupported()) {
-            //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            //frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            // frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         } else {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
