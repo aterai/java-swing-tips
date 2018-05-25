@@ -5,8 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-
-import static javax.swing.GroupLayout.Alignment;
+// import static javax.swing.GroupLayout.Alignment;
 
 public final class MainPanel extends JPanel {
     private final JTextField tf1 = new JTextField();
@@ -36,8 +35,8 @@ public final class MainPanel extends JPanel {
         layout.setHorizontalGroup(hgroup);
 
         GroupLayout.SequentialGroup vgroup = layout.createSequentialGroup();
-        vgroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(label1).addComponent(tf1));
-        vgroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(label2).addComponent(tf2));
+        vgroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(label1).addComponent(tf1));
+        vgroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(label2).addComponent(tf2));
         layout.setVerticalGroup(vgroup);
 
         // GridBagLayout
