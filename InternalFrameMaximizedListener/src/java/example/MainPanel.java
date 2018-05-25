@@ -65,33 +65,33 @@ public class MainPanel extends JPanel {
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
-//     private JMenuBar createMenuBar() {
-//         JMenuBar menuBar = new JMenuBar();
-//         JMenu menu = new JMenu("Window");
-//         menu.setMnemonic(KeyEvent.VK_W);
-//         menuBar.add(menu);
-//         JMenuItem menuItem = new JMenuItem("New");
-//         menuItem.setMnemonic(KeyEvent.VK_N);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
-//         menuItem.setActionCommand("new");
-//         menuItem.addActionListener(new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 JInternalFrame frame = createInternalFrame();
-//                 desktop.add(frame);
-//                 frame.setVisible(true);
-//                 //desktop.getDesktopManager().activateFrame(frame);
-//             }
-//         });
-//         menu.add(menuItem);
-//         return menuBar;
-//     }
-//
-//     private static JInternalFrame createInternalFrame() {
-//         JInternalFrame f = new JInternalFrame(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
-//         f.setSize(160, 100);
-//         f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
-//         return f;
-//     }
+    // private JMenuBar createMenuBar() {
+    //     JMenuBar menuBar = new JMenuBar();
+    //     JMenu menu = new JMenu("Window");
+    //     menu.setMnemonic(KeyEvent.VK_W);
+    //     menuBar.add(menu);
+    //     JMenuItem menuItem = new JMenuItem("New");
+    //     menuItem.setMnemonic(KeyEvent.VK_N);
+    //     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
+    //     menuItem.setActionCommand("new");
+    //     menuItem.addActionListener(new ActionListener() {
+    //         @Override public void actionPerformed(ActionEvent e) {
+    //             JInternalFrame frame = createInternalFrame();
+    //             desktop.add(frame);
+    //             frame.setVisible(true);
+    //             // desktop.getDesktopManager().activateFrame(frame);
+    //         }
+    //     });
+    //     menu.add(menuItem);
+    //     return menuBar;
+    // }
+    //
+    // private static JInternalFrame createInternalFrame() {
+    //     JInternalFrame f = new JInternalFrame(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
+    //     f.setSize(160, 100);
+    //     f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
+    //     return f;
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

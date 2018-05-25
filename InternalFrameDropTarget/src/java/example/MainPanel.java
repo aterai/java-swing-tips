@@ -86,70 +86,70 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     private int index = -1;
-//     private class Handler extends MouseAdapter { // , BeforeDrag
-//         private Point startPt;
-//         private final int gestureMotionThreshold = DragSource.getDragThreshold();
-//         // MouseListener
-//         @Override public void mousePressed(MouseEvent e) {
-//             JTableHeader src = (JTableHeader) e.getComponent();
-//             startPt = e.getPoint(); // e.getDragOrigin();
-//             // System.out.println(startPt);
-//         }
-//         @Override public void mouseDragged(MouseEvent e) {
-//             Point tabPt = e.getPoint(); // e.getDragOrigin();
-//             if (startPt != null && startPt.distance(tabPt) > gestureMotionThreshold) {
-//                 JTableHeader src = (JTableHeader) e.getComponent();
-//                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa" + src);
-//                 TransferHandler th = src.getTransferHandler();
-//                 index = src.columnAtPoint(tabPt);
-//                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-//                 // lineRect.setBounds(0, 0, 0, 0);
-//                 // src.getRootPane().getGlassPane().setVisible(true);
-//                 // src.setDropLocation(new DropLocation(tabPt, -1), null, true);
-//                 startPt = null;
-//             }
-//         }
-//     }
-//     class TableColumnTransferHandler extends TransferHandler {
-//         private final DataFlavor localObjectFlavor = new ActivationDataFlavor(
-//             JTableHeader.class, DataFlavor.javaJVMLocalObjectMimeType,
-//             "Integer Column Model Index");
-//
-//         @Override protected Transferable createTransferable(JComponent c) {
-//             System.out.println("createTransferable");
-//             JTableHeader header = (JTableHeader) c;
-//             // int index = table.getSelectedColumn();
-//             // TableColumn column = header.getDraggedColumn();
-//             return new DataHandler(header, localObjectFlavor.getMimeType());
-//         }
-//         @Override public boolean canImport(TransferHandler.TransferSupport info) {
-//             // System.out.println("canImport");
-//             return info.isDataFlavorSupported(localObjectFlavor);
-//         }
-//         @Override public int getSourceActions(JComponent c) {
-//             System.out.println("getSourceActions");
-//             return TransferHandler.MOVE;
-//         }
-//         @Override public boolean importData(TransferHandler.TransferSupport info) {
-//             System.out.println("importData");
-//             JTableHeader target = (JTableHeader) info.getComponent();
-//             // JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
-//             try {
-//                 JTableHeader source = (JTableHeader) info.getTransferable().getTransferData(localObjectFlavor);
-//                 System.out.println("source: " + source);
-//                 if (!source.equals(target)) {
-//                     System.out.println("-------------------------------");
-//                     TableColumn column = source.getColumnModel().getColumn(index);
-//                     source.getColumnModel().removeColumn(column);
-//                     target.getColumnModel().addColumn(column);
-//                 }
-//             } catch (Exception ex) {
-//                 ex.printStackTrace();
-//             }
-//             return false;
-//         }
-//     }
+    // private int index = -1;
+    // private class Handler extends MouseAdapter { // , BeforeDrag
+    //     private Point startPt;
+    //     private final int gestureMotionThreshold = DragSource.getDragThreshold();
+    //     // MouseListener
+    //     @Override public void mousePressed(MouseEvent e) {
+    //         JTableHeader src = (JTableHeader) e.getComponent();
+    //         startPt = e.getPoint(); // e.getDragOrigin();
+    //         // System.out.println(startPt);
+    //     }
+    //     @Override public void mouseDragged(MouseEvent e) {
+    //         Point tabPt = e.getPoint(); // e.getDragOrigin();
+    //         if (startPt != null && startPt.distance(tabPt) > gestureMotionThreshold) {
+    //             JTableHeader src = (JTableHeader) e.getComponent();
+    //             System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa" + src);
+    //             TransferHandler th = src.getTransferHandler();
+    //             index = src.columnAtPoint(tabPt);
+    //             th.exportAsDrag(src, e, TransferHandler.MOVE);
+    //             // lineRect.setBounds(0, 0, 0, 0);
+    //             // src.getRootPane().getGlassPane().setVisible(true);
+    //             // src.setDropLocation(new DropLocation(tabPt, -1), null, true);
+    //             startPt = null;
+    //         }
+    //     }
+    // }
+    // class TableColumnTransferHandler extends TransferHandler {
+    //     private final DataFlavor localObjectFlavor = new ActivationDataFlavor(
+    //         JTableHeader.class, DataFlavor.javaJVMLocalObjectMimeType,
+    //         "Integer Column Model Index");
+    //
+    //     @Override protected Transferable createTransferable(JComponent c) {
+    //         System.out.println("createTransferable");
+    //         JTableHeader header = (JTableHeader) c;
+    //         // int index = table.getSelectedColumn();
+    //         // TableColumn column = header.getDraggedColumn();
+    //         return new DataHandler(header, localObjectFlavor.getMimeType());
+    //     }
+    //     @Override public boolean canImport(TransferHandler.TransferSupport info) {
+    //         // System.out.println("canImport");
+    //         return info.isDataFlavorSupported(localObjectFlavor);
+    //     }
+    //     @Override public int getSourceActions(JComponent c) {
+    //         System.out.println("getSourceActions");
+    //         return TransferHandler.MOVE;
+    //     }
+    //     @Override public boolean importData(TransferHandler.TransferSupport info) {
+    //         System.out.println("importData");
+    //         JTableHeader target = (JTableHeader) info.getComponent();
+    //         // JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
+    //         try {
+    //             JTableHeader source = (JTableHeader) info.getTransferable().getTransferData(localObjectFlavor);
+    //             System.out.println("source: " + source);
+    //             if (!source.equals(target)) {
+    //                 System.out.println("-------------------------------");
+    //                 TableColumn column = source.getColumnModel().getColumn(index);
+    //                 source.getColumnModel().removeColumn(column);
+    //                 target.getColumnModel().addColumn(column);
+    //             }
+    //         } catch (Exception ex) {
+    //             ex.printStackTrace();
+    //         }
+    //         return false;
+    //     }
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -209,12 +209,12 @@ class TableRowTransferHandler extends TransferHandler {
         source = c;
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-//         List<Object> list = new ArrayList<>();
-//         indices = table.getSelectedRows();
-//         for (int i: indices) {
-//             list.add(model.getDataVector().get(i));
-//         }
-//         Object[] transferedObjects = list.toArray();
+        // List<Object> list = new ArrayList<>();
+        // indices = table.getSelectedRows();
+        // for (int i: indices) {
+        //     list.add(model.getDataVector().get(i));
+        // }
+        // Object[] transferedObjects = list.toArray();
         indices = table.getSelectedRows();
         @SuppressWarnings("JdkObsolete")
         List<?> transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());

@@ -33,12 +33,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

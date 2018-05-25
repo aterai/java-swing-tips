@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTextPane textPane = new JTextPane();
-        //textPane.setEditable(false);
+        // textPane.setEditable(false);
         textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 
         textPane.replaceSelection(" Default: ");
@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         JCheckBox check1 = new JCheckBox("JComponent#setAlignmentY(...)");
         Dimension d = check1.getPreferredSize();
         int baseline = check1.getBaseline(d.width, d.height);
-        //System.out.println(check1.getAlignmentY());
+        // System.out.println(check1.getAlignmentY());
         check1.setAlignmentY(baseline / (float) d.height);
         textPane.replaceSelection("\n\n Baseline: ");
         textPane.insertComponent(check1);

@@ -103,13 +103,13 @@ class HeaderRenderer implements TableCellRenderer {
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel) r.getTableCellRendererComponent(table, INPUT, isSelected, hasFocus, row, column);
 
-//         // TEST:
-//         JCheckBox check = new JCheckBox();
-//         updateCheckBox(check, value);
-//         String selected = check.isSelected() ? "checked " : "";
-//         String indeterminate = check.isEnabled() ? "" : "disabled ";
-//         l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>Check All", selected, indeterminate));
-//         System.out.println(l.getText());
+        // // TEST:
+        // JCheckBox check = new JCheckBox();
+        // updateCheckBox(check, value);
+        // String selected = check.isSelected() ? "checked " : "";
+        // String indeterminate = check.isEnabled() ? "" : "disabled ";
+        // l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>Check All", selected, indeterminate));
+        // System.out.println(l.getText());
 
         // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
         for (Component c: l.getComponents()) {
@@ -185,30 +185,30 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
             return true;
         }
     }
-//     private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-//         if (Status.INDETERMINATE.equals(status)) {
-//             boolean selected = true;
-//             boolean deselected = true;
-//             for (int i = 0; i < m.getRowCount(); i++) {
-//                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-//                 selected &= b;
-//                 deselected &= !b;
-//                 if (selected == deselected) {
-//                     return false;
-//                 }
-//             }
-//             if (deselected) {
-//                 column.setHeaderValue(Status.DESELECTED);
-//             } else if (selected) {
-//                 column.setHeaderValue(Status.SELECTED);
-//             } else {
-//                 return false;
-//             }
-//         } else {
-//             column.setHeaderValue(Status.INDETERMINATE);
-//         }
-//         return true;
-//     }
+    // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+    //     if (Status.INDETERMINATE.equals(status)) {
+    //         boolean selected = true;
+    //         boolean deselected = true;
+    //         for (int i = 0; i < m.getRowCount(); i++) {
+    //             Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+    //             selected &= b;
+    //             deselected &= !b;
+    //             if (selected == deselected) {
+    //                 return false;
+    //             }
+    //         }
+    //         if (deselected) {
+    //             column.setHeaderValue(Status.DESELECTED);
+    //         } else if (selected) {
+    //             column.setHeaderValue(Status.SELECTED);
+    //         } else {
+    //             return false;
+    //         }
+    //     } else {
+    //         column.setHeaderValue(Status.INDETERMINATE);
+    //     }
+    //     return true;
+    // }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
         JTable tbl = header.getTable();

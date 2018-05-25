@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         LayoutFocusTraversalPolicy ftp = new LayoutFocusTraversalPolicy();
         ftp.setImplicitDownCycleTraversal(false);
         setFocusCycleRoot(true);
-        //setFocusTraversalPolicyProvider(true);
+        // setFocusTraversalPolicyProvider(true);
         setFocusTraversalPolicy(ftp);
 
         JCheckBox check = new JCheckBox("ImplicitDownCycleTraversal");

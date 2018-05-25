@@ -22,48 +22,48 @@ public final class MainPanel extends JPanel {
         d.put("ProgressBar[Enabled+Indeterminate].foregroundPainter", new IndeterminateRegionPainter());
         progressBar1.putClientProperty("Nimbus.Overrides", d);
 
-//         UIManager.put("ProgressBar.cycleTime", 1000);
-//         UIManager.put("ProgressBar.repaintInterval", 10);
-//         progressBar1.setUI(new BasicProgressBarUI() {
-//             @Override protected int getBoxLength(int availableLength, int otherDimension) {
-//                 return availableLength; //(int) Math.round(availableLength / 6d);
-//             }
-//             @Override public void paintIndeterminate(Graphics g, JComponent c) {
-//                 if (!(g instanceof Graphics2D)) {
-//                     return;
-//                 }
-//
-//                 Insets b = progressBar.getInsets(); // area for border
-//                 int barRectWidth = progressBar.getWidth() - b.right - b.left;
-//                 int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
-//
-//                 if (barRectWidth <= 0 || barRectHeight <= 0) {
-//                     return;
-//                 }
-//
-//                 // Paint the bouncing box.
-//                 boxRect = getBox(boxRect);
-//                 if (Objects.nonNull(boxRect)) {
-//                     int w = 10;
-//                     int x = getAnimationIndex();
-//                     System.out.println(x);
-//                     GeneralPath p = new GeneralPath();
-//                     p.moveTo(boxRect.x + w * .5f, boxRect.y);
-//                     p.lineTo(boxRect.x + w,       boxRect.y + boxRect.height);
-//                     p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-//                     p.lineTo(boxRect.x,           boxRect.y);
-//                     p.closePath();
-//                     Graphics2D g2 = (Graphics2D) g.create();
-//                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//                     g2.setPaint(progressBar.getForeground());
-//                     AffineTransform at = AffineTransform.getTranslateInstance(x, 0);
-//                     for (int i = -x; i < boxRect.width; i += w) {
-//                         g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));
-//                     }
-//                     g2.dispose();
-//                 }
-//             }
-//         });
+        // UIManager.put("ProgressBar.cycleTime", 1000);
+        // UIManager.put("ProgressBar.repaintInterval", 10);
+        // progressBar1.setUI(new BasicProgressBarUI() {
+        //     @Override protected int getBoxLength(int availableLength, int otherDimension) {
+        //         return availableLength; // (int) Math.round(availableLength / 6d);
+        //     }
+        //     @Override public void paintIndeterminate(Graphics g, JComponent c) {
+        //         if (!(g instanceof Graphics2D)) {
+        //             return;
+        //         }
+        //
+        //         Insets b = progressBar.getInsets(); // area for border
+        //         int barRectWidth = progressBar.getWidth() - b.right - b.left;
+        //         int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
+        //
+        //         if (barRectWidth <= 0 || barRectHeight <= 0) {
+        //             return;
+        //         }
+        //
+        //         // Paint the bouncing box.
+        //         boxRect = getBox(boxRect);
+        //         if (Objects.nonNull(boxRect)) {
+        //             int w = 10;
+        //             int x = getAnimationIndex();
+        //             System.out.println(x);
+        //             GeneralPath p = new GeneralPath();
+        //             p.moveTo(boxRect.x + w * .5f, boxRect.y);
+        //             p.lineTo(boxRect.x + w,       boxRect.y + boxRect.height);
+        //             p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
+        //             p.lineTo(boxRect.x,           boxRect.y);
+        //             p.closePath();
+        //             Graphics2D g2 = (Graphics2D) g.create();
+        //             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //             g2.setPaint(progressBar.getForeground());
+        //             AffineTransform at = AffineTransform.getTranslateInstance(x, 0);
+        //             for (int i = -x; i < boxRect.width; i += w) {
+        //                 g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));
+        //             }
+        //             g2.dispose();
+        //         }
+        //     }
+        // });
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(makeTitledPanel("Default", progressBar0));
@@ -223,7 +223,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     private Rectangle2D decodeRect3() {
         rect.setRect(decodeX(.4f), // x
                      decodeY(.4f), // y
-                     decodeX(3f)   - decodeX(.4f), // width
+                     decodeX(3f) - decodeX(.4f), // width
                      decodeY(2.6f) - decodeY(.4f)); // height
         return rect;
     }

@@ -113,7 +113,7 @@ class JustifiedLabel extends JLabel {
         g2.setPaint(getBackground());
         g2.fillRect(0, 0, d.width, d.height);
         g2.setPaint(getForeground());
-        //int baseline = getBaseline(d.width, d.height);
+        // int baseline = getBaseline(d.width, d.height);
         int baseline = ins.top + font.getSize();
         layout.draw(g2, (float) ins.left, (float) baseline);
         g2.dispose();

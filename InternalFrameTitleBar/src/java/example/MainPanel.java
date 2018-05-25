@@ -57,32 +57,32 @@ public final class MainPanel extends JPanel {
             }
         });
 
-//         frame.addWindowListener(new WindowAdapter() {
-//             @Override public void windowLostFocus(FocusEvent e) {
-//                 System.out.println("bbbbbbbbb");
-//                 try {
-//                     internal.setSelected(false);
-//                 } catch (PropertyVetoException ex) {
-//                     ex.printStackTrace();
-//                 }
-//             }
-//             @Override public void windowGainedFocus(FocusEvent e) {
-//                 System.out.println("aaaaaaaa");
-//                 try {
-//                     internal.setSelected(true);
-//                 } catch (PropertyVetoException ex) {
-//                     ex.printStackTrace();
-//                 }
-//             }
-//         });
-//         EventQueue.invokeLater(() -> {
-//             try {
-//                 internal.setSelected(true);
-//             } catch (PropertyVetoException ex) {
-//                 ex.printStackTrace();
-//             }
-//             // internal.requestFocusInWindow();
-//         });
+        // frame.addWindowListener(new WindowAdapter() {
+        //     @Override public void windowLostFocus(FocusEvent e) {
+        //         System.out.println("bbbbbbbbb");
+        //         try {
+        //             internal.setSelected(false);
+        //         } catch (PropertyVetoException ex) {
+        //             ex.printStackTrace();
+        //         }
+        //     }
+        //     @Override public void windowGainedFocus(FocusEvent e) {
+        //         System.out.println("aaaaaaaa");
+        //         try {
+        //             internal.setSelected(true);
+        //         } catch (PropertyVetoException ex) {
+        //             ex.printStackTrace();
+        //         }
+        //     }
+        // });
+        // EventQueue.invokeLater(() -> {
+        //     try {
+        //         internal.setSelected(true);
+        //     } catch (PropertyVetoException ex) {
+        //         ex.printStackTrace();
+        //     }
+        //     // internal.requestFocusInWindow();
+        // });
         return internal;
     }
     public static void main(String... args) {

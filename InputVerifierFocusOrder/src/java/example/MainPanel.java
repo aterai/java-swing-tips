@@ -84,16 +84,16 @@ public class MainPanel extends JPanel {
                 updateButton();
             }
         });
-//         // TEST:
-//         textField.getDocument().addDocumentListener(new DocumentListener() {
-//             @Override public void insertUpdate(DocumentEvent e) {
-//                 System.out.println("insertUpdate");
-//             }
-//             @Override public void removeUpdate(DocumentEvent e) {
-//                 System.out.println("removeUpdate");
-//             }
-//             @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
-//         });
+        // // TEST:
+        // textField.getDocument().addDocumentListener(new DocumentListener() {
+        //     @Override public void insertUpdate(DocumentEvent e) {
+        //         System.out.println("insertUpdate");
+        //     }
+        //     @Override public void removeUpdate(DocumentEvent e) {
+        //         System.out.println("removeUpdate");
+        //     }
+        //     @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+        // });
         return textField;
     }
     public static void main(String... args) {

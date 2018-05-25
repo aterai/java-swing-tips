@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 
         add(sp, BorderLayout.NORTH);
         add(p);
-        //add(box, BorderLayout.SOUTH);
+        // add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
