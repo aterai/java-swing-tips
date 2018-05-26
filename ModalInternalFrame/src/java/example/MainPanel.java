@@ -66,11 +66,11 @@ public final class MainPanel extends JPanel {
         menuItem.setMnemonic(KeyEvent.VK_3);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
 
-//         JButton b = new JButton(new AbstractAction("dummy button") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 Toolkit.getDefaultToolkit().beep();
-//             }
-//         });
+        // JButton b = new JButton(new AbstractAction("dummy button") {
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         Toolkit.getDefaultToolkit().beep();
+        //     }
+        // });
         JButton b = new JButton(new DefaultEditorKit.BeepAction());
         b.setMnemonic(KeyEvent.VK_B);
         add(b, BorderLayout.SOUTH);
@@ -133,33 +133,30 @@ public final class MainPanel extends JPanel {
             // TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.FALSE);
             JInternalFrame modal = optionPane.createInternalFrame(getDesktop(), "modal3");
             // TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.TRUE);
-//*
             optionPane.setMessage("Hello, World");
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
             removeSystemMenuListener(modal);
-/*/
-            // GlassPane + JComboBox Test:
-            String[] items = {"Banana", "Apple", "Pear", "Grape", "Kiwi"};
-            // JComboBox<String> combo = new JComboBox<>(items);
-            JComboBox combo = new JComboBox(items);
-            combo.setEditable(true);
-            try {
-                Field field;
-                if (System.getProperty("java.version").startsWith("1.6.0")) {
-                    Class<?> clazz = Class.forName("javax.swing.PopupFactory");
-                    field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-                } else { // 1.7.0, 1.8.0
-                    Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
-                    field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
-                }
-                field.setAccessible(true);
-                modal.putClientProperty(field.get(null), Boolean.TRUE);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            optionPane.setMessage(combo);
-            optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
-//*/
+            // // GlassPane + JComboBox Test:
+            // String[] items = {"Banana", "Apple", "Pear", "Grape", "Kiwi"};
+            // // JComboBox<String> combo = new JComboBox<>(items);
+            // JComboBox combo = new JComboBox(items);
+            // combo.setEditable(true);
+            // try {
+            //     Field field;
+            //     if (System.getProperty("java.version").startsWith("1.6.0")) {
+            //         Class<?> clazz = Class.forName("javax.swing.PopupFactory");
+            //         field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+            //     } else { // 1.7.0, 1.8.0
+            //         Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
+            //         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+            //     }
+            //     field.setAccessible(true);
+            //     modal.putClientProperty(field.get(null), Boolean.TRUE);
+            // } catch (Exception ex) {
+            //     ex.printStackTrace();
+            // }
+            // optionPane.setMessage(combo);
+            // optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
             modal.addInternalFrameListener(new InternalFrameAdapter() {
                 @Override public void internalFrameClosed(InternalFrameEvent e) {
                     glass.removeAll();
@@ -168,9 +165,9 @@ public final class MainPanel extends JPanel {
             });
             glass.add(modal);
             modal.pack();
-//             Rectangle screen = desktop.getBounds();
-//             modal.setLocation(screen.x + screen.width  / 2 - modal.getSize().width  / 2,
-//                               screen.y + screen.height / 2 - modal.getSize().height / 2);
+            // Rectangle screen = desktop.getBounds();
+            // modal.setLocation(screen.x + screen.width / 2 - modal.getSize().width / 2,
+            //                   screen.y + screen.height / 2 - modal.getSize().height / 2);
             getRootPane().setGlassPane(glass);
             glass.setVisible(true);
             modal.setVisible(true);
@@ -189,11 +186,11 @@ public final class MainPanel extends JPanel {
         Stream.of(titleBar.getComponents())
             .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
             .forEach(MainPanel::removeComponentMouseListener);
-//         for (Component c: titleBar.getComponents()) {
-//             if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
-//                 removeComponentMouseListener(c)
-//             }
-//         }
+        // for (Component c: titleBar.getComponents()) {
+        //     if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
+        //         removeComponentMouseListener(c)
+        //     }
+        // }
     }
 
     protected static void removeComponentMouseListener(Component c) {
@@ -227,9 +224,9 @@ public final class MainPanel extends JPanel {
 
 class MyGlassPane extends JDesktopPane {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
-//     protected MyGlassPane() {
-//         super((LayoutManager) null);
-//     }
+    // protected MyGlassPane() {
+    //     super((LayoutManager) null);
+    // }
     @Override public void updateUI() {
         // setFocusTraversalPolicy(null);
         super.updateUI();
@@ -249,9 +246,9 @@ class MyGlassPane extends JDesktopPane {
 
 class PrintGlassPane extends JDesktopPane {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
-//     protected PrintGlassPane() {
-//         super((LayoutManager) null);
-//     }
+    // protected PrintGlassPane() {
+    //     super((LayoutManager) null);
+    // }
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);

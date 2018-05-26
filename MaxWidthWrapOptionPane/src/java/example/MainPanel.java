@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         @Override public void setText(String t) {
             super.setText(t);
             try {
-//                 System.out.println("fw: " + getColumnWidth());
-//                 int cc = (int) (.5 + 300 / (float) getColumnWidth());
-//                 setColumns(cc);
-//                 System.out.format("Columns: %d%n", cc);
+                // System.out.println("fw: " + getColumnWidth());
+                // int cc = (int) (.5 + 300 / (float) getColumnWidth());
+                // setColumns(cc);
+                // System.out.format("Columns: %d%n", cc);
 
                 setColumns(50);
                 // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-

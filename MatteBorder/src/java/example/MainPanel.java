@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Border outside = BorderFactory.createMatteBorder(0, 10, 1, 0, new Color(50, 200, 50));
-        Border inside  = BorderFactory.createEmptyBorder(0, 5, 0, 0);
+        Border inside = BorderFactory.createEmptyBorder(0, 5, 0, 0);
         label.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         Font font = label.getFont();

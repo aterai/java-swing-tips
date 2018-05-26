@@ -8,24 +8,24 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-//         frame.setJMenuBar(createMenuBar());
-//         addComponentListener(new ComponentAdapter() {
-//             @Override public void componentResized(ComponentEvent e) {
-//                 System.out.println("componentResized");
-//                 ((JComponent) e.getSource()).revalidate();
-//             }
-//         });
-//         frame.addWindowStateListener(new WindowStateListener() {
-//             @Override public void windowStateChanged(WindowEvent e) {
-//                 EventQueue.invokeLater(new Runnable() {
-//                     @Override public void run() {
-//                         System.out.println("windowStateChanged");
-//                         JFrame f = (JFrame) e.getWindow();
-//                         ((JComponent) f.getContentPane()).revalidate();
-//                     }
-//                 });
-//             }
-//         });
+        // frame.setJMenuBar(createMenuBar());
+        // addComponentListener(new ComponentAdapter() {
+        //     @Override public void componentResized(ComponentEvent e) {
+        //         System.out.println("componentResized");
+        //         ((JComponent) e.getSource()).revalidate();
+        //     }
+        // });
+        // frame.addWindowStateListener(new WindowStateListener() {
+        //     @Override public void windowStateChanged(WindowEvent e) {
+        //         EventQueue.invokeLater(new Runnable() {
+        //             @Override public void run() {
+        //                 System.out.println("windowStateChanged");
+        //                 JFrame f = (JFrame) e.getWindow();
+        //                 ((JComponent) f.getContentPane()).revalidate();
+        //             }
+        //         });
+        //     }
+        // });
         add(createMenuBar(), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
@@ -62,23 +62,23 @@ public final class MainPanel extends JPanel {
                     return new Dimension(targetWidth, height);
                 }
             }
-//             // https://tips4java.wordpress.com/2008/11/06/wrap-layout/
-//             // WrapLayout.java
-//             // Rob Camick on November 6, 2008
-//             private Dimension preferredLayoutSize;
-//             @Override public void layoutContainer(Container target) {
-//                 Dimension size = preferredLayoutSize(target);
-//                 if (size.equals(preferredLayoutSize)) {
-//                     super.layoutContainer(target);
-//                 } else {
-//                     preferredLayoutSize = size;
-//                     Container top = target;
-//                     while (!(top instanceof Window) && top.getParent() != null) {
-//                         top = top.getParent();
-//                     }
-//                     top.validate();
-//                 }
-//             }
+            // // https://tips4java.wordpress.com/2008/11/06/wrap-layout/
+            // // WrapLayout.java
+            // // Rob Camick on November 6, 2008
+            // private Dimension preferredLayoutSize;
+            // @Override public void layoutContainer(Container target) {
+            //     Dimension size = preferredLayoutSize(target);
+            //     if (size.equals(preferredLayoutSize)) {
+            //         super.layoutContainer(target);
+            //     } else {
+            //         preferredLayoutSize = size;
+            //         Container top = target;
+            //         while (!(top instanceof Window) && top.getParent() != null) {
+            //             top = top.getParent();
+            //         }
+            //         top.validate();
+            //     }
+            // }
         });
         for (String key: new String[] {"File", "Edit", "Aaaaaaaaaaaaaaaaaaaaa", "Bbbbbbbbbbbbb", "Help"}) {
             menuBar.add(createMenu(key));

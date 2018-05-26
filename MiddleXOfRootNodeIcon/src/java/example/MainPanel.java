@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel {
         JTree tree = new JTree();
         tree.setRowHeight(0);
         tree.setBorder(BorderFactory.createEmptyBorder(1, 1 + (iw - ow) / 2, 1, 1));
-        //TEST:
-        //tree.setBorder(BorderFactory.createMatteBorder(1, 1 + (iw - ow) / 2, 1, 1, Color.RED));
+        // TEST:
+        // tree.setBorder(BorderFactory.createMatteBorder(1, 1 + (iw - ow) / 2, 1, 1, Color.RED));
         tree.setCellRenderer(new DefaultTreeCellRenderer() {
             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -98,7 +98,7 @@ class ColorIcon implements Icon {
         g2.fillRect(1, 1, dim.width - 2, dim.height - 2);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return dim.width;
     }
     @Override public int getIconHeight() {

@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         UIManager.put("PopupMenuUI", "example.CustomPopupMenuUI");
-        //contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
+        // contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
 
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

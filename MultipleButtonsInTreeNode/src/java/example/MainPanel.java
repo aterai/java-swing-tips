@@ -62,12 +62,12 @@ class ButtonPanel extends JPanel {
         Arrays.asList(b1, b2, b3, c).forEach(this::add);
         return this;
     }
-//     public int getButtonAreaWidth() {
-//         int hgap = ((FlowLayout) getLayout()).getHgap();
-//         return Arrays.asList(b1, b2, b3).stream()
-//             .mapToInt(b -> b.getPreferredSize().width + hgap)
-//             .sum();
-//     }
+    // public int getButtonAreaWidth() {
+    //     int hgap = ((FlowLayout) getLayout()).getHgap();
+    //     return Arrays.asList(b1, b2, b3).stream()
+    //         .mapToInt(b -> b.getPreferredSize().width + hgap)
+    //         .sum();
+    // }
 }
 
 class ButtonCellRenderer implements TreeCellRenderer {
@@ -94,12 +94,12 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
             System.out.println("b3: " + panel.renderer.getText());
             stopCellEditing();
         });
-//     panel.renderer.addMouseListener(new MouseAdapter() {
-//         @Override public void mousePressed(MouseEvent e) {
-//             System.out.println("label");
-//             stopCellEditing();
-//         }
-//     });
+        // panel.renderer.addMouseListener(new MouseAdapter() {
+        //     @Override public void mousePressed(MouseEvent e) {
+        //         System.out.println("label");
+        //         stopCellEditing();
+        //     }
+        // });
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         Component c = panel.renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);

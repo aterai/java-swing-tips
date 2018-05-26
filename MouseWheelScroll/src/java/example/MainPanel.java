@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+        label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
             sb.setUnitIncrement(25);
         }
 
-        InputMap im  = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        InputMap im = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = scroll.getActionMap();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK, false), "pressed");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "released");
@@ -104,11 +104,11 @@ public class MainPanel extends JPanel {
         scroll.setVerticalScrollBar(zeroVerticalBar);
         scroll.setHorizontalScrollBar(zeroHorizontalBar);
 
-        //JScrollBar vsb = scroll.getVerticalScrollBar();
-        //vsb.setPreferredSize(new Dimension(0, vsb.getPreferredSize().height));
-        //vsb.putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
-        //JScrollBar hsb = scroll.getHorizontalScrollBar();
-        //hsb.setPreferredSize(new Dimension(hsb.getPreferredSize().width, 0));
+        // JScrollBar vsb = scroll.getVerticalScrollBar();
+        // vsb.setPreferredSize(new Dimension(0, vsb.getPreferredSize().height));
+        // vsb.putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+        // JScrollBar hsb = scroll.getHorizontalScrollBar();
+        // hsb.setPreferredSize(new Dimension(hsb.getPreferredSize().width, 0));
 
         add(p, BorderLayout.NORTH);
         add(scroll);

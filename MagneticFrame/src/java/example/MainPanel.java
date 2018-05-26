@@ -39,36 +39,36 @@ public final class MainPanel extends JPanel {
         return frame;
     }
 
-//     private class MagneticListener extends MouseAdapter {
-//         private final JInternalFrame frame;
-//         private final Point loc = new Point();
-//         protected MagneticListener(JInternalFrame frame) {
-//             super();
-//             this.frame = frame;
-//         }
-//         @Override public void mousePressed(MouseEvent e) {
-//             Point p1 = frame.getLocation();
-//             Point p2 = SwingUtilities.convertPoint(frame, e.getPoint(), frame.getDesktopPane());
-//             loc.setLocation(p2.x - p1.x, p2.y - p1.y);
-//         }
-//         @Override public void mouseDragged(MouseEvent e) {
-//             JDesktopPane desktop = frame.getDesktopPane();
-//             Point ep = e.getPoint();
-//             Point pt = SwingUtilities.convertPoint(frame, ep.x - loc.x, ep.y - loc.y, desktop);
-//             int e = pt.x;
-//             int n = pt.y;
-//             int w = desktop.getSize().width - frame.getSize().width - e;
-//             int s = desktop.getSize().height - frame.getSize().height - n;
-//             if (isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
-//                 int x = (e < w) ? (isNear(e) ? 0 : e) : (isNear(w) ? w + e : e);
-//                 int y = (n < s) ? (isNear(n) ? 0 : n) : (isNear(s) ? s + n : n);
-//                 desktop.getDesktopManager().dragFrame(frame, x, y);
-//             }
-//         }
-//         private boolean isNear(int c) {
-//             return (Math.abs(c) < 10);
-//         }
-//     }
+    // private class MagneticListener extends MouseAdapter {
+    //     private final JInternalFrame frame;
+    //     private final Point loc = new Point();
+    //     protected MagneticListener(JInternalFrame frame) {
+    //         super();
+    //         this.frame = frame;
+    //     }
+    //     @Override public void mousePressed(MouseEvent e) {
+    //         Point p1 = frame.getLocation();
+    //         Point p2 = SwingUtilities.convertPoint(frame, e.getPoint(), frame.getDesktopPane());
+    //         loc.setLocation(p2.x - p1.x, p2.y - p1.y);
+    //     }
+    //     @Override public void mouseDragged(MouseEvent e) {
+    //         JDesktopPane desktop = frame.getDesktopPane();
+    //         Point ep = e.getPoint();
+    //         Point pt = SwingUtilities.convertPoint(frame, ep.x - loc.x, ep.y - loc.y, desktop);
+    //         int e = pt.x;
+    //         int n = pt.y;
+    //         int w = desktop.getSize().width - frame.getSize().width - e;
+    //         int s = desktop.getSize().height - frame.getSize().height - n;
+    //         if (isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
+    //             int x = (e < w) ? (isNear(e) ? 0 : e) : (isNear(w) ? w + e : e);
+    //             int y = (n < s) ? (isNear(n) ? 0 : n) : (isNear(s) ? s + n : n);
+    //             desktop.getDesktopManager().dragFrame(frame, x, y);
+    //         }
+    //     }
+    //     private boolean isNear(int c) {
+    //         return (Math.abs(c) < 10);
+    //     }
+    // }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -101,7 +101,7 @@ class MagneticDesktopManager extends DefaultDesktopManager {
             JDesktopPane desktop = (JDesktopPane) c;
             int e = x;
             int n = y;
-            int w = desktop.getSize().width  - frame.getSize().width  - e;
+            int w = desktop.getSize().width - frame.getSize().width  - e;
             int s = desktop.getSize().height - frame.getSize().height - n;
             if (isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
                 super.dragFrame(frame, getX(e, w), getY(n, s));

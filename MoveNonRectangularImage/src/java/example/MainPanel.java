@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
                 removeMouseListener(handler);
                 removeMouseMotionListener(handler);
                 super.updateUI();
-                //handler = new ComponentMoveHandler();
+                // handler = new ComponentMoveHandler();
                 addMouseListener(handler);
                 addMouseMotionListener(handler);
             }

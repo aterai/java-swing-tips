@@ -65,8 +65,8 @@ public final class MainPanel extends JPanel {
 //     @Override public void mouseReleased(MouseEvent e) {
 //         JTable t = (JTable) e.getComponent();
 //         Point pt = e.getPoint();
-//         int row  = t.rowAtPoint(pt);
-//         int col  = t.columnAtPoint(pt);
+//         int row = t.rowAtPoint(pt);
+//         int col = t.columnAtPoint(pt);
 //         if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
 //             TableCellEditor ce = t.getCellEditor(row, col);
 //             ce.stopCellEditing();

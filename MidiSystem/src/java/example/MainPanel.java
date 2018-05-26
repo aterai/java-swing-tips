@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.net.*;
 import javax.sound.midi.*;
 import javax.swing.*;
-//import javax.sound.midi.spi.*;
+// import javax.sound.midi.spi.*;
 
 public final class MainPanel extends JPanel {
     private static final byte END_OF_TRACK = 0x2F;
     private long tickpos;
     private final JButton start = new JButton("start");
-    private final JButton stop  = new JButton("stop");
-    private final JButton init  = new JButton("init");
+    private final JButton stop = new JButton("stop");
+    private final JButton init = new JButton("init");
     public MainPanel() {
         super(new BorderLayout(5, 5));
         Sequencer sequencer;

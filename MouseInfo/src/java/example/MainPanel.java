@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel implements ActionListener, HierarchyListener {
     private final Dimension panelDim = new Dimension(320, 240);
-    private final Racket racket   = new Racket(panelDim);
+    private final Racket racket = new Racket(panelDim);
     private final JLabel absolute = new JLabel("absolute:");
     private final JLabel relative = new JLabel("relative:");
     private final Timer timer;
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.setResizable(false);
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
     }
 }
 
-//http://d.hatena.ne.jp/aidiary/20070601/1251545490
+// http://d.hatena.ne.jp/aidiary/20070601/1251545490
 class Racket implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final int WIDTH  = 80;
+    private static final int WIDTH = 80;
     private static final int HEIGHT = 5;
     private int centerPos;
     private final Dimension parentSize;

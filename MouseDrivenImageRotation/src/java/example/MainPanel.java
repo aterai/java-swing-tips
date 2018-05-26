@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override protected void paintComponent(Graphics g) {
-        //super.paintComponent(g);
+        // super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new GradientPaint(50, 0, new Color(200, 200, 200), getWidth(), getHeight(), new Color(100, 100, 100), true));
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -51,29 +51,29 @@ public final class MainPanel extends JPanel {
 class DraggableImageMouseListener extends MouseAdapter {
     private static final BasicStroke BORDER_STROKE = new BasicStroke(4f);
     private static final Color BORDER_COLOR = Color.WHITE;
-    private static final Color HOVER_COLOR  = new Color(100, 255, 200, 100);
+    private static final Color HOVER_COLOR = new Color(100, 255, 200, 100);
     private static final int IR = 40;
     private static final int OR = IR * 3;
     private final Shape border;
     private final Shape polaroid;
     private final RectangularShape inner = new Ellipse2D.Double(0, 0, IR, IR);
     private final RectangularShape outer = new Ellipse2D.Double(0, 0, OR, OR);
-    private final Point2D startPt  = new Point2D.Double(); //drag start point
-    private final Point2D centerPt = new Point2D.Double(100d, 100d); //center of Image
+    private final Point2D startPt = new Point2D.Double(); // drag start point
+    private final Point2D centerPt = new Point2D.Double(100d, 100d); // center of Image
     private final Dimension imageSz;
     private final Image image;
     private double radian = 45d * (Math.PI / 180d);
-    private double startRadian; //drag start radian
+    private double startRadian; // drag start radian
     private boolean moverHover;
     private boolean rotatorHover;
 
     protected DraggableImageMouseListener(ImageIcon ii) {
         super();
         image = ii.getImage();
-        int width  = ii.getIconWidth();
+        int width = ii.getIconWidth();
         int height = ii.getIconHeight();
-        imageSz  = new Dimension(width, height);
-        border   = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
+        imageSz = new Dimension(width, height);
+        border = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
         polaroid = new Rectangle2D.Double(-2, -2, width + 4, height + 20);
         setCirclesLocation(centerPt);
     }

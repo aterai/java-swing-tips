@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         String[] menuKeys = {"File", "Edit", "Help"};
         for (String key: menuKeys) {
             JMenu m = createMenu(key);
-            //if (m != null)
+            // if (m != null)
             mb.add(m);
         }
         return mb;
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
                 setOpaque(false); // Motif lnf
             }
         };
-        //System.out.println(System.getProperty("os.name"));
-        //System.out.println(System.getProperty("os.version"));
+        // System.out.println(System.getProperty("os.name"));
+        // System.out.println(System.getProperty("os.version"));
         if ("Windows XP".equals(System.getProperty("os.name"))) {
-            menu.setBackground(new Color(0x0, true)); //XXX Windows XP lnf?
+            menu.setBackground(new Color(0x0, true)); // XXX Windows XP lnf?
         }
         menu.add("dummy1");
         menu.add("dummy2");
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         System.out.println("Menu.useMenuBarBackgroundForTopLevel: " + UIManager.getBoolean("Menu.useMenuBarBackgroundForTopLevel"));
-        //TEST: UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.FALSE);
+        // TEST: UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.FALSE);
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

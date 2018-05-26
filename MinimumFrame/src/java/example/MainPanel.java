@@ -69,27 +69,26 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-//         int MAX = 500;
-//         // frame.setMaximumSize(new Dimension(MAX, MAX));
-//         Robot r;
-//         Robot r2;
-//         try {
-//             r = new Robot();
-//         } catch (AWTException ex) {
-//             r = null;
-//         }
-//         r2 = r;
-//         frame.getRootPane().addComponentListener(new ComponentAdapter() {
-//             @Override public void componentResized(ComponentEvent e) {
-//                 Point loc = frame.getLocationOnScreen();
-//                 Point mouse = MouseInfo.getPointerInfo().getLocation();
-//                 if (Objects.nonNull(r2) && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
-//                     r2.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-//                     frame.setSize(Math.min(MAX, frame.getWidth()),
-//                                   Math.min(MAX, frame.getHeight()));
-//                 }
-//             }
-//         });
+        // int MAX = 500;
+        // // frame.setMaximumSize(new Dimension(MAX, MAX));
+        // Robot r;
+        // Robot r2;
+        // try {
+        //     r = new Robot();
+        // } catch (AWTException ex) {
+        //     r = null;
+        // }
+        // r2 = r;
+        // frame.getRootPane().addComponentListener(new ComponentAdapter() {
+        //     @Override public void componentResized(ComponentEvent e) {
+        //         Point loc = frame.getLocationOnScreen();
+        //         Point mouse = MouseInfo.getPointerInfo().getLocation();
+        //         if (Objects.nonNull(r2) && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
+        //             r2.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+        //             frame.setSize(Math.min(MAX, frame.getWidth()), Math.min(MAX, frame.getHeight()));
+        //         }
+        //     }
+        // });
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(frame));
         frame.pack();
