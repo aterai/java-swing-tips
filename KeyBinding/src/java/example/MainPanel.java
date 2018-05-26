@@ -95,26 +95,26 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     // -------->
-    // original code:
-    // ftp://ftp.oreilly.de/pub/examples/english_examples/jswing2/code/goodies/Mapper.java
-    // modified by terai
-//     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
-//         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<>();
-//         if (Objects.isNull(im.allKeys())) {
-//             return h;
-//         }
-//         for (KeyStroke ks: im.allKeys()) {
-//             Object name = im.get(ks);
-//             if (h.containsKey(name)) {
-//                 h.get(name).add(ks);
-//             } else {
-//                 ArrayList<KeyStroke> keylist = new ArrayList<>();
-//                 keylist.add(ks);
-//                 h.put(name, keylist);
-//             }
-//         }
-//         return h;
-//     }
+    // // original code:
+    // // ftp://ftp.oreilly.de/pub/examples/english_examples/jswing2/code/goodies/Mapper.java
+    // // modified by terai
+    // private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
+    //     Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<>();
+    //     if (Objects.isNull(im.allKeys())) {
+    //         return h;
+    //     }
+    //     for (KeyStroke ks: im.allKeys()) {
+    //         Object name = im.get(ks);
+    //         if (h.containsKey(name)) {
+    //             h.get(name).add(ks);
+    //         } else {
+    //             ArrayList<KeyStroke> keylist = new ArrayList<>();
+    //             keylist.add(ks);
+    //             h.put(name, keylist);
+    //         }
+    //     }
+    //     return h;
+    // }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
         if (Objects.isNull(im.allKeys())) {
             return;

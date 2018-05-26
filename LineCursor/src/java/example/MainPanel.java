@@ -74,13 +74,13 @@ class LineCursorTextArea extends JTextArea {
                     JTextComponent c = getComponent();
                     x = 0;
                     y = r.y;
-                    width  = c.getSize().width;
+                    width = c.getSize().width;
                     height = r.height;
                     c.repaint();
                 }
             }
         };
-        //caret.setBlinkRate(getCaret().getBlinkRate());
+        // caret.setBlinkRate(getCaret().getBlinkRate());
         caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
         setCaret(caret);
     }
@@ -90,7 +90,7 @@ class LineCursorTextArea extends JTextArea {
         if (c instanceof DefaultCaret) {
             Graphics2D g2 = (Graphics2D) g.create();
             Insets i = getInsets();
-            //int y = g2.getFontMetrics().getHeight() * getLineAtCaret(this) + i.top;
+            // int y = g2.getFontMetrics().getHeight() * getLineAtCaret(this) + i.top;
             DefaultCaret caret = (DefaultCaret) c;
             int y = caret.y + caret.height - 1;
             g2.setPaint(LINE_COLOR);
@@ -98,9 +98,9 @@ class LineCursorTextArea extends JTextArea {
             g2.dispose();
         }
     }
-//     public static int getLineAtCaret(JTextComponent component) {
-//         int caretPosition = component.getCaretPosition();
-//         Element root = component.getDocument().getDefaultRootElement();
-//         return root.getElementIndex(caretPosition) + 1;
-//     }
+    // public static int getLineAtCaret(JTextComponent component) {
+    //     int caretPosition = component.getCaretPosition();
+    //     Element root = component.getDocument().getDefaultRootElement();
+    //     return root.getElementIndex(caretPosition) + 1;
+    // }
 }

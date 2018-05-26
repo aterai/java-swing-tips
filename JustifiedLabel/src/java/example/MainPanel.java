@@ -20,14 +20,14 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
+        Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JLabel text-align:justify");
         p.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 0);
-        c.fill   = GridBagConstraints.HORIZONTAL;
-        c.gridx  = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
         p.add(l0, c);
         p.add(l1, c);
         p.add(l2, c);
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         p.add(l4, c);
         p.add(l5, c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
         p.add(new JTextField(), c);
         p.add(new JTextField(), c);

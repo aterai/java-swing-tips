@@ -33,20 +33,20 @@ public final class MainPanel extends JPanel {
 
         int w = 2048;
         int h = 1360;
-//         Image img = Toolkit.getDefaultToolkit().createImage(path);
-//         MediaTracker tracker = new MediaTracker((Container) this);
-//         tracker.addImage(img, 0);
-//         try {
-//             tracker.waitForID(0);
-//         } catch (InterruptedException ex) {
-//             ex.printStackTrace();
-//         } finally {
-//             if (!tracker.isErrorID(0)) {
-//                 w = img.getWidth(this);
-//                 h = img.getHeight(this);
-//             }
-//             tracker.removeImage(img);
-//         }
+        // Image img = Toolkit.getDefaultToolkit().createImage(path);
+        // MediaTracker tracker = new MediaTracker((Container) this);
+        // tracker.addImage(img, 0);
+        // try {
+        //     tracker.waitForID(0);
+        // } catch (InterruptedException ex) {
+        //     ex.printStackTrace();
+        // } finally {
+        //     if (!tracker.isErrorID(0)) {
+        //         w = img.getWidth(this);
+        //         h = img.getHeight(this);
+        //     }
+        //     tracker.removeImage(img);
+        // }
 
         String str = String.join("\n", Collections.nCopies(50, TEXT));
         StringBuilder sb0 = new StringBuilder(str);

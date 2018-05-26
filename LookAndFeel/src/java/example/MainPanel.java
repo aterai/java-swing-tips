@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         box.add(makeSystemColor(SystemColor.controlShadow, "controlShadow"));
         box.add(makeSystemColor(SystemColor.controlDkShadow, "controlDkShadow"));
         box.add(makeSystemColor(SystemColor.controlText, "controlText"));
-//        box.add(makeSystemColor(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
+        // box.add(makeSystemColor(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
         box.add(makeSystemColor(SystemColor.control, "control"));
         box.add(makeSystemColor(SystemColor.scrollbar, "scrollbar"));
         box.add(makeSystemColor(SystemColor.info, "info"));
@@ -69,12 +69,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
 

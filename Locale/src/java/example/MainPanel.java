@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-//     private static void printLocale(JFileChooser fileChooser) {
-//         System.out.println("Locale: " + fileChooser.getLocale());
-//         System.out.println("DefaultLocale: " + fileChooser.getDefaultLocale());
-//     }
+    // private static void printLocale(JFileChooser fileChooser) {
+    //     System.out.println("Locale: " + fileChooser.getLocale());
+    //     System.out.println("DefaultLocale: " + fileChooser.getDefaultLocale());
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

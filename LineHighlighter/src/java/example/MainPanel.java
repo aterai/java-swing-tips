@@ -62,13 +62,13 @@ class HighlightCursorTextArea extends JTextArea {
                     JTextComponent c = getComponent();
                     x = 0;
                     y = r.y;
-                    width  = c.getSize().width;
+                    width = c.getSize().width;
                     height = r.height;
                     c.repaint();
                 }
             }
         };
-        //caret.setBlinkRate(getCaret().getBlinkRate());
+        // caret.setBlinkRate(getCaret().getBlinkRate());
         caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
         setCaret(caret);
     }

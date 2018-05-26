@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-//     private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
-//     private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
+    // private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
+    // private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
     private enum TreeDraws {
         DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
         DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
@@ -55,9 +55,9 @@ public class MainPanel extends JPanel {
             }
         });
 
-//         listMenuItems(menuBar)
-//             .filter(mi -> mi instanceof JRadioButtonMenuItem)
-//             .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
+        // listMenuItems(menuBar)
+        //     .filter(mi -> mi instanceof JRadioButtonMenuItem)
+        //     .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
         JPanel np = new JPanel(new GridLayout(2, 1));
         np.add(dfbaiCheck);
@@ -191,12 +191,12 @@ final class LookAndFeelUtil {
         }
     }
 
-//     static Stream<MenuElement> listMenuItems(MenuElement me) {
-//         MenuElement[] sub = me.getSubElements();
-//         if (sub.length != 0) {
-//             return Arrays.stream(sub).flatMap(MainPanel::listMenuItems);
-//         } else {
-//             return Stream.of(me);
-//         }
-//     }
+    // static Stream<MenuElement> listMenuItems(MenuElement me) {
+    //     MenuElement[] sub = me.getSubElements();
+    //     if (sub.length != 0) {
+    //         return Arrays.stream(sub).flatMap(MainPanel::listMenuItems);
+    //     } else {
+    //         return Stream.of(me);
+    //     }
+    // }
 }

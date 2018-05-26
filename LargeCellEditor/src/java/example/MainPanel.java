@@ -137,13 +137,13 @@ class IconTable extends JTable {
                 cancelEditing();
             }
         });
-//         editor.addKeyListener(new KeyAdapter() {
-//             @Override public void keyPressed(KeyEvent e) {
-//                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-//                     cancelEditing();
-//                 }
-//             }
-//         });
+        // editor.addKeyListener(new KeyAdapter() {
+        //     @Override public void keyPressed(KeyEvent e) {
+        //         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        //             cancelEditing();
+        //         }
+        //     }
+        // });
         editor.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 Point p = e.getPoint();

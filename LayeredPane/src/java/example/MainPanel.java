@@ -13,12 +13,12 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
-        //title, resizable, closable, maximizable, iconifiable
+        // title, resizable, closable, maximizable, iconifiable
         JInternalFrame jif = new JInternalFrame("AlwaysOnTop", true, false, true, true);
         jif.setSize(180, 180);
         desktop.add(jif, Integer.valueOf(JLayeredPane.MODAL_LAYER + 1));
         jif.setVisible(true);
-        //desktop.getDesktopManager().activateFrame(jif);
+        // desktop.getDesktopManager().activateFrame(jif);
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
             JInternalFrame jif = new MyInternalFrame();
             desktop.add(jif);
             jif.setVisible(true);
-            //desktop.getDesktopManager().activateFrame(jif);
+            // desktop.getDesktopManager().activateFrame(jif);
         });
         menu.add(menuItem);
 
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("quit");
         menuItem.addActionListener(e -> {
-            //SwingUtilities.getWindowAncestor(desktop).dispose();
+            // SwingUtilities.getWindowAncestor(desktop).dispose();
             Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose);
         });
         menu.add(menuItem);
@@ -81,7 +81,7 @@ class MyInternalFrame extends JInternalFrame {
     private static final int YOFFSET = 30;
     private static AtomicInteger openFrameCount = new AtomicInteger();
     protected MyInternalFrame() {
-        //title, resizable, closable, maximizable, iconifiable
+        // title, resizable, closable, maximizable, iconifiable
         super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
         setSize(180, 100);
         setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());

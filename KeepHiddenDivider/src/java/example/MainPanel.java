@@ -70,24 +70,24 @@ public class MainPanel extends JPanel {
                     int v = Objects.nonNull(i) ? i.right : 0;
                     splitPane.setDividerLocation(splitPane.getWidth() - v);
                 }
-//                 int lastLoc = splitPane.getLastDividerLocation();
-//                 int currentLoc = splitPane.getDividerLocation();
-//                 int newLoc;
-//                 BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
-//                 Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-//
-//                 if (currentLoc == insets.top) {
-//                     int maxLoc = splitPane.getMaximumDividerLocation();
-//                     newLoc = Math.min(lastLoc, maxLoc);
-//                     // splitPaneUI.setKeepHidden(false);
-//                 } else {
-//                     newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
-//                     // splitPaneUI.setKeepHidden(true);
-//                 }
-//                 if (currentLoc != newLoc) {
-//                     splitPane.setDividerLocation(newLoc);
-//                     splitPane.setLastDividerLocation(currentLoc);
-//                 }
+                // int lastLoc = splitPane.getLastDividerLocation();
+                // int currentLoc = splitPane.getDividerLocation();
+                // int newLoc;
+                // BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
+                // Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+                //
+                // if (currentLoc == insets.top) {
+                //     int maxLoc = splitPane.getMaximumDividerLocation();
+                //     newLoc = Math.min(lastLoc, maxLoc);
+                //     // splitPaneUI.setKeepHidden(false);
+                // } else {
+                //     newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
+                //     // splitPaneUI.setKeepHidden(true);
+                // }
+                // if (currentLoc != newLoc) {
+                //     splitPane.setDividerLocation(newLoc);
+                //     splitPane.setLastDividerLocation(currentLoc);
+                // }
             }
         }));
 

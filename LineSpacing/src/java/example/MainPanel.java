@@ -18,19 +18,19 @@ public final class MainPanel extends JPanel {
 
         MutableAttributeSet a = new SimpleAttributeSet();
         StyleConstants.setLineSpacing(a, .5f);
-        //StyleConstants.setSpaceAbove(a, 5f);
-        //StyleConstants.setSpaceBelow(a, 5f);
-        //StyleConstants.setLeftIndent(a, 5f);
-        //StyleConstants.setRightIndent(a, 5f);
+        // StyleConstants.setSpaceAbove(a, 5f);
+        // StyleConstants.setSpaceBelow(a, 5f);
+        // StyleConstants.setLeftIndent(a, 5f);
+        // StyleConstants.setRightIndent(a, 5f);
         editor1.setParagraphAttributes(a, false);
         setDummyText(editor1, attr);
 
-//         StyleSheet styleSheet = new StyleSheet();
-//         styleSheet.addRule("body {font-size: 24pt; line-height: 2.0}"); //XXX
-//         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-//         htmlEditorKit.setStyleSheet(styleSheet);
-//         editor1.setEditorKit(htmlEditorKit);
-//         editor1.setText("<html><body>12341234<br />asdf_fASdfasf_fasdf_affffFSDdfasdf<br />nasdfasFasdf<font size='32'>12341234<br />asdfasdf</font></body></html>");
+        // StyleSheet styleSheet = new StyleSheet();
+        // styleSheet.addRule("body {font-size: 24pt; line-height: 2.0}"); // XXX
+        // HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
+        // htmlEditorKit.setStyleSheet(styleSheet);
+        // editor1.setEditorKit(htmlEditorKit);
+        // editor1.setText("<html><body>12341234<br />asdf_fASdfasf_fasdf_affffFSDdfasdf<br />nasdfasFasdf<font size='32'>12341234<br />asdfasdf</font></body></html>");
 
         editor2.setEditorKit(new BottomInsetEditorKit());
         setDummyText(editor2, attr);
@@ -50,11 +50,11 @@ public final class MainPanel extends JPanel {
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
-//         StyledDocument doc = new DefaultStyledDocument();
-//         MutableAttributeSet a = new SimpleAttributeSet();
-//         StyleConstants.setLineSpacing(a, .5f);
-//         doc.setParagraphAttributes(0, doc.getLength() - 1, a, false);
-//         textPane.setStyledDocument(doc);
+        // StyledDocument doc = new DefaultStyledDocument();
+        // MutableAttributeSet a = new SimpleAttributeSet();
+        // StyleConstants.setLineSpacing(a, .5f);
+        // doc.setParagraphAttributes(0, doc.getLength() - 1, a, false);
+        // textPane.setStyledDocument(doc);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

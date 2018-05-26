@@ -8,9 +8,9 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected final JTree tree       = new JTree();
+    protected final JTree tree = new JTree();
     protected final JTextField field = new JTextField("", 10);
-    protected final JButton button   = new JButton("Find Next(dummy)");
+    protected final JButton button = new JButton("Find Next(dummy)");
     protected final JButton showHideButton = new JButton();
 
     protected Timer animator;
@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
         protected int controlsHeight;
         protected int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {
-            //synchronized (target.getTreeLock()) {
+            // synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
             if (Objects.nonNull(animator)) {
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
