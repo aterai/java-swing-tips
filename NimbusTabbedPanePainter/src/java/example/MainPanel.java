@@ -11,9 +11,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("JTree",      new JScrollPane(new JTree()));
+        tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
         tabbedPane.addTab("JSplitPane", new JSplitPane());
-        tabbedPane.addTab("JTextArea",  new JScrollPane(new JTextArea()));
+        tabbedPane.addTab("JTextArea", new JScrollPane(new JTextArea()));
         add(tabbedPane);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             NimbusTabbedPanePainter.configureUI();
         } catch (ClassNotFoundException | InstantiationException
@@ -53,30 +53,30 @@ final class NimbusTabbedPanePainter {
     public static void configureUI() {
         UIDefaults d = UIManager.getLookAndFeelDefaults();
         d.put("TabbedPane:TabbedPaneContent.contentMargins", new Insets(0, 5, 5, 5));
-        //d.put("TabbedPane:TabbedPaneTab.contentMargins",     new Insets(2, 8, 3, 8));
-        //d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, 4, 10));
+        // d.put("TabbedPane:TabbedPaneTab.contentMargins", new Insets(2, 8, 3, 8));
+        // d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, 4, 10));
         d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, OVERPAINT, 10));
 
         Painter<JComponent> tabAreaPainter = new TabAreaPainter();
-        d.put("TabbedPane:TabbedPaneTabArea[Disabled].backgroundPainter",          tabAreaPainter);
-        d.put("TabbedPane:TabbedPaneTabArea[Enabled].backgroundPainter",           tabAreaPainter);
+        d.put("TabbedPane:TabbedPaneTabArea[Disabled].backgroundPainter", tabAreaPainter);
+        d.put("TabbedPane:TabbedPaneTabArea[Enabled].backgroundPainter", tabAreaPainter);
         d.put("TabbedPane:TabbedPaneTabArea[Enabled+MouseOver].backgroundPainter", tabAreaPainter);
-        d.put("TabbedPane:TabbedPaneTabArea[Enabled+Pressed].backgroundPainter",   tabAreaPainter);
+        d.put("TabbedPane:TabbedPaneTabArea[Enabled+Pressed].backgroundPainter", tabAreaPainter);
 
         d.put("TabbedPane:TabbedPaneContent.backgroundPainter", new TabContentPainter());
 
         Painter<JComponent> tabPainter = new TabPainter(false);
         d.put("TabbedPane:TabbedPaneTab[Enabled+MouseOver].backgroundPainter", tabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Enabled+Pressed].backgroundPainter",   tabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Enabled].backgroundPainter",           tabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Enabled+Pressed].backgroundPainter", tabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Enabled].backgroundPainter", tabPainter);
 
         Painter<JComponent> selectedTabPainter = new TabPainter(true);
         d.put("TabbedPane:TabbedPaneTab[Focused+MouseOver+Selected].backgroundPainter", selectedTabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Focused+Pressed+Selected].backgroundPainter",   selectedTabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Focused+Selected].backgroundPainter",           selectedTabPainter);
-        d.put("TabbedPane:TabbedPaneTab[MouseOver+Selected].backgroundPainter",         selectedTabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Selected].backgroundPainter",                   selectedTabPainter);
-        d.put("TabbedPane:TabbedPaneTab[Pressed+Selected].backgroundPainter",           selectedTabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Focused+Pressed+Selected].backgroundPainter", selectedTabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Focused+Selected].backgroundPainter", selectedTabPainter);
+        d.put("TabbedPane:TabbedPaneTab[MouseOver+Selected].backgroundPainter", selectedTabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Selected].backgroundPainter", selectedTabPainter);
+        d.put("TabbedPane:TabbedPaneTab[Pressed+Selected].backgroundPainter", selectedTabPainter);
     }
 
     protected static class TabPainter implements Painter<JComponent> {

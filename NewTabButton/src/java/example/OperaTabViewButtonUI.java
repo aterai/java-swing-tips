@@ -20,9 +20,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }
-//     @Override public void installUI(JComponent c) {
-//         super.installUI(c);
-//     }
+    // @Override public void installUI(JComponent c) {
+    //     super.installUI(c);
+    // }
     @Override protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         b.setBorder(BorderFactory.createEmptyBorder());

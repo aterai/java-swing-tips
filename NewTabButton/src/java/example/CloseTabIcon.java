@@ -39,9 +39,9 @@ class PlusIcon implements Icon {
         Insets i = c instanceof JComponent ? ((JComponent) c).getInsets() : new Insets(0, 0, 0, 0);
         Dimension size = c.getSize();
 
-        viewRect.x      = i.left;
-        viewRect.y      = i.top;
-        viewRect.width  = size.width  - i.right  - viewRect.x;
+        viewRect.x = i.left;
+        viewRect.y = i.top;
+        viewRect.width = size.width - i.right - viewRect.x;
         viewRect.height = size.height - i.bottom - viewRect.y;
         OperaTabViewButtonUI.tabPainter(g2, viewRect);
 

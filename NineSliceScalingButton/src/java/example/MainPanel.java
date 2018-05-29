@@ -100,13 +100,13 @@ class ScalingButton extends JButton {
         init(title, null);
         setContentAreaFilled(false);
     }
-//     @Override public Dimension getPreferredSize() {
-//         Insets i = getInsets();
-//         return new Dimension(image.getWidth(this) + i.right + i.left, 80);
-//     }
-//     @Override public Dimension getMinimumSize() {
-//         return getPreferredSize();
-//     }
+    // @Override public Dimension getPreferredSize() {
+    //     Insets i = getInsets();
+    //     return new Dimension(image.getWidth(this) + i.right + i.left, 80);
+    // }
+    // @Override public Dimension getMinimumSize() {
+    //     return getPreferredSize();
+    // }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -128,13 +128,13 @@ class NineSliceScalingButton extends JButton {
         init(title, null);
         setContentAreaFilled(false);
     }
-//     @Override public Dimension getPreferredSize() {
-//         Dimension dim = super.getPreferredSize();
-//         return new Dimension(dim.width + leftw + rightw, dim.height + toph + bottomh);
-//     }
-//     @Override public Dimension getMinimumSize() {
-//         return getPreferredSize();
-//     }
+    // @Override public Dimension getPreferredSize() {
+    //     Dimension dim = super.getPreferredSize();
+    //     return new Dimension(dim.width + leftw + rightw, dim.height + toph + bottomh);
+    // }
+    // @Override public Dimension getMinimumSize() {
+    //     return getPreferredSize();
+    // }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -201,7 +201,7 @@ class NineSliceScalingIcon implements Icon {
 
         int iw = image.getWidth(cmp);
         int ih = image.getHeight(cmp);
-        width  = cmp.getWidth() - i.left - i.right;
+        width = cmp.getWidth() - i.left - i.right;
         height = cmp.getHeight() - i.top - i.bottom;
 
         g2.drawImage(image.getSubimage(leftw, toph, iw - leftw - rightw, ih - toph - bottomh), leftw, toph, width - leftw - rightw, height - toph - bottomh, cmp);

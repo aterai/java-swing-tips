@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+            // UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

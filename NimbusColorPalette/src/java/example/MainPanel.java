@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.beans.*;
 import java.util.Objects;
 import javax.swing.*;
-// JDK 1.6.0 import com.sun.java.swing.Painter;
 
 public class MainPanel extends JPanel implements HierarchyListener {
     protected transient SwingWorker<String, Void> worker;
@@ -15,7 +14,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
     public MainPanel() {
         super(new BorderLayout());
 
-        UIDefaults def = UIManager.getLookAndFeelDefaults(); //new UIDefaults();
+        UIDefaults def = UIManager.getLookAndFeelDefaults(); // new UIDefaults();
         def.put("nimbusOrange", new Color(255, 220, 35, 200));
 
         UIDefaults d = new UIDefaults();
@@ -78,7 +77,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -86,7 +85,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

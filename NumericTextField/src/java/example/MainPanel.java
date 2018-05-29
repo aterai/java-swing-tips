@@ -84,9 +84,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
-//>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
-//Validating with Input Verifiers
+// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
+// Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;
@@ -97,16 +97,16 @@ class IntegerInputVerifier extends InputVerifier {
                 verified = true;
             } catch (NumberFormatException ex) {
                 UIManager.getLookAndFeel().provideErrorFeedback(c);
-                //Toolkit.getDefaultToolkit().beep();
+                // Toolkit.getDefaultToolkit().beep();
             }
         }
         return verified;
     }
 }
 
-//Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
-//>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
-//Validating with a Custom Document
+// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
+// Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
     private int currentValue;
     public int getValue() {
@@ -150,11 +150,11 @@ class IntegerDocument extends PlainDocument {
     }
 }
 
-//Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
-//>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
-//Validating with a Document Filter
+// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
+// Validating with a Document Filter
 class IntegerDocumentFilter extends DocumentFilter {
-    //int currentValue = 0;
+    // int currentValue = 0;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
         if (Objects.nonNull(text)) {
             replace(fb, offset, 0, text, attr);
@@ -189,26 +189,26 @@ class IntegerDocumentFilter extends DocumentFilter {
 // How to Use Formatted Text Fields (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
 class NumberFormatterFactory extends DefaultFormatterFactory {
-    //private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
-    //private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();
-    //private static MaskFormatter mf;
+    // private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
+    // private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();
+    // private static MaskFormatter mf;
     private static NumberFormatter numberFormatter = new NumberFormatter();
     static {
-        //amountDisplayFormat.setMinimumFractionDigits(0);
-        //amountEditFormat.setGroupingUsed(false);
-        //try {
-        //    mf = new MaskFormatter("#######");
-        //} catch (ParseException ex) {}
+        // amountDisplayFormat.setMinimumFractionDigits(0);
+        // amountEditFormat.setGroupingUsed(false);
+        // try {
+        //     mf = new MaskFormatter("#######");
+        // } catch (ParseException ex) {}
         numberFormatter.setValueClass(Integer.class);
         ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }
     protected NumberFormatterFactory() {
         super(numberFormatter, numberFormatter, numberFormatter);
-//         super(new NumberFormatter(amountEditFormat),
-//               new NumberFormatter(amountEditFormat),
-//               new NumberFormatter(amountEditFormat));
-//         super(new NumberFormatter(amountDisplayFormat),
-//               new NumberFormatter(amountDisplayFormat),
-//               new NumberFormatter(amountEditFormat));
+        // super(new NumberFormatter(amountEditFormat),
+        //       new NumberFormatter(amountEditFormat),
+        //       new NumberFormatter(amountEditFormat));
+        // super(new NumberFormatter(amountDisplayFormat),
+        //       new NumberFormatter(amountDisplayFormat),
+        //       new NumberFormatter(amountEditFormat));
     }
 }

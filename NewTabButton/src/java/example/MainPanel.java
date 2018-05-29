@@ -88,8 +88,8 @@ class CardLayoutTabbedPane extends JPanel {
         wrapPanel.add(tabPanel);
         // TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
 
-//         JPanel locPanel = new JPanel();
-//         wrapPanel.add(new JButton("b"), BorderLayout.SOUTH);
+        // JPanel locPanel = new JPanel();
+        // wrapPanel.add(new JButton("b"), BorderLayout.SOUTH);
 
         add(wrapPanel, BorderLayout.NORTH);
         add(contentsPanel);
@@ -104,11 +104,11 @@ class CardLayoutTabbedPane extends JPanel {
         });
     }
     protected Component createTabComponent(String title, Component comp) {
-//         TabButton tab = new TabButton(new AbstractAction(title) {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 cardLayout.show(contentsPanel, title);
-//             }
-//         });
+        // TabButton tab = new TabButton(new AbstractAction(title) {
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(contentsPanel, title);
+        //     }
+        // });
         TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
@@ -176,9 +176,9 @@ class TabButton extends JRadioButton {
     @Override public String getUIClassID() {
         return UI_CLASS_ID;
     }
-//     @Override public void setUI(TabViewButtonUI ui) {
-//         super.setUI(ui);
-//     }
+    // @Override public void setUI(TabViewButtonUI ui) {
+    //     super.setUI(ui);
+    // }
     @Override public TabViewButtonUI getUI() {
         return (TabViewButtonUI) ui;
     }

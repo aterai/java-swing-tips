@@ -21,23 +21,21 @@ public final class MainPanel extends JPanel {
         JButton editorPaneButton = new JButton("JEditorPane");
         JButton textAreaButton = new JButton("JTextArea");
 
-/*
-        textPane = new JTextPane() {
-            // Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
-            // http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
-            @Override public boolean getScrollableTracksViewportWidth() {
-                Component p = getParent();
-                if (Objects.isNull(p)) {
-                    return true;
-                }
-                int ewidth = getUI().getPreferredSize(this).width;
-                return ewidth <= p.getSize().width;
-            }
-        };
-        textPane.setEditorKit(new NoWrapEditorKit1());
-/*/
+        // textPane = new JTextPane() {
+        //     // Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
+        //     // http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
+        //     @Override public boolean getScrollableTracksViewportWidth() {
+        //         Component p = getParent();
+        //         if (Objects.isNull(p)) {
+        //             return true;
+        //         }
+        //         int ewidth = getUI().getPreferredSize(this).width;
+        //         return ewidth <= p.getSize().width;
+        //     }
+        // };
+        // textPane.setEditorKit(new NoWrapEditorKit1());
+
         editorPane.setEditorKit(new NoWrapEditorKit2());
-//*/
 
         ActionListener longTextListener = e -> {
             threadPool.execute(() -> {

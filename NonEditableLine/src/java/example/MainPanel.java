@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
             Highlighter hilite = textArea.getHighlighter();
             Document doc = textArea.getDocument();
             Element root = doc.getDefaultRootElement();
-            for (int i = 0; i < maskRange; i++) { //root.getElementCount(); i++) {
+            for (int i = 0; i < maskRange; i++) { // root.getElementCount(); i++) {
                 Element elem = root.getElement(i);
                 hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
             }
