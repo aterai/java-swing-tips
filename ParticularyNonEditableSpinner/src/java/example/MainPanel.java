@@ -31,15 +31,15 @@ public final class MainPanel extends JPanel {
         spinner2.setEditor(editor2);
         initTextFieldBorder(editor2.getTextField());
 
-//         // Component Border - Java Tips Weblog
-//         // https://tips4java.wordpress.com/2009/09/27/component-border/
-//         JLabel label = new JLabel("%");
-//         label.setBorder(BorderFactory.createEmptyBorder());
-//         label.setOpaque(true);
-//         label.setBackground(Color.WHITE);
-//         ComponentBorder cb = new ComponentBorder(label);
-//         cb.setGap(0);
-//         cb.install(editor2);
+        // // Component Border - Java Tips Weblog
+        // // https://tips4java.wordpress.com/2009/09/27/component-border/
+        // JLabel label = new JLabel("%");
+        // label.setBorder(BorderFactory.createEmptyBorder());
+        // label.setOpaque(true);
+        // label.setBackground(Color.WHITE);
+        // ComponentBorder cb = new ComponentBorder(label);
+        // cb.setGap(0);
+        // cb.install(editor2);
 
         add(makeTitledPanel("JSpinner+Default", spinner1));
         add(makeTitledPanel("JSpinner+StringBorder", spinner2));

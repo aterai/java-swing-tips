@@ -215,16 +215,16 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         publish(result);
         return current + result.size();
     }
-//     private int load(Statement stat, int current, int limit) throws SQLException {
-//         List<Object[]> result = new ArrayList<>(limit);
-//         String q = String.format("select * from moz_bookmarks limit %d offset %d", limit, current - 1);
-//         ResultSet rs = stat.executeQuery(q);
-//         int i = current;
-//         while (rs.next() && !isCancelled()) {
-//             result.add(new Object[] {i, rs.getInt("id"), rs.getString("title")});
-//             i++;
-//         }
-//         publish(result);
-//         return current + result.size();
-//     }
+    // private int load(Statement stat, int current, int limit) throws SQLException {
+    //     List<Object[]> result = new ArrayList<>(limit);
+    //     String q = String.format("select * from moz_bookmarks limit %d offset %d", limit, current - 1);
+    //     ResultSet rs = stat.executeQuery(q);
+    //     int i = current;
+    //     while (rs.next() && !isCancelled()) {
+    //         result.add(new Object[] {i, rs.getInt("id"), rs.getString("title")});
+    //         i++;
+    //     }
+    //     publish(result);
+    //     return current + result.size();
+    // }
 }

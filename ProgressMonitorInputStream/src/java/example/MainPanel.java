@@ -188,24 +188,24 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     }
     @Override public String doInBackground() {
         String ret = "Done";
-//         try (BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs))) {
-//             int i = 0;
-//             int size = 0;
-//             String line;
-//             while ((line = reader.readLine()) != null) {
-//                 if (i % 50 == 0) { // Wait
-//                     Thread.sleep(10);
-//                 }
-//                 i++;
-//                 size += line.getBytes(cs).length + 1; // +1: \n
-//                 String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
-//                 publish(new Chunk(line, note));
-//             }
-//         } catch (InterruptedException | IOException ex) {
-//             System.out.println("Exception");
-//             ret = "Exception";
-//             cancel(true);
-//         }
+        // try (BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs))) {
+        //     int i = 0;
+        //     int size = 0;
+        //     String line;
+        //     while ((line = reader.readLine()) != null) {
+        //         if (i % 50 == 0) { // Wait
+        //             Thread.sleep(10);
+        //         }
+        //         i++;
+        //         size += line.getBytes(cs).length + 1; // +1: \n
+        //         String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
+        //         publish(new Chunk(line, note));
+        //     }
+        // } catch (InterruptedException | IOException ex) {
+        //     System.out.println("Exception");
+        //     ret = "Exception";
+        //     cancel(true);
+        // }
         try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pmis, cs)))) {
             int i = 0;
             int size = 0;

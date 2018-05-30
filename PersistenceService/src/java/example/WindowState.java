@@ -9,7 +9,7 @@ public class WindowState implements Serializable {
     private static final long serialVersionUID = 1415435143L;
     private Point location = new Point();
     private Dimension size = new Dimension(320, 240);
-//     public WindowState() {}
+    // public WindowState() {}
     public final Point getLocation() {
         return location;
     }

@@ -20,19 +20,19 @@ public final class MainPanel extends JPanel {
     private final JScrollPane scroll = new JScrollPane(new JTree());
     protected MainPanel() {
         super(new BorderLayout());
-//         // Test
-//         JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 // PersistenceService persistenceService = ...
-//                 persistenceService.delete(codebase);
-//                 Window frame = SwingUtilities.getWindowAncestor((Component) e.getSource());
-//                 frame.dispose();
-//             }
-//         });
-//         Box box = Box.createHorizontalBox();
-//         box.add(Box.createHorizontalGlue());
-//         box.add(clearButton);
-//         add(box, BorderLayout.SOUTH);
+        // // Test
+        // JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         // PersistenceService persistenceService = ...
+        //         persistenceService.delete(codebase);
+        //         Window frame = SwingUtilities.getWindowAncestor((Component) e.getSource());
+        //         frame.dispose();
+        //     }
+        // });
+        // Box box = Box.createHorizontalBox();
+        // box.add(Box.createHorizontalGlue());
+        // box.add(clearButton);
+        // add(box, BorderLayout.SOUTH);
         add(scroll);
     }
     public static void main(String... args) {

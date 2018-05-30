@@ -54,14 +54,14 @@ public class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html#FileChooserDemo2
 // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/ImagePreview.java
 class ImagePreview extends JComponent implements PropertyChangeListener {
-    private static final int PREVIEW_WIDTH  = 90;
+    private static final int PREVIEW_WIDTH = 90;
     private static final int PREVIEW_MARGIN = 5;
     private ImageIcon thumbnail;
     private File file;
     protected ImagePreview(JFileChooser fc) {
         super();
         fc.addPropertyChangeListener(this);
-        //setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, SystemColor.inactiveCaption));
+        // setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, SystemColor.inactiveCaption));
     }
     @Override public Dimension getPreferredSize() {
         return new Dimension(PREVIEW_WIDTH + PREVIEW_MARGIN * 2, 50);
@@ -78,7 +78,7 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
             // The Perils of Image.getScaledInstance() Blog | Oracle Community
             // https://community.oracle.com/docs/DOC-983611
             float scale = PREVIEW_WIDTH / (float) tmpIcon.getIconWidth();
-            int newW = (int) (tmpIcon.getIconWidth()  * scale);
+            int newW = (int) (tmpIcon.getIconWidth() * scale);
             int newH = (int) (tmpIcon.getIconHeight() * scale);
             BufferedImage img = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = img.createGraphics();

@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+    // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final List<String> icons = Arrays.asList(
         "wi0009-16.png",
         "wi0054-16.png",
@@ -19,39 +19,39 @@ public final class MainPanel extends JPanel {
         "wi0124-16.png",
         "wi0126-16.png");
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
-//         if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-//             tabbedPane.setUI(new WindowsTabbedPaneUI() {
-//                 @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-//                     int defaultWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-//                     int selectedIndex  = tabPane.getSelectedIndex();
-//                     boolean isSelected = selectedIndex == tabIndex;
-//                     if (isSelected) {
-//                         return defaultWidth + 100;
-//                     } else {
-//                         return defaultWidth;
-//                     }
-//                 }
-//                 //@Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
-//                 //    Rectangle tabRect = super.getTabBounds(pane, i);
-//                 //    tabRect.translate(0, -16);
-//                 //    tabRect.height = 16;
-//                 //    return tabRect;
-//                 //}
-// //                 @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-// //                     //Rectangle tabRect  = rects[tabIndex];
-// //                     int selectedIndex  = tabPane.getSelectedIndex();
-// //                     boolean isSelected = selectedIndex == tabIndex;
-// //                     if (isSelected) {
-// //                         //JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT
-// //                         rects[tabIndex].width += 16;
-// //                     }
-// //                     super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
-// //                 }
-//             });
-//         }
+        // if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+        //     tabbedPane.setUI(new WindowsTabbedPaneUI() {
+        //         @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+        //             int defaultWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+        //             int selectedIndex = tabPane.getSelectedIndex();
+        //             boolean isSelected = selectedIndex == tabIndex;
+        //             if (isSelected) {
+        //                 return defaultWidth + 100;
+        //             } else {
+        //                 return defaultWidth;
+        //             }
+        //         }
+        //         // @Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
+        //         //     Rectangle tabRect = super.getTabBounds(pane, i);
+        //         //     tabRect.translate(0, -16);
+        //         //     tabRect.height = 16;
+        //         //     return tabRect;
+        //         // }
+        //         // @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
+        //         //     // Rectangle tabRect = rects[tabIndex];
+        //         //     int selectedIndex = tabPane.getSelectedIndex();
+        //         //     boolean isSelected = selectedIndex == tabIndex;
+        //         //     if (isSelected) {
+        //         //         // JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT
+        //         //         rects[tabIndex].width += 16;
+        //         //     }
+        //         //     super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
+        //         // }
+        //     });
+        // }
         for (String str: icons) {
             tabbedPane.addTab(str, new ImageIcon(getClass().getResource(str)), new JLabel(str), str);
         }
@@ -87,12 +87,12 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane t = (JTabbedPane) getInvoker();
             JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
-            int idx       = t.getSelectedIndex();
+            int idx = t.getSelectedIndex();
             Component cmp = t.getComponentAt(idx);
             Component tab = t.getTabComponentAt(idx);
-            Icon icon     = t.getIconAt(idx);
-            String tip    = t.getToolTipTextAt(idx);
-            boolean flg   = t.isEnabledAt(idx);
+            Icon icon = t.getIconAt(idx);
+            String tip = t.getToolTipTextAt(idx);
+            boolean flg = t.isEnabledAt(idx);
 
             int i = searchNewSelectedIndex(t, idx, check.isSelected());
             t.remove(idx);
@@ -102,23 +102,23 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             if (flg) {
                 t.setSelectedIndex(i);
             }
-            //JComponent c = (JComponent) t.getTabComponentAt(idx);
-            //c.revalidate();
+            // JComponent c = (JComponent) t.getTabComponentAt(idx);
+            // c.revalidate();
         }
     });
-//     private final Action newTabAction = new AbstractAction("new tab") {
-//         @Override public void actionPerformed(ActionEvent e) {
-//             JTabbedPane t = (JTabbedPane) getInvoker();
-//             int count = t.getTabCount();
-//             String title = "Tab " + count;
-//             t.add(title, new JLabel(title));
-//             t.setTabComponentAt(count, new ButtonTabComponent(t));
-//         }
-//     };
+    // private final Action newTabAction = new AbstractAction("new tab") {
+    //     @Override public void actionPerformed(ActionEvent e) {
+    //         JTabbedPane t = (JTabbedPane) getInvoker();
+    //         int count = t.getTabCount();
+    //         String title = "Tab " + count;
+    //         t.add(title, new JLabel(title));
+    //         t.setTabComponentAt(count, new ButtonTabComponent(t));
+    //     }
+    // };
     private final Action closeAllAction = new AbstractAction("close all") {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane t = (JTabbedPane) getInvoker();
-            //t.removeAll();
+            // t.removeAll();
             for (int i = t.getTabCount() - 1; i >= 0; i--) {
                 String s = t.getTitleAt(i);
                 if (!isEmpty(s)) {

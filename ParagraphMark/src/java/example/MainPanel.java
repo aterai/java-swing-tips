@@ -66,7 +66,7 @@ class MyViewFactory implements ViewFactory {
 }
 
 class ParagraphWithEopmView extends ParagraphView {
-    //private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
+    // private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
     private static final Color MARK_COLOR = new Color(120, 130, 110);
     protected ParagraphWithEopmView(Element elem) {
         super(elem);
@@ -82,7 +82,7 @@ class ParagraphWithEopmView extends ParagraphView {
             int x = r.x;
             int y = r.y;
             int h = r.height;
-            //paragraphMarkIcon.paintIcon(null, g, x, y);
+            // paragraphMarkIcon.paintIcon(null, g, x, y);
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(MARK_COLOR);
             g2.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
@@ -113,7 +113,7 @@ class ParagraphWithEopmView extends ParagraphView {
 //         g2.draw(paragraphMark);
 //         g2.dispose();
 //     }
-//     @Override public int getIconWidth()  {
+//     @Override public int getIconWidth() {
 //         return 3;
 //     }
 //     @Override public int getIconHeight() {

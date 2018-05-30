@@ -43,12 +43,12 @@ public class MainPanel extends JPanel implements HierarchyListener {
         p.add(makeProgressBar1(m));
         p.add(Box.createHorizontalStrut(5));
         p.add(makeProgressBar2(m));
-//         p.add(new JButton(new AbstractAction("+10") {
-//             private int i = 0;
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 m.setValue(i = (i >= 100) ? 0 : i + 10);
-//             }
-//         }));
+        // p.add(new JButton(new AbstractAction("+10") {
+        //     private int i = 0;
+        //     @Override public void actionPerformed(ActionEvent e) {
+        //         m.setValue(i = (i >= 100) ? 0 : i + 10);
+        //     }
+        // }));
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
@@ -149,22 +149,22 @@ class ProgressListener implements PropertyChangeListener {
 
 class TextLabelProgressBar extends JProgressBar {
     private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
-//     private transient ChangeListener changeListener;
+    // private transient ChangeListener changeListener;
 
     protected TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
     @Override public void updateUI() {
         removeAll();
-//         removeChangeListener(changeListener);
+        // removeChangeListener(changeListener);
         super.updateUI();
         setLayout(new BorderLayout());
-//         changeListener = e -> {
-//             int iv = (int) (100 * getPercentComplete());
-//             label.setText(String.format("%03d/100", iv));
-//             // label.setText(getString());
-//         };
-//         addChangeListener(changeListener);
+        // changeListener = e -> {
+        //     int iv = (int) (100 * getPercentComplete());
+        //     label.setText(String.format("%03d/100", iv));
+        //     // label.setText(getString());
+        // };
+        // addChangeListener(changeListener);
         EventQueue.invokeLater(() -> {
             add(label);
             label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
@@ -200,7 +200,7 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
             label.setText(String.format("%03d/100", iv));
 
             Dimension d = label.getPreferredSize();
-            int x = (c.getWidth()  - d.width)  / 2;
+            int x = (c.getWidth() - d.width) / 2;
             int y = (c.getHeight() - d.height) / 2;
             // label.setText(progress.getString());
             SwingUtilities.paintComponent(g, label, rubberStamp, x, y, d.width, d.height);

@@ -89,9 +89,9 @@ class ProgressCircleUI extends BasicProgressBarUI {
         return d;
     }
     @Override public void paint(Graphics g, JComponent c) {
-        //public void paintDeterminate(Graphics g, JComponent c) {
+        // public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth  = progressBar.getWidth()  - b.right - b.left;
+        int barRectWidth = progressBar.getWidth() - b.right - b.left;
         int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
@@ -102,13 +102,13 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
         double degree = 360 * progressBar.getPercentComplete();
         double sz = Math.min(barRectWidth, barRectHeight);
-        double cx = b.left + barRectWidth  * .5;
-        double cy = b.top  + barRectHeight * .5;
+        double cx = b.left + barRectWidth * .5;
+        double cy = b.top + barRectHeight * .5;
         double or = sz * .5;
-        //double ir = or - 20;
-        double ir = or * .5; //.8;
-        Shape inner  = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2, ir * 2);
-        Shape outer  = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
+        // double ir = or - 20;
+        double ir = or * .5; // .8;
+        Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2, ir * 2);
+        Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
         Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, 90 - degree, degree, Arc2D.PIE);
 
         Area foreground = new Area(sector);
@@ -123,10 +123,10 @@ class ProgressCircleUI extends BasicProgressBarUI {
         g2.fill(background);
 
         // draw the circular sector
-        //AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
-        //at.translate(-(barRectWidth + b.left * 2), 0);
-        //AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
-        //g2.fill(at.createTransformedShape(area));
+        // AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
+        // at.translate(-(barRectWidth + b.left * 2), 0);
+        // AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
+        // g2.fill(at.createTransformedShape(area));
         g2.setPaint(progressBar.getForeground());
         g2.fill(foreground);
         g2.dispose();

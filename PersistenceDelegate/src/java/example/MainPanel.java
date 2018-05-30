@@ -34,11 +34,11 @@ public final class MainPanel extends JPanel {
                 // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                 try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
                     xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
-//                     xe.setExceptionListener(new ExceptionListener() {
-//                         @Override public void exceptionThrown(Exception ex) {
-//                             // XXX: ex.printStackTrace();
-//                         }
-//                     });
+                    // xe.setExceptionListener(new ExceptionListener() {
+                    //     @Override public void exceptionThrown(Exception ex) {
+                    //         // XXX: ex.printStackTrace();
+                    //     }
+                    // });
                     DefaultTableModel m = (DefaultTableModel) table.getModel();
                     xe.writeObject(m);
                     // xe.flush();
@@ -107,10 +107,10 @@ class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
     @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
         super.initialize(type, oldInstance, newInstance, encoder);
         DefaultTableModel m = (DefaultTableModel) oldInstance;
-//         Vector v = m.getDataVector();
-//         for (int i = 0; i < m.getRowCount(); i++) {
-//             encoder.writeStatement(new Statement(oldInstance, "addRow", new Object[] { (Vector) v.get(i) }));
-//         }
+        // Vector v = m.getDataVector();
+        // for (int i = 0; i < m.getRowCount(); i++) {
+        //     encoder.writeStatement(new Statement(oldInstance, "addRow", new Object[] { (Vector) v.get(i) }));
+        // }
         for (int row = 0; row < m.getRowCount(); row++) {
             for (int col = 0; col < m.getColumnCount(); col++) {
                 Object[] o = {m.getValueAt(row, col), row, col};

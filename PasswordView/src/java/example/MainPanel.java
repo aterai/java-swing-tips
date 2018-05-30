@@ -73,16 +73,16 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
     }
     private static class MyPasswordView extends PasswordView {
         @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
-//             Graphics2D g2 = (Graphics2D) g.create();
-//             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//             FontMetrics fm = g2.getFontMetrics();
-//             int r = fm.charWidth(c) - 4;
-//             // g2.setPaint(Color.GRAY);
-//             g2.drawRect(x + 2, y + 4 - fm.getAscent(), r, r);
-//             // g2.setPaint(Color.GRAY.brighter());
-//             g2.fillOval(x + 2, y + 4 - fm.getAscent(), r, r);
-//             g2.dispose();
-//             return x + fm.charWidth(c);
+            // Graphics2D g2 = (Graphics2D) g.create();
+            // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            // FontMetrics fm = g2.getFontMetrics();
+            // int r = fm.charWidth(c) - 4;
+            // // g2.setPaint(Color.GRAY);
+            // g2.drawRect(x + 2, y + 4 - fm.getAscent(), r, r);
+            // // g2.setPaint(Color.GRAY.brighter());
+            // g2.fillOval(x + 2, y + 4 - fm.getAscent(), r, r);
+            // g2.dispose();
+            // return x + fm.charWidth(c);
 
             FontMetrics fm = g.getFontMetrics();
             ICON.paintIcon(null, g, x, y - fm.getAscent());

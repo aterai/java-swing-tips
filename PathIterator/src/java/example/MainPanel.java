@@ -90,49 +90,49 @@ public final class MainPanel extends JPanel {
         p.add(sp, BorderLayout.SOUTH);
         p.add(new JScrollPane(textArea));
 
-//         JLabel l = new JLabel("Starburst.svg(drag here)");
-//         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
-//         p.add(l, BorderLayout.NORTH);
+        // JLabel l = new JLabel("Starburst.svg(drag here)");
+        // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
+        // p.add(l, BorderLayout.NORTH);
         return p;
     }
-//     class MyDragGestureListener implements DragGestureListener {
-//         @Override public void dragGestureRecognized(DragGestureEvent dge) {
-//             File outfile;
-//             try {
-//                 outfile = File.createTempFile("starburst", ".svg");
-//                 FileWriter w = new FileWriter(outfile);
-//                 w.writeData(textArea.getText());
-//                 // outfile.deleteOnExit();
-//             } catch (IOException ex) {
-//                 Toolkit.getDefaultToolkit().beep();
-//                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
-//                 return;
-//             }
-//             if (Objects.isNull(outfile)) {
-//                 return;
-//             }
-//             File tmpfile = outfile;
-//             Transferable tran = new Transferable() {
-//                 @Override public Object getTransferData(DataFlavor flavor) {
-//                     return Arrays.asList(tmpfile);
-//                 }
-//                 @Override public DataFlavor[] getTransferDataFlavors() {
-//                     return new DataFlavor[] {DataFlavor.javaFileListFlavor};
-//                 }
-//                 @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-//                     return flavor.equals(DataFlavor.javaFileListFlavor);
-//                 }
-//             };
-//             DragSourceAdapter dsa = new DragSourceAdapter() {
-//                 @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-//                     if (dsde.getDropSuccess()) {
-//                         System.out.println(dsde);
-//                     }
-//                 }
-//             };
-//             dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
-//         }
-//     }
+    // class MyDragGestureListener implements DragGestureListener {
+    //     @Override public void dragGestureRecognized(DragGestureEvent dge) {
+    //         File outfile;
+    //         try {
+    //             outfile = File.createTempFile("starburst", ".svg");
+    //             FileWriter w = new FileWriter(outfile);
+    //             w.writeData(textArea.getText());
+    //             // outfile.deleteOnExit();
+    //         } catch (IOException ex) {
+    //             Toolkit.getDefaultToolkit().beep();
+    //             JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
+    //             return;
+    //         }
+    //         if (Objects.isNull(outfile)) {
+    //             return;
+    //         }
+    //         File tmpfile = outfile;
+    //         Transferable tran = new Transferable() {
+    //             @Override public Object getTransferData(DataFlavor flavor) {
+    //                 return Arrays.asList(tmpfile);
+    //             }
+    //             @Override public DataFlavor[] getTransferDataFlavors() {
+    //                 return new DataFlavor[] {DataFlavor.javaFileListFlavor};
+    //             }
+    //             @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+    //                 return flavor.equals(DataFlavor.javaFileListFlavor);
+    //             }
+    //         };
+    //         DragSourceAdapter dsa = new DragSourceAdapter() {
+    //             @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+    //                 if (dsde.getDropSuccess()) {
+    //                     System.out.println(dsde);
+    //                 }
+    //             }
+    //         };
+    //         dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
+    //     }
+    // }
     protected void initStar() {
         int r1 = outer.getNumber().intValue();
         int r2 = inner.getNumber().intValue();
@@ -144,12 +144,12 @@ public final class MainPanel extends JPanel {
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
         StringBuilder sb = StarburstSvgMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
 
-//         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
-//         FontRenderContext frc = new FontRenderContext(null, true, true);
-//         Shape copyright = new TextLayout("\u3042", font, frc).getOutline(null);
-//         Rectangle r = copyright.getBounds();
-//         AffineTransform at = AffineTransform.getTranslateInstance(0d, r.getHeight());
-//         StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleField.getText().trim(), desc);
+        // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
+        // FontRenderContext frc = new FontRenderContext(null, true, true);
+        // Shape copyright = new TextLayout("\u3042", font, frc).getOutline(null);
+        // Rectangle r = copyright.getBounds();
+        // AffineTransform at = AffineTransform.getTranslateInstance(0d, r.getHeight());
+        // StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleField.getText().trim(), desc);
 
         textArea.setText(sb.toString());
     }

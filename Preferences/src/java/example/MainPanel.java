@@ -72,7 +72,7 @@ public class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        //frame.setLocationRelativeTo(null);
+        // frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
@@ -86,11 +86,11 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
         int wdim = prefs.getInt(PREFIX + "dimw", dim.width);
         int hdim = prefs.getInt(PREFIX + "dimh", dim.height);
         dim.setSize(wdim, hdim);
-        //setPreferredSize(dim);
+        // setPreferredSize(dim);
         frame.pack();
 
         Rectangle screen = frame.getGraphicsConfiguration().getBounds();
-        pos.setLocation(screen.x + screen.width / 2  - dim.width / 2, screen.y + screen.height / 2 - dim.height / 2);
+        pos.setLocation(screen.x + screen.width / 2 - dim.width / 2, screen.y + screen.height / 2 - dim.height / 2);
         int xpos = prefs.getInt(PREFIX + "locx", pos.x);
         int ypos = prefs.getInt(PREFIX + "locy", pos.y);
         pos.setLocation(xpos, ypos);
@@ -129,14 +129,14 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
         }
     }
     @Override public void componentShown(ComponentEvent e) { /* not needed */ }
-//     @Override public void windowActivated(WindowEvent e) { /* not needed */ }
-//     @Override public void windowClosed(WindowEvent e) { /* not needed */ }
+    // @Override public void windowActivated(WindowEvent e) { /* not needed */ }
+    // @Override public void windowClosed(WindowEvent e) { /* not needed */ }
     @Override public void windowClosing(WindowEvent e) {
         saveLocation();
         e.getWindow().dispose();
     }
-//     @Override public void windowDeactivated(WindowEvent e) { /* not needed */ }
-//     @Override public void windowDeiconified(WindowEvent e) { /* not needed */ }
-//     @Override public void windowIconified(WindowEvent e) { /* not needed */ }
-//     @Override public void windowOpened(WindowEvent e) { /* not needed */ }
+    // @Override public void windowDeactivated(WindowEvent e) { /* not needed */ }
+    // @Override public void windowDeiconified(WindowEvent e) { /* not needed */ }
+    // @Override public void windowIconified(WindowEvent e) { /* not needed */ }
+    // @Override public void windowOpened(WindowEvent e) { /* not needed */ }
 }

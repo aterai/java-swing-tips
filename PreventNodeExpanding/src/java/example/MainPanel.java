@@ -84,7 +84,7 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
 }
 
 class FolderSelectionListener implements TreeSelectionListener {
-//     private JFrame frame = null;
+    // private JFrame frame = null;
     private final FileSystemView fileSystemView;
     protected FolderSelectionListener(FileSystemView fileSystemView) {
         this.fileSystemView = fileSystemView;

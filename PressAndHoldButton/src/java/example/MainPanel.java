@@ -46,7 +46,7 @@ class PressAndHoldButton extends JButton {
     private PressAndHoldHandler handler;
     protected PressAndHoldButton(Icon icon) {
         super(icon);
-        //getAction().putValue(Action.NAME, text);
+        // getAction().putValue(Action.NAME, text);
         getAction().putValue(Action.SMALL_ICON, icon);
     }
     @Override public void updateUI() {
@@ -95,26 +95,26 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
                 System.out.println(bg.getSelection().getActionCommand());
                 pop.setVisible(false);
             });
-            //b.setIcon(m.small);
-            //b.setRolloverIcon(m.rollover);
-            //b.setSelectedIcon(m.rollover);
-            //b.setFocusable(false);
-            //b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
+            // b.setIcon(m.small);
+            // b.setRolloverIcon(m.rollover);
+            // b.setSelectedIcon(m.rollover);
+            // b.setFocusable(false);
+            // b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
             pop.add(b);
             bg.add(b);
         }
     }
     private List<MenuContext> makeMenuList() {
         return Arrays.asList(
-            new MenuContext("BLACK",   Color.BLACK),
-            new MenuContext("BLUE",    Color.BLUE),
-            new MenuContext("CYAN",    Color.CYAN),
-            new MenuContext("GREEN",   Color.GREEN),
+            new MenuContext("BLACK", Color.BLACK),
+            new MenuContext("BLUE", Color.BLUE),
+            new MenuContext("CYAN", Color.CYAN),
+            new MenuContext("GREEN", Color.GREEN),
             new MenuContext("MAGENTA", Color.MAGENTA),
-            new MenuContext("ORANGE",  Color.ORANGE),
-            new MenuContext("PINK",    Color.PINK),
-            new MenuContext("RED",     Color.RED),
-            new MenuContext("YELLOW",  Color.YELLOW));
+            new MenuContext("ORANGE", Color.ORANGE),
+            new MenuContext("PINK", Color.PINK),
+            new MenuContext("RED", Color.RED),
+            new MenuContext("YELLOW", Color.YELLOW));
     }
     @Override public void actionPerformed(ActionEvent e) {
         System.out.println("actionPerformed");
@@ -149,13 +149,13 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
 class MenuContext {
     public final String command;
     public final Color color;
-//     public final Icon small;
-//     public final Icon rollover;
+    // public final Icon small;
+    // public final Icon rollover;
     protected MenuContext(String cmd, Color c) {
         command = cmd;
         color = c;
-//         small = new ColorIcon(c);
-//         rollover = new ColorIcon2(c);
+        // small = new ColorIcon(c);
+        // rollover = new ColorIcon2(c);
     }
 }
 

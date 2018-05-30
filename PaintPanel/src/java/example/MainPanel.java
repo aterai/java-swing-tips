@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
 //                 g2.setPaint(Color.BLACK);
 //                 g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);
 //                 g2.dispose();
-//                 //repaint();
+//                 // repaint();
 //                 Rectangle r = getRepaintRectangle(startPoint, p);
 //                 repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); // (3.0 / 2) = 1.5 < 2
 //                 startPoint.setLocation(p);
@@ -110,10 +110,10 @@ public final class MainPanel extends JPanel {
 //     }
 //     private Rectangle getRepaintRectangle(Point srcPoint, Point destPoint) {
 //         polygon.reset();
-//         polygon.addPoint(srcPoint.x,  srcPoint.y);
+//         polygon.addPoint(srcPoint.x, srcPoint.y);
 //         polygon.addPoint(destPoint.x, srcPoint.y);
 //         polygon.addPoint(destPoint.x, destPoint.y);
-//         polygon.addPoint(srcPoint.x,  destPoint.y);
+//         polygon.addPoint(srcPoint.x, destPoint.y);
 //         return polygon.getBounds();
 //     }
 // }

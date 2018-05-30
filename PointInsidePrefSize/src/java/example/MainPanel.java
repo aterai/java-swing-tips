@@ -112,7 +112,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
-        lrect.width = table.getColumnModel().getColumn(column).getWidth() - table.getColumnModel().getColumnMargin() - i.right  - lrect.x;
+        lrect.width = table.getColumnModel().getColumn(column).getWidth() - table.getColumnModel().getColumnMargin() - i.right - lrect.x;
         lrect.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - lrect.y;
         irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
         trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
@@ -133,8 +133,6 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
         if (isRolloverCell(table, row, column)) {
             setText("<html><u><font color='blue'>" + str);
-//         } else if (hasFocus) {
-//             setText("<html><font color='blue'>" + str);
         } else {
             setText(str);
         }
@@ -175,8 +173,8 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         if (!isRollover && !prevRollover) {
             return;
         }
-// >>>> HyperlinkCellRenderer.java
-// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        // >>>> HyperlinkCellRenderer.java
+        // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         Rectangle repaintRect;
         if (isRollover) {
             Rectangle r = table.getCellRect(vrow, vcol, false);
@@ -185,7 +183,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
-// <<<<
+        // <<<<
         // table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {

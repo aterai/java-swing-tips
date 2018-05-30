@@ -69,7 +69,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
     }
     public static void createAndShowGUI() {
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -77,7 +77,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -87,7 +87,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
 
 class StringAlignmentProgressBar extends JProgressBar {
     private final JLabel label;
-//     private transient ChangeListener changeListener;
+    // private transient ChangeListener changeListener;
 
     protected StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
         super(model);
@@ -95,14 +95,14 @@ class StringAlignmentProgressBar extends JProgressBar {
     }
     @Override public void updateUI() {
         removeAll();
-//         removeChangeListener(changeListener);
+        // removeChangeListener(changeListener);
         super.updateUI();
         setLayout(new BorderLayout());
-//         changeListener = e -> {
-//             //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
-//             label.setText(getString());
-//         };
-//         addChangeListener(changeListener);
+        // changeListener = e -> {
+        //     // BoundedRangeModel m = (BoundedRangeModel) e.getSource(); // label.setText(m.getValue() + "%");
+        //     label.setText(getString());
+        // };
+        // addChangeListener(changeListener);
         EventQueue.invokeLater(() -> {
             add(label);
             label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
@@ -110,7 +110,7 @@ class StringAlignmentProgressBar extends JProgressBar {
     }
     @Override protected ChangeListener createChangeListener() {
         return e -> {
-            //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
+            // BoundedRangeModel m = (BoundedRangeModel) e.getSource(); // label.setText(m.getValue() + "%");
             label.setText(getString());
         };
     }

@@ -13,12 +13,12 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Type", "Value"};
     private final Object[][] data = {
-        {"String",  "text"      },
-        {"Date",    new Date()  },
-        {"Integer", 12          },
-        {"Double",  3.45        },
+        {"String", "text"},
+        {"Date", new Date()},
+        {"Integer", 12},
+        {"Double", 3.45},
         {"Boolean", Boolean.TRUE},
-        {"Color",   Color.RED   }
+        {"Color", Color.RED}
     };
     private final JTable table = new JTable(data, columnNames) {
         private static final int TARGET_COLIDX = 1;
@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
         table.setDefaultRenderer(Color.class, new ColorRenderer());
-        table.setDefaultEditor(Color.class,   new ColorEditor());
-        table.setDefaultEditor(Date.class,    new DateEditor());
+        table.setDefaultEditor(Color.class, new ColorEditor());
+        table.setDefaultEditor(Date.class, new DateEditor());
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -108,12 +108,12 @@ class DateEditor extends JSpinner implements TableCellEditor {
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(SwingConstants.LEFT);
 
-//         addFocusListener(new FocusAdapter() {
-//             @Override public void focusGained(FocusEvent e) {
-//                 // System.out.println("spinner");
-//                 editor.getTextField().requestFocusInWindow();
-//             }
-//         });
+        // addFocusListener(new FocusAdapter() {
+        //     @Override public void focusGained(FocusEvent e) {
+        //         // System.out.println("spinner");
+        //         editor.getTextField().requestFocusInWindow();
+        //     }
+        // });
         editor.getTextField().addFocusListener(new FocusListener() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);
@@ -160,9 +160,9 @@ class DateEditor extends JSpinner implements TableCellEditor {
         } catch (ParseException ex) {
             Toolkit.getDefaultToolkit().beep();
             return false;
-//             // Edited value is invalid, spinner.getValue() will return
-//             // the last valid value, you could revert the spinner to show that:
-//             editor.getTextField().setValue(getValue());
+            // // Edited value is invalid, spinner.getValue() will return
+            // // the last valid value, you could revert the spinner to show that:
+            // editor.getTextField().setValue(getValue());
         }
         fireEditingStopped();
         return true;
