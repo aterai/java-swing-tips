@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
+// This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
 // Fast styled JTextPane editor | Oracle Community
 // @author camickr
 // @author David Underhill

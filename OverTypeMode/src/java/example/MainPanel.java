@@ -64,7 +64,7 @@ class OvertypeTextArea extends JTextArea {
     }
 
     /*
-     *Set the caret to use depending on overtype/insert mode
+     * Set the caret to use depending on overtype/insert mode
      */
     public void setOvertypeMode(boolean overtypeMode) {
         this.overtypeMode = overtypeMode;

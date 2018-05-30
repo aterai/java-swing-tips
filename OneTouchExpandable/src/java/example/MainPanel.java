@@ -32,15 +32,15 @@ public final class MainPanel extends JPanel {
         splitPane.setOneTouchExpandable(true);
         // splitPane.setDividerLocation(0);
 
-//         BasicService bs;
-//         try {
-//             bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-//         } catch (UnavailableServiceException ex) {
-//             bs = null;
-//         }
+        // BasicService bs;
+        // try {
+        //     bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+        // } catch (UnavailableServiceException ex) {
+        //     bs = null;
+        // }
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
-//         if (bs == null) {
+        // if (bs == null) {
         if (splitPane.getUI() instanceof BasicSplitPaneUI) {
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
                 @Override public Void run() {
@@ -56,27 +56,27 @@ public final class MainPanel extends JPanel {
                 }
             });
         }
-//         } else {
-// //             s1.setMinimumSize(new Dimension());
-// //             s2.setMinimumSize(new Dimension());
-// //             EventQueue.invokeLater(new Runnable() {
-// //                 @Override public void run() {
-// //                     splitPane.setDividerLocation(1d);
-// //                     splitPane.setResizeWeight(1d);
-// //                 }
-// //             });
-//             EventQueue.invokeLater(new Runnable() {
-//                 @Override public void run() {
-//                     Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-//                     for (Component c: divider.getComponents()) {
-//                         if (c instanceof JButton) {
-//                             ((JButton) c).doClick();
-//                             break;
-//                         }
-//                     }
-//                 }
-//             });
-//         }
+        // } else {
+        //     // s1.setMinimumSize(new Dimension());
+        //     // s2.setMinimumSize(new Dimension());
+        //     // EventQueue.invokeLater(new Runnable() {
+        //     //     @Override public void run() {
+        //     //         splitPane.setDividerLocation(1d);
+        //     //         splitPane.setResizeWeight(1d);
+        //     //     }
+        //     // });
+        //     EventQueue.invokeLater(new Runnable() {
+        //         @Override public void run() {
+        //             Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+        //             for (Component c: divider.getComponents()) {
+        //                 if (c instanceof JButton) {
+        //                     ((JButton) c).doClick();
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
         add(splitPane);
         setPreferredSize(new Dimension(320, 240));
     }

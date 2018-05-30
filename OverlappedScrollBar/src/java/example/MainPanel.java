@@ -73,13 +73,13 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
             JScrollPane scrollPane = (JScrollPane) parent;
 
             Rectangle availR = scrollPane.getBounds();
-            availR.setLocation(0, 0); //availR.x = availR.y = 0;
+            availR.setLocation(0, 0); // availR.x = availR.y = 0;
 
             Insets insets = parent.getInsets();
             availR.x = insets.left;
             availR.y = insets.top;
-            availR.width  -= insets.left + insets.right;
-            availR.height -= insets.top  + insets.bottom;
+            availR.width -= insets.left + insets.right;
+            availR.height -= insets.top + insets.bottom;
 
             Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
             if (colHead != null && colHead.isVisible()) {
@@ -97,15 +97,15 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
 
             Rectangle hsbR = new Rectangle();
             hsbR.height = BAR_SIZE;
-            hsbR.width  = availR.width - hsbR.height;
-            hsbR.x      = availR.x;
-            hsbR.y      = availR.y + availR.height - hsbR.height;
+            hsbR.width = availR.width - hsbR.height;
+            hsbR.x = availR.x;
+            hsbR.y = availR.y + availR.height - hsbR.height;
 
             Rectangle vsbR = new Rectangle();
-            vsbR.width  = BAR_SIZE;
+            vsbR.width = BAR_SIZE;
             vsbR.height = availR.height - vsbR.width;
-            vsbR.x      = availR.x + availR.width - vsbR.width;
-            vsbR.y      = availR.y;
+            vsbR.x = availR.x + availR.width - vsbR.width;
+            vsbR.y = availR.y;
 
             if (viewport != null) {
                 viewport.setBounds(availR);
@@ -130,7 +130,7 @@ class ZeroSizeButton extends JButton {
 }
 
 class OverlappedScrollBarUI extends BasicScrollBarUI {
-    private static final Color DEFAULT_COLOR  = new Color(100, 180, 255, 100);
+    private static final Color DEFAULT_COLOR = new Color(100, 180, 255, 100);
     private static final Color DRAGGING_COLOR = new Color(100, 180, 200, 100);
     private static final Color ROLLOVER_COLOR = new Color(100, 180, 220, 100);
 
@@ -141,10 +141,10 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
         return new ZeroSizeButton();
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-        //Graphics2D g2 = (Graphics2D) g.create();
-        //g2.setPaint(new Color(100, 100, 100, 100));
-        //g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-        //g2.dispose();
+        // Graphics2D g2 = (Graphics2D) g.create();
+        // g2.setPaint(new Color(100, 100, 100, 100));
+        // g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
+        // g2.dispose();
     }
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
         JScrollBar sb = (JScrollBar) c;
