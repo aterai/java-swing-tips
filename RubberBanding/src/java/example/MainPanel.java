@@ -152,21 +152,21 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
             l.repaint();
         }
     }
-//     // JDK 1.7.0
-//     private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-//         ListModel model = l.getModel();
-//         List<Integer> ll = new ArrayList<>(model.getSize());
-//         for (int i = 0; i < model.getSize(); i++) {
-//             if (rect.intersects(l.getCellBounds(i, i))) {
-//                 ll.add(i);
-//             }
-//         }
-//         int[] il = new int[ll.size()];
-//         for (int i = 0; i < ll.size(); i++) {
-//             il[i] = ll.get(i);
-//         }
-//         return il;
-//     }
+    // // JDK 1.7.0
+    // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+    //     ListModel model = l.getModel();
+    //     List<Integer> ll = new ArrayList<>(model.getSize());
+    //     for (int i = 0; i < model.getSize(); i++) {
+    //         if (rect.intersects(l.getCellBounds(i, i))) {
+    //             ll.add(i);
+    //         }
+    //     }
+    //     int[] il = new int[ll.size()];
+    //     for (int i = 0; i < ll.size(); i++) {
+    //         il[i] = ll.get(i);
+    //     }
+    //     return il;
+    // }
 }
 
 class SelectedImageFilter extends RGBImageFilter {

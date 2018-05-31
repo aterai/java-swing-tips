@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         JButton b = new JButton("restore TableColumn order");
         b.addActionListener(e -> {
             TableColumnModel m = table.getColumnModel();
-            //TEST: sortTableColumn(m);
+            // TEST: sortTableColumn(m);
             if (m instanceof SortableTableColumnModel) {
                 ((SortableTableColumnModel) m).restoreColumnOrder();
             }
@@ -31,21 +31,21 @@ public final class MainPanel extends JPanel {
         add(b, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-//     // TEST: selection sort
-//     public static void sortTableColumn(TableColumnModel model) {
-//         int n = model.getColumnCount();
-//         for (int i = 0; i < n - 1; i++) {
-//             TableColumn c = (TableColumn) model.getColumn(i);
-//             for (int j = i + 1; j < n; j++) {
-//                 TableColumn p = (TableColumn) model.getColumn(j);
-//                 if (c.getModelIndex() - p.getModelIndex() > 0) {
-//                     model.moveColumn(j, i);
-//                     i -= 1;
-//                     break;
-//                 }
-//             }
-//         }
-//     }
+    // // TEST: selection sort
+    // public static void sortTableColumn(TableColumnModel model) {
+    //     int n = model.getColumnCount();
+    //     for (int i = 0; i < n - 1; i++) {
+    //         TableColumn c = (TableColumn) model.getColumn(i);
+    //         for (int j = i + 1; j < n; j++) {
+    //             TableColumn p = (TableColumn) model.getColumn(j);
+    //             if (c.getModelIndex() - p.getModelIndex() > 0) {
+    //                 model.moveColumn(j, i);
+    //                 i -= 1;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

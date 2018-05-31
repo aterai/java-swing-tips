@@ -104,7 +104,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
                 c.setBounds(
                     startingBounds.x - dx,
                     startingBounds.y - dy,
-                    startingBounds.width  + dx,
+                    startingBounds.width + dx,
                     startingBounds.height + dy);
                 break;
             case Cursor.N_RESIZE_CURSOR:
@@ -121,7 +121,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
                 c.setBounds(
                     startingBounds.x,
                     startingBounds.y - dy,
-                    startingBounds.width  - dx,
+                    startingBounds.width - dx,
                     startingBounds.height + dy);
                 break;
             case Cursor.E_RESIZE_CURSOR:
@@ -134,7 +134,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
                 dx = getDeltaX(deltaX, parentBounds);
                 dy = getDeltaY(deltaY, parentBounds);
                 c.setSize(
-                    startingBounds.width  - dx,
+                    startingBounds.width - dx,
                     startingBounds.height - dy);
                 break;
             case Cursor.S_RESIZE_CURSOR:
@@ -149,7 +149,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
                 c.setBounds(
                     startingBounds.x - dx,
                     startingBounds.y,
-                    startingBounds.width  + dx,
+                    startingBounds.width + dx,
                     startingBounds.height - dy);
                 break;
             case Cursor.W_RESIZE_CURSOR:

@@ -20,13 +20,13 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             setOpaque(false);
         }
-//         @Override protected void paintComponent(Graphics g) {
-//             super.paintComponent(g);
-//             Graphics2D g2 = (Graphics2D) g.create();
-//             g2.setPaint(new Color(100, 100, 100, 100));
-//             g2.fillRect(0, 0, getWidth(), getHeight());
-//             g2.dispose();
-//         }
+        // @Override protected void paintComponent(Graphics g) {
+        //     super.paintComponent(g);
+        //     Graphics2D g2 = (Graphics2D) g.create();
+        //     g2.setPaint(new Color(100, 100, 100, 100));
+        //     g2.fillRect(0, 0, getWidth(), getHeight());
+        //     g2.dispose();
+        // }
     };
     public MainPanel() {
         super(new BorderLayout());
@@ -192,7 +192,7 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = (width  - image.getWidth())  / 2;
+        int cx = (width - image.getWidth()) / 2;
         int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -225,19 +225,19 @@ class TranslucentPopupMenu extends JPopupMenu {
         menuItem.setOpaque(false);
         return super.add(menuItem);
     }
-//     private static final Color ALPHA_ZERO = new Color(0x0, true);
-//     @Override public void show(Component c, int x, int y) {
-//         EventQueue.invokeLater(() -> {
-//             Container p = getTopLevelAncestor();
-//             if (p instanceof JWindow) {
-//                 System.out.println("Heavy weight");
-//                 ((JWindow) p).setBackground(ALPHA_ZERO);
-//             } else {
-//                 System.out.println("Light weight");
-//             }
-//         });
-//         super.show(c, x, y);
-//     }
+    // private static final Color ALPHA_ZERO = new Color(0x0, true);
+    // @Override public void show(Component c, int x, int y) {
+    //     EventQueue.invokeLater(() -> {
+    //         Container p = getTopLevelAncestor();
+    //         if (p instanceof JWindow) {
+    //             System.out.println("Heavy weight");
+    //             ((JWindow) p).setBackground(ALPHA_ZERO);
+    //         } else {
+    //             System.out.println("Light weight");
+    //         }
+    //     });
+    //     super.show(c, x, y);
+    // }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(POPUP_LEFT);

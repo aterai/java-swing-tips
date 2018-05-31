@@ -12,7 +12,7 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final Object[][] data = {
-        {1, "D", true},  {2, "B", false}, {3, "C", false},
+        {1, "D", true}, {2, "B", false}, {3, "C", false},
         {4, "E", false}, {5, "A", false}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
@@ -100,9 +100,9 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         return isSelected();
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

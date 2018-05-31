@@ -10,19 +10,19 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JButton button = new JButton("RoundedCornerButtonUI") {
         @Override public void updateUI() {
-            //IGNORE LnF change: super.updateUI();
+            // IGNORE LnF change: super.updateUI();
             setUI(new RoundedCornerButtonUI());
         }
     };
     public MainPanel() {
         super();
         add(new JButton("Default JButton"));
-        //button.setUI(new RoundedCornerButtonUI());
+        // button.setUI(new RoundedCornerButtonUI());
         add(button);
         add(new RoundedCornerButton("Rounded Corner Button"));
         add(new RoundButton(new ImageIcon(getClass().getResource("16x16.png"))) {
             @Override public Dimension getPreferredSize() {
-                int r = 16 + (FOCUS_STROKE + 4) * 2; //test margin = 4
+                int r = 16 + (FOCUS_STROKE + 4) * 2; // test margin = 4
                 return new Dimension(r, r);
             }
         });
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-    private static final double ARC_WIDTH  = 16d;
+    private static final double ARC_WIDTH = 16d;
     private static final double ARC_HEIGHT = 16d;
     protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100, 150, 255, 200);
@@ -90,15 +90,15 @@ class RoundedCornerButton extends JButton {
     }
     protected RoundedCornerButton(Action a) {
         super(a);
-        //setAction(a);
+        // setAction(a);
     }
     protected RoundedCornerButton(String text, Icon icon) {
         super(text, icon);
-        //setModel(new DefaultButtonModel());
-        //init(text, icon);
-        //setContentAreaFilled(false);
-        //setBackground(new Color(250, 250, 250));
-        //initShape();
+        // setModel(new DefaultButtonModel());
+        // init(text, icon);
+        // setContentAreaFilled(false);
+        // setBackground(new Color(250, 250, 250));
+        // initShape();
     }
     @Override public void updateUI() {
         super.updateUI();
@@ -152,8 +152,8 @@ class RoundedCornerButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        //return shape != null && shape.contains(x, y);
-        //return Optional.ofNullable(shape).filter(s -> s.contains(x, y)).isPresent();
+        // return shape != null && shape.contains(x, y);
+        // return Optional.ofNullable(shape).filter(s -> s.contains(x, y)).isPresent();
         return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
     }
 }
@@ -170,12 +170,12 @@ class RoundButton extends RoundedCornerButton {
     }
     protected RoundButton(Action a) {
         super(a);
-        //setAction(a);
+        // setAction(a);
     }
     protected RoundButton(String text, Icon icon) {
         super(text, icon);
-        //setModel(new DefaultButtonModel());
-        //init(text, icon);
+        // setModel(new DefaultButtonModel());
+        // init(text, icon);
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
@@ -244,11 +244,11 @@ class ShapeButton extends JButton {
     @Override public boolean contains(int x, int y) {
         return shape.contains(x, y);
     }
-//     //Test
-//     @Override public Dimension getPreferredSize() {
-//         Rectangle r = shape.getBounds();
-//         return new Dimension(r.width, r.height);
-//     }
+    // // TEST:
+    // @Override public Dimension getPreferredSize() {
+    //     Rectangle r = shape.getBounds();
+    //     return new Dimension(r.width, r.height);
+    // }
 }
 
 class DummySizeIcon implements Icon {

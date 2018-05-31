@@ -68,16 +68,16 @@ public final class BarFactory {
     }
 
     private String[] tokenize(String input) {
-//         List<String> v = new ArrayList<>();
-//         StringTokenizer t = new StringTokenizer(input);
-//         while (t.hasMoreTokens()) {
-//             v.add(t.nextToken());
-//         }
-//         String[] cmd = new String[v.size()];
-//         for (int i = 0; i < cmd.length; i++) {
-//             cmd[i] = v.get(i);
-//         }
-//         return cmd;
+        // List<String> v = new ArrayList<>();
+        // StringTokenizer t = new StringTokenizer(input);
+        // while (t.hasMoreTokens()) {
+        //     v.add(t.nextToken());
+        // }
+        // String[] cmd = new String[v.size()];
+        // for (int i = 0; i < cmd.length; i++) {
+        //     cmd[i] = v.get(i);
+        // }
+        // return cmd;
         return input.split("\\s");
     }
 
@@ -131,9 +131,9 @@ public final class BarFactory {
         return b;
     }
 
-//    protected Container getToolbar() {
-//        return toolbar;
-//    }
+    // protected Container getToolbar() {
+    //     return toolbar;
+    // }
 
     public JButton getToolButton(String key) {
         return (JButton) toolButtons.get(key);
@@ -212,13 +212,13 @@ public final class BarFactory {
         return commands.get(cmd);
     }
 
-//     public Action[] getActions() {
-//         return actions;
-//     }
+    // public Action[] getActions() {
+    //     return actions;
+    // }
 
-//    protected JMenuBar getMenubar() {
-//        return menubar;
-//    }
+    // protected JMenuBar getMenubar() {
+    //     return menubar;
+    // }
 }
 
 // https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html

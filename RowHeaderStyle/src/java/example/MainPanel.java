@@ -82,18 +82,18 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
         }
     }
     private class RollOverListener extends MouseAdapter {
-//         @Override public void mouseMoved(MouseEvent e) {
-//             JTable table = (JTable) e.getSource();
-//             Point pt = e.getPoint();
-//             int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-//             rollOverRowIndex = column == 0 ? table.rowAtPoint(pt) : -1;
-//             table.repaint();
-//         }
-//         @Override public void mouseExited(MouseEvent e) {
-//             JTable table = (JTable) e.getSource();
-//             rollOverRowIndex = -1;
-//             table.repaint();
-//         }
+        // @Override public void mouseMoved(MouseEvent e) {
+        //     JTable table = (JTable) e.getSource();
+        //     Point pt = e.getPoint();
+        //     int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+        //     rollOverRowIndex = column == 0 ? table.rowAtPoint(pt) : -1;
+        //     table.repaint();
+        // }
+        // @Override public void mouseExited(MouseEvent e) {
+        //     JTable table = (JTable) e.getSource();
+        //     rollOverRowIndex = -1;
+        //     table.repaint();
+        // }
         @Override public void mouseMoved(MouseEvent e) {
             JTable table = (JTable) e.getComponent();
             Point pt = e.getPoint();

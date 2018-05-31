@@ -13,17 +13,16 @@ public final class MainPanel extends JPanel {
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));
         // Icon i = UIManager.getIcon("OptionPane.warningIcon");
         add(makeLabel("Default", i));
-//*/
         add(makeLabel("Rotate: 180", new RotateIcon(i, 180)));
-        add(makeLabel("Rotate:  90", new RotateIcon(i,  90)));
+        add(makeLabel("Rotate:  90", new RotateIcon(i, 90)));
         add(makeLabel("Rotate: -90", new RotateIcon(i, -90)));
-/*/
-        setOpaque(true);
-        setBackground(Color.RED);
-        add(makeLabel("Rotate: 180", new QuadrantRotateIcon(i, QuadrantRotate.VERTICAL_FLIP)));
-        add(makeLabel("Rotate: 90",  new QuadrantRotateIcon(i, QuadrantRotate.CLOCKWISE)));
-        add(makeLabel("Rotate: -90", new QuadrantRotateIcon(i, QuadrantRotate.COUNTER_CLOCKWISE)));
-//*/
+
+        // setOpaque(true);
+        // setBackground(Color.RED);
+        // add(makeLabel("Rotate: 180", new QuadrantRotateIcon(i, QuadrantRotate.VERTICAL_FLIP)));
+        // add(makeLabel("Rotate: 90", new QuadrantRotateIcon(i, QuadrantRotate.CLOCKWISE)));
+        // add(makeLabel("Rotate: -90", new QuadrantRotateIcon(i, QuadrantRotate.COUNTER_CLOCKWISE)));
+
         setBorder(BorderFactory.createEmptyBorder(0, 32, 0, 32));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -90,21 +89,21 @@ class RotateIcon implements Icon {
                 trans = AffineTransform.getTranslateInstance(0, 0);
                 break;
         }
-//         if (numquadrants == 1 || numquadrants == -3) {
-//             trans = AffineTransform.getTranslateInstance(dim.height, 0);
-//             int v = dim.width;
-//             dim.width = dim.height;
-//             dim.height = v;
-//         } else if (numquadrants == -1 || numquadrants == 3) {
-//             trans = AffineTransform.getTranslateInstance(0, dim.width);
-//             int v = dim.width;
-//             dim.width = dim.height;
-//             dim.height = v;
-//         } else if (Math.abs(numquadrants) == 2) {
-//             trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
-//         } else {
-//             trans = AffineTransform.getTranslateInstance(0, 0);
-//         }
+        // if (numquadrants == 1 || numquadrants == -3) {
+        //     trans = AffineTransform.getTranslateInstance(dim.height, 0);
+        //     int v = dim.width;
+        //     dim.width = dim.height;
+        //     dim.height = v;
+        // } else if (numquadrants == -1 || numquadrants == 3) {
+        //     trans = AffineTransform.getTranslateInstance(0, dim.width);
+        //     int v = dim.width;
+        //     dim.width = dim.height;
+        //     dim.height = v;
+        // } else if (Math.abs(numquadrants) == 2) {
+        //     trans = AffineTransform.getTranslateInstance(dim.width, dim.height);
+        // } else {
+        //     trans = AffineTransform.getTranslateInstance(0, 0);
+        // }
         trans.quadrantRotate(numquadrants);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

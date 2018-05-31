@@ -126,12 +126,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
@@ -225,7 +225,7 @@ class RoundedCornerBorder extends AbstractBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = ARC;
-        int w = width  - 1;
+        int w = width - 1;
         int h = height - 1;
 
         Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
@@ -263,7 +263,7 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
             g2.clearRect(x, y, width, height);
         }
         int r = ARC;
-        int w = width  - 1;
+        int w = width - 1;
         int h = height - 1;
 
         Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
@@ -290,20 +290,20 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-//         // TEST: WindowsLookAndFeel
-//         if (c instanceof JPopupMenu) {
-//             Container top = ((JPopupMenu) c).getTopLevelAncestor();
-//             if (top instanceof JWindow) {
-//                 Composite cmp = g2.getComposite();
-//                 g2.setComposite(AlphaComposite.Clear);
-//                 g2.setPaint(new Color(0x0, true));
-//                 g2.clearRect(x, y, width, height);
-//                 g2.setComposite(cmp);
-//             }
-//         }
+        // // TEST: WindowsLookAndFeel
+        // if (c instanceof JPopupMenu) {
+        //     Container top = ((JPopupMenu) c).getTopLevelAncestor();
+        //     if (top instanceof JWindow) {
+        //         Composite cmp = g2.getComposite();
+        //         g2.setComposite(AlphaComposite.Clear);
+        //         g2.setPaint(new Color(0x0, true));
+        //         g2.clearRect(x, y, width, height);
+        //         g2.setComposite(cmp);
+        //     }
+        // }
 
         int r = ARC;
-        int w = width  - 1;
+        int w = width - 1;
         int h = height - 1;
 
         Path2D p = new Path2D.Double();

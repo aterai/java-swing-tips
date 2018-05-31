@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         header.setComponentPopupMenu(pop);
         pop.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                //System.out.println("popupMenuWillBecomeInvisible");
+                // System.out.println("popupMenuWillBecomeInvisible");
                 header.setDraggedColumn(null);
-                //header.setResizingColumn(null);
-                //header.setDraggedDistance(0);
+                // header.setResizingColumn(null);
+                // header.setDraggedDistance(0);
                 header.repaint();
             }
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
@@ -78,8 +78,7 @@ public final class MainPanel extends JPanel {
 class TableHeaderPopupMenu extends JPopupMenu {
     private final List<SortAction> actions = Arrays.asList(
         new SortAction(SortOrder.ASCENDING),
-        new SortAction(SortOrder.DESCENDING));
-        //new SortAction(SortOrder.UNSORTED));
+        new SortAction(SortOrder.DESCENDING)); // new SortAction(SortOrder.UNSORTED));
     protected TableHeaderPopupMenu() {
         super();
         actions.forEach(this::add);

@@ -11,12 +11,11 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
     private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
         JMenuBar menuBar = BAR_FACTORY.createMenuBar();
-        //if (Objects.nonNull(menuBar))
         menupanel.add(menuBar, BorderLayout.NORTH);
 
         JToolBar toolBar = BAR_FACTORY.createToolBar();
@@ -38,14 +37,14 @@ public final class MainPanel extends JPanel {
             new HelpAction(),
             new VersionAction()
         };
-        //return defaultActions;
+        // return defaultActions;
     }
-//     private final Action[] defaultActions = {
-//         new NewAction(),
-//         new ExitAction(),
-//         new HelpAction(),
-//         new VersionAction(),
-//     };
+    // private final Action[] defaultActions = {
+    //     new NewAction(),
+    //     new ExitAction(),
+    //     new HelpAction(),
+    //     new VersionAction(),
+    // };
 
     private static class NewAction extends AbstractAction {
         protected NewAction() {
@@ -125,10 +124,10 @@ class HelpAction extends AbstractAction {
 }
 
 class VersionAction extends AbstractAction {
-    public static final String APP_NAME   = "@title@";
+    public static final String APP_NAME = "@title@";
     private static final String COPYRIGHT = "Copyright(C) 2006";
-    private static final String VERSION   = "0.0";
-    private static final int    RELEASE   = 1;
+    private static final String VERSION = "0.0";
+    private static final int RELEASE = 1;
     protected VersionAction() {
         super("version");
     }

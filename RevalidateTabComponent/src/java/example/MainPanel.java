@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTabbedPane tabbedPane = new JTabbedPane();
-//         TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
-//         tabbedPane.addChangeListener(l);
-//         tabbedPane.addMouseListener(l);
+        // TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
+        // tabbedPane.addChangeListener(l);
+        // tabbedPane.addMouseListener(l);
         for (int i = 0; i < 3; i++) {
             String title = "Tab " + i;
             tabbedPane.add(title, new JLabel(title));

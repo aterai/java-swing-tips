@@ -27,36 +27,36 @@ public final class MainPanel extends JPanel {
         };
         JTable table = new JTable(model);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//         if (System.getProperty("java.version").startsWith("1.6.0")) {
-//             // 1.6.0_xx bug? column header click -> edit cancel?
-//             table.getTableHeader().addMouseListener(new MouseAdapter() {
-//                 @Override public void mousePressed(MouseEvent e) {
-//                     if (table.isEditing()) {
-//                         table.getCellEditor().stopCellEditing();
-//                     }
-//                 }
-//             });
-//         }
+        // if (System.getProperty("java.version").startsWith("1.6.0")) {
+        //     // 1.6.0_xx bug? column header click -> edit cancel?
+        //     table.getTableHeader().addMouseListener(new MouseAdapter() {
+        //         @Override public void mousePressed(MouseEvent e) {
+        //             if (table.isEditing()) {
+        //                 table.getCellEditor().stopCellEditing();
+        //             }
+        //         }
+        //     });
+        // }
 
-//         table.addMouseListener(new MouseAdapter() {
-//             @Override public void mouseReleased(MouseEvent e) {
-//                 JTable t = (JTable) e.getComponent();
-//                 Point pt = e.getPoint();
-//                 int row = t.rowAtPoint(pt);
-//                 int col = t.columnAtPoint(pt);
-//                 if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
-//                     TableCellEditor ce = t.getCellEditor(row, col);
-//                     // https://tips4java.wordpress.com/2009/07/12/table-button-column/
-//                     ce.stopCellEditing();
-//                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
-//                     Point p = SwingUtilities.convertPoint(t, pt, c);
-//                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//                     if (b instanceof JRadioButton) {
-//                         ((JRadioButton) b).doClick();
-//                     }
-//                 }
-//             }
-//         });
+        // table.addMouseListener(new MouseAdapter() {
+        //     @Override public void mouseReleased(MouseEvent e) {
+        //         JTable t = (JTable) e.getComponent();
+        //         Point pt = e.getPoint();
+        //         int row = t.rowAtPoint(pt);
+        //         int col = t.columnAtPoint(pt);
+        //         if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
+        //             TableCellEditor ce = t.getCellEditor(row, col);
+        //             // https://tips4java.wordpress.com/2009/07/12/table-button-column/
+        //             ce.stopCellEditing();
+        //             Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
+        //             Point p = SwingUtilities.convertPoint(t, pt, c);
+        //             Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
+        //             if (b instanceof JRadioButton) {
+        //                 ((JRadioButton) b).doClick();
+        //             }
+        //         }
+        //     }
+        // });
         // RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
         table.getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
         table.getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());

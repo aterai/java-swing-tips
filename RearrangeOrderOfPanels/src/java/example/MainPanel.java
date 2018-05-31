@@ -168,9 +168,9 @@ class RearrangingHandler extends MouseAdapter {
         prevRect.setBounds(0, 0, 0, 0);
         window.setVisible(false);
 
-//         if (!window.isVisible() || Objects.isNull(draggingComonent) {
-//             return;
-//         }
+        // if (!window.isVisible() || Objects.isNull(draggingComonent) {
+        //     return;
+        // }
         Point pt = e.getPoint();
         Container parent = (Container) e.getComponent();
         Component cmp = draggingComonent;

@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
 
         StyleSheet styleSheet = new StyleSheet();
         styleSheet.addRule("body {font-size: 24pt; font-family: Burnstown Dam;}");
-        //styleSheet.addRule(".highlight {color: red; background: green; font-family: Burnstown Dam.ttf; }");
+        // styleSheet.addRule(".highlight {color: red; background: green; font-family: Burnstown Dam.ttf; }");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
         JEditorPane editor = new JEditorPane();

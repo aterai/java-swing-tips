@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
         int ir = 20; // inset.right
         int ch = c.getPreferredSize().height / 2;
 
-//         Border ib = BorderFactory.createMatteBorder(0, 0, ch, 0, Color.WHITE);
-//         Border eb = BorderFactory.createEtchedBorder();
-//         Border ob = BorderFactory.createEmptyBorder(0, 0, ch, 0);
-//         Border bo = BorderFactory.createCompoundBorder(eb, ib);
-//         m.setBorder(BorderFactory.createCompoundBorder(ob, bo));
+        // Border ib = BorderFactory.createMatteBorder(0, 0, ch, 0, Color.WHITE);
+        // Border eb = BorderFactory.createEtchedBorder();
+        // Border ob = BorderFactory.createEmptyBorder(0, 0, ch, 0);
+        // Border bo = BorderFactory.createCompoundBorder(eb, ib);
+        // m.setBorder(BorderFactory.createCompoundBorder(ob, bo));
 
         Border ib = BorderFactory.createEmptyBorder(0, 0, ch, 0);
         Border eb = BorderFactory.createEtchedBorder();
@@ -49,15 +49,15 @@ public final class MainPanel extends JPanel {
         Spring g = Spring.minus(Spring.constant(ir));
 
         SpringLayout.Constraints constraints = layout.getConstraints(c);
-        constraints.setConstraint(SpringLayout.EAST,  Spring.sum(x, g));
+        constraints.setConstraint(SpringLayout.EAST, Spring.sum(x, g));
         constraints.setConstraint(SpringLayout.SOUTH, y);
         p.setLayer(c, JLayeredPane.DEFAULT_LAYER + 1);
         p.add(c);
 
         constraints = layout.getConstraints(m);
-        constraints.setConstraint(SpringLayout.WEST,  Spring.constant(0));
+        constraints.setConstraint(SpringLayout.WEST, Spring.constant(0));
         constraints.setConstraint(SpringLayout.NORTH, Spring.constant(0));
-        constraints.setConstraint(SpringLayout.EAST,  x);
+        constraints.setConstraint(SpringLayout.EAST, x);
         constraints.setConstraint(SpringLayout.SOUTH, y);
         p.setLayer(m, JLayeredPane.DEFAULT_LAYER);
         p.add(m);
@@ -94,9 +94,9 @@ public final class MainPanel extends JPanel {
 //     private final Border border;
 //
 //     protected ComponentTitledBorder(Component comp, JComponent container, Border border) {
-//         this.comp      = comp;
+//         this.comp = comp;
 //         this.container = container;
-//         this.border    = border;
+//         this.border = border;
 //         if (comp instanceof JComponent) {
 //             ((JComponent) comp).setOpaque(true);
 //         }

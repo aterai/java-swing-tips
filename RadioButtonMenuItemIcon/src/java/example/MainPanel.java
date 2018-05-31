@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//com.sun.java.swing.plaf.windows.WindowsIconFactory.java
+// @see com.sun.java.swing.plaf.windows.WindowsIconFactory.java
 class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
     private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -92,9 +92,9 @@ class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
         if (model.isSelected()) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
-            //g2.fillRoundRect(3, 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
+            // g2.fillRoundRect(3, 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
             g2.fillOval(2, 2, getIconWidth() - 5, getIconHeight() - 5);
-            //g2.fillArc(2, 2, getIconWidth() - 5, getIconHeight() - 5, 0, 360);
+            // g2.fillArc(2, 2, getIconWidth() - 5, getIconHeight() - 5, 0, 360);
             g2.dispose();
         }
     }

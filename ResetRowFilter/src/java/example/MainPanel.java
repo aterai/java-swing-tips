@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         };
         JTable table = new JTable(model);
         table.setFillsViewportHeight(true);
-        //XXX: sorter.setSortsOnUpdates(true);
+        // XXX: sorter.setSortsOnUpdates(true);
 
         RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
@@ -41,16 +41,16 @@ public final class MainPanel extends JPanel {
                 super.toggleSortOrder(column);
                 if (check1.isSelected()) {
                     model.fireTableDataChanged();
-                    sort(); //allRowsChanged();
+                    sort(); // allRowsChanged();
                 }
-//                 if (check1.isSelected()) {
-//                     RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-//                     setRowFilter(null);
-//                     super.toggleSortOrder(column);
-//                     setRowFilter(f);
-//                 } else {
-//                     super.toggleSortOrder(column);
-//                 }
+                // if (check1.isSelected()) {
+                //     RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                //     setRowFilter(null);
+                //     super.toggleSortOrder(column);
+                //     setRowFilter(f);
+                // } else {
+                //     super.toggleSortOrder(column);
+                // }
             }
         };
 

@@ -38,14 +38,14 @@ public final class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
 
-        //table.setTableHeader(null);
-        //table.setTableHeader(new JTableHeader(table.getColumnModel()));
+        // table.setTableHeader(null);
+        // table.setTableHeader(new JTableHeader(table.getColumnModel()));
 
         add(scrollPane);
         JCheckBox check = new JCheckBox("JTableHeader visible: ", true);
         check.addActionListener(e -> {
             JCheckBox cb = (JCheckBox) e.getSource();
-            //table.getTableHeader().setVisible(cb.isSelected());
+            // table.getTableHeader().setVisible(cb.isSelected());
             scrollPane.getColumnHeader().setVisible(cb.isSelected());
             scrollPane.revalidate();
         });
