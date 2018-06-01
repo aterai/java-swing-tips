@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
-    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200, 150, 100, 50));
+    private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(200, 150, 100, 50));
 
     private MainPanel() {
         super(new BorderLayout());
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
 }
 
 class GradientPalletSliderUI extends MetalSliderUI {
-    private static final int[] GRADIENT_PALLET = GradientPalletFactory.makeGradientPallet();
+    private static final int[] GRADIENT_PALLET = GradientPalletUtils.makeGradientPallet();
     protected Color controlDarkShadow = new Color(100, 100, 100); // MetalLookAndFeel.getControlDarkShadow();
     protected Color controlHighlight = new Color(200, 255, 200); // MetalLookAndFeel.getControlHighlight();
     protected Color controlShadow = new Color(0, 100, 0); // MetalLookAndFeel.getControlShadow();
@@ -219,7 +219,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
             // g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
             float x = (fillRight - fillLeft) / (float) (trackRight - trackLeft);
-            g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
+            g.setColor(GradientPalletUtils.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
             g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
         } else {
             g.setColor(controlShadow);
@@ -237,8 +237,8 @@ class GradientPalletSliderUI extends MetalSliderUI {
     }
 }
 
-final class GradientPalletFactory {
-    private GradientPalletFactory() { /* Singleton */ }
+final class GradientPalletUtils {
+    private GradientPalletUtils() { /* HideUtilityClassConstructor */ }
     public static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
@@ -273,8 +273,8 @@ final class GradientPalletFactory {
     }
 }
 
-final class TextureFactory {
-    private TextureFactory() { /* Singleton */ }
+final class TextureUtils {
+    private TextureUtils() { /* HideUtilityClassConstructor */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs * cs;
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);

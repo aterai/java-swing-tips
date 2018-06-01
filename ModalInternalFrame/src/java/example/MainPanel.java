@@ -223,7 +223,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MyGlassPane extends JDesktopPane {
-    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
+    private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6);
     // protected MyGlassPane() {
     //     super((LayoutManager) null);
     // }
@@ -245,7 +245,7 @@ class MyGlassPane extends JDesktopPane {
 }
 
 class PrintGlassPane extends JDesktopPane {
-    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
+    private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(4);
     // protected PrintGlassPane() {
     //     super((LayoutManager) null);
     // }
@@ -272,9 +272,9 @@ class PrintGlassPane extends JDesktopPane {
     }
 }
 
-final class TextureFactory {
+final class TextureUtils {
     private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
-    private TextureFactory() { /* Singleton */ }
+    private TextureUtils() { /* HideUtilityClassConstructor */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs * cs;
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);

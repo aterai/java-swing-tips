@@ -14,7 +14,6 @@
     <exclude name="AtLeastOneConstructor" />
     <exclude name="LocalVariableCouldBeFinal" />
     <exclude name="MethodArgumentCouldBeFinal" />
-    <exclude name="ClassNamingConventions" />
     <exclude name="PrematureDeclaration" />
     <exclude name="OnlyOneReturn" />
     <exclude name="LongVariable" />

@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            NimbusTabbedPanePainter.configureUI();
+            NimbusTabbedPanePainterUtils.configureUI();
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -43,12 +43,12 @@ public final class MainPanel extends JPanel {
     }
 }
 
-final class NimbusTabbedPanePainter {
+final class NimbusTabbedPanePainterUtils {
     public static final int OVERPAINT = 6;
     public static final int STROKE_SIZE = 2;
     public static final int ARC = 10;
 
-    private NimbusTabbedPanePainter() { /* Singleton */ }
+    private NimbusTabbedPanePainterUtils() { /* HideUtilityClassConstructor */ }
 
     public static void configureUI() {
         UIDefaults d = UIManager.getLookAndFeelDefaults();

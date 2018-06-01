@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
                 if (target != null) {
                     try {
                         int offs = target.getCaretPosition();
-                        int begOffs = TextUtilties.getWordStart(target, offs);
-                        int endOffs = TextUtilties.getWordEnd(target, offs);
+                        int begOffs = TextUtils.getWordStart(target, offs);
+                        int endOffs = TextUtils.getWordEnd(target, offs);
                         target.setCaretPosition(begOffs);
                         target.moveCaretPosition(endOffs);
                     } catch (BadLocationException ex) {
@@ -69,8 +69,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-final class TextUtilties {
-    private TextUtilties() { /* HideUtilityClassConstructor */ }
+final class TextUtils {
+    private TextUtils() { /* HideUtilityClassConstructor */ }
     // @see javax.swint.text.Utilities.getWordStart(...)
     public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
         Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
@@ -172,12 +172,12 @@ class SegmentCache {
         getSharedInstance().releaseSegment(segment);
     }
 
-//     /**
-//      * Creates and returns a SegmentCache.
-//      */
-//     public SegmentCache() {
-//         segments = new ArrayList<>(11);
-//     }
+    // /**
+    //  * Creates and returns a SegmentCache.
+    //  */
+    // public SegmentCache() {
+    //     segments = new ArrayList<>(11);
+    // }
 
     /**
      * Returns a <code>Segment</code>. When done, the <code>Segment</code>

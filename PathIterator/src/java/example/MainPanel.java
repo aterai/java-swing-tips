@@ -139,10 +139,10 @@ public final class MainPanel extends JPanel {
         int vc = vcModel.getNumber().intValue();
         boolean antialias = check.isSelected();
         // outer.setMinimum(r2 + 1);
-        Path2D star = StarburstSvgMaker.makeStar(r1, r2, vc);
+        Path2D star = SvgUtils.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
-        StringBuilder sb = StarburstSvgMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
+        StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
 
         // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
         // FontRenderContext frc = new FontRenderContext(null, true, true);
@@ -176,8 +176,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-final class StarburstSvgMaker {
-    private StarburstSvgMaker() { /* Singleton */ }
+final class SvgUtils {
+    private SvgUtils() { /* HideUtilityClassConstructor */ }
     public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n")

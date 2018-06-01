@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
+@SuppressWarnings("PMD.ClassNamingConventions")
 public final class MainPanel {
     private MainPanel() { /* Singleton */ }
     public static void main(String... args) {

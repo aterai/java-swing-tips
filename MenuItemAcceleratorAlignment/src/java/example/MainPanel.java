@@ -12,8 +12,12 @@ import javax.swing.plaf.basic.BasicMenuItemUI;
 import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
 // import sun.swing.*;
 
-public final class MainPanel {
-    private MainPanel() { /* Singleton */ }
+public final class MainPanel extends JPanel {
+    private MainPanel() {
+        super(new BorderLayout());
+        setPreferredSize(new Dimension(320, 240));
+        add(new JScrollPane(new JTextArea()));
+    }
     private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
@@ -157,9 +161,9 @@ public final class MainPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        // frame.getContentPane().add(new MainPanel());
+        frame.getContentPane().add(new MainPanel());
         frame.setJMenuBar(createMenuBar());
-        frame.setSize(320, 240);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
