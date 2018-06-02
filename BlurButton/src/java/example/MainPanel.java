@@ -5,53 +5,26 @@ package example;
 import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        List<JButton> list = Arrays.asList(
-            new JButton("JButton"),
-            new JButton("+getPreferredSize") {
-                @Override public Dimension getPreferredSize() {
-                    Dimension d = super.getPreferredSize();
-                    d.width += 3 + 3;
-                    return d;
-                }
-            },
-            new BlurJButton("Blurred JButton1"),
-            new BlurJButton("+getPreferredSize") {
-                @Override public Dimension getPreferredSize() {
-                    Dimension d = super.getPreferredSize();
-                    d.width += 9;
-                    return d;
-                }
-            },
-            new BlurButton("Blurred JButton2"),
-            new BlurButton("+getPreferredSize") {
-                @Override public Dimension getPreferredSize() {
-                    Dimension d = super.getPreferredSize();
-                    d.width += 9;
-                    return d;
-                }
-            });
-
         JPanel p0 = new JPanel();
         p0.setBorder(BorderFactory.createTitledBorder("Default JButton"));
-        p0.add(list.get(0));
-        p0.add(list.get(1));
+        JButton b0 = new JButton("Default JButton");
+        p0.add(b0);
 
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("Blurred JButton1"));
-        p1.add(list.get(2));
-        p1.add(list.get(3));
+        JButton b1 = new BlurJButton("Blurred JButton1");
+        p1.add(b1);
 
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("Blurred JButton(ConvolveOp.EDGE_NO_OP)"));
-        p2.add(list.get(4));
-        p2.add(list.get(5));
+        JButton b2 = new BlurButton("Blurred JButton2");
+        p2.add(b2);
 
         Box box = Box.createVerticalBox();
         Arrays.asList(p0, p1, p2).forEach(p -> {
@@ -62,7 +35,7 @@ public final class MainPanel extends JPanel {
         JToggleButton button = new JToggleButton("setEnabled(false)");
         button.addActionListener(e -> {
             boolean f = !((AbstractButton) e.getSource()).isSelected();
-            list.forEach(b -> b.setEnabled(f));
+            Arrays.asList(b0, b1, b2).forEach(b -> b.setEnabled(f));
         });
 
         add(box, BorderLayout.NORTH);
@@ -119,6 +92,7 @@ class BlurJButton extends JButton {
                 .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
                 .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
+            g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
@@ -145,6 +119,7 @@ class BlurButton extends JButton {
                 .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
                 .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
+            g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
