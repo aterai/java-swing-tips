@@ -34,13 +34,13 @@ public final class MainPanel extends JPanel {
                         int end = elm.getEndOffset();
                         System.out.format("start: %d, end: %d%n", start, end);
                         String text = doc.getText(start, end - start);
-//                         int pos = text.lastIndexOf(faceMark);
-//                         while (pos > -1) {
-//                             Style face = doc.getStyle(faceMark);
-//                             doc.replace(start + pos, faceMark.length(), " ", face);
-//                             pos = text.lastIndexOf(faceMark, pos - 1);
-//                             textPane.getInputAttributes().removeAttributes(face);
-//                         }
+                        // int pos = text.lastIndexOf(faceMark);
+                        // while (pos > -1) {
+                        //     Style face = doc.getStyle(faceMark);
+                        //     doc.replace(start + pos, faceMark.length(), " ", face);
+                        //     pos = text.lastIndexOf(faceMark, pos - 1);
+                        //     textPane.getInputAttributes().removeAttributes(face);
+                        // }
                         int pos = text.indexOf(faceMark);
                         while (pos > -1) {
                             Style face = doc.getStyle(faceMark);

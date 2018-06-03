@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         @SuppressWarnings("JdkObsolete")
         Dictionary<Integer, Component> labelTable = new Hashtable<>();
         int c = 0;
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         for (String s: Arrays.asList("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
                                      "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
                                      "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
         labelTable.put(c, new JButton("aaa"));
         JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 10, 0);
         slider1.setSnapToTicks(true);
-        //slider1.setMajorTickSpacing(1);
-        //slider1.setMinorTickSpacing(5);
+        // slider1.setMajorTickSpacing(1);
+        // slider1.setMinorTickSpacing(5);
         slider1.setPaintTicks(true);
         slider1.setLabelTable(labelTable);
         slider1.setPaintLabels(true);
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             labelTable2.put(i++, l);
         }
         JSlider slider2 = new JSlider(0, 10, 0);
-        //slider2.setForeground(Color.BLUE);
+        // slider2.setForeground(Color.BLUE);
         slider2.setSnapToTicks(true);
         slider2.setLabelTable(labelTable2);
         slider2.setPaintTicks(true);

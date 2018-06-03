@@ -66,14 +66,14 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         }
         return popupMenuListener;
     }
-//     // NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
-//     private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
-//     @Override protected KeyListener createKeyListener() {
-//         if (Objects.isNull(keyListener)) {
-//             keyListener = new DummyKeyAdapter();
-//         }
-//         return keyListener;
-//     }
+    // // NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
+    // private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
+    // @Override protected KeyListener createKeyListener() {
+    //     if (Objects.isNull(keyListener)) {
+    //         keyListener = new DummyKeyAdapter();
+    //     }
+    //     return keyListener;
+    // }
     @Override protected void configureEditor() {
         // super.configureEditor();
         // Should be in the same state as the combobox
@@ -240,8 +240,8 @@ class SearchBarLayout implements LayoutManager {
         // JTextField editor = (JTextField) cb.getComponent(1);
         if (Objects.nonNull(editor)) {
             editor.setBounds(insets.left + buttonWidth, insets.top,
-                             width  - insets.left - insets.right - buttonWidth - loupeWidth,
-                             height - insets.top  - insets.bottom);
+                             width - insets.left - insets.right - buttonWidth - loupeWidth,
+                             height - insets.top - insets.bottom);
         }
     }
 }

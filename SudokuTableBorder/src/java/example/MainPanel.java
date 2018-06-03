@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
             table.setRowHeight(i, CELLSIZE + a);
         }
 
-//         JTextField editor = new JTextField();
-//         editor.setHorizontalAlignment(SwingConstants.CENTER);
-//         editor.setBorder(BorderFactory.createLineBorder(Color.RED));
-//         table.setDefaultEditor(Integer.class, new DefaultCellEditor(editor));
+        // JTextField editor = new JTextField();
+        // editor.setHorizontalAlignment(SwingConstants.CENTER);
+        // editor.setBorder(BorderFactory.createLineBorder(Color.RED));
+        // table.setDefaultEditor(Integer.class, new DefaultCellEditor(editor));
 
         table.setCellSelectionEnabled(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -9,8 +9,8 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     public static final int FIXED_COLUMNRANGE = 2;
-    //<blockquote cite="FixedColumnExample.java">
-    //@auther Nobuo Tamemasa
+    // <blockquote cite="FixedColumnExample.java">
+    // @auther Nobuo Tamemasa
     private static final String ES = "";
     protected final Object[][] data = {
         {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
         {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
     };
     protected final String[] columnNames = {"1", "2", "a", "b", "c"};
-    //</blockquote>
+    // </blockquote>
     protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return column < FIXED_COLUMNRANGE ? Integer.class : Object.class;
@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
             }
         }
         JScrollPane scroll1 = new JScrollPane(leftTable);
-        //scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        // scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll1.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
 
         JSplitPane split = new JSplitPane();
         split.setResizeWeight(.3);
-        //split.setDividerSize(0);
+        // split.setDividerSize(0);
         split.setLeftComponent(scroll1);
         split.setRightComponent(scroll2);
 
@@ -77,9 +77,9 @@ public class MainPanel extends JPanel {
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
         table.setIntercellSpacing(new Dimension());
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        //table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         return table;
     }
     public static void main(String... args) {

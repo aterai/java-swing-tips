@@ -58,23 +58,23 @@ class ComparableTab { // implements Comparable<ComparableTab> {
     public Component getComponent() {
         return comp;
     }
-//     @Override public int compareTo(ComparableTab o) {
-//         return title.compareToIgnoreCase(o.title);
-//     }
-//     // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
-//     @Override public final boolean equals(Object o) {
-//         if (o == this) {
-//             return true;
-//         }
-//         if (o instanceof ComparableTab) {
-//             ComparableTab other = (ComparableTab) o;
-//             return Objects.equals(title, other.title) && Objects.equals(comp, other.comp);
-//         }
-//         return false;
-//     }
-//     @Override public final int hashCode() {
-//         return Objects.hash(title, comp);
-//     }
+    // @Override public int compareTo(ComparableTab o) {
+    //     return title.compareToIgnoreCase(o.title);
+    // }
+    // // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
+    // @Override public final boolean equals(Object o) {
+    //     if (o == this) {
+    //         return true;
+    //     }
+    //     if (o instanceof ComparableTab) {
+    //         ComparableTab other = (ComparableTab) o;
+    //         return Objects.equals(title, other.title) && Objects.equals(comp, other.comp);
+    //     }
+    //     return false;
+    // }
+    // @Override public final int hashCode() {
+    //     return Objects.hash(title, comp);
+    // }
 }
 
 class EditableTabbedPane extends JTabbedPane {

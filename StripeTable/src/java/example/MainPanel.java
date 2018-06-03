@@ -20,21 +20,21 @@ public final class MainPanel extends JPanel {
         model.addRowData(new RowData("Name 0", "Test aa"));
 
         JTable table = new JTable(model);
-//         // TEST:
-//         JTable table = new JTable(model) {
-//             protected final Color evenColor = new Color(240, 240, 255);
-//             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//                 Component c = super.prepareRenderer(tcr, row, column);
-//                 if (isRowSelected(row)) {
-//                     c.setForeground(getSelectionForeground());
-//                     c.setBackground(getSelectionBackground());
-//                 } else {
-//                     c.setForeground(getForeground());
-//                     c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-//                 }
-//                 return c;
-//             }
-//         };
+        // // TEST:
+        // JTable table = new JTable(model) {
+        //     protected final Color evenColor = new Color(240, 240, 255);
+        //     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        //         Component c = super.prepareRenderer(tcr, row, column);
+        //         if (isRowSelected(row)) {
+        //             c.setForeground(getSelectionForeground());
+        //             c.setBackground(getSelectionBackground());
+        //         } else {
+        //             c.setForeground(getForeground());
+        //             c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        //         }
+        //         return c;
+        //     }
+        // };
 
         StripeTableRenderer renderer = new StripeTableRenderer();
         table.setDefaultRenderer(Object.class, renderer);

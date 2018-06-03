@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
 
         // https://ateraimemo.com/Swing/StyleSheet.html
         StyleSheet styleSheet = new StyleSheet();
-        styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}"); //INCOMPLETE: opacity
-        //INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
+        styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}"); // INCOMPLETE: opacity
+        // INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
         area.setEditorKit(htmlEditorKit);
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         area.setOpaque(false);
         area.setForeground(new Color(0xC8C8C8));
         area.setSelectedTextColor(Color.WHITE);
-        area.setBackground(new Color(0x0, true)); //Nimbus
+        area.setBackground(new Color(0x0, true)); // Nimbus
         area.setSelectionColor(SELECTION_COLOR);
         area.setText("<html><pre>"
             + "public static void createAndShowGUI() {<br />"
@@ -56,9 +56,9 @@ public final class MainPanel extends JPanel {
             + "}<br />"
         );
 
-        //TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html
-        //DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
-        //dh.setDrawsLayeredHighlights(false);
+        // TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html
+        // DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
+        // dh.setDrawsLayeredHighlights(false);
 
         JToggleButton button = new JToggleButton("highlight");
         button.addActionListener(e -> {
@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
             int pos = 0;
             while (matcher.find(pos)) {
                 int start = matcher.start();
-                int end   = matcher.end();
+                int end = matcher.end();
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
@@ -157,7 +157,7 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = (width  - image.getWidth())  / 2;
+        int cx = (width - image.getWidth()) / 2;
         int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);

@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
         spinner1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         Box box = Box.createVerticalBox();
-        box.add(makeTitledPanel("Default",          spinner0));
-        box.add(makeTitledPanel("RIGHT_TO_LEFT",    spinner1));
+        box.add(makeTitledPanel("Default", spinner0));
+        box.add(makeTitledPanel("RIGHT_TO_LEFT", spinner1));
         box.add(makeTitledPanel("L(Prev), R(Next)", spinner2));
         box.add(makeTitledPanel("L(Prev), R(Next)", spinner3));
 
@@ -75,8 +75,8 @@ class SpinnerLayout extends BorderLayout {
     protected SpinnerLayout() {
         super();
         layoutMap = new HashMap<>();
-        layoutMap.put("Editor",   "Center");
-        layoutMap.put("Next",     "East");
+        layoutMap.put("Editor", "Center");
+        layoutMap.put("Next", "East");
         layoutMap.put("Previous", "West");
     }
     @Override public void addLayoutComponent(Component comp, Object constraints) {

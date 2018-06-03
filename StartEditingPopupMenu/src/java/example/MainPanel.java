@@ -14,25 +14,25 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JTree tree = new JTree();
 
-//         UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
-//         tree.addMouseListener(new MouseAdapter() {
-//             @Override public void mousePressed(MouseEvent e) {
-//                 JTree tree = (JTree) e.getSource();
-//                 TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-//                 if (!tree.getSelectionModel().isPathSelected(path)) {
-//                     tree.getSelectionModel().setSelectionPath(path);
-//                 }
-//             }
-//         });
+        // UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
+        // tree.addMouseListener(new MouseAdapter() {
+        //     @Override public void mousePressed(MouseEvent e) {
+        //         JTree tree = (JTree) e.getSource();
+        //         TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+        //         if (!tree.getSelectionModel().isPathSelected(path)) {
+        //             tree.getSelectionModel().setSelectionPath(path);
+        //         }
+        //     }
+        // });
 
         tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
-//             @Override protected boolean shouldStartEditingTimer(EventObject e) {
-//                 return false;
-//             }
-//             @Override protected boolean canEditImmediately(EventObject e) {
-//                 //((MouseEvent) e).getClickCount() - 2 >= 0
-//                 return !(e instanceof MouseEvent) && super.canEditImmediately(e);
-//             }
+            // @Override protected boolean shouldStartEditingTimer(EventObject e) {
+            //     return false;
+            // }
+            // @Override protected boolean canEditImmediately(EventObject e) {
+            //     // ((MouseEvent) e).getClickCount() - 2 >= 0
+            //     return !(e instanceof MouseEvent) && super.canEditImmediately(e);
+            // }
             @Override public boolean isCellEditable(EventObject e) {
                 return !(e instanceof MouseEvent) && super.isCellEditable(e);
             }
@@ -78,7 +78,7 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
 
@@ -105,10 +105,10 @@ class TreePopupMenu extends JPopupMenu {
                     Optional.ofNullable(textField.getText().trim())
                         .filter(str -> !str.isEmpty())
                         .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
-//                     String str = textField.getText().trim();
-//                     if (!str.isEmpty()) {
-//                         ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);
-//                     }
+                    // String str = textField.getText().trim();
+                    // if (!str.isEmpty()) {
+                    //     ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);
+                    // }
                 }
             }
         });
@@ -118,15 +118,15 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
-            ////Test:
-            //path = tree.getPathForLocation(x, y);
-            //if (tree.getSelectionModel().isPathSelected(path)) {
-            //    super.show(c, x, y);
-            //}
+            // // Test:
+            // path = tree.getPathForLocation(x, y);
+            // if (tree.getSelectionModel().isPathSelected(path)) {
+            //     super.show(c, x, y);
+            // }
             TreePath[] tsp = tree.getSelectionPaths();
-            path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
+            path = tree.getPathForLocation(x, y); // Test: path = tree.getClosestPathForLocation(x, y);
             boolean isEditable = tsp.length == 1 && tsp[0].equals(path);
-            //Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
+            // Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
             editItem.setEnabled(isEditable);
             editDialogItem.setEnabled(isEditable);
             super.show(c, x, y);

@@ -29,19 +29,19 @@ public final class MainPanel extends JPanel {
         p2.add(makeColorSpinner(items));
         p2.setBorder(BorderFactory.createTitledBorder("ColorSpinner(JComboBox)"));
 
-//         // TEST:
-//         JPanel p3 = new JPanel(new BorderLayout(5, 5));
-//         JSpinner spinner = new JSpinner(new SpinnerListModel(items)) {
-//             @Override public void setEditor(JComponent editor) {
-//                 JComponent oldEditor = getEditor();
-//                 if (!editor.equals(oldEditor) && oldEditor instanceof HTMLListEditor) {
-//                     ((HTMLListEditor) oldEditor).dismiss(this);
-//                 }
-//                 super.setEditor(editor);
-//             }
-//         };
-//         spinner.setEditor(new HTMLListEditor(spinner));
-//         p3.add(spinner);
+        // // TEST:
+        // JPanel p3 = new JPanel(new BorderLayout(5, 5));
+        // JSpinner spinner = new JSpinner(new SpinnerListModel(items)) {
+        //     @Override public void setEditor(JComponent editor) {
+        //         JComponent oldEditor = getEditor();
+        //         if (!editor.equals(oldEditor) && oldEditor instanceof HTMLListEditor) {
+        //             ((HTMLListEditor) oldEditor).dismiss(this);
+        //         }
+        //         super.setEditor(editor);
+        //     }
+        // };
+        // spinner.setEditor(new HTMLListEditor(spinner));
+        // p3.add(spinner);
 
         JPanel panel = new JPanel(new BorderLayout(25, 25));
         panel.add(p1, BorderLayout.NORTH);
@@ -138,14 +138,14 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
         button.setVisible(false);
         return button;
     }
-//     @Override public void setPopupVisible(JComboBox c, boolean v) {
-//         System.out.println("setPopupVisible: " + v);
-//         if (v) {
-//             popup.show();
-//         } else {
-//             popup.hide();
-//         }
-//     }
+    // @Override public void setPopupVisible(JComboBox c, boolean v) {
+    //     System.out.println("setPopupVisible: " + v);
+    //     if (v) {
+    //         popup.show();
+    //     } else {
+    //         popup.hide();
+    //     }
+    // }
     @Override protected ComboPopup createPopup() {
         return new BasicComboPopup(comboBox) {
             @Override public void show() {

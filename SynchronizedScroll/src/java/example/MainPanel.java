@@ -42,14 +42,14 @@ public final class MainPanel extends JPanel {
                 adjflg = true;
                 Dimension dim1 = src.getViewSize();
                 Dimension siz1 = src.getSize();
-                Point     pnt1 = src.getViewPosition();
+                Point pnt1 = src.getViewPosition();
                 Dimension dim2 = tgt.getViewSize();
                 Dimension siz2 = tgt.getSize();
-                //Point     pnt2 = tgt.getViewPosition();
+                // Point pnt2 = tgt.getViewPosition();
                 double d;
                 d = pnt1.getY() / (dim1.getHeight() - siz1.getHeight()) * (dim2.getHeight() - siz2.getHeight());
                 pnt1.y = (int) d;
-                d = pnt1.getX() / (dim1.getWidth()  - siz1.getWidth())  * (dim2.getWidth()  - siz2.getWidth());
+                d = pnt1.getX() / (dim1.getWidth() - siz1.getWidth()) * (dim2.getWidth() - siz2.getWidth());
                 pnt1.x = (int) d;
                 tgt.setViewPosition(pnt1);
                 adjflg = false;
@@ -58,19 +58,19 @@ public final class MainPanel extends JPanel {
         sp1.getViewport().addChangeListener(cl);
         sp2.getViewport().addChangeListener(cl);
 
-//         //Test:
-//         lbl1.setPreferredSize(new Dimension(1200, 600));
-//         lbl2.setPreferredSize(new Dimension(1200, 600));
-//         Dimension d1 = lbl1.getPreferredSize();
-//         Dimension d2 = lbl2.getPreferredSize();
-//         if (d1.width == d2.width) {
-//             BoundedRangeModel m = sp1.getHorizontalScrollBar().getModel();
-//             sp2.getHorizontalScrollBar().setModel(m);
-//         }
-//         if (d1.height == d2.height) {
-//             BoundedRangeModel m = sp1.getVerticalScrollBar().getModel();
-//             sp2.getVerticalScrollBar().setModel(m);
-//         }
+        // // Test:
+        // lbl1.setPreferredSize(new Dimension(1200, 600));
+        // lbl2.setPreferredSize(new Dimension(1200, 600));
+        // Dimension d1 = lbl1.getPreferredSize();
+        // Dimension d2 = lbl2.getPreferredSize();
+        // if (d1.width == d2.width) {
+        //     BoundedRangeModel m = sp1.getHorizontalScrollBar().getModel();
+        //     sp2.getHorizontalScrollBar().setModel(m);
+        // }
+        // if (d1.height == d2.height) {
+        //     BoundedRangeModel m = sp1.getVerticalScrollBar().getModel();
+        //     sp2.getVerticalScrollBar().setModel(m);
+        // }
         add(sp1);
         add(sp2);
         setPreferredSize(new Dimension(320, 240));

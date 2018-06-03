@@ -85,11 +85,11 @@ public class MainPanel extends JPanel {
 
         field.getActionMap().put("find-next", findNextAction);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 SwingUtilities.getRootPane(button).setDefaultButton(button);
-//             }
-//         });
+        // EventQueue.invokeLater(new Runnable() {
+        //     @Override public void run() {
+        //         SwingUtilities.getRootPane(button).setDefaultButton(button);
+        //     }
+        // });
 
         controls.setBorder(BorderFactory.createTitledBorder("Search down"));
         controls.add(new JLabel("Find what:"), BorderLayout.WEST);
@@ -147,31 +147,31 @@ public class MainPanel extends JPanel {
         }
     }
 
-//     // <blockquote cite="https://community.oracle.com/thread/1357454"
-//     //           title="how to get everything in DefaultTreeNode">
-//     public void traverse(JTree tree) {
-//         TreeModel model = tree.getModel();
-//         Object root;
-//         if (Objects.nonNull(model)) {
-//             root = model.getRoot();
-//             walk(model, root);
-//         } else {
-//             System.out.println("Tree is empty.");
-//         }
-//     }
-//     protected void walk(TreeModel model, Object o) {
-//         int cc = model.getChildCount(o);
-//         for (int i=0; i < cc; i++) {
-//             DefaultMutableTreeNode child = (DefaultMutableTreeNode) model.getChild(o, i);
-//             if (model.isLeaf(child)) {
-//                 System.out.println(child);
-//             } else {
-//                 System.out.println(child);
-//                 walk(model, child);
-//             }
-//         }
-//     }
-//     // <blockquote />
+    // // <blockquote cite="https://community.oracle.com/thread/1357454"
+    // //           title="how to get everything in DefaultTreeNode">
+    // public void traverse(JTree tree) {
+    //     TreeModel model = tree.getModel();
+    //     Object root;
+    //     if (Objects.nonNull(model)) {
+    //         root = model.getRoot();
+    //         walk(model, root);
+    //     } else {
+    //         System.out.println("Tree is empty.");
+    //     }
+    // }
+    // protected void walk(TreeModel model, Object o) {
+    //     int cc = model.getChildCount(o);
+    //     for (int i=0; i < cc; i++) {
+    //         DefaultMutableTreeNode child = (DefaultMutableTreeNode) model.getChild(o, i);
+    //         if (model.isLeaf(child)) {
+    //             System.out.println(child);
+    //         } else {
+    //             System.out.println(child);
+    //             walk(model, child);
+    //         }
+    //     }
+    // }
+    // // <blockquote />
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

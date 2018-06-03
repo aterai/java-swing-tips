@@ -15,8 +15,8 @@ public final class MainPanel extends JPanel {
         JButton button1 = new JButton("default");
         button1.addActionListener(e -> {
             UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", false);
-            //JOptionPane.showConfirmDialog(getRootPane(), "message");
-            //JOptionPane pane1 = new JOptionPane("message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
+            // JOptionPane.showConfirmDialog(getRootPane(), "message");
+            // JOptionPane pane1 = new JOptionPane("message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
             UIDefaults d = new UIDefaults();
             d.put("OptionPane.sameSizeButtons", false);
             op.putClientProperty("Nimbus.Overrides", d);
@@ -27,9 +27,9 @@ public final class MainPanel extends JPanel {
 
         JButton button2 = new JButton("sameSizeButtons");
         button2.addActionListener(e -> {
-            //UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
-            //UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(Color.RED, 10));
-            //JOptionPane.showConfirmDialog(getRootPane(), "message");
+            // UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
+            // UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(Color.RED, 10));
+            // JOptionPane.showConfirmDialog(getRootPane(), "message");
             UIDefaults d = new UIDefaults();
             if (borderCheck.isSelected()) {
                 d.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(Color.RED, 10));
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            //UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
+            // UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

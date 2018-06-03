@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
-//     private static final IAppInstanceCounter counter = new JVMDescriptorInstanceCounter();
+    // private static final IAppInstanceCounter counter = new JVMDescriptorInstanceCounter();
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-//         if (counter.getInstanceCount() > 1) {
-//             JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
-//             return;
-//         }
+        // if (counter.getInstanceCount() > 1) {
+        //     JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
+        //     return;
+        // }
 
         // Java Swing Hacks #68
         ServerSocket socket = null;

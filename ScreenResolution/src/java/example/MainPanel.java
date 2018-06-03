@@ -60,18 +60,18 @@ public final class MainPanel extends JPanel {
                 }
             }
         };
-        //tree.setRowHeight(0);
+        // tree.setRowHeight(0);
         JSplitPane sp = new JSplitPane() {
-//             @Override protected void paintComponent(Graphics g) {
-//                 //TEST
-//                 Graphics2D g2 = (Graphics2D) g.create();
-//                 GraphicsConfiguration gc = g2.getDeviceConfiguration();
-//                 System.out.println(gc.getDefaultTransform());
-//                 g2.setTransform(gc.getDefaultTransform());
-//                 System.out.println(gc.getNormalizingTransform());
-//                 g2.transform(gc.getNormalizingTransform());
-//                 super.paintComponent(g2);
-//             }
+            // // TEST:
+            // @Override protected void paintComponent(Graphics g) {
+            //     Graphics2D g2 = (Graphics2D) g.create();
+            //     GraphicsConfiguration gc = g2.getDeviceConfiguration();
+            //     System.out.println(gc.getDefaultTransform());
+            //     g2.setTransform(gc.getDefaultTransform());
+            //     System.out.println(gc.getNormalizingTransform());
+            //     g2.transform(gc.getNormalizingTransform());
+            //     super.paintComponent(g2);
+            // }
         };
         sp.setLeftComponent(new JScrollPane(table));
         sp.setRightComponent(new JScrollPane(tree));

@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         p.add(new JButton(selectAllAction));
         p.add(new JButton(copyAction));
 
-        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT); //Panel(new GridLayout(2, 1));
+        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT); // Panel(new GridLayout(2, 1));
         sp.setTopComponent(new JScrollPane(table));
         sp.setBottomComponent(new JScrollPane(new JTextArea()));
         sp.setResizeWeight(.5);

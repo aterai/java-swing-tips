@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
                 setUI(new BasicCheckBoxMenuItemUI() {
                     // https://stackoverflow.com/questions/3759379/how-to-prevent-jpopupmenu-disappearing-when-checking-checkboxes-in-it
                     @Override protected void doClick(MenuSelectionManager msm) {
-                        //super.doClick(msm);
+                        // super.doClick(msm);
                         System.out.println("MenuSelectionManager: doClick");
                         menuItem.doClick(0);
                     }

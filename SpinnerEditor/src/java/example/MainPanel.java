@@ -6,13 +6,13 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JSpinner spinner  = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
+    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     private final JSpinner spinner0 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     public MainPanel() {
         super(new BorderLayout());
 
-        //UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
+        // UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
         JTextField field = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
         field.setEditable(false);
         field.setBackground(UIManager.getColor("FormattedTextField.background"));

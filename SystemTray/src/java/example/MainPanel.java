@@ -11,15 +11,15 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static TrayIcon makeTrayIcon(JFrame frame) {
-//         SystemTray tray = SystemTray.getSystemTray();
-//         Dimension d = tray.getTrayIconSize();
-//         BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
-//         ImageIcon i = new ImageIcon(getClass().getResource("16x16.png"));
-//         Graphics2D g2 = image.createGraphics();
-//         g2.setBackground(new Color(0x0, true));
-//         g2.clearRect(0, 0, d.width, d.height);
-//         i.paintIcon(null, g2, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
-//         g2.dispose();
+        // SystemTray tray = SystemTray.getSystemTray();
+        // Dimension d = tray.getTrayIconSize();
+        // BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+        // ImageIcon i = new ImageIcon(getClass().getResource("16x16.png"));
+        // Graphics2D g2 = image.createGraphics();
+        // g2.setBackground(new Color(0x0, true));
+        // g2.clearRect(0, 0, d.width, d.height);
+        // i.paintIcon(null, g2, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
+        // g2.dispose();
 
         MenuItem item1 = new MenuItem("OPEN");
         item1.addActionListener(e -> {

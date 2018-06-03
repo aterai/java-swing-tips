@@ -73,9 +73,9 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
         int py = rect.y + rect.height - (int) (factory * array.get(i));
         publish(new Rectangle(px, py, 4, 4));
 
-//         double t = array.get(i);
-//         array.set(i, array.get(j));
-//         array.set(j, t);
+        // double t = array.get(i);
+        // array.set(i, array.get(j));
+        // array.set(j, t);
         Collections.swap(array, i, j);
 
         px = (int) (rect.x + factorx * i);

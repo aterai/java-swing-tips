@@ -11,11 +11,8 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "Integer", "Boolean"};
     private final Object[][] data = {
-        {50, 50, false},
-        {13, 13, true},
-        {0,  0,  false},
-        {20, 20, true},
-        {99, 99, false}
+        {50, 50, false}, {13, 13, true}, {0, 0, false},
+        {20, 20, true}, {99, 99, false}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -34,7 +31,7 @@ public final class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(26);
 
-        //SliderEditorRednerer ser = new SliderEditorRednerer(table);
+        // SliderEditorRednerer ser = new SliderEditorRednerer(table);
         table.getColumnModel().getColumn(1).setCellRenderer(new SliderRednerer());
         table.getColumnModel().getColumn(1).setCellEditor(new SliderEditor());
         add(new JScrollPane(table));
@@ -76,7 +73,7 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
         }
         return this;
     }
-    //Overridden for performance reasons. ---->
+    // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
@@ -89,19 +86,19 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
         }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-//         //System.out.println(propertyName);
-//         if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-//             super.firePropertyChange(propertyName, oldValue, newValue);
-//         }
+        // // System.out.println(propertyName);
+        // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //     super.firePropertyChange(propertyName, oldValue, newValue);
+        // }
     }
     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void repaint() { /* Overridden for performance reasons. */ }
     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void validate() { /* Overridden for performance reasons. */ }
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+    // <---- Overridden for performance reasons.
 }
 
 class SliderEditor extends JSlider implements TableCellEditor {
@@ -136,9 +133,9 @@ class SliderEditor extends JSlider implements TableCellEditor {
         return Integer.valueOf(getValue());
     }
 
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
+    // Copied from AbstractCellEditor
+    // protected EventListenerList listenerList = new EventListenerList();
+    // protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

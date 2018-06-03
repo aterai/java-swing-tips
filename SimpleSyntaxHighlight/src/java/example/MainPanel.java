@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
+// This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
 // Fast styled JTextPane editor | Oracle Community
 // @author camickr
 // @author David Underhill
@@ -46,15 +46,15 @@ public final class MainPanel extends JPanel {
 // modified by aterai aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
-    //HashMap<String, AttributeSet> keywords = new HashMap<>();
+    // HashMap<String, AttributeSet> keywords = new HashMap<>();
     private static final String OPERANDS = ".,";
     private final Style def = getStyle(StyleContext.DEFAULT_STYLE);
     protected SimpleSyntaxDocument() {
         super();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(addStyle("red",   def), Color.RED);
+        // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        StyleConstants.setForeground(addStyle("red", def), Color.RED);
         StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
-        StyleConstants.setForeground(addStyle("blue",  def), Color.BLUE);
+        StyleConstants.setForeground(addStyle("blue", def), Color.BLUE);
     }
     @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
@@ -89,9 +89,9 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private void applyHighlighting(String content, int line) throws BadLocationException {
         Element root = getDefaultRootElement();
-        int startOffset   = root.getElement(line).getStartOffset();
-        int endOffset     = root.getElement(line).getEndOffset() - 1;
-        int lineLength    = endOffset - startOffset;
+        int startOffset = root.getElement(line).getStartOffset();
+        int endOffset = root.getElement(line).getEndOffset() - 1;
+        int lineLength = endOffset - startOffset;
         int contentLength = content.length();
         endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
         setCharacterAttributes(startOffset, lineLength, def, true);
@@ -120,7 +120,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         }
         String token = content.substring(startOffset, endOfToken);
         Style s = getStyle(token);
-        //if (keywords.containsKey(token)) {
+        // if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
         if (Objects.nonNull(s)) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);

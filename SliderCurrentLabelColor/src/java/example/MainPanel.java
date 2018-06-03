@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         slider2.setSnapToTicks(true);
         slider2.setPaintTicks(true);
         slider2.setPaintLabels(true);
-        //slider2.setMajorTickSpacing(1);
+        // slider2.setMajorTickSpacing(1);
         ((Component) labelTable.get(0)).setForeground(Color.RED);
 
         Box box = Box.createVerticalBox();
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     private static JSlider makeSlider() {
         JSlider slider = new JSlider(0, 100);
         slider.setMajorTickSpacing(10);
-        //slider.setMinorTickSpacing(5);
+        // slider.setMinorTickSpacing(5);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
         slider.setPaintTicks(true);

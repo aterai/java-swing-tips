@@ -13,14 +13,14 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         SlideInNotification handler = new SlideInNotification();
 
-//         optionPane.addPropertyChangeListener(e -> {
-//             if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
-//                 Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
-//                 dialog.setVisible(false);
-//             }
-//         });
-//         dialog.getContentPane().add(optionPane);
-//         dialog.pack();
+        // optionPane.addPropertyChangeListener(e -> {
+        //     if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
+        //         Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+        //         dialog.setVisible(false);
+        //     }
+        // });
+        // dialog.getContentPane().add(optionPane);
+        // dialog.pack();
 
         JButton easeIn = new JButton("easeIn");
         easeIn.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN));
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     public static final int DELAY = 5;
-    public static final int STEP  = 3;
+    public static final int STEP = 3;
     protected final JWindow dialog = new JWindow((Frame) null);
     protected final Timer animator = new Timer(DELAY, null);
     private transient ActionListener listener;
@@ -169,15 +169,6 @@ final class AnimationUtil {
         return Math.pow(t - 1d, N) + 1d;
     }
     public static double easeInOut(double t) {
-/*/
-        boolean isFirstHalf = t < .5;
-        if (isFirstHalf) {
-            return .5 * Math.pow(t * 2d, N);
-        } else {
-            return .5 * (Math.pow(t * 2d - 2d, N) + 2d);
-        }
-    }
-/*/
         double ret;
         boolean isFirstHalf = t < .5;
         if (isFirstHalf) {
@@ -194,7 +185,6 @@ final class AnimationUtil {
     public static double intpow(double da, int ib) {
         int b = ib;
         if (b < 0) {
-            // return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;
@@ -206,8 +196,4 @@ final class AnimationUtil {
         }
         return d;
     }
-//*/
-//     public static double delta(double t) {
-//         return 1d - Math.sin(Math.acos(t));
-//     }
 }

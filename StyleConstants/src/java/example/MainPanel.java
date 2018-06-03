@@ -8,7 +8,7 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextPane jtp = new JTextPane();
-    private final JButton ok  = new JButton("Test");
+    private final JButton ok = new JButton("Test");
     private final JButton err = new JButton("Error");
     private final JButton clr = new JButton("Clear");
 
@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
 
         jtp.setEditable(false);
         StyledDocument doc = jtp.getStyledDocument();
-        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
         Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
 
-        //Style regular = doc.addStyle("regular", def);
-        //StyleConstants.setForeground(def, Color.BLACK);
+        // Style regular = doc.addStyle("regular", def);
+        // StyleConstants.setForeground(def, Color.BLACK);
 
         Style error = doc.addStyle("error", def);
         StyleConstants.setForeground(error, Color.RED);
@@ -45,26 +45,26 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-//     private static final String SEPARATOR = "\n";
-//     private void append_(String str, boolean flg) {
-//         MutableAttributeSet sas = null;
-//         if (!flg) {
-//             //sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
-//             sas = new SimpleAttributeSet();
-//             StyleConstants.setForeground(sas, Color.RED);
-//             //StyleConstants.setBold(sas, true);
-//             //StyleConstants.setFontFamily(sas, Font.MONOSPACED);
-//             //StyleConstants.setFontSize(sas, 32);
-//             //StyleConstants.setForeground(sas, Color.GREEN);
-//         }
-//         try {
-//             Document doc = jtp.getDocument();
-//             doc.insertString(doc.getLength(), str + SEPARATOR, sas);
-//             jtp.setCaretPosition(doc.getLength());
-//         } catch (BadLocationException ex) {
-//             ex.printStackTrace();
-//         }
-//     }
+    // private static final String SEPARATOR = "\n";
+    // private void append_(String str, boolean flg) {
+    //     MutableAttributeSet sas = null;
+    //     if (!flg) {
+    //         // sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
+    //         sas = new SimpleAttributeSet();
+    //         StyleConstants.setForeground(sas, Color.RED);
+    //         // StyleConstants.setBold(sas, true);
+    //         // StyleConstants.setFontFamily(sas, Font.MONOSPACED);
+    //         // StyleConstants.setFontSize(sas, 32);
+    //         // StyleConstants.setForeground(sas, Color.GREEN);
+    //     }
+    //     try {
+    //         Document doc = jtp.getDocument();
+    //         doc.insertString(doc.getLength(), str + SEPARATOR, sas);
+    //         jtp.setCaretPosition(doc.getLength());
+    //     } catch (BadLocationException ex) {
+    //         ex.printStackTrace();
+    //     }
+    // }
     private void append(String str, boolean flg) {
         String style = flg ? StyleContext.DEFAULT_STYLE : "error";
         StyledDocument doc = jtp.getStyledDocument();

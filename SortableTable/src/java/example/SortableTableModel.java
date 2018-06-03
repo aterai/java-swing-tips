@@ -40,37 +40,37 @@ class ColumnComparator implements Comparator<Object>, Serializable {
         }
         return 0;
     }
-//     @Override public int compare(Object one, Object two) {
-//         if (one instanceof Vector && two instanceof Vector) {
-//             Object oOne = ((Vector) one).get(index);
-//             Object oTwo = ((Vector) two).get(index);
-//             int dir = ascending ? 1 : -1;
-//             if (oOne instanceof Comparable && oTwo instanceof Comparable) {
-//                 Comparable cOne = (Comparable) oOne;
-//                 Comparable cTwo = (Comparable) oTwo;
-//                 return cOne.compareTo(cTwo) * dir;
-//             } else if (oOne == null && oTwo == null) {
-//                 return 0;
-//             } else if (oOne == null) {
-//                 return -1 * dir;
-//             } else { // if (oTwo == null) {
-//                 return 1 * dir;
-//             }
-//         }
-//         return 1;
-//     }
-//     @Override public int compare(Number o1, Number o2) {
-//         return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
-// //         double n1 = o1.doubleValue();
-// //         double n2 = o2.doubleValue();
-// //         if (n1 < n2) {
-// //             return -1;
-// //         } else if (n1 > n2) {
-// //             return 1;
-// //         } else {
-// //             return 0;
-// //         }
-//     }
+    // @Override public int compare(Object one, Object two) {
+    //     if (one instanceof Vector && two instanceof Vector) {
+    //         Object oOne = ((Vector) one).get(index);
+    //         Object oTwo = ((Vector) two).get(index);
+    //         int dir = ascending ? 1 : -1;
+    //         if (oOne instanceof Comparable && oTwo instanceof Comparable) {
+    //             Comparable cOne = (Comparable) oOne;
+    //             Comparable cTwo = (Comparable) oTwo;
+    //             return cOne.compareTo(cTwo) * dir;
+    //         } else if (oOne == null && oTwo == null) {
+    //             return 0;
+    //         } else if (oOne == null) {
+    //             return -1 * dir;
+    //         } else { // if (oTwo == null) {
+    //             return 1 * dir;
+    //         }
+    //     }
+    //     return 1;
+    // }
+    // @Override public int compare(Number o1, Number o2) {
+    //     return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
+    //     // double n1 = o1.doubleValue();
+    //     // double n2 = o2.doubleValue();
+    //     // if (n1 < n2) {
+    //     //     return -1;
+    //     // } else if (n1 > n2) {
+    //     //     return 1;
+    //     // } else {
+    //     //     return 0;
+    //     // }
+    // }
 }
 
 class SortButtonRenderer extends JButton implements TableCellRenderer {

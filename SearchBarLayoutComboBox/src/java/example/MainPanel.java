@@ -24,16 +24,16 @@ public final class MainPanel extends JPanel {
         JComboBox<SearchEngine> combo = new JSearchBar<>(model);
         combo.getEditor().setItem("java swing");
 
-//         JComboBox combo = new JComboBox(model);
-//         combo.setUI(new BasicSearchBarComboBoxUI());
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 SearchEngine se = combo.getItemAt(0);
-//                 JButton arrowButton = (JButton) combo.getComponent(0);
-//                 arrowButton.setIcon(se.favicon);
-//                 combo.getEditor().setItem("java swing");
-//             }
-//         });
+        // JComboBox combo = new JComboBox(model);
+        // combo.setUI(new BasicSearchBarComboBoxUI());
+        // EventQueue.invokeLater(new Runnable() {
+        //     @Override public void run() {
+        //         SearchEngine se = combo.getItemAt(0);
+        //         JButton arrowButton = (JButton) combo.getComponent(0);
+        //         arrowButton.setIcon(se.favicon);
+        //         combo.getEditor().setItem("java swing");
+        //     }
+        // });
 
         p.add(combo);
         // p.add(new SearchBarComboBox(makeModel()));
@@ -93,9 +93,9 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
     @Override public SearchBarComboBoxUI getUI() {
         return (SearchBarComboBoxUI) ui;
     }
-//     @Override public void setUI(SearchBarComboBoxUI newUI) {
-//         super.setUI(newUI);
-//     }
+    // @Override public void setUI(SearchBarComboBoxUI newUI) {
+    //     super.setUI(newUI);
+    // }
     @Override public void updateUI() {
         super.updateUI();
         if (Objects.nonNull(UIManager.get(getUIClassID()))) {
@@ -109,16 +109,16 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
         if (Objects.nonNull(se)) {
             arrowButton.setIcon(se.favicon);
         }
-//         ListCellRenderer<? super SearchEngine> renderer = getRenderer();
-//         if (renderer instanceof Component) {
-//             SwingUtilities.updateComponentTreeUI((Component) renderer);
-//         }
+        // ListCellRenderer<? super SearchEngine> renderer = getRenderer();
+        // if (renderer instanceof Component) {
+        //     SwingUtilities.updateComponentTreeUI((Component) renderer);
+        // }
     }
-//     protected JSearchBar() {
-//         super();
-//         setModel(new DefaultComboBoxModel<>());
-//         init();
-//     }
+    // protected JSearchBar() {
+    //     super();
+    //     setModel(new DefaultComboBoxModel<>());
+    //     init();
+    // }
     protected JSearchBar(ComboBoxModel<E> model) {
         super(model);
         // setModel(model);
@@ -130,16 +130,16 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
         // setModel(new DefaultComboBoxModel<>(items));
         // init();
     }
-//     protected JSearchBar(Vector<?> items) {
-//         super();
-//         setModel(new DefaultComboBoxModel(items));
-//         init();
-//     }
-//     private void init() {
-//         installAncestorListener();
-//         // setUIProperty("opaque", true);
-//         updateUI();
-//     }
+    // protected JSearchBar(Vector<?> items) {
+    //     super();
+    //     setModel(new DefaultComboBoxModel(items));
+    //     init();
+    // }
+    // private void init() {
+    //     installAncestorListener();
+    //     // setUIProperty("opaque", true);
+    //     updateUI();
+    // }
     @Override protected void processFocusEvent(FocusEvent e) {
         System.out.println("processFocusEvent");
     }

@@ -56,22 +56,22 @@ public final class MainPanel extends JPanel {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-//             try {
-//                 File tmp = File.createTempFile("_tmp", ".html");
-//                 tmp.deleteOnExit();
-//                 try (InputStream in = new BufferedInputStream(url.openStream());
-//                      OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
-//                     byte buf[] = new byte[256];
-//                     int len;
-//                     while ((len = in.read(buf)) != -1) {
-//                         out.write(buf, 0, len);
-//                     }
-//                     out.flush();
-//                     Desktop.getDesktop().browse(tmp.toURI());
-//                 }
-//             } catch (IOException ex) {
-//                 ex.printStackTrace();
-//             }
+            // try {
+            //     File tmp = File.createTempFile("_tmp", ".html");
+            //     tmp.deleteOnExit();
+            //     try (InputStream in = new BufferedInputStream(url.openStream());
+            //          OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
+            //         byte buf[] = new byte[256];
+            //         int len;
+            //         while ((len = in.read(buf)) != -1) {
+            //             out.write(buf, 0, len);
+            //         }
+            //         out.flush();
+            //         Desktop.getDesktop().browse(tmp.toURI());
+            //     }
+            // } catch (IOException ex) {
+            //     ex.printStackTrace();
+            // }
         }
     }
     private static Component makeTitledPanel(String title, Component c) {

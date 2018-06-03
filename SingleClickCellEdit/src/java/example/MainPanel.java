@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
 
-//         TableColumn col = table.getColumnModel().getColumn(0);
-//         col.setMinWidth(50);
-//         col.setMaxWidth(50);
-//         col.setResizable(false);
+        // TableColumn col = table.getColumnModel().getColumn(0);
+        // col.setMinWidth(50);
+        // col.setMaxWidth(50);
+        // col.setResizable(false);
 
         TableCellRenderer defaultRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(Object.class);
         UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();

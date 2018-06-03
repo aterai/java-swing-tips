@@ -14,10 +14,10 @@ public final class MainPanel extends JPanel {
         styleSheet.addRule(".highlight {color: red; background: green}");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
-        //HTMLDocument htmlDocument = (HTMLDocument) htmlEditorKit.createDefaultDocument();
+        // HTMLDocument htmlDocument = (HTMLDocument) htmlEditorKit.createDefaultDocument();
         JEditorPane editor = new JEditorPane();
         editor.setEditorKit(htmlEditorKit);
-        //editor.setDocument(htmlDocument);
+        // editor.setDocument(htmlDocument);
         editor.setText(makeTestHtml());
         add(new JScrollPane(editor));
         setPreferredSize(new Dimension(320, 240));

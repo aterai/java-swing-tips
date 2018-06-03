@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.*;
-//import sun.awt.shell.ShellFolder;
+// import sun.awt.shell.ShellFolder;
 
 public class MainPanel extends JPanel {
     protected final JLabel smallLabel = new JLabel() {
