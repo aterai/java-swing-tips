@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ComboBoxFocusBorder" />
+  <property name="jnlp.Name"     value="ComboBoxFocusBorder" />
+  <property name="jnlp.name"     value="comboboxfocusborder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxfocusborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxFocusBorder.html" />
+</project>
