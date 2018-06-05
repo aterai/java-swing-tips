@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel {
         DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
         JList<CheckBoxNode> list2 = new CheckBoxList<>(model);
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
         JTree list3 = new JTree() {
             @Override public void updateUI() {
                 setCellRenderer(null);
@@ -36,16 +35,15 @@ public final class MainPanel extends JPanel {
         p.add(makeTitledPanel("JList", new JScrollPane(list2)));
         p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
-        for (String title: Arrays.asList(
-                "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
-                "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
+        Arrays.asList("aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj").forEach(title -> {
             boolean isSelected = title.length() % 2 == 0;
             JCheckBox c = new JCheckBox(title, isSelected);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             list1.add(c);
             model.addElement(new CheckBoxNode(title, isSelected));
             root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
-        }
+        });
         list3.setModel(new DefaultTreeModel(root));
 
         add(new JLabel("JCheckBox in ", SwingConstants.CENTER), BorderLayout.NORTH);
