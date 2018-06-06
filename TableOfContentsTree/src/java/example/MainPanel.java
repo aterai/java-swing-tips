@@ -153,36 +153,36 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 return (Component) l;
             });
     }
-//     // @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-//     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-//         if (value instanceof DefaultMutableTreeNode) {
-//             DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
-//             Object o = n.getUserObject();
-//             if (o instanceof TableOfContents) {
-//                 TableOfContents toc = (TableOfContents) o;
-//                 int gap = l.getIconTextGap();
-//                 Dimension d = l.getPreferredSize();
-//                 Insets ins = tree.getInsets();
-//
-//                 p.removeAll();
-//                 p.add(l, BorderLayout.WEST);
-//                 if (isSynth) {
-//                     p.setForeground(l.getForeground());
-//                 }
-//
-//                 pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
-//                 pn = toc.page;
-//                 rxs = d.width + gap;
-//                 rxe = tree.getWidth() - ins.right - gap;
-//
-//                 p.setOpaque(false);
-//                 return p;
-//             }
-//         }
-//         pn = -1;
-//         return l;
-//     }
+    // // @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
+    // @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    //     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    //     if (value instanceof DefaultMutableTreeNode) {
+    //         DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
+    //         Object o = n.getUserObject();
+    //         if (o instanceof TableOfContents) {
+    //             TableOfContents toc = (TableOfContents) o;
+    //             int gap = l.getIconTextGap();
+    //             Dimension d = l.getPreferredSize();
+    //             Insets ins = tree.getInsets();
+    //
+    //             p.removeAll();
+    //             p.add(l, BorderLayout.WEST);
+    //             if (isSynth) {
+    //                 p.setForeground(l.getForeground());
+    //             }
+    //
+    //             pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
+    //             pn = toc.page;
+    //             rxs = d.width + gap;
+    //             rxe = tree.getWidth() - ins.right - gap;
+    //
+    //             p.setOpaque(false);
+    //             return p;
+    //         }
+    //     }
+    //     pn = -1;
+    //     return l;
+    // }
 }
 
 // // TEST:
@@ -277,16 +277,16 @@ class TableOfContentsTree extends JTree {
                 visRect.y -= height;
                 visRect.height += height;
             });
-//         Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-//         if (container instanceof JScrollPane) {
-//             JScrollPane pane = (JScrollPane) container;
-//             JScrollBar bar = pane.getHorizontalScrollBar();
-//             if (bar != null && bar.isVisible()) {
-//                 int height = bar.getHeight();
-//                 visRect.y -= height;
-//                 visRect.height += height;
-//             }
-//         }
+        // Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+        // if (container instanceof JScrollPane) {
+        //     JScrollPane pane = (JScrollPane) container;
+        //     JScrollBar bar = pane.getHorizontalScrollBar();
+        //     if (bar != null && bar.isVisible()) {
+        //         int height = bar.getHeight();
+        //         visRect.y -= height;
+        //         visRect.height += height;
+        //     }
+        // }
         return visRect;
     }
     @Override protected void paintComponent(Graphics g) {

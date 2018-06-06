@@ -74,7 +74,7 @@ class TranslucentScrollPaneLayout extends ScrollPaneLayout {
             availR.x = insets.left;
             availR.y = insets.top;
             availR.width -= insets.left + insets.right;
-            availR.height -= insets.top  + insets.bottom;
+            availR.height -= insets.top + insets.bottom;
 
             Rectangle vsbR = new Rectangle();
             vsbR.width = 12;

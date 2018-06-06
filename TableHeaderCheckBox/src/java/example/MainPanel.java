@@ -129,15 +129,15 @@ class HeaderRenderer implements TableCellRenderer {
         label.setIcon(new ComponentIcon(check));
         l.setIcon(new ComponentIcon(label));
         l.setText(null); // XXX: Nimbus???
-//         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-//         System.out.println("getPreferredSize: " + l.getPreferredSize());
-//         System.out.println("getMaximunSize: " + l.getMaximumSize());
-//         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-//             System.out.println(l.getPreferredSize().height);
-//             Rectangle rect = table.getTableHeader().getHeaderRect(column);
-//             l.setPreferredSize(new Dimension(0, rect.height));
-//         }
+        // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
+        // System.out.println("getPreferredSize: " + l.getPreferredSize());
+        // System.out.println("getMaximunSize: " + l.getMaximumSize());
+        // System.out.println("----");
+        // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
+        //     System.out.println(l.getPreferredSize().height);
+        //     Rectangle rect = table.getTableHeader().getHeaderRect(column);
+        //     l.setPreferredSize(new Dimension(0, rect.height));
+        // }
         return l;
     }
 }
@@ -181,30 +181,30 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
             return true;
         }
     }
-//     private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-//         if (Status.INDETERMINATE.equals(status)) {
-//             boolean selected = true;
-//             boolean deselected = true;
-//             for (int i = 0; i < m.getRowCount(); i++) {
-//                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-//                 selected &= b;
-//                 deselected &= !b;
-//                 if (selected == deselected) {
-//                     return false;
-//                 }
-//             }
-//             if (deselected) {
-//                 column.setHeaderValue(Status.DESELECTED);
-//             } else if (selected) {
-//                 column.setHeaderValue(Status.SELECTED);
-//             } else {
-//                 return false;
-//             }
-//         } else {
-//             column.setHeaderValue(Status.INDETERMINATE);
-//         }
-//         return true;
-//     }
+    // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+    //     if (Status.INDETERMINATE.equals(status)) {
+    //         boolean selected = true;
+    //         boolean deselected = true;
+    //         for (int i = 0; i < m.getRowCount(); i++) {
+    //             Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+    //             selected &= b;
+    //             deselected &= !b;
+    //             if (selected == deselected) {
+    //                 return false;
+    //             }
+    //         }
+    //         if (deselected) {
+    //             column.setHeaderValue(Status.DESELECTED);
+    //         } else if (selected) {
+    //             column.setHeaderValue(Status.SELECTED);
+    //         } else {
+    //             return false;
+    //         }
+    //     } else {
+    //         column.setHeaderValue(Status.INDETERMINATE);
+    //     }
+    //     return true;
+    // }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
         JTable tbl = header.getTable();

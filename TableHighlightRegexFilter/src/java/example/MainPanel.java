@@ -132,7 +132,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
             int pos = 0;
             while (matcher.find(pos)) {
                 int start = matcher.start();
-                int end   = matcher.end();
+                int end = matcher.end();
                 try {
                     highlighter.addHighlight(start, end, highlightPainter);
                 } catch (BadLocationException | PatternSyntaxException ex) {

@@ -7,7 +7,7 @@ import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
-//import javax.swing.plaf.nimbus.*; //JDK 1.7.0
+// import javax.swing.plaf.nimbus.*; // JDK 1.7.0
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -15,11 +15,11 @@ public final class MainPanel extends JPanel {
         JTree tree1 = new TranslucentTree();
         JTree tree2 = new TransparentTree();
 
-//         //NimbusLookAndFeel(SynthLookAndFeel) JDK 1.7.0
-//         UIDefaults d = new UIDefaults();
-//         d.put("Tree:TreeCell[Enabled+Selected].backgroundPainter", new TransparentTreeCellPainter());
-//         tree2.putClientProperty("Nimbus.Overrides", d);
-//         tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+        // // NimbusLookAndFeel(SynthLookAndFeel) JDK 1.7.0
+        // UIDefaults d = new UIDefaults();
+        // d.put("Tree:TreeCell[Enabled+Selected].backgroundPainter", new TransparentTreeCellPainter());
+        // tree2.putClientProperty("Nimbus.Overrides", d);
+        // tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
         add(makeTranslucentScrollPane(tree1));
         add(makeTranslucentScrollPane(tree2));
@@ -163,9 +163,9 @@ class TranslucentTreeCellRenderer extends TransparentTreeCellRenderer {
 // https://ateraimemo.com/Swing/NimbusColorPalette.html
 // // JDK 1.7.0
 // class TransparentTreeCellPainter extends AbstractRegionPainter {
-//     //private PaintContext ctx = null;
+//     // private PaintContext ctx = null;
 //     @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] extendedCacheKeys) {
-//         //Do nothing
+//         // Do nothing
 //     }
 //     @Override protected final PaintContext getPaintContext() {
 //         return null;

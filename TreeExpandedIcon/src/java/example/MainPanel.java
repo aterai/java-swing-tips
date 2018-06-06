@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         Icon emptyIcon = new EmptyIcon();
-        UIManager.put("Tree.expandedIcon",  new IconUIResource(emptyIcon));
+        UIManager.put("Tree.expandedIcon", new IconUIResource(emptyIcon));
         UIManager.put("Tree.collapsedIcon", new IconUIResource(emptyIcon));
 
         JTree tree = new JTree();
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 ei = emptyIcon;
                 ci = emptyIcon;
             }
-            UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
+            UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
             UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
             SwingUtilities.updateComponentTreeUI(tree);
         });

@@ -27,16 +27,16 @@ public final class MainPanel extends JPanel {
             }
         });
 
-//         JButton postorder = new JButton("postorder");
-//         postorder.addActionListener(ev -> {
-//             textArea.setText("");
-//             // Java 9: Enumeration<TreeNode> e = root.postorderEnumeration();
-//             Enumeration<?> e = root.postorderEnumeration();
-//             while (e.hasMoreElements()) {
-//                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-//                 textArea.append(node.toString() + "\n");
-//             }
-//         });
+        // JButton postorder = new JButton("postorder");
+        // postorder.addActionListener(ev -> {
+        //     textArea.setText("");
+        //     // Java 9: Enumeration<TreeNode> e = root.postorderEnumeration();
+        //     Enumeration<?> e = root.postorderEnumeration();
+        //     while (e.hasMoreElements()) {
+        //         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+        //         textArea.append(node.toString() + "\n");
+        //     }
+        // });
 
         JButton breadthFirst = new JButton("breadthFirst");
         breadthFirst.addActionListener(ev -> {

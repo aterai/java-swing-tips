@@ -162,16 +162,16 @@ class RowHeaderList<E> extends JList<E> {
             table.changeSelection(row, 0, false, false);
             table.changeSelection(row, table.getColumnModel().getColumnCount() - 1, false, true);
             pressedRowIndex = row;
-//             table.setRowSelectionInterval(row, row);
-//             table.getSelectionModel().setSelectionInterval(row, row);
-//             tableSelection.clearSelection();
-//             table.getSelectionModel().setAnchorSelectionIndex(row);
-//             table.getSelectionModel().setLeadSelectionIndex(row);
-//             tableSelection.addSelectionInterval(row, row);
-//             listSelection.addSelectionInterval(row, row);
-//             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
-//             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
-//             table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount() - 1, false, true);
+            // table.setRowSelectionInterval(row, row);
+            // table.getSelectionModel().setSelectionInterval(row, row);
+            // tableSelection.clearSelection();
+            // table.getSelectionModel().setAnchorSelectionIndex(row);
+            // table.getSelectionModel().setLeadSelectionIndex(row);
+            // tableSelection.addSelectionInterval(row, row);
+            // listSelection.addSelectionInterval(row, row);
+            // table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
+            // table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
+            // table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount() - 1, false, true);
         }
         @Override public void mouseReleased(MouseEvent e) {
             listSelection.clearSelection();

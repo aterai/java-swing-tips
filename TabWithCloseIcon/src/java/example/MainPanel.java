@@ -11,13 +11,13 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(3, 1));
 
         JTabbedPaneWithCloseButton tab1 = new JTabbedPaneWithCloseButton();
-        JTabbedPaneWithCloseIcons  tab2 = new JTabbedPaneWithCloseIcons();
-        CloseableTabbedPane        tab3 = new CloseableTabbedPane();
+        JTabbedPaneWithCloseIcons tab2 = new JTabbedPaneWithCloseIcons();
+        CloseableTabbedPane tab3 = new CloseableTabbedPane();
 
         for (JTabbedPane t: Arrays.asList(tab1, tab2, tab3)) {
-            t.addTab("aaa",  new JLabel("aaaaaaaa"));
-            t.addTab("bbb",  new JLabel("bbbbbbbbb"));
-            t.addTab("c",    new JLabel("ccc"));
+            t.addTab("aaa", new JLabel("aaaaaaaa"));
+            t.addTab("bbb", new JLabel("bbbbbbbbb"));
+            t.addTab("c", new JLabel("ccc"));
             t.addTab("dddd", new JLabel("ddddddd"));
             add(t);
         }

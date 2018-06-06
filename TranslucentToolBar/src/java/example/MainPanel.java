@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -95,9 +95,9 @@ class LabelWithToolBox extends JLabel {
             }
             toolBox.revalidate();
         });
-        //toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
+        // toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
         toolBox.add(Box.createGlue());
-        //http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
+        // http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
         toolBox.add(makeToolButton("ATTACHMENT_16x16-32.png"));
         toolBox.add(Box.createHorizontalStrut(2));
         toolBox.add(makeToolButton("RECYCLE BIN - EMPTY_16x16-32.png"));
@@ -109,18 +109,18 @@ class LabelWithToolBox extends JLabel {
         super.updateUI();
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
-                //Insets insets = parent.getInsets();
+                // Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
                 if (ncomponents == 0) {
                     return;
                 }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
-                int x = 0; //insets.left; int y = insets.top;
-                //for (int i = 0; i < ncomponents; i++) {
-                Component c = parent.getComponent(0); //= toolBox;
+                int x = 0; // insets.left; int y = insets.top;
+                // for (int i = 0; i < ncomponents; i++) {
+                Component c = parent.getComponent(0); // = toolBox;
                 c.setBounds(x, height - yy, width, c.getPreferredSize().height);
-                //}
+                // }
             }
         });
         handler = new ToolBoxHandler();
@@ -135,7 +135,7 @@ class LabelWithToolBox extends JLabel {
             }
         }
         @Override public void mouseExited(MouseEvent e) {
-            if (!contains(e.getPoint())) { //!animator.isRunning()) {
+            if (!contains(e.getPoint())) { // !animator.isRunning()) {
                 isHidden = false;
                 animator.start();
             }
@@ -150,21 +150,21 @@ class LabelWithToolBox extends JLabel {
         ImageIcon icon = new ImageIcon(getClass().getResource(name));
         JButton b = new JButton();
         b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-//         b.addChangeListener(new ChangeListener() {
-//             @Override public void stateChanged(ChangeEvent e) {
-//                 JButton button = (JButton) e.getSource();
-//                 ButtonModel model = button.getModel();
-//                 if (button.isRolloverEnabled() && model.isRollover()) {
-//                     button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-//                 } else {
-//                     button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-//                 }
-//             }
-//         });
+        // b.addChangeListener(new ChangeListener() {
+        //     @Override public void stateChanged(ChangeEvent e) {
+        //         JButton button = (JButton) e.getSource();
+        //         ButtonModel model = button.getModel();
+        //         if (button.isRolloverEnabled() && model.isRollover()) {
+        //             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        //         } else {
+        //             button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        //         }
+        //     }
+        // });
         b.setIcon(makeRolloverIcon(icon));
         b.setRolloverIcon(icon);
         b.setContentAreaFilled(false);
-        //b.setBorderPainted(false);
+        // b.setBorderPainted(false);
         b.setFocusPainted(false);
         b.setFocusable(false);
         b.setToolTipText(name);
@@ -201,25 +201,16 @@ class ParentDispatchMouseListener extends MouseAdapter {
 final class AnimationUtil {
     private static final int N = 3;
     private AnimationUtil() { /* Singleton */ }
-    //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+    // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
+    // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     public static double easeIn(double t) {
-        //range: 0.0 <= t <= 1.0
+        // range: 0.0 <= t <= 1.0
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {
         return Math.pow(t - 1d, N) + 1d;
     }
     public static double easeInOut(double t) {
-/*/
-        boolean isFirstHalf = t < .5;
-        if (isFirstHalf) {
-            return .5 * Math.pow(t * 2d, N);
-        } else {
-            return .5 * (Math.pow(t * 2d - 2d, N) + 2d);
-        }
-    }
-/*/
         double ret;
         boolean isFirstHalf = t < .5;
         if (isFirstHalf) {
@@ -229,14 +220,14 @@ final class AnimationUtil {
         }
         return ret;
     }
-    //http://d.hatena.ne.jp/pcl/20120617/p1
-    //http://d.hatena.ne.jp/rexpit/20110328/1301305266
-    //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
-    //http://www.osix.net/modules/article/?id=696
+    // http://d.hatena.ne.jp/pcl/20120617/p1
+    // http://d.hatena.ne.jp/rexpit/20110328/1301305266
+    // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+    // http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
         int b = ib;
         if (b < 0) {
-            //return d / intpow(a, -b);
+            // return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;
@@ -248,8 +239,7 @@ final class AnimationUtil {
         }
         return d;
     }
-//*/
-//     public static double delta(double t) {
-//         return 1d - Math.sin(Math.acos(t));
-//     }
+    // public static double delta(double t) {
+    //     return 1d - Math.sin(Math.acos(t));
+    // }
 }

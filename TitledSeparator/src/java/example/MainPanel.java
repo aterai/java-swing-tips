@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         box.add(new JSeparator());
         box.add(new JCheckBox("JCheckBox 4"));
         box.add(new JCheckBox("JCheckBox 5"));
-        //box.add(Box.createVerticalStrut(8));
+        // box.add(Box.createVerticalStrut(8));
 
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -92,16 +92,16 @@ class TitledSeparator extends JLabel {
             if (w != width || Objects.isNull(painter1) || Objects.isNull(painter2)) {
                 width = w;
                 Point2D start = new Point2D.Float();
-                Point2D end   = new Point2D.Float(width, 0);
-                float[] dist  = {0f, 1f};
+                Point2D end = new Point2D.Float(width, 0);
+                float[] dist = {0f, 1f};
                 Color ec = Optional.ofNullable(getBackground()).orElse(UIManager.getColor("Panel.background"));
                 Color sc = Optional.ofNullable(target).orElse(ec);
-                painter1 = new LinearGradientPaint(start, end, dist, new Color[] {sc.darker(),   ec});
+                painter1 = new LinearGradientPaint(start, end, dist, new Color[] {sc.darker(), ec});
                 painter2 = new LinearGradientPaint(start, end, dist, new Color[] {sc.brighter(), ec});
             }
             int h = getIconHeight() / 2;
             Graphics2D g2 = (Graphics2D) g.create();
-            //XXX: g2.translate(x, y);
+            // XXX: g2.translate(x, y);
             g2.setPaint(painter1);
             g2.fillRect(x, y, width, getIconHeight());
             g2.setPaint(painter2);
@@ -109,7 +109,7 @@ class TitledSeparator extends JLabel {
             g2.dispose();
         }
         @Override public int getIconWidth() {
-            return 200; //dummy width
+            return 200; // dummy width
         }
         @Override public int getIconHeight() {
             return height;

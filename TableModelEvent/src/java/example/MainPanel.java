@@ -126,15 +126,15 @@ class HeaderRenderer implements TableCellRenderer {
         label.setIcon(new ComponentIcon(check));
         l.setIcon(new ComponentIcon(label));
         l.setText(null); // XXX: Nimbus???
-//         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-//         System.out.println("getPreferredSize: " + l.getPreferredSize());
-//         System.out.println("getMaximunSize: " + l.getMaximumSize());
-//         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-//             System.out.println(l.getPreferredSize().height);
-//             Rectangle rect = table.getTableHeader().getHeaderRect(column);
-//             l.setPreferredSize(new Dimension(0, rect.height));
-//         }
+        // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
+        // System.out.println("getPreferredSize: " + l.getPreferredSize());
+        // System.out.println("getMaximunSize: " + l.getMaximumSize());
+        // System.out.println("----");
+        // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
+        //     System.out.println(l.getPreferredSize().height);
+        //     Rectangle rect = table.getTableHeader().getHeaderRect(column);
+        //     l.setPreferredSize(new Dimension(0, rect.height));
+        // }
         return l;
     }
 }

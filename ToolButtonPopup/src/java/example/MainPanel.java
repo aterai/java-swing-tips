@@ -11,8 +11,8 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JToolBar toolbar = new JToolBar("toolbar");
-    private final JPopupMenu pop1  = new JPopupMenu();
-    private final JPopupMenu pop2  = new JPopupMenu();
+    private final JPopupMenu pop1 = new JPopupMenu();
+    private final JPopupMenu pop2 = new JPopupMenu();
     private final URL url = getClass().getResource("ei0021-16.png");
     private final Component rigid = Box.createRigidArea(new Dimension(5, 5));
     public MainPanel() {

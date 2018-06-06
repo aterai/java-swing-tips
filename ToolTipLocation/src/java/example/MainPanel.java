@@ -85,7 +85,7 @@ class ToolTipLocationHandler extends MouseInputAdapter {
     }
     @Override public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            //window.getContentPane().removeAll();
+            // window.getContentPane().removeAll();
             window.add(tip);
             updateTipText(e);
             window.setVisible(true);

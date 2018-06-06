@@ -22,9 +22,9 @@ public class JTabbedPaneWithCloseButton extends JTabbedPane {
     }
 }
 
-//Copied from
-//JTabbedPane with close Icons | Oracle Forums
-//https://community.oracle.com/thread/1356993
+// Copied from
+// JTabbedPane with close Icons | Oracle Forums
+// https://community.oracle.com/thread/1356993
 class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     public final List<JButton> closeButtons; // = new ArrayList<>();
     protected CloseButtonTabbedPaneUI(List<JButton> closeButtons) {
@@ -35,20 +35,20 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     @Override protected LayoutManager createLayoutManager() {
         return new CloseButtonTabbedPaneLayout();
     }
-    //add 40 to the tab size to allow room for the close button and 2 + 2 to the height
+    // add 40 to the tab size to allow room for the close button and 2 + 2 to the height
     @Override protected Insets getTabInsets(int tabPlacement, int tabIndex) {
-        //note that the insets that are returned to us are not copies.
+        // note that the insets that are returned to us are not copies.
         Insets defaultInsets = (Insets) super.getTabInsets(tabPlacement, tabIndex).clone();
-        defaultInsets.right  += 40;
-        defaultInsets.top    += 2;
+        defaultInsets.right += 40;
+        defaultInsets.top += 2;
         defaultInsets.bottom += 2;
         return defaultInsets;
     }
     private class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
-        //a list of our close buttons
+        // a list of our close buttons
         @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
-            //ensure that there are at least as many close buttons as tabs
+            // ensure that there are at least as many close buttons as tabs
             while (tabPane.getTabCount() > closeButtons.size()) {
                 closeButtons.add(new CloseButton(tabPane, closeButtons.size()));
             }
@@ -66,7 +66,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
                 tabPane.add(closeButton);
             }
             for (; i < closeButtons.size(); i++) {
-                //remove any extra close buttons
+                // remove any extra close buttons
                 tabPane.remove(closeButtons.get(i));
             }
         }
@@ -77,7 +77,7 @@ class CloseButton extends JButton implements UIResource {
     protected CloseButton(JTabbedPane tabPane, int index) {
         super(new CloseButtonAction(tabPane, index));
         setToolTipText("Close this tab");
-        //setMargin(new Insets(0, 0, 0, 0));
+        // setMargin(new Insets(0, 0, 0, 0));
         setBorder(BorderFactory.createEmptyBorder());
         setFocusPainted(false);
         setBorderPainted(false);

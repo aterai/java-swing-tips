@@ -15,14 +15,14 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2, 1));
 
         JTable table1 = makeTable();
-        //Bad: >>>>
+        // Bad: >>>>
         JTableHeader header = table1.getTableHeader();
-        //Dimension d = header.getPreferredSize();
-        //d.height = HEADER_HEIGHT;
-        //header.setPreferredSize(d); //addColumn case test
+        // Dimension d = header.getPreferredSize();
+        // d.height = HEADER_HEIGHT;
+        // header.setPreferredSize(d); // addColumn case test
         header.setPreferredSize(new Dimension(100, HEADER_HEIGHT));
         p.add(makeTitledPanel("Bad: JTableHeader#setPreferredSize(...)", new JScrollPane(table1)));
-        //<<<<
+        // <<<<
 
         JTable table2 = makeTable();
         JScrollPane scroll = new JScrollPane(table2);
@@ -33,14 +33,14 @@ public final class MainPanel extends JPanel {
                 return d;
             }
         });
-//         //or
-//         table2.setTableHeader(new JTableHeader(table2.getColumnModel()) {
-//             @Override public Dimension getPreferredSize() {
-//                 Dimension d = super.getPreferredSize();
-//                 d.height = HEADER_HEIGHT;
-//                 return d;
-//             }
-//         });
+        // // or
+        // table2.setTableHeader(new JTableHeader(table2.getColumnModel()) {
+        //     @Override public Dimension getPreferredSize() {
+        //         Dimension d = super.getPreferredSize();
+        //         d.height = HEADER_HEIGHT;
+        //         return d;
+        //     }
+        // });
         p.add(makeTitledPanel("Override getPreferredSize()", scroll));
 
         JButton button = new JButton("addColumn");

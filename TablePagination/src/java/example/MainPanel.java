@@ -54,17 +54,17 @@ public final class MainPanel extends JPanel {
             startPageIndex = 1;
         }
 
-// #if 0 // BUG
+        // #if 0 // BUG
         // int maxPageIndex = (model.getRowCount() / itemsPerPage) + 1;
-// #else
+        // #else
         /* "maxPageIndex" gives one blank page if the module of the division is not zero.
-         *   pointed out by erServi
+         *     pointed out by erServi
          * e.g. rowCount=100, maxPageIndex=100
          */
         int rowCount = model.getRowCount();
         int v = rowCount % itemsPerPage == 0 ? 0 : 1;
         int maxPageIndex = rowCount / itemsPerPage + v;
-// #endif
+        // #endif
         int endPageIndex = currentPageIndex + LR_PAGE_SIZE - 1;
         if (endPageIndex > maxPageIndex) {
             endPageIndex = maxPageIndex;
@@ -114,9 +114,10 @@ public final class MainPanel extends JPanel {
                         setForeground(Color.GREEN);
                     } else if (bm.isSelected()) {
                         setForeground(Color.RED);
+                    }
                     // } else if (isRolloverEnabled() && bm.isRollover()) {
                     //     setForeground(Color.BLUE);
-                    }
+                    // }
                 } else {
                     setForeground(Color.GRAY);
                 }
@@ -163,27 +164,27 @@ public final class MainPanel extends JPanel {
 }
 
 class LinkViewRadioButtonUI extends BasicRadioButtonUI {
-//     private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
-//     private boolean defaults_initialized = false;
+    // private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
+    // private boolean defaults_initialized = false;
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
 
-//     public static ComponentUI createUI(JComponent b) {
-//         return radioButtonUI;
-//     }
-//     @Override protected void installDefaults(AbstractButton b) {
-//         super.installDefaults(b);
-//         if (!defaults_initialized) {
-//             icon = null; // UIManager.getIcon(getPropertyPrefix() + "icon");
-//             defaults_initialized = true;
-//         }
-//     }
-//     @Override protected void uninstallDefaults(AbstractButton b) {
-//         super.uninstallDefaults(b);
-//         defaults_initialized = false;
-//     }
+    // public static ComponentUI createUI(JComponent b) {
+    //     return radioButtonUI;
+    // }
+    // @Override protected void installDefaults(AbstractButton b) {
+    //     super.installDefaults(b);
+    //     if (!defaults_initialized) {
+    //         icon = null; // UIManager.getIcon(getPropertyPrefix() + "icon");
+    //         defaults_initialized = true;
+    //     }
+    // }
+    // @Override protected void uninstallDefaults(AbstractButton b) {
+    //     super.uninstallDefaults(b);
+    //     defaults_initialized = false;
+    // }
     @Override public Icon getDefaultIcon() {
         return null;
     }
@@ -223,15 +224,15 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
             return;
         }
 
-//         // Changing Component State During Painting (an infinite repaint loop)
-//         // pointed out by Peter
-//         // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
-//         // b.setForeground(Color.BLUE);
-//         if (!model.isEnabled()) {
-//             // b.setForeground(Color.GRAY);
-//         } else if (model.isPressed() && model.isArmed() || model.isSelected()) {
-//             // b.setForeground(Color.BLACK);
-//         } else if (b.isRolloverEnabled() && model.isRollover()) {
+        // // Changing Component State During Painting (an infinite repaint loop)
+        // // pointed out by Peter
+        // // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
+        // // b.setForeground(Color.BLUE);
+        // if (!model.isEnabled()) {
+        //     // b.setForeground(Color.GRAY);
+        // } else if (model.isPressed() && model.isArmed() || model.isSelected()) {
+        //     // b.setForeground(Color.BLACK);
+        // } else if (b.isRolloverEnabled() && model.isRollover()) {
 
         ButtonModel model = b.getModel();
         g.setColor(c.getForeground());

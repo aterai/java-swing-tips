@@ -15,13 +15,13 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-//     @Override public void updateUI() {
-//         super.updateUI();
-//         if (Objects.nonNull(tree) && System.getProperty("java.version").startsWith("1.6.0")) {
-//             System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
-//             tree.setComponentPopupMenu(makePopupMenu());
-//         }
-//     }
+    // @Override public void updateUI() {
+    //     super.updateUI();
+    //     if (Objects.nonNull(tree) && System.getProperty("java.version").startsWith("1.6.0")) {
+    //         System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
+    //         tree.setComponentPopupMenu(makePopupMenu());
+    //     }
+    // }
     private static JPopupMenu makePopupMenu() {
         JPopupMenu popup = new TranslucentPopupMenu();
         popup.add("Undo");
@@ -78,7 +78,7 @@ class TranslucentPopupMenu extends JPopupMenu {
     }
     @Override public JMenuItem add(JMenuItem menuItem) {
         menuItem.setOpaque(false);
-        //menuItem.setBackground(ALPHA_ZERO);
+        // menuItem.setBackground(ALPHA_ZERO);
         return super.add(menuItem);
     }
     @Override public void show(Component c, int x, int y) {
@@ -87,13 +87,13 @@ class TranslucentPopupMenu extends JPopupMenu {
             if (p instanceof JWindow) {
                 System.out.println("Heavy weight");
                 JWindow w = (JWindow) p;
-                //if (System.getProperty("java.version").startsWith("1.6.0")) {
-                //    w.dispose();
-                //    if (AWTUtilities.isWindowOpaque(w)) {
-                //        AWTUtilities.setWindowOpaque(w, false);
-                //    }
-                //    w.setVisible(true);
-                //}
+                // if (System.getProperty("java.version").startsWith("1.6.0")) {
+                //     w.dispose();
+                //     if (AWTUtilities.isWindowOpaque(w)) {
+                //         AWTUtilities.setWindowOpaque(w, false);
+                //     }
+                //     w.setVisible(true);
+                // }
                 w.setBackground(ALPHA_ZERO);
             } else {
                 System.out.println("Light weight");
@@ -108,6 +108,6 @@ class TranslucentPopupMenu extends JPopupMenu {
         g2.setPaint(POPUP_BACK);
         g2.fillRect(LEFT_WIDTH, 0, getWidth(), getHeight());
         g2.dispose();
-        //super.paintComponent(g);
+        // super.paintComponent(g);
     }
 }

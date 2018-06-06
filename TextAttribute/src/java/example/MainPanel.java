@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
                 initUnderline(textField0, style);
                 initUnderline(textField1, style);
                 initUnderline(textField2, style);
-                initUnderline(textArea,   style);
+                initUnderline(textArea, style);
             }
         });
 

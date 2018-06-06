@@ -11,28 +11,28 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         UIDefaults def = new UIDefaults();
-//         def.put("Tree.selectionBackground", Color.WHITE);
-//         def.put("Tree.selectionForeground", Color.GREEN);
-//         def.put("Tree.opaque", Boolean.FALSE);
-//         def.put("Tree:TreeCell[Enabled+Selected].textForeground", Color.GREEN);
-//         def.put("Tree.rendererFillBackground", true);
-//         def.put("Tree.repaintWholeRow", true);
-//         def.put("Tree:TreeCell[Enabled+Selected].backgroundPainter", new Painter<JComponent>() {
-//             @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-//                 //g.setPaint(Color.RED);
-//                 //g.fillRect(0, 0, w, h);
-//             }
-//         });
-//         def.put("Tree:TreeCell[Focused+Selected].backgroundPainter", new Painter<JComponent>() {
-//             @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-//                 //g.setPaint(Color.RED);
-//                 //g.fillRect(0, 0, w, h);
-//             }
-//         });
-//         def.put("Tree[Enabled].collapsedIconPainter", null);
-//         def.put("Tree[Enabled].expandedIconPainter", null);
-//         def.put("Tree[Enabled+Selected].collapsedIconPainter", null);
-//         def.put("Tree[Enabled+Selected].expandedIconPainter", null);
+        // def.put("Tree.selectionBackground", Color.WHITE);
+        // def.put("Tree.selectionForeground", Color.GREEN);
+        // def.put("Tree.opaque", Boolean.FALSE);
+        // def.put("Tree:TreeCell[Enabled+Selected].textForeground", Color.GREEN);
+        // def.put("Tree.rendererFillBackground", true);
+        // def.put("Tree.repaintWholeRow", true);
+        // def.put("Tree:TreeCell[Enabled+Selected].backgroundPainter", new Painter<JComponent>() {
+        //     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+        //         // g.setPaint(Color.RED);
+        //         // g.fillRect(0, 0, w, h);
+        //     }
+        // });
+        // def.put("Tree:TreeCell[Focused+Selected].backgroundPainter", new Painter<JComponent>() {
+        //     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+        //         // g.setPaint(Color.RED);
+        //         // g.fillRect(0, 0, w, h);
+        //     }
+        // });
+        // def.put("Tree[Enabled].collapsedIconPainter", null);
+        // def.put("Tree[Enabled].expandedIconPainter", null);
+        // def.put("Tree[Enabled+Selected].collapsedIconPainter", null);
+        // def.put("Tree[Enabled+Selected].expandedIconPainter", null);
         JTree tree = new JTree();
         tree.putClientProperty("Nimbus.Overrides", def);
         tree.putClientProperty("Nimbus.Overrides.InheritDefaults", false);

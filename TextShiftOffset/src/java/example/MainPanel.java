@@ -11,7 +11,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(5, 5));
-        //System.out.println(UIManager.getInt("Button.textShiftOffset"));
+        // System.out.println(UIManager.getInt("Button.textShiftOffset"));
         UIManager.put("Button.textShiftOffset", 0);
 
         List<JRadioButton> rl = Arrays.asList(

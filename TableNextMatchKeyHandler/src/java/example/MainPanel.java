@@ -66,12 +66,12 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     private String prefix = "";
     private String typedString;
     private long lastTime;
-//     private final long timeFactor;
-//     protected TableNextMatchKeyHandler() {
-//         super();
-//         Long l = (Long) UIManager.get("List.timeFactor");
-//         timeFactor = Objects.nonNull(l) ? l.longValue() : 1000L;
-//     }
+    // private final long timeFactor;
+    // protected TableNextMatchKeyHandler() {
+    //     super();
+    //     Long l = (Long) UIManager.get("List.timeFactor");
+    //     timeFactor = Objects.nonNull(l) ? l.longValue() : 1000L;
+    // }
     private boolean isNavigationKey(KeyEvent event) {
         JTable table = (JTable) event.getComponent();
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

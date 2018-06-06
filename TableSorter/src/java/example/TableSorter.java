@@ -151,20 +151,20 @@ public class TableSorter extends AbstractTableModel {
         modelToView.clear();
     }
 
-//     public TableModel getTableModel() {
-//         return tableModel;
-//     }
+    // public TableModel getTableModel() {
+    //     return tableModel;
+    // }
 
     public final void setTableModel(TableModel tableModel) {
         Optional.ofNullable(this.tableModel).ifPresent(m -> m.removeTableModelListener(tableModelListener));
-//         if (this.tableModel != null) {
-//             this.tableModel.removeTableModelListener(tableModelListener);
-//         }
+        // if (this.tableModel != null) {
+        //     this.tableModel.removeTableModelListener(tableModelListener);
+        // }
         this.tableModel = tableModel;
         Optional.ofNullable(this.tableModel).ifPresent(m -> m.addTableModelListener(tableModelListener));
-//         if (this.tableModel != null) {
-//             this.tableModel.addTableModelListener(tableModelListener);
-//         }
+        // if (this.tableModel != null) {
+        //     this.tableModel.addTableModelListener(tableModelListener);
+        // }
 
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -174,9 +174,9 @@ public class TableSorter extends AbstractTableModel {
         });
     }
 
-//     public JTableHeader getTableHeader() {
-//         return tableHeader;
-//     }
+    // public JTableHeader getTableHeader() {
+    //     return tableHeader;
+    // }
 
     public final void setTableHeader(JTableHeader tableHeader) {
         Optional.ofNullable(this.tableHeader).ifPresent(header -> {
@@ -184,28 +184,28 @@ public class TableSorter extends AbstractTableModel {
             Optional.ofNullable(header.getDefaultRenderer())
                 .filter(SortableHeaderRenderer.class::isInstance).map(SortableHeaderRenderer.class::cast)
                 .ifPresent(renderer -> header.setDefaultRenderer(renderer.tableCellRenderer));
-//             TableCellRenderer defaultRenderer = header.getDefaultRenderer();
-//             if (defaultRenderer instanceof SortableHeaderRenderer) {
-//                 header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
-//             }
+            // TableCellRenderer defaultRenderer = header.getDefaultRenderer();
+            // if (defaultRenderer instanceof SortableHeaderRenderer) {
+            //     header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
+            // }
         });
         this.tableHeader = tableHeader;
         Optional.ofNullable(this.tableHeader).ifPresent(header -> {
             header.addMouseListener(mouseListener);
             header.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
         });
-//         if (this.tableHeader != null) {
-//             this.tableHeader.removeMouseListener(mouseListener);
-//             TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
-//             if (defaultRenderer instanceof SortableHeaderRenderer) {
-//                 this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
-//             }
-//         }
-//         this.tableHeader = tableHeader;
-//         if (this.tableHeader != null) {
-//             this.tableHeader.addMouseListener(mouseListener);
-//             this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
-//         }
+        // if (this.tableHeader != null) {
+        //     this.tableHeader.removeMouseListener(mouseListener);
+        //     TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
+        //     if (defaultRenderer instanceof SortableHeaderRenderer) {
+        //         this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
+        //     }
+        // }
+        // this.tableHeader = tableHeader;
+        // if (this.tableHeader != null) {
+        //     this.tableHeader.addMouseListener(mouseListener);
+        //     this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
+        // }
     }
 
     public boolean isSorting() {
@@ -215,12 +215,12 @@ public class TableSorter extends AbstractTableModel {
     private Directive getDirective(int column) {
         return sortingColumns.stream().filter(directive -> directive.column == column)
             .findFirst().orElse(EMPTY_DIRECTIVE);
-//         for (Directive directive: sortingColumns) {
-//             if (directive.column == column) {
-//                 return directive;
-//             }
-//         }
-//         return EMPTY_DIRECTIVE;
+        // for (Directive directive: sortingColumns) {
+        //     if (directive.column == column) {
+        //         return directive;
+        //     }
+        // }
+        // return EMPTY_DIRECTIVE;
     }
 
     public int getSortingStatus(int column) {
@@ -231,18 +231,18 @@ public class TableSorter extends AbstractTableModel {
         clearSortingState();
         fireTableDataChanged();
         Optional.ofNullable(tableHeader).ifPresent(h -> h.repaint());
-//         if (tableHeader != null) {
-//             tableHeader.repaint();
-//         }
+        // if (tableHeader != null) {
+        //     tableHeader.repaint();
+        // }
     }
 
     public void setSortingStatus(int column, int status) {
         Optional.of(getDirective(column))
             .filter(directive -> !EMPTY_DIRECTIVE.equals(directive))
             .ifPresent(directive -> sortingColumns.remove(directive));
-//         if (!EMPTY_DIRECTIVE.equals(directive)) {
-//             sortingColumns.remove(directive);
-//         }
+        // if (!EMPTY_DIRECTIVE.equals(directive)) {
+        //     sortingColumns.remove(directive);
+        // }
         if (status != NOT_SORTED) {
             sortingColumns.add(new Directive(column, status));
         }
@@ -286,11 +286,11 @@ public class TableSorter extends AbstractTableModel {
 
     private List<Row> getViewToModel() {
         if (viewToModel.isEmpty()) {
-//             int tableModelRowCount = tableModel.getRowCount();
-//             // viewToModel = new Row[tableModelRowCount];
-//             for (int row = 0; row < tableModelRowCount; row++) {
-//                 viewToModel.add(new Row(row));
-//             }
+            // int tableModelRowCount = tableModel.getRowCount();
+            // // viewToModel = new Row[tableModelRowCount];
+            // for (int row = 0; row < tableModelRowCount; row++) {
+            //     viewToModel.add(new Row(row));
+            // }
             IntStream.range(0, tableModel.getRowCount()).forEach(row -> viewToModel.add(new Row(row)));
             if (isSorting()) {
                 Collections.sort(viewToModel, rowComparator);
@@ -305,10 +305,10 @@ public class TableSorter extends AbstractTableModel {
 
     protected List<Integer> getModelToView() {
         if (modelToView.isEmpty()) {
-//             int n = getViewToModel().size();
-//             for (int i = 0; i < n; i++) {
-//                 modelToView.add(modelIndex(i));
-//             }
+            // int n = getViewToModel().size();
+            // for (int i = 0; i < n; i++) {
+            //     modelToView.add(modelIndex(i));
+            // }
             IntStream.range(0, getViewToModel().size()).forEach(i -> modelToView.add(modelIndex(i)));
         }
         return modelToView;
@@ -355,22 +355,22 @@ public class TableSorter extends AbstractTableModel {
                 int column = directive.column;
                 Object o1 = tableModel.getValueAt(row1, column);
                 Object o2 = tableModel.getValueAt(row2, column);
-//                 int comparison;
-//                 // Define null less than everything, except null.
-//                 if (o1 == null && o2 == null) {
-//                     comparison = 0;
-//                 } else if (o1 == null) {
-//                     comparison = -1;
-//                 } else if (o2 == null) {
-//                     comparison = 1;
-//                 } else {
-//                     @SuppressWarnings("unchecked")
-//                     Comparator<Object> comparator = getComparator(column);
-//                     comparison = comparator.compare(o1, o2);
-//                 }
-//                 if (comparison != 0) {
-//                     return directive.direction == DESCENDING ? -comparison : comparison;
-//                 }
+                // int comparison;
+                // // Define null less than everything, except null.
+                // if (o1 == null && o2 == null) {
+                //     comparison = 0;
+                // } else if (o1 == null) {
+                //     comparison = -1;
+                // } else if (o2 == null) {
+                //     comparison = 1;
+                // } else {
+                //     @SuppressWarnings("unchecked")
+                //     Comparator<Object> comparator = getComparator(column);
+                //     comparison = comparator.compare(o1, o2);
+                // }
+                // if (comparison != 0) {
+                //     return directive.direction == DESCENDING ? -comparison : comparison;
+                // }
                 @SuppressWarnings("unchecked")
                 Comparator<Object> comparator = getComparator(column);
                 int comparison = Objects.compare(o1, o2, Comparator.nullsFirst(comparator));
@@ -473,14 +473,14 @@ class SortableHeaderRenderer implements TableCellRenderer {
                 l.setHorizontalTextPosition(SwingConstants.LEFT);
             });
         return l;
-//         TableModel model = table.getModel();
-//         if (c instanceof JLabel && model instanceof TableSorter) {
-//             JLabel l = (JLabel) c;
-//             int modelColumn = table.convertColumnIndexToModel(column);
-//             l.setIcon(((TableSorter) model).getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
-//             l.setHorizontalTextPosition(SwingConstants.LEFT);
-//         }
-//         return c;
+        // TableModel model = table.getModel();
+        // if (c instanceof JLabel && model instanceof TableSorter) {
+        //     JLabel l = (JLabel) c;
+        //     int modelColumn = table.convertColumnIndexToModel(column);
+        //     l.setIcon(((TableSorter) model).getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
+        //     l.setHorizontalTextPosition(SwingConstants.LEFT);
+        // }
+        // return c;
     }
 }
 

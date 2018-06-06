@@ -49,30 +49,30 @@ public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelLis
             return true;
         }
     }
-//     private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-//         if (Status.INDETERMINATE.equals(status)) {
-//             boolean selected = true;
-//             boolean deselected = true;
-//             for (int i = 0; i < m.getRowCount(); i++) {
-//                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-//                 selected &= b;
-//                 deselected &= !b;
-//                 if (selected == deselected) {
-//                     return false;
-//                 }
-//             }
-//             if (deselected) {
-//                 column.setHeaderValue(Status.DESELECTED);
-//             } else if (selected) {
-//                 column.setHeaderValue(Status.SELECTED);
-//             } else {
-//                 return false;
-//             }
-//         } else {
-//             column.setHeaderValue(Status.INDETERMINATE);
-//         }
-//         return true;
-//     }
+    // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+    //     if (Status.INDETERMINATE.equals(status)) {
+    //         boolean selected = true;
+    //         boolean deselected = true;
+    //         for (int i = 0; i < m.getRowCount(); i++) {
+    //             Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+    //             selected &= b;
+    //             deselected &= !b;
+    //             if (selected == deselected) {
+    //                 return false;
+    //             }
+    //         }
+    //         if (deselected) {
+    //             column.setHeaderValue(Status.DESELECTED);
+    //         } else if (selected) {
+    //             column.setHeaderValue(Status.SELECTED);
+    //         } else {
+    //             return false;
+    //         }
+    //     } else {
+    //         column.setHeaderValue(Status.INDETERMINATE);
+    //     }
+    //     return true;
+    // }
     @Override public void mouseClicked(MouseEvent e) {
         JTableHeader header = (JTableHeader) e.getComponent();
         JTable tbl = header.getTable();

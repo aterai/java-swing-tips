@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
             @Override public String getToolTipText(MouseEvent e) {
                 Border b = getBorder();
                 if (b instanceof TitledBorder) {
-                    //int edge = 2; //EDGE_SPACING;
+                    // int edge = 2; // EDGE_SPACING;
                     TitledBorder titledBorder = (TitledBorder) b;
                     Insets i = titledBorder.getBorderInsets(this);
                     String title = titledBorder.getTitle();
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                         return r.contains(e.getPoint()) ? title : null;
                     }
                 }
-                return null; //super.getToolTipText(e);
+                return null; // super.getToolTipText(e);
             }
         };
         panel1.setBorder(BorderFactory.createTitledBorder("Override JPanel#getToolTipText(...)"));

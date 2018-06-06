@@ -16,15 +16,15 @@ public final class MainPanel extends JPanel {
         DefaultComboBoxModel<DefaultMutableTreeNode> model2 = new DefaultComboBoxModel<>();
         TreeModel tm = makeModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tm.getRoot();
-//         // Java 9: Enumeration<TreeNode> depth = root.depthFirstEnumeration();
-//         Enumeration<?> depth = root.depthFirstEnumeration();
-//         while (depth.hasMoreElements()) {
-//             DefaultMutableTreeNode node = (DefaultMutableTreeNode) depth.nextElement();
-//             if (node.isRoot()) {
-//                 break;
-//             }
-//             model.insertElementAt(node, 0);
-//         }
+        // // Java 9: Enumeration<TreeNode> depth = root.depthFirstEnumeration();
+        // Enumeration<?> depth = root.depthFirstEnumeration();
+        // while (depth.hasMoreElements()) {
+        //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) depth.nextElement();
+        //     if (node.isRoot()) {
+        //         break;
+        //     }
+        //     model.insertElementAt(node, 0);
+        // }
         makeComboBoxModel(model1, root);
         makeComboBoxModel(model2, root);
         combo.setModel(model2);
@@ -52,22 +52,22 @@ public final class MainPanel extends JPanel {
     }
     private static TreeModel makeModel() {
         return new JTree().getModel();
-//         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-//         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-//         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-//         DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-//         set1.add(new DefaultMutableTreeNode("111111111"));
-//         set1.add(new DefaultMutableTreeNode("22222222222"));
-//         set1.add(new DefaultMutableTreeNode("33333"));
-//         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-//         set2.add(set3);
-//         set2.add(new DefaultMutableTreeNode("asdf"));
-//         set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-//         set3.add(new DefaultMutableTreeNode("qwerqwer"));
-//         set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
-//         root.add(set1);
-//         root.add(set2);
-//         return new DefaultTreeModel(root);
+        // DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+        // DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
+        // DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
+        // DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
+        // set1.add(new DefaultMutableTreeNode("111111111"));
+        // set1.add(new DefaultMutableTreeNode("22222222222"));
+        // set1.add(new DefaultMutableTreeNode("33333"));
+        // set2.add(new DefaultMutableTreeNode("asdfasdfas"));
+        // set2.add(set3);
+        // set2.add(new DefaultMutableTreeNode("asdf"));
+        // set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
+        // set3.add(new DefaultMutableTreeNode("qwerqwer"));
+        // set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+        // root.add(set1);
+        // root.add(set2);
+        // return new DefaultTreeModel(root);
     }
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());

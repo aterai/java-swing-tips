@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
     private static final Icon EMPTY_ICON = new EmptyIcon();
-    private final Icon customAscendingSortIcon  = new ImageIcon(getClass().getResource("ascending.png"));
+    private final Icon customAscendingSortIcon = new ImageIcon(getClass().getResource("ascending.png"));
     private final Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
 
     private final JButton clearButton = new JButton("clear SortKeys");
@@ -35,19 +35,19 @@ public final class MainPanel extends JPanel {
         JRadioButton r2 = new JRadioButton("Cumstom");
         ActionListener al = e -> {
             JRadioButton r = (JRadioButton) e.getSource();
-            Icon ascending  = null;
+            Icon ascending = null;
             Icon descending = null;
             if (r.equals(r0)) {
-                ascending  = UIManager.getIcon("Table.ascendingSortIcon");
+                ascending = UIManager.getIcon("Table.ascendingSortIcon");
                 descending = UIManager.getIcon("Table.descendingSortIcon");
             } else if (r.equals(r1)) {
-                ascending  = new IconUIResource(EMPTY_ICON);
+                ascending = new IconUIResource(EMPTY_ICON);
                 descending = new IconUIResource(EMPTY_ICON);
             } else {
-                ascending  = new IconUIResource(customAscendingSortIcon);
+                ascending = new IconUIResource(customAscendingSortIcon);
                 descending = new IconUIResource(customDescendingSortIcon);
             }
-            UIManager.put("Table.ascendingSortIcon",  ascending);
+            UIManager.put("Table.ascendingSortIcon", ascending);
             UIManager.put("Table.descendingSortIcon", descending);
             table.getTableHeader().repaint();
         };

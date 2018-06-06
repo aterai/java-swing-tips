@@ -107,18 +107,18 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab-title");
         am.put("rename-tab-title", renameTabTitle);
         editor.getDocument().addDocumentListener(this);
-//         editor.addKeyListener(new KeyAdapter() {
-//             @Override public void keyPressed(KeyEvent e) {
-//                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                     renameTabTitle();
-//                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-//                     cancelEditing();
-//                 } else {
-//                     editor.setPreferredSize(editor.getText().length() > len ? null : dim);
-//                     tabbedPane.revalidate();
-//                 }
-//             }
-//         });
+        // editor.addKeyListener(new KeyAdapter() {
+        //     @Override public void keyPressed(KeyEvent e) {
+        //         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+        //             renameTabTitle();
+        //         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        //             cancelEditing();
+        //         } else {
+        //             editor.setPreferredSize(editor.getText().length() > len ? null : dim);
+        //             tabbedPane.revalidate();
+        //         }
+        //     }
+        // });
         tabbedPane.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
         tabbedPane.getActionMap().put("start-editing", startEditing);
     }

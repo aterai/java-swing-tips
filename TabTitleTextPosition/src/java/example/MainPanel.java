@@ -22,20 +22,20 @@ public final class MainPanel extends JPanel {
         JTabbedPane t = new ClippedTitleTabbedPane();
         t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-        addTab(t, "JTree",      new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
-        addTab(t, "JTextArea",  new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
+        addTab(t, "JTree", new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
+        addTab(t, "JTextArea", new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
         addTab(t, "Preference", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));
-        addTab(t, "Help",       new ImageIcon(getClass().getResource("wi0063-32.png")), new JScrollPane(new JTextArea()));
+        addTab(t, "Help", new ImageIcon(getClass().getResource("wi0063-32.png")), new JScrollPane(new JTextArea()));
 
-//         t.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
-//         t.addTab(makeTitle("Help",  "wi0054-32.png"), new JLabel("b"));
+        // t.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
+        // t.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
 
         add(t);
         setPreferredSize(new Dimension(320, 240));
     }
-//     private String makeTitle(String t, String p) {
-//         return "<html><center><img src='" + getClass().getResource(p) + "'/><br/>" + t;
-//     }
+    // private String makeTitle(String t, String p) {
+    //     return "<html><center><img src='" + getClass().getResource(p) + "'/><br/>" + t;
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -116,8 +116,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
         super.doLayout();
     }
-//     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-//         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-//         setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
-//     }
+    // @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
+    //     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
+    //     setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
+    // }
 }

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel() {
             @Override protected void paintComponent(Graphics g) {
-                //super.paintComponent(g);
+                // super.paintComponent(g);
                 g.setColor(new Color(100, 50, 50, 100));
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
         frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
         frame.setOpaque(false);
         frame.setVisible(true);
-        //desktop.getDesktopManager().activateFrame(frame);
+        // desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
 
@@ -146,7 +146,7 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = (width  - image.getWidth())  / 2;
+        int cx = (width - image.getWidth()) / 2;
         int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);

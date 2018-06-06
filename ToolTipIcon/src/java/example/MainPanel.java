@@ -11,22 +11,22 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         URL url = getClass().getResource("wi0124-48.png");
         ImageIcon icon = new ImageIcon(url);
         JLabel l1 = new JLabel("ToolTip icon using JLabel") {
             @Override public JToolTip createToolTip() {
                 JLabel iconlabel = new JLabel(icon);
                 iconlabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-                //LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+                // LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
                 JToolTip tip = new JToolTip() {
                     @Override public Dimension getPreferredSize() {
-//                     if (getLayout() == null) {
-//                         Insets i = getInsets();
-//                         Dimension d = iconlabel.getPreferredSize();
-//                         d.width  += i.left + i.right;
-//                         d.height += i.top + i.bottom;
-//                         return d;
+                        // if (getLayout() == null) {
+                        //     Insets i = getInsets();
+                        //     Dimension d = iconlabel.getPreferredSize();
+                        //     d.width += i.left + i.right;
+                        //     d.height += i.top + i.bottom;
+                        //     return d;
                         return getLayout().preferredLayoutSize(this);
                     }
                     @Override public void setTipText(String tipText) {
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         l2.setToolTipText("Test2");
 
         JLabel l3 = new JLabel("ToolTip icon using HTML tags");
-        l3.setToolTipText(String.format("<html><img src='%s'>Test3</img></html>", url)); //align='middle'
+        l3.setToolTipText(String.format("<html><img src='%s'>Test3</img></html>", url)); // align='middle'
 
         Box box = Box.createVerticalBox();
         box.add(l1);

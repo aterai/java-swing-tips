@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
                 // button.setAlignmentY(Component.TOP_ALIGNMENT);
                 // System.out.println(button.getAlignmentY());
                 UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets());
-                super.updateUI(); //reinstall
+                super.updateUI(); // reinstall
             }
             @Override public float getAlignmentX() {
                 return Component.LEFT_ALIGNMENT;

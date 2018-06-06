@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
                 ei = emptyIcon;
                 ci = emptyIcon;
             }
-            UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
+            UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
             UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
             UIManager.put("Tree.paintLines", paintLines.isSelected());
             SwingUtilities.updateComponentTreeUI(this);

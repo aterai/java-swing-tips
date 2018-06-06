@@ -81,21 +81,21 @@ public final class MainPanel extends JPanel {
             .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
 
     }
-//     protected void repaintWindowAncestor(Component c) {
-//         Window w = SwingUtilities.getWindowAncestor(c);
-//         if (w instanceof JFrame) {
-//             JFrame f = (JFrame) w;
-//             JComponent cp = (JComponent) f.getContentPane();
-//             // cp.repaint();
-//             Rectangle r = c.getBounds();
-//             r = SwingUtilities.convertRectangle(c, r, cp);
-//             cp.repaint(r);
-//             // r = SwingUtilities.convertRectangle(c, r, f);
-//             // f.repaint(r.x, r.y, r.width, r.height);
-//         } else {
-//             c.repaint();
-//         }
-//     }
+    // protected void repaintWindowAncestor(Component c) {
+    //     Window w = SwingUtilities.getWindowAncestor(c);
+    //     if (w instanceof JFrame) {
+    //         JFrame f = (JFrame) w;
+    //         JComponent cp = (JComponent) f.getContentPane();
+    //         // cp.repaint();
+    //         Rectangle r = c.getBounds();
+    //         r = SwingUtilities.convertRectangle(c, r, cp);
+    //         cp.repaint(r);
+    //         // r = SwingUtilities.convertRectangle(c, r, f);
+    //         // f.repaint(r.x, r.y, r.width, r.height);
+    //     } else {
+    //         c.repaint();
+    //     }
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

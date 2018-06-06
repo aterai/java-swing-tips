@@ -151,31 +151,31 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         }
         super.paintComponent(g);
     }
-//     //Overridden for performance reasons. ---->
-//     @Override public boolean isOpaque() {
-//         Color back = getBackground();
-//         Component p = getParent();
-//         if (Objects.nonNull(p)) {
-//             p = p.getParent();
-//         } // p should now be the JTable.
-//         boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-//         return !colorMatch && super.isOpaque();
-//     }
-//     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-//         //System.out.println(propertyName);
-//         //String literal pool
-//         //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-//         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-//         if (flag && !Objects.equals(oldValue, newValue)) {
-//             super.firePropertyChange(propertyName, oldValue, newValue);
-//         }
-//     }
-//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
-//     @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//     @Override public void validate()   { /* Overridden for performance reasons. */ }
-//     @Override public void revalidate() { /* Overridden for performance reasons. */ }
-//     //<---- Overridden for performance reasons.
+    // // Overridden for performance reasons. ---->
+    // @Override public boolean isOpaque() {
+    //     Color back = getBackground();
+    //     Component p = getParent();
+    //     if (Objects.nonNull(p)) {
+    //         p = p.getParent();
+    //     } // p should now be the JTable.
+    //     boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
+    //     return !colorMatch && super.isOpaque();
+    // }
+    // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    //     // System.out.println(propertyName);
+    //     // String literal pool
+    //     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+    //     boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
+    //     if (flag && !Objects.equals(oldValue, newValue)) {
+    //         super.firePropertyChange(propertyName, oldValue, newValue);
+    //     }
+    // }
+    // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+    // @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+    // @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+    // @Override public void repaint() { /* Overridden for performance reasons. */ }
+    // @Override public void invalidate() { /* Overridden for performance reasons. */ }
+    // @Override public void validate() { /* Overridden for performance reasons. */ }
+    // @Override public void revalidate() { /* Overridden for performance reasons. */ }
+    // // <---- Overridden for performance reasons.
 }

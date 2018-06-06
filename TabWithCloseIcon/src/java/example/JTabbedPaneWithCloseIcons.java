@@ -30,9 +30,9 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
     }
 }
 
-//Copied from
-//JTabbedPane with close Icons | Oracle Forums
-//https://community.oracle.com/thread/1356993
+// Copied from
+// JTabbedPane with close Icons | Oracle Forums
+// https://community.oracle.com/thread/1356993
 /**
  * The class which generates the 'X' icon for the tabs. The constructor
  * accepts an icon which is extra to the 'X' icon, so you can have tabs

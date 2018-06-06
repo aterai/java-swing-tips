@@ -34,17 +34,17 @@ public class MainPanel extends JPanel {
             + "LEFT333\tCENTER333\tRIGHT333\t1.23\n"
             + "LEFT4444\tCENTER4444\tRIGHT4444\t0.9876\n");
 
-        //MutableAttributeSet attr = new SimpleAttributeSet();
+        // MutableAttributeSet attr = new SimpleAttributeSet();
         Style attr = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setTabSet(attr, new TabSet(new TabStop[] {
-            new TabStop(0f,   TabStop.ALIGN_LEFT,    TabStop.LEAD_NONE),
-            new TabStop(100f, TabStop.ALIGN_CENTER,  TabStop.LEAD_NONE),
-            new TabStop(200f, TabStop.ALIGN_RIGHT,   TabStop.LEAD_NONE),
+            new TabStop(0f, TabStop.ALIGN_LEFT, TabStop.LEAD_NONE),
+            new TabStop(100f, TabStop.ALIGN_CENTER, TabStop.LEAD_NONE),
+            new TabStop(200f, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE),
             new TabStop(250f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)
-            //new TabStop(300f, TabStop.ALIGN_BAR,     TabStop.LEAD_NONE)
+            // new TabStop(300f, TabStop.ALIGN_BAR, TabStop.LEAD_NONE)
         }));
         textPane.setParagraphAttributes(attr, false);
-        //textPane.getStyledDocument().setParagraphAttributes(0, textPane.getDocument().getLength(), attr, false);
+        // textPane.getStyledDocument().setParagraphAttributes(0, textPane.getDocument().getLength(), attr, false);
 
         check.addActionListener(e -> repaint());
         add(new JScrollPane(textPane));

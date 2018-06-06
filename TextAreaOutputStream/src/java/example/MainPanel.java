@@ -24,15 +24,15 @@ public final class MainPanel extends JPanel {
         OutputStream os = new TextAreaOutputStream(textArea);
         LOGGER.addHandler(new TextAreaHandler(os));
 
-//         // TEST:
-//         try {
-//             // System.setOut(new PrintStream(os, true, "UTF-8"));
-//             FileHandler fh = new FileHandler("test.log");
-//             fh.setEncoding("UTF-8");
-//             LOGGER.addHandler(fh);
-//         } catch (IOException ex) {
-//             ex.printStackTrace();
-//         }
+        // // TEST:
+        // try {
+        //     // System.setOut(new PrintStream(os, true, "UTF-8"));
+        //     FileHandler fh = new FileHandler("test.log");
+        //     fh.setEncoding("UTF-8");
+        //     LOGGER.addHandler(fh);
+        // } catch (IOException ex) {
+        //     ex.printStackTrace();
+        // }
 
         LOGGER.info("test, TEST");
 

@@ -49,29 +49,29 @@ public final class MainPanel extends JPanel {
             allNodesChanged(tree);
         });
 
-//         tree.setCellRenderer(new DefaultTreeCellRenderer() {
-//             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//                 super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-//                 if (leaf) {
-//                     if (!leafCheck.isSelected()) {
-//                         setIcon(null);
-//                     } else {
-//                         setIcon(getDefaultLeafIcon());
-//                     }
-//                 } else {
-//                     if (!folderCheck.isSelected()) {
-//                         setIcon(null);
-//                     } else {
-//                         if (expanded) {
-//                             setIcon(getDefaultOpenIcon());
-//                         } else {
-//                             setIcon(getDefaultClosedIcon());
-//                         }
-//                     }
-//                 }
-//                 return this;
-//             }
-//         });
+        // tree.setCellRenderer(new DefaultTreeCellRenderer() {
+        //     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        //         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        //         if (leaf) {
+        //             if (!leafCheck.isSelected()) {
+        //                 setIcon(null);
+        //             } else {
+        //                 setIcon(getDefaultLeafIcon());
+        //             }
+        //         } else {
+        //             if (!folderCheck.isSelected()) {
+        //                 setIcon(null);
+        //             } else {
+        //                 if (expanded) {
+        //                     setIcon(getDefaultOpenIcon());
+        //                 } else {
+        //                     setIcon(getDefaultClosedIcon());
+        //                 }
+        //             }
+        //         }
+        //         return this;
+        //     }
+        // });
 
         JPanel np = new JPanel();
         np.add(folderCheck);

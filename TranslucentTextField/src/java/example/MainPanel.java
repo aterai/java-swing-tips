@@ -37,21 +37,21 @@ public final class MainPanel extends JPanel {
         field2.setOpaque(false);
         field2.setBackground(BG_COLOR);
 
-        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
+        Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("setBackground(1.0, 0.8, 0.8, 0.2)");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx  = 0;
+        c.gridx = 0;
         c.insets = new Insets(15, 15, 15, 0);
         c.anchor = GridBagConstraints.LINE_START;
         add(new JLabel("0. setOpaque(true)"), c);
         add(new JLabel("1. setOpaque(false)"), c);
         add(new JLabel("2. 1+paintComponent"), c);
 
-        c.gridx   = 1;
+        c.gridx = 1;
         c.weightx = 1d;
-        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.HORIZONTAL;
         add(field0, c);
         add(field1, c);
         add(field2, c);
@@ -59,12 +59,12 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private TexturePaint makeTexturePaint() {
-        //Viva! edo > http://www.viva-edo.com/komon/edokomon.html
+        // Viva! edo > http://www.viva-edo.com/komon/edokomon.html
         URL url = getClass().getResource("unkaku_w.gif");
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(url);
-            //bi = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
+            // bi = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException(ex);
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();

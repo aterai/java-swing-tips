@@ -51,8 +51,8 @@ public class MainPanel extends JPanel {
             }
         };
         table.setRowSorter(sorter);
-        //sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
-        //sorter.toggleSortOrder(1);
+        // sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
+        // sorter.toggleSortOrder(1);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);

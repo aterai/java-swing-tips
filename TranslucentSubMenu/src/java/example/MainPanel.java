@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     }
     public static JMenu createMenu(String key) {
         JMenu menu = new TransparentMenu(key);
-        //menu.setForeground(new Color(200, 200, 200));
+        // menu.setForeground(new Color(200, 200, 200));
         menu.setOpaque(false); // Motif lnf
         JMenu sub = new TransparentMenu("Submenu");
         sub.add("JMenuItem");
@@ -191,7 +191,7 @@ Translucent and Shaped Swing Windows | Java.net
 </a>
 */
 class TranslucentPopupFactory extends PopupFactory {
-    @Override public Popup getPopup(Component owner, Component contents, int x, int y) { //throws IllegalArgumentException {
+    @Override public Popup getPopup(Component owner, Component contents, int x, int y) { // throws IllegalArgumentException {
         return new TranslucentPopup(owner, contents, x, y);
     }
 }
@@ -203,18 +203,18 @@ class TranslucentPopup extends Popup {
         // create a new heavyweight window
         this.popupWindow = new JWindow();
         // mark the popup with partial opacity
-        //AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
-        //popupWindow.setOpacity(.5f);
-        //AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
-        popupWindow.setBackground(new Color(0x0, true)); //Java 1.7.0
+        // AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
+        // popupWindow.setOpacity(.5f);
+        // AWTUtilities.setWindowOpaque(popupWindow, false); // Java 1.6.0_10
+        popupWindow.setBackground(new Color(0x0, true)); // Java 1.7.0
         // determine the popup location
         popupWindow.setLocation(ownerX, ownerY);
         // add the contents to the popup
         popupWindow.getContentPane().add(contents);
         contents.invalidate();
-        //JComponent parent = (JComponent) contents.getParent();
+        // JComponent parent = (JComponent) contents.getParent();
         // set the shadow border
-        //parent.setBorder(new ShadowPopupBorder());
+        // parent.setBorder(new ShadowPopupBorder());
     }
     @Override public void show() {
         System.out.println("Always Heavy weight!");
@@ -223,7 +223,7 @@ class TranslucentPopup extends Popup {
         // mark the window as non-opaque, so that the
         // shadow border pixels take on the per-pixel
         // translucency
-        //AWTUtilities.setWindowOpaque(this.popupWindow, false);
+        // AWTUtilities.setWindowOpaque(this.popupWindow, false);
     }
     @Override public void hide() {
         this.popupWindow.setVisible(false);

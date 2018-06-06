@@ -14,18 +14,18 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
-        int charWidth  = fm.charWidth('m');
-        int tabWidth   = charWidth * 4;
+        int charWidth = fm.charWidth('m');
+        int tabWidth = charWidth * 4;
         TabStop[] tabs = new TabStop[10];
         for (int j = 0; j < tabs.length; j++) {
             tabs[j] = new TabStop((j + 1) * tabWidth);
         }
         TabSet tabSet = new TabSet(tabs);
-        //MutableAttributeSet attributes = new SimpleAttributeSet();
+        // MutableAttributeSet attributes = new SimpleAttributeSet();
         MutableAttributeSet attributes = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setTabSet(attributes, tabSet);
-        //int length = textPane.getDocument().getLength();
-        //textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
+        // int length = textPane.getDocument().getLength();
+        // textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
         textPane.setParagraphAttributes(attributes, false);
         textPane.setText("JTextPane\naaaa\n\taaaa\n\t\taaaa\n");
 

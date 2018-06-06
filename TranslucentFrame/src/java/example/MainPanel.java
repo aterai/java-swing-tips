@@ -21,24 +21,24 @@ public final class MainPanel extends JPanel {
         };
         p2.setOpaque(false);
 
-//         d.put("InternalFrame[Enabled].backgroundPainter", new Painter<JComponent>() {
-//             @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-//                 g.setColor(new Color(100, 200, 100, 100));
-//                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
-//             }
-//         });
-//         d.put("InternalFrame[Enabled+WindowFocused].backgroundPainter", new Painter() {
-//             @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-//                 g.setColor(new Color(100, 250, 120, 100));
-//                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
-//             }
-//         });
+        // d.put("InternalFrame[Enabled].backgroundPainter", new Painter<JComponent>() {
+        //     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+        //         g.setColor(new Color(100, 200, 100, 100));
+        //         g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
+        //     }
+        // });
+        // d.put("InternalFrame[Enabled+WindowFocused].backgroundPainter", new Painter() {
+        //     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+        //         g.setColor(new Color(100, 250, 120, 100));
+        //         g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
+        //     }
+        // });
         createFrame(initContainer(p1), 0);
         createFrame(initContainer(p2), 1);
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
-//     private final UIDefaults d = new UIDefaults();
+    // private final UIDefaults d = new UIDefaults();
 
     private static Container initContainer(Container p) {
         p.add(new JLabel("label"));
@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
 
     protected JInternalFrame createFrame(Container panel, int idx) {
         JInternalFrame frame = new MyInternalFrame();
-//         frame.putClientProperty("Nimbus.Overrides", d);
-//         // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+        // frame.putClientProperty("Nimbus.Overrides", d);
+        // // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
         frame.setContentPane(panel);
         frame.getRootPane().setOpaque(false);
         frame.setOpaque(false);

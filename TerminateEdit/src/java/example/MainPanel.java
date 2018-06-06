@@ -40,23 +40,23 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
 
-//         // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
-//         // https://bugs.openjdk.java.net/browse/JDK-4330950
-//         frame.addWindowListener(new WindowAdapter() {
-//             @Override public void windowClosing(WindowEvent e) {
-// //                 if (table.isEditing()) {
-// //                     table.getCellEditor().stopCellEditing();
-// //                 }
-// //                 System.out.println(table.getValueAt(0, 1));
-//             }
-//         });
-//         frame.addWindowStateListener(new WindowStateListener() {
-//             @Override public void windowStateChanged(WindowEvent e) {
-//                 if (frame.getExtendedState() == Frame.MAXIMIZED_BOTH && table.isEditing()) {
-//                     table.getCellEditor().stopCellEditing();
-//                 }
-//             }
-//         });
+        // // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
+        // // https://bugs.openjdk.java.net/browse/JDK-4330950
+        // frame.addWindowListener(new WindowAdapter() {
+        //     @Override public void windowClosing(WindowEvent e) {
+        //         // if (table.isEditing()) {
+        //         //     table.getCellEditor().stopCellEditing();
+        //         // }
+        //         // System.out.println(table.getValueAt(0, 1));
+        //     }
+        // });
+        // frame.addWindowStateListener(new WindowStateListener() {
+        //     @Override public void windowStateChanged(WindowEvent e) {
+        //         if (frame.getExtendedState() == Frame.MAXIMIZED_BOTH && table.isEditing()) {
+        //             table.getCellEditor().stopCellEditing();
+        //         }
+        //     }
+        // });
 
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
@@ -84,16 +84,16 @@ public class MainPanel extends JPanel {
             }
         });
 
-//         // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
-//         // https://bugs.openjdk.java.net/browse/JDK-4330950
-//         table.getTableHeader().addComponentListener(new ComponentAdapter() {
-//             @Override public void componentResized(ComponentEvent e) {
-//                 System.out.println("componentResized");
-//                 if (table.isEditing()) {
-//                     table.getCellEditor().stopCellEditing();
-//                 }
-//             }
-//         });
+        // // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
+        // // https://bugs.openjdk.java.net/browse/JDK-4330950
+        // table.getTableHeader().addComponentListener(new ComponentAdapter() {
+        //     @Override public void componentResized(ComponentEvent e) {
+        //         System.out.println("componentResized");
+        //         if (table.isEditing()) {
+        //             table.getCellEditor().stopCellEditing();
+        //         }
+        //     }
+        // });
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     }
     private static JTree makeTree() {
         Icon emptyIcon = new EmptyIcon();
-        UIManager.put("Tree.expandedIcon",  new IconUIResource(emptyIcon));
+        UIManager.put("Tree.expandedIcon", new IconUIResource(emptyIcon));
         UIManager.put("Tree.collapsedIcon", new IconUIResource(emptyIcon));
 
         JTree tree = new JTree();
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
 
         tree.addTreeWillExpandListener(new TreeWillExpandListener() {
             @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
-                //throw new ExpandVetoException(e, "Tree expansion cancelled");
+                // throw new ExpandVetoException(e, "Tree expansion cancelled");
             }
             @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
                 throw new ExpandVetoException(e, "Tree collapse cancelled");

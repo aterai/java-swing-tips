@@ -13,8 +13,8 @@ public final class MainPanel extends JPanel {
     private final JToolBar toolbar2 = new JToolBar("JButton");
     public MainPanel() {
         super(new BorderLayout());
-        //toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
-        //toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
+        // toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
+        // toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
 
         URL url1 = getClass().getResource(PATH + "Copy24.gif");
         URL url2 = getClass().getResource(PATH + "Cut24.gif");

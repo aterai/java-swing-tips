@@ -116,9 +116,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
-//>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
-//Validating with Input Verifiers
+// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
+// Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;
@@ -129,8 +129,8 @@ class IntegerInputVerifier extends InputVerifier {
                 verified = true;
             } catch (NumberFormatException ex) {
                 verified = false;
-                //System.out.println("InputVerifier#verify: false");
-                //UIManager.getLookAndFeel().provideErrorFeedback(c);
+                // System.out.println("InputVerifier#verify: false");
+                // UIManager.getLookAndFeel().provideErrorFeedback(c);
             }
         }
         return verified;
@@ -139,7 +139,7 @@ class IntegerInputVerifier extends InputVerifier {
         boolean verified = verify(input);
         if (!verified) {
             UIManager.getLookAndFeel().provideErrorFeedback(input);
-            //JOptionPane.showMessageDialog(input.getParent(), "InputVerifier#verify(...): false");
+            // JOptionPane.showMessageDialog(input.getParent(), "InputVerifier#verify(...): false");
         }
         return verified;
     }
