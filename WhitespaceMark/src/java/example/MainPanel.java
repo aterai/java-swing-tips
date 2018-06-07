@@ -73,21 +73,21 @@ class CustomEditorKit extends StyledEditorKit {
 
 class CustomViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
-//         String kind = elem.getName();
-//         if (Objects.nonNull(kind)) {
-//             if (kind.equals(AbstractDocument.ContentElementName)) {
-//                 return new WhitespaceLabelView(elem);
-//             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
-//                 return new ParagraphWithEopmView(elem);
-//             } else if (kind.equals(AbstractDocument.SectionElementName)) {
-//                 return new BoxView(elem, View.Y_AXIS);
-//             } else if (kind.equals(StyleConstants.ComponentElementName)) {
-//                 return new ComponentView(elem);
-//             } else if (kind.equals(StyleConstants.IconElementName)) {
-//                 return new IconView(elem);
-//             }
-//         }
-//         return new WhitespaceLabelView(elem);
+        // String kind = elem.getName();
+        // if (Objects.nonNull(kind)) {
+        //     if (kind.equals(AbstractDocument.ContentElementName)) {
+        //         return new WhitespaceLabelView(elem);
+        //     } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+        //         return new ParagraphWithEopmView(elem);
+        //     } else if (kind.equals(AbstractDocument.SectionElementName)) {
+        //         return new BoxView(elem, View.Y_AXIS);
+        //     } else if (kind.equals(StyleConstants.ComponentElementName)) {
+        //         return new ComponentView(elem);
+        //     } else if (kind.equals(StyleConstants.IconElementName)) {
+        //         return new IconView(elem);
+        //     }
+        // }
+        // return new WhitespaceLabelView(elem);
         return Optional.ofNullable(elem.getName()).map(kind -> {
             switch (kind) {
                 case AbstractDocument.ContentElementName: return new WhitespaceLabelView(elem);

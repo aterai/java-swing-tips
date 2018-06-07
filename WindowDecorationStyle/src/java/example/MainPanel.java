@@ -44,50 +44,50 @@ public final class MainPanel extends JPanel {
         setBackground(new Color(1f, 1f, 1f, .01f));
         // <<<
     }
-//     private ButtonGroup lafRadioGroup;
-//     private String lookAndFeel;
-//     protected JMenu createLookAndFeelMenu() {
-//         JMenu menu = new JMenu("LookAndFeel");
-//         lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-//         lafRadioGroup = new ButtonGroup();
-//         for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
-//             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
-//         }
-//         return menu;
-//     }
-//     protected JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
-//         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-//         lafItem.setActionCommand(lafClassName);
-//         lafItem.setHideActionText(true);
-//         lafItem.addActionListener(e -> {
-//             ButtonModel m = lafRadioGroup.getSelection();
-//             try {
-//                 setLookAndFeel(m.getActionCommand());
-//             } catch (ClassNotFoundException | InstantiationException
-//                    | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//                 ex.printStackTrace();
-//             }
-//         });
-//         lafRadioGroup.add(lafItem);
-//         return lafItem;
-//     }
-//     public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-//         String oldLookAndFeel = this.lookAndFeel;
-//         if (!oldLookAndFeel.equals(lookAndFeel)) {
-//             UIManager.setLookAndFeel(lookAndFeel);
-//             this.lookAndFeel = lookAndFeel;
-//             updateLookAndFeel();
-//             firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
-//         }
-//     }
-//     private void updateLookAndFeel() {
-//         for (Window window: Frame.getWindows()) {
-//             if (window instanceof RootPaneContainer) {
-//                 RootPaneContainer rpc = (RootPaneContainer) window;
-//                 SwingUtilities.updateComponentTreeUI(rpc.getContentPane());
-//             }
-//         }
-//     }
+    // private ButtonGroup lafRadioGroup;
+    // private String lookAndFeel;
+    // protected JMenu createLookAndFeelMenu() {
+    //     JMenu menu = new JMenu("LookAndFeel");
+    //     lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+    //     lafRadioGroup = new ButtonGroup();
+    //     for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+    //         menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
+    //     }
+    //     return menu;
+    // }
+    // protected JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
+    //     JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+    //     lafItem.setActionCommand(lafClassName);
+    //     lafItem.setHideActionText(true);
+    //     lafItem.addActionListener(e -> {
+    //         ButtonModel m = lafRadioGroup.getSelection();
+    //         try {
+    //             setLookAndFeel(m.getActionCommand());
+    //         } catch (ClassNotFoundException | InstantiationException
+    //                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    //             ex.printStackTrace();
+    //         }
+    //     });
+    //     lafRadioGroup.add(lafItem);
+    //     return lafItem;
+    // }
+    // public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    //     String oldLookAndFeel = this.lookAndFeel;
+    //     if (!oldLookAndFeel.equals(lookAndFeel)) {
+    //         UIManager.setLookAndFeel(lookAndFeel);
+    //         this.lookAndFeel = lookAndFeel;
+    //         updateLookAndFeel();
+    //         firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+    //     }
+    // }
+    // private void updateLookAndFeel() {
+    //     for (Window window: Frame.getWindows()) {
+    //         if (window instanceof RootPaneContainer) {
+    //             RootPaneContainer rpc = (RootPaneContainer) window;
+    //             SwingUtilities.updateComponentTreeUI(rpc.getContentPane());
+    //         }
+    //     }
+    // }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

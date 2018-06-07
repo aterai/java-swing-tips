@@ -314,30 +314,30 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
                 r.width = checkBox.getPreferredSize().width;
                 return r.contains(p);
             }).orElse(false);
-//             MouseEvent me = (MouseEvent) e;
-//             JTree tree = (JTree) e.getSource();
-//             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-//             Rectangle r = tree.getPathBounds(path);
-//             if (Objects.isNull(r)) {
-//                 return false;
-//             }
-//             Dimension d = checkBox.getPreferredSize();
-//             r.setSize(new Dimension(d.width, r.height));
-//             if (r.contains(me.getPoint())) {
-//                 return true;
-//             }
+            // MouseEvent me = (MouseEvent) e;
+            // JTree tree = (JTree) e.getSource();
+            // TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+            // Rectangle r = tree.getPathBounds(path);
+            // if (Objects.isNull(r)) {
+            //     return false;
+            // }
+            // Dimension d = checkBox.getPreferredSize();
+            // r.setSize(new Dimension(d.width, r.height));
+            // if (r.contains(me.getPoint())) {
+            //     return true;
+            // }
         }
         return false;
     }
-//     // AbstractCellEditor
-//     @Override public boolean shouldSelectCell(EventObject anEvent) {
-//         return true;
-//     }
-//     @Override public boolean stopCellEditing() {
-//         fireEditingStopped();
-//         return true;
-//     }
-//     @Override public void cancelCellEditing() {
-//         fireEditingCanceled();
-//     }
+    // // AbstractCellEditor
+    // @Override public boolean shouldSelectCell(EventObject anEvent) {
+    //     return true;
+    // }
+    // @Override public boolean stopCellEditing() {
+    //     fireEditingStopped();
+    //     return true;
+    // }
+    // @Override public void cancelCellEditing() {
+    //     fireEditingCanceled();
+    // }
 }

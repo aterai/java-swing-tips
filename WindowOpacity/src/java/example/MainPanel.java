@@ -11,7 +11,7 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final transient TexturePaint imageTexture   = makeImageTexture();
+    private final transient TexturePaint imageTexture = makeImageTexture();
     private final transient TexturePaint checkerTexture = makeCheckerTexture();
     private transient TexturePaint texture;
 
@@ -24,17 +24,17 @@ public final class MainPanel extends JPanel {
 
         JComboBox<String> combo = new JComboBox<>(new String[] {"Color(.5f, .8f, .5f, .5f)", "ImageTexturePaint", "CheckerTexturePaint"});
 
-//         if (System.getProperty("java.version").startsWith("1.7.0")) {
-//             // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
-//             // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
-//             // [JDK-7156657] Version 7 doesn't support translucent popup menus against a translucent window - Java Bug System
-//             // https://bugs.openjdk.java.net/browse/JDK-7156657
-//             combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
-//         }
+        // if (System.getProperty("java.version").startsWith("1.7.0")) {
+        //     // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
+        //     // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
+        //     // [JDK-7156657] Version 7 doesn't support translucent popup menus against a translucent window - Java Bug System
+        //     // https://bugs.openjdk.java.net/browse/JDK-7156657
+        //     combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
+        // }
         combo.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                //JComboBox cbox = (JComboBox) e.getSource();
-                //Object o = cbox.getSelectedItem();
+                // JComboBox cbox = (JComboBox) e.getSource();
+                // Object o = cbox.getSelectedItem();
                 Object o = e.getItem();
                 if ("ImageTexturePaint".equals(o)) {
                     texture = imageTexture;
@@ -47,14 +47,14 @@ public final class MainPanel extends JPanel {
                     setOpaque(true);
                 }
                 getRootPane().getContentPane().repaint();
-//                 Window w = SwingUtilities.getWindowAncestor(getRootPane());
-//                 if (w instanceof JFrame) { //XXX: JDK 1.7.0 ???
-//                     //((JFrame) w).getRootPane().repaint();
-//                     ((JFrame) w).getContentPane().repaint();
-//                 } else {
-//                     revalidate();
-//                     repaint();
-//                 }
+                // Window w = SwingUtilities.getWindowAncestor(getRootPane());
+                // if (w instanceof JFrame) { // XXX: JDK 1.7.0 ???
+                //     // ((JFrame) w).getRootPane().repaint();
+                //     ((JFrame) w).getContentPane().repaint();
+                // } else {
+                //     revalidate();
+                //     repaint();
+                // }
             }
         });
         add(combo);
@@ -104,19 +104,20 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("@title@");
-//         frame.setUndecorated(true);
+        // frame.setUndecorated(true);
 
-        //if (System.getProperty("java.version").startsWith("1.6.0")) {
-        //    AWTUtilities.setWindowOpaque(frame, false);
-        frame.setBackground(new Color(0x0, true)); //1.7.0
+        // if (System.getProperty("java.version").startsWith("1.6.0")) {
+        //     AWTUtilities.setWindowOpaque(frame, false);
+        // }
+        frame.setBackground(new Color(0x0, true)); // 1.7.0
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -132,7 +133,7 @@ public final class MainPanel extends JPanel {
 //         EventQueue.invokeLater(() -> {
 //             JComboBox combo = (JComboBox) e.getSource();
 //             Object o = combo.getAccessibleContext().getAccessibleChild(0);
-//             if (o instanceof JComponent) { //BasicComboPopup
+//             if (o instanceof JComponent) { // BasicComboPopup
 //                 ((JComponent) o).repaint();
 //             }
 //         });

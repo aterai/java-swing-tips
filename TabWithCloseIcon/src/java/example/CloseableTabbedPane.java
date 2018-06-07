@@ -132,7 +132,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
     //     //     }
     //     // }
     //     //
-    //     //         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
+    //     // super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
     //     super.addTab(title, new CloseTabIcon(extraIcon), component);
     //
     //     if (Objects.isNull(headerViewport)) {

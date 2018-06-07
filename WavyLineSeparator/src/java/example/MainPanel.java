@@ -71,8 +71,8 @@ class WavyLineSeparator extends JSeparator {
         }
     }
     @Override protected void paintComponent(Graphics g) {
-        //super.paintComponent(g);
-        //g.setClip(0, 0, getWidth(), getHeight());
+        // super.paintComponent(g);
+        // g.setClip(0, 0, getWidth(), getHeight());
         int pos;
         Insets i = getInsets();
         if (getOrientation() == SwingConstants.HORIZONTAL) {

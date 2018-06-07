@@ -24,16 +24,16 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
-//         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
-//             @Override public void toggleSortOrder(int column) {
-//                 super.toggleSortOrder(column);
-//                 if (check2.isSelected()) {
-//                     table.clearSelection();
-//                 }
-//             }
-//         };
-//         table.setRowSorter(sorter);
-        //table.setUpdateSelectionOnSort(false);
+        // TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+        //     @Override public void toggleSortOrder(int column) {
+        //         super.toggleSortOrder(column);
+        //         if (check2.isSelected()) {
+        //             table.clearSelection();
+        //         }
+        //     }
+        // };
+        // table.setRowSorter(sorter);
+        // table.setUpdateSelectionOnSort(false);
 
         JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
         check1.addActionListener(e -> table.setUpdateSelectionOnSort(((JCheckBox) e.getSource()).isSelected()));

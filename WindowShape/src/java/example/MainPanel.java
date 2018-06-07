@@ -38,17 +38,17 @@ public final class MainPanel extends JPanel {
                 Rectangle2D b = tl.getBounds();
                 Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(), -b.getY()));
 
-//                 int w = 300;
-//                 int h = 300;
-//                 GeneralPath p = new GeneralPath();
-//                 p.moveTo(-w / 4f, -h / 12f);
-//                 p.lineTo(+w / 4f, -h / 12f);
-//                 p.lineTo(-w / 6f, +h /  4f);
-//                 p.lineTo(     0f, -h /  4f);
-//                 p.lineTo(+w / 6f, +h /  4f);
-//                 p.closePath();
-//                 AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
-//                 shape = at.createTransformedShape(p);
+                // int w = 300;
+                // int h = 300;
+                // GeneralPath p = new GeneralPath();
+                // p.moveTo(-w / 4f, -h / 12f);
+                // p.lineTo(+w / 4f, -h / 12f);
+                // p.lineTo(-w / 6f, +h /  4f);
+                // p.lineTo(     0f, -h /  4f);
+                // p.lineTo(+w / 6f, +h /  4f);
+                // p.closePath();
+                // AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
+                // shape = at.createTransformedShape(p);
 
                 frame.setBounds(shape.getBounds());
                 // frame.setSize(shape.getBounds().width, shape.getBounds().height);

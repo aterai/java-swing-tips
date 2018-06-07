@@ -69,14 +69,14 @@ class ZoomAndPanePanel extends JPanel {
         // g2.drawImage(img, 0, 0, this);
         // g2.fill(r);
 
-        //or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
-        //https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html#drawImage-java.awt.Image-java.awt.geom.AffineTransform-java.awt.image.ImageObserver-
-        g2.drawImage(img, zoomTransform, this); //or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
+        // or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
+        // https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html#drawImage-java.awt.Image-java.awt.geom.AffineTransform-java.awt.image.ImageObserver-
+        g2.drawImage(img, zoomTransform, this); // or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
         g2.fill(zoomTransform.createTransformedShape(r));
 
-        //BAD EXAMPLE
-        //g2.setTransform(zoomTransform);
-        //g2.drawImage(img, 0, 0, this);
+        // BAD EXAMPLE
+        // g2.setTransform(zoomTransform);
+        // g2.drawImage(img, 0, 0, this);
 
         g2.dispose();
     }
@@ -114,8 +114,8 @@ class ZoomAndPanePanel extends JPanel {
                     Rectangle ovr = vport.getViewRect();
                     double s = dir > 0 ? 1d / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
                     zoomTransform.scale(s, s);
-                    //double s = 1d + zoomRange.getValue() * .1;
-                    //zoomTransform.setToScale(s, s);
+                    // double s = 1d + zoomRange.getValue() * .1;
+                    // zoomTransform.setToScale(s, s);
                     Rectangle nvr = AffineTransform.getScaleInstance(s, s).createTransformedShape(ovr).getBounds();
                     Point vp = nvr.getLocation();
                     vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);

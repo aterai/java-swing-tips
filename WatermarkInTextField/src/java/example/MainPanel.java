@@ -73,7 +73,7 @@ class WatermarkTextField extends JTextField implements FocusListener {
         super.paintComponent(g);
         if (showWatermark) {
             Graphics2D g2 = (Graphics2D) g.create();
-            //Insets i = getMargin();
+            // Insets i = getMargin();
             Insets i = getInsets();
             int yy = (getHeight() - image.getIconHeight()) / 2;
             g2.drawImage(image.getImage(), i.left, yy, this);
@@ -100,7 +100,7 @@ class GhostFocusListener implements FocusListener {
     @Override public void focusGained(FocusEvent e) {
         JTextComponent textField = (JTextComponent) e.getComponent();
         String str = textField.getText();
-        Color col  = textField.getForeground();
+        Color col = textField.getForeground();
         if (ghostMessage.equals(str) && INACTIVE_COLOR.equals(col)) {
             textField.setForeground(ORIGINAL_COLOR);
             textField.setText("");

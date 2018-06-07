@@ -9,9 +9,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.nimbus.*;
 import javax.swing.table.*;
-// // JDK 1.6
-// import com.sun.java.swing.*;
-// import com.sun.java.swing.plaf.nimbus.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B", "C"};
@@ -48,15 +45,15 @@ public final class MainPanel extends JPanel {
         r.putClientProperty("Nimbus.Overrides", d);
         r.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
-//         // or
-//         d.put("TextArea.NotInScrollPane", new State("NotInScrollPane") {
-//             @Override protected boolean isInState(JComponent c) {
-//                 // @see javax.swing.plaf.nimbus.TextAreaNotInScrollPaneState
-//                 // return !(c.getParent() instanceof JViewport);
-//                 return false;
-//             }
-//         });
-//         r.putClientProperty("Nimbus.Overrides", d);
+        // // or
+        // d.put("TextArea.NotInScrollPane", new State("NotInScrollPane") {
+        //     @Override protected boolean isInState(JComponent c) {
+        //         // @see javax.swing.plaf.nimbus.TextAreaNotInScrollPaneState
+        //         // return !(c.getParent() instanceof JViewport);
+        //         return false;
+        //     }
+        // });
+        // r.putClientProperty("Nimbus.Overrides", d);
 
         table2.setDefaultRenderer(String.class, r);
 
@@ -132,10 +129,10 @@ enum CheckIcon {
 
 // @see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
-//     public static final int CHECKICON_ENABLED_SELECTED = 6;
-//     public static final int CHECKICON_SELECTED_MOUSEOVER = 7;
-//     public static final int CHECKICON_ENABLED = 8;
-//     public static final int CHECKICON_MOUSEOVER = 9;
+    // public static final int CHECKICON_ENABLED_SELECTED = 6;
+    // public static final int CHECKICON_SELECTED_MOUSEOVER = 7;
+    // public static final int CHECKICON_ENABLED = 8;
+    // public static final int CHECKICON_MOUSEOVER = 9;
     private final CheckIcon state;
     private final PaintContext ctx;
     protected MyCheckBoxMenuItemPainter(CheckIcon state) {

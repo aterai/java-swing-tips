@@ -59,12 +59,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try {
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException
-//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//             ex.printStackTrace();
-//         }
+        // try {
+        //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException | InstantiationException
+        //        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        //     ex.printStackTrace();
+        // }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
@@ -78,48 +78,48 @@ class TriSliderUI extends MetalSliderUI {
     @Override public void paintThumb(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //Rectangle thumb = thumbRect;
+        // Rectangle thumb = thumbRect;
         g2.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
         g2.dispose();
     }
     @Override public void paintTrack(Graphics g) {
         int cy;
         int cw;
-        //int pad;
+        // int pad;
         Rectangle trackBounds = trackRect;
         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             Graphics2D g2 = (Graphics2D) g.create();
-            //pad = trackBuffer;
-            //cx = pad;
+            // pad = trackBuffer;
+            // cx = pad;
             cy = -2 + trackBounds.height / 2;
             cw = trackBounds.width;
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.translate(trackBounds.x, trackBounds.y + cy);
 
-            //g2.setPaint(new GradientPaint(0, 0, getShadowColor(), cw, 0, getHighlightColor(), true));
+            // g2.setPaint(new GradientPaint(0, 0, getShadowColor(), cw, 0, getHighlightColor(), true));
             g2.setPaint(Color.GRAY);
             g2.fillRect(0, -cy, cw, cy * 2);
 
             int trackLeft = 0;
             int trackRight = 0;
-            //int trackTop = 0;
-            //int trackBottom = 0;
+            // int trackTop = 0;
+            // int trackBottom = 0;
 
-            //trackBottom = (trackRect.height - 1) - getThumbOverhang();
-            //trackTop    = trackBottom - (getTrackWidth() - 1);
+            // trackBottom = (trackRect.height - 1) - getThumbOverhang();
+            // trackTop = trackBottom - (getTrackWidth() - 1);
             trackRight = trackRect.width - 1;
 
             int middleOfThumb = 0;
-            //int fillTop = 0;
-            //int fillBottom = 0;
+            // int fillTop = 0;
+            // int fillBottom = 0;
             int fillLeft = 0;
             int fillRight = 0;
 
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-            //fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
-            //fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
+            // fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
+            // fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
 
             if (drawInverted()) {
                 fillLeft = middleOfThumb;
@@ -143,8 +143,8 @@ class TriSliderUI extends MetalSliderUI {
             g2.setPaint(Color.WHITE);
             g2.drawLine(0, cy, cw - 1, cy);
 
-            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            //g2.translate(-trackBounds.x, -(trackBounds.y + cy));
+            // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            // g2.translate(-trackBounds.x, -(trackBounds.y + cy));
             g2.dispose();
         } else {
             super.paintTrack(g);
@@ -157,7 +157,7 @@ class TriSliderUI extends MetalSliderUI {
 //     JSlider slider = new JSlider(0, 100);
 //     slider.setMajorTickSpacing(10);
 //     slider.setMinorTickSpacing(5);
-//     //slider.setPaintTicks(true);
+//     // slider.setPaintTicks(true);
 //     slider.setPaintLabels(true);
 //     Dictionary<?, ?> dictionary = slider.getLabelTable();
 //     if (Objects.nonNull(dictionary)) {
@@ -181,6 +181,10 @@ class TriSliderUI extends MetalSliderUI {
 //         g.drawLine(x + 1, y + 0, x + 3, y + 0);
 //         g.drawLine(x + 0, y + 1, x + 4, y + 1);
 //     }
-//     @Override public int getIconWidth() { return 5; }
-//     @Override public int getIconHeight() { return 3; }
+//     @Override public int getIconWidth() {
+//         return 5;
+//     }
+//     @Override public int getIconHeight() {
+//         return 3;
+//     }
 // }

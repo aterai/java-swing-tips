@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         button1.addActionListener(al);
         button2.addActionListener(al);
 
-        //button0.setVerifyInputWhenFocusTarget(true);
+        // button0.setVerifyInputWhenFocusTarget(true);
         button1.setFocusable(false);
         button2.setVerifyInputWhenFocusTarget(false);
 
@@ -110,9 +110,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
-//>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
-//Validating with Input Verifiers
+// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
+// Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;

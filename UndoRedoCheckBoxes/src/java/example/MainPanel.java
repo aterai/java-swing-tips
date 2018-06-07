@@ -100,22 +100,22 @@ public class MainPanel extends JPanel {
             updateCheckBoxes(newValue);
         }
     }
-//       // TEST: bit count
-//       private static final BigInteger M1 = new BigInteger("5555555555555555", 16); // binary: 0101...
-//       private static final BigInteger M2 = new BigInteger("3333333333333333", 16); // binary: 00110011..
-//       private static final BigInteger M4 = new BigInteger("0F0F0F0F0F0F0F0F", 16); // binary: 4 zeros, 4 ones ...
-//       private static final BigInteger M8 = new BigInteger("00FF00FF00FF00FF", 16); // binary: 8 zeros, 8 ones ...
-//       private static final BigInteger M16 = new BigInteger("0000FFFF0000FFFF", 16); // binary: 16 zeros, 16 ones ...
-//       private static final BigInteger M32 = new BigInteger("00000000FFFFFFFF", 16); // binary: 32 zeros, 32 ones
-//       private static int numofbits(BigInteger bits) {
-//         bits = bits.and(M1).add(bits.shiftRight(1).and(M1));
-//         bits = bits.and(M2).add(bits.shiftRight(2).and(M2));
-//         bits = bits.and(M4).add(bits.shiftRight(4).and(M4));
-//         bits = bits.and(M8).add(bits.shiftRight(8).and(M8));
-//         bits = bits.and(M16).add(bits.shiftRight(16).and(M16));
-//         bits = bits.and(M32).add(bits.shiftRight(32).and(M32));
-//         return bits.intValue();
-//       }
+    // // TEST: bit count
+    // private static final BigInteger M1 = new BigInteger("5555555555555555", 16); // binary: 0101...
+    // private static final BigInteger M2 = new BigInteger("3333333333333333", 16); // binary: 00110011..
+    // private static final BigInteger M4 = new BigInteger("0F0F0F0F0F0F0F0F", 16); // binary: 4 zeros, 4 ones ...
+    // private static final BigInteger M8 = new BigInteger("00FF00FF00FF00FF", 16); // binary: 8 zeros, 8 ones ...
+    // private static final BigInteger M16 = new BigInteger("0000FFFF0000FFFF", 16); // binary: 16 zeros, 16 ones ...
+    // private static final BigInteger M32 = new BigInteger("00000000FFFFFFFF", 16); // binary: 32 zeros, 32 ones
+    // private static int numofbits(BigInteger bits) {
+    //     bits = bits.and(M1).add(bits.shiftRight(1).and(M1));
+    //     bits = bits.and(M2).add(bits.shiftRight(2).and(M2));
+    //     bits = bits.and(M4).add(bits.shiftRight(4).and(M4));
+    //     bits = bits.and(M8).add(bits.shiftRight(8).and(M8));
+    //     bits = bits.and(M16).add(bits.shiftRight(16).and(M16));
+    //     bits = bits.and(M32).add(bits.shiftRight(32).and(M32));
+    //     return bits.intValue();
+    // }
     private static String print(BigInteger l) {
         String b = l.toString(2);
         int count = l.bitCount();

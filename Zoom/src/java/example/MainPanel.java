@@ -70,11 +70,11 @@ class ZoomImage extends JPanel {
     @Override public void updateUI() {
         removeMouseWheelListener(handler);
         super.updateUI();
-//         handler = new MouseWheelListener() {
-//             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-//                 changeScale(e.getWheelRotation());
-//             }
-//         };
+        // handler = new MouseWheelListener() {
+        //     @Override public void mouseWheelMoved(MouseWheelEvent e) {
+        //         changeScale(e.getWheelRotation());
+        //     }
+        // };
         handler = e -> changeScale(e.getWheelRotation());
         addMouseWheelListener(handler);
     }
@@ -92,11 +92,11 @@ class ZoomImage extends JPanel {
     public void changeScale(int iv) {
         scale = Math.max(.05, Math.min(5d, scale - iv * .05));
         repaint();
-        //double v = scale - iv * .1;
-        //if (v - 1d > -1.0e-2) {
-        //    scale = Math.min(10d, v);
-        //} else {
-        //    scale = Math.max(.01, scale - iv * .01);
-        //}
+        // double v = scale - iv * .1;
+        // if (v - 1d > -1.0e-2) {
+        //     scale = Math.min(10d, v);
+        // } else {
+        //     scale = Math.max(.01, scale - iv * .01);
+        // }
     }
 }
