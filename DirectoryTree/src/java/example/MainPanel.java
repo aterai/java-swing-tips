@@ -71,16 +71,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        JTree tree = (JTree) e.getSource();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-        // if (frame == null) {
-        //     frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
-        //     frame.setGlassPane(new LockingGlassPane());
-        // }
-        // frame.getGlassPane().setVisible(true);
-
-        // TreePath path = e.getPath();
-
         if (!node.isLeaf()) {
             return;
         }
@@ -88,6 +79,13 @@ class FolderSelectionListener implements TreeSelectionListener {
         if (!parent.isDirectory()) {
             return;
         }
+
+        JTree tree = (JTree) e.getSource();
+        // if (frame == null) {
+        //     frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
+        //     frame.setGlassPane(new LockingGlassPane());
+        // }
+        // frame.getGlassPane().setVisible(true);
 
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         SwingWorker<String, File> worker = new BackgroundTask(fileSystemView, parent) {
