@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileSystemView;
@@ -17,14 +18,14 @@ public final class MainPanel extends JPanel {
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        for (File fileSystemRoot: fileSystemView.getRoots()) {
+        Stream.of(fileSystemView.getRoots()).forEach(fileSystemRoot -> {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
             Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
                 .map(DefaultMutableTreeNode::new)
                 .forEach(node::add);
-        }
+        });
 
         JTree tree = new JTree(treeModel);
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
