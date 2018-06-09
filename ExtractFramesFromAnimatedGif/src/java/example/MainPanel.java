@@ -21,20 +21,18 @@ public final class MainPanel extends JPanel {
         label.setIcon(new ImageIcon(getClass().getResource("duke.running.gif")));
         label.setBorder(BorderFactory.createTitledBorder("duke.running.gif"));
 
-        Box p = Box.createHorizontalBox();
-        p.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
+        Box box = Box.createHorizontalBox();
+        box.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
 
         // https://bugs.openjdk.java.net/browse/JDK-8080225
         // try (InputStream is = getClass().getResourceAsStream("duke.running.gif"); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
         try (InputStream is = Files.newInputStream(Paths.get(getClass().getResource("duke.running.gif").toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-            for (BufferedImage image: loadFromStream(iis)) {
-                p.add(new JLabel(new ImageIcon(image)));
-            }
+            loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
         } catch (IOException | URISyntaxException ex) {
             ex.printStackTrace();
         }
         add(label, BorderLayout.WEST);
-        add(new JScrollPane(p));
+        add(new JScrollPane(box));
         setPreferredSize(new Dimension(320, 240));
     }
     // // https://community.oracle.com/thread/1271862 Reading gif animation frame rates and such?
