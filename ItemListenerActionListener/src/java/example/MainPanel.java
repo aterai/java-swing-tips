@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.time.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -67,13 +68,12 @@ public final class MainPanel extends JPanel {
         };
         List<AbstractButton> list = new ArrayList<>(7);
         Box p = Box.createHorizontalBox();
-        for (DayOfWeek dow: DayOfWeek.values()) {
-            JCheckBox check = new JCheckBox(Objects.toString(dow));
+        Stream.of(DayOfWeek.values()).map(Objects::toString).map(JCheckBox::new).forEach(check -> {
             list.add(check);
             check.addItemListener(il);
             check.addActionListener(al);
             p.add(check);
-        }
+        });
 
         JButton button0 = new JButton("clear");
         button0.addActionListener(e -> list.forEach(c -> c.setSelected(false)));
@@ -98,13 +98,12 @@ public final class MainPanel extends JPanel {
             print(textArea, "ActionListener", c.getClass(), c.isSelected(), e.getActionCommand());
         };
         Box p = Box.createHorizontalBox();
-        for (DayOfWeek dow: DayOfWeek.values()) {
-            JRadioButton r = new JRadioButton(Objects.toString(dow));
+        Stream.of(DayOfWeek.values()).map(Objects::toString).map(JRadioButton::new).forEach(r -> {
             r.addItemListener(il);
             r.addActionListener(al);
             p.add(r);
             bg.add(r);
-        }
+        });
 
         JButton button0 = new JButton("clear");
         button0.addActionListener(e -> bg.clearSelection());
