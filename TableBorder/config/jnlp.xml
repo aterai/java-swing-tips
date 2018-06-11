@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TableBorder" />
+  <property name="jnlp.Name"     value="TableBorder" />
+  <property name="jnlp.name"     value="tableborder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tableborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableBorder.html" />
+</project>
