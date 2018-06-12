@@ -4,7 +4,7 @@
 modified by aterai aterai@outlook.com
 */
 package example;
-//-*- mode:java; encoding:utf-8 -*-
+// -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 import java.awt.*;
 import java.awt.event.*;

@@ -1,7 +1,7 @@
 package example;
-//-*- mode:java; encoding:utf-8 -*-
+// -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-//@homepage@
+// @homepage@
 import java.awt.*;
 import java.util.Arrays;
 import javax.swing.*;
@@ -43,11 +43,11 @@ public final class MainPanel extends JPanel {
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                createAndShowGUI();
+                createAndShowGui();
             }
         });
     }
-    public static void createAndShowGUI() {
+    public static void createAndShowGui() {
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

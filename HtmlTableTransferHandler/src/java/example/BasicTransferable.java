@@ -1,7 +1,7 @@
 package example;
-//-*- mode:java; encoding:utf-8 -*-
+// -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-//@homepage@
+// @homepage@
 import java.awt.datatransfer.*;
 import java.io.*;
 import java.nio.charset.Charset;

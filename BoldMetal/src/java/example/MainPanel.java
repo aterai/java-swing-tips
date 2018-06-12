@@ -1,7 +1,7 @@
 package example;
-//-*- mode:java; encoding:utf-8 -*-
+// -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-//@homepage@
+// @homepage@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Optional;
@@ -58,11 +58,11 @@ public final class MainPanel extends JPanel {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                createAndShowGUI();
+                createAndShowGui();
             }
         });
     }
-    public static void createAndShowGUI() {
+    public static void createAndShowGui() {
         // XXX: UIManager.put("swing.boldMetal", Boolean.FALSE);
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

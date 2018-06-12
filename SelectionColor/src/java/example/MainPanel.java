@@ -1,7 +1,7 @@
 package example;
-//-*- mode:java; encoding:utf-8 -*-
+// -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-//@homepage@
+// @homepage@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         area.setBackground(new Color(0x0, true)); // Nimbus
         area.setSelectionColor(SELECTION_COLOR);
         area.setText("<html><pre>"
-            + "public static void createAndShowGUI() {<br />"
+            + "public static void createAndShowGui() {<br />"
             + "    <span class='highlight'>JFrame</span> frame = new JFrame();<br />"
             + "    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"
             + "    frame.getContentPane().add(new MainPanel());<br />"
@@ -129,11 +129,11 @@ public final class MainPanel extends JPanel {
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                createAndShowGUI();
+                createAndShowGui();
             }
         });
     }
-    public static void createAndShowGUI() {
+    public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException

@@ -341,7 +341,7 @@
         </module>
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
-            <property name="allowedAbbreviations" value="GUI,UI"/>
+            <property name="allowedAbbreviations" value="UI"/>
             <property name="allowedAbbreviationLength" value="1"/>
         </module>
         <module name="OverloadMethodsDeclarationOrder"/>
