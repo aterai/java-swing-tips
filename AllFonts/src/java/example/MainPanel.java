@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -20,9 +21,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        for (Font f: GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {
-            model.addRow(new String[] {f.getFamily(), f.getName(), f.getPSName()});
-        }
+        Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
+            .map(f -> new String[] {f.getFamily(), f.getName(), f.getPSName()})
+            .forEach(model::addRow);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
