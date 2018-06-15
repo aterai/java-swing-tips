@@ -59,6 +59,8 @@ public final class MainPanel extends JPanel {
 }
 
 class DragHandler extends MouseAdapter {
+    private static final Rectangle PREV_AREA = new Rectangle();
+    private static final Rectangle NEXT_AREA = new Rectangle();
     private final JWindow window = new JWindow();
     private Component draggingComonent;
     private int index = -1;
@@ -116,12 +118,12 @@ class DragHandler extends MouseAdapter {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
             int wd2 = r.width / 2;
-            Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
-            Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
-            if (r1.contains(pt)) {
+            PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
+            NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
+            if (PREV_AREA.contains(pt)) {
                 swapComponentLocation(parent, gap, gap, i > 1 ? i : 0);
                 return;
-            } else if (r2.contains(pt)) {
+            } else if (NEXT_AREA.contains(pt)) {
                 swapComponentLocation(parent, gap, gap, i);
                 return;
             }
@@ -145,12 +147,12 @@ class DragHandler extends MouseAdapter {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
             int wd2 = r.width / 2;
-            Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
-            Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
-            if (r1.contains(pt)) {
+            PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
+            NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
+            if (PREV_AREA.contains(pt)) {
                 swapComponentLocation(parent, gap, cmp, i > 1 ? i : 0);
                 return;
-            } else if (r2.contains(pt)) {
+            } else if (NEXT_AREA.contains(pt)) {
                 swapComponentLocation(parent, gap, cmp, i);
                 return;
             }
