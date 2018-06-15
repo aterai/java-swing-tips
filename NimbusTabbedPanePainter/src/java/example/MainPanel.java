@@ -96,8 +96,10 @@ final class NimbusTabbedPanePainterUtils {
             int w = width - r - 1;
             int h = height + r;
             g2.setPaint(new Color(0, 0, 0, 20));
+            RoundRectangle2D rrect = new RoundRectangle2D.Double(0, 0, w, h, r, r);
             for (int i = 0; i < x; i++) {
-                g2.fill(new RoundRectangle2D.Double(x - i, y - i, w + i + i, h, r, r));
+                rrect.setFrame(x - i, y - i, w + i + i, h);
+                g2.fill(rrect);
             }
             g2.setColor(color);
             g2.fill(new RoundRectangle2D.Double(x, y, w, h + OVERPAINT, r, r));
