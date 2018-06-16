@@ -34,9 +34,10 @@ public final class MainPanel extends JPanel {
         button1.setFocusable(false);
         button2.setVerifyInputWhenFocusTarget(false);
 
+        InputVerifier verifier = new IntegerInputVerifier();
         for (JTextField tf: Arrays.asList(field0, field1, field2)) {
             tf.setHorizontalAlignment(SwingConstants.RIGHT);
-            tf.setInputVerifier(new IntegerInputVerifier());
+            tf.setInputVerifier(verifier);
         }
 
         JButton b0 = new JButton("setText(0)");

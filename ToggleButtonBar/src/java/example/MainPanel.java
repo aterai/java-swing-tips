@@ -11,11 +11,14 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
 
-        add(makeToggleButtonBar(0xFF7400, true));
-        add(makeToggleButtonBar(0x555555, false));
-        add(makeToggleButtonBar(0x006400, true));
-        add(makeToggleButtonBar(0x8B0000, false));
-        add(makeToggleButtonBar(0x001E43, true));
+        Icon roundIcon = new ToggleButtonBarCellIcon();
+        Icon rectIcon = new CellIcon();
+
+        add(makeToggleButtonBar(0xFF7400, roundIcon));
+        add(makeToggleButtonBar(0x555555, rectIcon));
+        add(makeToggleButtonBar(0x006400, roundIcon));
+        add(makeToggleButtonBar(0x8B0000, rectIcon));
+        add(makeToggleButtonBar(0x001E43, roundIcon));
 
         setPreferredSize(new Dimension(320, 240));
     }
@@ -32,18 +35,14 @@ public final class MainPanel extends JPanel {
         b.setForeground(Color.WHITE);
         return b;
     }
-    private static Component makeToggleButtonBar(int cc, boolean round) {
+    private static Component makeToggleButtonBar(int cc, Icon icon) {
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(1, 0, 0, 0));
         p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06X", cc)));
         Color color = new Color(cc);
         for (AbstractButton b: Arrays.asList(makeButton("left"), makeButton("center"), makeButton("right"))) {
             b.setBackground(color);
-            if (round) {
-                b.setIcon(new ToggleButtonBarCellIcon());
-            } else {
-                b.setIcon(new CellIcon());
-            }
+            b.setIcon(icon);
             bg.add(b);
             p.add(b);
         }
