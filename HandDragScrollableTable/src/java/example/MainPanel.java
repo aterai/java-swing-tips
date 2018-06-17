@@ -4,6 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,9 +18,11 @@ public final class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        for (int i = 0; i < 1000; i++) {
-            model.addRow(new Object[] {"aaaaa", i, i % 2 == 0});
-        }
+
+        IntStream.range(0, 1000)
+            .mapToObj(i -> new Object[] {"aaaaa", i, i % 2 == 0})
+            .forEach(model::addRow);
+
         JTable table = new JTable(model) {
             private transient MouseAdapter handler;
             @Override public void updateUI() {

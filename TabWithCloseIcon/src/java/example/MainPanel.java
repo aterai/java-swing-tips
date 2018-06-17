@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -14,14 +14,15 @@ public final class MainPanel extends JPanel {
         JTabbedPaneWithCloseIcons tab2 = new JTabbedPaneWithCloseIcons();
         CloseableTabbedPane tab3 = new CloseableTabbedPane();
 
-        for (JTabbedPane t: Arrays.asList(tab1, tab2, tab3)) {
-            t.addTab("aaa", new JLabel("aaaaaaaa"));
-            t.addTab("bbb", new JLabel("bbbbbbbbb"));
-            t.addTab("c", new JLabel("ccc"));
-            t.addTab("dddd", new JLabel("ddddddd"));
-            add(t);
-        }
+        Stream.of(tab1, tab2, tab3).map(MainPanel::makeTabbedPane).forEach(this::add);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
+        tabbedPane.addTab("aaa", new JLabel("aaaaaaaa"));
+        tabbedPane.addTab("bbb", new JLabel("bbbbbbbbb"));
+        tabbedPane.addTab("c", new JLabel("ccc"));
+        tabbedPane.addTab("dddd", new JLabel("ddddddd"));
+        return tabbedPane;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
