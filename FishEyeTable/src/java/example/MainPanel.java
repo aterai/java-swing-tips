@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -23,9 +24,9 @@ public final class MainPanel extends JPanel {
     };
     private MainPanel() {
         super(new BorderLayout());
-        for (int i = 0; i < 20; i++) {
-            model.addRow(new Object[] {"Name:" + i, i, i % 2 == 0});
-        }
+        IntStream.range(0, 20)
+            .mapToObj(i -> new Object[] {"Name: " + i, i, i % 2 == 0})
+            .forEach(model::addRow);
         JTable table = new FishEyeTable(model);
         table.setRowSelectionInterval(0, 0);
         JScrollPane scroll = new JScrollPane(table);

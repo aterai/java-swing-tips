@@ -52,9 +52,7 @@ public final class MainPanel extends JPanel {
         //         // }
         //     });
         // }
-        for (String str: icons) {
-            tabbedPane.addTab(str, new ImageIcon(getClass().getResource(str)), new JLabel(str), str);
-        }
+        icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(getClass().getResource(s)), new JLabel(s), s));
         tabbedPane.setComponentPopupMenu(new TabTitleRenamePopupMenu());
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
