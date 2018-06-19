@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.*;
 import java.util.*;
 import java.util.List;
@@ -26,7 +27,8 @@ public final class MainPanel extends JPanel {
 
         // https://bugs.openjdk.java.net/browse/JDK-8080225
         // try (InputStream is = getClass().getResourceAsStream("test.jpg"); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-        try (InputStream is = Files.newInputStream(Paths.get(getClass().getResource("test.jpg").toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+        URL url = getClass().getResource("test.jpg");
+        try (InputStream is = Files.newInputStream(Paths.get(url.toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
             // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
             reader.setInput(iis, true);
 

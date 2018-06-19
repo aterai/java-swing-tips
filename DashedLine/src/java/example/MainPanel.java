@@ -42,7 +42,8 @@ public class MainPanel extends JPanel {
         JLabel label = new JLabel() {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                dashedStroke = Optional.ofNullable(dashedStroke).orElseGet(() -> new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f));
+                dashedStroke = Optional.ofNullable(dashedStroke)
+                    .orElseGet(() -> new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f));
                 Insets i = getInsets();
                 int w = getWidth();
                 int h = getHeight() / 2;

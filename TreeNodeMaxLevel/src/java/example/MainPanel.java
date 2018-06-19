@@ -57,7 +57,8 @@ public final class MainPanel extends JPanel {
                     self.add(child);
                     model.reload(self);
                 } else {
-                    JOptionPane.showMessageDialog(tree, String.format("ERROR: Maximum levels of %d exceeded.", NODE_MAXIMUM_LEVELS), "add node", JOptionPane.ERROR_MESSAGE);
+                    String message = String.format("ERROR: Maximum levels of %d exceeded.", NODE_MAXIMUM_LEVELS);
+                    JOptionPane.showMessageDialog(tree, message, "add node", JOptionPane.ERROR_MESSAGE);
                 }
             });
         }

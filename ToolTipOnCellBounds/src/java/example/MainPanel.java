@@ -90,7 +90,8 @@ class TooltipList<E> extends JList<E> {
         Rectangle cellBounds = getCellBounds(i, i);
         if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
-            Component renderer = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
+            Component renderer = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus);
             if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
                 return cellBounds.getLocation();
             }
