@@ -107,17 +107,29 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             tabWidth = areaWidth / tabCount;
             gap = areaWidth - tabWidth * tabCount;
         }
+
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth -= tabInsets.left + tabInsets.right + 3;
-        for (int i = 0; i < tabCount; i++) {
-            int w = i < gap ? tabWidth + 1 : tabWidth;
-            Optional.ofNullable((JComponent) getTabComponentAt(i))
-                .ifPresent(t -> t.setPreferredSize(new Dimension(w, t.getPreferredSize().height)));
-        }
+        updateAllTabWidth(tabWidth, gap);
+
         super.doLayout();
     }
     // @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     //     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
     //     setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
     // }
+    protected void updateAllTabWidth(int tabWidth, int gap) {
+        Dimension dim = new Dimension();
+        int rest = gap;
+        for (int i = 0; i < getTabCount(); i++) {
+            JComponent tab = (JComponent) getTabComponentAt(i);
+            if (Objects.nonNull(tab)) {
+                int a = (i == getTabCount() - 1) ? rest : 1;
+                int w = rest > 0 ? tabWidth + a : tabWidth;
+                dim.setSize(w, tab.getPreferredSize().height);
+                tab.setPreferredSize(dim);
+                rest -= a;
+            }
+        }
+    }
 }
