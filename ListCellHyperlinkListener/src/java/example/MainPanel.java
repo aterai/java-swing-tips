@@ -37,7 +37,8 @@ public final class MainPanel extends JPanel {
                         // c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
                         // TEST2:
                         // pt.translate(-r.x, -r.y);
-                        // c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(), pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
+                        // c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+                        //     pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
                     }
                 }
             }
