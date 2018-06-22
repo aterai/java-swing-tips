@@ -10,6 +10,7 @@ import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -33,10 +34,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
         // ButtonTabComponent
-        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
-            tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
-        }
+        IntStream.range(0, tabbedPane.getTabCount()).forEach(this::setTabComponent);
 
         DnDTabbedPane sub2 = new DnDTabbedPane();
         sub2.addTab("Title aaa", new JLabel("aaa"));
@@ -64,6 +62,10 @@ public final class MainPanel extends JPanel {
         add(p);
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private void setTabComponent(int i) {
+        tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
+        tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
     }
     private Component makeCheckBoxPanel() {
         JCheckBox tcheck = new JCheckBox("Top", true);
