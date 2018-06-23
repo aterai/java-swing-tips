@@ -32,7 +32,8 @@ public final class MainPanel extends JPanel {
     private static JButton makeButton(JTextField textField, JTextArea textArea) {
         JButton button = new JButton("show");
         button.addActionListener(e -> {
-            int result = JOptionPane.showConfirmDialog(textArea.getRootPane(), textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            Component p = textArea.getRootPane();
+            int result = JOptionPane.showConfirmDialog(p, textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 textArea.setText(textField.getText());
             }

@@ -114,7 +114,8 @@ public final class MainPanel extends JPanel {
 class HeaderRenderer implements TableCellRenderer {
     private static final Font FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JLabel l = (JLabel) table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        TableCellRenderer hr = table.getTableHeader().getDefaultRenderer();
+        JLabel l = (JLabel) hr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         l.setHorizontalAlignment(SwingConstants.CENTER);
         l.setFont(FONT);
         return l;

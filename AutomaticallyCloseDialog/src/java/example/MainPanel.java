@@ -20,7 +20,8 @@ public final class MainPanel extends JPanel {
         JButton button = new JButton("show");
         button.addActionListener(e -> {
             Component p = SwingUtilities.getRoot(button);
-            int r = JOptionPane.showConfirmDialog(p, label, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            String title = "Automatically close dialog";
+            int r = JOptionPane.showConfirmDialog(p, label, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
             switch (r) {
                 case JOptionPane.OK_OPTION:
                     textArea.append("OK\n");
