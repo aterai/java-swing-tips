@@ -11,6 +11,7 @@ public final class MainPanel extends JPanel {
         boolean flg = UIManager.getLookAndFeelDefaults().getBoolean("Spinner.disableOnBoundaryValues");
         System.out.println(flg);
 
+        // UIManager.put("Spinner.disableOnBoundaryValues", Boolean.TRUE);
         SpinnerModel model = new SpinnerNumberModel(0, 0, 10, 1);
         JSpinner spinner1 = new JSpinner(model);
         spinner1.setFont(spinner1.getFont().deriveFont(32f));
