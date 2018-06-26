@@ -94,7 +94,9 @@ public class MainPanel extends JPanel {
             Shape mjShape = new TextLayout(str, ipaMj, frc).getOutline(null);
 
             Rectangle2D b = exShape.getBounds2D();
-            AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
+            double cx = getWidth() / 2d - b.getCenterX();
+            double cy = getHeight() / 2d - b.getCenterY();
+            AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
 
             g2.setPaint(Color.YELLOW);
             g2.draw(toCenterAtf.createTransformedShape(b));

@@ -110,7 +110,9 @@ class SymbolIcon implements Icon {
         FontRenderContext frc = g2.getFontRenderContext();
         Shape symbol = new TextLayout(str, font, frc).getOutline(null);
         Rectangle2D b = symbol.getBounds2D();
-        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(getIconWidth() / 2d - b.getCenterX(), getIconHeight() / 2d - b.getCenterY());
+        double cx = getIconWidth() / 2d - b.getCenterX();
+        double cy = getIconHeight() / 2d - b.getCenterY();
+        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
         g2.fill(toCenterAtf.createTransformedShape(symbol));
         g2.dispose();
     }
