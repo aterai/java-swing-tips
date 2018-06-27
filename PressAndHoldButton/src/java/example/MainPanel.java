@@ -86,23 +86,28 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
             }
         });
         pop.setLayout(new GridLayout(0, 3, 5, 5));
-        for (MenuContext m: makeMenuList()) {
-            AbstractButton b = new JRadioButton(m.command);
-            b.setActionCommand(m.command);
-            b.setForeground(m.color);
-            b.setBorder(BorderFactory.createEmptyBorder());
-            b.addActionListener(e -> {
-                System.out.println(bg.getSelection().getActionCommand());
-                pop.setVisible(false);
+        makeMenuList().stream()
+            .map(PressAndHoldHandler::makeMenuButton)
+            .forEach(b -> {
+                b.addActionListener(e -> {
+                    System.out.println(bg.getSelection().getActionCommand());
+                    pop.setVisible(false);
+                });
+                pop.add(b);
+                bg.add(b);
             });
-            // b.setIcon(m.small);
-            // b.setRolloverIcon(m.rollover);
-            // b.setSelectedIcon(m.rollover);
-            // b.setFocusable(false);
-            // b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
-            pop.add(b);
-            bg.add(b);
-        }
+    }
+    private static AbstractButton makeMenuButton(MenuContext m) {
+        AbstractButton b = new JRadioButton(m.command);
+        b.setActionCommand(m.command);
+        b.setForeground(m.color);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        // b.setIcon(m.small);
+        // b.setRolloverIcon(m.rollover);
+        // b.setSelectedIcon(m.rollover);
+        // b.setFocusable(false);
+        // b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
+        return b;
     }
     private List<MenuContext> makeMenuList() {
         return Arrays.asList(
