@@ -4,8 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.stream.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -95,7 +97,7 @@ public class MainPanel extends JPanel {
     protected final void initDisableIndex(Set<Integer> set) {
         set.clear();
         try {
-            set.addAll(Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet()));
+            set.addAll(Stream.of(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet()));
         } catch (NumberFormatException ex) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

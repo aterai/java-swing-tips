@@ -4,9 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.util.List;
-import java.util.stream.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 
     protected static List<Integer> getWidthRaitoArray(String text, int length) {
         try {
-            Stream<Integer> a = Arrays.stream(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
+            Stream<Integer> a = Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
             Stream<Integer> b = Stream.generate(() -> 1).limit(length);
             return Stream.concat(a, b).limit(length).collect(Collectors.toList());
         } catch (NumberFormatException ex) {

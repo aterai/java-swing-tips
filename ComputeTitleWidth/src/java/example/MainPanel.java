@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.stream.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
 final class SwingUtils {
     private SwingUtils() { /* Singleton */ }
     public static Stream<Component> stream(Container parent) {
-        return Arrays.stream(parent.getComponents())
+        return Stream.of(parent.getComponents())
             .filter(Container.class::isInstance).map(Container.class::cast)
             .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
     }

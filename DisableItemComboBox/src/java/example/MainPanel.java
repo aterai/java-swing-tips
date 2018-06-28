@@ -4,8 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.stream.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -45,7 +48,7 @@ public final class MainPanel extends JPanel {
 
     private static Set<Integer> getDisableIndexFromTextField(JTextField field) {
         try {
-            return Arrays.stream(field.getText().split(","))
+            return Stream.of(field.getText().split(","))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .map(Integer::valueOf)
