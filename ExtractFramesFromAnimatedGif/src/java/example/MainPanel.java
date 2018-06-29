@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import javax.imageio.*;
-import javax.imageio.stream.*;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
