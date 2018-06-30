@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.time.*;
-import java.time.format.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.*;
 import java.util.*;
 import javax.swing.*;
