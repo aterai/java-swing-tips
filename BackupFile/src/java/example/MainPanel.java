@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
     private static final String FILE_NAME = "example.txt";

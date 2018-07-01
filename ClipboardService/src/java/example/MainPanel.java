@@ -11,7 +11,9 @@ import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.undo.*;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 public class MainPanel extends JPanel {
     protected ClipboardService cs;
