@@ -4,7 +4,6 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -47,7 +46,7 @@ public final class MainPanel extends JPanel {
     }
     // https://github.com/aterai/java-swing-tips/blob/master/GetComponentsRecursively/src/java/example/MainPanel.java
     public static Stream<Component> stream(Container parent) {
-        return Arrays.stream(parent.getComponents())
+        return Stream.of(parent.getComponents())
             .filter(Container.class::isInstance)
             .map(c -> stream(Container.class.cast(c)))
             .reduce(Stream.of(parent), Stream::concat);

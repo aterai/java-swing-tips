@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -65,7 +66,7 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
             if (LB.equals(str)) {
                 String line = doc.getText(promptPosition, offset - promptPosition);
                 // String[] args = line.split("\\s");
-                String[] args = Arrays.stream(line.split(","))
+                String[] args = Stream.of(line.split(","))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
                     .toArray(String[]::new);

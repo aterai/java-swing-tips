@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -12,7 +13,7 @@ public class MainPanel extends JPanel {
 
     protected final float[] getDashArray() {
         // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
-        String[] slist = Arrays.stream(field.getText().split(","))
+        String[] slist = Stream.of(field.getText().split(","))
             .map(String::trim)
             .filter(s -> !s.isEmpty())
             .toArray(String[]::new);

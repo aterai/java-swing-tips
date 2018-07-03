@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
@@ -105,7 +104,7 @@ class RightAlignmentWindowsFileChooserUI extends WindowsFileChooserUI {
 final class SwingUtils {
     private SwingUtils() { /* Singleton */ }
     public static Stream<Component> stream(Container parent) {
-        return Arrays.stream(parent.getComponents())
+        return Stream.of(parent.getComponents())
             .filter(Container.class::isInstance)
             .map(c -> stream(Container.class.cast(c)))
             .reduce(Stream.of(parent), Stream::concat);

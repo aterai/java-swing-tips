@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
     }
     // // import java.util.function.Function;
     // private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
-    //     return Arrays.stream(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
+    //     return Stream.of(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
     //         @Override public Stream<Component> apply(Component c) {
     //             if (c instanceof Container) {
     //                 Component[] sub = ((Container) c).getComponents();
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
     //     }).filter(c -> c instanceof JTextField).findFirst();
     // }
     public static Stream<Component> stream(Container parent) {
-        return Arrays.stream(parent.getComponents())
+        return Stream.of(parent.getComponents())
             .filter(Container.class::isInstance).map(Container.class::cast)
             .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
     }

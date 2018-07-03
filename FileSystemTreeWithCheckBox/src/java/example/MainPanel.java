@@ -5,8 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.*;
+import java.util.EventObject;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileSystemView;
@@ -22,7 +25,7 @@ public final class MainPanel extends JPanel {
         for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
             root.add(node);
-            Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
+            Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
                 .map(file -> new CheckBoxNode(file, Status.DESELECTED))
                 .map(DefaultMutableTreeNode::new)
@@ -342,7 +345,7 @@ class BackgroundTask extends SwingWorker<String, File> {
         this.parent = parent;
     }
     @Override public String doInBackground() {
-        Arrays.stream(fileSystemView.getFiles(parent, true))
+        Stream.of(fileSystemView.getFiles(parent, true))
             .filter(File::isDirectory)
             .forEach(this::publish);
         return "done";
