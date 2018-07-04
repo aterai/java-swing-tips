@@ -672,7 +672,8 @@ public class TitledBorder2 extends AbstractBorder {
         return this.label;
     }
 
-    // private static Insets getBorderInsets(Border border, Component c, Insets insets) { // CheckStyle False Positive: OverloadMethodsDeclarationOrder
+    // Checkstyle False Positive: OverloadMethodsDeclarationOrder
+    // private static Insets getBorderInsets(Border border, Component c, Insets insets) {
     @SuppressWarnings("PMD.AvoidReassigningParameters")
     private static Insets makeBorderInsets(Border border, Component c, Insets insets) {
         if (Objects.isNull(border)) {

@@ -97,7 +97,11 @@ public class MainPanel extends JPanel {
     protected final void initDisableIndex(Set<Integer> set) {
         set.clear();
         try {
-            set.addAll(Stream.of(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet()));
+            set.addAll(Stream.of(field.getText().split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Integer::valueOf)
+                .collect(Collectors.toSet()));
         } catch (NumberFormatException ex) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
