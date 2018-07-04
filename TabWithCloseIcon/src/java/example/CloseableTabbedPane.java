@@ -3,7 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.EventListener;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -196,7 +198,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
         return closeit;
     }
     public final Point getHeaderViewPosition() {
-        return Arrays.stream(getComponents())
+        return Stream.of(getComponents())
             .filter(JViewport.class::isInstance)
             .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))
             .findFirst()

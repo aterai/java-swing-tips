@@ -3,7 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,14 +26,14 @@ public final class MainPanel extends JPanel {
         swapButton.addActionListener(e -> {
             if (((AbstractButton) e.getSource()).isSelected()) {
                 // tabbedPane.removeAll();
-                Arrays.stream(desktopPane.getAllFrames())
+                Stream.of(desktopPane.getAllFrames())
                     .sorted(Comparator.comparing(JInternalFrame::getTitle))
                     .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
                 Optional.ofNullable(desktopPane.getSelectedFrame())
                     .ifPresent(f -> tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(f.getTitle())));
                 cardLayout.show(panel, tabbedPane.getClass().getName());
             } else {
-                Arrays.stream(desktopPane.getAllFrames())
+                Stream.of(desktopPane.getAllFrames())
                     .forEach(f -> f.setContentPane((Container) tabbedPane.getComponentAt(tabbedPane.indexOfTab(f.getTitle()))));
                 cardLayout.show(panel, desktopPane.getClass().getName());
             }

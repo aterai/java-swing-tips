@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileSystemView;
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
-            Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
+            Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
                 .map(DefaultMutableTreeNode::new)
                 .forEach(node::add);
@@ -127,7 +127,7 @@ class BackgroundTask extends SwingWorker<String, File> {
         this.parent = parent;
     }
     @Override public String doInBackground() {
-        Arrays.stream(fileSystemView.getFiles(parent, true))
+        Stream.of(fileSystemView.getFiles(parent, true))
             .filter(File::isDirectory)
             .forEach(this::publish);
         return "done";

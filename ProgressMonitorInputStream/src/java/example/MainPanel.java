@@ -7,9 +7,12 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
-import java.util.*;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -69,7 +72,7 @@ public final class MainPanel extends JPanel {
             cs = Charset.forName(encoding);
         } else {
             String contentType = urlConnection.getContentType();
-            Arrays.stream(contentType.split(";"))
+            Stream.of(contentType.split(";"))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty() && s.toLowerCase(Locale.ENGLISH).startsWith("charset="))
                 .map(s -> s.substring("charset=".length()))
