@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -47,17 +47,17 @@ public class MainPanel extends JPanel {
                     updateCheckBox("JMenuItem: actionPerformed: invokeLater");
                 }
             };
-            List<JRadioButtonMenuItem> list = new ArrayList<>();
-            JMenuBar menuBar = getRootPane().getJMenuBar();
-            LookAndFeelUtil.searchAllMenuElements(menuBar, list);
-            for (JRadioButtonMenuItem mi: list) {
-                mi.addActionListener(al);
-            }
+            // List<JRadioButtonMenuItem> list = new ArrayList<>();
+            // JMenuBar menuBar = getRootPane().getJMenuBar();
+            // searchAllMenuElements(menuBar, list);
+            // for (JRadioButtonMenuItem mi: list) {
+            //     mi.addActionListener(al);
+            // }
+            stream(getRootPane().getJMenuBar())
+                .filter(JRadioButtonMenuItem.class::isInstance)
+                .map(JRadioButtonMenuItem.class::cast)
+                .forEach(mi -> mi.addActionListener(al));
         });
-
-        // listMenuItems(menuBar)
-        //     .filter(mi -> mi instanceof JRadioButtonMenuItem)
-        //     .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
         JPanel np = new JPanel(new GridLayout(2, 1));
         np.add(dfbaiCheck);
@@ -76,6 +76,29 @@ public class MainPanel extends JPanel {
         super.updateUI();
         append("JPanel: updateUI");
         updateCheckBox("JPanel: updateUI: invokeLater");
+    }
+
+    // public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
+    //     if (me instanceof JRadioButtonMenuItem) {
+    //         list.add((JRadioButtonMenuItem) me);
+    //     }
+    //     MenuElement[] sub = me.getSubElements();
+    //     if (sub.length != 0) {
+    //         for (MenuElement e: sub) {
+    //             searchAllMenuElements(e, list);
+    //         }
+    //     }
+    // }
+
+    public static Stream<MenuElement> stream(MenuElement me) {
+        return Stream.of(me.getSubElements())
+          .map(MainPanel::stream)
+          .reduce(Stream.of(me), Stream::concat);
+    }
+
+    public static Stream<MenuElement> stream2(MenuElement me) {
+        return Stream.of(me.getSubElements())
+          .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
     }
 
     private void updateCheckBox(String str) {
@@ -178,25 +201,4 @@ final class LookAndFeelUtil {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }
-
-    public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
-        if (me instanceof JRadioButtonMenuItem) {
-            list.add((JRadioButtonMenuItem) me);
-        }
-        MenuElement[] sub = me.getSubElements();
-        if (sub.length != 0) {
-            for (MenuElement e: sub) {
-                searchAllMenuElements(e, list);
-            }
-        }
-    }
-
-    // static Stream<MenuElement> listMenuItems(MenuElement me) {
-    //     MenuElement[] sub = me.getSubElements();
-    //     if (sub.length != 0) {
-    //         return Arrays.stream(sub).flatMap(MainPanel::listMenuItems);
-    //     } else {
-    //         return Stream.of(me);
-    //     }
-    // }
 }
