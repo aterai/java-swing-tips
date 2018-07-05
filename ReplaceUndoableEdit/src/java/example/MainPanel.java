@@ -9,6 +9,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoManager;
 
 public class MainPanel extends JPanel {
