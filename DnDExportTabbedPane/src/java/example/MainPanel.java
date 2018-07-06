@@ -66,13 +66,13 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static Component makeCheckBoxPanel(JTabbedPane tabbedPane) {
-        JCheckBox tcheck = new JCheckBox("Top", true);
-        tcheck.addActionListener(e -> tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
-        JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-        scheck.addActionListener(e -> tabbedPane.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+        JCheckBox tc = new JCheckBox("Top", true);
+        tc.addActionListener(e -> tabbedPane.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+        JCheckBox sc = new JCheckBox("SCROLL_TAB_LAYOUT", true);
+        sc.addActionListener(e -> tabbedPane.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(tcheck);
-        p.add(scheck);
+        p.add(tc);
+        p.add(sc);
         return p;
     }
     public static void main(String... args) {

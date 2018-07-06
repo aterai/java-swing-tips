@@ -18,7 +18,8 @@ public final class MainPanel extends JPanel {
             // m.getColumn(i).setHeaderRenderer(new IconColumnHeaderRenderer());
             // m.getColumn(i).setHeaderRenderer(new HtmlIconHeaderRenderer());
             // m.getColumn(i).setHeaderValue(String.format("<html><table><td><img src='%s'/></td>%s", icons[i], columnNames[i]));
-            m.getColumn(i).setHeaderValue(String.format("<html><table cellpadding='0' cellspacing='0'><td><img src='%s'/></td>&nbsp;%s", icons[i], columnNames[i]));
+            String hv = String.format("<html><table cellpadding='0' cellspacing='0'><td><img src='%s'/></td>&nbsp;%s", icons[i], columnNames[i]);
+            m.getColumn(i).setHeaderValue(hv);
         }
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
@@ -105,6 +106,7 @@ final class LookAndFeelUtil {
         lafRadioGroup.add(lafItem);
         return lafItem;
     }
+    @SuppressWarnings("checkstyle:linelength")
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
         if (!oldLookAndFeel.equals(lookAndFeel)) {
