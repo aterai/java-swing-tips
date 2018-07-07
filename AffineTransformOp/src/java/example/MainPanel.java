@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.util.stream.Stream;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -47,20 +48,23 @@ public class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JLabel("Flip: "));
-        for (Flip f: Flip.values()) {
-            JRadioButton rb = new JRadioButton(f.toString(), f == Flip.NONE);
-            rb.addActionListener(e -> {
-                mode = f;
-                repaint();
-            });
+        Stream.of(Flip.values()).map(this::makeRadioButton).forEach(rb -> {
             box.add(rb);
             bg.add(rb);
             box.add(Box.createHorizontalStrut(5));
-        }
+        });
         add(panel);
         add(box, BorderLayout.SOUTH);
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private JRadioButton makeRadioButton(Flip f) {
+        JRadioButton rb = new JRadioButton(f.toString(), f == Flip.NONE);
+        rb.addActionListener(e -> {
+            mode = f;
+            panel.repaint();
+        });
+        return rb;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
