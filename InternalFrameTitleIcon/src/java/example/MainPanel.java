@@ -12,16 +12,20 @@ public final class MainPanel extends JPanel {
         JDesktopPane desktop = new JDesktopPane();
         int idx = 0;
         for (Color c: Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
-            String s = String.format("Document #%s", ++idx);
-            JInternalFrame f = new JInternalFrame(s, true, true, true, true);
+            JInternalFrame f = makeInternalFrame(c, ++idx);
             desktop.add(f);
-            f.setFrameIcon(new ColorIcon(c));
-            f.setSize(240, 120);
-            f.setLocation(10 + 20 * idx, 20 * idx);
             f.setVisible(true);
         }
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static JInternalFrame makeInternalFrame(Color color, int idx) {
+        String title = String.format("Document #%s", idx);
+        JInternalFrame f = new JInternalFrame(title, true, true, true, true);
+        f.setFrameIcon(new ColorIcon(color));
+        f.setSize(240, 120);
+        f.setLocation(10 + 20 * idx, 20 * idx);
+        return f;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
