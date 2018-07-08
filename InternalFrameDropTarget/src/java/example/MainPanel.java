@@ -277,9 +277,10 @@ class TableRowTransferHandler extends TransferHandler {
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
         boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor) && isDroppableTableIntersection(info);
-        // XXX bug? The cursor flickering
-        // Problem with JTableHeader: info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-        getRootGlassPane(info.getComponent()).ifPresent(p -> p.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
+        // XXX bug? The cursor flickering problem with JTableHeader:
+        // info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        getRootGlassPane(info.getComponent())
+            .ifPresent(p -> p.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
         return isDroppable;
     }
     @Override public int getSourceActions(JComponent c) {

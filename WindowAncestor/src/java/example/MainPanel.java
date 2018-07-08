@@ -16,7 +16,8 @@ public final class MainPanel extends JPanel {
             // Frame f = JOptionPane.getFrameForComponent((Component) e.getSource());
             if (w instanceof JFrame) {
                 JFrame frame = (JFrame) w;
-                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
+                String msg = "parentFrame.getTitle(): " + frame.getTitle();
+                JOptionPane.showMessageDialog(frame, msg, "title", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         add(button);

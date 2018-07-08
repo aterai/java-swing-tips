@@ -100,7 +100,8 @@ public final class MainPanel extends JPanel {
             LocalDate date = weekList.getModel().getElementAt(c.gridx * DayOfWeek.values().length).date;
             // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
             // System.out.println(weekNumberOfMonth);
-            boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth(); // ignore WeekFields#getMinimalDaysInFirstWeek()
+            // ignore WeekFields#getMinimalDaysInFirstWeek()
+            boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth();
             if (isSimplyFirstWeekOfMonth) {
                 colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
             }

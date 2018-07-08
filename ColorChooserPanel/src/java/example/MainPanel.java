@@ -29,7 +29,10 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("open JColorChooser");
         button.addActionListener(e -> {
-            List<String> selected = list.stream().filter(AbstractButton::isSelected).map(AbstractButton::getText).collect(Collectors.toList());
+            List<String> selected = list.stream()
+                .filter(AbstractButton::isSelected)
+                .map(AbstractButton::getText)
+                .collect(Collectors.toList());
             Color color;
             if (selected.isEmpty()) { // use default JColorChooser
                 color = JColorChooser.showDialog(getRootPane(), "JColorChooser", null);
