@@ -6,10 +6,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.net.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

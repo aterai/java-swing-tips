@@ -5,9 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.Timer;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 

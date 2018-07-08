@@ -6,11 +6,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.beans.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     private final JTextArea area = new JTextArea();

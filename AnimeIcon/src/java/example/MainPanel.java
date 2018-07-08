@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public class MainPanel extends JPanel {
     protected final JTextArea area = new JTextArea();

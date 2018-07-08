@@ -5,10 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {

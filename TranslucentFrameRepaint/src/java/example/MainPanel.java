@@ -9,10 +9,10 @@ import java.io.*;
 import java.net.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
