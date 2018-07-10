@@ -97,12 +97,11 @@ class DragHereIcon implements Icon {
         // g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
 
         FontRenderContext frc = g2.getFontRenderContext();
-        // U+21E9: DOWNWARDS WHITE ARROW
-        Shape arrow = new TextLayout("\u21E9", FONT, frc).getOutline(null);
+        Shape arrow = new TextLayout("⇩", FONT, frc).getOutline(null);
         g2.setPaint(LINE_COLOR);
         Rectangle2D b = arrow.getBounds2D();
-        int cx = ICON_SIZE / 2d - b.getCenterX();
-        int cy = ICON_SIZE / 2d - b.getCenterY();
+        double cx = ICON_SIZE / 2d - b.getCenterX();
+        double cy = ICON_SIZE / 2d - b.getCenterY();
         AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
         g2.fill(toCenterAtf.createTransformedShape(arrow));
         g2.dispose();
