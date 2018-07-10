@@ -92,13 +92,13 @@ public class MainPanel extends JPanel {
 
     public static Stream<MenuElement> stream(MenuElement me) {
         return Stream.of(me.getSubElements())
-          .map(MainPanel::stream)
-          .reduce(Stream.of(me), Stream::concat);
+            .map(MainPanel::stream)
+            .reduce(Stream.of(me), Stream::concat);
     }
 
     public static Stream<MenuElement> stream2(MenuElement me) {
         return Stream.of(me.getSubElements())
-          .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
+            .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
     }
 
     private void updateCheckBox(String str) {
