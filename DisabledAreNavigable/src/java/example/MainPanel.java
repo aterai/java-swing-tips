@@ -4,8 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -77,7 +76,7 @@ public final class MainPanel extends JPanel {
         // Stream.of(menuBar)
         //     .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
         //         @Override public Stream<MenuElement> apply(MenuElement me) {
-        //             return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(e -> apply(e)));
+        //             return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(this::apply));
         //         }
         //     })
         //     .filter(mi -> mi instanceof JRadioButtonMenuItem)
@@ -154,17 +153,21 @@ final class ManuBarUtil {
         p.add(new JSeparator());
         p.add(new JMenuItem(new ExitAction()));
     }
-    public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
-        if (me instanceof JRadioButtonMenuItem) {
-            list.add((JRadioButtonMenuItem) me);
-        }
-        MenuElement[] sub = me.getSubElements();
-        if (sub.length != 0) {
-            for (MenuElement e: sub) {
-                searchAllMenuElements(e, list);
-            }
-        }
-    }
+    // public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
+    //     if (me instanceof JRadioButtonMenuItem) {
+    //         list.add((JRadioButtonMenuItem) me);
+    //     }
+    //     MenuElement[] sub = me.getSubElements();
+    //     if (sub.length != 0) {
+    //         for (MenuElement e: sub) {
+    //             searchAllMenuElements(e, list);
+    //         }
+    //     }
+    // }
+    // public static Stream<MenuElement> stream(MenuElement me) {
+    //     return Stream.of(me.getSubElements())
+    //       .flatMap(m -> Stream.concat(Stream.of(m), stream(m)));
+    // }
 }
 
 // @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
