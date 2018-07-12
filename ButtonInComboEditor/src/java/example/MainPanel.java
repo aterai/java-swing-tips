@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
