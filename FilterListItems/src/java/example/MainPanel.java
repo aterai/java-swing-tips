@@ -7,7 +7,7 @@ import java.awt.image.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.*;
-import java.util.stream.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;

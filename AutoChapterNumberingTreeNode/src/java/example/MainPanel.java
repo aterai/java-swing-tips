@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.util.Objects;
-import java.util.stream.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.tree.*;
 

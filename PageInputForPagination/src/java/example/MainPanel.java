@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.*;
 

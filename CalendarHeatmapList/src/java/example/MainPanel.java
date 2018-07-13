@@ -6,10 +6,14 @@ import java.awt.*;
 import java.time.*;
 import java.time.format.*;
 import java.time.temporal.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

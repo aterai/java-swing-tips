@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
