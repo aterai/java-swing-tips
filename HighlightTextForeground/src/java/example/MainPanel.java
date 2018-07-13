@@ -5,7 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
@@ -28,8 +30,10 @@ public class MainPanel extends JPanel {
         + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
-    private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0xAA006400, true));
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0x64DDDD00, true));
+    private static final Color CURRENT_COLOR = new Color(0xAA006400, true);
+    private static final Color HIGHLIGHT_COLOR = new Color(0x64DDDD00, true);
+    private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(CURRENT_COLOR);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOR);
     private final JTextPane textPane = new JTextPane();
     private final JTextField field = new JTextField("Swing");
     private final JButton prevButton = new JButton("⋀");
