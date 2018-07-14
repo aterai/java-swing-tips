@@ -4,9 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.text.*;
+import java.text.DateFormat;
 import java.util.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.table.*;
 
