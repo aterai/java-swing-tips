@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.*;
 import javax.swing.text.*;
 
