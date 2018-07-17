@@ -6,7 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
