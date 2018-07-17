@@ -6,16 +6,23 @@ import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
-import javax.imageio.*;
-import javax.imageio.metadata.*;
-import javax.imageio.stream.*;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
