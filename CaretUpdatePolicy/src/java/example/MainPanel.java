@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.time.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.IntStream;

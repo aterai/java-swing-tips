@@ -4,10 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.time.temporal.*;
+import java.time.temporal.WeekFields;
 import java.util.*;
 import javax.swing.*;
 

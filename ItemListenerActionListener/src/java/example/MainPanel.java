@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.time.*;
+import java.time.DayOfWeek;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;

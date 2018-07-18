@@ -4,9 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.time.*;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.*;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;

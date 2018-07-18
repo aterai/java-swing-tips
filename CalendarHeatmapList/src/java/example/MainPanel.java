@@ -3,9 +3,10 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.time.*;
-import java.time.format.*;
-import java.time.temporal.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
