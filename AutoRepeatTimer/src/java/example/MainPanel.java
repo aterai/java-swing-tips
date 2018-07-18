@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.math.*;
+import java.math.BigInteger;
 import java.util.Objects;
 import javax.swing.*;
 
