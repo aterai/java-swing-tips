@@ -3,8 +3,10 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.lang.reflect.*;
-import java.security.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;

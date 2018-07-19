@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
