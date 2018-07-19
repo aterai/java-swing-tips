@@ -187,7 +187,7 @@ final class ZipUtil {
                     Files.createDirectories(path);
                 } else {
                     Path parent = path.getParent();
-                    if (Files.notExists(parent)) {
+                    if (Objects.nonNull(parent) && Files.notExists(parent)) {
                         log("mkdir2: " + parent.toString());
                         Files.createDirectories(parent);
                     }
