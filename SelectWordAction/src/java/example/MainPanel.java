@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.text.*;
+import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;

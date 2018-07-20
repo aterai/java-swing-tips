@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.text.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
