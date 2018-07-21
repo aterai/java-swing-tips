@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
-import javax.accessibility.*;
+import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

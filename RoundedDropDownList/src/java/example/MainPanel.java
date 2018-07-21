@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
-import javax.accessibility.*;
+import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.AbstractBorder;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
     public static final Color BACKGROUND = Color.BLACK;

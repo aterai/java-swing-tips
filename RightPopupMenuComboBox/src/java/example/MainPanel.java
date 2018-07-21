@@ -4,10 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.*;
-import javax.accessibility.*;
+import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
