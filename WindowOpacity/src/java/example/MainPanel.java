@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.*;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

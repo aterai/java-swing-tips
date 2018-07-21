@@ -5,13 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.stream.IntStream;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
     public static final TexturePaint TEXTURE = ImageUtil.makeCheckerTexture();

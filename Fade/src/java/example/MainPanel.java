@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.*;
-import java.io.*;
-import javax.imageio.*;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {

@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.Objects;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {

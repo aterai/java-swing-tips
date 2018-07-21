@@ -5,12 +5,12 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.io.*;
-import java.net.*;
-import javax.imageio.*;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
-// import javax.swing.plaf.basic.*;
+import javax.swing.border.Border;
+// import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = makeCheckerTexture();

@@ -5,10 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

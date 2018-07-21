@@ -5,11 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
-import java.net.*;
+import java.net.URL;
 import java.util.Objects;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
     private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);

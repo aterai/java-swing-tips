@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.Objects;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;

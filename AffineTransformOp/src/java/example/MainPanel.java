@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.stream.Stream;
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
