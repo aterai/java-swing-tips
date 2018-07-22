@@ -5,10 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileSystemView;
 // import sun.awt.shell.ShellFolder;
 
 public class MainPanel extends JPanel {
