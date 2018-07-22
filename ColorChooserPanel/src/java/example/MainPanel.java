@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.colorchooser.*;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
