@@ -58,18 +58,18 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     protected final JTextField editor = new JTextField();
     protected final JLabel dummy = new JLabel();
     protected final Rectangle rect = new Rectangle();
-    protected Component container;
+    protected Component comp;
 
     protected final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            if (container instanceof JComponent) {
-                Optional.ofNullable(((JComponent) container).getRootPane())
+            if (comp instanceof JComponent) {
+                Optional.ofNullable(((JComponent) comp).getRootPane())
                     .ifPresent(r -> r.setGlassPane(glassPane));
             }
             glassPane.add(editor);
             glassPane.setVisible(true);
 
-            Point p = SwingUtilities.convertPoint(container, rect.x, rect.y, glassPane);
+            Point p = SwingUtilities.convertPoint(comp, rect.getLocation(), glassPane);
             rect.setLocation(p);
             rect.grow(2, 2);
             editor.setBounds(rect);
@@ -109,8 +109,8 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     }
     protected EditableTitledBorder(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Color titleColor, Component c) {
         super(border, title, titleJustification, titlePosition, titleFont, titleColor);
-        this.container = c;
-        container.addMouseListener(this);
+        this.comp = c;
+        comp.addMouseListener(this);
         editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
         editor.getActionMap().put("rename-title", renameTitle);
         editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
@@ -233,18 +233,11 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
             }
         }
     }
-    @Override public void mouseEntered(MouseEvent e) {
-        // dispatchEvent(e);
-    }
-    @Override public void mouseExited(MouseEvent e) {
-        // dispatchEvent(e);
-    }
-    @Override public void mousePressed(MouseEvent e) {
-        // dispatchEvent(e);
-    }
-    @Override public void mouseReleased(MouseEvent e) {
-        // dispatchEvent(e);
-    }
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+    @Override public void mouseExited(MouseEvent e) { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e) { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+
     protected JTextField getEditorTextField() {
         return editor;
     }
