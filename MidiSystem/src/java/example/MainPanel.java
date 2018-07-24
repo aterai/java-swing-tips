@@ -4,10 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.io.IOException;
-import java.net.*;
-import javax.sound.midi.*;
+import java.net.URL;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 import javax.swing.*;
-// import javax.sound.midi.spi.*;
 
 public final class MainPanel extends JPanel {
     private static final byte END_OF_TRACK = 0x2F;
