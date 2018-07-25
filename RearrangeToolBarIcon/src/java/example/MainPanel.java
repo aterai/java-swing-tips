@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.net.*;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 

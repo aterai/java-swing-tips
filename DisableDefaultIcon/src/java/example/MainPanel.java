@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.net.*;
+import java.net.URL;
 import java.util.Arrays;
 import javax.swing.*;
 

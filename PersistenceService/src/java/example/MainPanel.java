@@ -4,9 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
-import java.io.*;
-import java.net.*;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import javax.jnlp.BasicService;

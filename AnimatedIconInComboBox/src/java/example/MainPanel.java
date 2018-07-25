@@ -4,10 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.ImageObserver;
-import java.net.*;
+import java.net.URL;
 import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

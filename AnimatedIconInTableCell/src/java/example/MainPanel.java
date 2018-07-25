@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.ImageObserver;
-import java.net.*;
+import java.net.URL;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 

@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.net.URL;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
