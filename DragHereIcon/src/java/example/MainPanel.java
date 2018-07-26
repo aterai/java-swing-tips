@@ -5,9 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.awt.font.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
 import java.awt.geom.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
 
