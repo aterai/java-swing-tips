@@ -5,10 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.nimbus.*;
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 
 public final class MainPanel extends JPanel {
     private transient SwingWorker<String, Void> worker;

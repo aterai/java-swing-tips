@@ -5,11 +5,12 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
     private transient SwingWorker<String, Void> worker;

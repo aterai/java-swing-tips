@@ -7,13 +7,14 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.LayerUI;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();

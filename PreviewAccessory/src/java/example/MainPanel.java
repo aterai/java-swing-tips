@@ -4,8 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.*;
-import java.beans.*;
-import java.io.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Objects;
 import javax.swing.*;
 

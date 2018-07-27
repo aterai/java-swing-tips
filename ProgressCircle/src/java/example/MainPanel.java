@@ -4,10 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.geom.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Random;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class MainPanel extends JPanel {
     protected final JProgressBar progress1 = new JProgressBar() {

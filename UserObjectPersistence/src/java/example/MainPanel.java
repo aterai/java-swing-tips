@@ -4,8 +4,15 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
-import java.io.*;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;

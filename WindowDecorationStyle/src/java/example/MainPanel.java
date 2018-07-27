@@ -4,10 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
+import java.beans.PropertyVetoException;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {

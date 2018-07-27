@@ -5,9 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
