@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.sun.java.swing.plaf.windows.*;
+import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

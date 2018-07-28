@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
 
-import com.sun.java.swing.plaf.windows.*;
+import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
