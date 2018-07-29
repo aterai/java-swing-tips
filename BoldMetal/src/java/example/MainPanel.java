@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {

@@ -5,8 +5,9 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

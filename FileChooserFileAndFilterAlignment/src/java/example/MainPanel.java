@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalFileChooserUI;
 
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 

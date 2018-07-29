@@ -8,8 +8,8 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
