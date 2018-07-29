@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SyntaxHighlightingEditorPane" />
+  <property name="jnlp.Name"     value="SyntaxHighlightingEditorPane" />
+  <property name="jnlp.name"     value="syntaxhighlightingeditorpane" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/syntaxhighlightingeditorpane/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SyntaxHighlightingEditorPane.html" />
+</project>
