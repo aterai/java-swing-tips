@@ -7,7 +7,7 @@ import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
-// import javax.swing.plaf.nimbus.*; // JDK 1.7.0
+// import javax.swing.plaf.nimbus.AbstractRegionPainter; // JDK 1.7.0
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

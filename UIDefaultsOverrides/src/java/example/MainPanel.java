@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.nimbus.*;
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
