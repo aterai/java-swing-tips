@@ -9,7 +9,11 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
-import javax.swing.plaf.synth.*;
+import javax.swing.plaf.synth.Region;
+import javax.swing.plaf.synth.SynthConstants;
+import javax.swing.plaf.synth.SynthContext;
+import javax.swing.plaf.synth.SynthLookAndFeel;
+import javax.swing.plaf.synth.SynthStyle;
 import javax.swing.text.View;
 
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
