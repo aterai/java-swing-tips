@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.font.FontMetrics;
 import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.util.Objects;
