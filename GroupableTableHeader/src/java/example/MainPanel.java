@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicTableHeaderUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

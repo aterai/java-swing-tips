@@ -7,7 +7,9 @@ import java.awt.event.*;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 

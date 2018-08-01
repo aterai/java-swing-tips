@@ -8,7 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 

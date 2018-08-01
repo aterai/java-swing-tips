@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 // How to Use Internal Frames (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html

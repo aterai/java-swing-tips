@@ -7,7 +7,7 @@ import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicPopupMenuUI;
 
 public class CustomPopupMenuUI extends BasicPopupMenuUI {
     public static final int OFF = 4;

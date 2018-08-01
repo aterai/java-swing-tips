@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

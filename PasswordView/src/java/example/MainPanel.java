@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicPasswordFieldUI;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {

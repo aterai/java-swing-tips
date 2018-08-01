@@ -6,7 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

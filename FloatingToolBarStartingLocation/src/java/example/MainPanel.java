@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

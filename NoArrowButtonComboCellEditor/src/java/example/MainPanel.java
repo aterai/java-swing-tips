@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

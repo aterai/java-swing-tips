@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 public class RoundedCornerButtonUI extends BasicButtonUI {
     private static final double ARC_WIDTH = 16d;

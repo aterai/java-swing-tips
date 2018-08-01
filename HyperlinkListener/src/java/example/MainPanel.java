@@ -7,7 +7,8 @@ import java.net.URL;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 

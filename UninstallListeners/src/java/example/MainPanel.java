@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
     private final JSlider slider0 = new JSlider(0, 100, 50);

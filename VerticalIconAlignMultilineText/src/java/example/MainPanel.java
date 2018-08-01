@@ -6,7 +6,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicCheckBoxUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;
 
 import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;

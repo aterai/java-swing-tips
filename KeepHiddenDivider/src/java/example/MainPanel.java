@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {

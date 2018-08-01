@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSeparatorUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

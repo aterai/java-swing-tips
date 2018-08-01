@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

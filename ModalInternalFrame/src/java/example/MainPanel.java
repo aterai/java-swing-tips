@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.text.DefaultEditorKit;
 
 public final class MainPanel extends JPanel {

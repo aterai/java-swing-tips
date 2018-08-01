@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 import javax.swing.table.*;
 

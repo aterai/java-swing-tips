@@ -7,7 +7,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {

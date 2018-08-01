@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

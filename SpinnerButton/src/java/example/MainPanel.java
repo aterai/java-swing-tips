@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicSpinnerUI;
 
 import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 

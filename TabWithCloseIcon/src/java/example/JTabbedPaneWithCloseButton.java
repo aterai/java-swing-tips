@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class JTabbedPaneWithCloseButton extends JTabbedPane {
     private List<JButton> closeButtons;
