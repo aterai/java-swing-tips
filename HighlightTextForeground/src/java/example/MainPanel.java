@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.LayerUI;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {

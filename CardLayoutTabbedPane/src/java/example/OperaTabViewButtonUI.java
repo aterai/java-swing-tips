@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;
 

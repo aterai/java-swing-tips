@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.text.ParseException;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {

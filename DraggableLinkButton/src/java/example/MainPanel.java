@@ -7,7 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.FontUIResource;
 
 public class MainPanel extends JPanel {
     protected static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);

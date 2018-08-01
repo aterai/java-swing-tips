@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

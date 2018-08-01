@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;

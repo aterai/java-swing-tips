@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.BorderUIResource;
 
 public final class MainPanel extends JPanel {
     private final JComponent tree = new JTree();

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.LayerUI;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {

@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
 
 public final class MainPanel extends JPanel {

@@ -8,7 +8,7 @@ import java.awt.image.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

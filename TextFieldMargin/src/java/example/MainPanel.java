@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.InsetsUIResource;
 
 public final class MainPanel extends JPanel {
     private final JTextField field00 = new JTextField("aaaaaaaaaaaaaaaa");

@@ -7,7 +7,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

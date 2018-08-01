@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDirectoryModel;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
