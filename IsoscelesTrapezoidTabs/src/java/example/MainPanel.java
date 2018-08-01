@@ -53,7 +53,6 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private final Color tabBackgroundColor = Color.LIGHT_GRAY;
     private final Color tabBorderColor = Color.GRAY;
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = tabPane.getTabCount();
 

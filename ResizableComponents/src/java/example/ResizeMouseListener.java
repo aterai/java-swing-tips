@@ -82,7 +82,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
         return deltaY;
     }
     // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"}) // Cyclomatic Complexity, Standard Cyclomatic Complexity
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void mouseDragged(MouseEvent e) {
         if (startPos == null || startingBounds == null) {
             return;
