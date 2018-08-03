@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.io.*;
+import java.io.File;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;

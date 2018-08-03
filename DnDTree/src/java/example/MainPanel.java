@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;

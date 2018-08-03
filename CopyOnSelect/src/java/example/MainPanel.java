@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Optional;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;

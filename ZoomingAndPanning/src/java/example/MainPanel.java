@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.io.*;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 

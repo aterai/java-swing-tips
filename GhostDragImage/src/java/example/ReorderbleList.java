@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.io.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;

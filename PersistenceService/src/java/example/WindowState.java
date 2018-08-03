@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.io.*;
+import java.io.Serializable;
 
 public class WindowState implements Serializable {
     private static final long serialVersionUID = 1415435143L;

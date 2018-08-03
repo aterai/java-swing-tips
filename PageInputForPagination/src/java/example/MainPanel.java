@@ -179,8 +179,6 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         this.itemsPerPage = itemsPerPage;
     }
     @Override public String doInBackground() {
-        // import java.io.*;
-        // import java.sql.*;
         // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default/places.sqlite");
         // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
         // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {

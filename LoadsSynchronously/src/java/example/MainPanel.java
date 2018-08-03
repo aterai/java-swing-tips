@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
