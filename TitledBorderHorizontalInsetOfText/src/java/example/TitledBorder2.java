@@ -532,7 +532,6 @@ public class TitledBorder2 extends AbstractBorder {
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
-    @SuppressWarnings("PMD.NPathComplexity")
     @Override public int getBaseline(Component c, int width, int height) {
         Objects.requireNonNull(c, "Must supply non-null component");
         if (width < 0) {
