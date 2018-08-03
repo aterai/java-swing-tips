@@ -9,7 +9,8 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicHTML;
 
 /**

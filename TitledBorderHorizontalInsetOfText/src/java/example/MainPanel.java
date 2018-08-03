@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
     private static final String TITLE = "TitledBorder Test";

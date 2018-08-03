@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.AbstractBorder;
 
 public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = makeCheckerTexture();

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPopupMenuUI;
 

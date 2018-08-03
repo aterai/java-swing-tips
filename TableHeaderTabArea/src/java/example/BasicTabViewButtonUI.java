@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;

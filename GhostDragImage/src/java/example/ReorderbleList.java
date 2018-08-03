@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 import javax.swing.event.*;
 
 public class ReorderbleList<E extends ListItem> extends JList<E> {

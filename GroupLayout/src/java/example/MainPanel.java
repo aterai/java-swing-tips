@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 // import static javax.swing.GroupLayout.Alignment;
 
 public final class MainPanel extends JPanel {

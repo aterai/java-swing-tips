@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 

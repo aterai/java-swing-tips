@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

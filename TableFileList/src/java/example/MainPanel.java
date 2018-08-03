@@ -9,7 +9,7 @@ import java.awt.image.*;
 import java.util.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 

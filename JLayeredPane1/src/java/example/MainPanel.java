@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 
 /**
  * JLayeredPane1.

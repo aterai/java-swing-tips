@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 

@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 
 public class TriangleArrowButton extends JButton {
     private static Icon triangleIcon = new TriangleIcon();

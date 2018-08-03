@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
     private final JPanel panel = new JPanel();

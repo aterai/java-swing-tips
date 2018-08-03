@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

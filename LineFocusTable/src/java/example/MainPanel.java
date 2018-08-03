@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
@@ -222,7 +223,7 @@ class DotBorder extends EmptyBorder {
 // import java.awt.*;
 // import java.util.*;
 // import javax.swing.*;
-// import javax.swing.border.*;
+// import javax.swing.border.Border;
 // import javax.swing.table.*;
 // class FocusCellHighlightBorderTest {
 //   String[] columnNames = {"String", "Integer", "Boolean"};
