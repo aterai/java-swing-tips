@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.HTMLDocument;
 
 public final class MainPanel extends JPanel {
     private static final String LINK = "https://ateraimemo.com/";

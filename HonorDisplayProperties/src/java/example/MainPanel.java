@@ -6,7 +6,8 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

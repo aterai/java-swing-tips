@@ -9,7 +9,10 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.BlockView;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>"

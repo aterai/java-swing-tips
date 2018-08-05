@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>head<table id='log' border='1'></table>tail</body></html>";

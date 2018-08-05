@@ -9,7 +9,9 @@ import java.io.StringReader;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
 public class MainPanel extends JPanel {

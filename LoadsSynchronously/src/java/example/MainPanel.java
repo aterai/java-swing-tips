@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.ImageView;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "<span style='background-color:red'>aaaaaaaaaaaaaaaaaaa</span><br />";
