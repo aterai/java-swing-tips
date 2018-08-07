@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DragSource;
 import java.awt.image.*;
 import java.io.IOException;
 import java.util.*;

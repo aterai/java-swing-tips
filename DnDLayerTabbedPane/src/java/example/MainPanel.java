@@ -4,7 +4,12 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.PropertyChangeEvent;

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.net.URL;
 import java.util.*;
