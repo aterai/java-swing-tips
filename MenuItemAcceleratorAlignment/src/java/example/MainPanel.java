@@ -215,6 +215,7 @@ final class MenuItemUIHelper {
         });
     }
 
+    @SuppressWarnings("checkstyle:linelength")
     public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledFg, Color accFg, Color accSelFg) {
         String text = lh.getAccText();
         if (text.isEmpty()) {

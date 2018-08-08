@@ -212,8 +212,8 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
         <module name="LineLength">
-            <property name="max" value="180"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|@Override.*"/>
+            <property name="max" value="170"/>
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|throws|@Override.*"/>
         </module>
         <!-- module name="AvoidStarImport"/ -->
         <!-- module name="OneTopLevelClass"/ -->
