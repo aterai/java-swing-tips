@@ -108,7 +108,7 @@
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <!-- module name="AvoidStarImport"/ -->
         <module name="AvoidStarImport">
-            <property name="excludes" value="java.awt,java.awt.datatransfer,java.awt.event,java.awt.geom,java.awt.image,java.util,javax.swing,javax.swing.event,javax.swing.table,javax.swing.text,javax.swing.tree"/>
+            <property name="excludes" value="java.awt,java.awt.event,java.awt.geom,java.awt.image,java.util,javax.swing,javax.swing.event,javax.swing.table,javax.swing.text,javax.swing.tree"/>
             <property name="allowClassImports" value="false"/>
             <property name="allowStaticMemberImports" value="false"/>
         </module>
