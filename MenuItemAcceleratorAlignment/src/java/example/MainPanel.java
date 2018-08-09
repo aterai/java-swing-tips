@@ -252,10 +252,13 @@ final class MenuItemUIHelper {
     }
 
     private static void drawString(JComponent c, Graphics g, String text, int x, int y) {
-        // Note:
+        sun.swing.SwingUtilities2.drawString(c, g, text, x, y);
+
         // JDK-8132119 Provide public API for text related methods in SwingUtilities2 - Java Bug System
         // https://bugs.openjdk.java.net/browse/JDK-8132119
-        sun.swing.SwingUtilities2.drawString(c, g, text, x, y);
+        // Java 9
+        // // import javax.swing.plaf.basic.BasicGraphicsUtils;
+        // BasicGraphicsUtils.drawString(c, (Graphics2D) g, text, x, y);
     }
 
     public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
