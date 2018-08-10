@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
             c.gridx = y & 0b1; // start x offset
             c.gridwidth = WIDTH;
             for (int x = 0; x < XSIZE; x++) {
-                panel.add(new JButton(" "), c);
+                panel.add(makeBrick(), c);
                 c.gridx += WIDTH;
             }
             // if (d == 0) {
@@ -48,6 +48,9 @@ public final class MainPanel extends JPanel {
 
         add(panel);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static Component makeBrick() {
+        return new JButton(" ");
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

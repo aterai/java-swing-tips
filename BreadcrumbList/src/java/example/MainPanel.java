@@ -52,11 +52,13 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         Object[] paths = tree.getSelectionPath().getPath();
         for (int i = 0; i < paths.length; i++) {
-            TreePath cur = new TreePath(Arrays.copyOf(paths, i + 1));
-            AbstractButton b = makeButton(tree, cur, Color.ORANGE);
+            AbstractButton b = makeButton(tree, copyTreePath(paths, i + 1), Color.ORANGE);
             p.add(b);
             bg.add(b);
         }
+    }
+    private static TreePath copyTreePath(Object[] paths, int newLength) {
+        return new TreePath(Arrays.copyOf(paths, newLength));
     }
     private static Component makeBreadcrumbList(List<String> list) {
         Container p = makeContainer(5 + 1);

@@ -43,13 +43,17 @@ public final class MainPanel extends JPanel {
             c.gridx = 0;
             c.weightx = 0d;
             c.fill = GridBagConstraints.NONE;
-            p2.add(new JLabel(String.format("%d:", i)), c);
+            p2.add(makeLabel(i), c);
             c.gridx = 1;
             c.weightx = 1d;
             c.fill = GridBagConstraints.HORIZONTAL;
             p2.add(list.get(i), c);
         }
         p2.revalidate(); // ??? JDK 1.7.0 Nimbus ???
+    }
+
+    private static Component makeLabel(int num) {
+        return new JLabel(String.format("%d:", num));
     }
 
     private List<JComboBox<?>> initComboBoxes(boolean isColor) {
