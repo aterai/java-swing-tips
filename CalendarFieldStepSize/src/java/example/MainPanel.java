@@ -4,7 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.*;
 

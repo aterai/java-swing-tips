@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.*;

@@ -11,7 +11,8 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
-import java.util.*;
+import java.util.Locale;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
