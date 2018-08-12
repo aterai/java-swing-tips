@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.*;
