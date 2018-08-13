@@ -1,0 +1,43 @@
+<synth>
+  <style id="default">
+    <font name="Dialog" size="16" /> 
+  </style>
+  <bind style="default" type="region" key=".*" />
+  <style id="ButtonTest">
+    <opaque value="true" />
+    <insets top="10" bottom="10" left="10" right="10" />
+    <state>
+      <font name="Verdana" size="24" />
+      <color type="BACKGROUND" value="#FF0000" />
+      <color type="TEXT_FOREGROUND" value="#000000" />
+    </state>
+    <state value="MOUSE_OVER">
+      <color type="BACKGROUND" value="ORANGE" />
+      <color type="TEXT_FOREGROUND" value="WHITE" />
+    </state>
+    <state value="PRESSED">
+      <color type="BACKGROUND" value="BLUE" />
+      <color type="TEXT_FOREGROUND" value="WHITE" />
+    </state>
+  </style>
+  <bind style="ButtonTest" type="region" key="button" />
+
+  <style id="greenButton">
+    <opaque value="true" />
+    <insets top="10" bottom="10" left="10" right="10" />
+    <state>
+      <font name="Verdana" size="24" />
+      <color type="BACKGROUND" value="GREEN" />
+      <color type="TEXT_FOREGROUND" value="#000000" />
+    </state>
+    <state value="MOUSE_OVER">
+      <color type="BACKGROUND" value="RED" />
+      <color type="TEXT_FOREGROUND" value="WHITE" />
+    </state>
+    <state value="PRESSED">
+      <color type="BACKGROUND" value="BLUE" />
+      <color type="TEXT_FOREGROUND" value="WHITE" />
+    </state>
+  </style>
+  <bind style="greenButton" type="name" key="green:[0-9]+" />
+</synth>
