@@ -4,9 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -27,10 +29,12 @@ public final class MainPanel extends JPanel {
         c.gridx = 0;
         c.weightx = 0.0;
         c.anchor = GridBagConstraints.WEST;
-        for (String s: Arrays.asList("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():", "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")) {
-            p.add(new JLabel(s), c);
-            c.gridy += 1;
-        }
+        Stream.of("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():", "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")
+            .map(JLabel::new)
+            .forEach(l -> {
+                p.add(l, c);
+                c.gridy += 1;
+            });
 
         c.gridy = 0;
         c.gridx = 1;
@@ -52,12 +56,12 @@ public final class MainPanel extends JPanel {
         JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
         JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
         JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
-        List<Component> list = Arrays.asList(combo0, combo1, combo2, combo3, combo4);
-        for (Component cmp: list) {
-            // cmp.setPrototypeDisplayValue(displayValue);
-            p.add(cmp, c);
-            c.gridy += 1;
-        }
+        Stream.of(combo0, combo1, combo2, combo3, combo4)
+            .forEach(cmp -> {
+                // cmp.setPrototypeDisplayValue(displayValue);
+                p.add(cmp, c);
+                c.gridy += 1;
+            });
 
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

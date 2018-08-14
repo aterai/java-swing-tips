@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
@@ -33,11 +33,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void initMenu(JComponent p) {
-        for (Component c: Arrays.asList(
-                new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
-                new JSeparator(), new JMenuItem(new ExitAction()))) {
-            p.add(c);
-        }
+        Stream.of(
+            new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
+            new JSeparator(), new JMenuItem(new ExitAction()))
+            .forEach(p::add);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
