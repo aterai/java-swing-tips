@@ -4,8 +4,12 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.EventObject;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;

@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
