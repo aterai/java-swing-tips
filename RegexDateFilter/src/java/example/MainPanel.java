@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -100,10 +101,10 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        for (JRadioButton rb: Arrays.asList(r0, r1, r2)) {
+        Stream.of(r0, r1, r2).forEach(rb -> {
             bg.add(rb);
             p2.add(rb);
-        }
+        });
         box.add(p1);
         box.add(p2);
 
