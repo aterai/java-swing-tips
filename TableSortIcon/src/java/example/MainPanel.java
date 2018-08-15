@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.table.*;
@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
             Icon ascending = null;
             Icon descending = null;
             if (r.equals(r0)) {
-                ascending = UIManager.getIcon("Table.ascendingSortIcon");
-                descending = UIManager.getIcon("Table.descendingSortIcon");
+                ascending = UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon");
+                descending = UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon");
             } else if (r.equals(r1)) {
                 ascending = new IconUIResource(EMPTY_ICON);
                 descending = new IconUIResource(EMPTY_ICON);
@@ -55,12 +55,12 @@ public final class MainPanel extends JPanel {
         box1.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         ButtonGroup bg = new ButtonGroup();
         box1.add(new JLabel("Table Sort Icon: "));
-        for (JRadioButton rb: Arrays.asList(r0, r1, r2)) {
+        Stream.of(r0, r1, r2).forEach(rb -> {
             box1.add(rb);
             box1.add(Box.createHorizontalStrut(5));
             bg.add(rb);
             rb.addActionListener(al);
-        }
+        });
         box1.add(Box.createHorizontalGlue());
         return box1;
     }
