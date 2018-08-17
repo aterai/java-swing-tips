@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.EnumSet;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -189,7 +190,7 @@ enum Type { START, END; }
 class DotBorder extends EmptyBorder {
     private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
     private static final Color DOT_COLOR = new Color(200, 150, 150);
-    public final EnumSet<Type> type = EnumSet.noneOf(Type.class);
+    public final Set<Type> type = EnumSet.noneOf(Type.class);
 
     protected DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);

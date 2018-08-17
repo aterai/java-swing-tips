@@ -10,13 +10,14 @@ import java.awt.geom.*;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));
     private final JPanel fontPanel = new GlyphPaintPanel();
-    protected EnumSet<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
+    protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -60,7 +61,7 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    protected final void setFontPaintFlag(EnumSet<FontPaint> fp) {
+    protected final void setFontPaintFlag(Set<FontPaint> fp) {
         fontPaintFlag = fp;
         fontPanel.repaint();
     }

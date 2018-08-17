@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -58,7 +59,7 @@ public final class MainPanel extends JPanel {
             StringBuilder nbuf = new StringBuilder(3);
             StringBuilder buf = new StringBuilder(9);
             for (int i = 0; i < model.getRowCount(); i++) {
-                EnumSet<?> v = (EnumSet<?>) model.getValueAt(i, 1);
+                Set<?> v = (Set<?>) model.getValueAt(i, 1);
                 int flg = 0;
                 if (v.contains(Permissions.READ)) {
                     flg |= map.get(Permissions.READ);
@@ -146,7 +147,7 @@ class CheckBoxesPanel extends JPanel {
     }
     protected void updateButtons(Object v) {
         initButtons();
-        EnumSet<?> f = v instanceof EnumSet ? (EnumSet<?>) v : EnumSet.noneOf(Permissions.class);
+        Set<?> f = v instanceof Set ? (Set<?>) v : EnumSet.noneOf(Permissions.class);
         buttons.get(0).setSelected(f.contains(Permissions.READ));
         buttons.get(1).setSelected(f.contains(Permissions.WRITE));
         buttons.get(2).setSelected(f.contains(Permissions.EXECUTE));
@@ -193,7 +194,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         return this;
     }
     @Override public Object getCellEditorValue() {
-        EnumSet<Permissions> f = EnumSet.noneOf(Permissions.class);
+        Set<Permissions> f = EnumSet.noneOf(Permissions.class);
         if (buttons.get(0).isSelected()) {
             f.add(Permissions.READ);
         }
