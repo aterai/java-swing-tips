@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -23,19 +23,19 @@ public final class MainPanel extends JPanel {
             private Object old;
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                Arrays.asList(s0, s1, s2, s3).forEach(c -> c.setEnabled(flg));
+                Stream.of(s0, s1, s2, s3).forEach(c -> c.setEnabled(flg));
                 if (flg) {
-                    Arrays.asList(s2, s3).forEach(c -> c.setValue(old));
+                    Stream.of(s2, s3).forEach(c -> c.setValue(old));
                 } else {
                     old = s2.getValue();
-                    Arrays.asList(s2, s3).forEach(c -> c.setValue(Double.NaN));
+                    Stream.of(s2, s3).forEach(c -> c.setValue(Double.NaN));
                 }
             }
         });
         cbx.setSelected(true);
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
-        for (JComponent c: Arrays.asList(s0, s1, s2, s3)) {
+        Stream.of(s0, s1, s2, s3).forEach(c -> {
             c.setEnabled(true);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             Dimension d = c.getPreferredSize();
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             c.setMaximumSize(d);
             box.add(c);
             box.add(Box.createVerticalStrut(5));
-        }
+        });
         box.add(Box.createVerticalGlue());
         add(cbx, BorderLayout.NORTH);
         add(box);

@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
             table.setEnabled(!editableCheck.isSelected());
         };
         JPanel p = new JPanel(new GridLayout(3, 1));
-        for (JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {
+        Stream.of(modelCheck, objectCheck, editableCheck).forEach(cb -> {
             cb.addActionListener(al);
             p.add(cb);
-        }
+        });
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

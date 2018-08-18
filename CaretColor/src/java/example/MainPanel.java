@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -58,11 +58,11 @@ public final class MainPanel extends JPanel {
 
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
-        for (JRadioButton rb: Arrays.asList(r1, r2, r3)) {
+        Stream.of(r1, r2, r3).forEach(rb -> {
             bg.add(rb);
             box.add(rb);
             box.add(Box.createHorizontalStrut(2));
-        }
+        });
         box.add(field);
 
         UIManager.put("TextArea.caretForeground", Color.ORANGE);

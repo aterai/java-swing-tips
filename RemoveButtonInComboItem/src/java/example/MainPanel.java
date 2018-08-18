@@ -5,8 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
@@ -23,10 +26,10 @@ public final class MainPanel extends JPanel {
         JButton button = new JButton("add");
         button.addActionListener(e -> {
             String str = LocalDateTime.now().toString();
-            for (JComboBox<String> c: Arrays.asList(c0, c1, c2, c3)) {
+            Stream.of(c0, c1, c2, c3).forEach(c -> {
                 MutableComboBoxModel<String> m = (MutableComboBoxModel<String>) c.getModel();
                 m.insertElementAt(str, m.getSize());
-            }
+            });
         });
 
         JPanel p = new JPanel(new GridLayout(2, 1));
@@ -57,9 +60,9 @@ public final class MainPanel extends JPanel {
         c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         c.gridx = GridBagConstraints.REMAINDER;
-        for (Component cmp: list) {
+        list.forEach(cmp -> {
             p.add(cmp, c);
-        }
+        });
         return p;
     }
     public static void main(String... args) {

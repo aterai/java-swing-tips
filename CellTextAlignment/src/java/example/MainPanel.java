@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -53,11 +53,11 @@ public final class MainPanel extends JPanel {
 
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
-        for (JRadioButton r: Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
-            bg.add(r);
-            p.add(r);
-            r.addActionListener(e -> table.repaint());
-        }
+        Stream.of(leftRadio, centerRadio, rightRadio, customRadio).forEach(rb -> {
+            bg.add(rb);
+            p.add(rb);
+            rb.addActionListener(e -> table.repaint());
+        });
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));

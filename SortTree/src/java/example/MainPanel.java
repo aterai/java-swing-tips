@@ -4,9 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -44,10 +48,10 @@ public final class MainPanel extends JPanel {
             }
             TreeUtil.expandAll(tree);
         };
-        for (JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
+        Stream.of(sort0, sort1, sort2, sort3).forEach(check -> {
             box.add(check);
             check.addActionListener(listener);
-        }
+        });
         add(box, BorderLayout.SOUTH);
 
         JPanel p = new JPanel(new BorderLayout());
