@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        for (JRadioButton r: Arrays.asList(ra, rb, rr)) {
+        Stream.of(ra, rb, rr).forEach(r -> {
             bg.add(r);
             p.add(r);
-        }
+        });
 
         add(label);
         add(p, BorderLayout.SOUTH);

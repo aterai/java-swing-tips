@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 
@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
 
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
-        for (JRadioButton r: Arrays.asList(r0, r1, r2)) {
+        Stream.of(r0, r1, r2).forEach(r -> {
             bg.add(r);
             box.add(r);
-        }
+        });
 
         JPanel pp = new JPanel(new GridLayout(0, 1));
         pp.add(check);

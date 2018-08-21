@@ -9,9 +9,11 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
@@ -71,10 +73,10 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        for (JRadioButton rb: Arrays.asList(check1, check2, check3)) {
+        Stream.of(check1, check2, check3).forEach(rb -> {
             bg.add(rb);
             p.add(rb);
-        }
+        });
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

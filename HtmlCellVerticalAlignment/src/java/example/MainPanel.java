@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -54,11 +54,11 @@ public class MainPanel extends JPanel {
         };
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
-        for (JRadioButton b: Arrays.asList(centerRadio, topRadio, bottomRadio)) {
+        Stream.of(centerRadio, topRadio, bottomRadio).forEach(b -> {
             b.addActionListener(al);
             bg.add(b);
             p.add(b);
-        }
+        });
 
         add(new JScrollPane(table));
         add(p, BorderLayout.SOUTH);

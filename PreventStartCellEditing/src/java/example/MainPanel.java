@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -55,11 +55,11 @@ public final class MainPanel extends JPanel {
 
         Box p = Box.createVerticalBox();
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(new JRadioButton("default", true), r1, r2, r3, r4)) {
+        Stream.of(new JRadioButton("default", true), r1, r2, r3, r4).forEach(b -> {
             b.addActionListener(al);
             bg.add(b);
             p.add(b);
-        }
+        });
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

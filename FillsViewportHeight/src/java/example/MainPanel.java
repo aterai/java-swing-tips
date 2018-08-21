@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -95,10 +95,10 @@ public final class MainPanel extends JPanel {
         });
 
         ButtonGroup bg = new ButtonGroup();
-        for (JRadioButton r: Arrays.asList(r1, r2)) {
+        Stream.of(r1, r2).forEach(r -> {
             bg.add(r);
             p.add(r);
-        }
+        });
         return p;
     }
 
