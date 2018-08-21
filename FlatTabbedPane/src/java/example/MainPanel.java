@@ -12,13 +12,17 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         UIManager.put("TabbedPane.tabInsets", new Insets(5, 10, 5, 10));
+        // UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(2, 3, 2, 2));
+        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
+        UIManager.put("TabbedPane.tabAreaInsets", new Insets(0, 0, 0, 0));
+
         UIManager.put("TabbedPane.selectedLabelShift", 0);
         UIManager.put("TabbedPane.labelShift", 0);
 
         // UIManager.put("TabbedPane.foreground", Color.WHITE);
         // UIManager.put("TabbedPane.selectedForeground", Color.WHITE);
         // UIManager.put("TabbedPane.unselectedBackground", UNSELECTED_BG);
-        UIManager.put("TabbedPane.tabAreaBackground", UNSELECTED_BG);
+        // UIManager.put("TabbedPane.tabAreaBackground", UNSELECTED_BG);
 
         JTabbedPane tabs = new JTabbedPane() {
             @Override public void updateUI() {
@@ -32,11 +36,28 @@ public final class MainPanel extends JPanel {
                     }
                     @Override  protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
                         g.setColor(isSelected ? SELECTED_BG : UNSELECTED_BG);
-                        g.fillRect(x - 1, y, w + 1, h); // -1: default labelShift? magic number
+                        g.fillRect(x, y, w, h);
+                    }
+                    @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+                        g.setColor(SELECTED_BG);
+                        g.fillRect(x, y, w, h);
+                    }
+                    @Override protected void paintContentBorderRightEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+                        g.setColor(SELECTED_BG);
+                        g.fillRect(x, y, w, h);
+                    }
+                    @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+                        g.setColor(SELECTED_BG);
+                        g.fillRect(x, y, w, h);
+                    }
+                    @Override protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+                        g.setColor(SELECTED_BG);
+                        g.fillRect(x, y, w, h);
                     }
                 });
                 setOpaque(true);
                 setForeground(Color.WHITE);
+                setBackground(UNSELECTED_BG);
                 setTabPlacement(SwingConstants.LEFT);
                 setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
             }
