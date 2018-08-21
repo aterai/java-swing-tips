@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         UIManager.put("TabbedPane.tabInsets", new Insets(5, 10, 5, 10));
         // UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(2, 3, 2, 2));
-        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
+        UIManager.put("TabbedPane.contentBorderInsets", new Insets(5, 5, 5, 5));
         UIManager.put("TabbedPane.tabAreaInsets", new Insets(0, 0, 0, 0));
 
         UIManager.put("TabbedPane.selectedLabelShift", 0);
