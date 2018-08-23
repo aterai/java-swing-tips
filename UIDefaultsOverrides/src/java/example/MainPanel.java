@@ -3,8 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.nimbus.AbstractRegionPainter;
