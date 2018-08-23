@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -49,11 +49,11 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        for (JTextField textField: Arrays.asList(textField0, textField1, textField2, textField3, textField4, textField5)) {
-            textField.setDragEnabled(true);
-            box.add(textField);
+        Stream.of(textField0, textField1, textField2, textField3, textField4, textField5).forEach(tf -> {
+            tf.setDragEnabled(true);
+            box.add(tf);
             box.add(Box.createVerticalStrut(10));
-        }
+        });
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

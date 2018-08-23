@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -22,9 +22,7 @@ public final class MainPanel extends JPanel {
         ActionListener al = e -> {
             Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
             System.out.println(c);
-            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                tf.setText("");
-            }
+            Stream.of(field0, field1, field2).forEach(tf -> tf.setText(""));
         };
         button0.addActionListener(al);
         button1.addActionListener(al);
@@ -35,24 +33,20 @@ public final class MainPanel extends JPanel {
         button2.setVerifyInputWhenFocusTarget(false);
 
         InputVerifier verifier = new IntegerInputVerifier();
-        for (JTextField tf: Arrays.asList(field0, field1, field2)) {
+        Stream.of(field0, field1, field2).forEach(tf -> {
             tf.setHorizontalAlignment(SwingConstants.RIGHT);
             tf.setInputVerifier(verifier);
-        }
+        });
 
         JButton b0 = new JButton("setText(0)");
         b0.addActionListener(e -> {
-            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                tf.setText("0");
-            }
+            Stream.of(field0, field1, field2).forEach(tf -> tf.setText("0"));
             field0.requestFocusInWindow();
         });
 
         JButton b1 = new JButton("setText(Integer.MAX_VALUE+1)");
         b1.addActionListener(e -> {
-            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                tf.setText("2147483648");
-            }
+            Stream.of(field0, field1, field2).forEach(tf -> tf.setText("2147483648"));
             field0.requestFocusInWindow();
         });
 

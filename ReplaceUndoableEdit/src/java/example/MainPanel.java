@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -21,20 +22,16 @@ public class MainPanel extends JPanel {
     protected final DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
     protected final Action undoAction = new AbstractAction("undo") {
         @Override public void actionPerformed(ActionEvent e) {
-            for (UndoManager um: Arrays.asList(undoManager0, undoManager1, undoManager2)) {
-                if (um.canUndo()) {
-                    um.undo();
-                }
-            }
+            Stream.of(undoManager0, undoManager1, undoManager2)
+                .filter(UndoManager::canUndo)
+                .forEach(UndoManager::undo);
         }
     };
     protected final Action redoAction = new AbstractAction("redo") {
         @Override public void actionPerformed(ActionEvent e) {
-            for (UndoManager um: Arrays.asList(undoManager0, undoManager1, undoManager2)) {
-                if (um.canRedo()) {
-                    um.redo();
-                }
-            }
+            Stream.of(undoManager0, undoManager1, undoManager2)
+                .filter(UndoManager::canRedo)
+                .forEach(UndoManager::redo);
         }
     };
 
@@ -58,9 +55,7 @@ public class MainPanel extends JPanel {
         JButton button = new JButton("setText(LocalDateTime.now())");
         button.addActionListener(e -> {
             String str = LocalDateTime.now().toString();
-            for (JTextField tf: Arrays.asList(textField0, textField1, textField2)) {
-                tf.setText(str);
-            }
+            Stream.of(textField0, textField1, textField2).forEach(tf -> tf.setText(str));
         });
 
         JPanel p = new JPanel();

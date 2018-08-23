@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
         }
 
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
-        for (JTextField f: Arrays.asList(field0, field1, field2)) {
-            f.setFont(font);
-            f.setColumns(8);
-        }
+        Stream.of(field0, field1, field2).forEach(tf -> {
+            tf.setFont(font);
+            tf.setColumns(8);
+        });
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
