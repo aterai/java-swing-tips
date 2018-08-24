@@ -153,8 +153,8 @@ class SpinnerLayout implements LayoutManager {
         return preferredLayoutSize(parent);
     }
 
-    private void setBounds(Component c, int x, int y, int width, int height) {
-        if (c != null) {
+    private static void setBounds(Component c, int x, int y, int width, int height) {
+        if (Objects.nonNull(c)) {
             c.setBounds(x, y, width, height);
         }
     }
