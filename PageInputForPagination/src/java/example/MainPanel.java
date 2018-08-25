@@ -4,11 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -58,17 +58,13 @@ public class MainPanel extends JPanel {
         po.add(label);
         JPanel box = new JPanel(new GridLayout(1, 4, 2, 2));
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        for (Component c: Arrays.asList(first, prev, po, next, last)) {
-            box.add(c);
-        }
+        Stream.of(first, prev, po, next, last).forEach(box::add);
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        for (JButton b: Arrays.asList(first, prev, next, last)) {
-            b.addActionListener(this::updateCurrentPageIndex);
-        }
+        Stream.of(first, prev, next, last).forEach(b -> b.addActionListener(this::updateCurrentPageIndex));
 
         new TableUpdateTask(2016, itemsPerPage).execute();
 

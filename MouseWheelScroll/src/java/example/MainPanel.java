@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -45,9 +45,7 @@ public class MainPanel extends JPanel {
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
-        for (JScrollBar sb: Arrays.asList(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar)) {
-            sb.setUnitIncrement(25);
-        }
+        Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar).forEach(sb -> sb.setUnitIncrement(25));
 
         InputMap im = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = scroll.getActionMap();
@@ -90,9 +88,7 @@ public class MainPanel extends JPanel {
         });
 
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(r0, r1, r2)) {
-            bg.add(b);
-        }
+        Stream.of(r0, r1, r2).forEach(bg::add);
 
         Box b = Box.createHorizontalBox();
         JPanel p = new JPanel(new GridLayout(2, 1));
