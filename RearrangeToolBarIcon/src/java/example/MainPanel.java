@@ -5,14 +5,14 @@ package example;
 import java.awt.*;
 import java.awt.dnd.DragSource;
 import java.awt.event.*;
-import java.net.URL;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String PATH = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar = new JToolBar("ToolBarButton");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         toolbar.setFloatable(false);
@@ -21,17 +21,18 @@ public final class MainPanel extends JPanel {
         toolbar.addMouseMotionListener(dh);
         toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
-        for (String str: Arrays.asList("Copy24.gif", "Cut24.gif", "Paste24.gif",
-                                       "Delete24.gif", "Undo24.gif", "Redo24.gif",
-                                       "Help24.gif", "Open24.gif", "Save24.gif")) {
-            toolbar.add(createToolBarButton(getClass().getResource(PATH + str)));
-        }
+        Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
+                  "Delete24.gif", "Undo24.gif", "Redo24.gif",
+                  "Help24.gif", "Open24.gif", "Save24.gif")
+            .map(this::createToolBarButton)
+            .forEach(toolbar::add);
+
         add(toolbar, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component createToolBarButton(URL url) {
-        JComponent b = new JLabel(new ImageIcon(url));
+    private Component createToolBarButton(String name) {
+        JComponent b = new JLabel(new ImageIcon(getClass().getResource(PATH + name)));
         b.setOpaque(false);
         return b;
     }

@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -40,12 +41,12 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(1, 0, 0, 0));
         p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06X", cc)));
         Color color = new Color(cc);
-        for (AbstractButton b: Arrays.asList(makeButton("left"), makeButton("center"), makeButton("right"))) {
+        Stream.of(makeButton("left"), makeButton("center"), makeButton("right")).forEach(b -> {
             b.setBackground(color);
             b.setIcon(icon);
             bg.add(b);
             p.add(b);
-        }
+        });
         return p;
     }
     public static void main(String... args) {

@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
@@ -138,9 +138,7 @@ final class ManuBarUtil {
     }
     private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key);
-        for (String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
-            menu.add(k).setEnabled(false);
-        }
+        Stream.of("Cut", "Copy", "Paste", "Delete").map(menu::add).forEach(mi -> mi.setEnabled(false));
         return menu;
     }
     public static void initMenu(Container p) {

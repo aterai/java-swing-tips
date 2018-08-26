@@ -4,9 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -47,11 +47,11 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder("frame.setIconImage(img)"));
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(r1, r2, r3, r4)) {
+        Stream.of(r1, r2, r3, r4).forEach(b -> {
             bg.add(b);
             box.add(b);
             box.add(Box.createVerticalStrut(5));
-        }
+        });
         add(box);
         setPreferredSize(new Dimension(320, 240));
     }

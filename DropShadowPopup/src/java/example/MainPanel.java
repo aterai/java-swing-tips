@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.image.*;
-import java.util.Arrays;
+import java.awt.image.BufferedImage;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -30,9 +30,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void initPopupMenu(JPopupMenu p) {
-        for (String s: Arrays.asList("Open", "Save", "Close")) {
-            p.add(s + "(dummy)");
-        }
+        Stream.of("Open", "Save", "Close").map(s -> s.concat("(dummy)")).forEach(p::add);
         // [JDK-6595814] Nimbus LAF: Renderers, MenuSeparators, colors rollup bug - Java Bug System
         // https://bugs.openjdk.java.net/browse/JDK-6595814
         // Fixed 6u10: p.add(new JSeparator());

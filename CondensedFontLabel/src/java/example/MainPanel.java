@@ -12,7 +12,8 @@ import java.awt.font.TextLayout;
 import java.awt.geom.*;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -46,10 +47,10 @@ public final class MainPanel extends JPanel {
         // if (font.isTransformed()) {
         //     font = font.deriveFont(AffineTransform.getScaleInstance(.9, 1d));
         // }
-        for (Component c: Arrays.asList(textArea, lbl1, lbl2)) {
+        Stream.of(textArea, lbl1, lbl2).forEach(c -> {
             c.setFont(font);
             add(c);
-        }
+        });
         setPreferredSize(new Dimension(320, 240));
     }
 

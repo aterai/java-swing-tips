@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
 
         Box p = Box.createVerticalBox();
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(r0, r1, r2)) {
+        Stream.of(r0, r1, r2).forEach(b -> {
             bg.add(b);
             p.add(b);
-        }
+        });
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));

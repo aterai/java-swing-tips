@@ -3,8 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 // import javax.swing.event.EventListenerList;
 
@@ -84,10 +88,10 @@ public final class MainPanel extends JPanel {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     ButtonGroup bg = new ButtonGroup();
-                    for (JRadioButton b: Arrays.asList(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc", true))) {
+                    Stream.of(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc", true)).forEach(b -> {
                         p.add(b);
                         bg.add(b);
-                    }
+                    });
                     return p;
                 }
             });

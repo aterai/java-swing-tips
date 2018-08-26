@@ -4,7 +4,6 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -62,10 +61,10 @@ public final class MainPanel extends JPanel {
         JRadioButton radio = new JRadioButton("set initial focus on JTextField", true);
         ButtonGroup bg = new ButtonGroup();
         JPanel p2 = new JPanel();
-        for (AbstractButton b: Arrays.asList(new JRadioButton("default"), radio)) {
+        Stream.of(new JRadioButton("default"), radio).forEach(b -> {
             bg.add(b);
             p2.add(b);
-        }
+        });
 
         JButton button = new JButton("JFileChooser");
         button.addActionListener(e -> {

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
 
         Dimension d = new Dimension(2, 2);
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(tg1, tg2, tg3, button, radio)) {
+        Stream.of(tg1, tg2, tg3, button, radio).forEach(b -> {
             b.setFocusPainted(false);
             // b.setRolloverEnabled(false);
             // b.setContentAreaFilled(false);
             toolbar.add(b);
             toolbar.add(Box.createRigidArea(d));
             bg.add(b);
-        }
+        });
 
         JCheckBox check = new JCheckBox("setRollover");
         check.addActionListener(e -> toolbar.setRollover(((AbstractButton) e.getSource()).isSelected()));
@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("setRolloverEnabled(false)"));
-        for (AbstractButton b: Arrays.asList(new JToggleButton("ToggleButton"), new JButton("Button"))) {
+        Stream.of(new JToggleButton("ToggleButton"), new JButton("Button")).forEach(b -> {
             // b.setFocusPainted(false);
             b.setRolloverEnabled(false);
             // b.setContentAreaFilled(false);
             box.add(b);
             box.add(Box.createRigidArea(d));
-        }
+        });
 
         add(toolbar, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.*;
@@ -72,9 +72,7 @@ final class SizeVariantUtil {
     public static JMenu createSizeVariantMenu() {
         JMenu menu = new JMenu("Resizing a Component");
         ButtonGroup bg = new ButtonGroup();
-        for (String key: Arrays.asList("regular", "mini", "small", "large")) {
-            menu.add(createSizeVariantItem(key, bg));
-        }
+        Stream.of("regular", "mini", "small", "large").forEach(key -> menu.add(createSizeVariantItem(key, bg)));
         return menu;
     }
     private static JRadioButtonMenuItem createSizeVariantItem(String key, ButtonGroup bg) {
@@ -85,11 +83,11 @@ final class SizeVariantUtil {
         return menuItem;
     }
     private static void setSizeVariant(String key) {
-        for (Window window: Frame.getWindows()) {
+        Stream.of(Frame.getWindows()).forEach(window -> {
             setSizeVariantAllComponents(window, key);
             SwingUtilities.updateComponentTreeUI(window);
             window.pack();
-        }
+        });
     }
     private static void setSizeVariantAllComponents(Container me, String key) {
         if (me instanceof JComponent) {

@@ -4,10 +4,12 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
@@ -60,10 +62,10 @@ public class MainPanel extends JPanel {
         StyleConstants.setForeground(htf, new Color(0xFFDDFF));
 
         field.getDocument().addDocumentListener(handler);
-        for (AbstractButton b: Arrays.asList(prevButton, nextButton, checkCase, checkWord)) {
+        Stream.of(prevButton, nextButton, checkCase, checkWord).forEach(b -> {
             b.setFocusable(false);
             b.addActionListener(handler);
-        }
+        });
 
         JPanel bp = new JPanel(new GridLayout(1, 2));
         bp.add(prevButton);

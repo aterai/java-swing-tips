@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 
@@ -27,11 +27,11 @@ public class MainPanel extends JPanel {
 
         JToolBar toolbar = new JToolBar();
         ButtonGroup bg = new ButtonGroup();
-        for (AbstractButton b: Arrays.asList(tgb12, tgb24, tgb32)) {
+        Stream.of(tgb12, tgb24, tgb32).forEach(b -> {
             b.setFocusPainted(false);
             bg.add(b);
             toolbar.add(b);
-        }
+        });
 
         JButton button = new JButton("Dialog");
         button.addActionListener(e -> {

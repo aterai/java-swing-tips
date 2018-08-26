@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
@@ -69,12 +69,12 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        for (AbstractButton b: Arrays.asList(r1, r2)) {
+        Stream.of(r1, r2).forEach(b -> {
             b.addActionListener(l);
             b.setOpaque(false);
             bg.add(b);
             box.add(b);
-        }
+        });
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.setOpaque(false);
         p.add(makeTitledPanel("Override: JTextField#paintComponent(...)", textField01));

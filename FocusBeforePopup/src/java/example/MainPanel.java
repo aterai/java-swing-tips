@@ -3,11 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -68,10 +72,10 @@ public final class MainPanel extends JPanel {
         // });
 
         Box box = Box.createVerticalBox();
-        for (Component c: Arrays.asList(textField1, textField2, combo3, combo4)) {
+        Stream.of(textField1, textField2, combo3, combo4).forEach(c -> {
             box.add(c);
             box.add(Box.createVerticalStrut(5));
-        }
+        });
 
         JTextArea textArea = new JTextArea("dummy");
         textArea.setComponentPopupMenu(popup2);
