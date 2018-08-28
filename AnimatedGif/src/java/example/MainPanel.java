@@ -3,14 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
-        Arrays.asList("no_disposal_specified", "do_not_dispose", "restore_to_background_color", "restore_to_previous").forEach(s -> {
+        Stream.of("no_disposal_specified", "do_not_dispose", "restore_to_background_color", "restore_to_previous").forEach(s -> {
             Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
             box.add(new JLabel(s, i, SwingConstants.LEFT));
             box.add(Box.createVerticalStrut(20));

@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.image.*;
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         p2.add(b2);
 
         Box box = Box.createVerticalBox();
-        Arrays.asList(p0, p1, p2).forEach(p -> {
+        Stream.of(p0, p1, p2).forEach(p -> {
             box.add(p);
             box.add(Box.createVerticalStrut(10));
         });
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         JToggleButton button = new JToggleButton("setEnabled(false)");
         button.addActionListener(e -> {
             boolean f = !((AbstractButton) e.getSource()).isSelected();
-            Arrays.asList(b0, b1, b2).forEach(b -> b.setEnabled(f));
+            Stream.of(b0, b1, b2).forEach(b -> b.setEnabled(f));
         });
 
         add(box, BorderLayout.NORTH);

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -69,10 +69,8 @@ public class MainPanel extends JPanel {
         item5.addActionListener(e -> {
             animator.stop();
             SystemTray tray = SystemTray.getSystemTray();
-            Arrays.asList(tray.getTrayIcons()).forEach(tray::remove);
-            for (Frame frame: Frame.getFrames()) {
-                frame.dispose();
-            }
+            Stream.of(tray.getTrayIcons()).forEach(tray::remove);
+            Stream.of(Frame.getFrames()).forEach(Frame::dispose);
         });
 
         PopupMenu popup = new PopupMenu();
