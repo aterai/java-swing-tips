@@ -18,7 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

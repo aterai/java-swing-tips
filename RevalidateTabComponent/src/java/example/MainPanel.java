@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {

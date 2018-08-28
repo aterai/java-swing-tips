@@ -9,7 +9,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
