@@ -3,9 +3,10 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.image.*;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -21,11 +22,10 @@ public final class MainPanel extends JPanel {
         t1.setSelectedIcon(sicon);
         t2.setSelectedIcon(sicon);
 
-        List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("ButtonGroup"));
-        l.forEach(b -> {
+        Stream.of(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2).forEach(b -> {
             bg.add(b);
             p.add(b);
         });

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         b3.addActionListener(e -> combo.setSelectedItem(null));
 
         JPanel box = new JPanel(new GridLayout(0, 1, 10, 10));
-        Arrays.asList(b1, b2, b3, combo).forEach(box::add);
+        Stream.of(b1, b2, b3, combo).forEach(box::add);
 
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
