@@ -28,7 +28,9 @@ public final class MainPanel extends JPanel {
         JComboBox<String> combo2 = new JComboBox<>(makeModel());
         combo2.setKeySelectionManager(new JComboBox.KeySelectionManager() {
             // Java 10: @Override public int selectionForKey(char key, ComboBoxModel<?> model) {
-            @Override public int selectionForKey(char key, ComboBoxModel model) { // Java 9
+            // Java 9:
+            @SuppressWarnings("rawtypes")
+            @Override public int selectionForKey(char key, ComboBoxModel model) {
                 return -1;
             }
         });
