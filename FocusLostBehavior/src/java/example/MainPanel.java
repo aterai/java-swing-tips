@@ -4,40 +4,32 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.text.ParseException;
-import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.MaskFormatter;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JFormattedTextField field0 = new JFormattedTextField();
+        MaskFormatter formatter = createFormatter("UUUUUUUUUU");
+        // formatter.setAllowsInvalid(true);
+        // formatter.setCommitsOnValidEdit(true);
+        // formatter.setPlaceholder("_");
+        // formatter.setPlaceholderCharacter('?');
 
-        JFormattedTextField field1 = new JFormattedTextField();
+        JFormattedTextField field1 = new JFormattedTextField(formatter);
         field1.setFocusLostBehavior(JFormattedTextField.REVERT);
 
-        JFormattedTextField field2 = new JFormattedTextField();
+        JFormattedTextField field2 = new JFormattedTextField(formatter);
         field2.setFocusLostBehavior(JFormattedTextField.COMMIT);
 
-        JFormattedTextField field3 = new JFormattedTextField();
+        JFormattedTextField field3 = new JFormattedTextField(formatter);
         field3.setFocusLostBehavior(JFormattedTextField.PERSIST);
 
         JCheckBox check = new JCheckBox("setCommitsOnValidEdit");
-        try {
-            MaskFormatter formatter = new MaskFormatter("UUUUUUUUUU");
-            // formatter.setAllowsInvalid(true);
-            // formatter.setCommitsOnValidEdit(true);
-            // formatter.setPlaceholder("_");
-            // formatter.setPlaceholderCharacter('?');
-            // DefaultFormatterFactory ff = new DefaultFormatterFactory(formatter);
-            Arrays.asList(field0, field1, field2, field3).forEach(f -> f.setFormatterFactory(new DefaultFormatterFactory(formatter)));
-            check.addActionListener(e -> formatter.setCommitsOnValidEdit(((JCheckBox) e.getSource()).isSelected()));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
+        check.addActionListener(e -> formatter.setCommitsOnValidEdit(((JCheckBox) e.getSource()).isSelected()));
 
         Box box = Box.createVerticalBox();
-        box.add(makeTitledPanel("COMMIT_OR_REVERT(default)", field0));
+        box.add(makeTitledPanel("COMMIT_OR_REVERT(default)", new JFormattedTextField(formatter)));
         box.add(Box.createVerticalStrut(5));
         box.add(makeTitledPanel("REVERT", field1));
         box.add(Box.createVerticalStrut(5));
@@ -48,6 +40,15 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (ParseException ex) {
+            System.err.println("formatter is bad: " + ex.getMessage());
+        }
+        return formatter;
     }
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());

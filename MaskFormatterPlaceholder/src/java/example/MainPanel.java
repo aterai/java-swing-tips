@@ -6,50 +6,53 @@ import java.awt.*;
 import java.text.ParseException;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.MaskFormatter;
 
 public final class MainPanel extends JPanel {
-    private final JFormattedTextField field0 = new JFormattedTextField();
-    private final JFormattedTextField field1 = new JFormattedTextField();
-    private final JFormattedTextField field2 = new JFormattedTextField();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-
-        String mask = "###-####";
-        try {
-            MaskFormatter formatter0 = new MaskFormatter(mask);
-            field0.setFormatterFactory(new DefaultFormatterFactory(formatter0));
-
-            MaskFormatter formatter1 = new MaskFormatter(mask);
-            formatter1.setPlaceholderCharacter('_');
-            field1.setFormatterFactory(new DefaultFormatterFactory(formatter1));
-
-            MaskFormatter formatter2 = new MaskFormatter(mask);
-            formatter2.setPlaceholderCharacter('_');
-            formatter2.setPlaceholder("000-0000");
-            field2.setFormatterFactory(new DefaultFormatterFactory(formatter2));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
-        Stream.of(field0, field1, field2).forEach(tf -> {
-            tf.setFont(font);
-            tf.setColumns(8);
-        });
-
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        String mask = "###-####";
+
+        MaskFormatter formatter0 = createFormatter(mask);
+        JFormattedTextField field0 = new JFormattedTextField(formatter0);
         box.add(makeTitledPanel("new MaskFormatter(\"###-####\")", field0));
         box.add(Box.createVerticalStrut(15));
+
+        MaskFormatter formatter1 = createFormatter(mask);
+        formatter1.setPlaceholderCharacter('_');
+        JFormattedTextField field1 = new JFormattedTextField(formatter1);
+
+        MaskFormatter formatter2 = createFormatter(mask);
+        formatter2.setPlaceholderCharacter('_');
+        formatter2.setPlaceholder("000-0000");
+        JFormattedTextField field2 = new JFormattedTextField(formatter2);
         box.add(makeTitledPanel("MaskFormatter#setPlaceholderCharacter('_')", field1));
         box.add(Box.createVerticalStrut(15));
+
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, 18);
+        Insets insets = new Insets(1, 1 + 18 / 2, 1, 1);
+        Stream.of(field0, field1, field2).forEach(tf -> {
+            tf.setFont(font);
+            tf.setColumns(mask.length() + 1);
+            tf.setMargin(insets);
+        });
         box.add(makeTitledPanel("MaskFormatter#setPlaceholder(\"000-0000\")", field2));
-        // box.add(Box.createVerticalGlue());
+        box.add(Box.createVerticalGlue());
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (ParseException ex) {
+            System.err.println("formatter is bad: " + ex.getMessage());
+        }
+        return formatter;
     }
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel();
