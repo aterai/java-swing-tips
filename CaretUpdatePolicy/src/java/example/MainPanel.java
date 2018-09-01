@@ -4,8 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.time.LocalDateTime;
-import java.util.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;

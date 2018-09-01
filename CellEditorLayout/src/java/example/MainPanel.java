@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.EventObject;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

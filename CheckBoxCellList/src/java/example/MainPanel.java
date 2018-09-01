@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.EventObject;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -36,7 +37,7 @@ public final class MainPanel extends JPanel {
         p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
-        Arrays.asList("aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj").forEach(title -> {
+        Stream.of("aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj").forEach(title -> {
             boolean isSelected = title.length() % 2 == 0;
             JCheckBox c = new JCheckBox(title, isSelected);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
