@@ -3,10 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
     private static final int W = 4;
@@ -98,7 +100,7 @@ public final class MainPanel extends JPanel {
         // title.add(iconify, BorderLayout.WEST);
 
         MouseInputListener rwl = new ResizeWindowListener();
-        Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright).forEach(c -> {
+        Stream.of(left, right, top, bottom, topleft, topright, bottomleft, bottomright).forEach(c -> {
             c.addMouseListener(rwl);
             c.addMouseMotionListener(rwl);
         });

@@ -3,15 +3,16 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         DefaultListModel<String> model = new DefaultListModel<>();
-        Arrays.asList("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee").forEach(model::addElement);
+        Stream.of("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee").forEach(model::addElement);
 
         add(new JScrollPane(new LinkCellList<>(model)));
         setPreferredSize(new Dimension(320, 240));

@@ -3,9 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 
         JTabbedPane tabbedPane0 = new CloseableTabbedPane();
         JTabbedPane tabbedPane1 = new JTabbedPane();
-        Arrays.asList(tabbedPane0, tabbedPane1).forEach(t -> {
+        Stream.of(tabbedPane0, tabbedPane1).forEach(t -> {
             t.addTab("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new JLabel("aaa"));
             t.addTab("bbbbbbbbaa", new JLabel("bbb"));
             t.addTab("ccc", new JLabel("ccc"));
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         JButton addTabButton = new JButton("add tab");
         addTabButton.addActionListener(e -> {
             String title = LocalTime.now().toString();
-            Arrays.asList(tabbedPane0, tabbedPane1).forEach(t -> t.addTab(title, new JLabel(title)));
+            Stream.of(tabbedPane0, tabbedPane1).forEach(t -> t.addTab(title, new JLabel(title)));
         });
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
