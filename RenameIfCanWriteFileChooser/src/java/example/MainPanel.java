@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        JButton canWriteButton = new JButton("Rename only File#canWrite() == true");
-        canWriteButton.addActionListener(e -> {
+        JButton writableButton = new JButton("Rename only File#canWrite() == true");
+        writableButton.addActionListener(e -> {
             UIManager.put("FileChooser.readOnly", Boolean.FALSE);
             JFileChooser fileChooser = new JFileChooser() {
                 @Override protected void setUI(ComponentUI ui) {
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(readOnlyButton);
-        p.add(canWriteButton);
+        p.add(writableButton);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));

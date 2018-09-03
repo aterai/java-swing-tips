@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea area = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton = new JButton("run");
-    private final JButton canButton = new JButton("cancel");
+    private final JButton cancelButton = new JButton("cancel");
     private final JProgressBar bar = new JProgressBar();
     private final AnimatedLabel anil = new AnimatedLabel();
     private transient SwingWorker<String, String> worker;
@@ -30,14 +30,14 @@ public final class MainPanel extends JPanel {
         area.setLineWrap(true);
 
         runButton.addActionListener(e -> executeWorker());
-        canButton.addActionListener(e -> Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true)));
+        cancelButton.addActionListener(e -> Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true)));
 
         Box box = Box.createHorizontalBox();
         box.add(anil);
         box.add(Box.createHorizontalGlue());
         box.add(runButton);
         box.add(Box.createHorizontalStrut(2));
-        box.add(canButton);
+        box.add(cancelButton);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     protected void executeWorker() {
         System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
         runButton.setEnabled(false);
-        canButton.setEnabled(true);
+        cancelButton.setEnabled(true);
         anil.startAnimation();
         statusPanel.setVisible(true);
         bar.setIndeterminate(true);
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     protected void updateComponentDone() {
         anil.stopAnimation();
         runButton.setEnabled(true);
-        canButton.setEnabled(false);
+        cancelButton.setEnabled(false);
         statusPanel.setVisible(false);
     }
 

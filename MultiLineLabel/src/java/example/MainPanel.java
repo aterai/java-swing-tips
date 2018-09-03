@@ -20,10 +20,10 @@ public final class MainPanel extends JPanel {
         StyleConstants.setLineSpacing(attr, -.2f);
         label1.setParagraphAttributes(attr, true);
         label1.setText("JTextPane\n" + DUMMY_TEXT);
-        add(setLeftIcon(label1, icon));
+        add(makeLeftIcon(label1, icon));
 
         JTextArea label2 = new JTextArea("JTextArea\n" + DUMMY_TEXT);
-        add(setLeftIcon(label2, icon));
+        add(makeLeftIcon(label2, icon));
 
         JLabel label3 = new JLabel("<html>JLabel+html<br>" + DUMMY_TEXT);
         label3.setIcon(icon);
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Box setLeftIcon(JTextComponent label, ImageIcon icon) {
+    private static Box makeLeftIcon(JTextComponent label, ImageIcon icon) {
         label.setForeground(UIManager.getColor("Label.foreground"));
         // label.setBackground(UIManager.getColor("Label.background"));
         label.setOpaque(false);

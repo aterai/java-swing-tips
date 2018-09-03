@@ -22,6 +22,7 @@ public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
     }
     @Override public UIDefaults getDefaults() {
         UIDefaults table = new UIDefaults() {
+            @SuppressWarnings("PMD.LinguisticNaming")
             @Override protected void getUIError(String msg) { /* not needed */ }
         };
         // String packageName = "example.AuxiliaryWindows";

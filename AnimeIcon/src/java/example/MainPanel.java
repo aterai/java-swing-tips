@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
     protected final JProgressBar bar = new JProgressBar();
     protected final JPanel statusPanel = new JPanel(new BorderLayout());
     protected final JButton runButton = new JButton("run");
-    protected final JButton canButton = new JButton("cancel");
+    protected final JButton cancelButton = new JButton("cancel");
     protected final AnimatedLabel anil = new AnimatedLabel();
     protected transient BackgroundTask worker;
 
@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         area.setEditable(false);
         area.setLineWrap(true);
         runButton.addActionListener(e -> executeWorker());
-        canButton.addActionListener(e -> {
+        cancelButton.addActionListener(e -> {
             Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
             worker = null;
         });
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         box.add(anil);
         box.add(Box.createHorizontalGlue());
         box.add(runButton);
-        box.add(canButton);
+        box.add(cancelButton);
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
         add(new JScrollPane(area));
@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
 
     protected final void executeWorker() {
         runButton.setEnabled(false);
-        canButton.setEnabled(true);
+        cancelButton.setEnabled(true);
         anil.startAnimation();
         statusPanel.removeAll();
         statusPanel.add(bar);
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
                 }
                 anil.stopAnimation();
                 runButton.setEnabled(true);
-                canButton.setEnabled(false);
+                cancelButton.setEnabled(false);
                 statusPanel.remove(bar);
                 statusPanel.revalidate();
                 appendLine("\n");

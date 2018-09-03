@@ -244,7 +244,7 @@ class DnDTabbedPane extends JTabbedPane {
     //     firePropertyChange("dropLocation", old, dropLocation);
     //     return null;
     // }
-    public Object setTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
+    public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
         if (Objects.isNull(location) || !forDrop) {
             dropLocation = new DropLocation(new Point(), -1);
@@ -415,7 +415,7 @@ class DnDTabbedPane extends JTabbedPane {
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
-                src.setTabDropLocation(new DropLocation(tabPt, -1), null, true);
+                src.updateTabDropLocation(new DropLocation(tabPt, -1), null, true);
                 startPt = null;
             }
         }
@@ -426,7 +426,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
     private void clearDropLocationPaint(Component c) {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane t = (DnDTabbedPane) c;
-            t.setTabDropLocation(null, null, false);
+            t.updateTabDropLocation(null, null, false);
             t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
@@ -533,7 +533,7 @@ class TabTransferHandler extends TransferHandler {
 
         support.setShowDropLocation(isDroppable);
         dl.setDroppable(isDroppable);
-        target.setTabDropLocation(dl, null, isDroppable);
+        target.updateTabDropLocation(dl, null, isDroppable);
         return isDroppable;
     }
     // private static boolean isWebStart() {
@@ -605,7 +605,7 @@ class TabTransferHandler extends TransferHandler {
         System.out.println("exportDone");
         DnDTabbedPane src = (DnDTabbedPane) c;
         src.getRootPane().getGlassPane().setVisible(false);
-        src.setTabDropLocation(null, null, false);
+        src.updateTabDropLocation(null, null, false);
         src.repaint();
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }

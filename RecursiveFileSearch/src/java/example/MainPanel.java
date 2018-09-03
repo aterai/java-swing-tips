@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     private final JProgressBar progress = new JProgressBar();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton = new JButton("Run");
-    private final JButton canButton = new JButton("Cancel");
+    private final JButton cancelButton = new JButton("Cancel");
     private final JButton openButton = new JButton("Choose...");
     private transient SwingWorker<String, Message> worker;
 
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             executeWorker();
         });
 
-        canButton.addActionListener(e -> {
+        cancelButton.addActionListener(e -> {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
         box2.add(Box.createHorizontalGlue());
         box2.add(runButton);
         box2.add(Box.createHorizontalStrut(2));
-        box2.add(canButton);
+        box2.add(cancelButton);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(box1, BorderLayout.NORTH);
@@ -146,14 +146,14 @@ public final class MainPanel extends JPanel {
             dirCombo.setEnabled(false);
             openButton.setEnabled(false);
             runButton.setEnabled(false);
-            canButton.setEnabled(true);
+            cancelButton.setEnabled(true);
             progress.setIndeterminate(true);
             textArea.setText("");
         } else {
             dirCombo.setEnabled(true);
             openButton.setEnabled(true);
             runButton.setEnabled(true);
-            canButton.setEnabled(false);
+            cancelButton.setEnabled(false);
             statusPanel.setVisible(false);
         }
     }

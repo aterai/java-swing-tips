@@ -66,8 +66,8 @@ public final class MainPanel extends JPanel {
         String pattern = field.getText().trim();
         if (pattern.isEmpty()) {
             sorter.setRowFilter(null);
-            renderer.setPattern("");
-        } else if (renderer.setPattern(pattern)) {
+            renderer.updatePattern("");
+        } else if (renderer.updatePattern(pattern)) {
             try {
                 sorter.setRowFilter(RowFilter.regexFilter(pattern));
             } catch (PatternSyntaxException ex) {
@@ -106,7 +106,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     private String pattern = "";
     private String prev;
 
-    public boolean setPattern(String str) {
+    public boolean updatePattern(String str) {
         if (Objects.equals(str, pattern)) {
             return false;
         } else {

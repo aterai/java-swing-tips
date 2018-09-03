@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea area = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton = new JButton("run");
-    private final JButton canButton = new JButton("cancel");
+    private final JButton cancelButton = new JButton("cancel");
     private final JProgressBar bar1 = new JProgressBar(0, 100);
     private final JProgressBar bar2 = new JProgressBar(0, 100);
     private transient SwingWorker<String, Progress> worker;
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
             initStatusPanel(true);
             executeWorker();
         });
-        canButton.addActionListener(e -> {
+        cancelButton.addActionListener(e -> {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
         box.add(runButton);
         box.add(Box.createHorizontalStrut(2));
-        box.add(canButton);
+        box.add(cancelButton);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
@@ -52,14 +52,14 @@ public final class MainPanel extends JPanel {
     protected void initStatusPanel(boolean start) {
         if (start) {
             runButton.setEnabled(false);
-            canButton.setEnabled(true);
+            cancelButton.setEnabled(true);
             bar1.setValue(0);
             bar2.setValue(0);
             statusPanel.add(bar1, BorderLayout.NORTH);
             statusPanel.add(bar2, BorderLayout.SOUTH);
         } else {
             runButton.setEnabled(true);
-            canButton.setEnabled(false);
+            cancelButton.setEnabled(false);
             statusPanel.removeAll();
         }
         statusPanel.revalidate();
@@ -186,7 +186,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     private final JTextArea area = new JTextArea();
 //     private final JPanel statusPanel = new JPanel(new BorderLayout());
 //     private final JButton runButton = new JButton(new RunAction());
-//     private final JButton canButton = new JButton(new CancelAction());
+//     private final JButton cancelButton = new JButton(new CancelAction());
 //     private SwingWorker<String, String> worker;
 //
 //     public MainPanel() {
@@ -196,7 +196,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //         box.add(Box.createHorizontalGlue());
 //         box.add(runButton);
 //         box.add(Box.createHorizontalStrut(2));
-//         box.add(canButton);
+//         box.add(cancelButton);
 //         add(new JScrollPane(area));
 //         add(box, BorderLayout.NORTH);
 //         add(statusPanel, BorderLayout.SOUTH);
@@ -213,7 +213,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //             JProgressBar bar1 = new JProgressBar(0, 100);
 //             JProgressBar bar2 = new JProgressBar(0, 100);
 //             runButton.setEnabled(false);
-//             canButton.setEnabled(true);
+//             cancelButton.setEnabled(true);
 //             statusPanel.removeAll();
 //             statusPanel.add(bar1, BorderLayout.NORTH);
 //             statusPanel.add(bar2, BorderLayout.SOUTH);
@@ -264,7 +264,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //                 @Override public void done() {
 //                     // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //                     runButton.setEnabled(true);
-//                     canButton.setEnabled(false);
+//                     cancelButton.setEnabled(false);
 //                     statusPanel.remove(bar1);
 //                     statusPanel.remove(bar2);
 //                     statusPanel.revalidate();
