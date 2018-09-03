@@ -38,22 +38,22 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     @Override public String doInBackground() {
         try {
             switch (sortAlgorithm) {
-                case Isort:
+                case ISORT:
                     isort(number);
                     break;
-                case Selsort:
+                case SELSORT:
                     ssort(number);
                     break;
-                case Shellsort:
+                case SHELLSORT:
                     shellsort(number);
                     break;
-                case Hsort:
+                case HSORT:
                     heapsort(number);
                     break;
-                case Qsort:
+                case QSORT:
                     qsort(0, number - 1);
                     break;
-                case Qsort2:
+                case QSORT2:
                     qsort2(0, number - 1);
                     break;
                 default:

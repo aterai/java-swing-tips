@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    protected Fade mode = Fade.In;
+    protected Fade mode = Fade.IN;
     protected final Timer animator = new Timer(25, null);
     protected int alpha = 10;
     protected transient BufferedImage icon;
@@ -34,9 +34,9 @@ public class MainPanel extends JPanel {
         };
 
         animator.addActionListener(e -> {
-            if (mode == Fade.In && alpha < 10) {
+            if (mode == Fade.IN && alpha < 10) {
                 alpha += 1;
-            } else if (mode == Fade.Out && alpha > 0) {
+            } else if (mode == Fade.OUT && alpha > 0) {
                 alpha -= 1;
             } else {
                 animator.stop();
@@ -46,13 +46,13 @@ public class MainPanel extends JPanel {
 
         JButton button1 = new JButton("Fade In");
         button1.addActionListener(e -> {
-            mode = Fade.In;
+            mode = Fade.IN;
             animator.start();
         });
 
         JButton button2 = new JButton("Fade Out");
         button2.addActionListener(e -> {
-            mode = Fade.Out;
+            mode = Fade.OUT;
             animator.start();
         });
 
@@ -85,4 +85,4 @@ public class MainPanel extends JPanel {
     }
 }
 
-enum Fade { In, Out }
+enum Fade { IN, OUT }

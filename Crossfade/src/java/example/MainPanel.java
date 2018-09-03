@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     protected int alpha = 10;
-    protected Crossfade mode = Crossfade.In;
+    protected Crossfade mode = Crossfade.IN;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -34,9 +34,9 @@ public class MainPanel extends JPanel {
 
         Timer animator = new Timer(50, null);
         animator.addActionListener(e -> {
-            if (mode == Crossfade.In && alpha < 10) {
+            if (mode == Crossfade.IN && alpha < 10) {
                 alpha += 1;
-            } else if (mode == Crossfade.Out && alpha > 0) {
+            } else if (mode == Crossfade.OUT && alpha > 0) {
                 alpha -= 1;
             } else {
                 animator.stop();
@@ -78,8 +78,8 @@ public class MainPanel extends JPanel {
 }
 
 enum Crossfade {
-    In, Out;
+    IN, OUT;
     public Crossfade toggle() {
-        return this.equals(In) ? Out : In;
+        return this.equals(IN) ? OUT : IN;
     }
 }

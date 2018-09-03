@@ -106,13 +106,13 @@ public class MainPanel extends JPanel {
         GenerateInputs gi = distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex());
         for (int i = 0; i < n; i++) {
             switch (gi) {
-                case Random:
+                case RANDOM:
                     array.add((double) Math.random());
                     break;
-                case Ascending:
+                case ASCENDING:
                     array.add(i / (double) n);
                     break;
-                case Descending:
+                case DESCENDING:
                     array.add(1d - i / (double) n);
                     break;
                 default:
@@ -190,12 +190,12 @@ public class MainPanel extends JPanel {
 }
 
 enum SortAlgorithms {
-    Isort("Insertion Sort"),
-    Selsort("Selection Sort"),
-    Shellsort("Shell Sort"),
-    Hsort("Heap Sort"),
-    Qsort("Quicksort"),
-    Qsort2("2-way Quicksort");
+    ISORT("Insertion Sort"),
+    SELSORT("Selection Sort"),
+    SHELLSORT("Shell Sort"),
+    HSORT("Heap Sort"),
+    QSORT("Quicksort"),
+    QSORT2("2-way Quicksort");
     private final String description;
     SortAlgorithms(String description) {
         this.description = description;
@@ -206,5 +206,5 @@ enum SortAlgorithms {
 }
 
 enum GenerateInputs {
-    Random, Ascending, Descending;
+    RANDOM, ASCENDING, DESCENDING;
 }

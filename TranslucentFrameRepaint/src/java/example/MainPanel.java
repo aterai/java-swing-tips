@@ -145,18 +145,18 @@ class TexturePanel extends JPanel {
 }
 
 enum TexturePaints {
-    Null("Color(.5f, .8f, .5f, .5f)"),
-    Image("Image TexturePaint"),
-    Checker("Checker TexturePaint");
+    NULL("Color(.5f, .8f, .5f, .5f)"),
+    IMAGE("Image TexturePaint"),
+    CHECKER("Checker TexturePaint");
     private final String description;
     TexturePaints(String description) {
         this.description = description;
     }
     public Paint getTexturePaint() {
         switch (this) {
-            case Image: return TextureUtil.makeImageTexture();
-            case Checker: return TextureUtil.makeCheckerTexture();
-            case Null: return null;
+            case IMAGE: return TextureUtil.makeImageTexture();
+            case CHECKER: return TextureUtil.makeCheckerTexture();
+            case NULL: return null;
             default: throw new AssertionError();
         }
     }

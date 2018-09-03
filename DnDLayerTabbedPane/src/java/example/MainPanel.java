@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
         JCheckBoxMenuItem check = new JCheckBoxMenuItem("Ghost image: Heavyweight");
         check.addActionListener(e -> {
             JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
-            handler.setDragImageMode(c.isSelected() ? DragImageMode.Heavyweight : DragImageMode.Lightweight);
+            handler.setDragImageMode(c.isSelected() ? DragImageMode.HEAVYWEIGHT : DragImageMode.LIGHTWEIGHT);
         });
         JMenu menu = new JMenu("Debug");
         menu.add(check);
@@ -414,7 +414,7 @@ class DnDTabbedPane extends JTabbedPane {
 }
 
 enum DragImageMode {
-    Heavyweight, Lightweight;
+    HEAVYWEIGHT, LIGHTWEIGHT;
 }
 
 class TabDropTargetAdapter extends DropTargetAdapter {
@@ -465,7 +465,7 @@ class TabTransferHandler extends TransferHandler {
         }
     };
     protected final JWindow dialog = new JWindow();
-    protected DragImageMode mode = DragImageMode.Lightweight;
+    protected DragImageMode mode = DragImageMode.LIGHTWEIGHT;
     public void setDragImageMode(DragImageMode dmode) {
         this.mode = dmode;
         setDragImage(null);
@@ -584,7 +584,7 @@ class TabTransferHandler extends TransferHandler {
             if (src.dragTabIndex < 0) {
                 return TransferHandler.NONE;
             }
-            if (mode == DragImageMode.Heavyweight) {
+            if (mode == DragImageMode.HEAVYWEIGHT) {
                 label.setIcon(new ImageIcon(makeDragTabImage(src)));
                 dialog.pack();
                 dialog.setVisible(true);
@@ -623,7 +623,7 @@ class TabTransferHandler extends TransferHandler {
         DnDTabbedPane src = (DnDTabbedPane) c;
         src.updateTabDropLocation(null, null, false);
         src.repaint();
-        if (mode == DragImageMode.Heavyweight) {
+        if (mode == DragImageMode.HEAVYWEIGHT) {
             dialog.setVisible(false);
         }
     }

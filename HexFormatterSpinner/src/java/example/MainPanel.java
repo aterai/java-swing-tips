@@ -28,17 +28,17 @@ public class MainPanel extends JPanel {
         ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
         ftf.setFormatterFactory(makeFFactory());
 
-        JRadioButton exMi = new JRadioButton(FontPaint.IPAexMincho.toString());
+        JRadioButton exMi = new JRadioButton(FontPaint.IPA_EX_MINCHO.toString());
         exMi.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                setFontPaintFlag(EnumSet.of(FontPaint.IPAexMincho));
+                setFontPaintFlag(EnumSet.of(FontPaint.IPA_EX_MINCHO));
             }
         });
 
-        JRadioButton mjMi = new JRadioButton(FontPaint.IPAmjMincho.toString());
+        JRadioButton mjMi = new JRadioButton(FontPaint.IPA_MJ_MINCHO.toString());
         mjMi.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                setFontPaintFlag(EnumSet.of(FontPaint.IPAmjMincho));
+                setFontPaintFlag(EnumSet.of(FontPaint.IPA_MJ_MINCHO));
             }
         });
 
@@ -107,11 +107,11 @@ public class MainPanel extends JPanel {
             Shape s1 = toCenterAtf.createTransformedShape(exShape);
             Shape s2 = toCenterAtf.createTransformedShape(mjShape);
 
-            if (fontPaintFlag.contains(FontPaint.IPAexMincho)) {
+            if (fontPaintFlag.contains(FontPaint.IPA_EX_MINCHO)) {
                 g2.setPaint(Color.CYAN);
                 g2.fill(s1);
             }
-            if (fontPaintFlag.contains(FontPaint.IPAmjMincho)) {
+            if (fontPaintFlag.contains(FontPaint.IPA_MJ_MINCHO)) {
                 g2.setPaint(Color.MAGENTA);
                 g2.fill(s2);
             }
@@ -171,4 +171,4 @@ public class MainPanel extends JPanel {
     }
 }
 
-enum FontPaint { IPAexMincho, IPAmjMincho }
+enum FontPaint { IPA_EX_MINCHO, IPA_MJ_MINCHO }
