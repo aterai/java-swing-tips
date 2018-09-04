@@ -27,6 +27,7 @@
   <!-- rule ref="category/java/documentation.xml" / -->
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize" />
+    <exclude name="MissingSerialVersionUID" />
     <exclude name="DataflowAnomalyAnalysis" />
     <exclude name="NullAssignment" />
   </rule>
