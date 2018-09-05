@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.stream.Stream;
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new GridLayout(0, 1, 2, 2));
-        Arrays.asList(button1, button2, button3, button4).forEach(p::add);
+        Stream.of(button1, button2, button3, button4).forEach(p::add);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(p, BorderLayout.NORTH);

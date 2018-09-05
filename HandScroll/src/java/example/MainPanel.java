@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
-        Arrays.asList(radio, new JRadioButton("setViewPosition")).forEach(r -> {
+        Stream.of(radio, new JRadioButton("setViewPosition")).forEach(r -> {
             box.add(r);
             bg.add(r);
         });

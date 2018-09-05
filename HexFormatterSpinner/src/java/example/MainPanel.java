@@ -8,9 +8,9 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        Arrays.asList(exMi, mjMi, both).forEach(b -> {
+        Stream.of(exMi, mjMi, both).forEach(b -> {
             p.add(b);
             bg.add(b);
         });

@@ -17,7 +17,10 @@ import java.awt.image.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.TooManyListenersException;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -56,7 +59,7 @@ public final class MainPanel extends JPanel {
 
         DropTargetListener dropTargetListener = new TabDropTargetAdapter();
         TransferHandler handler = new TabTransferHandler();
-        Arrays.asList(tabbedPane, sub, sub2).forEach(t -> {
+        Stream.of(tabbedPane, sub, sub2).forEach(t -> {
             t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
             t.setTransferHandler(handler);
             try {

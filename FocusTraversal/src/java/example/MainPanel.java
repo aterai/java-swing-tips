@@ -4,8 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -46,17 +47,16 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        List<JRadioButton> rl = Arrays.asList(
-            new JRadioButton(new FocusTraversalPolicyChangeAction("Default", policy0)),
-            new JRadioButton(new FocusTraversalPolicyChangeAction("Custom", policy1)),
-            new JRadioButton(new FocusTraversalPolicyChangeAction("Layout", policy2)));
         ButtonGroup bg = new ButtonGroup();
         box.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
-        for (JRadioButton rb: rl) {
-            bg.add(rb);
-            box.add(rb);
-            box.add(Box.createHorizontalStrut(3));
-        }
+        Stream.of(new JRadioButton(new FocusTraversalPolicyChangeAction("Default", policy0)),
+                  new JRadioButton(new FocusTraversalPolicyChangeAction("Custom", policy1)),
+                  new JRadioButton(new FocusTraversalPolicyChangeAction("Layout", policy2)))
+            .forEach(rb -> {
+                bg.add(rb);
+                box.add(rb);
+                box.add(Box.createHorizontalStrut(3));
+            });
         ((JRadioButton) bg.getElements().nextElement()).setSelected(true);
         box.add(Box.createHorizontalGlue());
 

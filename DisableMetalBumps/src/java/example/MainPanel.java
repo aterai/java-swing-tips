@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -70,7 +70,7 @@ class BumpsFreeInternalFrameTitlePane extends BasicInternalFrameTitlePane {
     }
     @Override public void createButtons() {
         super.createButtons();
-        Arrays.asList(closeButton, maxButton, iconButton).forEach(b -> {
+        Stream.of(closeButton, maxButton, iconButton).forEach(b -> {
             b.setContentAreaFilled(false);
             b.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
         });
