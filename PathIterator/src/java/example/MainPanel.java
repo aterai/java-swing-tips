@@ -143,8 +143,10 @@ public final class MainPanel extends JPanel {
         // outer.setMinimum(r2 + 1);
         Path2D star = SvgUtils.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
-        String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
-        StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
+        int min = Math.min(r1, r2);
+        int max = Math.max(r1, r2);
+        String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", max, min, vc);
+        StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, styleField.getText().trim(), desc);
 
         // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
         // FontRenderContext frc = new FontRenderContext(null, true, true);

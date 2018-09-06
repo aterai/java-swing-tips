@@ -21,7 +21,8 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -93,7 +94,8 @@ class DnDTree extends JTree {
         super.updateUI();
         setCellRenderer(new DnDTreeCellRenderer());
         if (Objects.isNull(dragGestureRecognizer) || Objects.isNull(dropTarget)) {
-            dragGestureRecognizer = DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+            dragGestureRecognizer = DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+                this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
             dropTarget = new DropTarget(this, new NodeDropTargetListener());
         }
     }
@@ -150,8 +152,8 @@ class DnDTree extends JTree {
             MutableTreeNode draggingNode = (MutableTreeNode) getSelectionPath().getLastPathComponent();
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-            TreeNode parentNode = targetNode.getParent();
-            if (parentNode instanceof DefaultMutableTreeNode && Arrays.asList(((DefaultMutableTreeNode) parentNode).getPath()).contains(draggingNode)) {
+            TreeNode parent = targetNode.getParent();
+            if (parent instanceof DefaultMutableTreeNode && Arrays.asList(((DefaultMutableTreeNode) parent).getPath()).contains(draggingNode)) {
                 // Trying to drop a parent node to a child node
                 rejectDrag(dtde);
                 return;
@@ -192,9 +194,9 @@ class DnDTree extends JTree {
             DefaultTreeModel model = (DefaultTreeModel) getModel();
             model.removeNodeFromParent(draggingNode);
 
-            TreeNode parentNode = targetNode.getParent();
-            if (parentNode instanceof MutableTreeNode && targetNode.isLeaf()) {
-                model.insertNodeInto(draggingNode, (MutableTreeNode) parentNode, parentNode.getIndex(targetNode));
+            TreeNode parent = targetNode.getParent();
+            if (parent instanceof MutableTreeNode && targetNode.isLeaf()) {
+                model.insertNodeInto(draggingNode, (MutableTreeNode) parent, parent.getIndex(targetNode));
             } else {
                 model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
             }

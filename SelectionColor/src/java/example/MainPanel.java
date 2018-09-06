@@ -20,7 +20,8 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF, true);
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0x64FFFF32, true));
+    private static final Color HIGHLIGHT_COLOR = new Color(0x64FFFF32, true);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOR);
     private final JEditorPane area = new JEditorPane();
 
     public MainPanel() {
