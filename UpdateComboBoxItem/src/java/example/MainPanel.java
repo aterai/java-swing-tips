@@ -3,15 +3,16 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ListDataEvent;
 import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
@@ -43,11 +44,11 @@ public final class MainPanel extends JPanel {
 
         // CheckableItem displayValue = new CheckableItem("MMMMMMMMMM", false);
         CheckableItem[] m = {
-            new CheckableItem("aaa",     false),
-            new CheckableItem("bbbbb",   true),
-            new CheckableItem("111",     false),
-            new CheckableItem("33333",   true),
-            new CheckableItem("2222",    true),
+            new CheckableItem("aaa", false),
+            new CheckableItem("bbbbb", true),
+            new CheckableItem("111", false),
+            new CheckableItem("33333", true),
+            new CheckableItem("2222", true),
             new CheckableItem("ccccccc", false)
         };
 
@@ -112,7 +113,8 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
     private final JCheckBox check = new JCheckBox(" ");
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index < 0) {
-            label.setText(getCheckedItemString(list.getModel()));
+            String txt = getCheckedItemString(list.getModel());
+            label.setText(txt.isEmpty() ? " " : txt);
             return label;
         } else {
             check.setText(Objects.toString(value, ""));
@@ -128,18 +130,12 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
         }
     }
     private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
-        List<String> sl = new ArrayList<>();
-        for (int i = 0; i < model.getSize(); i++) {
-            E v = model.getElementAt(i);
-            if (v.isSelected()) {
-                sl.add(v.toString());
-            }
-        }
-        if (sl.isEmpty()) {
-            return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
-        } else {
-            return sl.stream().sorted().collect(Collectors.joining(", "));
-        }
+        return IntStream.range(0, model.getSize())
+            .mapToObj(model::getElementAt)
+            .filter(CheckableItem::isSelected)
+            .map(Objects::toString)
+            .sorted()
+            .collect(Collectors.joining(", "));
     }
 }
 
@@ -204,7 +200,7 @@ class CheckedComboBox1<E extends CheckableItem> extends CheckedComboBox<E> {
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
-            E item = getItemAt(index);
+            CheckableItem item = getItemAt(index);
             item.setSelected(!item.isSelected());
             contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, index, index));
         }
@@ -217,7 +213,7 @@ class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
-            E item = getItemAt(index);
+            CheckableItem item = getItemAt(index);
             item.setSelected(!item.isSelected());
             repaint();
             Accessible a = getAccessibleContext().getAccessibleChild(0);
@@ -259,7 +255,7 @@ class CheckedComboBox4<E extends CheckableItem> extends CheckedComboBox<E> {
     }
     @Override protected void updateItem(int index) {
         if (isPopupVisible()) {
-            E item = getItemAt(index);
+            CheckableItem item = getItemAt(index);
             item.setSelected(!item.isSelected());
             ComboBoxModel<E> m = getModel();
             if (m instanceof CheckableComboBoxModel) {

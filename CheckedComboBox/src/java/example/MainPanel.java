@@ -3,10 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
@@ -91,7 +93,8 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
     private final JCheckBox check = new JCheckBox(" ");
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index < 0) {
-            label.setText(getCheckedItemString(list.getModel()));
+            String txt = getCheckedItemString(list.getModel());
+            label.setText(txt.isEmpty() ? " " : txt);
             return label;
         } else {
             check.setText(Objects.toString(value, ""));
@@ -107,18 +110,24 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
         }
     }
     private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
-        List<String> sl = new ArrayList<>();
-        for (int i = 0; i < model.getSize(); i++) {
-            E v = model.getElementAt(i);
-            if (v.isSelected()) {
-                sl.add(v.toString());
-            }
-        }
-        if (sl.isEmpty()) {
-            return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
-        } else {
-            return sl.stream().sorted().collect(Collectors.joining(", "));
-        }
+        return IntStream.range(0, model.getSize())
+            .mapToObj(model::getElementAt)
+            .filter(CheckableItem::isSelected)
+            .map(Objects::toString)
+            .sorted()
+            .collect(Collectors.joining(", "));
+        // List<String> sl = new ArrayList<>();
+        // for (int i = 0; i < model.getSize(); i++) {
+        //     CheckableItem v = model.getElementAt(i);
+        //     if (v.isSelected()) {
+        //         sl.add(v.toString());
+        //     }
+        // }
+        // if (sl.isEmpty()) {
+        //     return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
+        // } else {
+        //     return sl.stream().sorted().collect(Collectors.joining(", "));
+        // }
     }
 }
 
