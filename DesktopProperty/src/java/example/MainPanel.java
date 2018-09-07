@@ -37,7 +37,8 @@ public final class MainPanel extends JPanel {
         Toolkit tk = Toolkit.getDefaultToolkit();
         for (String s: (String[]) tk.getDesktopProperty("win.propNames")) {
             Object o = tk.getDesktopProperty(s);
-            model.addRow(new Object[] {s, o.getClass(), o});
+            Object[] row = {s, o.getClass(), o};
+            model.addRow(row);
         }
     }
     public static void main(String... args) {

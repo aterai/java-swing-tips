@@ -4,6 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Objects;
@@ -27,12 +28,12 @@ public final class MainPanel extends JPanel {
         };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-        Enumeration<?> e = root.breadthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            node.setUserObject(new CheckBoxNode(Objects.toString(node.getUserObject(), ""), Status.DESELECTED));
-        }
+        // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+        Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .forEach(n -> n.setUserObject(new CheckBoxNode(Objects.toString(n.getUserObject(), ""), Status.DESELECTED)));
+
         model.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
         tree.setEditable(true);

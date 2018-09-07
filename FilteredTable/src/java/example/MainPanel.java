@@ -130,8 +130,9 @@ class RowDataModel extends DefaultTableModel {
                 continue;
             }
             RowData t = list.get(i);
-            addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
-            // dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
+            Object[] obj = {i, t.getName(), t.getComment()};
+            addRow(convertToVector(obj));
+            // dataVector.add(convertToVector(obj));
         }
         // setDataVector(v, columnIdentifiers);
         fireTableDataChanged();

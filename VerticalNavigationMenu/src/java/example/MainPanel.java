@@ -4,6 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,13 +31,12 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(cardLayout);
         // https://ateraimemo.com/Swing/TraverseAllNodes.html
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        // JDK 9: Enumeration<TreeNode> en = root.postorderEnumeration();
-        Enumeration<?> en = root.postorderEnumeration();
-        while (en.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
-            String title = Objects.toString(node.getUserObject());
-            p.add(new JLabel(title), title);
-        }
+        // // Java 9: Collections.list(root.postorderEnumeration()).stream()
+        Collections.list((Enumeration<?>) root.postorderEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .map(node -> Objects.toString(node.getUserObject()))
+            .forEach(title -> p.add(new JLabel(title), title));
 
         JTree tree = new RowSelectionTree();
         tree.setModel(model);
