@@ -3,12 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.RGBImageFilter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -33,8 +36,8 @@ public class MainPanel extends JPanel {
 
         BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTitledPanel("setStringPainted(true)", Arrays.asList(progress01, progress02)));
-        p.add(makeTitledPanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<>(progress04, layerUI))));
+        p.add(makeTitledPanel("setStringPainted(true)", progress01, progress02));
+        p.add(makeTitledPanel("setStringPainted(false)", progress03, new JLayer<>(progress04, layerUI)));
 
         JCheckBox check = new JCheckBox("Turn the progress bar red");
         check.addActionListener(e -> {
@@ -74,7 +77,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeTitledPanel(String title, List<? extends Component> list) {
+    private static Component makeTitledPanel(String title, Component... list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
@@ -82,9 +85,7 @@ public class MainPanel extends JPanel {
         c.insets = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
         c.gridx = GridBagConstraints.REMAINDER;
-        for (Component cmp: list) {
-            p.add(cmp, c);
-        }
+        Stream.of(list).forEach(cmp -> p.add(cmp, c));
         return p;
     }
     public static void main(String... args) {
