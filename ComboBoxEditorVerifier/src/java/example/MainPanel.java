@@ -3,13 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.text.*;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
