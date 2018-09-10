@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RightSideRowHeader" />
+  <property name="jnlp.Name"     value="RightSideRowHeader" />
+  <property name="jnlp.name"     value="rightsiderowheader" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rightsiderowheader/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RightSideRowHeader.html" />
+</project>
