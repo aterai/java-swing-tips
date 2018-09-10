@@ -4,8 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
@@ -76,7 +77,7 @@ class TablePopupMenu extends JPopupMenu {
         add("add").addActionListener(e -> {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.addRow(new Object[] {"New row", model.getRowCount(), false});
+            model.addRow(new Object[] {model.getRowCount(), "New row", false});
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         });
