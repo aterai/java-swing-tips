@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.*;
 import javax.swing.text.html.HTML;
 

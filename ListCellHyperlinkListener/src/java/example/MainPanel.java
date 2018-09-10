@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.HyperlinkEvent;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

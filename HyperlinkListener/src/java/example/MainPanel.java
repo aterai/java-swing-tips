@@ -6,7 +6,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.*;

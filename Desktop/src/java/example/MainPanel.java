@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.HyperlinkEvent;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "https://ateraimemo.com/";
