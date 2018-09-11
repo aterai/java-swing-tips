@@ -6,9 +6,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
 
 public class MainPanel extends JPanel implements HierarchyListener {
     protected final BoundedRangeModel model = new DefaultBoundedRangeModel();
@@ -25,7 +26,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
 
         check.addActionListener(e -> {
             boolean b = ((JCheckBox) e.getSource()).isSelected();
-            Arrays.asList(progressBar1, progressBar2).forEach(bar -> bar.setStringPainted(b));
+            Stream.of(progressBar1, progressBar2).forEach(bar -> bar.setStringPainted(b));
         });
 
         button.addActionListener(e -> {
