@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
@@ -84,7 +85,7 @@ public class ResizeMouseListener extends MouseInputAdapter {
     // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public void mouseDragged(MouseEvent e) {
-        if (startPos == null || startingBounds == null) {
+        if (Objects.isNull(startPos) || Objects.isNull(startingBounds)) {
             return;
         }
         Component c = e.getComponent();

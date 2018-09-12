@@ -182,7 +182,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
 
         Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
 
-        if (colHead != null && colHead.isVisible()) {
+        if (Objects.nonNull(colHead) && colHead.isVisible()) {
             int colHeadHeight = Math.min(availR.height, colHead.getPreferredSize().height);
             colHeadR.height = colHeadHeight;
             availR.y += colHeadHeight;
@@ -190,7 +190,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
         }
 
         Rectangle rowHeadR = new Rectangle(0, 0, 0, 0);
-        if (rowHead != null && rowHead.isVisible()) {
+        if (Objects.nonNull(rowHead) && rowHead.isVisible()) {
             int rowHeadWidth = Math.min(availR.width, rowHead.getPreferredSize().width);
             rowHeadR.width = rowHeadWidth;
             availR.width -= rowHeadWidth;
@@ -271,17 +271,17 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
             }
         }
 
-        if (viewport != null) {
+        if (Objects.nonNull(viewport)) {
             viewport.setBounds(availR);
 
-            if (sv != null) {
+            if (Objects.nonNull(sv)) {
                 extentSize = viewport.toViewCoordinates(availR.getSize());
 
                 final boolean oldHSBNeeded = hsbNeeded;
                 final boolean oldVSBNeeded = vsbNeeded;
                 viewTracksViewportWidth = sv.getScrollableTracksViewportWidth();
                 viewTracksViewportHeight = sv.getScrollableTracksViewportHeight();
-                if (vsb != null && vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
+                if (Objects.nonNull(vsb) && vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
                     boolean newVSBNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
                     if (newVSBNeeded != vsbNeeded) {
                         vsbNeeded = newVSBNeeded;
@@ -290,7 +290,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
                         extentSize = viewport.toViewCoordinates(availR.getSize());
                     }
                 }
-                if (hsb != null && hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+                if (Objects.nonNull(hsb) && hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
                     boolean newHSBbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
                     if (newHSBbNeeded != hsbNeeded) {
                         hsbNeeded = newHSBbNeeded;

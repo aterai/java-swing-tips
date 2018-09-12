@@ -289,7 +289,7 @@ public class TitledBorder2 extends AbstractBorder {
                     // will NOT execute because of the line preceding the switch.
             }
 
-            if (border != null) {
+            if (Objects.nonNull(border)) {
                 if (position != TOP && position != BOTTOM) {
                     border.paintBorder(c, g, borderX, borderY, borderW, borderH);
                 } else {

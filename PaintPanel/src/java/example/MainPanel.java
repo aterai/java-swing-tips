@@ -3,12 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -95,7 +97,7 @@ public final class MainPanel extends JPanel {
 //             }
 //             @Override public void mousePressed(MouseEvent e) {
 //                 startPoint.setLocation(e.getPoint());
-//                 // if (offImage == null) { // resized
+//                 // if (Objects.isNull(offImage)) { // resized
 //                 //     offImage = (BufferedImage) createImage(getWidth(), getHeight());
 //                 // }
 //             }
@@ -124,7 +126,7 @@ class PaintPanel extends JPanel {
     private transient List<Shape> list;
 
     protected List<Shape> getList() {
-        if (list == null) {
+        if (Objects.isNull(list)) {
             list = new ArrayList<>();
         }
         return list;
@@ -134,15 +136,14 @@ class PaintPanel extends JPanel {
         removeMouseListener(handler);
         super.updateUI();
         handler = new MouseInputAdapter() {
-            private transient Path2D path;
+            private transient Path2D path = new Path2D.Double();
             @Override public void mousePressed(MouseEvent e) {
-                path = new Path2D.Double();
                 path.moveTo(e.getX(), e.getY());
                 getList().add(path);
                 repaint();
             }
             @Override public void mouseDragged(MouseEvent e) {
-                if (path != null) {
+                if (Objects.nonNull(path)) {
                     path.lineTo(e.getX(), e.getY());
                     repaint();
                 }

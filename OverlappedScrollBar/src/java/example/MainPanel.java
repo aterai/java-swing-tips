@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.*;
@@ -82,7 +83,7 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
             availR.height -= insets.top + insets.bottom;
 
             Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
-            if (colHead != null && colHead.isVisible()) {
+            if (Objects.nonNull(colHead) && colHead.isVisible()) {
                 int colHeadHeight = Math.min(availR.height, colHead.getPreferredSize().height);
                 colHeadR.height = colHeadHeight;
                 availR.y += colHeadHeight;
@@ -91,7 +92,7 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
 
             colHeadR.width = availR.width;
             colHeadR.x = availR.x;
-            if (colHead != null) {
+            if (Objects.nonNull(colHead)) {
                 colHead.setBounds(colHeadR);
             }
 
@@ -107,14 +108,14 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
             vsbR.x = availR.x + availR.width - vsbR.width;
             vsbR.y = availR.y;
 
-            if (viewport != null) {
+            if (Objects.nonNull(viewport)) {
                 viewport.setBounds(availR);
             }
-            if (vsb != null) {
+            if (Objects.nonNull(vsb)) {
                 vsb.setVisible(true);
                 vsb.setBounds(vsbR);
             }
-            if (hsb != null) {
+            if (Objects.nonNull(hsb)) {
                 hsb.setVisible(true);
                 hsb.setBounds(hsbR);
             }

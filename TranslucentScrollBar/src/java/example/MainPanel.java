@@ -4,6 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -82,10 +83,10 @@ class TranslucentScrollPaneLayout extends ScrollPaneLayout {
             vsbR.x = availR.x + availR.width - vsbR.width;
             vsbR.y = availR.y;
 
-            if (viewport != null) {
+            if (Objects.nonNull(viewport)) {
                 viewport.setBounds(availR);
             }
-            if (vsb != null) {
+            if (Objects.nonNull(vsb)) {
                 vsb.setVisible(true);
                 vsb.setBounds(vsbR);
             }

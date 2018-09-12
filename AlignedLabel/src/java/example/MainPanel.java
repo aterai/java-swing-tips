@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -100,7 +101,7 @@ class AlignedLabel extends JLabel {
         return new Dimension(getMaxWidth() + INDENT, d.height);
     }
     private int getMaxWidth() {
-        if (maxWidth == 0 && group != null) {
+        if (maxWidth == 0 && Objects.nonNull(group)) {
             // int max = 0;
             // for (AlignedLabel al: group) {
             //    max = Math.max(al.getSuperPreferredWidth(), max);

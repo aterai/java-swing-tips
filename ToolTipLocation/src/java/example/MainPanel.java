@@ -3,9 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
     private transient MouseInputListener handler;
@@ -70,7 +72,7 @@ class ToolTipLocationHandler extends MouseInputAdapter {
             window.setLocation(p);
             window.setAlwaysOnTop(true);
         } else {
-            if (popup != null) {
+            if (Objects.nonNull(popup)) {
                 popup.hide();
             }
             popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
@@ -97,7 +99,7 @@ class ToolTipLocationHandler extends MouseInputAdapter {
         updateTipText(e);
     }
     @Override public void mouseReleased(MouseEvent e) {
-        if (popup != null) {
+        if (Objects.nonNull(popup)) {
             popup.hide();
         }
         window.setVisible(false);

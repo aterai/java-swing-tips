@@ -148,9 +148,9 @@ class DnDTabbedPane extends JTabbedPane {
         JButton scrollBackwardButton = null;
         for (Component c: getComponents()) {
             if (c instanceof JButton) {
-                if (scrollForwardButton == null && scrollBackwardButton == null) {
+                if (Objects.isNull(scrollForwardButton) && Objects.isNull(scrollBackwardButton)) {
                     scrollForwardButton = (JButton) c;
-                } else if (scrollBackwardButton == null) {
+                } else if (Objects.isNull(scrollBackwardButton)) {
                     scrollBackwardButton = (JButton) c;
                 }
             }

@@ -165,7 +165,7 @@ class SpinnerLayout implements LayoutManager {
 
         Insets insets = parent.getInsets();
 
-        if (nextButton == null && previousButton == null) {
+        if (Objects.isNull(nextButton) && Objects.isNull(previousButton)) {
             setBounds(editor, insets.left,  insets.top, width - insets.left - insets.right, height - insets.top - insets.bottom);
             return;
         }
@@ -181,7 +181,7 @@ class SpinnerLayout implements LayoutManager {
         // border, and leaving it as "null" places the buttons completely
         // inside the spinner's border.
         Insets buttonInsets = UIManager.getInsets("Spinner.arrowButtonInsets");
-        if (buttonInsets == null) {
+        if (Objects.isNull(buttonInsets)) {
             buttonInsets = insets;
         }
 

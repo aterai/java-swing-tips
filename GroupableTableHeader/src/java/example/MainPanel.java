@@ -95,13 +95,13 @@ class GroupableTableHeader extends JTableHeader {
         super.setReorderingAllowed(false);
     }
     public void addColumnGroup(ColumnGroup g) {
-        if (columnGroups == null) {
+        if (Objects.isNull(columnGroups)) {
             columnGroups = new ArrayList<>();
         }
         columnGroups.add(g);
     }
     public List<?> getColumnGroups(TableColumn col) {
-        if (columnGroups == null) {
+        if (Objects.isNull(columnGroups)) {
             return Collections.emptyList();
         }
         for (ColumnGroup cg: columnGroups) {
@@ -146,7 +146,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
             for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
                 ColumnGroup cg = (ColumnGroup) o;
                 Rectangle groupRect = (Rectangle) h.get(cg);
-                if (groupRect == null) {
+                if (Objects.isNull(groupRect)) {
                     groupRect = new Rectangle(cellRect.getLocation(), cg.getSize(header));
                     h.put(cg, groupRect);
                 }
@@ -164,7 +164,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
     private Component getHeaderRenderer(int columnIndex) {
         TableColumn tc = header.getColumnModel().getColumn(columnIndex);
         TableCellRenderer renderer = tc.getHeaderRenderer();
-        if (renderer == null) {
+        if (Objects.isNull(renderer)) {
             renderer = header.getDefaultRenderer();
         }
         boolean hasFocus = !header.isPaintingForPrint() && header.hasFocus();
@@ -238,7 +238,7 @@ class ColumnGroup {
      * @param obj TableColumn or ColumnGroup
      */
     public void add(Object obj) {
-        if (obj == null) {
+        if (Objects.isNull(obj)) {
             return;
         }
         list.add(obj);

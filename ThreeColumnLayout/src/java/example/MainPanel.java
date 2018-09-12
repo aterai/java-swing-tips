@@ -3,8 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -157,7 +158,7 @@ public final class MainPanel extends JPanel {
                     int we = wc / 2;
                     int ww = wc - we;
                     Component c = getLayoutComponent(CENTER);
-                    if (c != null) {
+                    if (Objects.nonNull(c)) {
                         Dimension d = c.getPreferredSize();
                         wc -= d.width + hgap + hgap;
                         we = wc / 2;
@@ -165,11 +166,11 @@ public final class MainPanel extends JPanel {
                         c.setBounds(left + hgap + ww, top, wc, bottom - top);
                     }
                     c = getLayoutComponent(EAST);
-                    if (c != null) {
+                    if (Objects.nonNull(c)) {
                         c.setBounds(right - we, top, we, bottom - top);
                     }
                     c = getLayoutComponent(WEST);
-                    if (c != null) {
+                    if (Objects.nonNull(c)) {
                         c.setBounds(left, top, ww, bottom - top);
                     }
                 }
