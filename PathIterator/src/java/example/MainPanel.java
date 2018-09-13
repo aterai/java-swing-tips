@@ -12,7 +12,7 @@ import javax.jnlp.ClipboardService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
 
 public final class MainPanel extends JPanel {
     private final SpinnerNumberModel outer = new SpinnerNumberModel(40, 10, 1000, 1);

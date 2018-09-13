@@ -3,16 +3,18 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JPanel {
     protected static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
