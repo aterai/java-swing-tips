@@ -7,10 +7,11 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

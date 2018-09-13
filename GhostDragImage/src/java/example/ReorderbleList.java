@@ -3,15 +3,18 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 public class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);

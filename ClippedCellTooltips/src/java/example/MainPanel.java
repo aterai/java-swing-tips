@@ -3,9 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String-String/String", "Integer", "Boolean"};
