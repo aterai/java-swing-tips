@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public final class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();

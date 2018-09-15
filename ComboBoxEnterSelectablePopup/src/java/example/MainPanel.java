@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 public class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();
