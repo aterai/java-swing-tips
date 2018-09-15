@@ -3,10 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -46,7 +51,7 @@ public final class MainPanel extends JPanel {
         button1.addActionListener(e -> combo.setSelectedIndex(-1));
 
         JPanel p = new JPanel();
-        Arrays.asList(Box.createVerticalStrut(40), combo, button0, button1).forEach(p::add);
+        Stream.of(Box.createVerticalStrut(40), combo, button0, button1).forEach(p::add);
         return p;
     }
     private static Component makeCheckBoxes(JTextArea textArea) {

@@ -3,9 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -55,7 +57,7 @@ public final class MainPanel extends JPanel {
         });
 
         Box box = Box.createVerticalBox();
-        Arrays.asList(focusPainted, borderPainted, contentAreaFilled, rolloverEnabled).forEach(box::add);
+        Stream.of(focusPainted, borderPainted, contentAreaFilled, rolloverEnabled).forEach(box::add);
         add(box, BorderLayout.NORTH);
         add(p);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -3,12 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -31,10 +33,9 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         progress3.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         progress3.setStringPainted(true);
 
-        List<Component> list1 = Arrays.asList(progress0, progress1, progress2, progress3);
         JPanel p1 = new JPanel(new GridLayout(2, 2, 10, 10));
         p1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        list1.forEach(p1::add);
+        Stream.of(progress0, progress1, progress2, progress3).forEach(p1::add);
 
         JProgressBar progress4 = new JProgressBar(m);
         progress4.setOrientation(SwingConstants.VERTICAL);
@@ -64,11 +65,10 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         progress8.setOrientation(SwingConstants.VERTICAL);
         JLayer<JProgressBar> layer = new JLayer<>(progress8, new VerticalFlipLayerUI<>());
 
-        List<Component> list2 = Arrays.asList(progress4, progress5, progress6, progress7, layer);
         Box p2 = Box.createHorizontalBox();
         p2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         p2.add(Box.createHorizontalGlue());
-        list2.forEach(c -> {
+        Stream.of(progress4, progress5, progress6, progress7, layer).forEach(c -> {
             p2.add(c);
             p2.add(Box.createHorizontalStrut(25));
         });
