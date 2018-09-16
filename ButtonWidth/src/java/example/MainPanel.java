@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -25,7 +26,7 @@ public final class MainPanel extends JPanel {
         Component box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
 
         Box box = Box.createVerticalBox();
-        Arrays.asList(box6, box5, box4, box3, box2, box1).forEach(c -> {
+        Stream.of(box6, box5, box4, box3, box2, box1).forEach(c -> {
             box.add(new JSeparator());
             box.add(c);
         });

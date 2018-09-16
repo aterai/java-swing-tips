@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         panel.setBorder(BorderFactory.createTitledBorder("ToolTipManager"));
         panel.add(new JLabel("ToolTip enabled:"));
         ButtonGroup group = new ButtonGroup();
-        Arrays.asList(radio, new JRadioButton("off")).forEach(r -> {
+        Stream.of(radio, new JRadioButton("off")).forEach(r -> {
             group.add(r);
             panel.add(r);
         });

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
                 label.repaint();
             }
         };
-        Arrays.asList(verticalAlignmentChoices, verticalTextPositionChoices, horizontalAlignmentChoices, horizontalTextPositionChoices)
+        Stream.of(verticalAlignmentChoices, verticalTextPositionChoices, horizontalAlignmentChoices, horizontalTextPositionChoices)
             .forEach(c -> c.addItemListener(listener));
 
         JPanel p1 = new JPanel(new BorderLayout());

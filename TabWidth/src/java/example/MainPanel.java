@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(2, 1, 0, 10));
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        Arrays.asList(new JTabbedPane(), tabbedPane).forEach(tab -> {
+        Stream.of(new JTabbedPane(), tabbedPane).forEach(tab -> {
             tab.addTab("aaaaaa", new JLabel("aaaaaaaaaaa"));
             tab.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
             tab.addTab("c", new JLabel("cccccccccc"));
