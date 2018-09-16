@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
         JSlider slider2 = new JSlider(SwingConstants.HORIZONTAL);
 
-        Arrays.asList(slider1, slider2).forEach(s -> {
+        Stream.of(slider1, slider2).forEach(s -> {
             s.setModel(model);
             s.setMajorTickSpacing(20);
             s.setMinorTickSpacing(10);

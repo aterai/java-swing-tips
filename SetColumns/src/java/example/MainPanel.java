@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
         layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
 
-        Arrays.asList(field, passwd, spinner, combo1, combo2, combo3).forEach(p::add);
+        Stream.of(field, passwd, spinner, combo1, combo2, combo3).forEach(p::add);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }

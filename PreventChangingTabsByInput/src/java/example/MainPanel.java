@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -35,14 +36,14 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel(new GridLayout(0, 1, 0, 5));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        Arrays.asList(tabbedPane0, tabbedPane2).forEach(p::add);
+        Stream.of(tabbedPane0, tabbedPane2).forEach(p::add);
         p.add(new JLayer<Component>(tabbedPane3, new DisableInputLayerUI()));
 
         JButton button = new JButton("next");
         button.addActionListener(e -> {
             int i = tabbedPane0.getSelectedIndex() + 1;
             int next = i >= tabbedPane0.getTabCount() ? 0 : i;
-            Arrays.asList(tabbedPane0, tabbedPane2, tabbedPane3).forEach(t -> t.setSelectedIndex(next));
+            Stream.of(tabbedPane0, tabbedPane2, tabbedPane3).forEach(t -> t.setSelectedIndex(next));
         });
 
         add(p, BorderLayout.NORTH);

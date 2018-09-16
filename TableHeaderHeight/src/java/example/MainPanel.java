@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
 
         JButton button = new JButton("addColumn");
         button.addActionListener(e -> {
-            Arrays.asList(table1, table2).forEach(t -> {
+            Stream.of(table1, table2).forEach(t -> {
                 t.getColumnModel().addColumn(new TableColumn());
                 JTableHeader h = t.getTableHeader();
                 Dimension d = h.getPreferredSize();

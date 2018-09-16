@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.EventObject;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -59,7 +61,7 @@ class ButtonPanel extends JPanel {
     }
     public Component remakePanel(Component c) {
         removeAll();
-        Arrays.asList(b1, b2, b3, c).forEach(this::add);
+        Stream.of(b1, b2, b3, c).forEach(this::add);
         return this;
     }
     // public int getButtonAreaWidth() {

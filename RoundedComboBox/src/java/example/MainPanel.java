@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.TitledBorder;
@@ -109,7 +110,7 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("editable");
         check.addActionListener(e -> {
             boolean flag = ((JCheckBox) e.getSource()).isSelected();
-            Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2).forEach(c -> c.setEditable(flag));
+            Stream.of(combo00, combo01, combo02, combo0, combo1, combo2).forEach(c -> c.setEditable(flag));
             repaint();
         });
 
