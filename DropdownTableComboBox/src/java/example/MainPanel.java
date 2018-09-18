@@ -4,16 +4,20 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.metal.MetalComboBoxUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
-    @SuppressWarnings("JdkObsolete")
+    @SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "JdkObsolete"})
     private MainPanel() {
         super(new BorderLayout());
 
