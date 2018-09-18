@@ -8,7 +8,8 @@ import java.awt.image.*;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.text.DefaultEditorKit;
 
