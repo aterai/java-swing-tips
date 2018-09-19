@@ -4,9 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -102,68 +106,119 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
+
+class ComboCellRenderer implements TableCellRenderer {
     protected static final Color EVEN_COLOR = new Color(240, 240, 250);
     protected JButton button;
-    @Override public void updateUI() {
-        super.updateUI();
-        setBorder(BorderFactory.createEmptyBorder());
-        setUI(new BasicComboBoxUI() {
-            @Override protected JButton createArrowButton() {
-                button = super.createArrowButton();
-                button.setContentAreaFilled(false);
-                // button.setBackground(ComboCellRenderer.this.getBackground());
-                button.setBorder(BorderFactory.createEmptyBorder());
-                return button;
+    protected final JComboBox<String> combo = new JComboBox<String>() {
+        @Override public void updateUI() {
+            super.updateUI();
+            setBorder(BorderFactory.createEmptyBorder());
+            setUI(new BasicComboBoxUI() {
+                @Override protected JButton createArrowButton() {
+                    button = super.createArrowButton();
+                    button.setContentAreaFilled(false);
+                    button.setBorder(BorderFactory.createEmptyBorder());
+                    return button;
+                }
+            });
+        }
+        @Override public boolean isOpaque() {
+            Color back = getBackground();
+            Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+            if (o instanceof JTable) {
+                JTable table = (JTable) o;
+                boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+                return !colorMatch && super.isOpaque();
+            } else {
+                return super.isOpaque();
             }
-        });
-    }
+        }
+    };
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JTextField editor = (JTextField) getEditor().getEditorComponent();
+        JTextField editor = (JTextField) combo.getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
-        // editor.setEditable(false);
-        removeAllItems();
-        if (Objects.nonNull(button)) {
+        combo.removeAllItems();
+        Optional.ofNullable(button).ifPresent(b -> {
             if (isSelected) {
                 editor.setForeground(table.getSelectionForeground());
                 editor.setBackground(table.getSelectionBackground());
-                button.setBackground(table.getSelectionBackground());
+                b.setBackground(table.getSelectionBackground());
             } else {
                 editor.setForeground(table.getForeground());
-                // setBackground(table.getBackground());
                 Color bg = row % 2 == 0 ? EVEN_COLOR : table.getBackground();
                 editor.setBackground(bg);
-                button.setBackground(bg);
+                b.setBackground(bg);
             }
-        }
-        addItem(Objects.toString(value, ""));
-        return this;
+        });
+        combo.addItem(Objects.toString(value, ""));
+        return combo;
     }
-    // Overridden for performance reasons. ---->
-    @Override public boolean isOpaque() {
-        Color back = getBackground();
-        Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
-        if (o instanceof JTable) {
-            JTable table = (JTable) o;
-            boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
-            return !colorMatch && super.isOpaque();
-        } else {
-            return super.isOpaque();
-        }
-    }
-    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        // System.out.println(propertyName);
-        // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-        //     super.firePropertyChange(propertyName, oldValue, newValue);
-        // }
-    }
-    // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
-    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint() { /* Overridden for performance reasons. */ }
-    // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    // @Override public void validate() { /* Overridden for performance reasons. */ }
-    @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    // <---- Overridden for performance reasons.
 }
+
+// class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
+//     protected static final Color EVEN_COLOR = new Color(240, 240, 250);
+//     protected JButton button;
+//     @Override public void updateUI() {
+//         super.updateUI();
+//         setBorder(BorderFactory.createEmptyBorder());
+//         setUI(new BasicComboBoxUI() {
+//             @Override protected JButton createArrowButton() {
+//                 button = super.createArrowButton();
+//                 button.setContentAreaFilled(false);
+//                 // button.setBackground(ComboCellRenderer.this.getBackground());
+//                 button.setBorder(BorderFactory.createEmptyBorder());
+//                 return button;
+//             }
+//         });
+//     }
+//     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//         JTextField editor = (JTextField) getEditor().getEditorComponent();
+//         editor.setBorder(BorderFactory.createEmptyBorder());
+//         editor.setOpaque(true);
+//         // editor.setEditable(false);
+//         removeAllItems();
+//         if (button != null) {
+//             if (isSelected) {
+//                 editor.setForeground(table.getSelectionForeground());
+//                 editor.setBackground(table.getSelectionBackground());
+//                 button.setBackground(table.getSelectionBackground());
+//             } else {
+//                 editor.setForeground(table.getForeground());
+//                 // setBackground(table.getBackground());
+//                 Color bg = row % 2 == 0 ? EVEN_COLOR : table.getBackground();
+//                 editor.setBackground(bg);
+//                 button.setBackground(bg);
+//             }
+//         }
+//         addItem(Objects.toString(value, ""));
+//         return this;
+//     }
+//     // Overridden for performance reasons. ---->
+//     @Override public boolean isOpaque() {
+//         Color back = getBackground();
+//         Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+//         if (o instanceof JTable) {
+//             JTable table = (JTable) o;
+//             boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//             return !colorMatch && super.isOpaque();
+//         } else {
+//             return super.isOpaque();
+//         }
+//     }
+//     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//         // System.out.println(propertyName);
+//         // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+//         //     super.firePropertyChange(propertyName, oldValue, newValue);
+//         // }
+//     }
+//     // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
+//     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint() { /* Overridden for performance reasons. */ }
+//     // @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//     // @Override public void validate() { /* Overridden for performance reasons. */ }
+//     @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//     // <---- Overridden for performance reasons.
+// }
