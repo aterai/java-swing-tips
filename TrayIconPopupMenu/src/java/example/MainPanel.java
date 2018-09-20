@@ -3,27 +3,39 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 public final class MainPanel extends JPanel {
     private final JPopupMenu popup = new JPopupMenu();
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JLabel("SystemTray.isSupported(): " + SystemTray.isSupported()), BorderLayout.NORTH);
 
         ButtonGroup group = new ButtonGroup();
         Box box = Box.createVerticalBox();
-        for (LookAndFeelEnum lnf: LookAndFeelEnum.values()) {
-            JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
-            group.add(rb);
-            box.add(rb);
-        }
+        Stream.of(LookAndFeelEnum.values())
+            .map(lnf -> new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)))
+            .map(JRadioButton::new)
+            .forEach(rb -> {
+                group.add(rb);
+                box.add(rb);
+            });
+        // for (LookAndFeelEnum lnf: LookAndFeelEnum.values()) {
+        //     JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
+        //     group.add(rb);
+        //     box.add(rb);
+        // }
         box.add(Box.createVerticalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
 

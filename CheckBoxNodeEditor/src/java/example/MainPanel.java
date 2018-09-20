@@ -3,15 +3,23 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -183,16 +191,15 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-        // Java 9: Enumeration<TreeNode> breadth = root.breadthFirstEnumeration();
-        Enumeration<?> breadth = root.breadthFirstEnumeration();
-        while (breadth.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
-            if (Objects.equals(root, node)) {
-                continue;
-            }
-            CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-            node.setUserObject(new CheckBoxNode(check.label, status));
-        }
+        // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+        Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .filter(node -> !Objects.equals(root, node))
+            .forEach(node -> {
+                CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+                node.setUserObject(new CheckBoxNode(check.label, status));
+            });
     }
     @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
     @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }

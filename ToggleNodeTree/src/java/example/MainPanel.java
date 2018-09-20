@@ -5,8 +5,13 @@ package example;
 import java.awt.*;
 import java.util.Enumeration;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -69,6 +74,18 @@ public final class MainPanel extends JPanel {
     public static void collapseFirstHierarchy(JTree tree) {
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
+        // // Java 9:
+        // Collections.list(root.breadthFirstEnumeration()).stream()
+        //     .filter(DefaultMutableTreeNode.class::isInstance)
+        //     .map(DefaultMutableTreeNode.class::cast)
+        //     .takeWhile(node -> node.getLevel() <= 1)
+        //     .dropWhile(DefaultMutableTreeNode::isRoot)
+        //     .dropWhile(DefaultMutableTreeNode::isLeaf)
+        //     .map(DefaultMutableTreeNode::getPath)
+        //     .map(TreePath::new)
+        //     .forEach(tree::collapsePath);
+
         // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
         Enumeration<?> e = root.breadthFirstEnumeration();
         while (e.hasMoreElements()) {

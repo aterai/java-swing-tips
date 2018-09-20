@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 
 public final class MainPanel extends JPanel {
     private final DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
@@ -226,14 +228,26 @@ final class TreeUtil {
     }
 
     public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
-        for (int i = 0; i < src.getChildCount(); i++) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
-            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); // (DefaultMutableTreeNode) node.clone();
-            tgt.add(clone);
-            if (!node.isLeaf()) {
-                deepCopyTree(node, clone);
-            }
-        }
+        // Java 9: Collections.list(src.children()).stream()
+        Collections.list((Enumeration<?>) src.children()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .forEach(node -> {
+                DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+                tgt.add(clone);
+                if (!node.isLeaf()) {
+                    deepCopyTree(node, clone);
+                }
+            });
+        // for (int i = 0; i < src.getChildCount(); i++) {
+        //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
+        //     DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+        //     // DefaultMutableTreeNode clone = (DefaultMutableTreeNode) node.clone();
+        //     tgt.add(clone);
+        //     if (!node.isLeaf()) {
+        //         deepCopyTree(node, clone);
+        //     }
+        // }
         return tgt;
     }
 

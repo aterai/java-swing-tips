@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.EventObject;
 import java.util.List;
@@ -11,9 +11,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -22,7 +28,7 @@ public final class MainPanel extends JPanel {
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        for (File fileSystemRoot: fileSystemView.getRoots()) {
+        Stream.of(fileSystemView.getRoots()).forEach(fileSystemRoot -> {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
             root.add(node);
             Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
@@ -30,7 +36,7 @@ public final class MainPanel extends JPanel {
                 .map(file -> new CheckBoxNode(file, Status.DESELECTED))
                 .map(DefaultMutableTreeNode::new)
                 .forEach(node::add);
-        }
+        });
         treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
         JTree tree = new JTree(treeModel) {
@@ -67,9 +73,9 @@ public final class MainPanel extends JPanel {
         //             return;
         //         }
         //         CheckBoxNode check = (CheckBoxNode) o;
-        //         if (check.status == Status.SELECTED) {
-        //             System.out.println(check.file.toString());
-        //         } else if (check.status == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
+        //         if (check.getStatus() == Status.SELECTED) {
+        //             System.out.println(check.getFile().toString());
+        //         } else if (check.getStatus() == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
         //             // Java 9: Enumeration<TreeNode> e = node.children();
         //             Enumeration<?> e = node.children();
         //             while (e.hasMoreElements()) {
@@ -86,8 +92,8 @@ public final class MainPanel extends JPanel {
         //         // while (e.hasMoreElements()) {
         //         //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
         //         //     CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-        //         //     if (Objects.nonNull(check) && check.status == Status.SELECTED) {
-        //         //         System.out.println(check.file.toString());
+        //         //     if (Objects.nonNull(check) && check.getStatus() == Status.SELECTED) {
+        //         //         System.out.println(check.getFile().toString());
         //         //     }
         //         // }
         //     }
@@ -155,11 +161,11 @@ class IndeterminateIcon implements Icon {
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
 
 class CheckBoxNode {
-    public final File file;
-    public final Status status;
+    private final File file;
+    private final Status status;
     protected CheckBoxNode(File file) {
         this.file = file;
-        status = Status.INDETERMINATE;
+        this.status = Status.INDETERMINATE;
     }
     protected CheckBoxNode(File file, Status status) {
         this.file = file;
@@ -167,6 +173,12 @@ class CheckBoxNode {
     }
     @Override public String toString() {
         return file.getName();
+    }
+    public File getFile() {
+        return file;
+    }
+    public Status getStatus() {
+        return status;
     }
 }
 
@@ -194,16 +206,16 @@ class FileTreeCellRenderer implements TreeCellRenderer {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
-                if (node.status == Status.INDETERMINATE) {
+                if (node.getStatus() == Status.INDETERMINATE) {
                     checkBox.setIcon(new IndeterminateIcon());
                 } else {
                     checkBox.setIcon(null);
                 }
-                File file = (File) node.file;
+                File file = (File) node.getFile();
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
                 l.setToolTipText(file.getPath());
-                checkBox.setSelected(node.status == Status.SELECTED);
+                checkBox.setSelected(node.getStatus() == Status.SELECTED);
             }
             panel.add(l);
             return panel;
@@ -239,15 +251,15 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
-                if (node.status == Status.INDETERMINATE) {
+                if (node.getStatus() == Status.INDETERMINATE) {
                     checkBox.setIcon(new IndeterminateIcon());
                 } else {
                     checkBox.setIcon(null);
                 }
-                file = node.file;
+                file = node.getFile();
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
-                checkBox.setSelected(node.status == Status.SELECTED);
+                checkBox.setSelected(node.getStatus() == Status.SELECTED);
             }
             panel.add(l);
             return panel;
@@ -308,12 +320,12 @@ class FolderSelectionListener implements TreeSelectionListener {
         if (Objects.isNull(check)) {
             return;
         }
-        File parent = check.file;
+        File parent = check.getFile();
         if (!parent.isDirectory()) {
             return;
         }
 
-        Status parentStatus = check.status == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+        Status parentStatus = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
         DefaultTreeModel model = (DefaultTreeModel) ((JTree) e.getSource()).getModel();
         BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {

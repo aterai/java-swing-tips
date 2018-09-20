@@ -3,10 +3,20 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private final JTextField field = new JTextField("foo");
@@ -33,12 +43,12 @@ public final class MainPanel extends JPanel {
         tree.setRowHeight(-1);
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-        Enumeration<?> e = root.breadthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), "")));
-        }
+        // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+        Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .forEach(node -> node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), ""))));
+
         model.addTreeModelListener(new FilterableStatusUpdateListener());
 
         tree.setCellRenderer(new FilterTreeCellRenderer());

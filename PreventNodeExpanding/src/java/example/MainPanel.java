@@ -7,9 +7,17 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -17,14 +25,14 @@ public final class MainPanel extends JPanel {
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        for (File fileSystemRoot: fileSystemView.getRoots()) {
+        Stream.of(fileSystemView.getRoots()).forEach(fileSystemRoot -> {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
             Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
                 .filter(File::isDirectory)
                 .map(DefaultMutableTreeNode::new)
                 .forEach(node::add);
-        }
+        });
 
         JTree tree = new JTree(treeModel);
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));

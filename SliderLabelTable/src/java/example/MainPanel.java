@@ -3,9 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -14,15 +14,14 @@ public final class MainPanel extends JPanel {
 
         @SuppressWarnings("JdkObsolete")
         Dictionary<Integer, Component> labelTable = new Hashtable<>();
-        int c = 0;
         // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-        for (String s: Arrays.asList("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
-                                     "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
-                                     "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
-                                     "wi0126-16.png")) {
-            labelTable.put(c++, new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT));
-        }
-        labelTable.put(c, new JButton("aaa"));
+        Stream.of("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
+                  "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
+                  "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
+                  "wi0126-16.png")
+            .forEach(s -> labelTable.put(labelTable.size(), new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT)));
+
+        labelTable.put(labelTable.size(), new JButton("aaa"));
         JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 10, 0);
         slider1.setSnapToTicks(true);
         // slider1.setMajorTickSpacing(1);
@@ -35,12 +34,14 @@ public final class MainPanel extends JPanel {
         Dictionary<Integer, Component> labelTable2 = new Hashtable<>();
         // @SuppressWarnings("PMD.ReplaceHashtableWithMap")
         // Hashtable labelTable2 = slider2.createStandardLabels(1);
-        int i = 0;
-        for (String s: Arrays.asList("零", "壱", "弐", "参", "肆", "伍", "陸", "漆", "捌", "玖", "拾")) {
-            JLabel l = new JLabel(s);
-            l.setForeground(new Color(250, 100 - i * 10, 10));
-            labelTable2.put(i++, l);
-        }
+        Stream.of("零", "壱", "弐", "参", "肆", "伍", "陸", "漆", "捌", "玖", "拾")
+            .map(JLabel::new)
+            .forEach(l -> {
+                int idx = labelTable2.size();
+                l.setForeground(new Color(250, 100 - idx * 10, 10));
+                labelTable2.put(idx, l);
+            });
+
         JSlider slider2 = new JSlider(0, 10, 0);
         // slider2.setForeground(Color.BLUE);
         slider2.setSnapToTicks(true);

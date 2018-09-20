@@ -3,9 +3,16 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.io.File;
-import java.util.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting;
@@ -39,48 +46,70 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
             node = (DefaultMutableTreeNode) model.getRoot();
             c = (CheckBoxNode) node.getUserObject();
         }
-        updateAllChildrenUserObject(node, c.status);
+        updateAllChildrenUserObject(node, c.getStatus());
         model.nodeChanged(node);
         adjusting = false;
     }
+    // private void updateParentUserObject(DefaultMutableTreeNode parent) {
+    //     int selectedCount = 0;
+    //     // Java 9: Enumeration<TreeNode> children = parent.children();
+    //     Enumeration<?> children = parent.children();
+    //     while (children.hasMoreElements()) {
+    //         DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
+    //         CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+    //         if (check.getStatus() == Status.INDETERMINATE) {
+    //             selectedCount = -1;
+    //             break;
+    //         }
+    //         if (check.getStatus() == Status.SELECTED) {
+    //             selectedCount++;
+    //         }
+    //     }
+    //     Object o = parent.getUserObject();
+    //     if (o instanceof CheckBoxNode) {
+    //         File file = ((CheckBoxNode) o).getFile();
+    //         if (selectedCount == 0) {
+    //             parent.setUserObject(new CheckBoxNode(file, Status.DESELECTED));
+    //         } else if (selectedCount == parent.getChildCount()) {
+    //             parent.setUserObject(new CheckBoxNode(file, Status.SELECTED));
+    //         } else {
+    //             parent.setUserObject(new CheckBoxNode(file));
+    //         }
+    //     }
+    // }
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
-        int selectedCount = 0;
-        // Java 9: Enumeration<TreeNode> children = parent.children();
-        Enumeration<?> children = parent.children();
-        while (children.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
-            CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-            if (check.status == Status.INDETERMINATE) {
-                selectedCount = -1;
-                break;
-            }
-            if (check.status == Status.SELECTED) {
-                selectedCount++;
-            }
-        }
+        // Java 9: Collections.list(parent.children()).stream()
+        List<Status> list = Collections.list((Enumeration<?>) parent.children()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .map(DefaultMutableTreeNode::getUserObject)
+            .filter(CheckBoxNode.class::isInstance)
+            .map(CheckBoxNode.class::cast)
+            .map(CheckBoxNode::getStatus)
+            .collect(Collectors.toList());
+
         Object o = parent.getUserObject();
         if (o instanceof CheckBoxNode) {
-            File file = ((CheckBoxNode) o).file;
-            if (selectedCount == 0) {
+            File file = ((CheckBoxNode) o).getFile();
+            if (list.stream().allMatch(s -> Objects.equals(s, Status.DESELECTED))) {
                 parent.setUserObject(new CheckBoxNode(file, Status.DESELECTED));
-            } else if (selectedCount == parent.getChildCount()) {
+            } else if (list.stream().allMatch(s -> Objects.equals(s, Status.SELECTED))) {
                 parent.setUserObject(new CheckBoxNode(file, Status.SELECTED));
             } else {
-                parent.setUserObject(new CheckBoxNode(file));
+                parent.setUserObject(new CheckBoxNode(file, Status.INDETERMINATE));
             }
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-        // Java 9: Enumeration<TreeNode> breadth = root.breadthFirstEnumeration();
-        Enumeration<?> breadth = root.breadthFirstEnumeration();
-        while (breadth.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
-            if (Objects.equals(root, node)) {
-                continue;
-            }
-            CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-            node.setUserObject(new CheckBoxNode(check.file, status));
-        }
+        // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+        Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .filter(node -> !Objects.equals(root, node))
+            .forEach(node -> {
+                CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+                node.setUserObject(new CheckBoxNode(check.getFile(), status));
+            });
     }
     @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
     @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }

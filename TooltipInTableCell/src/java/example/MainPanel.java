@@ -3,12 +3,16 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "List<Icon>"};
@@ -116,15 +120,17 @@ class ListIconRenderer implements TableCellRenderer {
             // renderer.setBackground(table.getBackground());
         }
         if (value instanceof List<?>) {
-            for (Object o: (List<?>) value) {
-                if (o instanceof Icon) {
-                    Icon icon = (Icon) o;
-                    JLabel label = new JLabel(icon);
-                    label.setToolTipText(icon.toString());
-                    renderer.add(label);
-                }
-            }
+            ((List<?>) value).stream()
+                .filter(Icon.class::isInstance)
+                .map(Icon.class::cast)
+                .map(ListIconRenderer::makeLabel)
+                .forEach(renderer::add);
         }
         return renderer;
+    }
+    private static Component makeLabel(Icon icon) {
+        JLabel label = new JLabel(icon);
+        label.setToolTipText(icon.toString());
+        return label;
     }
 }
