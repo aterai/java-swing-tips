@@ -3,6 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +83,7 @@ public final class MainPanel extends JPanel {
  * @author aterai aterai@outlook.com
  */
 class GroupableTableHeader extends JTableHeader {
-    private transient List<ColumnGroup> columnGroups;
+    private final List<ColumnGroup> columnGroups = new ArrayList<>();
 
     protected GroupableTableHeader(TableColumnModel model) {
         super(model);
@@ -97,16 +100,10 @@ class GroupableTableHeader extends JTableHeader {
     @Override public void setReorderingAllowed(boolean b) {
         super.setReorderingAllowed(false);
     }
-    public void addColumnGroup(ColumnGroup g) {
-        if (Objects.isNull(columnGroups)) {
-            columnGroups = new ArrayList<>();
-        }
+    protected void addColumnGroup(ColumnGroup g) {
         columnGroups.add(g);
     }
     public List<?> getColumnGroups(TableColumn col) {
-        if (Objects.isNull(columnGroups)) {
-            return Collections.emptyList();
-        }
         for (ColumnGroup cg: columnGroups) {
             List<?> groups = cg.getColumnGroupList(col, new ArrayList<>());
             if (!groups.isEmpty()) {
@@ -114,6 +111,12 @@ class GroupableTableHeader extends JTableHeader {
             }
         }
         return Collections.emptyList();
+    }
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+    }
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 }
 
