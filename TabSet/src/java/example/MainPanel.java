@@ -4,7 +4,11 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.TabSet;
+import javax.swing.text.TabStop;
 
 public class MainPanel extends JPanel {
     protected final JCheckBox check = new JCheckBox("vertical grid lines", true);
