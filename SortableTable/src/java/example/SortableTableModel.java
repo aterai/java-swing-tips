@@ -7,12 +7,20 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 public class SortableTableModel extends DefaultTableModel {
     @SuppressWarnings("unchecked")
