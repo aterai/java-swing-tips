@@ -5,13 +5,15 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import javax.swing.tree.*;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public class MainPanel extends JPanel {
     protected final JTree tree = new JTree();
@@ -193,11 +195,9 @@ class FindNextAction extends AbstractAction {
                 tree.expandPath(path.getParentPath());
             }
             if (!node.isLeaf() && node.getChildCount() >= 0) {
-                // Java 9: Enumeration<TreeNode> e = node.children();
-                Enumeration<?> e = node.children();
-                while (e.hasMoreElements()) {
-                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
-                }
+                // Java 9: Collections.list(node.children())
+                Collections.list((Enumeration<?>) node.children()).stream()
+                    .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
             }
         }
     }

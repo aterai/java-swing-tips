@@ -3,7 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -55,21 +57,17 @@ public class MainPanel extends JPanel {
             tree.expandPath(path.getParentPath());
         }
         if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
-            }
+            // Java 9: Collections.list(node.children())
+            Collections.list((Enumeration<?>) node.children()).stream()
+                .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
         }
     }
     private static void collapseAll(JTree tree, TreePath parent) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                collapseAll(tree, parent.pathByAddingChild(e.nextElement()));
-            }
+            // Java 9: Collections.list(node.children())
+            Collections.list((Enumeration<?>) node.children()).stream()
+                .forEach(n -> collapseAll(tree, parent.pathByAddingChild(n)));
         }
         tree.collapsePath(parent);
     }

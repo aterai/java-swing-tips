@@ -190,15 +190,13 @@ final class TreeUtil {
             }
         }
     }
-    public static void sortTree2(DefaultMutableTreeNode root) {
-        // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
-        Enumeration<?> e = root.preorderEnumeration();
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            if (!node.isLeaf()) {
-                sort2(node);
-            }
-        }
+    public static void sortTree2(DefaultMutableTreeNode parent) {
+        // Java 9: Collections.list(parent.preorderEnumeration()).stream()
+        Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .filter(node -> !node.isLeaf())
+            .forEach(TreeUtil::sort2);
     }
 
     private static void sort3(DefaultMutableTreeNode parent) {
@@ -216,15 +214,13 @@ final class TreeUtil {
         parent.removeAllChildren();
         children.forEach(parent::add);
     }
-    public static void sortTree3(DefaultMutableTreeNode root) {
-        // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
-        Enumeration<?> e = root.preorderEnumeration();
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            if (!node.isLeaf()) {
-                sort3(node);
-            }
-        }
+    public static void sortTree3(DefaultMutableTreeNode parent) {
+        // Java 9: Collections.list(parent.preorderEnumeration()).stream()
+        Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .filter(node -> !node.isLeaf())
+            .forEach(TreeUtil::sort3);
     }
 
     public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {

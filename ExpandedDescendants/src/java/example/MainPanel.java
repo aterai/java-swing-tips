@@ -3,9 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private Enumeration<TreePath> expandedState;
@@ -46,10 +51,7 @@ public final class MainPanel extends JPanel {
             if (Objects.isNull(expandedState)) {
                 return;
             }
-            Enumeration<TreePath> expandedNodes = getExpandedState();
-            while (expandedNodes.hasMoreElements()) {
-                tree.expandPath(expandedNodes.nextElement());
-            }
+            Collections.list(getExpandedState()).stream().forEach(tree::expandPath);
             setExpandedState(tree.getExpandedDescendants(rootPath));
         });
 
@@ -83,11 +85,10 @@ public final class MainPanel extends JPanel {
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
-            }
+            // Java 9: Collections.list(node.children())
+            Collections.list((Enumeration<?>) node.children())
+                .stream()
+                .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
         }
         if (expand) {
             tree.expandPath(parent);
