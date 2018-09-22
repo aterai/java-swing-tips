@@ -3,15 +3,21 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        String[] columnNames = new String[] {"Group", "Name", "Count"};
+        String[] columnNames = {"Group", "Name", "Count"};
         DefaultTableModel model = new DefaultTableModel(null, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return RowData.class;

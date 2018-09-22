@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
         {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
     };
-    private final Object[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
+    private final String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return column < FIXEDCOLUMN_RANGE ? Integer.class : Object.class;
