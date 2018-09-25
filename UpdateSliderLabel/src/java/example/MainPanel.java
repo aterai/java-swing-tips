@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
+import java.util.Collections;
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -72,13 +72,14 @@ public final class MainPanel extends JPanel {
         slider.setSnapToTicks(true);
         // slider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
         Dictionary<?, ?> labelTable = slider.getLabelTable();
-        Enumeration<?> ed = labelTable.keys();
-        while (ed.hasMoreElements()) {
-            Integer i = (Integer) ed.nextElement();
-            JLabel label = (JLabel) labelTable.get(i);
-            label.setText(Objects.toString(i / 100));
-            // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
-        }
+        Collections.list(labelTable.keys()).stream()
+            .filter(Integer.class::isInstance)
+            .map(Integer.class::cast)
+            .forEach(i -> {
+                JLabel label = (JLabel) labelTable.get(i);
+                label.setText(Objects.toString(i / 100));
+                // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
+            });
         return slider;
     }
 

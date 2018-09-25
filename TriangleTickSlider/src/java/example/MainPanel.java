@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
+import java.util.Collections;
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -32,19 +32,20 @@ public final class MainPanel extends JPanel {
         if (icon) {
             Dictionary<?, ?> dictionary = slider.getLabelTable();
             if (Objects.nonNull(dictionary)) {
-                Enumeration<?> elements = dictionary.elements();
                 Icon tick = new TickIcon();
-                while (elements.hasMoreElements()) {
-                    JLabel label = (JLabel) elements.nextElement();
-                    label.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-                    label.setIcon(tick);
-                    label.setIconTextGap(0);
-                    label.setVerticalAlignment(SwingConstants.TOP);
-                    label.setVerticalTextPosition(SwingConstants.BOTTOM);
-                    label.setHorizontalAlignment(SwingConstants.CENTER);
-                    label.setHorizontalTextPosition(SwingConstants.CENTER);
-                    label.setForeground(Color.RED);
-                }
+                Collections.list(dictionary.elements()).stream()
+                    .filter(JLabel.class::isInstance)
+                    .map(JLabel.class::cast)
+                    .forEach(label -> {
+                        label.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+                        label.setIcon(tick);
+                        label.setIconTextGap(0);
+                        label.setVerticalAlignment(SwingConstants.TOP);
+                        label.setVerticalTextPosition(SwingConstants.BOTTOM);
+                        label.setHorizontalAlignment(SwingConstants.CENTER);
+                        label.setHorizontalTextPosition(SwingConstants.CENTER);
+                        label.setForeground(Color.RED);
+                    });
             }
         } else {
             slider.setPaintTicks(true);
