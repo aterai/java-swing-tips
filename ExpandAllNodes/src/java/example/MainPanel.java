@@ -64,18 +64,16 @@ public final class MainPanel extends JPanel {
     //     return new DefaultTreeModel(root);
     // }
 
-    public static Stream<TreeNode> children(TreeNode node) {
-        // Java 9: return Collections.list(node.children())
-        return Collections.list((Enumeration<?>) node.children())
-            .stream().filter(TreeNode.class::isInstance).map(TreeNode.class::cast);
-    }
-
     // Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
     // http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        children(node).forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
-        // if (!node.isLeaf() && node.getChildCount() >= 0) {
+        // Java 9: return Collections.list(node.children())
+        Collections.list((Enumeration<?>) node.children()).stream()
+            .filter(TreeNode.class::isInstance)
+            .map(TreeNode.class::cast)
+            .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+        // if (!node.isLeaf()) {
         //     // Java 9: Enumeration<TreeNode> e = node.children();
         //     Enumeration<?> e = node.children();
         //     while (e.hasMoreElements()) {

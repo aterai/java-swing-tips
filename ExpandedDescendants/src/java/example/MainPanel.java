@@ -84,10 +84,9 @@ public final class MainPanel extends JPanel {
 
     protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
+        if (!node.isLeaf()) {
             // Java 9: Collections.list(node.children())
-            Collections.list((Enumeration<?>) node.children())
-                .stream()
+            Collections.list((Enumeration<?>) node.children()).stream()
                 .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
         }
         if (expand) {

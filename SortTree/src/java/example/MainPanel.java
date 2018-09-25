@@ -141,7 +141,7 @@ final class TreeUtil {
                     }
                 }
             }
-            if (node.getChildCount() > 0) {
+            if (!node.isLeaf()) { // = if (node.getChildCount() > 0) {
                 sortTree0(node);
             }
         }
@@ -162,7 +162,7 @@ final class TreeUtil {
                     break;
                 }
             }
-            if (node.getChildCount() > 0) {
+            if (!node.isLeaf()) { // = if (node.getChildCount() > 0) {
                 sortTree1(node);
             }
         }

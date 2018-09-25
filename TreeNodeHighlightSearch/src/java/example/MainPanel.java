@@ -3,10 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
@@ -49,26 +54,22 @@ public final class MainPanel extends JPanel {
         Object o = path.getLastPathComponent();
         if (o instanceof TreeNode) {
             TreeNode node = (TreeNode) o;
-            if (node.toString().startsWith(q)) {
+            if (Objects.toString(node).startsWith(q)) {
                 tree.expandPath(path.getParentPath());
             }
-            if (!node.isLeaf() && node.getChildCount() >= 0) {
-                // Java 9: Enumeration<TreeNode> e = node.children();
-                Enumeration<?> e = node.children();
-                while (e.hasMoreElements()) {
-                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
-                }
+            if (!node.isLeaf()) {
+                // Java 9: Collections.list(node.children()).stream()
+                Collections.list((Enumeration<?>) node.children()).stream()
+                    .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
             }
         }
     }
     private static void collapseAll(JTree tree, TreePath parent) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                collapseAll(tree, parent.pathByAddingChild(e.nextElement()));
-            }
+        if (!node.isLeaf()) {
+            // Java 9: Collections.list(node.children()).stream()
+            Collections.list((Enumeration<?>) node.children()).stream()
+              .forEach(parent::pathByAddingChild);
         }
         tree.collapsePath(parent);
     }

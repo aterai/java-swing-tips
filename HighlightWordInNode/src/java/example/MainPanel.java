@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
         } else if (node.toString().startsWith(q)) {
             tree.expandPath(path.getParentPath());
         }
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
+        if (!node.isLeaf()) {
             // Java 9: Collections.list(node.children())
             Collections.list((Enumeration<?>) node.children()).stream()
                 .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
     }
     private static void collapseAll(JTree tree, TreePath parent) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
+        if (!node.isLeaf()) {
             // Java 9: Collections.list(node.children())
             Collections.list((Enumeration<?>) node.children()).stream()
                 .forEach(n -> collapseAll(tree, parent.pathByAddingChild(n)));

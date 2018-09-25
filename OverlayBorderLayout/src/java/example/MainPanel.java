@@ -194,7 +194,7 @@ class FindNextAction extends AbstractAction {
                 rollOverPathLists.add(path);
                 tree.expandPath(path.getParentPath());
             }
-            if (!node.isLeaf() && node.getChildCount() >= 0) {
+            if (!node.isLeaf()) {
                 // Java 9: Collections.list(node.children())
                 Collections.list((Enumeration<?>) node.children()).stream()
                     .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));

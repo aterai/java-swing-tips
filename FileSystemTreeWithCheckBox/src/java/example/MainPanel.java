@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         //         CheckBoxNode check = (CheckBoxNode) o;
         //         if (check.getStatus() == Status.SELECTED) {
         //             System.out.println(check.getFile().toString());
-        //         } else if (check.getStatus() == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
+        //         } else if (check.getStatus() == Status.INDETERMINATE && !node.isLeaf()) {
         //             // Java 9: Enumeration<TreeNode> e = node.children();
         //             Enumeration<?> e = node.children();
         //             while (e.hasMoreElements()) {

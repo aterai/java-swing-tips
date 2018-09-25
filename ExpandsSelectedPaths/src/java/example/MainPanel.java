@@ -3,9 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -49,12 +51,10 @@ public final class MainPanel extends JPanel {
             if (node.toString().equals(q)) {
                 tree.addSelectionPath(path);
             }
-            if (!node.isLeaf() && node.getChildCount() >= 0) {
-                // Java 9: Enumeration<TreeNode> e = node.children();
-                Enumeration<?> e = node.children();
-                while (e.hasMoreElements()) {
-                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
-                }
+            if (!node.isLeaf()) {
+                // Java 9: Collections.list(node.children()).stream()
+                Collections.list((Enumeration<?>) node.children()).stream()
+                    .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
             }
         }
     }

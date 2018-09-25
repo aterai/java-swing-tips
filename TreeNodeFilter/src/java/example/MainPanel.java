@@ -203,12 +203,12 @@ final class TreeUtil {
             if (uo.status) {
                 tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
             }
-            if (!uo.status && !node.isLeaf() && node.getChildCount() >= 0) {
-                // Java 9: Enumeration<TreeNode> e = node.children();
-                Enumeration<?> e = node.children();
-                while (e.hasMoreElements()) {
-                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
-                }
+            if (!uo.status && !node.isLeaf()) {
+                // Java 9: return Collections.list(node.children())
+                Collections.list((Enumeration<?>) node.children()).stream()
+                    .filter(TreeNode.class::isInstance)
+                    .map(TreeNode.class::cast)
+                    .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
             }
         }
     }
@@ -216,22 +216,18 @@ final class TreeUtil {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
         FilterableNode uo = (FilterableNode) node.getUserObject();
         uo.status = match;
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                resetAll(tree, parent.pathByAddingChild(e.nextElement()), match);
-            }
+        if (!node.isLeaf()) {
+            // Java 9: Collections.list(node.children()).stream()
+            Collections.list((Enumeration<?>) node.children()).stream()
+                .forEach(n -> resetAll(tree, parent.pathByAddingChild(n), match));
         }
     }
     public static void visitAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            // Java 9: Enumeration<TreeNode> e = node.children();
-            Enumeration<?> e = node.children();
-            while (e.hasMoreElements()) {
-                visitAll(tree, parent.pathByAddingChild(e.nextElement()), expand);
-            }
+        if (!node.isLeaf()) {
+            // Java 9: Collections.list(node.children()).stream()
+            Collections.list((Enumeration<?>) node.children()).stream()
+                .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
         }
         if (expand) {
             tree.expandPath(parent);

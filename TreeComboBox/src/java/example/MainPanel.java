@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         if (!node.isRoot()) {
             model.addElement(node);
         }
-        if (!node.isLeaf() && node.getChildCount() > 0) {
+        if (!node.isLeaf()) {
             // Java 9: Collections.list(node.children()).stream()
             Collections.list((Enumeration<?>) node.children()).stream()
                 .filter(DefaultMutableTreeNode.class::isInstance)
