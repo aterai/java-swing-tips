@@ -3,8 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.HierarchyEvent;
 import java.time.LocalTime;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -44,9 +45,9 @@ public final class MainPanel extends JPanel {
 
         JPanel panel = new JPanel();
         panel.add(button);
-        for (int i = 0; i < 5; i++) {
-            panel.add(new JLabel("<html>asfasfdasdfasdfsa<br>asfdd134123fgh"));
-        }
+        IntStream.range(0, 15)
+            .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
+            .forEach(panel::add);
         tab.addTab("Main", new JScrollPane(panel));
         tab.addTab("JTree", new JScrollPane(new JTree()));
         tab.addTab("JLabel", new JLabel("Test"));
