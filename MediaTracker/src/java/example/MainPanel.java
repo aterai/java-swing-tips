@@ -15,10 +15,12 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
     private static final int IMAGE_ID = 0;

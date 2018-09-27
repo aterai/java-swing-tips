@@ -4,10 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
