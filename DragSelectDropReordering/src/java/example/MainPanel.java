@@ -7,9 +7,11 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

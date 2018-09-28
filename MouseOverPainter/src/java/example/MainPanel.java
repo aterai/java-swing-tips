@@ -3,10 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
