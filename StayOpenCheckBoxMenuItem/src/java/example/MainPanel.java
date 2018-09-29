@@ -3,20 +3,32 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
+        // Java 9
+        // UIManager.put("CheckBoxMenuItem.doNotCloseOnMouseClick", true);
 
         JToggleButton button = new JToggleButton("JPopupMenu Test");
         JPopupMenu popup = new JPopupMenu();
         TogglePopupHandler handler = new TogglePopupHandler(popup, button);
         popup.addPopupMenuListener(handler);
         button.addActionListener(handler);
+
+        // Java 9
+        // JCheckBoxMenuItem checkMenuItem = new JCheckBoxMenuItemd("doNotCloseOnMouseClick");
+        // checkMenuItem.putClientProperty("CheckBoxMenuItem.doNotCloseOnMouseClick", true);
+        // popup.add(checkMenuItem);
 
         popup.add(new JCheckBox("JCheckBox") {
             @Override public void updateUI() {
