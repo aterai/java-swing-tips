@@ -4,8 +4,13 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.color.ColorSpace;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
