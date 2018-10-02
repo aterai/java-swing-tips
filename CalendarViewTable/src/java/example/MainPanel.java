@@ -12,8 +12,10 @@ import java.time.temporal.WeekFields;
 import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
     public final LocalDate realLocalDate = LocalDate.now();
