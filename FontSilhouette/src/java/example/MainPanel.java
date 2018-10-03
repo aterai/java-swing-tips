@@ -4,7 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.font.FontRenderContext;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.io.Serializable;
 import javax.swing.*;
 

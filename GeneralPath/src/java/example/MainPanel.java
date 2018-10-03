@@ -5,7 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
