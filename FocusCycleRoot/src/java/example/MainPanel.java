@@ -3,8 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

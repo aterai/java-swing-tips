@@ -3,10 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.EventObject;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -20,7 +22,7 @@ public final class MainPanel extends JPanel {
             {"aaa", 12, true}, {"bbb", 5, false},
             {"CCC", 92, true}, {"DDD", 0, false}
         };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        TableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }

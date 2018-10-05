@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:homepage@
 import java.awt.*;
 import java.awt.datatransfer.Transferable;
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
 import javax.swing.*;
 
 public class HtmlTableTransferHandler extends TransferHandler {

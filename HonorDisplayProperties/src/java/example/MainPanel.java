@@ -3,9 +3,10 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.Style;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
