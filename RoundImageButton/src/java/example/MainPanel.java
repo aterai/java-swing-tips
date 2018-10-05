@@ -5,8 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.geom.Ellipse2D;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
