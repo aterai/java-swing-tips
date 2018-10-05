@@ -3,11 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 public final class MainPanel extends JPanel {
     private static final String PAUSE = "pause";
