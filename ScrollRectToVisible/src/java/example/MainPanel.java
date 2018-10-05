@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};

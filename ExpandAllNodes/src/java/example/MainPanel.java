@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -9,7 +9,9 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 public class MainPanel extends JPanel {
     protected final JTree tree = new JTree();

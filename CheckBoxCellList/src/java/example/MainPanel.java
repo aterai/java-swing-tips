@@ -7,7 +7,11 @@ import java.awt.event.*;
 import java.util.EventObject;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

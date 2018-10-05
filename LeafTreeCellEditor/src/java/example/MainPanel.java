@@ -5,7 +5,10 @@ package example;
 import java.awt.*;
 import java.util.EventObject;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeCellEditor;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeNode;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

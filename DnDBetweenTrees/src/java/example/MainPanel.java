@@ -10,7 +10,11 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
