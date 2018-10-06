@@ -6,7 +6,9 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree() {

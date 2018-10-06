@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

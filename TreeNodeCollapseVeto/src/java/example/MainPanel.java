@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.IconUIResource;
-import javax.swing.tree.*;
+import javax.swing.tree.ExpandVetoException;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
 // import javax.swing.plaf.nimbus.AbstractRegionPainter; // JDK 1.7.0
 
 public final class MainPanel extends JPanel {
