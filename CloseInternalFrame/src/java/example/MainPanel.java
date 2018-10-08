@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 public final class MainPanel extends JPanel {
     private static int openFrameCount;

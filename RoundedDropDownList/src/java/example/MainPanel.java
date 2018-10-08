@@ -9,7 +9,8 @@ import java.util.*;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {

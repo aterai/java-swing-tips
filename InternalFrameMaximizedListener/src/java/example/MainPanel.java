@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 public class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();

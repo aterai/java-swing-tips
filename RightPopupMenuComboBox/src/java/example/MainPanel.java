@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 

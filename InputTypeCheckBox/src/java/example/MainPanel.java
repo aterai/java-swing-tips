@@ -9,9 +9,16 @@ import java.util.Objects;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};

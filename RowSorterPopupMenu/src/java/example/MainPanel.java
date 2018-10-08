@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {

@@ -4,8 +4,12 @@ package example;
 // @homepage@
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     private final JTable table;
