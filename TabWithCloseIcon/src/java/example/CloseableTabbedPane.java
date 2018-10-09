@@ -2,12 +2,14 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.EventListener;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.EventListenerList;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
 

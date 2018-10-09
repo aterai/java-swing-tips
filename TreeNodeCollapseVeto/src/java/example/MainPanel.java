@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeWillExpandListener;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.tree.ExpandVetoException;
 
