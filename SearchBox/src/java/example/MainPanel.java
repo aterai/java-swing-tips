@@ -105,6 +105,7 @@ public class MainPanel extends JPanel {
 
         InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
+        // Java 10: imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
         getActionMap().put("open-searchbox", showHideAction);
 
         add(controls, BorderLayout.NORTH);

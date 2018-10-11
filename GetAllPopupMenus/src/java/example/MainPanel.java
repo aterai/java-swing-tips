@@ -44,6 +44,7 @@ public final class MainPanel extends JPanel {
 
         EventQueue.invokeLater(() -> {
             KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+            // Java 10: KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
             tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
             tabs.getActionMap().put("prev1", new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent e) {
@@ -53,6 +54,7 @@ public final class MainPanel extends JPanel {
             });
 
             KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+            // Java 10: KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
             tabs.getInputMap(JComponent.WHEN_FOCUSED).put(ks2, "next1");
             tabs.getActionMap().put("next1", new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent e) {
@@ -61,6 +63,7 @@ public final class MainPanel extends JPanel {
             });
 
             KeyStroke ks3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+            // Java 10: KeyStroke ks3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
             tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
             tabs.getActionMap().put("prev2", new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent e) {
@@ -71,6 +74,7 @@ public final class MainPanel extends JPanel {
             });
 
             KeyStroke ks4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+            // Java 10: KeyStroke ks4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
             tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
             tabs.getActionMap().put("next2", new AbstractAction() {
                 @Override public void actionPerformed(ActionEvent e) {

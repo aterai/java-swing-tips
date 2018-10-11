@@ -3,7 +3,10 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -183,7 +186,8 @@ class BasicComboPopup3 extends BasicComboPopup {
                     ev = new MouseEvent(
                         e.getComponent(), e.getID(), e.getWhen(),
                         // e.getModifiers() ^ InputEvent.CTRL_MASK,
-                        e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
+                        // Java 10: e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
+                        e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
                         e.getX(), e.getY(),
                         e.getXOnScreen(), e.getYOnScreen(),
                         e.getClickCount(),
