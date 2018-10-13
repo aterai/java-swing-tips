@@ -4,8 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.dnd.DragSource;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
