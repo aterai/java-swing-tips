@@ -3,12 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
