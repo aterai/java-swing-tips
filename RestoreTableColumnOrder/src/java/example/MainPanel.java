@@ -3,10 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelEvent;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

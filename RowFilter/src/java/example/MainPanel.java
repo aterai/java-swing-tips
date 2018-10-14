@@ -3,10 +3,14 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
     private final JCheckBox check1 = new JCheckBox("!comment.isEmpty()");

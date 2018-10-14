@@ -3,9 +3,11 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
     public static final int USER_SPECIFIED_NUMBER_OF_ROWS = 5;
