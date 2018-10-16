@@ -59,14 +59,14 @@ public final class MainPanel extends JPanel {
             BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
             Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("gif");
             try {
-                File file = File.createTempFile("anime", ".gif");
-                file.deleteOnExit();
-
                 ImageWriter writer = it.hasNext() ? it.next() : null;
-                ImageOutputStream stream = ImageIO.createImageOutputStream(file);
                 if (Objects.isNull(writer)) {
                     throw new IOException();
                 }
+
+                File file = File.createTempFile("anime", ".gif");
+                file.deleteOnExit();
+                ImageOutputStream stream = ImageIO.createImageOutputStream(file);
                 writer.setOutput(stream);
                 writer.prepareWriteSequence(null);
 
