@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -18,11 +19,11 @@ public final class MainPanel extends JPanel {
         // TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
         // tabbedPane.addChangeListener(l);
         // tabbedPane.addMouseListener(l);
-        for (int i = 0; i < 3; i++) {
+        IntStream.range(0, 3).forEach(i -> {
             String title = "Tab " + i;
             tabbedPane.add(title, new JLabel(title));
             tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
-        }
+        });
         tabbedPane.setComponentPopupMenu(new TabTitleRenamePopupMenu());
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
