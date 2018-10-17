@@ -5,9 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.font.TextAttribute;
-import java.util.*;
+import java.util.HashMap;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "0123456789";
