@@ -3,12 +3,19 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 
 public class MainPanel extends JPanel {
     protected final JTextPane jtp = new JTextPane();

@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

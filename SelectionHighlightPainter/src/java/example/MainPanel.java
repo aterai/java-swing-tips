@@ -4,7 +4,12 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
     private final JTextField field0 = new JTextField("aaaaaaaaaa");

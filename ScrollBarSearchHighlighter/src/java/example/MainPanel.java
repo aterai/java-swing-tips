@@ -3,14 +3,18 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
 
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
