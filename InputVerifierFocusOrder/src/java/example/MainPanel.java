@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.JTextComponent;
 
 public class MainPanel extends JPanel {
     protected static final int MAX_LEN = 6;

@@ -6,7 +6,12 @@ import java.awt.*;
 import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

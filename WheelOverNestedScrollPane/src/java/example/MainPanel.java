@@ -7,7 +7,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "aaa\na\na\na\na\naaaa\na\na\na\naaaa\n";

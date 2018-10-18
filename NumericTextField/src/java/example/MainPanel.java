@@ -6,7 +6,15 @@ import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.NumberFormatter;
+import javax.swing.text.PlainDocument;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

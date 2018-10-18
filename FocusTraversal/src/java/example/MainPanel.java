@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private final JPanel panel = new JPanel(new BorderLayout(2, 2));

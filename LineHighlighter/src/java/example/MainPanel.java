@@ -5,7 +5,9 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("LineWrap");

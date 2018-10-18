@@ -4,7 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public final class MainPanel extends JPanel {
     private static final String DUMMY_TEXT = "asdfasdfasdfasdfasdfasdfasd";
