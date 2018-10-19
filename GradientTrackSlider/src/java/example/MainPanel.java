@@ -3,9 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 

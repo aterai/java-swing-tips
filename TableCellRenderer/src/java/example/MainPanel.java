@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
-import java.awt.geom.*;
+import java.awt.geom.Point2D;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;

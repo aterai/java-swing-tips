@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicPasswordFieldUI;
 import javax.swing.text.*;
