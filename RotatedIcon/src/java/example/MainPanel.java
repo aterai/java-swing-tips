@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
