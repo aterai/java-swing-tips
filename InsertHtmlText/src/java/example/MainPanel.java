@@ -6,7 +6,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 

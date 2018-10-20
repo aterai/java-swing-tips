@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.*;
+import javax.swing.text.View;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
     // private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();

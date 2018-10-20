@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.*;
+import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "https://ateraimemo.com/";

@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Highlighter;
 
 public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea("aaaaaaaaaaaaaaaaa\nbbbbb\nccc");

@@ -7,7 +7,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.*;
+import javax.swing.text.View;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     // private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();

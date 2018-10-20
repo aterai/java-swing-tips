@@ -7,7 +7,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicPasswordFieldUI;
-import javax.swing.text.*;
+import javax.swing.text.Element;
+import javax.swing.text.PasswordView;
+import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
 
 public final class MainPanel extends JPanel {
     // https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane

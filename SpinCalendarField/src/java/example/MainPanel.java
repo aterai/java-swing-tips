@@ -8,7 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

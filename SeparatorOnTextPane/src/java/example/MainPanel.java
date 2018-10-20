@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 

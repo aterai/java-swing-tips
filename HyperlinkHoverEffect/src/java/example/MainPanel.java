@@ -5,7 +5,9 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.text.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
 
 public final class MainPanel extends JPanel {

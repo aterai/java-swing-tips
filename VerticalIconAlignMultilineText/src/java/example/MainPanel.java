@@ -9,7 +9,10 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicCheckBoxUI;
 import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.View;
 
 import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 

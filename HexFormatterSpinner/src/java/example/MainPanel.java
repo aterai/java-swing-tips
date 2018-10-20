@@ -13,7 +13,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 public class MainPanel extends JPanel {
     private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));

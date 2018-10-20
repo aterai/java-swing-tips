@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
