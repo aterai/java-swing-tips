@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;

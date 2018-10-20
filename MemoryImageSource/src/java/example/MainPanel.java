@@ -4,7 +4,8 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.MemoryImageSource;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

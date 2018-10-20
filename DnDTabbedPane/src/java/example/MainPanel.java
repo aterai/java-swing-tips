@@ -19,7 +19,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;

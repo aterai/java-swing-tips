@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
