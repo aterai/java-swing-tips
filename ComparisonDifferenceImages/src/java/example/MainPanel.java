@@ -4,7 +4,9 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.awt.image.MemoryImageSource;
 import java.util.stream.Stream;
 import javax.swing.*;
 

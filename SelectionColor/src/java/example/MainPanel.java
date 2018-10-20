@@ -4,7 +4,10 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.LookupOp;
 import java.io.IOException;
 import java.net.URL;
 import java.util.regex.Matcher;
