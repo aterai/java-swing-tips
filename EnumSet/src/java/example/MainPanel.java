@@ -7,13 +7,10 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.EventObject;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -35,7 +32,14 @@ public final class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+        JTable table = new JTable(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                TableColumn c = getColumnModel().getColumn(1);
+                c.setCellRenderer(new CheckBoxesRenderer());
+                c.setCellEditor(new CheckBoxesEditor());
+            }
+        };
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         // if (System.getProperty("java.version").startsWith("1.6.0")) {
@@ -48,10 +52,6 @@ public final class MainPanel extends JPanel {
         //         }
         //     });
         // }
-
-        TableColumn c = table.getColumnModel().getColumn(1);
-        c.setCellRenderer(new CheckBoxesRenderer());
-        c.setCellEditor(new CheckBoxesEditor());
 
         EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
         map.put(Permissions.READ, 1 << 2);
@@ -159,112 +159,51 @@ class CheckBoxesPanel extends JPanel {
     }
 }
 
-class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
-    @Override public void updateUI() {
-        super.updateUI();
-        setName("Table.cellRenderer");
-    }
+class CheckBoxesRenderer implements TableCellRenderer {
+    private final CheckBoxesPanel renderer = new CheckBoxesPanel();
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        updateButtons(value);
-        return this;
+        renderer.updateButtons(value);
+        return renderer;
     }
     // public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
-class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
-    protected transient ChangeEvent changeEvent;
-
+class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
+    protected final CheckBoxesPanel renderer = new CheckBoxesPanel();
     protected CheckBoxesEditor() {
         super();
-        ActionMap am = getActionMap();
-        for (int i = 0; i < buttons.size(); i++) {
-            String t = titles[i];
+        ActionMap am = renderer.getActionMap();
+        Stream.of(renderer.titles).forEach(t -> {
             am.put(t, new AbstractAction(t) {
                 @Override public void actionPerformed(ActionEvent e) {
-                    buttons.stream()
+                    renderer.buttons.stream()
                         .filter(b -> b.getText().equals(t))
                         .findFirst()
                         .ifPresent(JCheckBox::doClick);
                     fireEditingStopped();
                 }
             });
-        }
-        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
+        });
+        InputMap im = renderer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), renderer.titles[0]);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), renderer.titles[1]);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), renderer.titles[2]);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        updateButtons(value);
-        return this;
+        renderer.updateButtons(value);
+        return renderer;
     }
     @Override public Object getCellEditorValue() {
         Set<Permissions> f = EnumSet.noneOf(Permissions.class);
-        if (buttons.get(0).isSelected()) {
+        if (renderer.buttons.get(0).isSelected()) {
             f.add(Permissions.READ);
         }
-        if (buttons.get(1).isSelected()) {
+        if (renderer.buttons.get(1).isSelected()) {
             f.add(Permissions.WRITE);
         }
-        if (buttons.get(2).isSelected()) {
+        if (renderer.buttons.get(2).isSelected()) {
             f.add(Permissions.EXECUTE);
         }
         return f;
-    }
-
-    // Copied from AbstractCellEditor
-    // protected EventListenerList listenerList = new EventListenerList();
-    // protected transient ChangeEvent changeEvent;
-    @Override public boolean isCellEditable(EventObject e) {
-        return true;
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
-    @Override public boolean stopCellEditing() {
-        fireEditingStopped();
-        return true;
-    }
-    @Override public void cancelCellEditing() {
-        fireEditingCanceled();
-    }
-    @Override public void addCellEditorListener(CellEditorListener l) {
-        listenerList.add(CellEditorListener.class, l);
-    }
-    @Override public void removeCellEditorListener(CellEditorListener l) {
-        listenerList.remove(CellEditorListener.class, l);
-    }
-    public CellEditorListener[] getCellEditorListeners() {
-        return listenerList.getListeners(CellEditorListener.class);
-    }
-    protected void fireEditingStopped() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
-            }
-        }
-    }
-    protected void fireEditingCanceled() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
-            }
-        }
     }
 }

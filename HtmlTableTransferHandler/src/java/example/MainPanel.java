@@ -10,15 +10,15 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Type", "Value"};
     private final Object[][] data = {
-        {"String",  "text"      },
-        {"Date",    new Date()  },
-        {"Integer", 12          },
-        {"Double",  3.45        },
+        {"String", "text"},
+        {"Date", new Date()},
+        {"Integer", 12},
+        {"Double", 3.45},
         {"Boolean", Boolean.TRUE},
-        {"Color",   Color.RED   }
+        {"Color", Color.RED}
     };
     private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -94,6 +94,10 @@ class PropertyTable extends JTable {
             return super.getCellRenderer(row, column);
         }
     }
+    // https://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
+    // This method is also invoked by the editor when the value in the editor
+    // component is saved in the TableModel. The class was saved when the
+    // editor was invoked so the proper class can be created.
     @Override public TableCellEditor getCellEditor(int row, int column) {
         if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
             editingClass = getClassAt(row, column);

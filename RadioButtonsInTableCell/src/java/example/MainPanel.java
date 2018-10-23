@@ -5,12 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
-import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -31,7 +27,13 @@ public final class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+        JTable table = new JTable(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
+                getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
+            }
+        };
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         // if (System.getProperty("java.version").startsWith("1.6.0")) {
         //     // 1.6.0_xx bug? column header click -> edit cancel?
@@ -64,8 +66,6 @@ public final class MainPanel extends JPanel {
         //     }
         // });
         // RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
-        table.getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
-        table.getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -91,6 +91,8 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum Answer { A, B, C }
 
 class RadioButtonsPanel extends JPanel {
     private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
@@ -139,90 +141,116 @@ class RadioButtonsPanel extends JPanel {
     }
 }
 
-class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRenderer {
-    @Override public void updateUI() {
-        super.updateUI();
-        setName("Table.cellRenderer");
-    }
+// delegation pattern
+class RadioButtonsRenderer implements TableCellRenderer {
+    private final RadioButtonsPanel renderer = new RadioButtonsPanel();
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        updateSelectedButton(value);
-        return this;
+        renderer.updateSelectedButton(value);
+        return renderer;
     }
 }
 
-class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
-    protected transient ChangeEvent changeEvent;
-
+class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
+    private final RadioButtonsPanel renderer = new RadioButtonsPanel();
     protected RadioButtonsEditor() {
         super();
         ActionListener al = e -> fireEditingStopped();
-        for (AbstractButton b: buttons) {
+        for (AbstractButton b: renderer.buttons) {
             b.addActionListener(al);
         }
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        updateSelectedButton(value);
-        return this;
+        renderer.updateSelectedButton(value);
+        return renderer;
     }
     @Override public Object getCellEditorValue() {
-        return Answer.valueOf(bg.getSelection().getActionCommand());
-    }
-
-    // Copied from AbstractCellEditor
-    // protected EventListenerList listenerList = new EventListenerList();
-    // protected transient ChangeEvent changeEvent;
-    @Override public boolean isCellEditable(EventObject e) {
-        return true;
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
-    @Override public boolean stopCellEditing() {
-        fireEditingStopped();
-        return true;
-    }
-    @Override public void cancelCellEditing() {
-        fireEditingCanceled();
-    }
-    @Override public void addCellEditorListener(CellEditorListener l) {
-        listenerList.add(CellEditorListener.class, l);
-    }
-    @Override public void removeCellEditorListener(CellEditorListener l) {
-        listenerList.remove(CellEditorListener.class, l);
-    }
-    public CellEditorListener[] getCellEditorListeners() {
-        return listenerList.getListeners(CellEditorListener.class);
-    }
-    protected final void fireEditingStopped() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
-            }
-        }
-    }
-    protected void fireEditingCanceled() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
-            }
-        }
+        return Answer.valueOf(renderer.bg.getSelection().getActionCommand());
     }
 }
 
-enum Answer { A, B, C }
+// // inheritence to extend a class
+// class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRenderer {
+//     @Override public void updateUI() {
+//         super.updateUI();
+//         setName("Table.cellRenderer");
+//     }
+//     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//         updateSelectedButton(value);
+//         return this;
+//     }
+// }
+//
+// class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
+//     protected transient ChangeEvent changeEvent;
+//
+//     protected RadioButtonsEditor() {
+//         super();
+//         ActionListener al = e -> fireEditingStopped();
+//         for (AbstractButton b: buttons) {
+//             b.addActionListener(al);
+//         }
+//     }
+//     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+//         updateSelectedButton(value);
+//         return this;
+//     }
+//     @Override public Object getCellEditorValue() {
+//         return Answer.valueOf(bg.getSelection().getActionCommand());
+//     }
+//
+//     // Copied from AbstractCellEditor
+//     // protected EventListenerList listenerList = new EventListenerList();
+//     // protected transient ChangeEvent changeEvent;
+//     @Override public boolean isCellEditable(EventObject e) {
+//         return true;
+//     }
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
+//     @Override public boolean stopCellEditing() {
+//         fireEditingStopped();
+//         return true;
+//     }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
+//     @Override public void addCellEditorListener(CellEditorListener l) {
+//         listenerList.add(CellEditorListener.class, l);
+//     }
+//     @Override public void removeCellEditorListener(CellEditorListener l) {
+//         listenerList.remove(CellEditorListener.class, l);
+//     }
+//     public CellEditorListener[] getCellEditorListeners() {
+//         return listenerList.getListeners(CellEditorListener.class);
+//     }
+//     protected final void fireEditingStopped() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for (int i = listeners.length - 2; i >= 0; i -= 2) {
+//             if (listeners[i] == CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if (Objects.isNull(changeEvent)) {
+//                     changeEvent = new ChangeEvent(this);
+//                 }
+//                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
+//             }
+//         }
+//     }
+//     protected void fireEditingCanceled() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for (int i = listeners.length - 2; i >= 0; i -= 2) {
+//             if (listeners[i] == CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if (Objects.isNull(changeEvent)) {
+//                     changeEvent = new ChangeEvent(this);
+//                 }
+//                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
+//             }
+//         }
+//     }
+// }
