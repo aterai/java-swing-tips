@@ -87,7 +87,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     protected DnDList() {
         super();
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
-        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+            (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
