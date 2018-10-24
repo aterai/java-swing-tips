@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"family", "name", "postscript name"};
