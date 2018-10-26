@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="example" default="compile">
+<project name="example" default="compile" xmlns:unless="ant:unless">
   <!-- all properties are in build.properties -->
   <!--property file="build.properties" /-->
   <property environment="env" />
@@ -338,6 +338,14 @@
   <property name="sca.dir" value="${user.dir}" />
 
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+    <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+    <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
+    <condition property="jdk9orlater">
+      <javaversion atleast="9"/>
+    </condition>
+    <path id="processorpath.ref">
+      <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+    </path>
     <javac srcdir="${build.src}"
            excludes="**/module-info.java"
            includes="**/*.java"
@@ -346,14 +354,13 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
-           compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
-           includeAntRuntime="false"
-           classpathref="project.class.path">
-      <compilerclasspath>
-        <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
-      </compilerclasspath>
-      <compilerarg value="-Xlint:unchecked" />
-      <compilerarg value="-Xep:MultipleTopLevelClasses:OFF" />
+           fork="yes"
+           includeAntRuntime="no">
+      <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater"/>
+      <compilerarg line="-XDcompilePolicy=simple"/>
+      <compilerarg value="-processorpath"/>
+      <compilerarg pathref="processorpath.ref"/>
+      <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF -Xep:CatchAndPrintStackTrace:OFF" />
     </javac>
   </target>
 
