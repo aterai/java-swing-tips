@@ -355,7 +355,8 @@
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
            fork="yes"
-           includeAntRuntime="no">
+           includeAntRuntime="no"
+           classpathref="project.class.path">
       <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater"/>
       <compilerarg line="-XDcompilePolicy=simple"/>
       <compilerarg value="-processorpath"/>
