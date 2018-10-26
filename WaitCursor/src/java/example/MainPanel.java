@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             getRootPane().getGlassPane().setVisible(true);
             Component c = (Component) e.getSource();
             c.setEnabled(false);
-            (new BackgroundTask() {
+            new BackgroundTask() {
                 @Override public void done() {
                     if (!isDisplayable()) {
                         System.out.println("done: DISPOSE_ON_CLOSE");
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                     getRootPane().getGlassPane().setVisible(false);
                     c.setEnabled(true);
                 }
-            }).execute();
+            }.execute();
         });
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -181,8 +181,8 @@ class SelectedImageFilter extends RGBImageFilter {
     // }
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (int) (((argb >> 16) & 0xFF) * rf);
-        int g = (int) (((argb >>  8) & 0xFF) * gf);
-        int b = (int) (((argb)       & 0xFF) * bf);
-        return (argb & 0xFF000000) | (r << 16) | (g << 8) | (b);
+        int g = (int) (((argb >> 8) & 0xFF) * gf);
+        int b = (int) ((argb & 0xFF) * bf);
+        return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
     }
 }

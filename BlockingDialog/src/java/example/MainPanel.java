@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
             dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int color = check.isSelected() ? 0x22FF0000 : 0x01FF0000;
             dialog.setBackground(new Color(color, true));
-            (new BackgroundTask() {
+            new BackgroundTask() {
                 @Override public void done() {
                     if (!isDisplayable()) {
                         cancel(true);
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                     }
                     dialog.setVisible(false);
                 }
-            }).execute();
+            }.execute();
             dialog.setVisible(true);
         });
 

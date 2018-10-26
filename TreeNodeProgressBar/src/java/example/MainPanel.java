@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
             JButton b = (JButton) e.getSource();
             b.setEnabled(false);
             ExecutorService executor = Executors.newCachedThreadPool();
-            (new SwingWorker<Boolean, Void>() {
+            new SwingWorker<Boolean, Void>() {
                 @Override protected Boolean doInBackground() throws InterruptedException {
                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
                 @Override protected void done() {
                     b.setEnabled(true);
                 }
-            }).execute();
+            }.execute();
         });
 
         add(new JScrollPane(tree));

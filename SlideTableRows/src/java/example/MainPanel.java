@@ -73,7 +73,7 @@ public class MainPanel extends JPanel {
 
     protected final void createActionPerformed() {
         model.addRow(new Object[] {"New name", model.getRowCount(), false});
-        (new Timer(DELAY, new ActionListener() {
+        new Timer(DELAY, new ActionListener() {
             private int index = table.convertRowIndexToView(model.getRowCount() - 1);
             private int height = START_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
                     ((Timer) e.getSource()).stop();
                 }
             }
-        })).start();
+        }).start();
     }
 
     protected final void deleteActionPerformed() {
@@ -91,7 +91,7 @@ public class MainPanel extends JPanel {
         if (selection.length == 0) {
             return;
         }
-        (new Timer(DELAY, new ActionListener() {
+        new Timer(DELAY, new ActionListener() {
             private int height = END_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
                 height--;
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
                     }
                 }
             }
-        })).start();
+        }).start();
     }
 
     public static void main(String... args) {

@@ -13,7 +13,7 @@ public final class MainPanel {
         JWindow splashScreen = createSplashScreen(frame, img);
         splashScreen.setVisible(true);
 
-        (new Thread() {
+        new Thread() {
             @Override public void run() {
                 try {
                     // dummy long task
@@ -28,7 +28,7 @@ public final class MainPanel {
                     ex.printStackTrace();
                 }
             }
-        }).start();
+        }.start();
     }
     private static Component makeUI() {
         JLabel label = new JLabel("Draggable Label (@title@)");
