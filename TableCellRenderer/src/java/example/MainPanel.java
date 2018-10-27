@@ -9,7 +9,12 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private static final String STR0 = "Default Default Default Default";
@@ -130,7 +135,7 @@ class WrappedLabel extends JLabel {
     private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
         Point2D gmPos = new Point2D.Float();
         GlyphVector gv = font.createGlyphVector(frc, str);
-        float lineheight = (float) (gv.getLogicalBounds().getHeight());
+        float lineheight = (float) gv.getLogicalBounds().getHeight();
         float xpos = 0f;
         float advance = 0f;
         int lineCount = 0;
