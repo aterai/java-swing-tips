@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Optional;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
     private final JTable table = new JTable(new DefaultTableModel(10, 10)) {

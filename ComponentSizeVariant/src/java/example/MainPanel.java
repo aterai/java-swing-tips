@@ -6,7 +6,8 @@ import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
