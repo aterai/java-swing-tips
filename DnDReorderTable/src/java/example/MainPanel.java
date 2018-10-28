@@ -15,7 +15,8 @@ import java.util.Objects;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private final TransferHandler handler = new TableRowTransferHandler();
