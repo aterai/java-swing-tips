@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         //     });
         // }
         icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(getClass().getResource(s)), new JLabel(s), s));
-        tabbedPane.setComponentPopupMenu(new TabTitleRenamePopupMenu());
+        tabbedPane.setComponentPopupMenu(new PinTabPopupMenu());
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TabTitleRenamePopupMenu extends JPopupMenu {
+class PinTabPopupMenu extends JPopupMenu {
     private final JCheckBoxMenuItem pinTabMenuItem = new JCheckBoxMenuItem(new AbstractAction("pin tab") {
         @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane t = (JTabbedPane) getInvoker();
@@ -126,7 +126,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             }
         }
     };
-    protected TabTitleRenamePopupMenu() {
+    protected PinTabPopupMenu() {
         super();
         add(pinTabMenuItem);
         addSeparator();
