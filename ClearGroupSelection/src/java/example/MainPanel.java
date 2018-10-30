@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         ImageIcon nicon = new ImageIcon(getClass().getResource("wi0063-32.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         ImageIcon sicon = new ImageIcon(createImage(ip));

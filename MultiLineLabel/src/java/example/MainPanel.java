@@ -11,7 +11,7 @@ import javax.swing.text.StyleContext;
 
 public final class MainPanel extends JPanel {
     private static final String DUMMY_TEXT = "asdfasdfasdfasdfasdfasdfasd";
-    // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     private final ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
     private MainPanel() {

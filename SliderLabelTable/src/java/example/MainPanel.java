@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
 
         @SuppressWarnings("JdkObsolete")
         Dictionary<Integer, Component> labelTable = new Hashtable<>();
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         Stream.of("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
                   "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
                   "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",

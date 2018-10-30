@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-48.png"));
         JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
         tabbedPane.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");

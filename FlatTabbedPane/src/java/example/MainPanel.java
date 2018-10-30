@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         tabs.addTab("A", new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
         tabs.addTab("B", new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
         tabs.addTab("C", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));

@@ -3,15 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-// import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
-// import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     private final List<String> icons = Arrays.asList(
         "wi0009-16.png",
         "wi0054-16.png",
@@ -22,6 +19,7 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
         super(new BorderLayout());
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         icons.forEach(s -> {
             Icon icon = new ImageIcon(getClass().getResource(s));
             ShrinkLabel label = new ShrinkLabel(s, icon);

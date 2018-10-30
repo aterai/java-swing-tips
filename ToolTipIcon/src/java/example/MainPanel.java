@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        // http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         URL url = getClass().getResource("wi0124-48.png");
         ImageIcon icon = new ImageIcon(url);
         JLabel l1 = new JLabel("ToolTip icon using JLabel") {

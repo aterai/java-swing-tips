@@ -131,8 +131,7 @@ class FileNameRenderer implements TableCellRenderer {
         p.setOpaque(false);
         renderer.setOpaque(false);
 
-        // http://www.icongalore.com/
-        // XP Style Icons - Windows Application Icon, Software XP Icons
+        // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
 
