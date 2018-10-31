@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Vector;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
     private final RowDataModel model = new RowDataModel();

@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
     private final BindingMapModel model = new BindingMapModel();

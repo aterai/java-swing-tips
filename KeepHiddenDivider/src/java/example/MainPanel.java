@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class MainPanel extends JPanel {
     protected final String[] columnNames = {"String", "Integer", "Boolean"};
