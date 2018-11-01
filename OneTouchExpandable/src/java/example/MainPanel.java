@@ -9,7 +9,8 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -4,7 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};

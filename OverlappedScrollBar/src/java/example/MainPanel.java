@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -16,8 +16,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JTable makeList() {
-        DefaultTableModel model = new DefaultTableModel(30, 5);
-        JTable table = new JTable(model);
+        JTable table = new JTable(new DefaultTableModel(30, 5));
         table.setAutoCreateRowSorter(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         return table;
