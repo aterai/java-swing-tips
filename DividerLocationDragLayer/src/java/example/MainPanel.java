@@ -4,6 +4,7 @@ package example;
 // @homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -90,7 +91,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
         JSplitPane splitPane = l.getView();
         Component c = e.getComponent();
-        if (splitPane.equals(SwingUtilities.getUnwrappedParent(c)) && e.getID() == MouseEvent.MOUSE_PRESSED) {
+        if (isDraggableComponent(splitPane, c) && e.getID() == MouseEvent.MOUSE_PRESSED) {
             startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), splitPane));
             dividerLocation = splitPane.getDividerLocation();
         }
@@ -98,10 +99,13 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
         JSplitPane splitPane = l.getView();
         Component c = e.getComponent();
-        if (splitPane.equals(SwingUtilities.getUnwrappedParent(c)) && e.getID() == MouseEvent.MOUSE_DRAGGED) {
+        if (isDraggableComponent(splitPane, c) && e.getID() == MouseEvent.MOUSE_DRAGGED) {
             Point pt = SwingUtilities.convertPoint(c, e.getPoint(), splitPane);
             int delta = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? pt.x - startPt.x : pt.y - startPt.y;
             splitPane.setDividerLocation(Math.max(0, dividerLocation + delta));
         }
+    }
+    private static boolean isDraggableComponent(JSplitPane splitPane, Component c) {
+        return Objects.equals(splitPane, c) || Objects.equals(splitPane, SwingUtilities.getUnwrappedParent(c));
     }
 }
