@@ -68,21 +68,21 @@ public final class MainPanel extends JPanel {
 }
 
 class ShrinkLabel extends JLabel {
-    private boolean isSelected;
+    private boolean selected;
     protected ShrinkLabel(String title, Icon icon) {
         super(title, icon, SwingConstants.LEFT);
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        if (!isSelected) {
+        if (!selected) {
             d.width = 20;
         }
         return d;
     }
     public void setSelected(boolean active) {
-        this.isSelected = active;
+        this.selected = active;
     }
     public boolean isSelected() {
-        return isSelected;
+        return selected;
     }
 }
