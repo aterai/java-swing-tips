@@ -22,7 +22,7 @@ subprojects {
     }
   }
 
-  def config = new ConfigSlurper().parse(new File("${project.projectDir}/config.gradle").toURL())
+  ext.config = new ConfigSlurper().parse(new File("${project.projectDir}/config.gradle").toURL())
 
   mainClassName = config.main.class
 
