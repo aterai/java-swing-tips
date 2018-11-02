@@ -7,7 +7,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

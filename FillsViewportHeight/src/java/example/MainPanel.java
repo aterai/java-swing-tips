@@ -6,7 +6,9 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};

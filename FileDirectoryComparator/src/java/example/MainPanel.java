@@ -16,7 +16,10 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
