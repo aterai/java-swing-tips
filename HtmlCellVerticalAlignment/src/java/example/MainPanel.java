@@ -6,7 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 public class MainPanel extends JPanel {
     private static final String TEXT = "drag select table cells 1 22 333 4444 55555 666666 7777777 88888888";
