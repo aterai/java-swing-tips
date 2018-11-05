@@ -8,7 +8,8 @@ import java.beans.PropertyChangeEvent;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
