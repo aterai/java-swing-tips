@@ -163,7 +163,7 @@ final class EditorPanel extends JPanel {
     private final JCheckBox enabledCheck = new JCheckBox();
     private final JCheckBox editableCheck = new JCheckBox();
     private final JTextField textField = new JTextField("", 16);
-    private final ComboItem data;
+    private final transient ComboItem data;
     private int editingIndex = -1;
 
     protected EditorPanel(ComboItem data) {
