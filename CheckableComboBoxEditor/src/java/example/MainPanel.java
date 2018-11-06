@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
     }
     private static ComboItem[] makeModel() {
         return new ComboItem[] {
-            new ComboItem(0, true, true, "00000"),
-            new ComboItem(1, true, false, "11111"),
-            new ComboItem(2, false, true, "22222"),
-            new ComboItem(3, false, false, "33333")
+            new ComboItem(true, true, "00000"),
+            new ComboItem(true, false, "11111"),
+            new ComboItem(false, true, "22222"),
+            new ComboItem(false, false, "33333")
         };
     }
     private static Component makeTitledPanel(String title, Component c) {
@@ -65,25 +65,17 @@ public final class MainPanel extends JPanel {
 
 
 class ComboItem {
-    private int index;
     private boolean enabled;
     private boolean editable;
     private String text;
 
     protected ComboItem() {
-        this(-1, false, false, "");
+        this(false, false, "");
     }
-    protected ComboItem(int idx, boolean enabled, boolean editable, String text) {
-        this.index = idx;
+    protected ComboItem(boolean enabled, boolean editable, String text) {
         this.enabled = enabled;
         this.editable = editable;
         this.text = text;
-    }
-    public int getIndex() {
-        return index;
-    }
-    public void setIndex(int index) {
-        this.index = index;
     }
     public boolean isEnabled() {
         return enabled;
@@ -130,6 +122,17 @@ class CheckComboBoxEditor implements ComboBoxEditor {
         return editor.getItem();
     }
     @Override public void setItem(Object anObject) {
+        EventQueue.invokeLater(() -> {
+            Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, getEditorComponent());
+            if (c instanceof JComboBox) {
+                JComboBox<?> combo = (JComboBox<?>) c;
+                int idx = combo.getSelectedIndex();
+                if (idx >= 0 && idx != editor.getEditingIndex()) {
+                    System.out.println("setItem: " + idx);
+                    editor.setEditingIndex(idx);
+                }
+            }
+        });
         if (anObject instanceof ComboItem) {
             editor.setItem((ComboItem) anObject);
         } else {
@@ -154,6 +157,7 @@ final class EditorPanel extends JPanel {
     private final JCheckBox editableCheck = new JCheckBox();
     private final JTextField textField = new JTextField("", 16);
     private final ComboItem data;
+    private int editingIndex = -1;
 
     protected EditorPanel(ComboItem data) {
         super();
@@ -164,10 +168,11 @@ final class EditorPanel extends JPanel {
             Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
             if (c instanceof JComboBox) {
                 JComboBox<?> combo = (JComboBox<?>) c;
-                ComboItem item = (ComboItem) combo.getItemAt(data.getIndex());
+                ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
                 item.setEnabled(((JCheckBox) e.getSource()).isSelected());
                 editableCheck.setEnabled(item.isEnabled());
                 textField.setEnabled(item.isEnabled());
+                combo.setSelectedIndex(editingIndex);
             }
         });
         enabledCheck.setOpaque(false);
@@ -177,9 +182,10 @@ final class EditorPanel extends JPanel {
             Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
             if (c instanceof JComboBox) {
                 JComboBox<?> combo = (JComboBox<?>) c;
-                ComboItem item = (ComboItem) combo.getItemAt(data.getIndex());
+                ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
                 item.setEditable(((JCheckBox) e.getSource()).isSelected());
                 textField.setEditable(item.isEditable());
+                combo.setSelectedIndex(editingIndex);
             }
         });
         editableCheck.setOpaque(false);
@@ -189,8 +195,9 @@ final class EditorPanel extends JPanel {
             Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
             if (c instanceof JComboBox) {
                 JComboBox<?> combo = (JComboBox<?>) c;
-                ComboItem item = (ComboItem) combo.getItemAt(data.getIndex());
+                ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
                 item.setText(((JTextField) e.getSource()).getText());
+                combo.setSelectedIndex(editingIndex);
             }
         });
         textField.setBorder(BorderFactory.createEmptyBorder());
@@ -203,6 +210,12 @@ final class EditorPanel extends JPanel {
         add(editableCheck);
         add(textField);
     }
+    public int getEditingIndex() {
+        return editingIndex;
+    }
+    public void setEditingIndex(int idx) {
+        this.editingIndex = idx;
+    }
     public ComboItem getItem() {
         // data.index(this.data.index);
         data.setEnabled(enabledCheck.isSelected());
@@ -211,8 +224,6 @@ final class EditorPanel extends JPanel {
         return data;
     }
     public void setItem(ComboItem item) {
-        data.setIndex(item.getIndex());
-
         enabledCheck.setSelected(item.isEnabled());
 
         editableCheck.setSelected(item.isEditable());
