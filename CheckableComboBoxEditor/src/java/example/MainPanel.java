@@ -10,13 +10,21 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JComboBox<ComboItem> combo0 = new JComboBox<>(makeModel());
-        combo0.setRenderer(new CheckComboBoxRenderer<>());
+        JComboBox<ComboItem> combo0 = new JComboBox<ComboItem>(makeModel()) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setRenderer(new CheckComboBoxRenderer<>());
+            }
+        };
 
-        JComboBox<ComboItem> combo1 = new JComboBox<>(makeModel());
-        combo1.setEditable(true);
-        combo1.setEditor(new CheckComboBoxEditor());
-        combo1.setRenderer(new CheckComboBoxRenderer<>());
+        JComboBox<ComboItem> combo1 = new JComboBox<ComboItem>(makeModel()) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setEditable(true);
+                setRenderer(new CheckComboBoxRenderer<>());
+                setEditor(new CheckComboBoxEditor());
+            }
+        };
 
         Box box = Box.createVerticalBox();
         box.add(makeTitledPanel("setEditable(false), setRenderer(...)", combo0));
@@ -62,7 +70,6 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-
 
 class ComboItem {
     private boolean enabled;
@@ -143,11 +150,11 @@ class CheckComboBoxEditor implements ComboBoxEditor {
         return editor;
     }
     @Override public void addActionListener(ActionListener l) {
-        System.out.println("addActionListener: " + l.getClass().getName());
+        // System.out.println("addActionListener: " + l.getClass().getName());
         editor.addActionListener(l);
     }
     @Override public void removeActionListener(ActionListener l) {
-        System.out.println("removeActionListener: " + l.getClass().getName());
+        // System.out.println("removeActionListener: " + l.getClass().getName());
         editor.removeActionListener(l);
     }
 }
@@ -217,7 +224,6 @@ final class EditorPanel extends JPanel {
         this.editingIndex = idx;
     }
     public ComboItem getItem() {
-        // data.index(this.data.index);
         data.setEnabled(enabledCheck.isSelected());
         data.setEditable(editableCheck.isSelected());
         data.setText(textField.getText());
