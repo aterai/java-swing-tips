@@ -3,7 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
