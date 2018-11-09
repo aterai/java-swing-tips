@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 

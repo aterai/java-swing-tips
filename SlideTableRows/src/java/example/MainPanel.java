@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JPanel {
     protected static final int START_HEIGHT = 4;

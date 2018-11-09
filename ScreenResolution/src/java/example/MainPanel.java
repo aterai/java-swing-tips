@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
     private final Dimension defaultSize = new Dimension(320, 240);
