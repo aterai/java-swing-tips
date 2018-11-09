@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.util.stream.IntStream;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class MainPanel extends JPanel {
     public static final int FIXED_COLUMNRANGE = 2;
