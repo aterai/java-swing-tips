@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.Position;
 
 public final class MainPanel extends JPanel {

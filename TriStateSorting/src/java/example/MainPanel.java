@@ -6,7 +6,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class MainPanel extends JPanel {
     protected final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);

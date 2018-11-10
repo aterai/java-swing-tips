@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.net.URL;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
