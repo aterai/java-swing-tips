@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TranslucentThumbDivider" />
+  <property name="jnlp.Name"     value="TranslucentThumbDivider" />
+  <property name="jnlp.name"     value="translucentthumbdivider" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentthumbdivider/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentThumbDivider.html" />
+</project>
