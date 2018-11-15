@@ -8,10 +8,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
-import javax.jnlp.ClipboardService;
-import javax.jnlp.ServiceManager;
-import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,17 +15,9 @@ public final class MainPanel extends JPanel {
     private final JButton button = new JButton("get Clipboard DataFlavor");
     public MainPanel() {
         super(new BorderLayout());
-        Object o;
-        try {
-            o = ServiceManager.lookup("javax.jnlp.ClipboardService");
-        } catch (UnavailableServiceException ex) {
-            o = null;
-        }
-        Optional<ClipboardService> csOp = Optional.ofNullable((ClipboardService) o);
         button.addActionListener(e -> {
             try {
-                Transferable t = csOp.map(ClipboardService::getContents)
-                    .orElse(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null));
+                Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
                 if (Objects.isNull(t)) {
                     Toolkit.getDefaultToolkit().beep();
                     return;

@@ -3,16 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
-import java.util.Objects;
-import javax.jnlp.ClipboardService;
-import javax.jnlp.ServiceManager;
-import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 
@@ -26,7 +19,7 @@ public final class MainPanel extends JPanel {
     private final JTextField styleField = new JTextField("stroke:none; fill:pink");
     private final JCheckBox check = new JCheckBox("Antialias", true);
     private final JLabel label = new JLabel();
-    private final JTextArea textArea = new ClipboardServiceTextArea();
+    private final JTextArea textArea = new JTextArea();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -274,39 +267,3 @@ class StarIcon implements Icon {
 //         }
 //     }
 // }
-
-class ClipboardServiceTextArea extends JTextArea {
-    private ClipboardService cs;
-    protected ClipboardServiceTextArea() {
-        super();
-        try {
-            cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
-        } catch (UnavailableServiceException ex) {
-            cs = null;
-        }
-    }
-    @Override public void copy() {
-        if (Objects.nonNull(cs)) {
-            cs.setContents(new StringSelection(getSelectedText()));
-        } else {
-            super.copy();
-        }
-    }
-    @Override public void cut() {
-        if (Objects.nonNull(cs)) {
-            cs.setContents(new StringSelection(getSelectedText()));
-        } else {
-            super.cut();
-        }
-    }
-    @Override public void paste() {
-        if (Objects.nonNull(cs)) {
-            Transferable tr = cs.getContents();
-            if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                getTransferHandler().importData(this, tr);
-            }
-        } else {
-            super.paste();
-        }
-    }
-}
