@@ -5,7 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.util.Objects;
@@ -53,7 +56,12 @@ public final class MainPanel extends JPanel {
         };
         split.setRightComponent(afterCanvas);
 
-        add(new JLayer<>(split, new DividerLocationDragLayerUI()));
+        DividerLocationDragLayerUI layerUI = new DividerLocationDragLayerUI();
+        JCheckBox check = new JCheckBox("Transparent");
+        check.addActionListener(e -> layerUI.setPaintDividerEnabled(((JCheckBox) e.getSource()).isSelected()));
+
+        add(new JLayer<>(split, layerUI));
+        add(check, BorderLayout.SOUTH);
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -90,6 +98,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     private int dividerLocation;
     private boolean isDragging;
     private boolean isEnter;
+    private boolean dividerEnabled;
 
     @Override public void installUI(JComponent c) {
         super.installUI(c);
@@ -111,8 +120,35 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setPaint(new Color(255, 100, 100, 100));
             g2.fill(thumb);
+            if (dividerEnabled) {
+                paintDivider(g2);
+            }
             g2.dispose();
         }
+    }
+    private void paintDivider(Graphics2D g2) {
+        g2.setStroke(new BasicStroke(5f));
+        g2.setPaint(Color.WHITE);
+        g2.draw(thumb);
+        Line2D line = new Line2D.Double(thumb.getCenterX(), 0d, thumb.getCenterX(), thumb.getMinY());
+        g2.draw(line);
+        AffineTransform at = AffineTransform.getQuadrantRotateInstance(2, thumb.getCenterX(), thumb.getCenterY());
+        g2.draw(at.createTransformedShape(line));
+
+        double v = 10d;
+        double mx = thumb.getCenterX() - thumb.getWidth() / 6d;
+        double cy = thumb.getCenterY();
+        Path2D triangle = new Path2D.Double();
+        triangle.moveTo(mx, cy - v);
+        triangle.lineTo(mx - v,  cy);
+        triangle.lineTo(mx, cy + v);
+        triangle.lineTo(mx, cy - v);
+        triangle.closePath();
+        g2.fill(triangle);
+        g2.fill(at.createTransformedShape(triangle));
+    }
+    public void setPaintDividerEnabled(boolean flg) {
+        this.dividerEnabled = flg;
     }
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
         JSplitPane splitPane = l.getView();
