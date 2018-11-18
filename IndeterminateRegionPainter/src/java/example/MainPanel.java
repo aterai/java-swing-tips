@@ -206,6 +206,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     @Override public PaintContext getPaintContext() {
         return ctx;
     }
+    @SuppressWarnings("checkstyle:linelength")
     private Path2D decodePath1() {
         path.reset();
         path.moveTo(decodeX(1f), decodeY(.21111111f));

@@ -139,6 +139,7 @@ class NineSliceScalingButton extends JButton {
     // @Override public Dimension getMinimumSize() {
     //     return getPreferredSize();
     // }
+    @SuppressWarnings("checkstyle:linelength")
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -190,6 +191,7 @@ class NineSliceScalingIcon implements Icon {
     @Override public int getIconHeight() {
         return Math.max(image.getHeight(null), height);
     }
+    @SuppressWarnings("checkstyle:linelength")
     @Override public void paintIcon(Component cmp, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

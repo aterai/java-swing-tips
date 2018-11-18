@@ -281,7 +281,8 @@ class FileNameRenderer implements TableCellRenderer {
 //         // System.out.println(propertyName);
 // //      // String literal pool
 // //      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
-// //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
+// //          || ((propertyName == "font"
+// //          || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
 //         if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
 //               || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey))
 //               || "foreground".equals(propertyName))) {

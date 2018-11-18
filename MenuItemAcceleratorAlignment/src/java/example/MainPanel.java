@@ -13,7 +13,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 
 import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
-// import sun.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -51,12 +50,14 @@ public final class MainPanel extends JPanel {
 
         menuItem = new JMenuItem("bbbbb");
         menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK));
+        int msk2 = InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK;
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, msk2));
         list.add(menuItem);
 
         menuItem = new JMenuItem("c");
         menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        int msk3 = InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, msk3));
         list.add(menuItem);
 
         for (JMenuItem mi: list) {
@@ -200,6 +201,7 @@ final class MenuItemUIHelper {
         });
     }
 
+    @SuppressWarnings("checkstyle:linelength")
     public static void paintCheckIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
         Optional.ofNullable(lh.getCheckIcon()).ifPresent(checkIcon -> {
             JMenuItem menuItem = lh.getMenuItem();
@@ -264,6 +266,7 @@ final class MenuItemUIHelper {
         // BasicGraphicsUtils.drawString(c, (Graphics2D) g, text, x, y);
     }
 
+    @SuppressWarnings("checkstyle:linelength")
     public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
         Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
             JMenuItem menuItem = lh.getMenuItem();

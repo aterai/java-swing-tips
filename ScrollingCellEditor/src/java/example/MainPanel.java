@@ -286,11 +286,13 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //     //     // String literal pool
 //     //     // if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-//     //     if ("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
+//     //     if ("document".equals(propertyName)
+//     //         || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName)
+//     //         || "foreground".equals(propertyName))) {
 //     //         super.firePropertyChange(propertyName, oldValue, newValue);
 //     //     }
 //     // }
-//     // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//     // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* performance reasons. */ }
 //     // @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
 //     // @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
 //     // @Override public void repaint() { /* Overridden for performance reasons. */ }
