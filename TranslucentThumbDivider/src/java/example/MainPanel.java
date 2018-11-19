@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         split.setRightComponent(afterCanvas);
 
         DividerLocationDragLayerUI layerUI = new DividerLocationDragLayerUI();
-        JCheckBox check = new JCheckBox("Transparent");
+        JCheckBox check = new JCheckBox("Paint divider");
         check.addActionListener(e -> layerUI.setPaintDividerEnabled(((JCheckBox) e.getSource()).isSelected()));
 
         add(new JLayer<>(split, layerUI));
@@ -130,14 +130,15 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
         g2.setStroke(new BasicStroke(5f));
         g2.setPaint(Color.WHITE);
         g2.draw(thumb);
-        Line2D line = new Line2D.Double(thumb.getCenterX(), 0d, thumb.getCenterX(), thumb.getMinY());
-        g2.draw(line);
-        AffineTransform at = AffineTransform.getQuadrantRotateInstance(2, thumb.getCenterX(), thumb.getCenterY());
-        g2.draw(at.createTransformedShape(line));
 
-        double v = 10d;
-        double mx = thumb.getCenterX() - thumb.getWidth() / 6d;
+        double cx = thumb.getCenterX();
         double cy = thumb.getCenterY();
+
+        Line2D line = new Line2D.Double(cx, 0d, cx, thumb.getMinY());
+        g2.draw(line);
+
+        double v = 8d;
+        double mx = cx - thumb.getWidth() / 4d + v / 2d;
         Path2D triangle = new Path2D.Double();
         triangle.moveTo(mx, cy - v);
         triangle.lineTo(mx - v,  cy);
@@ -145,6 +146,9 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
         triangle.lineTo(mx, cy - v);
         triangle.closePath();
         g2.fill(triangle);
+
+        AffineTransform at = AffineTransform.getQuadrantRotateInstance(2, cx, cy);
+        g2.draw(at.createTransformedShape(line));
         g2.fill(at.createTransformedShape(triangle));
     }
     public void setPaintDividerEnabled(boolean flg) {
