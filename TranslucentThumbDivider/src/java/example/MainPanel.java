@@ -36,7 +36,13 @@ public final class MainPanel extends JPanel {
         Component beforeCanvas = new JComponent() {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(icon.getImage(), 0, 0, icon.getIconWidth(), icon.getIconHeight(), this);
+
+                int iw = icon.getIconWidth();
+                int ih = icon.getIconHeight();
+                Dimension dim = split.getSize();
+                int x = (dim.width - iw) / 2;
+                int y = (dim.height - ih) / 2;
+                g.drawImage(icon.getImage(), x, y, iw, ih, this);
             }
         };
         split.setLeftComponent(beforeCanvas);
@@ -45,12 +51,15 @@ public final class MainPanel extends JPanel {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
-                int iw = icon.getIconWidth();
-                int ih = icon.getIconHeight();
-                Point pt = getLocation();
                 Insets ins = split.getBorder().getBorderInsets(split);
-                g2.translate(-pt.x + ins.left, 0);
-                g2.drawImage(destination, 0, 0, iw, ih, this);
+                g2.translate(-getLocation().x + ins.left, 0);
+
+                int iw = destination.getWidth(this);
+                int ih = destination.getHeight(this);
+                Dimension dim = split.getSize();
+                int x = (dim.width - iw) / 2;
+                int y = (dim.height - ih) / 2;
+                g2.drawImage(destination, x, y, iw, ih, this);
                 g2.dispose();
             }
         };
@@ -82,7 +91,6 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
