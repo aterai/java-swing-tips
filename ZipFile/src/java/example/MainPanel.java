@@ -25,7 +25,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import javax.swing.*;
 
-
 public final class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(ZipUtil.class.getName());
     private final JTextArea log = new JTextArea();
@@ -166,11 +165,12 @@ final class ZipUtil {
         try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {
             List<Path> files = s.collect(Collectors.toList());
             try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zip))) {
-                for (Path f: files) {
-                    String relativePath = srcDir.relativize(f).toString();
-                    ZipEntry ze = new ZipEntry(relativePath.replace('\\', '/'));
-                    zos.putNextEntry(ze);
-                    Files.copy(f, zos);
+                for (Path path: files) {
+                    String relativePath = srcDir.relativize(path).toString().replace('\\', '/');
+                    log("zip: " + relativePath);
+                    zos.putNextEntry(new ZipEntry(relativePath));
+                    Files.copy(path, zos);
+                    zos.closeEntry();
                 }
             }
         }
