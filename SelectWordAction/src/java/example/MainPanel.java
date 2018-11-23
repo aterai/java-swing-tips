@@ -156,7 +156,6 @@ class SegmentCache {
      */
     private final List<Segment> segments = new ArrayList<>(11);
 
-
     /**
      * Returns the shared SegmentCache.
      */

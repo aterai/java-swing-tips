@@ -425,7 +425,6 @@ public class TitledBorder2 extends AbstractBorder {
         return Objects.isNull(titleColor) ? UIManager.getColor("TitledBorder.titleColor") : titleColor;
     }
 
-
     // REMIND(aim): remove all or some of these set methods?
 
     /**

@@ -25,7 +25,6 @@ public final class MainPanel extends JPanel {
         JLabel lbl2 = new WrappedLabel(TEXT);
         lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 5), "GlyphVector"));
 
-
         JLabel lbl3 = new WrappingLabel(TEXT);
         lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN, 5), "LineBreakMeasurer"));
 

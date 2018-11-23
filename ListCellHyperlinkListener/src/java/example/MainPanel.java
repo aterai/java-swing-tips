@@ -80,7 +80,6 @@ class SiteItem {
     }
 }
 
-
 class SiteListItemRenderer extends JEditorPane implements ListCellRenderer<SiteItem> {
     protected SiteListItemRenderer() {
         super();

@@ -42,7 +42,6 @@ public final class MainPanel extends JPanel {
         // check.setInheritsPopupMenu(true);
         label.setComponentPopupMenu(popup);
 
-
         add(check, BorderLayout.NORTH);
         add(label);
         setBorder(BorderFactory.createLineBorder(Color.RED, 10));
