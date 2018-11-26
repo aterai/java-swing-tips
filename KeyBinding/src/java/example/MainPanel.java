@@ -29,6 +29,7 @@ public final class MainPanel extends JPanel {
     };
     private final JComponent[] clist = {
         new JComboBox<Object>(),
+        new JDesktopPane(),
         new JFormattedTextField(),
         // new JFileChooser(),
         new JInternalFrame(),
