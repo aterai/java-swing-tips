@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST InternalFrameKeyInputOperation" />
+  <property name="jnlp.Name"     value="InternalFrameKeyInputOperation" />
+  <property name="jnlp.name"     value="internalframekeyinputoperation" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/internalframekeyinputoperation/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/InternalFrameKeyInputOperation.html" />
+</project>
