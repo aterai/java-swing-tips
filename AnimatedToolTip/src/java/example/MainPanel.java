@@ -30,7 +30,8 @@ public final class MainPanel extends JPanel {
         JLabel l2 = new JLabel("Gif Animated ToolTip") {
             // private final Icon icon = new ImageIcon(url);
             @Override public JToolTip createToolTip() {
-                JToolTip tip = new AnimatedToolTip(new JLabel("", new ImageIcon(url), SwingConstants.LEFT));
+                JLabel label = new JLabel("", new ImageIcon(url), SwingConstants.LEFT);
+                JToolTip tip = new AnimatedToolTip(label);
                 tip.setComponent(this);
                 return tip;
             }

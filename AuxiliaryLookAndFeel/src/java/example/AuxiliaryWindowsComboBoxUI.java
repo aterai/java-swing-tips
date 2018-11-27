@@ -25,7 +25,8 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
         // System.out.println("AuxiliaryWindowsComboBoxUI#createPopup");
         return new BasicComboPopup2(comboBox);
     }
-    // // ???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
+    // // ???: Use the installUI method to perform all initialization,
+    // // and the uninstallUI method to perform all cleanup.
     // @Override public void installUI(JComponent c) {
     //     // super.installUI(c);
     // }

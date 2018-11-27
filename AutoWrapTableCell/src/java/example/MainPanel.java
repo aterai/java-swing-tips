@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
 
-    // public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
+    // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
     @Override public void updateUI() {
         super.updateUI();
         setLineWrap(true);

@@ -123,10 +123,11 @@ abstract class AbstractExpansionPanel extends JPanel {
         super(new BorderLayout());
         this.title = title;
         label = new JLabel("▼ " + title) {
+            private final Color bgc = new Color(200, 200, 255);
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 // Insets ins = getInsets();
-                g2.setPaint(new GradientPaint(50, 0, Color.WHITE, getWidth(), getHeight(), new Color(200, 200, 255)));
+                g2.setPaint(new GradientPaint(50, 0, Color.WHITE, getWidth(), getHeight(), bgc));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.dispose();
                 super.paintComponent(g);

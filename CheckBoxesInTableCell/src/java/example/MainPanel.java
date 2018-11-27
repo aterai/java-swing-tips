@@ -135,7 +135,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
         updateButtons(value);
         return this;
     }
-    // public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
+    // public static class UIResource extends CheckBoxesRenderer implements UIResource {}
 }
 
 // // TEST:
