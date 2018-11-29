@@ -107,11 +107,6 @@
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <!-- module name="AvoidStarImport"/ -->
-        <module name="AvoidStarImport">
-            <property name="excludes" value="java.awt,javax.swing"/>
-            <property name="allowClassImports" value="false"/>
-            <property name="allowStaticMemberImports" value="false"/>
-        </module>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports">
@@ -215,7 +210,9 @@
             <property name="max" value="150"/>
             <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|throws|@Override.*|&lt;html"/>
         </module>
-        <!-- module name="AvoidStarImport"/ -->
+        <module name="AvoidStarImport">
+            <property name="excludes" value="java.awt,javax.swing"/>
+        </module>
         <!-- module name="OneTopLevelClass"/ -->
         <module name="NoLineWrap"/>
         <module name="EmptyBlock">
@@ -359,7 +356,7 @@
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="STANDARD_JAVA_PACKAGE###STATIC###THIRD_PARTY_PACKAGE"/>
+            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
         </module>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">

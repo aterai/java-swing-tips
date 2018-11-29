@@ -1,6 +1,8 @@
 package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
@@ -12,8 +14,6 @@ import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
-
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 // Copied from
 // JTabbedPane with close Icons | Oracle Forums

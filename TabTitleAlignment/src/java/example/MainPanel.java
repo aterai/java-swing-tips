@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +22,6 @@ import javax.swing.plaf.synth.SynthContext;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.plaf.synth.SynthStyle;
 import javax.swing.text.View;
-
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -2,12 +2,12 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsSliderUI;
+
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.*;
-
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

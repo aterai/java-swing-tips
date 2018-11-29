@@ -2,12 +2,12 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-
-import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

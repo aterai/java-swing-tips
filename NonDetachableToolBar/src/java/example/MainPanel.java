@@ -2,11 +2,11 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsToolBarUI;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
-
-import com.sun.java.swing.plaf.windows.WindowsToolBarUI;
 
 public class MainPanel extends JPanel {
     protected final JToolBar toolbar = new JToolBar("toolbar") {

@@ -2,12 +2,12 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
-
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());

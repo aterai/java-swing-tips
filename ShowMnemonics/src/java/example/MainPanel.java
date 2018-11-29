@@ -2,13 +2,13 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 public final class MainPanel extends JPanel {
     private static final String SHOW_MNEMONICS = "Button.showMnemonics";

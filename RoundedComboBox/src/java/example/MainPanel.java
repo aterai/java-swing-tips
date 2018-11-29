@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,8 +18,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.metal.MetalComboBoxUI;
-
-import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
     public static final Color BACKGROUND = Color.BLACK; // RED;

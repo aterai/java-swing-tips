@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
@@ -11,8 +13,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-
-import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
     private final JComboBox<String> combo00 = new JComboBox<>(makeModel());

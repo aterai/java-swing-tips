@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Objects;
@@ -15,8 +17,6 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
-
-import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {
     private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);

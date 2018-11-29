@@ -2,12 +2,12 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.table.DefaultTableModel;
-
-import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

@@ -2,11 +2,11 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSpinnerUI;
-
-import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 
 public final class MainPanel extends JPanel {
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));

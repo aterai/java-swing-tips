@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
@@ -13,8 +15,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
-
-import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

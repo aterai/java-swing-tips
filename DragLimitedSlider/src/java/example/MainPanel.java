@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsSliderUI;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Dictionary;
@@ -9,8 +11,6 @@ import java.util.Enumeration;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
-
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
     public static final int MAXI = 80;

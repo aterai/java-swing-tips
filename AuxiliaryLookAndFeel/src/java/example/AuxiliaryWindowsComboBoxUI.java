@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,8 +14,6 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
-
-import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
 // ???: Don't extend visual look and feels.

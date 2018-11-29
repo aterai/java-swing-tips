@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -11,8 +13,6 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicMenuItemUI;
-
-import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

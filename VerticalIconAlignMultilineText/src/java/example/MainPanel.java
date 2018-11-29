@@ -2,6 +2,8 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +15,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.Position;
 import javax.swing.text.View;
-
-import com.sun.java.swing.plaf.windows.WindowsCheckBoxUI;
 
 public final class MainPanel extends JPanel {
     private static final String TEXT = "<html>The vertical alignment of this text gets offset when the font changes.";

@@ -2,14 +2,14 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
+
 import java.awt.*;
 import java.io.File;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDirectoryModel;
 import javax.swing.plaf.metal.MetalFileChooserUI;
-
-import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
