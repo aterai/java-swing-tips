@@ -3,9 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,11 +24,11 @@ public final class MainPanel extends JPanel {
         Dictionary<Integer, Component> labelTable = new Hashtable<>();
         // @SuppressWarnings("PMD.ReplaceHashtableWithMap")
         // Hashtable labelTable = slider2.createStandardLabels(1);
-        int c = 0;
-        for (String s: Arrays.asList("A", "B", "C", "D", "E")) {
-            labelTable.put(c++, new JLabel(s));
-            // ((JLabel) labelTable.get(c++)).setText(s);
-        }
+        List<Component> list = Stream.of("A", "B", "C", "D", "E")
+            .map(JLabel::new).collect(Collectors.toList());
+        IntStream.range(0, list.size()).boxed()
+            .forEach(i -> labelTable.put(i, list.get(i)));
+
         JSlider slider2 = new JSlider(0, 4, 0);
         setCurrentLabelListener(slider2);
         slider2.setLabelTable(labelTable);
