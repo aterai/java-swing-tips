@@ -64,10 +64,12 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     protected final void setFontPaintFlag(Set<FontPaint> fp) {
         fontPaintFlag = fp;
         fontPanel.repaint();
     }
+
     protected final String getCharacterString() {
         int code = ((Integer) spinner.getValue()).intValue();
         // char[] ca = Character.toChars(code);
@@ -84,6 +86,7 @@ public class MainPanel extends JPanel {
         //     str = new String(ca, 0, 2);
         // }
     }
+
     private class GlyphPaintPanel extends JPanel {
         private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
         private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
@@ -126,6 +129,7 @@ public class MainPanel extends JPanel {
             g2.dispose();
         }
     }
+
     private static DefaultFormatterFactory makeFFactory() {
         DefaultFormatter formatter = new DefaultFormatter() {
             @Override public Object stringToValue(String text) throws ParseException {

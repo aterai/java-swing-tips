@@ -55,7 +55,6 @@ public final class MainPanel extends JPanel {
 
         openButton.addActionListener(e -> {
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            // fileChooser.setDialogTitle("...");
             fileChooser.setSelectedFile(new File(Objects.toString(dirCombo.getEditor().getItem())));
             int fcSelected = fileChooser.showOpenDialog(getRootPane());
             String title = "title";
@@ -105,6 +104,7 @@ public final class MainPanel extends JPanel {
         protected UITask(File dir) {
             super(dir);
         }
+
         @Override protected void process(List<Message> chunks) {
             // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
@@ -117,6 +117,7 @@ public final class MainPanel extends JPanel {
             }
             processChunks(chunks);
         }
+
         @Override public void done() {
             // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
             if (!isDisplayable()) {
@@ -193,7 +194,6 @@ public final class MainPanel extends JPanel {
     }
 
     protected void appendLine(String str) {
-        // System.out.println(str);
         textArea.append(str + "\n");
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }
@@ -205,6 +205,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -296,6 +297,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         super();
         this.dir = dir;
     }
+
     @Override public String doInBackground() {
         if (Objects.isNull(dir) || !dir.exists()) {
             publish(new Message("The directory does not exist.", true));
@@ -330,6 +332,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         }
         return "Done";
     }
+
     // Walking the File Tree (The Java™ Tutorials > Essential Classes > Basic I/O)
     // https://docs.oracle.com/javase/tutorial/essential/io/walk.html
     private void recursiveSearch(Path dirPath, List<Path> list) throws IOException {
@@ -357,6 +360,7 @@ class ProgressListener implements PropertyChangeListener {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

@@ -21,7 +21,6 @@ public class MainPanel extends JPanel {
     protected static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
     protected static final String PATTERN = "Swing";
     protected final List<Integer> emphasisIndices = new ArrayList<>();
-
     protected final DefaultTableModel model = new DefaultTableModel(0, 2);
     protected final JTable table = new JTable(model);
     protected final JScrollPane scroll = new JScrollPane(table);
@@ -74,6 +73,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private class HighlightBarHandler extends MouseInputAdapter {
         @Override public void mousePressed(MouseEvent e) {
             processHighlightBarMouseEvent(e);
@@ -81,14 +81,15 @@ public class MainPanel extends JPanel {
         @Override public void mouseDragged(MouseEvent e) {
             processHighlightBarMouseEvent(e);
         }
+        protected final void processHighlightBarMouseEvent(MouseEvent e) {
+            Point pt = e.getPoint();
+            Component c = (Component) e.getComponent();
+            BoundedRangeModel m = scrollbar.getModel();
+            int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
+            m.setValue(iv);
+        }
     }
-    protected final void processHighlightBarMouseEvent(MouseEvent e) {
-        Point pt = e.getPoint();
-        Component c = (Component) e.getComponent();
-        BoundedRangeModel m = scrollbar.getModel();
-        int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
-        m.setValue(iv);
-    }
+
     protected final void updateHighlighter() {
         for (int i = 0; i < table.getRowCount(); i++) {
             if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
@@ -96,6 +97,7 @@ public class MainPanel extends JPanel {
             }
         }
     }
+
     private class HighlightIcon implements Icon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, table));
@@ -137,6 +139,7 @@ public class MainPanel extends JPanel {
             return scroll.getHeight();
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
