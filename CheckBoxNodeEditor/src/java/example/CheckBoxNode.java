@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 // @homepage@
 
+
 public final class CheckBoxNode {
     private String label;
     private Status status;

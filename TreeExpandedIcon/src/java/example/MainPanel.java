@@ -2,6 +2,7 @@ package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
