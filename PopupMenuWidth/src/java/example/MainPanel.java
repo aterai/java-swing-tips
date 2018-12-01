@@ -51,7 +51,8 @@ public final class MainPanel extends JPanel {
         menu.add("Open").setMnemonic(KeyEvent.VK_O);
         menu.addSeparator();
         menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        // Java 10: menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        // Java 10:
+        // menu.add("Exit").setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         return menu;
     }
 
