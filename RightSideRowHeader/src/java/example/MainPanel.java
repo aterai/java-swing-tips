@@ -158,7 +158,6 @@ public final class MainPanel extends JPanel {
     }
 }
 
-@SuppressWarnings("checkstyle:abbreviationaswordinname")
 class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "checkstyle:methodlength"})
     @Override public void layoutContainer(Container parent) {
@@ -244,7 +243,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
         }
 
         if (Objects.nonNull(vsb) && vsbNeeded) {
-            adjustForVSB(true, rowHeadR, vsbR, vpbInsets, leftToRight);
+            adjustForVsb(true, rowHeadR, vsbR, vpbInsets, leftToRight);
             extentSize = viewport.toViewCoordinates(availR.getSize());
         }
 
@@ -259,15 +258,15 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
         }
 
         if (Objects.nonNull(hsb) && hsbNeeded) {
-            adjustForHSB(true, availR, hsbR, vpbInsets);
+            adjustForHsb(true, availR, hsbR, vpbInsets);
             if (Objects.nonNull(vsb) && !vsbNeeded && vsbPolicy != VERTICAL_SCROLLBAR_NEVER) {
 
                 extentSize = viewport.toViewCoordinates(availR.getSize());
                 vsbNeeded = viewPrefSize.height > extentSize.height;
 
                 if (vsbNeeded) {
-                    // adjustForVSB(true, availR, vsbR, vpbInsets, leftToRight);
-                    adjustForVSB(true, rowHeadR, vsbR, vpbInsets, leftToRight);
+                    // adjustForVsb(true, availR, vsbR, vpbInsets, leftToRight);
+                    adjustForVsb(true, rowHeadR, vsbR, vpbInsets, leftToRight);
                 }
             }
         }
@@ -278,37 +277,37 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
             if (Objects.nonNull(sv)) {
                 extentSize = viewport.toViewCoordinates(availR.getSize());
 
-                final boolean oldHSBNeeded = hsbNeeded;
-                final boolean oldVSBNeeded = vsbNeeded;
+                final boolean oldHsbNeeded = hsbNeeded;
+                final boolean oldVsbNeeded = vsbNeeded;
                 viewTracksViewportWidth = sv.getScrollableTracksViewportWidth();
                 viewTracksViewportHeight = sv.getScrollableTracksViewportHeight();
                 if (Objects.nonNull(vsb) && vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
-                    boolean newVSBNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
-                    if (newVSBNeeded != vsbNeeded) {
-                        vsbNeeded = newVSBNeeded;
-                        // adjustForVSB(vsbNeeded, availR, vsbR, vpbInsets, leftToRight);
-                        adjustForVSB(vsbNeeded, rowHeadR, vsbR, vpbInsets, leftToRight);
+                    boolean newVsbNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
+                    if (newVsbNeeded != vsbNeeded) {
+                        vsbNeeded = newVsbNeeded;
+                        // adjustForVsb(vsbNeeded, availR, vsbR, vpbInsets, leftToRight);
+                        adjustForVsb(vsbNeeded, rowHeadR, vsbR, vpbInsets, leftToRight);
                         extentSize = viewport.toViewCoordinates(availR.getSize());
                     }
                 }
                 if (Objects.nonNull(hsb) && hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
-                    boolean newHSBbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
-                    if (newHSBbNeeded != hsbNeeded) {
-                        hsbNeeded = newHSBbNeeded;
-                        adjustForHSB(hsbNeeded, availR, hsbR, vpbInsets);
+                    boolean newHsbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
+                    if (newHsbNeeded != hsbNeeded) {
+                        hsbNeeded = newHsbNeeded;
+                        adjustForHsb(hsbNeeded, availR, hsbR, vpbInsets);
                         if (Objects.nonNull(vsb) && !vsbNeeded && vsbPolicy != VERTICAL_SCROLLBAR_NEVER) {
 
                             extentSize = viewport.toViewCoordinates(availR.getSize());
                             vsbNeeded = viewPrefSize.height > extentSize.height;
 
                             if (vsbNeeded) {
-                                // adjustForVSB(true, availR, vsbR, vpbInsets, leftToRight);
-                                adjustForVSB(true, rowHeadR, vsbR, vpbInsets, leftToRight);
+                                // adjustForVsb(true, availR, vsbR, vpbInsets, leftToRight);
+                                adjustForVsb(true, rowHeadR, vsbR, vpbInsets, leftToRight);
                             }
                         }
                     }
                 }
-                if (oldHSBNeeded != hsbNeeded || oldVSBNeeded != vsbNeeded) {
+                if (oldHsbNeeded != hsbNeeded || oldVsbNeeded != vsbNeeded) {
                     viewport.setBounds(availR);
                 }
             }
@@ -377,9 +376,9 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
             upperRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, colHeadR.y, leftToRight ? vsbR.width : rowHeadR.width, colHeadR.height);
         }
     }
-    private void adjustForVSB(boolean wantsVSB, Rectangle available, Rectangle vsbR, Insets vpbInsets, boolean leftToRight) {
+    private void adjustForVsb(boolean wantsVsb, Rectangle available, Rectangle vsbR, Insets vpbInsets, boolean leftToRight) {
         int oldWidth = vsbR.width;
-        if (wantsVSB) {
+        if (wantsVsb) {
             int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, available.width));
             available.width -= vsbWidth;
             vsbR.width = vsbWidth;
@@ -394,9 +393,9 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
             available.width += oldWidth;
         }
     }
-    private void adjustForHSB(boolean wantsHSB, Rectangle available, Rectangle hsbR, Insets vpbInsets) {
+    private void adjustForHsb(boolean wantsHsb, Rectangle available, Rectangle hsbR, Insets vpbInsets) {
         int oldHeight = hsbR.height;
-        if (wantsHSB) {
+        if (wantsHsb) {
             int hsbHeight = Math.max(0, Math.min(available.height, hsb.getPreferredSize().height));
             available.height -= hsbHeight;
             hsbR.y = available.y + available.height + vpbInsets.bottom;

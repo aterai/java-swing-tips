@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
-@SuppressWarnings("AbbreviationAsWordInName")
 class BasicTransferable implements Transferable {
     protected String plainData;
     protected String htmlData;
@@ -61,10 +60,10 @@ class BasicTransferable implements Transferable {
     @Override public DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] richerFlavors = getRicherFlavors();
         int nRicher = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
-        int nHTML = isHTMLSupported() ? htmlFlavors.length : 0;
+        int nHtml = isHtmlSupported() ? htmlFlavors.length : 0;
         int nPlain = isPlainSupported() ? plainFlavors.length : 0;
         int nString = isPlainSupported() ? stringFlavors.length : 0;
-        int nFlavors = nRicher + nHTML + nPlain + nString;
+        int nFlavors = nRicher + nHtml + nPlain + nString;
         DataFlavor[] flavors = new DataFlavor[nFlavors];
 
         // fill in the array
@@ -73,9 +72,9 @@ class BasicTransferable implements Transferable {
         System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
         nDone += nRicher;
         // }
-        // if (nHTML > 0) {
-        System.arraycopy(htmlFlavors, 0, flavors, nDone, nHTML);
-        nDone += nHTML;
+        // if (nHtml > 0) {
+        System.arraycopy(htmlFlavors, 0, flavors, nDone, nHtml);
+        nDone += nHtml;
         // }
         // if (nPlain > 0) {
         System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
@@ -120,8 +119,8 @@ class BasicTransferable implements Transferable {
         // ???: DataFlavor[] richerFlavors = getRicherFlavors();
         if (isRicherFlavor(flavor)) {
             return getRicherData(flavor);
-        } else if (isHTMLFlavor(flavor)) {
-            return getHTMLTransferData(flavor);
+        } else if (isHtmlFlavor(flavor)) {
+            return getHtmlTransferData(flavor);
         } else if (isPlainFlavor(flavor)) {
             return getPlaneTransferData(flavor);
         } else if (isStringFlavor(flavor)) {
@@ -178,7 +177,7 @@ class BasicTransferable implements Transferable {
      * @param flavor the requested flavor for the data
      * @return boolean indicating whether or not the data flavor is supported
      */
-    protected boolean isHTMLFlavor(DataFlavor flavor) {
+    protected boolean isHtmlFlavor(DataFlavor flavor) {
         // DataFlavor[] flavors = htmlFlavors;
         // for (int i = 0; i < flavors.length; i++) {
         //     if (flavors[i].equals(flavor)) {
@@ -191,23 +190,23 @@ class BasicTransferable implements Transferable {
 
     /**
      * Should the HTML flavors be offered?  If so, the method
-     * getHTMLData should be implemented to provide something reasonable.
+     * getHtmlData should be implemented to provide something reasonable.
      */
-    protected boolean isHTMLSupported() {
+    protected boolean isHtmlSupported() {
         return Objects.nonNull(htmlData);
     }
 
     /**
      * Fetch the data in a text/html format.
      */
-    protected String getHTMLData() {
+    protected String getHtmlData() {
         return htmlData;
     }
 
-    protected Object getHTMLTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
-        // String data = getHTMLData();
+    protected Object getHtmlTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+        // String data = getHtmlData();
         // data = Objects.nonNull(data) ? data : "";
-        String data = Objects.toString(getHTMLData(), "");
+        String data = Objects.toString(getHtmlData(), "");
         if (String.class.equals(flavor.getRepresentationClass())) {
             return data;
         } else if (Reader.class.equals(flavor.getRepresentationClass())) {

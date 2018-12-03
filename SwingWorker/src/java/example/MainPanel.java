@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private class UIUpdateTask extends BackgroundTask {
+    private class AnimationTask extends BackgroundTask {
         @Override protected void process(List<String> chunks) {
             // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
             if (isCancelled()) {
@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
         anil.startAnimation();
         statusPanel.setVisible(true);
         bar.setIndeterminate(true);
-        worker = new UIUpdateTask();
+        worker = new AnimationTask();
         worker.addPropertyChangeListener(new ProgressListener(bar));
         worker.execute();
     }

@@ -88,12 +88,12 @@ public final class MainPanel extends JPanel {
 
     // // TEST: work Windows 7 only?
     // private static JMenuItem makeMenuItem2(JMenuItem mi) {
-    //     JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
+    //     JLabel label = new JLabel(MenuItemHelper.getAccText(mi, "+"));
     //     label.setOpaque(true);
     //     JMenuItem item = new JMenuItem(mi.getText()) {
     //         // @Override public Dimension getPreferredSize() {
     //         //     Dimension d = super.getPreferredSize();
-    //         //     label.setText(MenuItemUIHelper.getAccText(this, "+"));
+    //         //     label.setText(MenuItemHelper.getAccText(this, "+"));
     //         //     // d.width += label.getPreferredSize().width;
     //         //     d.height = Math.max(label.getPreferredSize().height, d.height);
     //         //     return d;
@@ -175,8 +175,8 @@ public final class MainPanel extends JPanel {
 }
 
 // @see javax/swing/plaf/basic/BasicMenuItemUI.java
-final class MenuItemUIHelper {
-    private MenuItemUIHelper() { /* Singleton */ }
+final class MenuItemHelper {
+    private MenuItemHelper() { /* Singleton */ }
     public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {
         Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
             Icon icon;
@@ -325,7 +325,7 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
         g2.setFont(mi.getFont());
 
         Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
-        MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
+        MenuItemHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
             mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
@@ -333,11 +333,11 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
         paintBackground(g2, mi, background);
-        MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
-        MenuItemUIHelper.paintIcon(g2, lh, lr); // , g.getColor());
+        MenuItemHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
+        MenuItemHelper.paintIcon(g2, lh, lr); // , g.getColor());
         paintText(g2, lh, lr);
-        MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
-        MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);
+        MenuItemHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
+        MenuItemHelper.paintArrowIcon(g2, lh, lr, foreground);
 
         // // Restore original graphics font and color
         // g.setColor(holdc);
@@ -369,7 +369,7 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
         g2.setFont(mi.getFont());
 
         Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
-        MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
+        MenuItemHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
             mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
@@ -377,11 +377,11 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
         paintBackground(g2, mi, background);
-        MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
-        MenuItemUIHelper.paintIcon(g2, lh, lr); // , g.getColor());
+        MenuItemHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
+        MenuItemHelper.paintIcon(g2, lh, lr); // , g.getColor());
         paintText(g2, lh, lr);
-        MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
-        MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);
+        MenuItemHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
+        MenuItemHelper.paintArrowIcon(g2, lh, lr, foreground);
 
         // // Restore original graphics font and color
         // g.setColor(holdc);

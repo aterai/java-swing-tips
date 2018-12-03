@@ -63,10 +63,10 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     protected final void updateFont(Font font) {
-        FontUIResource fontUIResource = new FontUIResource(font);
+        FontUIResource fontResource = new FontUIResource(font);
         for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
             if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
-                UIManager.put(o, fontUIResource);
+                UIManager.put(o, fontResource);
             }
         }
         recursiveUpdateUI(this); // SwingUtilities.updateComponentTreeUI(this);

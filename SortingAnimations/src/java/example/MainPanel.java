@@ -131,11 +131,11 @@ public class MainPanel extends JPanel {
         }
         SortAlgorithms sa = algorithmsChoices.getItemAt(algorithmsChoices.getSelectedIndex());
         Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
-        worker = new UITask(sa, number, array, paintArea, factorx, factory);
+        worker = new SortPaintTask(sa, number, array, paintArea, factorx, factory);
         worker.execute();
     }
-    private class UITask extends SortingTask {
-        protected UITask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
+    private class SortPaintTask extends SortingTask {
+        protected SortPaintTask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
             super(sortAlgorithm, number, array, rect, factorx, factory);
         }
         @Override protected void process(List<Rectangle> chunks) {

@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
             button.setEnabled(false);
             combo.setEnabled(false);
             // combo.removeAllItems();
-            worker = new UITask();
+            worker = new ComboTask();
             worker.execute();
         });
         add(makeTitledPanel("ProgressComboBox: ", combo, button), BorderLayout.NORTH);
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private class UITask extends BackgroundTask {
+    private class ComboTask extends BackgroundTask {
         @Override protected void process(List<Integer> chunks) {
             if (isCancelled()) {
                 return;

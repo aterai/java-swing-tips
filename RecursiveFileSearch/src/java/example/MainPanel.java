@@ -100,8 +100,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected class UITask extends RecursiveFileSearchTask {
-        protected UITask(File dir) {
+    protected class FileSearchTask extends RecursiveFileSearchTask {
+        protected FileSearchTask(File dir) {
             super(dir);
         }
 
@@ -178,7 +178,7 @@ public final class MainPanel extends JPanel {
 
     protected void executeWorker() {
         File dir = new File(dirCombo.getItemAt(dirCombo.getSelectedIndex()));
-        worker = new UITask(dir);
+        worker = new FileSearchTask(dir);
         worker.addPropertyChangeListener(new ProgressListener(progress));
         worker.execute();
     }
