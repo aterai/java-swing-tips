@@ -17,10 +17,12 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makeTitledPanel("defalut JLabel ellipsis", new JLabel(text)));
-        box.add(Box.createVerticalStrut(15));
+        box.add(Box.createVerticalStrut(5));
         box.add(makeTitledPanel("html JLabel fade out", new FadeOutLabel("<html>" + text)));
-        box.add(Box.createVerticalStrut(15));
-        box.add(makeTitledPanel("JTextField fade out", new FadingOutLabel(text)));
+        box.add(Box.createVerticalStrut(5));
+        box.add(makeTitledPanel("JLabel TextLayout fade out", new TextOverfloFadeLabel(text)));
+        box.add(Box.createVerticalStrut(5));
+        box.add(makeTitledPanel("JLabel BufferedImage fade out", new FadingOutLabel(text)));
         box.add(Box.createVerticalGlue());
 
         add(box, BorderLayout.NORTH);
@@ -93,22 +95,51 @@ class FadeOutLabel extends JLabel {
     }
 }
 
-class FadingOutLabel extends JTextField {
+class TextOverfloFadeLabel extends JLabel {
+    private static final int LENGTH = 20;
+    private static final float DIFF = .05f;
+
+    protected TextOverfloFadeLabel(String text) {
+        super(text);
+    }
+
+    @Override public void paintComponent(Graphics g) {
+        Insets i = getInsets();
+        int w = getWidth() - i.left - i.right;
+        int h = getHeight() - i.top - i.bottom;
+        Rectangle rect = new Rectangle(i.left, i.top, w - LENGTH, h);
+
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setFont(g.getFont());
+        g2.setPaint(getForeground());
+
+        FontRenderContext frc = g2.getFontRenderContext();
+        TextLayout tl = new TextLayout(getText(), getFont(), frc);
+        int baseline = getBaseline(w, h);
+
+        g2.setClip(rect);
+        tl.draw(g2, getInsets().left, baseline);
+
+        rect.width = 1;
+        float alpha = 1f;
+        for (int x = w - LENGTH; x < w; x++) {
+            rect.x = x;
+            alpha = Math.max(0f, alpha - DIFF);
+            g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
+            g2.setClip(rect);
+            tl.draw(g2, getInsets().left, baseline);
+        }
+        g2.dispose();
+    }
+}
+
+class FadingOutLabel extends JLabel {
     private static final int LENGTH = 20;
     private final Dimension dim = new Dimension();
     private transient Image buffer;
 
     protected FadingOutLabel(String text) {
         super(text);
-    }
-
-    @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        setEditable(false);
-        setFocusable(false);
-        setEnabled(false);
-        setBorder(BorderFactory.createEmptyBorder());
     }
 
     @Override public void paintComponent(Graphics g) {
