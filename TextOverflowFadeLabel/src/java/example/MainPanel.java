@@ -96,7 +96,7 @@ class FadeOutLabel extends JLabel {
 class FadingOutLabel extends JTextField {
     private static final int LENGTH = 20;
     private final Dimension dim = new Dimension();
-    private transient BufferedImage img;
+    private transient Image buffer;
 
     protected FadingOutLabel(String text) {
         super(text);
@@ -115,15 +115,15 @@ class FadingOutLabel extends JTextField {
         // super.paintComponent(g);
         int w = getWidth();
         int h = getHeight();
-        if (img == null || dim.width != w || dim.height != h) {
+        if (buffer == null || dim.width != w || dim.height != h) {
             dim.setSize(w, h);
-            img = updateImage(dim);
+            buffer = updateImage(dim);
         }
-        g.drawImage(img, 0, 0, this);
+        g.drawImage(buffer, 0, 0, this);
     }
 
     private BufferedImage updateImage(Dimension d) {
-        img = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setFont(getFont());
         g2.setPaint(getForeground());
