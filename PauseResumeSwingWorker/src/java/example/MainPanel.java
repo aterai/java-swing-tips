@@ -108,6 +108,7 @@ public final class MainPanel extends JPanel {
             appendLine(message);
         }
     }
+
     protected void updateComponentDone() {
         runButton.requestFocusInWindow();
         runButton.setEnabled(true);

@@ -403,6 +403,7 @@ class FileListTable extends JTable {
             }
         }
     }
+
     // SwingUtilities2.pointOutsidePrefSize(...)
     protected static Rectangle getCellRect2(JTable table, int row, int col) {
         TableCellRenderer tcr = table.getCellRenderer(row, col);

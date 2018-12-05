@@ -132,6 +132,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
             g2.dispose();
         }
     }
+
     private class AnimeIcon extends JComponent {
         private static final double R = 2d;
         private static final double SX = 1d;

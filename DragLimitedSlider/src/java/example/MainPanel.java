@@ -73,6 +73,7 @@ public final class MainPanel extends JPanel {
             };
         }
     }
+
     private static class MetalDragLimitedSliderUI extends MetalSliderUI {
         @Override protected TrackListener createTrackListener(JSlider slider) {
             return new TrackListener() {
@@ -89,6 +90,7 @@ public final class MainPanel extends JPanel {
             };
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

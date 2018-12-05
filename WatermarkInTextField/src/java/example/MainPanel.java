@@ -94,6 +94,7 @@ class WatermarkTextField extends JTextField implements FocusListener {
         repaint();
     }
 }
+
 class GhostFocusListener implements FocusListener {
     private static final Color INACTIVE_COLOR = UIManager.getColor("TextField.inactiveForeground");
     private static final Color ORIGINAL_COLOR = UIManager.getColor("TextField.foreground");

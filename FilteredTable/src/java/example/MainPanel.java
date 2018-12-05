@@ -126,6 +126,7 @@ class RowDataModel extends DefaultTableModel {
             this.isEditable = isEditable;
         }
     }
+
     public void filterRows(boolean flg) {
         // dataVector.clear();
         setRowCount(0);

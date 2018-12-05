@@ -109,6 +109,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class ListIconRenderer implements TableCellRenderer {
     private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEFT));
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

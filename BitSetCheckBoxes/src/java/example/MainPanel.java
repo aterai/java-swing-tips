@@ -101,6 +101,7 @@ public class MainPanel extends JPanel {
             updateCheckBoxes(newValue);
         }
     }
+
     private static String print(BitSet bitSet) {
         StringBuilder buf = new StringBuilder();
         for (long lv: bitSet.toLongArray()) {

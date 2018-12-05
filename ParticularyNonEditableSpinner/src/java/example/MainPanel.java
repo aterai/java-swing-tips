@@ -91,6 +91,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class StringBorder implements Border {
     private final Insets insets;
     private final Rectangle rect;

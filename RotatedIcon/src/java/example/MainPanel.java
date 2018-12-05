@@ -134,6 +134,7 @@ enum QuadrantRotate {
     }
 
 }
+
 class QuadrantRotateIcon implements Icon {
     private final QuadrantRotate rotate;
     private final Icon icon;

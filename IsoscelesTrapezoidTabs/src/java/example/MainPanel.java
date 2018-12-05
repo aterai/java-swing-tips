@@ -48,6 +48,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     private static final int ADJ2 = 3;
     private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");

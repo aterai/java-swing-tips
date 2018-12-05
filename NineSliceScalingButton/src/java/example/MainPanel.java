@@ -171,6 +171,7 @@ class NineSliceScalingButton extends JButton {
         super.paintComponent(g);
     }
 }
+
 class NineSliceScalingIcon implements Icon {
     private final BufferedImage image;
     private final int leftw;
@@ -228,6 +229,7 @@ class NineSliceScalingIcon implements Icon {
         g2.dispose();
     }
 }
+
 class PressedImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (int) (((argb >> 16) & 0xFF) * .6);
@@ -236,6 +238,7 @@ class PressedImageFilter extends RGBImageFilter {
         return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
     }
 }
+
 class RolloverImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * 1d);

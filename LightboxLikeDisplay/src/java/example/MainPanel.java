@@ -98,6 +98,7 @@ class LightboxGlassPane extends JPanel {
             }
         }
     }
+
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);

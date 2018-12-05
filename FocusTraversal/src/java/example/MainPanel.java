@@ -83,6 +83,7 @@ public final class MainPanel extends JPanel {
             debugPrint();
         }
     }
+
     protected void debugPrint() {
         Container w = getTopLevelAncestor();
         textarea.setText(debugString("frame", w)

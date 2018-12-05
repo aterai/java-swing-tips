@@ -211,6 +211,7 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
         numberFormatter.setValueClass(Integer.class);
         ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }
+
     protected NumberFormatterFactory() {
         super(numberFormatter, numberFormatter, numberFormatter);
         // super(new NumberFormatter(amountEditFormat),

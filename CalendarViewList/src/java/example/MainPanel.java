@@ -195,6 +195,7 @@ public final class MainPanel extends JPanel {
             return l;
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

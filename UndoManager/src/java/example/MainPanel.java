@@ -53,6 +53,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
+
     private static class RedoAction extends AbstractAction {
         private final UndoManager undoManager;
         protected RedoAction(UndoManager manager) {
@@ -68,6 +69,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
+
     private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

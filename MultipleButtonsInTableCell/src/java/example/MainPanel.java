@@ -160,6 +160,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
             EventQueue.invokeLater(() -> fireEditingStopped());
         }
     }
+
     protected ButtonsEditor(JTable table) {
         super();
         this.table = table;

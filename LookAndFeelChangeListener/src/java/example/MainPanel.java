@@ -24,6 +24,7 @@ public class MainPanel extends JPanel {
             return key;
         }
     }
+
     private final JCheckBox dfbaiCheck = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
     private final JCheckBox ddfiCheck = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
     private final JTextArea textArea = new JTextArea();

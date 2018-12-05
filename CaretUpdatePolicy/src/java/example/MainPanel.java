@@ -76,6 +76,7 @@ public class MainPanel extends JPanel {
             }
         }
     }
+
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

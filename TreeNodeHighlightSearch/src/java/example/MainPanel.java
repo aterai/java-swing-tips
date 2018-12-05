@@ -96,6 +96,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 //*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);

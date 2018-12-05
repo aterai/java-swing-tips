@@ -121,6 +121,7 @@ public class MainPanel extends JPanel {
     //     bits = bits.and(M32).add(bits.shiftRight(32).and(M32));
     //     return bits.intValue();
     // }
+
     private static String print(BigInteger l) {
         String b = l.toString(2);
         int count = l.bitCount();

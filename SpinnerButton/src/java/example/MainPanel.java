@@ -59,6 +59,7 @@ public final class MainPanel extends JPanel {
             return previousButton;
         }
     }
+
     private static class MyWinSpinnerUI extends WindowsSpinnerUI {
         @Override protected Component createNextButton() {
             JComponent nextButton = (JComponent) super.createNextButton();
@@ -71,6 +72,7 @@ public final class MainPanel extends JPanel {
             return previousButton;
         }
     }
+
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));

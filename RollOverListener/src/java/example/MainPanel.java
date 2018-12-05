@@ -83,6 +83,7 @@ class RollOverList<E> extends JList<E> {
             return c;
         }
     }
+
     private class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;

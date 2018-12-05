@@ -138,6 +138,7 @@ public final class MainPanel extends JPanel {
             return l;
         }
     }
+
     private static JLabel makeLabel(String title, Font font) {
         JLabel label = new JLabel(title);
         label.setFont(font);

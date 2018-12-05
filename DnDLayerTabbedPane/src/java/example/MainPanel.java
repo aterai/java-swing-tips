@@ -170,6 +170,7 @@ class DnDTabbedPane extends JTabbedPane {
         //         + "insert=" + isInsert + "]";
         // }
     }
+
     private void clickArrowButton(String actionKey) {
         JButton scrollForwardButton = null;
         JButton scrollBackwardButton = null;

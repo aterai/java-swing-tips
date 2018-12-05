@@ -143,6 +143,7 @@ final class LookAndFeelUtil {
             setLookAndFeel(laf);
         }
     }
+
     public static void setLookAndFeel(String laf) {
         if (currentLaf.equals(laf)) {
             return;

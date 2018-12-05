@@ -152,6 +152,7 @@ class LabelWithToolBox extends JLabel {
             }
         }
     }
+
     private JButton makeToolButton(String name) {
         ImageIcon icon = new ImageIcon(getClass().getResource(name));
         JButton b = new JButton();

@@ -167,6 +167,7 @@ class FileModel extends DefaultTableModel {
         }
     }
 }
+
 class FileName {
     private String name;
     private String absolutePath;

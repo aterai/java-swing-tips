@@ -209,6 +209,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
         return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
 }
+
 // delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final JCheckBox checkBox = new JCheckBox() {
