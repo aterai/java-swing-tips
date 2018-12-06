@@ -18,6 +18,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
     private transient SwingWorker<String, Void> worker;
+
     private MainPanel() {
         super(new BorderLayout());
         UIManager.put("ProgressBar.cycleTime", 1000);
@@ -65,13 +66,16 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
+
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+        boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+        if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
         }
     }
+
     private static Component makePanel(Component cmp) {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -82,6 +86,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         p.add(cmp, c);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -89,6 +94,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -108,14 +114,17 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 class StripedProgressBarUI extends BasicProgressBarUI {
     protected final boolean dir;
     protected final boolean slope;
+
     protected StripedProgressBarUI(boolean dir, boolean slope) {
         super();
         this.dir = dir;
         this.slope = slope;
     }
+
     @Override protected int getBoxLength(int availableLength, int otherDimension) {
         return availableLength; // (int) Math.round(availableLength / 6d);
     }
+
     @Override public void paintIndeterminate(Graphics g, JComponent c) {
         // if (!(g instanceof Graphics2D)) {
         //     return;
@@ -189,10 +198,12 @@ class BackgroundTask extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

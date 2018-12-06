@@ -66,7 +66,8 @@ public class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(2));
 
         addHierarchyListener(e -> {
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+            boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+            if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
                 System.out.println("DISPOSE_ON_CLOSE");
                 worker.cancel(true);
                 worker = null;
@@ -78,6 +79,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static Component makeTitledPanel(String title, Component... list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
@@ -89,6 +91,7 @@ public class MainPanel extends JPanel {
         Stream.of(list).forEach(cmp -> p.add(cmp, c));
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -96,6 +99,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -165,10 +169,12 @@ class BackgroundTask extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

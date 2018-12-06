@@ -107,7 +107,8 @@ public class MainPanel extends JPanel {
 
         InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
-        // Java 10: imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
+        // Java 10:
+        // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
         getActionMap().put("open-searchbox", showHideAction);
 
         add(controls, BorderLayout.NORTH);
@@ -115,6 +116,7 @@ public class MainPanel extends JPanel {
         add(showHideButton, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
         set1.add(new DefaultMutableTreeNode("111111111"));
@@ -136,6 +138,7 @@ public class MainPanel extends JPanel {
         set2.add(set3);
         return new DefaultTreeModel(root);
     }
+
     protected static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
         Object o = path.getLastPathComponent();
         if (o instanceof TreeNode) {
@@ -177,6 +180,7 @@ public class MainPanel extends JPanel {
     //     }
     // }
     // // <blockquote />
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -184,6 +188,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

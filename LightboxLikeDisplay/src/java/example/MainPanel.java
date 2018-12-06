@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
         add(button);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private JPanel makeDummyPanel() {
         JButton b = new JButton("Button & Mnemonic");
         b.setMnemonic(KeyEvent.VK_B);
@@ -43,6 +44,7 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -50,6 +52,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -88,12 +91,15 @@ class LightboxGlassPane extends JPanel {
         addMouseListener(handler);
         addHierarchyListener(handler);
     }
+
     private class Handler extends MouseAdapter implements HierarchyListener {
         @Override public void mouseClicked(MouseEvent e) {
             e.getComponent().setVisible(false);
         }
+
         @Override public void hierarchyChanged(HierarchyEvent e) {
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(animator)) {
+            boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+            if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(animator)) {
                 animator.stop();
             }
         }
@@ -123,6 +129,7 @@ class LightboxGlassPane extends JPanel {
         }
         animatedIcon.setRunning(isVisible);
     }
+
     @Override protected void paintComponent(Graphics g) {
         Optional.ofNullable(getRootPane()).ifPresent(r -> r.getLayeredPane().print(g));
         super.paintComponent(g);
@@ -176,17 +183,19 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(SX + 1 * R, SY + 5 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
-
     private boolean running;
+
     public void next() {
         if (running) {
             // list.add(list.remove(0));
             Collections.rotate(list, 1);
         }
     }
+
     public void setRunning(boolean running) {
         this.running = running;
     }
+
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -202,9 +211,11 @@ class AnimeIcon implements Icon {
         }
         g2.dispose();
     }
+
     @Override public int getIconWidth() {
         return WIDTH;
     }
+
     @Override public int getIconHeight() {
         return HEIGHT;
     }

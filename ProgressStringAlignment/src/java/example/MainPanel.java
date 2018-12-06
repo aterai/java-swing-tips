@@ -57,13 +57,16 @@ public class MainPanel extends JPanel implements HierarchyListener {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+        boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+        if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -71,6 +74,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -97,6 +101,7 @@ class StringAlignmentProgressBar extends JProgressBar {
         super(model);
         label = new JLabel(getString(), halign);
     }
+
     @Override public void updateUI() {
         removeAll();
         // removeChangeListener(changeListener);
@@ -112,6 +117,7 @@ class StringAlignmentProgressBar extends JProgressBar {
             label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         });
     }
+
     @Override protected ChangeListener createChangeListener() {
         return e -> {
             // BoundedRangeModel m = (BoundedRangeModel) e.getSource(); // label.setText(m.getValue() + "%");
@@ -139,10 +145,12 @@ class BackgroundTask extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

@@ -15,6 +15,7 @@ import javax.swing.plaf.nimbus.AbstractRegionPainter;
 
 public final class MainPanel extends JPanel {
     private transient SwingWorker<String, Void> worker;
+
     private MainPanel() {
         super(new BorderLayout());
         BoundedRangeModel model = new DefaultBoundedRangeModel();
@@ -91,7 +92,8 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(5));
 
         addHierarchyListener(e -> {
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+            boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+            if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
                 System.out.println("DISPOSE_ON_CLOSE");
                 worker.cancel(true);
                 worker = null;
@@ -102,6 +104,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
@@ -112,6 +115,7 @@ public final class MainPanel extends JPanel {
         p.add(cmp, c);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -119,6 +123,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -161,10 +166,12 @@ class BackgroundTask extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
@@ -193,6 +200,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     private final PaintContext ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(29, 19), false);
     private Rectangle2D rect = new Rectangle2D.Float();
     private Path2D path = new Path2D.Float();
+
     @Override public void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] extendedCacheKeys) {
         path = decodePath1();
         g.setPaint(color17);
@@ -204,9 +212,11 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
         g.setPaint(decodeGradient6(rect));
         g.fill(rect);
     }
+
     @Override public PaintContext getPaintContext() {
         return ctx;
     }
+
     @SuppressWarnings("checkstyle:linelength")
     private Path2D decodePath1() {
         path.reset();
@@ -224,6 +234,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
         path.closePath();
         return path;
     }
+
     private Rectangle2D decodeRect3() {
         rect.setRect(decodeX(.4f), // x
                      decodeY(.4f), // y
@@ -231,6 +242,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
                      decodeY(2.6f) - decodeY(.4f)); // height
         return rect;
     }
+
     private Rectangle2D decodeRect4() {
         rect.setRect(decodeX(.6f), // x
                      decodeY(.6f), // y
@@ -238,6 +250,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
                      decodeY(2.4f) - decodeY(.6f)); // height
         return rect;
     }
+
     private Paint decodeGradient5(Shape s) {
         Rectangle2D bounds = s.getBounds2D();
         float x = (float) bounds.getX();
@@ -261,6 +274,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
                 color22
             });
     }
+
     private Paint decodeGradient6(Shape s) {
         Rectangle2D bounds = s.getBounds2D();
         float x = (float) bounds.getX();

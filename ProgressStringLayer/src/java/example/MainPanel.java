@@ -65,19 +65,23 @@ public class MainPanel extends JPanel implements HierarchyListener {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+        boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+        if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
         }
     }
+
     private static Component makeProgressBar1(BoundedRangeModel model) {
         JProgressBar progressBar = new TextLabelProgressBar(model);
         progressBar.setOrientation(SwingConstants.VERTICAL);
         progressBar.setStringPainted(false);
         return progressBar;
     }
+
     private static Component makeProgressBar2(BoundedRangeModel model) {
         JLabel label = new JLabel("000/100");
         label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -93,6 +97,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
         progressBar.setStringPainted(false);
         return new JLayer<>(progressBar, new ProgressBarLayerUI(label));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -100,6 +105,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -136,10 +142,12 @@ class BackgroundTask extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
@@ -157,6 +165,7 @@ class TextLabelProgressBar extends JProgressBar {
     protected TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
+
     @Override public void updateUI() {
         removeAll();
         // removeChangeListener(changeListener);
@@ -173,6 +182,7 @@ class TextLabelProgressBar extends JProgressBar {
             label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         });
     }
+
     @Override protected ChangeListener createChangeListener() {
         return e -> {
             int iv = (int) (100 * getPercentComplete());
@@ -180,6 +190,7 @@ class TextLabelProgressBar extends JProgressBar {
             // label.setText(getString());
         };
     }
+
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         Insets i = label.getInsets();
@@ -191,10 +202,12 @@ class TextLabelProgressBar extends JProgressBar {
 class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     private final JPanel rubberStamp = new JPanel();
     private final JLabel label;
+
     protected ProgressBarLayerUI(JLabel label) {
         super();
         this.label = label;
     }
+
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {

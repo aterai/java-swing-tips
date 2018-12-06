@@ -14,7 +14,6 @@ public class MainPanel extends JPanel {
     protected final JTextField field = new JTextField("", 10);
     protected final JButton button = new JButton("Find Next(dummy)");
     protected final JButton showHideButton = new JButton();
-
     protected Timer animator;
     protected boolean isHidden = true;
     protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
@@ -87,13 +86,15 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout());
         InputMap imap = p.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
-        // Java 10: imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
+        // Java 10:
+        // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
         p.getActionMap().put("open-searchbox", act);
         p.add(controls, BorderLayout.NORTH);
         p.add(new JScrollPane(tree));
         p.add(showHideButton, BorderLayout.SOUTH);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -101,6 +102,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

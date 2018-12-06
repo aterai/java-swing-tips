@@ -74,17 +74,20 @@ public final class MainPanel extends JPanel {
         add(t);
         setPreferredSize(new Dimension(320, 240));
     }
+
     @Override public void updateUI() {
         removeHierarchyListener(hierarchyListener);
         super.updateUI();
         hierarchyListener = e -> {
-            if (Objects.nonNull(timer) && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+            boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+            if (isDisplayableChanged && Objects.nonNull(timer) && !e.getComponent().isDisplayable()) {
                 System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
                 timer.stop();
             }
         };
         addHierarchyListener(hierarchyListener);
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -92,6 +95,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

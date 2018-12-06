@@ -57,6 +57,7 @@ public class MainPanel extends JPanel {
             }
         }
     };
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -126,7 +127,8 @@ public class MainPanel extends JPanel {
 
         InputMap imap = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
-        // Java 10: imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
+        // Java 10:
+        // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
         p.getActionMap().put("open-searchbox", showHideAction);
         p.getActionMap().put("close-searchbox", hideAction);
@@ -137,6 +139,7 @@ public class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -144,6 +147,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -165,11 +169,13 @@ class FindNextAction extends AbstractAction {
     private final JTree tree;
     private final JTextField field;
     private final List<TreePath> rollOverPathLists = new ArrayList<>();
+
     protected FindNextAction(JTree tree, JTextField field) {
         super();
         this.tree = tree;
         this.field = field;
     }
+
     @Override public void actionPerformed(ActionEvent e) {
         TreePath selectedPath = tree.getSelectionPath();
         tree.clearSelection();
@@ -189,6 +195,7 @@ class FindNextAction extends AbstractAction {
             tree.scrollPathToVisible(p);
         }
     }
+
     private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
         Object o = path.getLastPathComponent();
         if (o instanceof TreeNode) {
@@ -208,16 +215,20 @@ class FindNextAction extends AbstractAction {
 
 final class AnimationUtil {
     private static final int N = 3;
+
     private AnimationUtil() { /* Singleton */ }
     // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
     // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+
     public static double easeIn(double t) {
         // range: 0.0 <= t <= 1.0
         return Math.pow(t, N);
     }
+
     public static double easeOut(double t) {
         return Math.pow(t - 1d, N) + 1d;
     }
+
     public static double easeInOut(double t) {
         double ret;
         boolean isFirstHalf = t < .5;
@@ -228,6 +239,7 @@ final class AnimationUtil {
         }
         return ret;
     }
+
     // http://d.hatena.ne.jp/pcl/20120617/p1
     // http://d.hatena.ne.jp/rexpit/20110328/1301305266
     // http://c2.com/cgi/wiki?IntegerPowerAlgorithm

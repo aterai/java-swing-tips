@@ -36,6 +36,7 @@ public final class MainPanel extends JPanel {
                 history.remove(component);
                 history.add(0, component);
             }
+
             @Override public void removeTabAt(int index) {
                 Component component = getComponentAt(index);
                 super.removeTabAt(index);
@@ -54,7 +55,8 @@ public final class MainPanel extends JPanel {
 
         InputMap im = tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), CLOSE_CURRENT_TAB);
-        // Java 10: im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), CLOSE_CURRENT_TAB);
+        // Java 10:
+        // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), CLOSE_CURRENT_TAB);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), CLOSE_CURRENT_TAB);
         tabbedPane.getActionMap().put(CLOSE_CURRENT_TAB, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -86,6 +88,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -93,6 +96,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -113,12 +117,15 @@ public final class MainPanel extends JPanel {
 class ClippedTitleTabbedPane extends JTabbedPane {
     private static final int MAX_TAB_WIDTH = 200;
     private static final int MIN_TAB_WIDTH = 50;
+
     protected ClippedTitleTabbedPane() {
         super();
     }
+
     protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
+
     protected Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
         if (Objects.nonNull(insets)) {
@@ -129,6 +136,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+
     protected Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
         if (Objects.nonNull(insets)) {
@@ -139,6 +147,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {
@@ -165,10 +174,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
         super.doLayout();
     }
+
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
         super.insertTab(title, icon, component, Objects.nonNull(tip) ? tip : title, index);
         setTabComponentAt(index, new ButtonTabComponent(this));
     }
+
     protected void updateAllTabWidth(int tabWidth, int gap) {
         Dimension dim = new Dimension();
         int rest = gap;
@@ -183,6 +194,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             }
         }
     }
+
     private static boolean isTopBottomTabPlacement(int tabPlacement) {
         return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
     }
@@ -222,6 +234,7 @@ class ButtonTabComponent extends JPanel {
         add(button, BorderLayout.EAST);
         setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
     }
+
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -229,6 +242,7 @@ class ButtonTabComponent extends JPanel {
                 tabbedPane.remove(i);
             }
         }
+
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -236,6 +250,7 @@ class ButtonTabComponent extends JPanel {
                 button.setBorderPainted(true);
             }
         }
+
         @Override public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -248,9 +263,11 @@ class ButtonTabComponent extends JPanel {
 
 class CloseTabIcon implements Icon {
     private final Color color;
+
     protected CloseTabIcon(Color color) {
         this.color = color;
     }
+
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -263,9 +280,11 @@ class CloseTabIcon implements Icon {
         g2.drawLine(10, 4,  4, 10);
         g2.dispose();
     }
+
     @Override public int getIconWidth() {
         return 16;
     }
+
     @Override public int getIconHeight() {
         return 16;
     }
