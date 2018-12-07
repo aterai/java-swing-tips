@@ -16,9 +16,11 @@ public final class MainPanel extends JPanel {
         @Override public String getToolTipTextAt(int index) {
             return getTitleAt(index);
         }
+
         @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
             super.insertTab(title, icon, component, title, index);
         }
+
         @Override public void updateUI() {
             super.updateUI();
             if (getUI() instanceof WindowsTabbedPaneUI) {
@@ -28,6 +30,7 @@ public final class MainPanel extends JPanel {
             }
         }
     };
+
     private MainPanel() {
         super(new BorderLayout());
         List<? extends JTabbedPane> list = Arrays.asList(
@@ -46,6 +49,7 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
         // tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
         // tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -55,6 +59,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("444444444444", new JLabel("dddddddddddddddd"));
         return tabbedPane;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -62,6 +67,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -93,17 +99,16 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
             return (int) (width / tabPane.getTabCount());
         }
     }
-    @Override protected void paintText(Graphics g, int tabPlacement,
-                                       Font font, FontMetrics metrics, int tabIndex,
-                                       String title, Rectangle textRect,
-                                       boolean isSelected) {
+
+    @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
         int fw = (int) font.getSize();
         Rectangle tabRect = rects[tabIndex];
         Rectangle rect = new Rectangle(textRect.x + fw / 2, textRect.y, tabRect.width - fw, textRect.height);
-        String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                SwingConstants.CENTER, SwingConstants.CENTER,
-                                                                SwingConstants.CENTER, SwingConstants.TRAILING,
-                                                                rect, new Rectangle(), rect, 0);
+        String clippedText = SwingUtilities.layoutCompoundLabel(
+            metrics, title, null,
+            SwingConstants.CENTER, SwingConstants.CENTER,
+            SwingConstants.CENTER, SwingConstants.TRAILING,
+            rect, new Rectangle(), rect, 0);
         if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
         } else {
@@ -128,21 +133,19 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
             return (int) (width / tabPane.getTabCount());
         }
     }
-    @Override protected void paintText(Graphics g, int tabPlacement,
-                                       Font font, FontMetrics metrics, int tabIndex,
-                                       String title, Rectangle textRect,
-                                       boolean isSelected) {
+
+    @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
         Rectangle tabRect = rects[tabIndex];
         Rectangle rect = new Rectangle(textRect.x + tabInsets.left, textRect.y,
                                        tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
-        String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                SwingConstants.CENTER, SwingConstants.CENTER,
-                                                                SwingConstants.CENTER, SwingConstants.TRAILING,
-                                                                rect, new Rectangle(), rect, 0);
+        String clippedText = SwingUtilities.layoutCompoundLabel(
+            metrics, title, null, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.TRAILING,
+            rect, new Rectangle(), rect, 0);
         if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
         } else {
-            rect = new Rectangle(textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
+            rect = new Rectangle(
+                textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
             super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
         }
     }

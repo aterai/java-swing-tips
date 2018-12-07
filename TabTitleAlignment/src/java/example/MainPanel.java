@@ -53,6 +53,7 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
         jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         jtp.addTab("1111111111111111111", new JScrollPane(new JTree()));
@@ -62,6 +63,7 @@ public final class MainPanel extends JPanel {
         jtp.addTab("55555555555555555555555555555555", new JLabel("e"));
         return jtp;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -69,6 +71,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -90,9 +93,11 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     protected ClippedTitleTabbedPane() {
         super();
     }
+
     protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
+
     protected Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
         if (Objects.nonNull(insets)) {
@@ -103,6 +108,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+
     protected Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
         if (Objects.nonNull(insets)) {
@@ -113,6 +119,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
+
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0 || !isVisible()) {
@@ -141,10 +148,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
         super.doLayout();
     }
+
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
         setTabComponentAt(index, new ButtonTabComponent(this));
     }
+
     protected void updateAllTabWidth(int tabWidth, int gap) {
         Dimension dim = new Dimension();
         int rest = gap;
@@ -162,11 +171,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 }
 
 class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
-    @Override protected void layoutLabel(int tabPlacement,
-                                         FontMetrics metrics, int tabIndex,
-                                         String title, Icon icon,
-                                         Rectangle tabRect, Rectangle iconRect,
-                                         Rectangle textRect, boolean isSelected) {
+    @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
@@ -174,16 +179,17 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         if (Objects.nonNull(v)) {
             tabPane.putClientProperty(html, v);
         }
-        SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                                           metrics, title, icon,
-                                           SwingConstants.CENTER,
-                                           SwingConstants.LEFT, // CENTER, <----
-                                           SwingConstants.CENTER,
-                                           SwingConstants.TRAILING,
-                                           tabRect,
-                                           iconRect,
-                                           textRect,
-                                           textIconGap);
+        SwingUtilities.layoutCompoundLabel(
+            (JComponent) tabPane,
+            metrics, title, icon,
+            SwingConstants.CENTER,
+            SwingConstants.LEFT, // CENTER, <----
+            SwingConstants.CENTER,
+            SwingConstants.TRAILING,
+            tabRect,
+            iconRect,
+            textRect,
+            textIconGap);
         tabPane.putClientProperty(html, null);
         textRect.translate(tabInsets.left + 2, 0); // <----
         textRect.width -= tabInsets.left + tabInsets.right;
@@ -198,27 +204,24 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 }
 
 class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
-    @Override protected void layoutLabel(int tabPlacement,
-                                         FontMetrics metrics, int tabIndex,
-                                         String title, Icon icon,
-                                         Rectangle tabRect, Rectangle iconRect,
-                                         Rectangle textRect, boolean isSelected) {
+    @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
         if (Objects.nonNull(v)) {
             tabPane.putClientProperty("html", v);
         }
-        SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                                           metrics, title, icon,
-                                           SwingConstants.CENTER,
-                                           SwingConstants.LEFT, // CENTER, <----
-                                           SwingConstants.CENTER,
-                                           SwingConstants.TRAILING,
-                                           tabRect,
-                                           iconRect,
-                                           textRect,
-                                           textIconGap);
+        SwingUtilities.layoutCompoundLabel(
+            (JComponent) tabPane,
+            metrics, title, icon,
+            SwingConstants.CENTER,
+            SwingConstants.LEFT, // CENTER, <----
+            SwingConstants.CENTER,
+            SwingConstants.TRAILING,
+            tabRect,
+            iconRect,
+            textRect,
+            textIconGap);
         tabPane.putClientProperty("html", null);
         textRect.translate(tabInsets.left, 0); // <----
         textRect.width -= tabInsets.left + tabInsets.right;
@@ -259,6 +262,7 @@ class ButtonTabComponent extends JPanel {
         add(button, BorderLayout.EAST);
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
+
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -266,6 +270,7 @@ class ButtonTabComponent extends JPanel {
                 tabbedPane.remove(i);
             }
         }
+
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -273,6 +278,7 @@ class ButtonTabComponent extends JPanel {
                 button.setBorderPainted(true);
             }
         }
+
         @Override public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -297,12 +303,15 @@ class TabButton extends JButton {
         setBorderPainted(false);
         setRolloverEnabled(true);
     }
+
     @Override public Dimension getPreferredSize() {
         return new Dimension(SIZE, SIZE);
     }
+
     @Override public void updateUI() {
         // we don't want to update UI for this button
     }
+
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();

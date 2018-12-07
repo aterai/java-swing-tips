@@ -16,6 +16,7 @@ import javax.swing.plaf.synth.SynthStyleFactory;
 
 public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
+
     public MainPanel() {
         super(new BorderLayout());
         JPanel p1 = new JPanel();
@@ -67,6 +68,7 @@ public final class MainPanel extends JPanel {
         desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -74,6 +76,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -101,10 +104,12 @@ class MyInternalFrame extends JInternalFrame {
 
 class MySynthStyleFactory extends SynthStyleFactory {
     private final SynthStyleFactory wrappedFactory;
+
     protected MySynthStyleFactory(SynthStyleFactory factory) {
         super();
         this.wrappedFactory = factory;
     }
+
     @Override public SynthStyle getStyle(JComponent c, Region id) {
         SynthStyle s = wrappedFactory.getStyle(c, id);
         // if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
@@ -117,34 +122,44 @@ class MySynthStyleFactory extends SynthStyleFactory {
 
 class TranslucentSynthStyle extends SynthStyle {
     private final SynthStyle style;
+
     protected TranslucentSynthStyle(SynthStyle s) {
         super();
         style = s;
     }
+
     @Override public Object get(SynthContext context, Object key) {
         return style.get(context, key);
     }
+
     @Override public boolean getBoolean(SynthContext context, Object key, boolean defaultValue) {
         return style.getBoolean(context, key, defaultValue);
     }
+
     @Override public Color getColor(SynthContext context, ColorType type) {
         return style.getColor(context, type);
     }
+
     @Override public Font getFont(SynthContext context) {
         return style.getFont(context);
     }
+
     @Override public SynthGraphicsUtils getGraphicsUtils(SynthContext context) {
         return style.getGraphicsUtils(context);
     }
+
     @Override public Icon getIcon(SynthContext context, Object key) {
         return style.getIcon(context, key);
     }
+
     @Override public Insets getInsets(SynthContext context, Insets insets) {
         return style.getInsets(context, insets);
     }
+
     @Override public int getInt(SynthContext context, Object key, int defaultValue) {
         return style.getInt(context, key, defaultValue);
     }
+
     @Override public SynthPainter getPainter(SynthContext context) {
         return new SynthPainter() {
             @Override public void paintInternalFrameBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
@@ -153,16 +168,19 @@ class TranslucentSynthStyle extends SynthStyle {
             }
         };
     }
-    @Override public String getString(SynthContext context,
-                            Object key, String defaultValue) {
+
+    @Override public String getString(SynthContext context, Object key, String defaultValue) {
         return style.getString(context, key, defaultValue);
     }
+
     @Override public void installDefaults(SynthContext context) {
         style.installDefaults(context);
     }
+
     @Override public void uninstallDefaults(SynthContext context) {
         style.uninstallDefaults(context);
     }
+
     @Override public boolean isOpaque(SynthContext context) {
         if (context.getRegion() == Region.INTERNAL_FRAME) {
             return false;
@@ -170,9 +188,11 @@ class TranslucentSynthStyle extends SynthStyle {
             return style.isOpaque(context);
         }
     }
+
     @Override public Color getColorForState(SynthContext context, ColorType type) {
         return null; // Color.RED;
     }
+
     @Override public Font getFontForState(SynthContext context) {
         return null; // new Font(Font.MONOSPACED, Font.ITALIC, 24);
     }
