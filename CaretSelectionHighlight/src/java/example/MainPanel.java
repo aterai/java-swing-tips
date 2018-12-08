@@ -27,6 +27,7 @@ public final class MainPanel extends JPanel {
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static JInternalFrame makeInternalFrame(String title, Point p, Component c) {
         JInternalFrame f = new JInternalFrame(title, true, true, true, true);
         f.add(c);
@@ -34,6 +35,7 @@ public final class MainPanel extends JPanel {
         f.setLocation(p);
         return f;
     }
+
     private static Component makeTextArea(boolean flag) {
         JTextArea textArea = new JTextArea() {
             @Override public void updateUI() {
@@ -54,6 +56,7 @@ public final class MainPanel extends JPanel {
         textArea.selectAll();
         return new JScrollPane(textArea);
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -61,6 +64,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -79,11 +83,14 @@ public final class MainPanel extends JPanel {
 }
 
 class FocusCaret extends DefaultCaret {
-    private static final Highlighter.HighlightPainter NONFOCUS_HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY.brighter());
+    private static final Color COLOR = Color.GRAY.brighter();
+    private static final Highlighter.HighlightPainter NONFOCUS = new DefaultHighlighter.DefaultHighlightPainter(COLOR);
+
     @Override public void focusLost(FocusEvent e) {
         super.focusLost(e);
         setSelectionVisible(true);
     }
+
     @Override public void focusGained(FocusEvent e) {
         super.focusGained(e);
         // https://stackoverflow.com/questions/18237317/how-to-retain-selected-text-in-jtextfield-when-focus-lost
@@ -94,6 +101,7 @@ class FocusCaret extends DefaultCaret {
         // damage(getComponent().getBounds());
         // repaint();
     }
+
     @Override protected Highlighter.HighlightPainter getSelectionPainter() {
         // JComponent c = getComponent();
         // boolean selected = c.hasFocus();
@@ -104,6 +112,6 @@ class FocusCaret extends DefaultCaret {
         //     selected = frame.isSelected();
         // }
         // return selected ? DefaultHighlighter.DefaultPainter : nonFocusHighlightPainter;
-        return getComponent().hasFocus() ? DefaultHighlighter.DefaultPainter : NONFOCUS_HIGHLIGHT;
+        return getComponent().hasFocus() ? DefaultHighlighter.DefaultPainter : NONFOCUS;
     }
 }

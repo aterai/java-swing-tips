@@ -50,7 +50,8 @@ public final class MainPanel extends JPanel {
                 File file = File.createTempFile("output", ".xml");
                 // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                 try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-                    xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"}));
+                    String[] constructorPropertyNames = {"column", "sortOrder"};
+                    xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(constructorPropertyNames));
                     xe.writeObject(table.getRowSorter().getSortKeys());
 
                     xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
@@ -97,6 +98,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -104,6 +106,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -149,6 +152,7 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
 
 class TableHeaderPopupMenu extends JPopupMenu {
     protected int index = -1;
+
     protected TableHeaderPopupMenu() {
         super();
         JTextField textField = new JTextField();
@@ -156,7 +160,9 @@ class TableHeaderPopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
+
             @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add("Edit: setHeaderValue").addActionListener(e -> {
@@ -164,7 +170,8 @@ class TableHeaderPopupMenu extends JPopupMenu {
             TableColumn column = header.getColumnModel().getColumn(index);
             String name = column.getHeaderValue().toString();
             textField.setText(name);
-            int ret = JOptionPane.showConfirmDialog(header.getTable(), textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            Component p = header.getRootPane();
+            int ret = JOptionPane.showConfirmDialog(p, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (ret == JOptionPane.OK_OPTION) {
                 String str = textField.getText().trim();
                 if (!str.equals(name)) {
@@ -174,6 +181,7 @@ class TableHeaderPopupMenu extends JPopupMenu {
             }
         });
     }
+
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTableHeader) {
             JTableHeader header = (JTableHeader) c;

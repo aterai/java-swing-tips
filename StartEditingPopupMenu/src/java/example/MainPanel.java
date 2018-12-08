@@ -51,6 +51,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -58,6 +59,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -86,7 +88,9 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
+
             @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
 
@@ -108,8 +112,8 @@ class TreePopupMenu extends JPopupMenu {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
                 JTree tree = (JTree) getInvoker();
-                int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
+                int ret = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (ret == JOptionPane.OK_OPTION) {
                     Optional.ofNullable(textField.getText().trim())
                         .filter(str -> !str.isEmpty())
                         .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
@@ -120,9 +124,9 @@ class TreePopupMenu extends JPopupMenu {
                 }
             }
         });
-
         add("dummy");
     }
+
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
