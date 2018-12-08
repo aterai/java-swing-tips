@@ -46,6 +46,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         return box;
     }
+
     private static Component makeSystemColor(Color color, String text) {
         JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFFFFFF));
         field.setEditable(false);
@@ -69,6 +70,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         // try {
         //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -117,6 +119,7 @@ final class LookAndFeelUtil {
         createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
         return lafMenu;
     }
+
     private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
         JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
         lafMenuGroup.add(mi);
@@ -124,21 +127,26 @@ final class LookAndFeelUtil {
         mi.setEnabled(isAvailableLookAndFeel(laf));
         return mi;
     }
+
     private static boolean isAvailableLookAndFeel(String laf) {
         try {
             Class<?> lnfClass = Class.forName(laf);
             LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
             return newLnF.isSupportedLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+              | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }
     }
+
     private static class ChangeLookAndFeelAction extends AbstractAction {
         private final String laf;
+
         protected ChangeLookAndFeelAction(String laf) {
             super("ChangeTheme");
             this.laf = laf;
         }
+
         @Override public void actionPerformed(ActionEvent e) {
             setLookAndFeel(laf);
         }
@@ -158,6 +166,7 @@ final class LookAndFeelUtil {
             System.out.println("Failed loading L&F: " + currentLaf);
         }
     }
+
     private static void updateLookAndFeel() {
         for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);

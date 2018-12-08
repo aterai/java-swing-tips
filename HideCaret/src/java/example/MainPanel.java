@@ -4,6 +4,7 @@ package example;
 // @homepage@
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
@@ -27,11 +28,11 @@ public final class MainPanel extends JPanel {
         Caret defaultCaret = textArea.getCaret();
         Highlighter defaultHighlighter = textArea.getHighlighter();
 
-        hidingCaretCheck.addActionListener(e -> textArea.setCaret(((JCheckBox) e.getSource()).isSelected() ? hidingCaret : defaultCaret));
-        hidingHighlighterCheck.addActionListener(e -> textArea.setHighlighter(((JCheckBox) e.getSource()).isSelected() ? null : defaultHighlighter));
+        hidingCaretCheck.addActionListener(e -> textArea.setCaret(isSelected(e) ? hidingCaret : defaultCaret));
+        hidingHighlighterCheck.addActionListener(e -> textArea.setHighlighter(isSelected(e) ? null : defaultHighlighter));
 
-        editableCheck.addActionListener(e -> textArea.setEditable(((JCheckBox) e.getSource()).isSelected()));
-        focusableCheck.addActionListener(e -> textArea.setFocusable(((JCheckBox) e.getSource()).isSelected()));
+        editableCheck.addActionListener(e -> textArea.setEditable(isSelected(e)));
+        focusableCheck.addActionListener(e -> textArea.setFocusable(isSelected(e)));
 
         JPanel p1 = new JPanel();
         p1.add(hidingCaretCheck);
@@ -48,6 +49,11 @@ public final class MainPanel extends JPanel {
         add(new JTextField(), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
+    private static boolean isSelected(ActionEvent e) {
+        return ((JCheckBox) e.getSource()).isSelected();
+    }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -55,6 +61,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

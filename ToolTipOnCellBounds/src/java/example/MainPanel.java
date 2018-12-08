@@ -52,12 +52,14 @@ public final class MainPanel extends JPanel {
         map.forEach((title, c) -> add(makeTitledPanel(title, c)));
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JScrollPane(c, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -65,6 +67,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -85,6 +88,7 @@ class TooltipList<E> extends JList<E> {
     protected TooltipList(ListModel<E> m) {
         super(m);
     }
+
     @Override public Point getToolTipLocation(MouseEvent e) {
         Point p = e.getPoint();
         ListCellRenderer<? super E> r = getCellRenderer();
@@ -104,11 +108,13 @@ class TooltipList<E> extends JList<E> {
 
 class CellRendererTooltipList<E> extends JList<E> {
     protected final JLabel label = new JLabel();
+
     protected CellRendererTooltipList(ListModel<E> m) {
         super(m);
         // TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
         label.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
     }
+
     @Override public Point getToolTipLocation(MouseEvent e) {
         Point p = e.getPoint();
         int i = locationToIndex(p);
@@ -117,7 +123,8 @@ class CellRendererTooltipList<E> extends JList<E> {
         if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
             E str = getModel().getElementAt(i);
-            Component renderer = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
+            Component renderer = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus);
             if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
                 Point pt = cellBounds.getLocation();
                 Insets ins = label.getInsets();
@@ -128,6 +135,7 @@ class CellRendererTooltipList<E> extends JList<E> {
         }
         return null;
     }
+
     @Override public JToolTip createToolTip() {
         JToolTip tip = new JToolTip() {
             @Override public Dimension getPreferredSize() {
@@ -147,6 +155,7 @@ class CellRendererTooltipList<E> extends JList<E> {
 
 class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
     private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
+
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();
@@ -163,11 +172,13 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
 class RendererIcon implements Icon {
     private final Component renderer;
     private final Rectangle rect;
+
     protected RendererIcon(Component renderer, Rectangle rect) {
         this.renderer = renderer;
         this.rect = rect;
         rect.setLocation(0, 0);
     }
+
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof Container) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -176,9 +187,11 @@ class RendererIcon implements Icon {
             g2.dispose();
         }
     }
+
     @Override public int getIconWidth() {
         return renderer.getPreferredSize().width;
     }
+
     @Override public int getIconHeight() {
         return renderer.getPreferredSize().height;
     }

@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
                 JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 RowSorter<? extends TableModel> rs = table.getRowSorter();
                 if (rs instanceof DefaultRowSorter) {
-                    l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(table.convertColumnIndexToModel(column)) ? Color.BLACK : Color.GRAY);
+                    int cmi = table.convertColumnIndexToModel(column);
+                    l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
                 }
                 return l;
             }
@@ -80,6 +81,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

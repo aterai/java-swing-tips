@@ -73,9 +73,11 @@ public final class MainPanel extends JPanel {
         // init JPopupMenu
         popup.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
+
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 dummy.setVisible(false);
             }
+
             @Override public void popupMenuCanceled(PopupMenuEvent e) {
                 dummy.setVisible(false);
             }
@@ -108,6 +110,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -199,11 +202,13 @@ final class TrayIconPopupMenuUtil {
 class TrayIconPopupMenuHandler extends MouseAdapter {
     private final JPopupMenu popup;
     private final Window dummy;
+
     protected TrayIconPopupMenuHandler(JPopupMenu popup, Window dummy) {
         super();
         this.popup = popup;
         this.dummy = dummy;
     }
+
     private void showJPopupMenu(MouseEvent e) {
         if (e.isPopupTrigger()) {
             Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getX(), e.getY());
@@ -213,9 +218,11 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
             popup.show(dummy, 0, 0);
         }
     }
+
     @Override public void mouseReleased(MouseEvent e) {
         showJPopupMenu(e);
     }
+
     @Override public void mousePressed(MouseEvent e) {
         showJPopupMenu(e);
     }
@@ -229,9 +236,11 @@ enum LookAndFeelEnum {
     GTK("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
     NIMBUS("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
     private final String clazz;
+
     LookAndFeelEnum(String clazz) {
         this.clazz = clazz;
     }
+
     public String getClassName() {
         return clazz;
     }
@@ -240,21 +249,25 @@ enum LookAndFeelEnum {
 class ChangeLookAndFeelAction extends AbstractAction {
     private final String lnf;
     private final List<? extends Component> list;
+
     protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<? extends Component> list) {
         super(lnfe.toString());
         this.list = list;
         this.lnf = lnfe.getClassName();
         this.setEnabled(isAvailableLookAndFeel(lnf));
     }
+
     private static boolean isAvailableLookAndFeel(String laf) {
         try {
             Class<?> lnfClass = Class.forName(laf);
             LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
             return newLnF.isSupportedLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+              | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             return false;
         }
     }
+
     @Override public void actionPerformed(ActionEvent e) {
         try {
             UIManager.setLookAndFeel(lnf);
