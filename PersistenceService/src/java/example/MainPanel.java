@@ -26,6 +26,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JScrollPane scroll = new JScrollPane(new JTree());
+
     protected MainPanel() {
         super(new BorderLayout());
         // // Test
@@ -43,6 +44,7 @@ public final class MainPanel extends JPanel {
         // add(box, BorderLayout.SOUTH);
         add(scroll);
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -50,6 +52,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         WindowState windowState = new WindowState();
         SwingWorker<WindowAdapter, Void> worker = new LoadSaveTask(windowState) {
@@ -80,10 +83,12 @@ public final class MainPanel extends JPanel {
 
 class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
     protected final WindowState windowState;
+
     protected LoadSaveTask(WindowState windowState) {
         super();
         this.windowState = windowState;
     }
+
     @Override public WindowAdapter doInBackground() {
         PersistenceService ps;
         BasicService bs;
@@ -117,6 +122,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             return null;
         }
     }
+
     private static void loadWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
         try {
             FileContents fc = ps.get(codebase);
@@ -136,7 +142,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
         } catch (IOException ex) {
             // create the cache
             try {
-                long size = ps.create(codebase, 64000);
+                long size = ps.create(codebase, 64_000);
                 System.out.println("Cache created - size: " + size);
             } catch (IOException ioex) {
                 // System.err.println("Application codebase is not a valid URL?!");
@@ -144,6 +150,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             }
         }
     }
+
     protected static void saveWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
         try {
             FileContents fc = ps.get(codebase);

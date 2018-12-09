@@ -31,9 +31,11 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static SpinnerNumberModel makeSpinnerNumberModel() {
-        return new SpinnerNumberModel(Long.valueOf(10), Long.valueOf(0), Long.valueOf(99999), Long.valueOf(1));
+        return new SpinnerNumberModel(Long.valueOf(10), Long.valueOf(0), Long.valueOf(99_999), Long.valueOf(1));
     }
+
     private static Component makeTitledPanel(String title, Component cmp) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
@@ -44,6 +46,7 @@ public final class MainPanel extends JPanel {
         p.add(cmp, c);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -51,6 +54,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -78,17 +82,21 @@ class WarningSpinner extends JSpinner {
             @Override public void changedUpdate(DocumentEvent e) {
                 updateEditValid();
             }
+
             @Override public void insertUpdate(DocumentEvent e) {
                 updateEditValid();
             }
+
             @Override public void removeUpdate(DocumentEvent e) {
                 updateEditValid();
             }
+
             private void updateEditValid() {
                 EventQueue.invokeLater(() -> ftf.setBackground(ftf.isEditValid() ? Color.WHITE : errorBackground));
             }
         });
     }
+
     private static DefaultFormatterFactory makeFFactory(SpinnerNumberModel m) { // DecimalFormatSymbols dfs) {
         NumberFormat format = new DecimalFormat("####0"); // , dfs);
         NumberFormatter editFormatter = new NumberFormatter(format) {

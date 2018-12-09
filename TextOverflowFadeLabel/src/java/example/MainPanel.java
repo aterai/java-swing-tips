@@ -79,7 +79,7 @@ class FadeOutLabel extends JLabel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setFont(g.getFont());
         g2.setClip(rect);
-        g2.setComposite(AlphaComposite.SrcOver.derive(.99999f));
+        g2.setComposite(AlphaComposite.SrcOver.derive(.99f));
         super.paintComponent(g2);
 
         rect.width = 1;

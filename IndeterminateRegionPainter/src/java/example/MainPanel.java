@@ -182,6 +182,7 @@ class ProgressListener implements PropertyChangeListener {
     }
 }
 
+@SuppressWarnings("PMD.UseUnderscoresInNumericLiterals")
 class IndeterminateRegionPainter extends AbstractRegionPainter {
     // Copied from javax.swing.plaf.nimbus.ProgressBarPainter.java
     private static final String NIMBUS_ORANGE = "nimbusOrange";

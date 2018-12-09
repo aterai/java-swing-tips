@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         p.add(progressBar);
 
         int cycleTime = UIManager.getInt("ProgressBar.cycleTime");
-        JSpinner cycleTimeSpinner = new JSpinner(new SpinnerNumberModel(cycleTime, 1000, 10000, 100));
+        JSpinner cycleTimeSpinner = new JSpinner(new SpinnerNumberModel(cycleTime, 1_000, 10_000, 100));
 
         int repaintInterval = UIManager.getInt("ProgressBar.repaintInterval");
         JSpinner repaintIntervalSpinner = new JSpinner(new SpinnerNumberModel(repaintInterval, 10, 100, 10));
@@ -47,6 +47,7 @@ public final class MainPanel extends JPanel {
         // add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -54,6 +55,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

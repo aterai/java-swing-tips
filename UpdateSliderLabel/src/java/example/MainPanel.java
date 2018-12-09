@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     }
 
     private JSlider makeSlider() {
-        JSlider slider = new JSlider(0, 10000);
+        JSlider slider = new JSlider(0, 10_000);
         slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
         slider.setMajorTickSpacing(2500);
         slider.setMinorTickSpacing(500);
@@ -98,6 +98,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

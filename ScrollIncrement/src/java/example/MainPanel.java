@@ -9,6 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String LF = "\n";
+
     private MainPanel() {
         super(new BorderLayout());
         StringBuilder buf = new StringBuilder();
@@ -17,7 +18,7 @@ public final class MainPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100_000, 1));
         spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));
         spinner.addChangeListener(e -> scrollPane.getVerticalScrollBar().setUnitIncrement((Integer) ((JSpinner) e.getSource()).getValue()));
         Box box = Box.createHorizontalBox();
@@ -37,6 +38,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

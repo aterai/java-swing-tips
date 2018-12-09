@@ -11,15 +11,19 @@ public class WindowState implements Serializable {
     private Point location = new Point();
     private Dimension size = new Dimension(320, 240);
     // public WindowState() {}
+
     public final Point getLocation() {
         return location;
     }
+
     public final void setLocation(Point location) {
         this.location = location;
     }
+
     public final Dimension getSize() {
         return size;
     }
+
     public final void setSize(Dimension size) {
         this.size = size;
     }

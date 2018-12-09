@@ -21,6 +21,7 @@ public final class MainPanel extends JPanel {
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static <E> void move0(JList<E> from, JList<E> to) {
         int[] selectedIndices = from.getSelectedIndices();
         if (selectedIndices.length > 0) {
@@ -34,6 +35,7 @@ public final class MainPanel extends JPanel {
             }
         }
     }
+
     private static <E> void move1(JList<E> from, JList<E> to) {
         ListSelectionModel sm = from.getSelectionModel();
         int[] selectedIndices = from.getSelectedIndices();
@@ -61,6 +63,7 @@ public final class MainPanel extends JPanel {
             from.setModel(model);
         }
     }
+
     private static <E> void move2(JList<E> from, JList<E> to) {
         int[] selectedIndices = from.getSelectedIndices();
         if (selectedIndices.length > 0) {
@@ -68,6 +71,7 @@ public final class MainPanel extends JPanel {
             ((ArrayListModel<E>) from.getModel()).remove(selectedIndices);
         }
     }
+
     private static <E> JList<E> makeList(ListModel<E> model) {
         JList<E> list = new JList<>(model);
         JPopupMenu popup = new JPopupMenu();
@@ -84,12 +88,14 @@ public final class MainPanel extends JPanel {
         list.setComponentPopupMenu(popup);
         return list;
     }
+
     private static JButton makeButton(String title) {
         JButton button = new JButton(title);
         button.setFocusable(false);
         button.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
         return button;
     }
+
     private Component makeUI0() {
         DefaultListModel<String> model = new DefaultListModel<>();
         IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
@@ -105,9 +111,10 @@ public final class MainPanel extends JPanel {
 
         return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
     }
+
     private Component makeUI1() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        IntStream.range(10000, 30000).mapToObj(Objects::toString).forEach(model::addElement);
+        IntStream.range(10_000, 30_000).mapToObj(Objects::toString).forEach(model::addElement);
         JList<String> leftList = makeList(model);
 
         JList<String> rightList = makeList(new DefaultListModel<>());
@@ -120,9 +127,10 @@ public final class MainPanel extends JPanel {
 
         return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
     }
+
     private Component makeUI2() {
         ArrayListModel<String> model = new ArrayListModel<>();
-        IntStream.range(30000, 50000).mapToObj(Objects::toString).forEach(model::add);
+        IntStream.range(30_000, 50_000).mapToObj(Objects::toString).forEach(model::add);
         JList<String> leftList = makeList(model);
 
         JList<String> rightList = makeList(new ArrayListModel<>());
@@ -135,6 +143,7 @@ public final class MainPanel extends JPanel {
 
         return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -142,6 +151,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -207,6 +217,7 @@ class ArrayListModel<E> extends AbstractListModel<E> {
 
 final class SpringLayoutUtil {
     private SpringLayoutUtil() { /* Singleton */ }
+
     public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float sx, float sy, float sw, float sh) {
         Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
         Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
@@ -219,6 +230,7 @@ final class SpringLayoutUtil {
 
         parent.add(child);
     }
+
     public static Component makePanel(JList<?> leftList, JList<?> rightList, JButton l2rButton, JButton r2lButton) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));

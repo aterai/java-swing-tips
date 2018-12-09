@@ -53,6 +53,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
+
     protected final void executeWorker(Component c) {
         Window w = SwingUtilities.getWindowAncestor(c);
         int toDecideToPopup = (int) millisToDecide.getValue();
@@ -64,7 +65,7 @@ public class MainPanel extends JPanel {
         // System.out.println(monitor.getMillisToDecideToPopup());
         // System.out.println(monitor.getMillisToPopup());
 
-        int lengthOfTask = Math.max(10000, toDecideToPopup * 5);
+        int lengthOfTask = Math.max(10_000, toDecideToPopup * 5);
         runButton.setEnabled(false);
         SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
             @Override protected void process(List<String> chunks) {
@@ -80,6 +81,7 @@ public class MainPanel extends JPanel {
                     monitor.setNote(message);
                 }
             }
+
             @Override public void done() {
                 if (!isDisplayable()) {
                     System.out.println("done: DISPOSE_ON_CLOSE");
@@ -106,9 +108,11 @@ public class MainPanel extends JPanel {
         worker.addPropertyChangeListener(new ProgressListener(monitor));
         worker.execute();
     }
+
     private static JSpinner makeSpinner(int num, int min, int max, int step) {
         return new JSpinner(new SpinnerNumberModel(num, min, max, step));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -116,6 +120,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -135,10 +140,12 @@ public class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<String, String> {
     private final int lengthOfTask;
+
     protected BackgroundTask(int lengthOfTask) {
         super();
         this.lengthOfTask = lengthOfTask;
     }
+
     @Override public String doInBackground() {
         int current = 0;
         while (current < lengthOfTask && !isCancelled()) {
@@ -160,10 +167,12 @@ class BackgroundTask extends SwingWorker<String, String> {
 
 class ProgressListener implements PropertyChangeListener {
     private final ProgressMonitor monitor;
+
     protected ProgressListener(ProgressMonitor monitor) {
         this.monitor = monitor;
         this.monitor.setProgress(0);
     }
+
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {

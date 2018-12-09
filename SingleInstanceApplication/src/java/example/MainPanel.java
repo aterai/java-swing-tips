@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -23,6 +24,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     // private static final IAppInstanceCounter counter = new JVMDescriptorInstanceCounter();
     public static void createAndShowGui() {
         try {
@@ -39,7 +41,7 @@ public final class MainPanel extends JPanel {
         // Java Swing Hacks #68
         ServerSocket socket = null;
         try {
-            socket = new ServerSocket(38765);
+            socket = new ServerSocket(38_765);
         } catch (IOException ex) {
             socket = null;
         }

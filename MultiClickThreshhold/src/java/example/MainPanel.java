@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         button.addActionListener(e -> addInternalFrame(desktop));
 
         long lv = button.getMultiClickThreshhold();
-        JSpinner spinner = new JSpinner(new SpinnerNumberModel(Long.valueOf(lv), Long.valueOf(0), Long.valueOf(10000), Long.valueOf(100)));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(Long.valueOf(lv), Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100)));
         spinner.addChangeListener(e -> button.setMultiClickThreshhold((long) ((JSpinner) e.getSource()).getValue()));
 
         JMenuBar mb = new JMenuBar();
@@ -32,12 +32,14 @@ public final class MainPanel extends JPanel {
         add(mb, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private void addInternalFrame(JDesktopPane desktop) {
         JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
         desktop.add(f);
         desktop.getDesktopManager().activateFrame(f);
         num++;
     }
+
     private static JInternalFrame createFrame(String t, int x, int y) {
         JInternalFrame f = new JInternalFrame(t, true, true, true, true);
         f.setSize(200, 100);
@@ -45,6 +47,7 @@ public final class MainPanel extends JPanel {
         f.setVisible(true);
         return f;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -52,6 +55,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             System.out.println(UIManager.get("OptionPane.buttonClickThreshhold"));

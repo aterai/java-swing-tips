@@ -48,12 +48,14 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static OptionPaneDescription makeOptionPaneDescription(String type) {
         String key = type + "Icon";
         Icon icon = UIManager.getIcon("OptionPane." + key);
         String msg = String.format("public static final int %s_MESSAGE%nUsed for %s messages.", type.toUpperCase(Locale.ENGLISH), type);
         return new OptionPaneDescription(key, icon, msg);
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -61,6 +63,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -79,7 +82,7 @@ public final class MainPanel extends JPanel {
 
 class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     private static final int TARGET_COLIDX = 0;
-    private final JTextArea textArea = new JTextArea(2, 999999);
+    private final JTextArea textArea = new JTextArea(2, 999_999);
     private final JLabel label = new JLabel();
     private final JLabel iconLabel = new JLabel();
     private final JScrollPane scroll = new JScrollPane(textArea);
@@ -113,6 +116,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         add(label, BorderLayout.NORTH);
         add(scroll);
     }
+
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         OptionPaneDescription d;
         if (value instanceof OptionPaneDescription) {
@@ -160,6 +164,7 @@ class OptionPaneDescription {
     public final String title;
     public final Icon icon;
     public final String text;
+
     protected OptionPaneDescription(String title, Icon icon, String text) {
         this.title = title;
         this.icon = icon;
