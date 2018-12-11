@@ -26,6 +26,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
+
     private MainPanel() {
         super(new BorderLayout());
         JTable table = new JTable(model) {
@@ -44,6 +45,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -51,6 +53,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -75,6 +78,7 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
             d.width = 60;
             return d;
         }
+
         @Override public void updateUI() {
             super.updateUI();
             setOpaque(false);
@@ -82,11 +86,13 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
             EventQueue.invokeLater(() -> {
                 // MutableAttributeSet attr = new SimpleAttributeSet();
                 Style attr = getStyle(StyleContext.DEFAULT_STYLE);
-                StyleConstants.setTabSet(attr, new TabSet(new TabStop[] {new TabStop(25f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)}));
+                TabStop[] ts = {new TabStop(25f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)};
+                StyleConstants.setTabSet(attr, new TabSet(ts));
                 setParagraphAttributes(attr, false);
             });
         }
     };
+
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         textPane.setFont(table.getFont());
         textPane.setText("\t" + Objects.toString(value, ""));

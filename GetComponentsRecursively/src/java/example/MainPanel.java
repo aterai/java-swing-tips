@@ -34,9 +34,14 @@ public final class MainPanel extends JPanel {
                 detailsAction.actionPerformed(null);
             }
 
-            // TEST1: searchAndResizeMode(chooser);
-            // TEST2: Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
-            // TEST3: getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+            // TEST1:
+            // searchAndResizeMode(chooser);
+
+            // TEST2:
+            // Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
+
+            // TEST3:
+            // getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
             // TEST4:
             stream(chooser)
@@ -119,6 +124,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

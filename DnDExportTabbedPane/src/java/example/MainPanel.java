@@ -78,16 +78,18 @@ public final class MainPanel extends JPanel {
         add(makeCheckBoxPanel(tabbedPane), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Component makeCheckBoxPanel(JTabbedPane tabbedPane) {
+
+    private static Component makeCheckBoxPanel(JTabbedPane tabs) {
         JCheckBox tc = new JCheckBox("Top", true);
-        tc.addActionListener(e -> tabbedPane.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+        tc.addActionListener(e -> tabs.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
         JCheckBox sc = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-        sc.addActionListener(e -> tabbedPane.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+        sc.addActionListener(e -> tabs.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(tc);
         p.add(sc);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -95,6 +97,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -125,16 +128,20 @@ class DnDTabbedPane extends JTabbedPane {
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
         private boolean dropable = true;
+
         protected DropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
+
         public int getIndex() {
             return index;
         }
+
         public void setDroppable(boolean flag) {
             dropable = flag;
         }
+
         public boolean isDroppable() {
             return dropable;
         }
@@ -176,6 +183,7 @@ class DnDTabbedPane extends JTabbedPane {
         // //     }
         // // }
     }
+
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
         // int tabPlacement = getTabPlacement();
@@ -193,6 +201,7 @@ class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
+
     protected DnDTabbedPane() {
         super();
         Handler h = new Handler();
@@ -200,6 +209,7 @@ class DnDTabbedPane extends JTabbedPane {
         addMouseMotionListener(h);
         addPropertyChangeListener(h);
     }
+
     // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
     public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
         if (dropMode != DropMode.INSERT) {
@@ -234,6 +244,7 @@ class DnDTabbedPane extends JTabbedPane {
         // }
         // return new DropLocation(p, -1);
     }
+
     public final DnDTabbedPane.DropLocation getDropLocation() {
         return dropLocation;
     }
@@ -250,6 +261,7 @@ class DnDTabbedPane extends JTabbedPane {
     //     firePropertyChange("dropLocation", old, dropLocation);
     //     return null;
     // }
+
     public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
         if (Objects.isNull(location) || !forDrop) {
@@ -260,6 +272,7 @@ class DnDTabbedPane extends JTabbedPane {
         firePropertyChange("dropLocation", old, dropLocation);
         return null;
     }
+
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
         final Component cmp = getComponentAt(dragIndex);
@@ -282,6 +295,7 @@ class DnDTabbedPane extends JTabbedPane {
             ((JComponent) tab).scrollRectToVisible(tab.getBounds());
         }
     }
+
     public void convertTab(int prev, int next) {
         System.out.println("convertTab");
         // if (next < 0 || prev == next) {
@@ -306,6 +320,7 @@ class DnDTabbedPane extends JTabbedPane {
         // pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
+
     public Optional<Rectangle> getDropLineRect() {
         int index = Optional.ofNullable(getDropLocation())
             .filter(DropLocation::isDroppable)
@@ -389,6 +404,7 @@ class DnDTabbedPane extends JTabbedPane {
                 glassPane.repaint();
             }
         }
+
         // PropertyChangeListener
         @Override public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
@@ -397,6 +413,7 @@ class DnDTabbedPane extends JTabbedPane {
                 repaintDropLocation();
             }
         }
+
         // MouseListener
         @Override public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
@@ -412,6 +429,7 @@ class DnDTabbedPane extends JTabbedPane {
             boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
             startPt = flag ? null : tabPt;
         }
+
         @Override public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); // e.getDragOrigin();
             if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
@@ -436,16 +454,19 @@ class TabDropTargetAdapter extends DropTargetAdapter {
             t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
+
     @Override public void drop(DropTargetDropEvent dtde) {
         Component c = dtde.getDropTargetContext().getComponent();
         System.out.println("DropTargetListener#drop: " + c.getName());
         clearDropLocationPaint(c);
     }
+
     @Override public void dragExit(DropTargetEvent dte) {
         Component c = dte.getDropTargetContext().getComponent();
         System.out.println("DropTargetListener#dragExit: " + c.getName());
         clearDropLocationPaint(c);
     }
+
     @Override public void dragEnter(DropTargetDragEvent dtde) {
         Component c = dtde.getDropTargetContext().getComponent();
         System.out.println("DropTargetListener#dragEnter: " + c.getName());
@@ -460,6 +481,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 
 class DnDTabData {
     public final DnDTabbedPane tabbedPane;
+
     protected DnDTabData(DnDTabbedPane tabbedPane) {
         this.tabbedPane = tabbedPane;
     }
@@ -475,6 +497,7 @@ class TabTransferHandler extends TransferHandler {
         // localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
         localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     }
+
     @Override protected Transferable createTransferable(JComponent c) {
         System.out.println("createTransferable");
         if (c instanceof DnDTabbedPane) {
@@ -485,9 +508,11 @@ class TabTransferHandler extends TransferHandler {
             @Override public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] {localObjectFlavor};
             }
+
             @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
                 return Objects.equals(localObjectFlavor, flavor);
             }
+
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
                 if (isDataFlavorSupported(flavor)) {
                     return new DnDTabData(source);
@@ -497,6 +522,7 @@ class TabTransferHandler extends TransferHandler {
             }
         };
     }
+
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
         // System.out.println("canImport");
         if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
@@ -542,6 +568,7 @@ class TabTransferHandler extends TransferHandler {
         target.updateTabDropLocation(dl, null, isDroppable);
         return isDroppable;
     }
+
     // private static boolean isWebStart() {
     //     try {
     //         ServiceManager.lookup("javax.jnlp.BasicService");
@@ -550,6 +577,7 @@ class TabTransferHandler extends TransferHandler {
     //         return false;
     //     }
     // }
+
     private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
         Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
         BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -570,6 +598,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return image.getSubimage(rect.x, rect.y, rect.width, rect.height);
     }
+
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         if (c instanceof DnDTabbedPane) {
@@ -584,6 +613,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return TransferHandler.NONE;
     }
+
     @Override public boolean importData(TransferHandler.TransferSupport support) {
         System.out.println("importData");
         if (!canImport(support)) {
@@ -607,6 +637,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return false;
     }
+
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
         DnDTabbedPane src = (DnDTabbedPane) c;
@@ -619,14 +650,17 @@ class TabTransferHandler extends TransferHandler {
 
 class GhostGlassPane extends JComponent {
     private DnDTabbedPane tabbedPane;
+
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         setOpaque(false);
     }
+
     public void setTargetTabbedPane(DnDTabbedPane tab) {
         tabbedPane = tab;
     }
+
     @Override protected void paintComponent(Graphics g) {
         tabbedPane.getDropLineRect().ifPresent(rect -> {
             Graphics2D g2 = (Graphics2D) g.create();

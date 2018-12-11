@@ -43,7 +43,8 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
 
-        JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values()); // ERROR, WARNING, INFO, NONE
+        // ERROR, WARNING, INFO, NONE
+        JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values());
 
         JButton messageButton = new JButton("TrayIcon#displayMessage()");
         messageButton.addActionListener(e -> {
@@ -60,6 +61,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -67,6 +69,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

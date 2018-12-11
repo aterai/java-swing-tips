@@ -44,6 +44,7 @@ public class MainPanel extends JPanel {
         add(mb, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     protected final JInternalFrame createFrame(String t, int x, int y) {
         JInternalFrame f = new JInternalFrame(t, true, true, true, true);
         f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
@@ -51,7 +52,8 @@ public class MainPanel extends JPanel {
                 if (!check.isSelected()) {
                     return super.getPreferredSize();
                 }
-                // if (getUI() instanceof MotifDesktopIconUI) { // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
+                // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
+                // if (getUI() instanceof MotifDesktopIconUI) {
                 if ("com.sun.java.swing.plaf.motif.MotifDesktopIconUI".equals(getUI().getClass().getName())) {
                     return new Dimension(64, 64 + 32);
                 } else {
@@ -64,6 +66,7 @@ public class MainPanel extends JPanel {
         f.setVisible(true);
         return f;
     }
+
     private void addIconifiedFrame(JInternalFrame f) {
         desktop.add(f);
         try {
@@ -72,6 +75,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -79,6 +83,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -102,7 +107,9 @@ public class MainPanel extends JPanel {
 // @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
     private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
     private LookAndFeelUtil() { /* Singleton */ }
+
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lafRadioGroup = new ButtonGroup();
@@ -111,6 +118,7 @@ final class LookAndFeelUtil {
         }
         return menu;
     }
+
     private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafRadioGroup) {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
         lafItem.setActionCommand(lafClassName);
@@ -127,6 +135,7 @@ final class LookAndFeelUtil {
         lafRadioGroup.add(lafItem);
         return lafItem;
     }
+
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
         if (!oldLookAndFeel.equals(lookAndFeel)) {
@@ -136,6 +145,7 @@ final class LookAndFeelUtil {
             // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
+
     private static void updateLookAndFeel() {
         for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);

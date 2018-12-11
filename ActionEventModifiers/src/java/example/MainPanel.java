@@ -21,6 +21,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private final JTextArea log = new JTextArea();
+
     private MainPanel() {
         super(new BorderLayout());
         LOGGER.setUseParentHandlers(false);
@@ -39,7 +40,8 @@ public final class MainPanel extends JPanel {
                 // InputEvent.SHIFT_MASK @Deprecated(since="9")
                 // boolean shiftActive = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
                 boolean shiftActive = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
-                if (e.getKeyCode() == KeyEvent.VK_N && shiftActive) { // or: if (e.getKeyCode() == KeyEvent.VK_N && e.isShiftDown()) {
+                if (e.getKeyCode() == KeyEvent.VK_N && shiftActive) {
+                    // or: if (e.getKeyCode() == KeyEvent.VK_N && e.isShiftDown()) {
                     Toolkit.getDefaultToolkit().beep();
                 }
             }
@@ -97,6 +99,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -104,6 +107,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -123,14 +127,17 @@ public final class MainPanel extends JPanel {
 class TextAreaOutputStream extends OutputStream {
     private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     private final JTextArea textArea;
+
     protected TextAreaOutputStream(JTextArea textArea) {
         super();
         this.textArea = textArea;
     }
+
     @Override public void flush() throws IOException {
         textArea.append(buffer.toString("UTF-8"));
         buffer.reset();
     }
+
     @Override public void write(int b) throws IOException {
         buffer.write(b);
     }
@@ -151,17 +158,20 @@ class TextAreaHandler extends StreamHandler {
             }
         }
     }
+
     protected TextAreaHandler(OutputStream os) {
         super();
         configure();
         setOutputStream(os);
     }
+
     // [UnsynchronizedOverridesSynchronized] Unsynchronized method publish overrides synchronized method in StreamHandler
     @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
     @Override public synchronized void publish(LogRecord record) {
         super.publish(record);
         flush();
     }
+
     // [UnsynchronizedOverridesSynchronized] Unsynchronized method close overrides synchronized method in StreamHandler
     @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
     @Override public synchronized void close() {
