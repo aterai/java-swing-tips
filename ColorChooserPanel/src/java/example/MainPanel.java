@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(10, 10));
 
-        // JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
+        // JDialog dialog = new JDialog(this, "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
         // JPanel buttonPanel = new JPanel();
         // buttonPanel.add(new JButton("OK"));
         // buttonPanel.add(new JButton("Cancel"));
@@ -82,6 +82,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -89,6 +90,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

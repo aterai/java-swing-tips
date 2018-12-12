@@ -82,12 +82,14 @@ public class MainPanel extends JPanel {
 
         setPreferredSize(new Dimension(320, 240));
     }
+
     private static Component makeTitledPanel(String title, Component c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
         return p;
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -95,6 +97,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -113,6 +116,7 @@ public class MainPanel extends JPanel {
 
 class CustomUndoPlainDocument extends PlainDocument {
     private CompoundEdit compoundEdit;
+
     @Override protected void fireUndoableEditUpdate(UndoableEditEvent e) {
         // FindBugs: UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR
         // if (Objects.nonNull(compoundEdit)) {
@@ -121,8 +125,10 @@ class CustomUndoPlainDocument extends PlainDocument {
         //     super.fireUndoableEditUpdate(e);
         // }
         Optional.ofNullable(compoundEdit).ifPresent(ce -> ce.addEdit(e.getEdit()));
-        // JDK9: Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
+        // JDK9:
+        // Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
     }
+
     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         if (length == 0) {
             // System.out.println("insert");
@@ -153,9 +159,11 @@ class DocumentFilterUndoManager extends UndoManager {
             }
         }
     };
+
     public DocumentFilter getDocumentFilter() {
         return undoFilter;
     }
+
     @Override public void undoableEditHappened(UndoableEditEvent e) {
         Optional.ofNullable(compoundEdit).orElse(this).addEdit(e.getEdit());
     }

@@ -23,7 +23,8 @@ public final class MainPanel extends JPanel {
         add(new JTextField(10));
         add(new JButton("bbb"));
 
-        JComboBox<String> combo = new JComboBox<>(new String[] {"Color(.5f, .8f, .5f, .5f)", "ImageTexturePaint", "CheckerTexturePaint"});
+        String[] model = {"Color(.5f, .8f, .5f, .5f)", "ImageTexturePaint", "CheckerTexturePaint"};
+        JComboBox<String> combo = new JComboBox<>(model);
 
         // if (System.getProperty("java.version").startsWith("1.7.0")) {
         //     // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
@@ -61,6 +62,7 @@ public final class MainPanel extends JPanel {
         add(combo);
         setPreferredSize(new Dimension(320, 240));
     }
+
     @Override protected void paintComponent(Graphics g) {
         Optional.ofNullable(texture).ifPresent(tx -> {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -70,6 +72,7 @@ public final class MainPanel extends JPanel {
         });
         super.paintComponent(g);
     }
+
     private TexturePaint makeImageTexture() {
         BufferedImage bi = null;
         try {
@@ -80,6 +83,7 @@ public final class MainPanel extends JPanel {
         }
         return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
+
     private TexturePaint makeCheckerTexture() {
         int cs = 6;
         int sz = cs * cs;
@@ -97,6 +101,7 @@ public final class MainPanel extends JPanel {
         g2.dispose();
         return new TexturePaint(bi, new Rectangle(sz, sz));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -104,6 +109,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         // try {
         //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

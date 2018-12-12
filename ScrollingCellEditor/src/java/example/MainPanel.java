@@ -45,6 +45,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -52,6 +53,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -83,7 +85,8 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        // Java 10: KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+        // Java 10:
+        // KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
         textArea.getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
         textArea.getActionMap().put(KEY, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -91,9 +94,11 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
             }
         });
     }
+
     @Override public Object getCellEditorValue() {
         return textArea.getText();
     }
+
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         System.out.println("getTableCellEditorComponent");
         textArea.setFont(table.getFont());
@@ -105,6 +110,7 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
         });
         return scroll;
     }
+
     @Override public boolean isCellEditable(EventObject e) {
         if (e instanceof MouseEvent) {
             return ((MouseEvent) e).getClickCount() >= 2;
@@ -126,11 +132,13 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
 
 class TextAreaCellRenderer implements TableCellRenderer {
     private final JTextArea textArea = new JTextArea();
+
     protected TextAreaCellRenderer() {
         super();
         textArea.setLineWrap(true);
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
     }
+
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
             textArea.setForeground(table.getSelectionForeground());
@@ -161,7 +169,8 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //         setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 //
 //         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-//         // Java 10: KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+//         // Java 10:
+//         // KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
 //         getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
 //         getActionMap().put(KEY, new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {

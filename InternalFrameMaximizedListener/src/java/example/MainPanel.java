@@ -18,25 +18,32 @@ public class MainPanel extends JPanel {
         @Override public void internalFrameClosing(InternalFrameEvent e) {
             displayMessage("Internal frame closing", e);
         }
+
         @Override public void internalFrameClosed(InternalFrameEvent e) {
             displayMessage("Internal frame closed", e);
         }
+
         @Override public void internalFrameOpened(InternalFrameEvent e) {
             displayMessage("Internal frame opened", e);
         }
+
         @Override public void internalFrameIconified(InternalFrameEvent e) {
             displayMessage("Internal frame iconified", e);
         }
+
         @Override public void internalFrameDeiconified(InternalFrameEvent e) {
             displayMessage("Internal frame deiconified", e);
         }
+
         @Override public void internalFrameActivated(InternalFrameEvent e) {
             displayMessage("Internal frame activated", e);
         }
+
         @Override public void internalFrameDeactivated(InternalFrameEvent e) {
             displayMessage("Internal frame deactivated", e);
         }
     };
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -62,6 +69,7 @@ public class MainPanel extends JPanel {
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
+
     protected final void displayMessage(String prefix, EventObject e) {
         String s = prefix + ": " + e.getSource();
         textArea.append(s + "\n");
@@ -88,9 +96,10 @@ public class MainPanel extends JPanel {
     //     menu.add(menuItem);
     //     return menuBar;
     // }
-    //
+
     // private static JInternalFrame createInternalFrame() {
-    //     JInternalFrame f = new JInternalFrame(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
+    //     String title = String.format("Document #%s", openFrameCount.getAndIncrement());
+    //     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     //     f.setSize(160, 100);
     //     f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
     //     return f;
@@ -103,6 +112,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

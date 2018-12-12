@@ -32,6 +32,7 @@ public final class MainPanel extends JPanel {
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -39,6 +40,7 @@ public final class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGui() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -82,6 +84,7 @@ class ButtonTabComponent extends JPanel {
         add(button);
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
+
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -89,6 +92,7 @@ class ButtonTabComponent extends JPanel {
                 tabbedPane.remove(i);
             }
         }
+
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -96,6 +100,7 @@ class ButtonTabComponent extends JPanel {
                 button.setBorderPainted(true);
             }
         }
+
         @Override public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -120,12 +125,15 @@ class TabButton extends JButton {
         setBorderPainted(false);
         setRolloverEnabled(true);
     }
+
     @Override public Dimension getPreferredSize() {
         return new Dimension(SIZE, SIZE);
     }
+
     @Override public void updateUI() {
         // we don't want to update UI for this button
     }
+
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -151,8 +159,8 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             int idx = t.getSelectedIndex();
             String title = t.getTitleAt(idx);
             textField.setText(title);
-            int result = JOptionPane.showConfirmDialog(t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (result == JOptionPane.OK_OPTION) {
+            int ret = JOptionPane.showConfirmDialog(t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (ret == JOptionPane.OK_OPTION) {
                 String str = textField.getText();
                 if (!str.trim().isEmpty()) {
                     t.setTitleAt(idx, str);
@@ -177,13 +185,16 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             t.removeAll();
         }
     };
+
     protected TabTitleRenamePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
+
             @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add(renameAction);
@@ -191,6 +202,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         add(newTabAction);
         add(closeAllAction);
     }
+
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTabbedPane) {
             JTabbedPane t = (JTabbedPane) c;
