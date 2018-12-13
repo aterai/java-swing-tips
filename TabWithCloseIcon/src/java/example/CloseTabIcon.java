@@ -1,6 +1,8 @@
-package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+
+package example;
+
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
@@ -8,7 +10,6 @@ import javax.swing.*;
 // Copied from
 // JTabbedPane with close Icons | Oracle Forums
 // https://community.oracle.com/thread/1356993
-
 /**
  * The class which generates the 'X' icon for the tabs. The constructor
  * accepts an icon which is extra to the 'X' icon, so you can have tabs

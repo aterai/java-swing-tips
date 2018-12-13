@@ -1,6 +1,8 @@
-package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+
+package example;
+
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 import java.awt.*;
@@ -18,7 +20,6 @@ import javax.swing.text.View;
 // Copied from
 // JTabbedPane with close Icons | Oracle Forums
 // https://community.oracle.com/thread/1356993
-
 /**
  * A JTabbedPane which has a close ('X') icon on each tab.
  *

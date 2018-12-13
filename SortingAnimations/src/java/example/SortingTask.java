@@ -1,7 +1,8 @@
-package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
+
+package example;
 
 import java.awt.*;
 import java.util.Collections;
@@ -14,7 +15,6 @@ import javax.swing.*;
 // Sorting Algorithm Animations from Programming Pearls
 // http://www.cs.bell-labs.com/cm/cs/pearls/sortanim.html
 // modified by aterai aterai@outlook.com
-
 public class SortingTask extends SwingWorker<String, Rectangle> {
   private final List<Double> array;
   private final int number;

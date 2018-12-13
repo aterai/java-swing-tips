@@ -1,6 +1,8 @@
-package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+
+package example;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;

@@ -1,4 +1,3 @@
-package example;
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 /*
@@ -32,7 +31,7 @@ package example;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// package components;
+package example; // package components;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

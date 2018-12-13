@@ -1,3 +1,5 @@
+// -*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
 /**
 @version 1.0 02/25/99
 @author Nobuo Tamemasa
@@ -5,8 +7,6 @@ modified by aterai aterai@outlook.com
 */
 
 package example;
-// -*- mode:java; encoding:utf-8 -*-
-// vim:set fileencoding=utf-8:
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
