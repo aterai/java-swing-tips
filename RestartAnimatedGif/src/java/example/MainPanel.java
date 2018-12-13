@@ -13,89 +13,94 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
+  private MainPanel() {
+    super(new BorderLayout());
 
-        URL url = getClass().getResource("9-0.gif");
-        BufferedImage bi = null;
-        try {
-            bi = ImageIO.read(url);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return;
+    URL url = getClass().getResource("9-0.gif");
+    BufferedImage bi = null;
+    try {
+      bi = ImageIO.read(url);
+    } catch (IOException ex) {
+      ex.printStackTrace();
+      return;
+    }
+    ImageIcon icon9 = new ImageIcon(bi);
+    ImageIcon animatedIcon = new ImageIcon(url);
+
+    JTextArea textArea = new JTextArea();
+    JButton button = new JButton(icon9) {
+      @Override protected void fireStateChanged() {
+        ButtonModel m = getModel();
+        if (isRolloverEnabled() && m.isRollover()) {
+          textArea.append("JButton: Rollover, Image: flush\n");
+          animatedIcon.getImage().flush();
         }
-        ImageIcon icon9 = new ImageIcon(bi);
-        ImageIcon animatedIcon = new ImageIcon(url);
+        super.fireStateChanged();
+      }
+    };
+    button.setRolloverIcon(animatedIcon);
+    button.setPressedIcon(new Icon() {
+      @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(Color.BLACK);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.dispose();
+      }
 
-        JTextArea textArea = new JTextArea();
-        JButton button = new JButton(icon9) {
-            @Override protected void fireStateChanged() {
-                ButtonModel m = getModel();
-                if (isRolloverEnabled() && m.isRollover()) {
-                    textArea.append("JButton: Rollover, Image: flush\n");
-                    animatedIcon.getImage().flush();
-                }
-                super.fireStateChanged();
-            }
-        };
-        button.setRolloverIcon(animatedIcon);
-        button.setPressedIcon(new Icon() {
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setPaint(Color.BLACK);
-                g2.fillRect(x, y, getIconWidth(), getIconHeight());
-                g2.dispose();
-            }
-            @Override public int getIconWidth() {
-                return icon9.getIconWidth();
-            }
-            @Override public int getIconHeight() {
-                return icon9.getIconHeight();
-            }
-        });
+      @Override public int getIconWidth() {
+        return icon9.getIconWidth();
+      }
 
-        JLabel label = new JLabel(animatedIcon);
-        label.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                textArea.append("JLabel: mousePressed, Image: flush\n");
-                animatedIcon.getImage().flush();
-                repaint(getBounds());
-            }
-        });
+      @Override public int getIconHeight() {
+        return icon9.getIconHeight();
+      }
+    });
 
-        JPanel p = new JPanel(new GridLayout(1, 2, 5, 5));
-        p.add(makeTitledPanel("JButton#setRolloverIcon", button));
-        p.add(makeTitledPanel("mousePressed: flush", label));
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(textArea));
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 240));
+    JLabel label = new JLabel(animatedIcon);
+    label.addMouseListener(new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        textArea.append("JLabel: mousePressed, Image: flush\n");
+        animatedIcon.getImage().flush();
+        repaint(getBounds());
+      }
+    });
+
+    JPanel p = new JPanel(new GridLayout(1, 2, 5, 5));
+    p.add(makeTitledPanel("JButton#setRolloverIcon", button));
+    p.add(makeTitledPanel("mousePressed: flush", label));
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(textArea));
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(c);
+    return p;
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    private static Component makeTitledPanel(String title, Component c) {
-        JPanel p = new JPanel();
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(c);
-        return p;
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }

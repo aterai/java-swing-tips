@@ -14,88 +14,98 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-        JTextComponent field1 = new JPasswordField();
-        Box b = Box.createHorizontalBox();
-        b.add(new JLabel("Password: "));
-        b.add(field1);
-        b.add(Box.createHorizontalGlue());
-        JTextComponent field2 = new WatermarkPasswordField();
+  private MainPanel() {
+    super(new BorderLayout());
+    JTextComponent field1 = new JPasswordField();
+    Box b = Box.createHorizontalBox();
+    b.add(new JLabel("Password: "));
+    b.add(field1);
+    b.add(Box.createHorizontalGlue());
+    JTextComponent field2 = new WatermarkPasswordField();
 
-        Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-        box.add(makeTitledPanel("JPasswordField", b));
-        box.add(Box.createVerticalStrut(16));
-        box.add(makeTitledPanel("InputHintPasswordField", field2));
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    box.add(makeTitledPanel("JPasswordField", b));
+    box.add(Box.createVerticalStrut(16));
+    box.add(makeTitledPanel("InputHintPasswordField", field2));
 
-        add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 240));
+    add(box, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(c);
+    return p;
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    private static Component makeTitledPanel(String title, Component c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(c);
-        return p;
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 class WatermarkPasswordField extends JPasswordField implements FocusListener, DocumentListener {
-    private boolean showWatermark = true;
-    protected WatermarkPasswordField() {
-        super();
-        addFocusListener(this);
-        getDocument().addDocumentListener(this);
+  private boolean showWatermark = true;
+
+  protected WatermarkPasswordField() {
+    super();
+    addFocusListener(this);
+    getDocument().addDocumentListener(this);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    if (showWatermark) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      Insets i = getInsets();
+      Font font = getFont();
+      FontRenderContext frc = g2.getFontRenderContext();
+      TextLayout tl = new TextLayout("Password", font, frc);
+      g2.setPaint(hasFocus() ? Color.GRAY : Color.BLACK);
+      int baseline = getBaseline(getWidth(), getHeight());
+      tl.draw(g2, i.left + 1, baseline);
+      g2.dispose();
     }
-    @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (showWatermark) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            Insets i = getInsets();
-            Font font = getFont();
-            FontRenderContext frc = g2.getFontRenderContext();
-            TextLayout tl = new TextLayout("Password", font, frc);
-            g2.setPaint(hasFocus() ? Color.GRAY : Color.BLACK);
-            int baseline = getBaseline(getWidth(), getHeight());
-            tl.draw(g2, i.left + 1, baseline);
-            g2.dispose();
-        }
-    }
-    @Override public void focusGained(FocusEvent e) {
-        repaint();
-    }
-    @Override public void focusLost(FocusEvent e) {
-        showWatermark = getPassword().length == 0;
-        repaint();
-    }
-    @Override public void insertUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength() == 0;
-        repaint();
-    }
-    @Override public void removeUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength() == 0;
-        repaint();
-    }
-    @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+  }
+
+  @Override public void focusGained(FocusEvent e) {
+    repaint();
+  }
+
+  @Override public void focusLost(FocusEvent e) {
+    showWatermark = getPassword().length == 0;
+    repaint();
+  }
+
+  @Override public void insertUpdate(DocumentEvent e) {
+    showWatermark = e.getDocument().getLength() == 0;
+    repaint();
+  }
+
+  @Override public void removeUpdate(DocumentEvent e) {
+    showWatermark = e.getDocument().getLength() == 0;
+    repaint();
+  }
+
+  @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
 }

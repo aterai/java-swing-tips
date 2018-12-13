@@ -9,66 +9,72 @@ import java.awt.event.FocusListener;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-        JTextField field1 = new JTextField("aaaaaaaaaa");
-        field1.addFocusListener(new BackgroundFocusListener(new Color(230, 230, 255)));
+  private MainPanel() {
+    super(new BorderLayout());
+    JTextField field1 = new JTextField("aaaaaaaaaa");
+    field1.addFocusListener(new BackgroundFocusListener(new Color(230, 230, 255)));
 
-        JTextField field2 = new JTextField();
-        field2.addFocusListener(new BackgroundFocusListener(new Color(255, 255, 230)));
+    JTextField field2 = new JTextField();
+    field2.addFocusListener(new BackgroundFocusListener(new Color(255, 255, 230)));
 
-        JTextField field3 = new JTextField("123465789735");
-        field3.addFocusListener(new BackgroundFocusListener(new Color(255, 230, 230)));
+    JTextField field3 = new JTextField("123465789735");
+    field3.addFocusListener(new BackgroundFocusListener(new Color(255, 230, 230)));
 
-        Box box = Box.createVerticalBox();
-        box.add(makeTitledPanel("Color(230, 230, 255)", field1));
-        box.add(Box.createVerticalStrut(5));
-        box.add(makeTitledPanel("Color(255, 255, 230)", field2));
-        box.add(Box.createVerticalStrut(5));
-        box.add(makeTitledPanel("Color(255, 230, 230)", field3));
-        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 240));
+    Box box = Box.createVerticalBox();
+    box.add(makeTitledPanel("Color(230, 230, 255)", field1));
+    box.add(Box.createVerticalStrut(5));
+    box.add(makeTitledPanel("Color(255, 255, 230)", field2));
+    box.add(Box.createVerticalStrut(5));
+    box.add(makeTitledPanel("Color(255, 230, 230)", field3));
+    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    add(box, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(c);
+    return p;
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    private static Component makeTitledPanel(String title, Component c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(c);
-        return p;
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setResizable(false);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 class BackgroundFocusListener implements FocusListener {
-    private final Color color;
-    protected BackgroundFocusListener(Color color) {
-        this.color = color;
-    }
-    @Override public void focusGained(FocusEvent e) {
-        e.getComponent().setBackground(color);
-    }
-    @Override public void focusLost(FocusEvent e) {
-        e.getComponent().setBackground(UIManager.getColor("TextField.background"));
-    }
+  private final Color color;
+
+  protected BackgroundFocusListener(Color color) {
+    this.color = color;
+  }
+
+  @Override public void focusGained(FocusEvent e) {
+    e.getComponent().setBackground(color);
+  }
+
+  @Override public void focusLost(FocusEvent e) {
+    e.getComponent().setBackground(UIManager.getColor("TextField.background"));
+  }
 }

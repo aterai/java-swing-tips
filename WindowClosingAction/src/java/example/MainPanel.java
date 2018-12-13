@@ -11,81 +11,85 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
+  private MainPanel() {
+    super(new BorderLayout());
 
-        JPopupMenu popup = new JPopupMenu();
-        initMenu(popup);
+    JPopupMenu popup = new JPopupMenu();
+    initMenu(popup);
 
-        JMenuBar bar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        initMenu(menu);
-        bar.add(menu);
+    JMenuBar bar = new JMenuBar();
+    JMenu menu = new JMenu("File");
+    initMenu(menu);
+    bar.add(menu);
 
-        JToolBar toolBar = new JToolBar();
-        toolBar.add(new JLabel("Floatable JToolBar:"));
-        toolBar.add(Box.createGlue());
-        toolBar.add(new ExitAction());
+    JToolBar toolBar = new JToolBar();
+    toolBar.add(new JLabel("Floatable JToolBar:"));
+    toolBar.add(Box.createGlue());
+    toolBar.add(new ExitAction());
 
-        JTree tree = new JTree();
-        tree.setComponentPopupMenu(popup);
-        add(bar, BorderLayout.NORTH);
-        add(new JScrollPane(tree));
-        add(toolBar, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 240));
+    JTree tree = new JTree();
+    tree.setComponentPopupMenu(popup);
+    add(bar, BorderLayout.NORTH);
+    add(new JScrollPane(tree));
+    add(toolBar, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void initMenu(JComponent p) {
+    Stream.of(
+      new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
+      new JSeparator(), new JMenuItem(new ExitAction()))
+      .forEach(p::add);
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    private static void initMenu(JComponent p) {
-        Stream.of(
-            new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
-            new JSeparator(), new JMenuItem(new ExitAction()))
-            .forEach(p::add);
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 class ExitAction extends AbstractAction {
-    protected ExitAction() {
-        super("Exit");
+  protected ExitAction() {
+    super("Exit");
+  }
+
+  @Override public void actionPerformed(ActionEvent e) {
+    Component root = null;
+    Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
+    if (parent instanceof JPopupMenu) {
+      JPopupMenu popup = (JPopupMenu) parent;
+      root = SwingUtilities.getRoot(popup.getInvoker());
+    } else if (parent instanceof JToolBar) {
+      JToolBar toolbar = (JToolBar) parent;
+      if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
+        root = SwingUtilities.getWindowAncestor(toolbar).getOwner();
+      } else {
+        root = SwingUtilities.getRoot(toolbar);
+      }
+    } else {
+      root = SwingUtilities.getRoot(parent);
     }
-    @Override public void actionPerformed(ActionEvent e) {
-        Component root = null;
-        Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
-        if (parent instanceof JPopupMenu) {
-            JPopupMenu popup = (JPopupMenu) parent;
-            root = SwingUtilities.getRoot(popup.getInvoker());
-        } else if (parent instanceof JToolBar) {
-            JToolBar toolbar = (JToolBar) parent;
-            if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
-                root = SwingUtilities.getWindowAncestor(toolbar).getOwner();
-            } else {
-                root = SwingUtilities.getRoot(toolbar);
-            }
-        } else {
-            root = SwingUtilities.getRoot(parent);
-        }
-        if (root instanceof Window) {
-            Window window = (Window) root;
-            window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
-        }
+    if (root instanceof Window) {
+      Window window = (Window) root;
+      window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }
+  }
 }

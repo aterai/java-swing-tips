@@ -7,91 +7,93 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field = new JTextField();
-    private final JButton nb = new JButton("NORTH");
-    private final JButton sb = new JButton("SOUTH");
-    private final JButton wb = new JButton("WEST");
-    private final JButton eb = new JButton("EAST");
-    private final JTextArea ta = new JTextArea("aaaaaaaaaa");
+  private final JTextField field = new JTextField();
+  private final JButton nb = new JButton("NORTH");
+  private final JButton sb = new JButton("SOUTH");
+  private final JButton wb = new JButton("WEST");
+  private final JButton eb = new JButton("EAST");
+  private final JTextArea ta = new JTextArea("aaaaaaaaaa");
 
-    private MainPanel() {
-        super(new BorderLayout());
+  private MainPanel() {
+    super(new BorderLayout());
 
-        JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        p.add(nb, BorderLayout.NORTH);
-        p.add(sb, BorderLayout.SOUTH);
-        p.add(wb, BorderLayout.WEST);
-        p.add(eb, BorderLayout.EAST);
-        p.add(field);
-        ta.setEditable(false);
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(ta));
-        setPreferredSize(new Dimension(320, 240));
+    JPanel p = new JPanel(new BorderLayout(5, 5));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    p.add(nb, BorderLayout.NORTH);
+    p.add(sb, BorderLayout.SOUTH);
+    p.add(wb, BorderLayout.WEST);
+    p.add(eb, BorderLayout.EAST);
+    p.add(field);
+    ta.setEditable(false);
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(ta));
+    setPreferredSize(new Dimension(320, 240));
 
-        // frame.addWindowListener(new WindowAdapter() {
-        //     @Override public void windowOpened(WindowEvent e) {
-        //         System.out.println("windowOpened");
-        //         field.requestFocus();
-        //     }
-        // });
+    // frame.addWindowListener(new WindowAdapter() {
+    //   @Override public void windowOpened(WindowEvent e) {
+    //     System.out.println("windowOpened");
+    //     field.requestFocus();
+    //   }
+    // });
 
-        // frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-        //     @Override public Component getInitialComponent(Window w) {
-        //         System.out.println("getInitialComponent");
-        //         return field;
-        //     }
-        // });
+    // frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
+    //   @Override public Component getInitialComponent(Window w) {
+    //     System.out.println("getInitialComponent");
+    //     return field;
+    //   }
+    // });
 
-        // frame.addComponentListener(new ComponentAdapter() {
-        //     @Override public void componentShown(ComponentEvent e) {
-        //         System.out.println("componentShown");
-        //         field.requestFocusInWindow();
-        //     }
-        // });
+    // frame.addComponentListener(new ComponentAdapter() {
+    //   @Override public void componentShown(ComponentEvent e) {
+    //     System.out.println("componentShown");
+    //     field.requestFocusInWindow();
+    //   }
+    // });
 
-        // KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        // focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-        //     @Override public void propertyChange(PropertyChangeEvent e) {
-        //         String prop = e.getPropertyName();
-        //         if ("activeWindow".equals(prop) && e.getNewValue() != null) {
-        //             System.out.println("activeWindow");
-        //             field.requestFocusInWindow();
-        //         }
-        //     }
-        // });
+    // KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    // focusManager.addPropertyChangeListener(new PropertyChangeListener() {
+    //   @Override public void propertyChange(PropertyChangeEvent e) {
+    //     String prop = e.getPropertyName();
+    //     if ("activeWindow".equals(prop) && e.getNewValue() != null) {
+    //       System.out.println("activeWindow");
+    //       field.requestFocusInWindow();
+    //     }
+    //   }
+    // });
 
-        EventQueue.invokeLater(() -> {
-            System.out.println("invokeLater");
-            field.requestFocusInWindow();
-            System.out.println("getRootPane().setDefaultButton(eb)");
-            getRootPane().setDefaultButton(eb);
-        });
+    EventQueue.invokeLater(() -> {
+      System.out.println("invokeLater");
+      field.requestFocusInWindow();
+      System.out.println("getRootPane().setDefaultButton(eb)");
+      getRootPane().setDefaultButton(eb);
+    });
 
-        System.out.println("this");
-        // field.requestFocusInWindow();
+    System.out.println("this");
+    // field.requestFocusInWindow();
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        System.out.println("frame.pack();");
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        System.out.println("frame.setVisible(true);");
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    System.out.println("frame.pack();");
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    System.out.println("frame.setVisible(true);");
+    frame.setVisible(true);
+  }
 }

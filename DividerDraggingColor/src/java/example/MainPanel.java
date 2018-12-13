@@ -9,48 +9,51 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-    private final String[] columnNames = {"String", "Integer", "Boolean"};
-    private final Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    private final TableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-        }
-    };
-    private MainPanel() {
-        super(new BorderLayout());
-        UIManager.put("SplitPaneDivider.draggingColor", new Color(255, 100, 100, 100));
+  private final String[] columnNames = {"String", "Integer", "Boolean"};
+  private final Object[][] data = {
+    {"aaa", 12, true}, {"bbb", 5, false},
+    {"CCC", 92, true}, {"DDD", 0, false}
+  };
+  private final TableModel model = new DefaultTableModel(data, columnNames) {
+    @Override public Class<?> getColumnClass(int column) {
+      return getValueAt(0, column).getClass();
+    }
+  };
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(new JScrollPane(new JTable(model)));
-        splitPane.setBottomComponent(new JScrollPane(new JTree()));
-        splitPane.setDividerSize(24);
-        // splitPane.setContinuousLayout(false);
+  private MainPanel() {
+    super(new BorderLayout());
+    UIManager.put("SplitPaneDivider.draggingColor", new Color(255, 100, 100, 100));
 
-        add(splitPane);
-        setPreferredSize(new Dimension(320, 240));
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(new JScrollPane(new JTable(model)));
+    splitPane.setBottomComponent(new JScrollPane(new JTree()));
+    splitPane.setDividerSize(24);
+    // splitPane.setContinuousLayout(false);
+
+    add(splitPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }

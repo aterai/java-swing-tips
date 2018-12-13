@@ -22,108 +22,108 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-        String[] columnNames = {"A", "B"};
-        Object[][] data = {
-            {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
-        };
-        JTable table = new JTable(new DefaultTableModel(data, columnNames));
-        table.setAutoCreateRowSorter(true);
+  private MainPanel() {
+    super(new BorderLayout());
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+      {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
+    };
+    JTable table = new JTable(new DefaultTableModel(data, columnNames));
+    table.setAutoCreateRowSorter(true);
 
-        JTextArea textArea = new JTextArea();
+    JTextArea textArea = new JTextArea();
 
-        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        sp.setResizeWeight(.5);
-        sp.setTopComponent(new JScrollPane(table));
-        sp.setBottomComponent(new JScrollPane(textArea));
+    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    sp.setResizeWeight(.5);
+    sp.setTopComponent(new JScrollPane(table));
+    sp.setBottomComponent(new JScrollPane(textArea));
 
-        JButton encodeButton = new JButton("XMLEncoder");
-        encodeButton.addActionListener(e -> {
-            try {
-                File file = File.createTempFile("output", ".xml");
-                // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-                try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-                    String[] constructorPropertyNames = {"column", "sortOrder"};
-                    xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(constructorPropertyNames));
-                    xe.writeObject(table.getRowSorter().getSortKeys());
+    JButton encodeButton = new JButton("XMLEncoder");
+    encodeButton.addActionListener(e -> {
+      try {
+        File file = File.createTempFile("output", ".xml");
+        // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
+        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
+          String[] constructorPropertyNames = {"column", "sortOrder"};
+          xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(constructorPropertyNames));
+          xe.writeObject(table.getRowSorter().getSortKeys());
 
-                    xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
-                    xe.writeObject(table.getModel());
-                }
-                // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-                try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
-                    textArea.read(r, "temp");
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
-
-        JButton decodeButton = new JButton("XMLDecoder");
-        decodeButton.addActionListener(e -> {
-            String text = textArea.getText();
-            if (text.isEmpty()) {
-                return;
-            }
-            try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
-                @SuppressWarnings("unchecked")
-                List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
-                DefaultTableModel model = (DefaultTableModel) xd.readObject();
-                table.setModel(model);
-                table.setAutoCreateRowSorter(true);
-                table.getRowSorter().setSortKeys(keys);
-            }
-        });
-
-        JButton clearButton = new JButton("clear");
-        clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
-
-        JPanel p = new JPanel();
-        p.add(encodeButton);
-        p.add(decodeButton);
-        p.add(clearButton);
-        add(sp);
-        add(p, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
-
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
+          xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+          xe.writeObject(table.getModel());
         }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+          textArea.read(r, "temp");
+        }
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+
+    JButton decodeButton = new JButton("XMLDecoder");
+    decodeButton.addActionListener(e -> {
+      String text = textArea.getText();
+      if (text.isEmpty()) {
+        return;
+      }
+      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+        @SuppressWarnings("unchecked")
+        List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        DefaultTableModel model = (DefaultTableModel) xd.readObject();
+        table.setModel(model);
+        table.setAutoCreateRowSorter(true);
+        table.getRowSorter().setSortKeys(keys);
+      }
+    });
+
+    JButton clearButton = new JButton("clear");
+    clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
+
+    JPanel p = new JPanel();
+    p.add(encodeButton);
+    p.add(decodeButton);
+    p.add(clearButton);
+    add(sp);
+    add(p, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 // http://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
 // http://www.oracle.com/technetwork/java/persistence4-140124.html
 // https://ateraimemo.com/Swing/PersistenceDelegate.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
-    @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
-        super.initialize(type, oldInstance, newInstance, encoder);
-        DefaultTableModel m = (DefaultTableModel) oldInstance;
-        for (int row = 0; row < m.getRowCount(); row++) {
-            for (int col = 0; col < m.getColumnCount(); col++) {
-                Object[] o = {m.getValueAt(row, col), row, col};
-                encoder.writeStatement(new Statement(oldInstance, "setValueAt", o));
-            }
-        }
+  @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
+    super.initialize(type, oldInstance, newInstance, encoder);
+    DefaultTableModel m = (DefaultTableModel) oldInstance;
+    for (int row = 0; row < m.getRowCount(); row++) {
+      for (int col = 0; col < m.getColumnCount(); col++) {
+        Object[] o = {m.getValueAt(row, col), row, col};
+        encoder.writeStatement(new Statement(oldInstance, "setValueAt", o));
+      }
     }
+  }
 }

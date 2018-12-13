@@ -14,82 +14,89 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new GridLayout(2, 1));
+  private MainPanel() {
+    super(new GridLayout(2, 1));
 
-        JTree tree1 = new JTree();
-        JTree tree2 = new JTree();
-        expandTree(tree1);
-        expandTree(tree2);
+    JTree tree1 = new JTree();
+    JTree tree2 = new JTree();
+    expandTree(tree1);
+    expandTree(tree2);
 
-        MouseAdapter ma = new DragScrollListener();
-        tree2.addMouseMotionListener(ma);
-        tree2.addMouseListener(ma);
+    MouseAdapter ma = new DragScrollListener();
+    tree2.addMouseMotionListener(ma);
+    tree2.addMouseListener(ma);
 
-        add(makeTitledPanel("Default", tree1));
-        add(makeTitledPanel("Drag scroll", tree2));
-        setPreferredSize(new Dimension(320, 240));
+    add(makeTitledPanel("Default", tree1));
+    add(makeTitledPanel("Drag scroll", tree2));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void expandTree(JTree tree) {
+    DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+    // Java 9: Collections.list(root.preorderEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
+      .filter(DefaultMutableTreeNode.class::isInstance)
+      .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
+      .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
+  }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    JScrollPane scroll = new JScrollPane(c);
+    scroll.setBorder(BorderFactory.createTitledBorder(title));
+    return scroll;
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    private static void expandTree(JTree tree) {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-        // Java 9: Collections.list(root.preorderEnumeration()).stream()
-        Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-            .filter(DefaultMutableTreeNode.class::isInstance)
-            .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
-            .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
-    }
-    private static Component makeTitledPanel(String title, Component c) {
-        JScrollPane scroll = new JScrollPane(c);
-        scroll.setBorder(BorderFactory.createTitledBorder(title));
-        return scroll;
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 class DragScrollListener extends MouseAdapter {
-    private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Point pp = new Point();
-    @Override public void mouseDragged(MouseEvent e) {
-        Component c = e.getComponent();
-        Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
-            .filter(JViewport.class::isInstance).map(JViewport.class::cast)
-            .ifPresent(v -> {
-                Point cp = SwingUtilities.convertPoint(c, e.getPoint(), v);
-                Point vp = v.getViewPosition();
-                vp.translate(pp.x - cp.x, pp.y - cp.y);
-                ((JComponent) c).scrollRectToVisible(new Rectangle(vp, v.getSize()));
-                pp.setLocation(cp);
-            });
-    }
-    @Override public void mousePressed(MouseEvent e) {
-        Component c = e.getComponent();
-        c.setCursor(hndCursor);
-        Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
-            .filter(JViewport.class::isInstance).map(JViewport.class::cast)
-            .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
-    }
-    @Override public void mouseReleased(MouseEvent e) {
-        e.getComponent().setCursor(defCursor);
-    }
+  private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Point pp = new Point();
+
+  @Override public void mouseDragged(MouseEvent e) {
+    Component c = e.getComponent();
+    Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
+        .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+        .ifPresent(v -> {
+          Point cp = SwingUtilities.convertPoint(c, e.getPoint(), v);
+          Point vp = v.getViewPosition();
+          vp.translate(pp.x - cp.x, pp.y - cp.y);
+          ((JComponent) c).scrollRectToVisible(new Rectangle(vp, v.getSize()));
+          pp.setLocation(cp);
+        });
+  }
+
+  @Override public void mousePressed(MouseEvent e) {
+    Component c = e.getComponent();
+    c.setCursor(hndCursor);
+    Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
+      .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+      .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
+  }
+
+  @Override public void mouseReleased(MouseEvent e) {
+    e.getComponent().setCursor(defCursor);
+  }
 }

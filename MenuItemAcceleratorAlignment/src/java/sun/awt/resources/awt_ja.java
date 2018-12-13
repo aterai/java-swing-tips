@@ -6,8 +6,8 @@ import java.util.ListResourceBundle;
 
 @SuppressWarnings({"PMD.ClassNamingConventions", "checkstyle:typename"}) // Class names should begin with an uppercase character
 public final class awt_ja extends ListResourceBundle {
-    @Override protected Object[][] getContents() {
-        System.out.println("---- awt_ja ----");
-        return new Object[][] {{"AWT.space", "XXXXX"}};
-    }
+  @Override protected Object[][] getContents() {
+    System.out.println("---- awt_ja ----");
+    return new Object[][] {{"AWT.space", "XXXXX"}};
+  }
 }

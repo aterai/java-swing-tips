@@ -16,191 +16,202 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-        SlideInNotification handler = new SlideInNotification();
+  private MainPanel() {
+    super(new BorderLayout());
+    SlideInNotification handler = new SlideInNotification();
 
-        // optionPane.addPropertyChangeListener(e -> {
-        //     if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
-        //         Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
-        //         dialog.setVisible(false);
-        //     }
-        // });
-        // dialog.getContentPane().add(optionPane);
-        // dialog.pack();
+    // optionPane.addPropertyChangeListener(e -> {
+    //   if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
+    //     Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+    //     dialog.setVisible(false);
+    //   }
+    // });
+    // dialog.getContentPane().add(optionPane);
+    // dialog.pack();
 
-        JButton easeIn = new JButton("easeIn");
-        easeIn.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN));
+    JButton easeIn = new JButton("easeIn");
+    easeIn.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN));
 
-        JButton easeOut = new JButton("easeOut");
-        easeOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_OUT));
+    JButton easeOut = new JButton("easeOut");
+    easeOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_OUT));
 
-        JButton easeInOut = new JButton("easeInOut");
-        easeInOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN_OUT));
+    JButton easeInOut = new JButton("easeInOut");
+    easeInOut.addActionListener(e -> handler.startSlideIn(SlideInAnimation.EASE_IN_OUT));
 
-        JPanel p = new JPanel();
-        p.add(easeIn);
-        p.add(easeOut);
-        p.add(easeInOut);
-        add(p, BorderLayout.NORTH);
-        add(new JScrollPane(new JTextArea()));
-        setPreferredSize(new Dimension(320, 240));
+    JPanel p = new JPanel();
+    p.add(easeIn);
+    p.add(easeOut);
+    p.add(easeInOut);
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(new JTextArea()));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String... args) {
+    EventQueue.invokeLater(new Runnable() {
+      @Override public void run() {
+        createAndShowGui();
+      }
+    });
+  }
+
+  public static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException
+         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
-    public static void main(String... args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-    public static void createAndShowGui() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+    JFrame frame = new JFrame("@title@");
+    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
 }
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
-    public static final int DELAY = 5;
-    public static final int STEP = 3;
-    protected final JWindow dialog = new JWindow((Frame) null);
-    protected final Timer animator = new Timer(DELAY, null);
-    private transient ActionListener listener;
-    protected int dx;
-    protected int dy;
+  public static final int DELAY = 5;
+  public static final int STEP = 3;
+  protected final JWindow dialog = new JWindow((Frame) null);
+  protected final Timer animator = new Timer(DELAY, null);
+  private transient ActionListener listener;
+  protected int dx;
+  protected int dy;
 
-    public void startSlideIn(SlideInAnimation slideInAnimation) {
-        if (animator.isRunning()) {
-            return;
-        }
-        if (dialog.isVisible()) {
-            dialog.setVisible(false);
-            dialog.getContentPane().removeAll();
-        }
-
-        JOptionPane optionPane = new JOptionPane("Warning", JOptionPane.WARNING_MESSAGE);
-        DragWindowListener dwl = new DragWindowListener();
-        optionPane.addMouseListener(dwl);
-        optionPane.addMouseMotionListener(dwl);
-        optionPane.addPropertyChangeListener(this);
-        optionPane.addHierarchyListener(this);
-        dialog.getContentPane().add(optionPane);
-        dialog.pack();
-
-        Dimension d = dialog.getContentPane().getPreferredSize();
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Rectangle desktopBounds = env.getMaximumWindowBounds();
-        dx = desktopBounds.width - d.width;
-        dy = desktopBounds.height;
-        dialog.setLocation(new Point(dx, dy));
-        dialog.setVisible(true);
-
-        animator.removeActionListener(listener);
-        listener = new ActionListener() {
-            private int counter;
-            @Override public void actionPerformed(ActionEvent e) {
-                counter += STEP;
-                double a = 1d;
-                if (slideInAnimation == SlideInAnimation.EASE_IN) {
-                    a = AnimationUtil.easeIn(counter / (double) d.height);
-                } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
-                    a = AnimationUtil.easeOut(counter / (double) d.height);
-                } else { // EASE_IN_OUT
-                    a = AnimationUtil.easeInOut(counter / (double) d.height);
-                }
-                int visibleHeight = (int) (.5 + a * d.height);
-                if (visibleHeight >= d.height) {
-                    visibleHeight = d.height;
-                    animator.stop();
-                }
-                dialog.setLocation(new Point(dx, dy - visibleHeight));
-            }
-        };
-        animator.addActionListener(listener);
-        animator.start();
+  public void startSlideIn(SlideInAnimation slideInAnimation) {
+    if (animator.isRunning()) {
+      return;
     }
-    @Override public void propertyChange(PropertyChangeEvent e) {
-        if (dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
-            dialog.setVisible(false);
-            dialog.getContentPane().removeAll();
-        }
+    if (dialog.isVisible()) {
+      dialog.setVisible(false);
+      dialog.getContentPane().removeAll();
     }
-    @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-            animator.stop();
+
+    JOptionPane optionPane = new JOptionPane("Warning", JOptionPane.WARNING_MESSAGE);
+    DragWindowListener dwl = new DragWindowListener();
+    optionPane.addMouseListener(dwl);
+    optionPane.addMouseMotionListener(dwl);
+    optionPane.addPropertyChangeListener(this);
+    optionPane.addHierarchyListener(this);
+    dialog.getContentPane().add(optionPane);
+    dialog.pack();
+
+    Dimension d = dialog.getContentPane().getPreferredSize();
+    GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    Rectangle desktopBounds = env.getMaximumWindowBounds();
+    dx = desktopBounds.width - d.width;
+    dy = desktopBounds.height;
+    dialog.setLocation(new Point(dx, dy));
+    dialog.setVisible(true);
+
+    animator.removeActionListener(listener);
+    listener = new ActionListener() {
+      private int counter;
+      @Override public void actionPerformed(ActionEvent e) {
+        counter += STEP;
+        double a = 1d;
+        if (slideInAnimation == SlideInAnimation.EASE_IN) {
+          a = AnimationUtil.easeIn(counter / (double) d.height);
+        } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
+          a = AnimationUtil.easeOut(counter / (double) d.height);
+        } else { // EASE_IN_OUT
+          a = AnimationUtil.easeInOut(counter / (double) d.height);
         }
+        int visibleHeight = (int) (.5 + a * d.height);
+        if (visibleHeight >= d.height) {
+          visibleHeight = d.height;
+          animator.stop();
+        }
+        dialog.setLocation(new Point(dx, dy - visibleHeight));
+      }
+    };
+    animator.addActionListener(listener);
+    animator.start();
+  }
+
+  @Override public void propertyChange(PropertyChangeEvent e) {
+    if (dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+      dialog.setVisible(false);
+      dialog.getContentPane().removeAll();
     }
+  }
+
+  @Override public void hierarchyChanged(HierarchyEvent e) {
+    if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+      animator.stop();
+    }
+  }
 }
 
 class DragWindowListener extends MouseAdapter {
-    private final Point startPt = new Point();
-    @Override public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            startPt.setLocation(e.getPoint());
-        }
+  private final Point startPt = new Point();
+
+  @Override public void mousePressed(MouseEvent e) {
+    if (SwingUtilities.isLeftMouseButton(e)) {
+      startPt.setLocation(e.getPoint());
     }
-    @Override public void mouseDragged(MouseEvent e) {
-        Component c = SwingUtilities.getRoot(e.getComponent());
-        if (c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
-            Window window = (Window) c;
-            Point pt = window.getLocation();
-            window.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
-        }
+  }
+
+  @Override public void mouseDragged(MouseEvent e) {
+    Component c = SwingUtilities.getRoot(e.getComponent());
+    if (c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
+      Window window = (Window) c;
+      Point pt = window.getLocation();
+      window.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
     }
+  }
 }
 
 enum SlideInAnimation {
-    EASE_IN, EASE_OUT, EASE_IN_OUT;
+  EASE_IN, EASE_OUT, EASE_IN_OUT;
 }
 
 final class AnimationUtil {
-    private static final int N = 3;
-    private AnimationUtil() { /* Singleton */ }
-    // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-    // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-    public static double easeIn(double t) {
-        // range: 0.0 <= t <= 1.0
-        return Math.pow(t, N);
+  private static final int N = 3;
+
+  private AnimationUtil() { /* Singleton */ }
+
+  // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
+  // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+  public static double easeIn(double t) {
+    // range: 0.0 <= t <= 1.0
+    return Math.pow(t, N);
+  }
+
+  public static double easeOut(double t) {
+    return Math.pow(t - 1d, N) + 1d;
+  }
+
+  public static double easeInOut(double t) {
+    double ret;
+    boolean isFirstHalf = t < .5;
+    if (isFirstHalf) {
+      ret = .5 * intpow(t * 2d, N);
+    } else {
+      ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
     }
-    public static double easeOut(double t) {
-        return Math.pow(t - 1d, N) + 1d;
+    return ret;
+  }
+
+  // http://d.hatena.ne.jp/pcl/20120617/p1
+  // http://d.hatena.ne.jp/rexpit/20110328/1301305266
+  // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+  // http://www.osix.net/modules/article/?id=696
+  public static double intpow(double da, int ib) {
+    int b = ib;
+    if (b < 0) {
+      throw new IllegalArgumentException("B must be a positive integer or zero");
     }
-    public static double easeInOut(double t) {
-        double ret;
-        boolean isFirstHalf = t < .5;
-        if (isFirstHalf) {
-            ret = .5 * intpow(t * 2d, N);
-        } else {
-            ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
-        }
-        return ret;
+    double a = da;
+    double d = 1d;
+    for (; b > 0; a *= a, b >>>= 1) {
+      if ((b & 1) != 0) {
+        d *= a;
+      }
     }
-    // http://d.hatena.ne.jp/pcl/20120617/p1
-    // http://d.hatena.ne.jp/rexpit/20110328/1301305266
-    // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
-    // http://www.osix.net/modules/article/?id=696
-    public static double intpow(double da, int ib) {
-        int b = ib;
-        if (b < 0) {
-            throw new IllegalArgumentException("B must be a positive integer or zero");
-        }
-        double a = da;
-        double d = 1d;
-        for (; b > 0; a *= a, b >>>= 1) {
-            if ((b & 1) != 0) {
-                d *= a;
-            }
-        }
-        return d;
-    }
+    return d;
+  }
 }
