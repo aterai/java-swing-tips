@@ -22,8 +22,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
 
-    desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-    desktop.getActionMap().put("escape", new AbstractAction() {
+    InputMap im = desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+
+    ActionMap am = desktop.getActionMap();
+    am.put("escape", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         getSelectedFrame(desktop).ifPresent(desktop.getDesktopManager()::closeFrame);
       }

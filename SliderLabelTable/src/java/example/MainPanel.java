@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
     Dictionary<Integer, Component> labelTable = new Hashtable<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     Stream.of("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
-          "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
-          "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
-          "wi0126-16.png")
-      .forEach(s -> labelTable.put(labelTable.size(), new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT)));
+              "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
+              "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
+              "wi0126-16.png")
+        .forEach(s -> labelTable.put(labelTable.size(), new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT)));
 
     labelTable.put(labelTable.size(), new JButton("aaa"));
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 10, 0);

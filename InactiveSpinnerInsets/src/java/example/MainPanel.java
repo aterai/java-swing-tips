@@ -96,7 +96,7 @@ class SimpleBorderSpinner extends JSpinner {
     if (getUI() instanceof WindowsSpinnerUI) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
-                  : UIManager.getColor("FormattedTextField.inactiveBackground"));
+                              : UIManager.getColor("FormattedTextField.inactiveBackground"));
       g2.fillRect(0, 0, getWidth(), getHeight());
       g2.dispose();
     }

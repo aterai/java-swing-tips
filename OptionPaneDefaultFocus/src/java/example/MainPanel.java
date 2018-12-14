@@ -37,13 +37,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeButton(JTextField textField, JTextArea textArea) {
+  private static JButton makeButton(JTextField field, JTextArea textArea) {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
       Component p = textArea.getRootPane();
-      int result = JOptionPane.showConfirmDialog(p, textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-        textArea.setText(textField.getText());
+      int ret = JOptionPane.showConfirmDialog(p, field, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (ret == JOptionPane.OK_OPTION) {
+        textArea.setText(field.getText());
       }
     });
     return button;

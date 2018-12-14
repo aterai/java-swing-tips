@@ -433,17 +433,18 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
       tabPane.putClientProperty(HTML, v);
     }
 
-    SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                       metrics, title, icon,
-                       SwingConstants.CENTER,
-                       SwingConstants.CENTER,
-                       SwingConstants.CENTER,
-                       // SwingConstants.TRAILING,
-                       horizontalTextPosition,
-                       tabRect,
-                       iconRect,
-                       textRect,
-                       textIconGap + 2);
+    SwingUtilities.layoutCompoundLabel(
+        (JComponent) tabPane,
+        metrics, title, icon,
+        SwingConstants.CENTER,
+        SwingConstants.CENTER,
+        SwingConstants.CENTER,
+        // SwingConstants.TRAILING,
+        horizontalTextPosition,
+        tabRect,
+        iconRect,
+        textRect,
+        textIconGap + 2);
 
     tabPane.putClientProperty(HTML, null);
 
@@ -505,17 +506,18 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
       tabPane.putClientProperty(HTML, v);
     }
 
-    SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                       metrics, title, icon,
-                       SwingConstants.CENTER,
-                       SwingConstants.CENTER,
-                       SwingConstants.CENTER,
-                       // SwingConstants.TRAILING,
-                       horizontalTextPosition,
-                       tabRect,
-                       iconRect,
-                       textRect,
-                       textIconGap + 2);
+    SwingUtilities.layoutCompoundLabel(
+        (JComponent) tabPane,
+        metrics, title, icon,
+        SwingConstants.CENTER,
+        SwingConstants.CENTER,
+        SwingConstants.CENTER,
+        // SwingConstants.TRAILING,
+        horizontalTextPosition,
+        tabRect,
+        iconRect,
+        textRect,
+        textIconGap + 2);
 
     tabPane.putClientProperty(HTML, null);
 

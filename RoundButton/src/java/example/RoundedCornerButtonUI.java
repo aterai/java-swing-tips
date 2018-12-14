@@ -102,10 +102,11 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
     if (!c.getBounds().equals(base)) {
       base = c.getBounds();
       shape = new RoundRectangle2D.Double(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
-      border = new RoundRectangle2D.Double(FOCUS_STROKE, FOCUS_STROKE,
-                         c.getWidth() - 1 - FOCUS_STROKE * 2,
-                         c.getHeight() - 1 - FOCUS_STROKE * 2,
-                         ARC_WIDTH, ARC_HEIGHT);
+      border = new RoundRectangle2D.Double(
+          FOCUS_STROKE, FOCUS_STROKE,
+          c.getWidth() - 1 - FOCUS_STROKE * 2,
+          c.getHeight() - 1 - FOCUS_STROKE * 2,
+          ARC_WIDTH, ARC_HEIGHT);
     }
   }
 

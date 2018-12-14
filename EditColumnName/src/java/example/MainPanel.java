@@ -70,8 +70,9 @@ class TablePopupMenu extends JPopupMenu {
       TableColumn column = header.getColumnModel().getColumn(index);
       String name = column.getHeaderValue().toString();
       textField.setText(name);
-      int result = JOptionPane.showConfirmDialog(header.getTable(), textField, getValue(Action.NAME).toString(),
-                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int result = JOptionPane.showConfirmDialog(
+          header.getTable(), textField, getValue(Action.NAME).toString(),
+          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (result == JOptionPane.OK_OPTION) {
         String str = textField.getText().trim();
         if (!str.equals(name)) {
@@ -88,8 +89,9 @@ class TablePopupMenu extends JPopupMenu {
       DefaultTableModel model = (DefaultTableModel) table.getModel();
       String name = table.getColumnName(index);
       textField.setText(name);
-      int result = JOptionPane.showConfirmDialog(table, textField, getValue(Action.NAME).toString(),
-                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int result = JOptionPane.showConfirmDialog(
+          table, textField, getValue(Action.NAME).toString(),
+          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (result == JOptionPane.OK_OPTION) {
         String str = textField.getText().trim();
         if (!str.equals(name)) {

@@ -176,7 +176,7 @@ final class TreeUtil {
       int min = i;
       for (int j = i + 1; j < n; j++) {
         if (tnc.compare((DefaultMutableTreeNode) parent.getChildAt(min),
-                (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
+                        (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
           min = j;
         }
       }

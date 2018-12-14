@@ -88,9 +88,10 @@ public final class MainPanel extends JPanel {
     } else if (rightRadio.isSelected()) {
       l.setHorizontalAlignment(SwingConstants.RIGHT);
     } else if (customRadio.isSelected()) {
-      l.setHorizontalAlignment(row % 3 == 0 ? SwingConstants.LEFT
-                   : row % 3 == 1 ? SwingConstants.CENTER
-                          : SwingConstants.RIGHT);
+      l.setHorizontalAlignment(
+            row % 3 == 0 ? SwingConstants.LEFT
+          : row % 3 == 1 ? SwingConstants.CENTER
+                         : SwingConstants.RIGHT);
     }
   }
 

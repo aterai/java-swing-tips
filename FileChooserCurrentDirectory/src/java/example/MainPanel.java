@@ -64,9 +64,9 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(e -> {
       File f = new File(field.getText().trim());
       JFileChooser fc = fc1;
-      System.out.format("isAbsolute: %s, isParent: %s%n",
-                f.isAbsolute(),
-                !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
+      System.out.format(
+          "isAbsolute: %s, isParent: %s%n",
+          f.isAbsolute(), !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
       fc.setSelectedFile(f);
       int retvalue = fc.showOpenDialog(p);
       if (retvalue == JFileChooser.APPROVE_OPTION) {

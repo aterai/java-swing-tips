@@ -137,8 +137,9 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
     Rectangle tabRect = rects[tabIndex];
-    Rectangle rect = new Rectangle(textRect.x + tabInsets.left, textRect.y,
-                     tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
+    Rectangle rect = new Rectangle(
+        textRect.x + tabInsets.left, textRect.y,
+        tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
     String clippedText = SwingUtilities.layoutCompoundLabel(
         metrics, title, null, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.TRAILING,
         rect, new Rectangle(), rect, 0);
