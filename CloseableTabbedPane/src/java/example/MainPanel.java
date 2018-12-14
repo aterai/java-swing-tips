@@ -62,8 +62,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       int g = CloseableTabbedPaneLayerUI.GAP;
       UIManager.put("TabbedPane.tabInsets", new Insets(g, 16 + g, g, 16 + g));
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");

@@ -115,8 +115,7 @@ public final class MainPanel extends JPanel {
   public static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");
@@ -272,8 +271,7 @@ class ChangeLookAndFeelAction extends AbstractAction {
   @Override public void actionPerformed(ActionEvent e) {
     try {
       UIManager.setLookAndFeel(lnf);
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
       System.out.println("Failed loading L&F: " + lnf);
     }

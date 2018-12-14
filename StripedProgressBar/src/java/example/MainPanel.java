@@ -99,8 +99,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
   public static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");

@@ -72,8 +72,7 @@ public final class MainPanel extends JPanel {
   public static void createAndShowGui() {
     // try {
     //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    // } catch (ClassNotFoundException | InstantiationException
-    //    | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
     //   ex.printStackTrace();
     // }
     JMenuBar menuBar = ManuBarUtil.createMenuBar();
@@ -200,8 +199,7 @@ final class LookAndFeelUtil {
       ButtonModel m = lafRadioGroup.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
-      } catch (ClassNotFoundException | InstantiationException
-           | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
       }
     });

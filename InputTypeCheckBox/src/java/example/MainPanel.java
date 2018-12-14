@@ -97,8 +97,7 @@ public final class MainPanel extends JPanel {
   public static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");

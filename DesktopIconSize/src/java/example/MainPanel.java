@@ -92,8 +92,7 @@ public class MainPanel extends JPanel {
       // TEST:
       // Font font = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");
@@ -128,8 +127,7 @@ final class LookAndFeelUtil {
       ButtonModel m = lafRadioGroup.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
-      } catch (ClassNotFoundException | InstantiationException
-           | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
       }
     });

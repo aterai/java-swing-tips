@@ -161,8 +161,7 @@ final class LookAndFeelUtil {
     try {
       UIManager.setLookAndFeel(currentLaf);
       updateLookAndFeel();
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
       System.out.println("Failed loading L&F: " + currentLaf);
     }

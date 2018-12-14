@@ -65,8 +65,7 @@ public final class MainPanel extends JPanel {
   public static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");
@@ -127,10 +126,11 @@ class RoundedCornerButton extends JButton {
     if (!getBounds().equals(base)) {
       base = getBounds();
       shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
-      border = new RoundRectangle2D.Double(FOCUS_STROKE, FOCUS_STROKE,
-                         getWidth() - 1 - FOCUS_STROKE * 2,
-                         getHeight() - 1 - FOCUS_STROKE * 2,
-                         ARC_WIDTH, ARC_HEIGHT);
+      border = new RoundRectangle2D.Double(
+        FOCUS_STROKE, FOCUS_STROKE,
+        getWidth() - 1 - FOCUS_STROKE * 2,
+        getHeight() - 1 - FOCUS_STROKE * 2,
+        ARC_WIDTH, ARC_HEIGHT);
     }
   }
 

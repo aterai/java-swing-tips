@@ -55,8 +55,7 @@ public final class MainPanel extends JPanel {
     try {
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
       UIManager.getLookAndFeelDefaults().put("InternalFrame:InternalFrameTitlePane.titleAlignment", "LEADING");
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");

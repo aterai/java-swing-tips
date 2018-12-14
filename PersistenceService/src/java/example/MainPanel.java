@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -56,20 +57,22 @@ public final class MainPanel extends JPanel {
 
   public static void createAndShowGui() {
     WindowState windowState = new WindowState();
-    SwingWorker<WindowAdapter, Void> worker = new LoadSaveTask(windowState) {
+    SwingWorker<WindowListener, Void> worker = new LoadSaveTask(windowState) {
       @Override public void done() {
-        WindowAdapter windowListener = null;
         try {
-          windowListener = get();
           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (InterruptedException   | ExecutionException
-             | ClassNotFoundException | InstantiationException
-             | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
           ex.printStackTrace();
         }
+
         JFrame frame = new JFrame("@title@");
-        if (Objects.nonNull(windowListener)) {
-          frame.addWindowListener(windowListener);
+        try {
+          WindowListener windowListener = get();
+          if (Objects.nonNull(windowListener)) {
+            frame.addWindowListener(windowListener);
+          }
+        } catch (InterruptedException | ExecutionException ex) {
+          ex.printStackTrace();
         }
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
@@ -82,7 +85,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
+class LoadSaveTask extends SwingWorker<WindowListener, Void> {
   protected final WindowState windowState;
 
   protected LoadSaveTask(WindowState windowState) {
@@ -90,7 +93,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
     this.windowState = windowState;
   }
 
-  @Override public WindowAdapter doInBackground() {
+  @Override public WindowListener doInBackground() {
     PersistenceService ps;
     BasicService bs;
     try {

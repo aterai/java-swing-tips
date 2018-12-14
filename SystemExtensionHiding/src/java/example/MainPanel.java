@@ -66,8 +66,7 @@ public final class MainPanel extends JPanel {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       // UIManager.put("FileChooser.useSystemExtensionHiding", Boolean.FALSE);
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");
@@ -102,8 +101,7 @@ final class LookAndFeelUtil {
       ButtonModel m = lafRadioGroup.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
-      } catch (ClassNotFoundException | InstantiationException
-           | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
       }
     });

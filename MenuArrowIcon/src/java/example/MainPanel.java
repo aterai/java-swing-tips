@@ -42,8 +42,7 @@ public final class MainPanel extends JPanel {
       // // NimbusLookAndFeel
       // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
       // UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", new ArrowIcon());
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
 

@@ -43,8 +43,7 @@ public final class MainPanel extends JPanel {
     try {
       // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     // swing - Nimbus JTree presentation error under java version 1.8 - Stack Overflow

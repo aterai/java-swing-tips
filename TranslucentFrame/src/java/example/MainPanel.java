@@ -83,8 +83,7 @@ public final class MainPanel extends JPanel {
       // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
       SynthLookAndFeel.setStyleFactory(new MySynthStyleFactory(SynthLookAndFeel.getStyleFactory()));
-    } catch (ClassNotFoundException | InstantiationException
-         | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
     JFrame frame = new JFrame("@title@");

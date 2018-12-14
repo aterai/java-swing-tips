@@ -88,8 +88,7 @@ final class LookAndFeelUtil {
       ButtonModel m = lafRadioGroup.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
-      } catch (ClassNotFoundException | InstantiationException
-           | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
       }
     });
