@@ -181,7 +181,8 @@ public final class MainPanel extends JPanel {
 final class MenuItemHelper {
   private MenuItemHelper() { /* Singleton */ }
 
-  public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {
+  public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                               sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {
     Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
       Icon icon;
       JMenuItem menuItem = lh.getMenuItem();
