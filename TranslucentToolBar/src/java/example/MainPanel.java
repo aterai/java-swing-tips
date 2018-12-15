@@ -262,6 +262,7 @@ final class AnimationUtil {
     }
     return d;
   }
+
   // public static double delta(double t) {
   //   return 1d - Math.sin(Math.acos(t));
   // }

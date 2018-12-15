@@ -219,9 +219,9 @@ final class AnimationUtil {
   private static final int N = 3;
 
   private AnimationUtil() { /* Singleton */ }
+
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
   // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-
   public static double easeIn(double t) {
     // range: 0.0 <= t <= 1.0
     return Math.pow(t, N);

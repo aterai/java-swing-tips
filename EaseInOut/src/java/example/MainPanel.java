@@ -203,6 +203,7 @@ final class AnimationUtil {
   public static double easeOut(double t) {
     return Math.pow(t - 1d, N) + 1d;
   }
+
   // public static double easeInOut(double t) {
   //   boolean isFirstHalf = t < .5;
   //   if (isFirstHalf) {
@@ -242,6 +243,7 @@ final class AnimationUtil {
     }
     return d;
   }
+
   // public static double delta(double t) {
   //   return 1d - Math.sin(Math.acos(t));
   // }
