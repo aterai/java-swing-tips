@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -146,7 +147,7 @@ class FadingOutLabel extends JLabel {
     // super.paintComponent(g);
     int w = getWidth();
     int h = getHeight();
-    if (buffer == null || dim.width != w || dim.height != h) {
+    if (Objects.isNull(buffer) || dim.width != w || dim.height != h) {
       dim.setSize(w, h);
       buffer = updateImage(dim);
     }
