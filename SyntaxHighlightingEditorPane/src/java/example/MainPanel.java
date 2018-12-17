@@ -7,12 +7,16 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.spi.FileSystemProvider;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.script.Invocable;
@@ -81,9 +85,23 @@ public final class MainPanel extends JPanel {
     ScriptEngineManager manager = new ScriptEngineManager();
     ScriptEngine engine = manager.getEngineByName("JavaScript");
     try {
+      URI uri = MainPanel.class.getResource("prettify.js").toURI();
+      // https://stackoverflow.com/questions/22605666/java-access-files-in-jar-causes-java-nio-file-filesystemnotfoundexception
+      for (FileSystemProvider provider: FileSystemProvider.installedProviders()) {
+        if (provider.getScheme().equalsIgnoreCase("jar")) {
+          try {
+            provider.getFileSystem(uri);
+          } catch (FileSystemNotFoundException e) {
+            // in this case we need to initialize it first:
+            provider.newFileSystem(uri, Collections.emptyMap());
+          }
+        }
+      }
+      Path path = Paths.get(uri);
+      // Path path = Paths.get(MainPanel.class.getResource("prettify.js").toURI());
+
       // String p = "https://raw.githubusercontent.com/google/code-prettify/f5ad44e3253f1bc8e288477a36b2ce5972e8e161/src/prettify.js";
       // try (Reader r = new BufferedReader(new InputStreamReader(new URL(p).openStream(), StandardCharsets.UTF_8))) {
-      Path path = Paths.get(MainPanel.class.getResource("prettify.js").toURI());
       try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
         engine.eval("var window={}, navigator=null;");
         engine.eval(r);
