@@ -11,8 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
@@ -102,13 +102,15 @@ public final class MainPanel extends JPanel {
     try {
       URI uri = MainPanel.class.getResource("prettify.js").toURI();
       // https://stackoverflow.com/questions/22605666/java-access-files-in-jar-causes-java-nio-file-filesystemnotfoundexception
-      for (FileSystemProvider provider: FileSystemProvider.installedProviders()) {
-        if (provider.getScheme().equalsIgnoreCase("jar")) {
-          try {
-            provider.getFileSystem(uri);
-          } catch (FileSystemNotFoundException e) {
-            // in this case we need to initialize it first:
-            provider.newFileSystem(uri, Collections.emptyMap());
+      if ("jar".equals(uri.getScheme())) {
+        for (FileSystemProvider provider: FileSystemProvider.installedProviders()) {
+          if (provider.getScheme().equalsIgnoreCase("jar")) {
+            try {
+              provider.getFileSystem(uri);
+            } catch (FileSystemNotFoundException e) {
+              // in this case we need to initialize it first:
+              provider.newFileSystem(uri, Collections.emptyMap());
+            }
           }
         }
       }
