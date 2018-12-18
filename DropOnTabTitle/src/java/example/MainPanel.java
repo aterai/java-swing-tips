@@ -24,6 +24,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
+import java.util.Collections;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -118,13 +119,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {
-    int size = getModel().getSize();
-    DataFlavor[] f = new DataFlavor[size];
-    for (int i = 0; i < size; i++) {
-      // f[i] = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
-      f[i] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    }
-    return f;
+    return new DataFlavor[] {new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME)};
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
