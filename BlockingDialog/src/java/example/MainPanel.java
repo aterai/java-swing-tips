@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JCheckBox check = new JCheckBox("0x01FF0000");
+    JCheckBox check = new JCheckBox("0x01_FF_00_00");
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(getRootPane());
@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
       dialog.setUndecorated(true);
       dialog.setBounds(w.getBounds());
       dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-      int color = check.isSelected() ? 0x22FF0000 : 0x01FF0000;
+      int color = check.isSelected() ? 0x22_FF_00_00 : 0x01_FF_00_00;
       dialog.setBackground(new Color(color, true));
       new BackgroundTask() {
         @Override public void done() {

@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
-    progress1.setForeground(new Color(0xAAFFAAAA));
+    progress1.setForeground(new Color(0xAA_FF_AA_AA));
     progress2.setStringPainted(true);
     progress2.setFont(progress2.getFont().deriveFont(24f));
 
@@ -127,7 +127,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     background.subtract(hole);
 
     // draw the track
-    g2.setPaint(new Color(0xDDDDDD));
+    g2.setPaint(new Color(0xDD_DD_DD));
     g2.fill(background);
 
     // draw the circular sector

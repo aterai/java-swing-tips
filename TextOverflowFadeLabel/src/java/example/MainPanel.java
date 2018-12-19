@@ -170,7 +170,7 @@ class FadingOutLabel extends JLabel {
       double factor = 1d - x / (double) LENGTH;
       for (int y = 0; y < d.height; y++) {
         int argb = img.getRGB(spx + x, y);
-        int rgb = argb & 0x00FFFFFF;
+        int rgb = argb & 0x00_FF_FF_FF;
         int a = (argb >> 24) & 0xFF;
         img.setRGB(spx + x, y, ((int) (a * factor) << 24) | rgb);
       }

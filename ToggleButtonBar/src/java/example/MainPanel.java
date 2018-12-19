@@ -18,11 +18,11 @@ public final class MainPanel extends JPanel {
     Icon roundIcon = new ToggleButtonBarCellIcon();
     Icon rectIcon = new CellIcon();
 
-    add(makeToggleButtonBar(0xFF7400, roundIcon));
-    add(makeToggleButtonBar(0x555555, rectIcon));
-    add(makeToggleButtonBar(0x006400, roundIcon));
-    add(makeToggleButtonBar(0x8B0000, rectIcon));
-    add(makeToggleButtonBar(0x001E43, roundIcon));
+    add(makeToggleButtonBar(0xFF_74_00, roundIcon));
+    add(makeToggleButtonBar(0x55_55_55, rectIcon));
+    add(makeToggleButtonBar(0x00_64_00, roundIcon));
+    add(makeToggleButtonBar(0x8B_00_00, rectIcon));
+    add(makeToggleButtonBar(0x00_1E_43, roundIcon));
 
     setPreferredSize(new Dimension(320, 240));
   }

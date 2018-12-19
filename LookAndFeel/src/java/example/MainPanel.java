@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeSystemColor(Color color, String text) {
-    JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFFFFFF));
+    JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFF_FF_FF));
     field.setEditable(false);
     JLabel c = new JLabel() {
       @Override public Dimension getPreferredSize() {

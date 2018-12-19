@@ -246,7 +246,7 @@ class PressedImageFilter extends RGBImageFilter {
     int r = (int) (((argb >> 16) & 0xFF) * .6);
     int g = (int) (((argb >> 8) & 0xFF) * 1d);
     int b = (int) ((argb & 0xFF) * 1d);
-    return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
+    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }
 
@@ -255,6 +255,6 @@ class RolloverImageFilter extends RGBImageFilter {
     int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * 1d);
     int g = (int) Math.min(0xFF, ((argb >> 8) & 0xFF) * 1.5);
     int b = (int) Math.min(0xFF, (argb & 0xFF) * 1.5);
-    return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
+    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }

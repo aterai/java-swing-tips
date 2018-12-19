@@ -28,8 +28,8 @@ import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
   private static final String PATTERN = "[Ff]rame";
-  private static final Color SELECTION_COLOR = new Color(0xC86464FF, true);
-  private static final Color HIGHLIGHT_COLOR = new Color(0x64FFFF32, true);
+  private static final Color SELECTION_COLOR = new Color(0xC8_64_64_FF, true);
+  private static final Color HIGHLIGHT_COLOR = new Color(0x64_FF_FF_32, true);
   private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOR);
   private final JEditorPane area = new JEditorPane();
 
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
     area.setOpaque(false);
-    area.setForeground(new Color(0xC8C8C8));
+    area.setForeground(new Color(0xC8_C8_C8));
     area.setSelectedTextColor(Color.WHITE);
     area.setBackground(new Color(0x0, true)); // Nimbus
     area.setSelectionColor(SELECTION_COLOR);

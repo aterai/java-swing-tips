@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     int[] pixelsB = getData(iib, w, h);
     for (int i = 0; i < pixelsA.length; i++) {
       if (pixelsA[i] == pixelsB[i]) {
-        pixelsA[i] = pixelsA[i] & 0x44FFFFFF;
+        pixelsA[i] = pixelsA[i] & 0x44_FF_FF_FF;
       }
     }
 

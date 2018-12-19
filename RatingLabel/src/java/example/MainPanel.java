@@ -202,6 +202,6 @@ class SelectedImageFilter extends RGBImageFilter {
     int r = (int) (((argb >> 16) & 0xFF) * rf);
     int g = (int) (((argb >> 8) & 0xFF) * gf);
     int b = (int) ((argb & 0xFF) * bf);
-    return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
+    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }

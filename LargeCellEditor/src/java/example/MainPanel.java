@@ -120,7 +120,7 @@ class IconTable extends JTable {
     }
 
     @Override protected void paintComponent(Graphics g) {
-      g.setColor(new Color(0x64FFFFFF, true));
+      g.setColor(new Color(0x64_FF_FF_FF, true));
       g.fillRect(0, 0, getWidth(), getHeight());
       BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = bufimg.createGraphics();
@@ -258,7 +258,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     setVisibleRowCount(0);
     setCellRenderer(new ListCellRenderer<IconItem>() {
       private final JLabel label = new JLabel();
-      private final Color selctedColor = new Color(0xC8C8FF);
+      private final Color selctedColor = new Color(0xC8_C8_FF);
       @Override public Component getListCellRendererComponent(JList<? extends IconItem> list, IconItem value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setOpaque(true);
         label.setHorizontalAlignment(SwingConstants.CENTER);

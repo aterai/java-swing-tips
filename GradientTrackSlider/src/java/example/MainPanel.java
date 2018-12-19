@@ -282,7 +282,7 @@ final class GradientPalletUtils {
     int i = (int) (pallet.length * x);
     int max = pallet.length - 1;
     int index = Math.min(Math.max(i, 0), max);
-    int pix = pallet[index] & 0x00FFFFFF;
+    int pix = pallet[index] & 0x00_FF_FF_FF;
     // int alpha = 0x64 << 24;
     return new Color(alpha | pix, true);
   }

@@ -140,7 +140,7 @@ class ListItem {
 
 class SelectedImageFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
-    return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
+    return (argb & 0xFF_FF_FF_00) | ((argb & 0xFF) >> 1);
   }
 }
 

@@ -256,7 +256,7 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
       area.subtract(new Area(shape));
       g2.setClip(area);
 
-      g2.setPaint(new Color(0x55666666, true));
+      g2.setPaint(new Color(0x55_66_66_66, true));
       g2.setStroke(new BasicStroke(3f));
       g2.draw(shape);
       g2.setStroke(new BasicStroke(2f));

@@ -64,7 +64,7 @@ class ZoomAndPanePanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new Color(0x55FF0000, true));
+    g2.setPaint(new Color(0x55_FF_00_00, true));
     Rectangle r = new Rectangle(500, 140, 150, 150);
 
     // use: AffineTransform#concatenate(...) and Graphics2D#setTransform(...)

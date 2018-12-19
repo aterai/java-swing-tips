@@ -113,7 +113,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 
   @Override public void mousePressed(MouseEvent e) {
     startPoint = e.getPoint();
-    penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF000000 : 0x0;
+    penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF_00_00_00 : 0x0;
   }
 
   @Override public void mouseMoved(MouseEvent e) { /* not needed */ }

@@ -152,9 +152,9 @@ class LightboxGlassPane extends JPanel {
     rect.setLocation(centerPt.x - rect.width / 2, centerPt.y - rect.height / 2);
 
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new Color(0x64646464, true));
+    g2.setPaint(new Color(0x64_64_64_64, true));
     g2.fill(screen);
-    g2.setPaint(new Color(0xC8FFFFFF, true));
+    g2.setPaint(new Color(0xC8_FF_FF_FF, true));
     g2.fill(rect);
 
     if (alpha > 0) {

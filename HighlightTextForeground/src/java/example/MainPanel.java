@@ -43,8 +43,8 @@ public class MainPanel extends JPanel {
       + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
-  private static final Color CURRENT_COLOR = new Color(0xAA006400, true);
-  private static final Color HIGHLIGHT_COLOR = new Color(0x64DDDD00, true);
+  private static final Color CURRENT_COLOR = new Color(0xAA_00_64_00, true);
+  private static final Color HIGHLIGHT_COLOR = new Color(0x64_DD_DD_00, true);
   private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(CURRENT_COLOR);
   private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOR);
   private final JTextPane textPane = new JTextPane();
@@ -70,7 +70,7 @@ public class MainPanel extends JPanel {
     // Style regular = doc.addStyle("regular", def);
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
     Style htf = doc.addStyle("highlight-text-foreground", def);
-    StyleConstants.setForeground(htf, new Color(0xFFDDFF));
+    StyleConstants.setForeground(htf, new Color(0xFF_DD_FF));
 
     field.getDocument().addDocumentListener(handler);
     Stream.of(prevButton, nextButton, checkCase, checkWord).forEach(b -> {

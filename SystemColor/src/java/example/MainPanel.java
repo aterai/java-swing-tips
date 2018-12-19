@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     box.add(makeSystemColorPanel(SystemColor.infoText, "infoText"));
     box.add(Box.createRigidArea(new Dimension(320, 0)));
     // box.add(Box.createVerticalStrut(10));
-    // box.add(makeSystemColorPanel(new Color(0xFF004E98), "test"));
+    // box.add(makeSystemColorPanel(new Color(0xFF_00_4E_98), "test"));
 
     add(new JScrollPane(box));
   }

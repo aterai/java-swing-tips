@@ -194,7 +194,7 @@ class SelectedImageFilter extends RGBImageFilter {
     // float[] array = new float[4];
     // color.getComponents(array);
     // return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
-    return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
+    return (argb & 0xFF_FF_FF_00) | ((argb & 0xFF) >> 1);
   }
 }
 

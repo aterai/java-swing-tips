@@ -315,6 +315,6 @@ class SelectedImageFilter extends RGBImageFilter {
     int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * SCALE);
     int g = (int) Math.min(0xFF, ((argb >> 8) & 0xFF) * SCALE);
     int b = (int) Math.min(0xFF, (argb & 0xFF) * SCALE);
-    return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
+    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }

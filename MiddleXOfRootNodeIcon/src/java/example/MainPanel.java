@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     });
 
     Icon icon1 = new ColorIcon(Color.GREEN, new Dimension(ow, ih));
-    Icon icon2 = new ColorIcon(new Color(0x550000AA, true), new Dimension(iw, ih));
+    Icon icon2 = new ColorIcon(new Color(0x55_00_00_AA, true), new Dimension(iw, ih));
     JTree tree = new JTree();
     tree.setRowHeight(0);
     tree.setBorder(BorderFactory.createEmptyBorder(1, 1 + (iw - ow) / 2, 1, 1));
