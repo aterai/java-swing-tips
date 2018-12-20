@@ -539,12 +539,12 @@
           print("FTP server refused connection.");
           System.exit(1);
         }
-        ftps.setBufferSize(1000);
+        // ftps.setBufferSize(1048576);
         if (!ftps.login(username, password)) {
           print("FTP server refused connection.");
         } else {
           print("Remote system is " + ftps.getSystemName());
-          //ftps.setFileType(FTP.BINARY_FILE_TYPE);
+          ftps.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
           ftps.enterLocalPassiveMode();
           ftps.makeDirectory(remotedir);
           var filesets = elements.get("fileset");
@@ -556,13 +556,13 @@
             var files = scanner.getIncludedFiles();
             for(j = 0; j < files.length; j++) {
               var filename = files[j];
-                var local = new java.io.File(basedir, filename);
-                print("file: " + remotedir + "/" +  filename);
-                var input = new java.io.FileInputStream(local);
-                ftps.storeFile(remotedir + "/" +  filename, input);
-                input.close();
-              }
+              var local = new java.io.File(basedir, filename);
+              print("file: " + remotedir + "/" +  filename);
+              var input = new java.io.FileInputStream(local);
+              ftps.storeFile(remotedir + "/" +  filename, input);
+              input.close();
             }
+          }
         }
         ftps.logout();
       } catch (ex) {
