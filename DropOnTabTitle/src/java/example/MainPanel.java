@@ -24,7 +24,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
-import java.util.Collections;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
