@@ -10,7 +10,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTextArea()), new JScrollPane(new JTree()));
+
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(new JScrollPane(new JTextArea()));
+    splitPane.setBottomComponent(new JScrollPane(new JTree()));
+
     SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
 
     JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio", true);

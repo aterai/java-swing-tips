@@ -97,8 +97,11 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
       rb.lineTo(destPoint.x, destPoint.y);
       rb.lineTo(srcPoint.x, destPoint.y);
       rb.closePath();
+
       // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-      l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray());
+      int[] indices = IntStream.range(0, l.getModel().getSize())
+          .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
+      l.setSelectedIndices(indices);
       l.repaint();
     }
 
