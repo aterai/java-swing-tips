@@ -55,9 +55,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeTitledPanel(String title, Component c) {
+    JScrollPane scroll = new JScrollPane(c);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
-    p.add(new JScrollPane(c, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+    p.add(scroll);
     return p;
   }
 

@@ -31,7 +31,8 @@ public final class MainPanel extends JPanel {
     // try (InputStream is = getClass().getResourceAsStream("duke.running.gif");
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     URL url = getClass().getResource("duke.running.gif");
-    // try (InputStream is = Files.newInputStream(Paths.get(url.toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+    // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
+    //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
       loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
     } catch (IOException ex) {

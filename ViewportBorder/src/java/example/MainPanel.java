@@ -35,7 +35,9 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         // setViewportBorder(null);
         super.updateUI();
-        EventQueue.invokeLater(() -> setViewportBorder(BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5)));
+        EventQueue.invokeLater(() -> {
+          setViewportBorder(BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5));
+        });
       }
     };
     // scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));

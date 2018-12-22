@@ -25,7 +25,9 @@ public final class MainPanel extends JPanel {
         UIManager.put(disabledAreNavigable, isSelected());
       }
     };
-    disabledAreNavigableCheck.addActionListener(e -> UIManager.put(disabledAreNavigable, ((JCheckBox) e.getSource()).isSelected()));
+    disabledAreNavigableCheck.addActionListener(e -> {
+      UIManager.put(disabledAreNavigable, ((JCheckBox) e.getSource()).isSelected());
+    });
 
     // EventQueue.invokeLater(new Runnable() {
     //   @Override public void run() {

@@ -37,9 +37,11 @@ public final class MainPanel extends JPanel {
     StringBuilder buf = new StringBuilder();
 
     // https://bugs.openjdk.java.net/browse/JDK-8080225
-    // try (InputStream is = getClass().getResourceAsStream("test.jpg"); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+    // try (InputStream is = getClass().getResourceAsStream("test.jpg");
+    //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     URL url = getClass().getResource("test.jpg");
-    // try (InputStream is = Files.newInputStream(Paths.get(url.toURI())); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+    // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
+    //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
       // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
       reader.setInput(iis, true);

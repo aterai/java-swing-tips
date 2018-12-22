@@ -111,7 +111,10 @@ public class MainPanel extends JPanel {
       }
     });
 
-    teoflCheck.addActionListener(e -> table.putClientProperty("terminateEditOnFocusLost", ((JCheckBox) e.getSource()).isSelected()));
+    teoflCheck.addActionListener(e -> {
+      boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
+      table.putClientProperty("terminateEditOnFocusLost", isSelected);
+    });
 
     JPanel box = new JPanel(new GridLayout(4, 0));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

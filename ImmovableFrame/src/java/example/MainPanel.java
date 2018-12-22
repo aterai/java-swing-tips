@@ -73,7 +73,8 @@ public class MainPanel extends JPanel {
   }
 
   private static JInternalFrame createInternalFrame() {
-    JInternalFrame f = new JInternalFrame(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
+    String title = String.format("Document #%s", openFrameCount.getAndIncrement());
+    JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     f.setSize(160, 100);
     f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
     return f;
