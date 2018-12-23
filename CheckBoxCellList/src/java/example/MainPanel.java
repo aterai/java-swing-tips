@@ -45,16 +45,16 @@ public final class MainPanel extends JPanel {
     p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
-    Stream.of(
-        "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff",
-        "gggggg", "hhhhh", "iiii", "jjjjjjjjjj").forEach(title -> {
-      boolean isSelected = title.length() % 2 == 0;
-      JCheckBox c = new JCheckBox(title, isSelected);
-      c.setAlignmentX(Component.LEFT_ALIGNMENT);
-      list1.add(c);
-      model.addElement(new CheckBoxNode(title, isSelected));
-      root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
-    });
+    Stream.of("aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff",
+              "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")
+        .forEach(title -> {
+          boolean isSelected = title.length() % 2 == 0;
+          JCheckBox c = new JCheckBox(title, isSelected);
+          c.setAlignmentX(Component.LEFT_ALIGNMENT);
+          list1.add(c);
+          model.addElement(new CheckBoxNode(title, isSelected));
+          root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));
+        });
     list3.setModel(new DefaultTreeModel(root));
 
     add(new JLabel("JCheckBox in ", SwingConstants.CENTER), BorderLayout.NORTH);
