@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
       + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
-  private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -70,12 +70,12 @@ public final class MainPanel extends JPanel {
       int pos = 0;
       while (matcher.find(pos)) {
         pos = matcher.end();
-        highlighter.addHighlight(matcher.start(), pos, HIGHLIGHT_PAINTER);
+        highlighter.addHighlight(matcher.start(), pos, HIGHLIGHT);
       }
       // int pos = text.indexOf(pattern);
       // while (pos >= 0) {
       //   int nextp = pos + pattern.length();
-      //   jtc.getHighlighter().addHighlight(pos, nextp, HIGHLIGHT_PAINTER);
+      //   jtc.getHighlighter().addHighlight(pos, nextp, HIGHLIGHT);
       //   pos = text.indexOf(pattern, nextp);
       // }
     } catch (BadLocationException | PatternSyntaxException ex) {

@@ -25,7 +25,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
 public class MainPanel extends JPanel {
-  protected final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  protected static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
   protected final JTextArea textArea = new JTextArea();
   protected final JEditorPane editorPane = new JEditorPane();
   protected final JTextField field = new JTextField("3");
@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
     int lf = isBlock ? 1 : 0;
     int end = element.getEndOffset() - lf; // lf???, setDrawsLayeredHighlights(false) bug???
     try {
-      highlighter.addHighlight(start, end, highlightPainter);
+      highlighter.addHighlight(start, end, HIGHLIGHT);
     } catch (BadLocationException ex) {
       ex.printStackTrace();
     }

@@ -21,7 +21,7 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
   private static final String PATTERN = "Swing";
   private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
       + "Lesson: Learning Swing by Example\n"
@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
       while (matcher.find(pos)) {
         int start = matcher.start();
         int end = matcher.end();
-        highlighter.addHighlight(start, end, HIGHLIGHT_PAINTER);
+        highlighter.addHighlight(start, end, HIGHLIGHT);
         pos = end;
       }
     } catch (BadLocationException | PatternSyntaxException ex) {

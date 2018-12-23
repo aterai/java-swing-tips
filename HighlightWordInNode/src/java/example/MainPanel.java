@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
 
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
   private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
-  private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
   protected String query;
 
   @Override public void updateUI() {
@@ -128,7 +128,7 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     setBackground(selected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
     if (Objects.nonNull(query) && !query.isEmpty() && txt.startsWith(query)) {
       try {
-        getHighlighter().addHighlight(0, query.length(), highlightPainter);
+        getHighlighter().addHighlight(0, query.length(), HIGHLIGHT);
       } catch (BadLocationException ex) {
         ex.printStackTrace();
       }
