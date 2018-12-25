@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,6 +17,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
 
 public class MainPanel extends JPanel {
   private final String[] columnNames = {"Year", "String", "Comment"};
@@ -68,6 +74,7 @@ public class MainPanel extends JPanel {
     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
     field.getActionMap().put("Enter", enterAction);
+    ((AbstractDocument) field.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
 
     Stream.of(first, prev, next, last).forEach(b -> b.addActionListener(this::updateCurrentPageIndex));
 
@@ -95,6 +102,7 @@ public class MainPanel extends JPanel {
   protected class TableUpdateTask extends LoadTask {
     protected TableUpdateTask(int max, int itemsPerPage) {
       super(max, itemsPerPage);
+      field.setEditable(false);
     }
 
     @Override protected void process(List<List<Object[]>> chunks) {
@@ -131,6 +139,7 @@ public class MainPanel extends JPanel {
       }
       System.out.println(text);
       table.setEnabled(true);
+      field.setEditable(true);
     }
   }
 
@@ -233,4 +242,40 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
   //   publish(result);
   //   return current + result.size();
   // }
+}
+
+class IntegerDocumentFilter extends DocumentFilter {
+  // int currentValue = 0;
+  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+    if (Objects.nonNull(text)) {
+      replace(fb, offset, 0, text, attr);
+    }
+  }
+
+  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+    replace(fb, offset, length, "", null);
+  }
+
+  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+    Document doc = fb.getDocument();
+    int currentLength = doc.getLength();
+    String currentContent = doc.getText(0, currentLength);
+    String before = currentContent.substring(0, offset);
+    String after = currentContent.substring(length + offset, currentLength);
+    String newValue = before + Objects.toString(text, "") + after;
+    checkInput(newValue, offset);
+    fb.replace(offset, length, text, attrs);
+  }
+
+  private static int checkInput(String proposedValue, int offset) throws BadLocationException {
+    if (proposedValue.isEmpty()) {
+      return 0;
+    } else {
+      try {
+        return Integer.parseInt(proposedValue);
+      } catch (NumberFormatException ex) {
+        throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
+      }
+    }
+  }
 }

@@ -78,8 +78,8 @@ public class MainPanel extends JPanel {
 
     JButton changeSelection = new JButton("changeSelection");
     changeSelection.addActionListener(e -> {
-      int row = Integer.parseInt(rowField.getValue().toString());
-      int col = Integer.parseInt(colField.getValue().toString());
+      int row = (Integer) rowField.getValue();
+      int col = (Integer) colField.getValue();
 
       table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
       // table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());

@@ -17,7 +17,7 @@ import javax.swing.text.Document;
 import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
-  private final JTextField textField = new JTextField("100");
+  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 1, 2000, 1));
   private final JTextArea textArea = new JTextArea();
   private final JScrollPane scroll = new JScrollPane(textArea);
 
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
     JPanel panel = new JPanel(new BorderLayout());
-    panel.add(textField);
+    panel.add(spinner);
     panel.add(button, BorderLayout.EAST);
 
     add(panel, BorderLayout.NORTH);
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
   private void startScroll() {
     Document doc = textArea.getDocument();
     Element root = doc.getDefaultRootElement();
-    int ln = getDestLineNumber(textField, root);
+    int ln = Math.max(1, Math.min(root.getElementCount(), (Integer) spinner.getValue()));
     try {
       Element elem = root.getElement(ln - 1);
       Rectangle dest = textArea.modelToView(elem.getStartOffset());
@@ -68,11 +68,6 @@ public final class MainPanel extends JPanel {
     } catch (BadLocationException ex) {
       Toolkit.getDefaultToolkit().beep();
     }
-  }
-
-  private static int getDestLineNumber(JTextField textField, Element root) {
-    int lineNumber = Integer.parseInt(textField.getText().trim());
-    return Math.max(1, Math.min(root.getElementCount(), lineNumber));
   }
 
   public static void main(String... args) {
