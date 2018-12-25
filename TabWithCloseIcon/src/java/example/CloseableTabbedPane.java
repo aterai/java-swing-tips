@@ -434,7 +434,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     }
 
     SwingUtilities.layoutCompoundLabel(
-        (JComponent) tabPane,
+        tabPane,
         metrics, title, icon,
         SwingConstants.CENTER,
         SwingConstants.CENTER,
@@ -507,7 +507,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     SwingUtilities.layoutCompoundLabel(
-        (JComponent) tabPane,
+        tabPane,
         metrics, title, icon,
         SwingConstants.CENTER,
         SwingConstants.CENTER,
