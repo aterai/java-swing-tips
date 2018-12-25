@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     // tabbedPane.addMouseListener(l);
     IntStream.range(0, 3).forEach(i -> {
       String title = "Tab " + i;
-      tabbedPane.add(title, new JLabel(title));
+      tabbedPane.addTab(title, new JLabel(title));
       tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
     });
     tabbedPane.setComponentPopupMenu(new TabTitleRenamePopupMenu());
@@ -64,13 +64,22 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabbedPane = Optional.ofNullable(tabbedPane)
+        .orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
           return tabbedPane.getTitleAt(i);
+        }
+        return null;
+      }
+
+      @Override public Icon getIcon() {
+        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+        if (i != -1) {
+          return tabbedPane.getIconAt(i);
         }
         return null;
       }
@@ -175,7 +184,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
       JTabbedPane t = (JTabbedPane) getInvoker();
       int count = t.getTabCount();
       String title = "Tab " + count;
-      t.add(title, new JLabel(title));
+      t.addTab(title, new JLabel(title));
       t.setTabComponentAt(count, new ButtonTabComponent(t));
     }
   };

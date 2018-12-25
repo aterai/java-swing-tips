@@ -57,11 +57,11 @@ public final class MainPanel extends JPanel {
 
   private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    jtp.addTab("1111111111111111111", new JScrollPane(new JTree()));
-    jtp.addTab("2", new JLabel("bbbbbbbbb"));
-    jtp.addTab("33333333333333", new JScrollPane(new JTree()));
-    jtp.addTab("444444444444444", new JLabel("dddddddddd"));
-    jtp.addTab("55555555555555555555555555555555", new JLabel("e"));
+    jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
+    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("bbbbbbbbb"));
+    jtp.addTab("33333333333333", new ColorIcon(Color.BLUE), new JScrollPane(new JTree()));
+    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("dddddddddd"));
+    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("e"));
     return jtp;
   }
 
@@ -180,7 +180,7 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
       tabPane.putClientProperty(html, v);
     }
     SwingUtilities.layoutCompoundLabel(
-        (JComponent) tabPane,
+        tabPane,
         metrics, title, icon,
         SwingConstants.CENTER,
         SwingConstants.LEFT, // CENTER, <----
@@ -191,8 +191,9 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         textRect,
         textIconGap);
     tabPane.putClientProperty(html, null);
+
     textRect.translate(tabInsets.left + 2, 0); // <----
-    textRect.width -= tabInsets.left + tabInsets.right;
+    iconRect.translate(tabInsets.left + 2, 0); // <----
 
     int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
     int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
@@ -212,7 +213,7 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
       tabPane.putClientProperty("html", v);
     }
     SwingUtilities.layoutCompoundLabel(
-        (JComponent) tabPane,
+        tabPane,
         metrics, title, icon,
         SwingConstants.CENTER,
         SwingConstants.LEFT, // CENTER, <----
@@ -223,8 +224,9 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
         textRect,
         textIconGap);
     tabPane.putClientProperty("html", null);
-    textRect.translate(tabInsets.left, 0); // <----
-    textRect.width -= tabInsets.left + tabInsets.right;
+
+    textRect.translate(tabInsets.left + 2, 0); // <----
+    iconRect.translate(tabInsets.left + 2, 0); // <----
 
     int xnudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
     int ynudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
@@ -249,6 +251,14 @@ class ButtonTabComponent extends JPanel {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
           return tabbedPane.getTitleAt(i);
+        }
+        return null;
+      }
+
+      @Override public Icon getIcon() {
+        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+        if (i != -1) {
+          return tabbedPane.getIconAt(i);
         }
         return null;
       }
@@ -326,5 +336,29 @@ class TabButton extends JButton {
     g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
     g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);
     g2.dispose();
+  }
+}
+
+class ColorIcon implements Icon {
+  private final Color color;
+
+  protected ColorIcon(Color color) {
+    this.color = color;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.translate(x, y);
+    g2.setPaint(color);
+    g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 16;
+  }
+
+  @Override public int getIconHeight() {
+    return 16;
   }
 }

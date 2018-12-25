@@ -692,6 +692,13 @@ class ButtonTabComponent extends JPanel {
         }
         return null;
       }
+      @Override public Icon getIcon() {
+        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+        if (i != -1) {
+          return tabbedPane.getIconAt(i);
+        }
+        return null;
+      }
     };
     add(label);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));

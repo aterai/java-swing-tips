@@ -39,11 +39,11 @@ public final class MainPanel extends JPanel {
 
   private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    jtp.addTab("1111111111111111111", new JScrollPane(new JTree()));
-    jtp.addTab("2", new JLabel("bbbbbbbbb"));
-    jtp.addTab("33333333333333", new JScrollPane(new JTree()));
-    jtp.addTab("444444444444444", new JLabel("dddddddddd"));
-    jtp.addTab("55555555555555555555555555555555", new JLabel("e"));
+    jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
+    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("bbbbbbbbb"));
+    jtp.addTab("33333333333333", new ColorIcon(Color.BLUE), new JScrollPane(new JTree()));
+    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("dddddddddd"));
+    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("e"));
     return jtp;
   }
 
@@ -133,7 +133,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-    setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
+    setTabComponentAt(index, new JLabel(title, icon, SwingConstants.CENTER));
   }
 
   protected void updateAllTabWidth(int tabWidth, int gap) {
@@ -149,5 +149,29 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         rest -= a;
       }
     }
+  }
+}
+
+class ColorIcon implements Icon {
+  private final Color color;
+
+  protected ColorIcon(Color color) {
+    this.color = color;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.translate(x, y);
+    g2.setPaint(color);
+    g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 16;
+  }
+
+  @Override public int getIconHeight() {
+    return 16;
   }
 }
