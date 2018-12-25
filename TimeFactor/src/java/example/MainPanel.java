@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
     p.add(combo);
 
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.add("ComboBox.timeFactor", p);
-    tabbedPane.add("List.timeFactor", new JScrollPane(new JList<>(model)));
-    tabbedPane.add("Table.timeFactor(JFileChooser)", new JFileChooser());
-    tabbedPane.add("Tree.timeFactor", new JScrollPane(new JTree()));
+    tabbedPane.addTab("ComboBox.timeFactor", p);
+    tabbedPane.addTab("List.timeFactor", new JScrollPane(new JList<>(model)));
+    tabbedPane.addTab("Table.timeFactor(JFileChooser)", new JFileChooser());
+    tabbedPane.addTab("Tree.timeFactor", new JScrollPane(new JTree()));
 
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));

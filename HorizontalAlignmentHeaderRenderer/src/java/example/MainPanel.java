@@ -47,11 +47,11 @@ public final class MainPanel extends JPanel {
     // });
 
     JTabbedPane tabs = new JTabbedPane();
-    tabs.add("Default", new JScrollPane(makeTable()));
-    tabs.add("Test0", new JScrollPane(table0));
-    tabs.add("Test1", new JScrollPane(table1));
-    tabs.add("Test2", new JScrollPane(table2));
-    // tabs.add("Test3", new JScrollPane(table3));
+    tabs.addTab("Default", new JScrollPane(makeTable()));
+    tabs.addTab("Test0", new JScrollPane(table0));
+    tabs.addTab("Test1", new JScrollPane(table1));
+    tabs.addTab("Test2", new JScrollPane(table2));
+    // tabs.addTab("Test3", new JScrollPane(table3));
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));

@@ -113,7 +113,7 @@ class PinTabPopupMenu extends JPopupMenu {
   //     JTabbedPane t = (JTabbedPane) getInvoker();
   //     int count = t.getTabCount();
   //     String title = "Tab " + count;
-  //     t.add(title, new JLabel(title));
+  //     t.addTab(title, new JLabel(title));
   //     t.setTabComponentAt(count, new ButtonTabComponent(t));
   //   }
   // };

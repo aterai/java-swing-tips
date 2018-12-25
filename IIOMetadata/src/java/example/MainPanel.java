@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
     JTextArea log = new JTextArea(buf.toString());
     JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));
     JTabbedPane tab = new JTabbedPane();
-    tab.add("text", new JScrollPane(log));
-    tab.add("tree", new JScrollPane(tree));
+    tab.addTab("text", new JScrollPane(log));
+    tab.addTab("tree", new JScrollPane(tree));
     add(tab);
     setPreferredSize(new Dimension(320, 240));
   }

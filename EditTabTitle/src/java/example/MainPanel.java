@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane = new EditableTabbedPane();
     // for (int i = 0; i < 5; i++) {
     //   String title = "Tab " + i;
-    //   tabbedPane.add(title, new JLabel(title));
+    //   tabbedPane.addTab(title, new JLabel(title));
     //   tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
     // }
     JTextArea a = new JTextArea(INFO);

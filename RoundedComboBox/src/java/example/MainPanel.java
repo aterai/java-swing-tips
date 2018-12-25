@@ -110,8 +110,8 @@ public final class MainPanel extends JPanel {
     box1.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.add("Basic, Metal", makeTitledPanel(null, box1, BACKGROUND));
-    tabbedPane.add("Windows", makeTitledPanel(null, box0, null));
+    tabbedPane.addTab("Basic, Metal", makeTitledPanel(null, box1, BACKGROUND));
+    tabbedPane.addTab("Windows", makeTitledPanel(null, box0, null));
 
     JCheckBox check = new JCheckBox("editable");
     check.addActionListener(e -> {

@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
     check.setHorizontalAlignment(SwingConstants.RIGHT);
 
     JTabbedPane tab = new JTabbedPane();
-    tab.add("Preview", makePreviewPanel());
-    tab.add("SVG", makeSvgPanel());
+    tab.addTab("Preview", makePreviewPanel());
+    tab.addTab("SVG", makeSvgPanel());
 
     JPanel panel = new JPanel(new BorderLayout());
     panel.add(makePreferencesPanel(), BorderLayout.NORTH);
