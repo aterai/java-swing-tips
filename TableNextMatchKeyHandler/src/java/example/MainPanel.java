@@ -126,9 +126,9 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     selectAndScrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
   }
 
-  private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIndex, boolean startingFromSelection) {
-    int start = startIndex;
-    boolean isStartingSelection = startingFromSelection;
+  private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIdx, boolean startingSelection) {
+    int start = startIdx;
+    boolean isStartingSelection = startingSelection;
     if (start < 0 || start >= max) {
       if (e.isShiftDown()) {
         start = max - 1;

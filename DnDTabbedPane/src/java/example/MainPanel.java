@@ -60,7 +60,9 @@ public final class MainPanel extends JPanel {
     tcheck.addActionListener(e -> tab.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
 
     JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    scheck.addActionListener(e -> tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+    scheck.addActionListener(e -> {
+      tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
+    });
 
     JCheckBox debugp = new JCheckBox("Debug Paint", true);
     debugp.addActionListener(e -> tab.isPaintScrollArea = debugp.isSelected());
@@ -171,7 +173,8 @@ class DnDTabbedPane extends JTabbedPane {
     super();
     glassPane.setName("GlassPane");
     new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
-    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+        this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }
 
   protected int getTargetTabIndex(Point glassPt) {

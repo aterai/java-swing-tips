@@ -32,7 +32,8 @@ public final class MainPanel extends JPanel {
     c.gridx = 0;
     c.weightx = 0.0;
     c.anchor = GridBagConstraints.WEST;
-    Stream.of("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():", "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")
+    Stream.of("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():",
+              "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")
         .map(JLabel::new)
         .forEach(l -> {
           p.add(l, c);
