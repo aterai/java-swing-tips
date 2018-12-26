@@ -1,22 +1,21 @@
 pipeline {
-    agent any
+    agent 'any'
     stages {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/aterai/java-swing-tips.git'
             }
         }
-        stage('PMD') {
+        stage ('Analysis') {
             steps {
-                sh "~/.sdkman/candidates/ant/current/bin/ant -file all.xml pmd"
-                step([$class: 'PmdPublisher', pattern: '**/pmd.xml'])
+                sh "~/.sdkman/candidates/ant/current/bin/ant -file all.xml checkstyle pmd"
             }
         }
-        stage('CheckStyle') {
-            steps {
-                sh "~/.sdkman/candidates/ant/current/bin/ant -file all.xml checkstyle"
-                step([$class: 'CheckStylePublisher', pattern: '**/checkstyle-result.xml'])
-            }
+    }
+    post {
+        always {
+            recordIssues enabledForFailure: true, tool: checkStyle()
+            recordIssues enabledForFailure: true, tool: pmd(pattern: '**/target/pmd.xml')
         }
     }
 }
