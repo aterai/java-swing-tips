@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
           label.setText("");
         }
       } catch (BadLocationException ex) {
-        ex.printStackTrace();
+        throw new RuntimeException(ex); // should never happen
       }
     });
 

@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
               // textPane.getInputAttributes().removeAttributes(face);
             }
           } catch (BadLocationException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex); // should never happen
           }
           // MutableAttributeSet inputAttributes = textPane.getInputAttributes();
           // inputAttributes.removeAttributes(inputAttributes);

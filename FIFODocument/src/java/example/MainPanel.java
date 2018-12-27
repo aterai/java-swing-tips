@@ -108,7 +108,7 @@ class FifoDocumentListener implements DocumentListener {
     try {
       doc.remove(0, fl.getEndOffset());
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 

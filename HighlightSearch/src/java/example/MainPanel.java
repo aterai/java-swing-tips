@@ -130,7 +130,7 @@ public class MainPanel extends JPanel {
           pos = end;
         }
       } catch (BadLocationException ex) {
-        ex.printStackTrace();
+        throw new RuntimeException(ex); // should never happen
       }
     });
     JLabel label = layerUI.hint;
@@ -148,7 +148,7 @@ public class MainPanel extends JPanel {
         highlighter.addHighlight(hh.getStartOffset(), hh.getEndOffset(), currentPainter);
         scrollToCenter(textArea, hh.getStartOffset());
       } catch (BadLocationException ex) {
-        ex.printStackTrace();
+        throw new RuntimeException(ex); // should never happen
       }
     }
     label.setText(String.format("%02d / %02d%n", current + 1, hits));

@@ -104,7 +104,7 @@ final class HtmlViewUtil {
           // System.out.println("v.h: " + s.getBounds());
           y = (int) (.5 + Math.abs(s.getBounds().height - iconRect.height) * .5);
         } catch (BadLocationException ex) {
-          ex.printStackTrace();
+          throw new RuntimeException(ex); // should never happen
         }
       }
     }

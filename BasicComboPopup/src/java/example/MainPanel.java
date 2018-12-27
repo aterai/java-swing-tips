@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
             popup.requestFocusInWindow();
           });
         } catch (BadLocationException ex) {
-          ex.printStackTrace();
+          throw new RuntimeException(ex); // should never happen
         }
       }
     });
@@ -87,7 +87,7 @@ public class MainPanel extends JPanel {
       Document doc = jtp.getDocument();
       doc.insertString(jtp.getCaretPosition(), str, null);
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 
@@ -133,7 +133,7 @@ class EditorComboPopup extends BasicComboPopup {
           Document doc = textArea.getDocument();
           doc.insertString(textArea.getCaretPosition(), str, null);
         } catch (BadLocationException ex) {
-          ex.printStackTrace();
+          throw new RuntimeException(ex); // should never happen
         }
       }
     };

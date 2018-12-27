@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
       }
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));

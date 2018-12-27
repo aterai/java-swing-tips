@@ -142,7 +142,7 @@ class OvertypeTextArea extends JTextArea {
           int y = r.y + r.height - 2;
           g.drawLine(r.x, y, r.x + width - 2, y);
         } catch (BadLocationException ex) {
-          ex.printStackTrace();
+          throw new RuntimeException(ex); // should never happen
         }
       }
     }

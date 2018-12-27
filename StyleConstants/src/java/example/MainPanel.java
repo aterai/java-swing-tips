@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
   //     doc.insertString(doc.getLength(), str + SEPARATOR, sas);
   //     jtp.setCaretPosition(doc.getLength());
   //   } catch (BadLocationException ex) {
-  //     ex.printStackTrace();
+  //     throw new RuntimeException(ex); // should never happen
   //   }
   // }
 
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
     try {
       doc.insertString(doc.getLength(), str + "\n", doc.getStyle(style));
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 

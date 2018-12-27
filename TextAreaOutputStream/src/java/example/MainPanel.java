@@ -127,7 +127,7 @@ class EnterAction extends AbstractAction {
 //     try {
 //       doc.remove(0, fl.getEndOffset());
 //     } catch (BadLocationException ex) {
-//       ex.printStackTrace();
+//       throw new RuntimeException(ex); // should never happen
 //     }
 //   }
 //   @Override public void removeUpdate(DocumentEvent e) {

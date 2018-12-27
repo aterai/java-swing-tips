@@ -152,7 +152,7 @@ class ParagraphWithEopmView extends ParagraphView {
       g.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
       g.setColor(old);
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 }

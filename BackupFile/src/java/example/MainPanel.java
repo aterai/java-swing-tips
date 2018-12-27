@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     try {
       doc.insertString(doc.getLength(), m.text + "\n", doc.getStyle(m.type.toString()));
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new IllegalArgumentException(ex); // should never happen
     }
   }
 

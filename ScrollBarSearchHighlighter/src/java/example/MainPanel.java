@@ -182,7 +182,7 @@ class HighlightIcon implements Icon {
         g2.fillRect(0, itop + s.y, getIconWidth(), h);
       }
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
 
     // paint Thumb
@@ -233,7 +233,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
       }
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 }
@@ -262,7 +262,7 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
       }
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 }

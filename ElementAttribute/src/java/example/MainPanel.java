@@ -110,7 +110,7 @@ class CustomTooltipEditorPane extends JEditorPane {
   //       }
   //       return r1.contains(x, y);
   //     } catch (BadLocationException ex) {
-  //       ex.printStackTrace();
+  //       throw new RuntimeException(ex); // should never happen
   //     }
   //   }
   //   return true;

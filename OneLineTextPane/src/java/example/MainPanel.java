@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     try {
       doc.insertString(0, str, null);
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
     String key = "Do-Nothing";
     InputMap im = textPane.getInputMap(JComponent.WHEN_FOCUSED);

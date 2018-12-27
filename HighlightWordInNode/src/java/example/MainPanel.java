@@ -130,7 +130,7 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
       try {
         getHighlighter().addHighlight(0, query.length(), HIGHLIGHT);
       } catch (BadLocationException ex) {
-        ex.printStackTrace();
+        throw new RuntimeException(ex); // should never happen
       }
     }
     return this;

@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
             // System.out.println(field.getLocation());
             textPane.scrollRectToVisible(rect);
           } catch (BadLocationException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex); // should never happen
           }
         }
       });
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
       textPane.insertComponent(field);
       doc.insertString(doc.getLength(), "\n", null);
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 

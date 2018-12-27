@@ -150,7 +150,7 @@ public final class MainPanel extends JPanel {
         Document doc = area.getDocument();
         doc.remove(doc.getLength() - 1, 1);
       } catch (BadLocationException ex) {
-        ex.printStackTrace();
+        throw new RuntimeException(ex); // should never happen
       }
     }
   }

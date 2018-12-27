@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
       //     }
       //   }
       // } catch (BadLocationException ex) {
-      //   ex.printStackTrace();
+      //   throw new RuntimeException(ex); // should never happen
       // }
       // // <<<< ElementCount
 

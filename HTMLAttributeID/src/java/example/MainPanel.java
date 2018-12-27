@@ -110,7 +110,7 @@ public class MainPanel extends JPanel {
     try {
       highlighter.addHighlight(start, end, HIGHLIGHT);
     } catch (BadLocationException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 
