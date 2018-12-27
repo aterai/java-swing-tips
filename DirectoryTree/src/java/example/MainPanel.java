@@ -139,7 +139,7 @@ class BackgroundTask extends SwingWorker<String, File> {
     //     // try { // Test
     //     //   Thread.sleep(500);
     //     // } catch (InterruptedException ex) {
-    //     //   ex.printStackTrace();
+    //     //   return "Interrupted";
     //     // }
     //   }
     // }

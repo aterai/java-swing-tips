@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
     //       try {
     //         Thread.sleep(1000);
     //       } catch (InterruptedException ex) {
-    //         ex.printStackTrace();
+    //         test("Interrupted");
     //       }
     //     }
     //   });

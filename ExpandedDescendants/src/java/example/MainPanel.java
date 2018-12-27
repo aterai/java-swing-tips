@@ -191,7 +191,7 @@ public final class MainPanel extends JPanel {
 // //             try {
 // //               Thread.sleep(500);
 // //             } catch (InterruptedException ex) {
-// //               ex.printStackTrace();
+// //               return "Interrupted";
 // //             }
 //           }
 //         }
