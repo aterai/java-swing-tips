@@ -40,24 +40,15 @@ public final class BarFactory {
   private final Map<String, JMenu> menus = new ConcurrentHashMap<>();
   // private Action[] actions;
 
-  public BarFactory(String restr) {
-    ResourceBundle res;
-    try {
-      res = ResourceBundle.getBundle(restr, new Utf8ResourceBundleControl());
-    } catch (MissingResourceException ex) {
-      ex.printStackTrace();
-      System.err.println("resources/" + restr + " not found");
-      res = null;
-      // System.exit(1);
-    }
-    resources = res;
-    // actions = act;
+  public BarFactory(String base) {
+    resources = ResourceBundle.getBundle(base, new Utf8ResourceBundleControl());
+    // Java 9
+    // resources = ResourceBundle.getBundle(base);
     // initActions();
   }
 
   public BarFactory(ResourceBundle res) {
     resources = res;
-    // actions = act;
     // initActions();
   }
 
@@ -75,7 +66,7 @@ public final class BarFactory {
   private String getResourceString(String nm) {
     String str;
     try {
-      str = resources.getString(nm);
+      str = Objects.nonNull(resources) ? resources.getString(nm) : null;
     } catch (MissingResourceException ex) {
       str = null;
     }
