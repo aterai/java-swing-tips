@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
       SystemTray.getSystemTray().add(new TrayIcon(image, "TRAY", popup));
       // icon.addActionListener(e -> log.append(e.toString() + "\n"));
     } catch (AWTException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
 
     // ERROR, WARNING, INFO, NONE

@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
       try {
         SystemTray.getSystemTray().add(makeTrayIcon(frame));
       } catch (AWTException ex) {
-        ex.printStackTrace();
+        throw new IllegalStateException(ex);
       }
     } else {
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -49,7 +49,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
   //       Rectangle rect = new Rectangle(p.x, p.y, dim.width + OFF, dim.height + OFF);
   //       bi = robot.createScreenCapture(rect);
   //     } catch (AWTException ex) {
-  //       ex.printStackTrace();
+  //       throw new IllegalStateException(ex);
   //     }
   //     screenShot = bi;
   //   }

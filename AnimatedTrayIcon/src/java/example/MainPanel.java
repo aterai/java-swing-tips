@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
     try {
       SystemTray.getSystemTray().add(icon);
     } catch (AWTException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
   }
 
