@@ -134,8 +134,7 @@ public class MainPanel extends JPanel {
       try {
         text = get();
       } catch (InterruptedException | ExecutionException ex) {
-        ex.printStackTrace();
-        text = "Cancelled";
+        text = "Interrupted";
       }
       System.out.println(text);
       table.setEnabled(true);

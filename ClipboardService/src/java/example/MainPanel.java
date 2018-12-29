@@ -172,7 +172,6 @@ class RedoAction extends AbstractAction {
     try {
       undoManager.redo();
     } catch (CannotRedoException ex) {
-      // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
   }

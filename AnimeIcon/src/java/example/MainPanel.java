@@ -86,8 +86,7 @@ public class MainPanel extends JPanel {
             appendLine(get());
           }
         } catch (InterruptedException | ExecutionException ex) {
-          ex.printStackTrace();
-          appendLine("Exception");
+          appendLine("Interrupted");
         }
         appendLine("\n\n");
       }

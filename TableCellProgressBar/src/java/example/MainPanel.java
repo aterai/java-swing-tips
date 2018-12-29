@@ -87,7 +87,6 @@ public class MainPanel extends JPanel {
             i = get();
             text = i >= 0 ? "Done" : "Disposed";
           } catch (InterruptedException | ExecutionException ex) {
-            ex.printStackTrace();
             text = ex.getMessage();
           }
         }

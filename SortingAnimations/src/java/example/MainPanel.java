@@ -170,7 +170,7 @@ public class MainPanel extends JPanel {
         String text = isCancelled() ? "Cancelled" : get();
         System.out.println(text);
       } catch (InterruptedException | ExecutionException ex) {
-        ex.printStackTrace();
+        System.out.println("Interrupted");
       }
       repaint();
     }

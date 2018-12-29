@@ -52,8 +52,7 @@ public class MainPanel extends JPanel {
               area.append(get() + "\n");
             }
           } catch (InterruptedException | ExecutionException ex) {
-            ex.printStackTrace();
-            area.append("Exception\n");
+            area.append("Interrupted\n");
           }
           area.setCaretPosition(area.getDocument().getLength());
         }

@@ -78,8 +78,7 @@ public final class MainPanel extends JPanel {
           appendText("\n" + get() + "\n");
         }
       } catch (InterruptedException | ExecutionException ex) {
-        ex.printStackTrace();
-        appendText("\nException\n");
+        appendText("\nInterrupted\n");
       }
     }
   }

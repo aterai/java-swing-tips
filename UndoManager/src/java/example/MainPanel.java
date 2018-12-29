@@ -71,7 +71,6 @@ public final class MainPanel extends JPanel {
       try {
         undoManager.redo();
       } catch (CannotRedoException ex) {
-        // cre.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
       }
     }

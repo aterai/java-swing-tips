@@ -105,8 +105,7 @@ public final class MainPanel extends JPanel {
       try {
         message = String.format("%n%s%n", isCancelled() ? "Cancelled" : get());
       } catch (InterruptedException | ExecutionException ex) {
-        ex.printStackTrace();
-        message = String.format("%n%s%n", "Exception");
+        message = String.format("%n%s%n", "Interrupted");
       }
       appendLine(message);
     }

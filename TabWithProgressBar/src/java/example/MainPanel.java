@@ -98,7 +98,7 @@ class ProgressJTabbedPane extends JTabbedPane {
         try {
           txt = get();
         } catch (InterruptedException | ExecutionException ex) {
-          txt = "Exception";
+          txt = "Interrupted";
         }
         System.out.println(txt);
       }

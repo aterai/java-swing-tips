@@ -134,8 +134,7 @@ public final class MainPanel extends JPanel {
         try {
           text = get();
         } catch (InterruptedException | ExecutionException ex) {
-          ex.printStackTrace();
-          text = "Exception";
+          text = "Interrupted";
         }
       }
       appendLine("----------------");
