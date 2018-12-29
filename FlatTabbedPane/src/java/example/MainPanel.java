@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
             // Do not paint anything
           }
 
-          @Override  protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
+          @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
             g.setColor(isSelected ? SELECTED_BG : UNSELECTED_BG);
             g.fillRect(x, y, w, h);
           }

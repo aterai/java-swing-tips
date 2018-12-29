@@ -67,7 +67,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
   //
   // /**
   //  * Creates a new instance of <code>CloseableTabbedPane</code>.
-  //  * @param horizontalTextPosition the horizontal position of the text (e.g.
+  //  * @param horizontalTextPosition  the horizontal position of the text (e.g.
   //  * SwingUtilities.TRAILING or SwingUtilities.LEFT)
   //  */
   // public CloseableTabbedPane(int horizontalTextPosition) {
@@ -93,9 +93,9 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
   // /**
   //  * Allows setting own closeicons.
-  //  * @param normal the normal closeicon
-  //  * @param hoover the closeicon when the mouse is over
-  //  * @param pressed the closeicon when the mouse is pressed
+  //  * @param normal  the normal closeicon
+  //  * @param hoover  the closeicon when the mouse is over
+  //  * @param pressed  the closeicon when the mouse is pressed
   //  */
   // public void setCloseIcons(Icon normal, Icon hoover, Icon pressed) {
   //   normalCloseIcon = normal;
@@ -105,8 +105,8 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
   /**
    * Adds a <code>Component</code> represented by a title and no icon.
-   * @param title the title to be displayed in this tab
-   * @param component the component to be displayed when this tab is clicked
+   * @param title  the title to be displayed in this tab
+   * @param component  the component to be displayed when this tab is clicked
    */
   @Override public void addTab(String title, Component component) {
     // addTab(title, component, null);
@@ -124,9 +124,9 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
   // /**
   //  * Adds a <code>Component</code> represented by a title and an icon.
-  //  * @param title the title to be displayed in this tab
-  //  * @param component the component to be displayed when this tab is clicked
-  //  * @param extraIcon the icon to be displayed in this tab
+  //  * @param title  the title to be displayed in this tab
+  //  * @param component  the component to be displayed when this tab is clicked
+  //  * @param extraIcon  the icon to be displayed in this tab
   //  */
   // public void addTab(String title, Component component, Icon extraIcon) {
   //   // boolean doPaintCloseIcon = true;
@@ -159,7 +159,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
   /**
    * Adds an <code>CloseableTabbedPaneListener</code> to the tabbedpane.
-   * @param l the <code>CloseableTabbedPaneListener</code> to be added
+   * @param l  the <code>CloseableTabbedPaneListener</code> to be added
    */
   public void addCloseableTabbedPaneListener(CloseableTabbedPaneListener l) {
     eventListenerList.add(CloseableTabbedPaneListener.class, l);
@@ -167,7 +167,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
 
   /**
    * Removes an <code>CloseableTabbedPaneListener</code> from the tabbedpane.
-   * @param l the listener to be removed
+   * @param l  the listener to be removed
    */
   public void removeCloseableTabbedPaneListener(CloseableTabbedPaneListener l) {
     eventListenerList.remove(CloseableTabbedPaneListener.class, l);
@@ -185,7 +185,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
   /**
    * Notifies all listeners that have registered interest for notification on
    * this event type.
-   * @param tabIndexToClose the index of the tab which should be closed
+   * @param tabIndexToClose  the index of the tab which should be closed
    * @return true if the tab can be closed, false otherwise
    */
   protected boolean fireCloseTab(int tabIndexToClose) {
@@ -231,7 +231,7 @@ class CloseableTabIconHandler extends MouseAdapter {
   /**
    * Invoked when the mouse button has been clicked (pressed and released) on
    * a component.
-   * @param e the <code>MouseEvent</code>
+   * @param e  the <code>MouseEvent</code>
    */
   @Override public void mouseClicked(MouseEvent e) {
     Component c = e.getComponent();
@@ -271,7 +271,7 @@ class CloseableTabIconHandler extends MouseAdapter {
 
   /**
    * Invoked when the mouse exits a component.
-   * @param e the <code>MouseEvent</code>
+   * @param e  the <code>MouseEvent</code>
    */
   @Override public void mouseExited(MouseEvent e) {
     Component c = e.getComponent();
@@ -290,7 +290,7 @@ class CloseableTabIconHandler extends MouseAdapter {
 
   /**
    * Invoked when a mouse button has been pressed on a component.
-   * @param e the <code>MouseEvent</code>
+   * @param e  the <code>MouseEvent</code>
    */
   @Override public void mousePressed(MouseEvent e) {
     Component c = e.getComponent();
@@ -318,7 +318,7 @@ class CloseableTabIconHandler extends MouseAdapter {
    * Due to platform-dependent Drag&Drop implementations,
    * <code>MOUSE_DRAGGED</code> events may not be delivered during a native
    * Drag&amp;Drop operation.
-   * @param e the <code>MouseEvent</code>
+   * @param e  the <code>MouseEvent</code>
    */
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();
@@ -341,7 +341,7 @@ class CloseableTabIconHandler extends MouseAdapter {
   /**
    * Invoked when the mouse cursor has been moved onto a component but no
    * buttons have been pushed.
-   * @param e the <code>MouseEvent</code>
+   * @param e  the <code>MouseEvent</code>
    */
   @Override public void mouseMoved(MouseEvent e) {
     Component c = e.getComponent();
@@ -379,7 +379,7 @@ class CloseableTabIconHandler extends MouseAdapter {
 interface CloseableTabbedPaneListener extends EventListener {
   /**
    * Informs all <code>CloseableTabbedPaneListener</code>s when a tab should be closed.
-   * @param tabIndexToClose the index of the tab which should be closed
+   * @param tabIndexToClose  the index of the tab which should be closed
    * @return true if the tab can be closed, false otherwise
    */
   boolean closeTab(int tabIndexToClose);
@@ -405,7 +405,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
-   * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
+   * @param horizontalTextPosition  the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
    */
   protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
     super();
@@ -414,14 +414,14 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 
   /**
    * Layouts the label.
-   * @param tabPlacement the placement of the tabs
-   * @param metrics the font metrics
-   * @param tabIndex the index of the tab
-   * @param title the title of the tab
-   * @param icon the icon of the tab
-   * @param tabRect the tab boundaries
-   * @param iconRect the icon boundaries
-   * @param textRect the text boundaries
+   * @param tabPlacement  the placement of the tabs
+   * @param metrics  the font metrics
+   * @param tabIndex  the index of the tab
+   * @param title  the title of the tab
+   * @param icon  the icon of the tab
+   * @param tabRect  the tab boundaries
+   * @param iconRect  the icon boundaries
+   * @param textRect  the text boundaries
    * @param isSelected true whether the tab is selected, false otherwise
    */
   @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
@@ -477,7 +477,8 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
-   * @param horizontalTextPosition the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
+   * @param horizontalTextPosition  the horizontal position of the text
+   *   (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
    */
   protected CloseableTabbedPaneUI(int horizontalTextPosition) {
     super();
@@ -486,15 +487,15 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
   /**
    * Layouts the label.
-   * @param tabPlacement the placement of the tabs
-   * @param metrics the font metrics
-   * @param tabIndex the index of the tab
-   * @param title the title of the tab
-   * @param icon the icon of the tab
-   * @param tabRect the tab boundaries
-   * @param iconRect the icon boundaries
-   * @param textRect the text boundaries
-   * @param isSelected true whether the tab is selected, false otherwise
+   * @param tabPlacement  the placement of the tabs
+   * @param metrics  the font metrics
+   * @param tabIndex  the index of the tab
+   * @param title  the title of the tab
+   * @param icon  the icon of the tab
+   * @param tabRect  the tab boundaries
+   * @param iconRect  the icon boundaries
+   * @param textRect  the text boundaries
+   * @param isSelected  true whether the tab is selected, false otherwise
    */
   @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
     // textRect.x = textRect.y = iconRect.x = iconRect.y = 0;

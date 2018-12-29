@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
 
   private static Color getColor(int i, float f) {
     int r = (int) ((i >> 16 & 0xFF) * f);
-    int g = (int) ((i >> 8  & 0xFF) * f);
-    int b = (int) ((i >> 0  & 0xFF) * f);
+    int g = (int) ((i >> 8 & 0xFF) * f);
+    int b = (int) ((i >> 0 & 0xFF) * f);
     return new Color(r, g, b);
   }
 

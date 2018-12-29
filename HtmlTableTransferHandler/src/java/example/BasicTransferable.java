@@ -91,7 +91,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is supported for
    * this object.
-   * @param flavor the requested flavor for the data
+   * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -109,12 +109,10 @@ class BasicTransferable implements Transferable {
    * Returns an object which represents the data to be transferred.  The class
    * of the object returned is defined by the representation class of the flavor.
    *
-   * @param flavor the requested flavor for the data
+   * @param flavor  the requested flavor for the data
    * @see DataFlavor#getRepresentationClass
-   * @exception IOException        if the data is no longer available
-   *        in the requested flavor.
-   * @exception UnsupportedFlavorException if the requested data flavor is
-   *        not supported.
+   * @exception IOException  if the data is no longer available in the requested flavor.
+   * @exception UnsupportedFlavorException  if the requested data flavor is not supported.
    */
   @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     // ???: DataFlavor[] richerFlavors = getRicherFlavors();
@@ -177,7 +175,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is an HTML flavor that
    * is supported.
-   * @param flavor the requested flavor for the data
+   * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
   protected boolean isHtmlFlavor(DataFlavor flavor) {
@@ -226,7 +224,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is an plain flavor that
    * is supported.
-   * @param flavor the requested flavor for the data
+   * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
   protected boolean isPlainFlavor(DataFlavor flavor) {
@@ -275,7 +273,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is a String flavor that
    * is supported.
-   * @param flavor the requested flavor for the data
+   * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
   protected boolean isStringFlavor(DataFlavor flavor) {

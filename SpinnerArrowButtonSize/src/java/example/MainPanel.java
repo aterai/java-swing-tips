@@ -165,7 +165,7 @@ class SpinnerLayout implements LayoutManager {
   }
 
   @Override public void layoutContainer(Container parent) {
-    int width  = parent.getWidth();
+    int width = parent.getWidth();
     int height = parent.getHeight();
 
     Insets insets = parent.getInsets();

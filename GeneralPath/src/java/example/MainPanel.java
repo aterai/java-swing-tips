@@ -143,15 +143,15 @@ class StarIcon0 implements Icon {
 
   protected StarIcon0() {
     // <blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
-    path.moveTo(50   * .8, 0    * .8);
+    path.moveTo(50     * .8, 0      * .8);
     path.lineTo(61.803 * .8, 38.196 * .8);
-    path.lineTo(100  * .8, 38.196 * .8);
+    path.lineTo(100    * .8, 38.196 * .8);
     path.lineTo(69.098 * .8, 61.804 * .8);
-    path.lineTo(80.902 * .8, 100  * .8);
-    path.lineTo(50   * .8, 76.394 * .8);
-    path.lineTo(19.098 * .8, 100  * .8);
+    path.lineTo(80.902 * .8, 100    * .8);
+    path.lineTo(50     * .8, 76.394 * .8);
+    path.lineTo(19.098 * .8, 100    * .8);
     path.lineTo(30.902 * .8, 61.804 * .8);
-    path.lineTo(0    * .8, 38.196 * .8);
+    path.lineTo(0      * .8, 38.196 * .8);
     path.lineTo(38.197 * .8, 38.196 * .8);
     path.closePath();
     // </blockquote>

@@ -138,8 +138,8 @@ public class TitledBorder2 extends AbstractBorder {
    *
    * @param border  the border
    * @param title  the title the border should display
-   * @param titleJustification the justification for the title
-   * @param titlePosition the position for the title
+   * @param titleJustification  the justification for the title
+   * @param titlePosition  the position for the title
    */
   public TitledBorder2(Border border, String title, int titleJustification, int titlePosition) {
     this(border, title, titleJustification, titlePosition, null, null);
@@ -151,9 +151,9 @@ public class TitledBorder2 extends AbstractBorder {
    *
    * @param border  the border
    * @param title  the title the border should display
-   * @param titleJustification the justification for the title
-   * @param titlePosition the position for the title
-   * @param titleFont the font for rendering the title
+   * @param titleJustification  the justification for the title
+   * @param titlePosition  the position for the title
+   * @param titleFont  the font for rendering the title
    */
   public TitledBorder2(Border border, String title, int titleJustification, int titlePosition, Font titleFont) {
     this(border, title, titleJustification, titlePosition, titleFont, null);
@@ -166,10 +166,10 @@ public class TitledBorder2 extends AbstractBorder {
    *
    * @param border  the border
    * @param title  the title the border should display
-   * @param titleJustification the justification for the title
-   * @param titlePosition the position for the title
-   * @param titleFont the font of the title
-   * @param titleColor the color of the title
+   * @param titleJustification  the justification for the title
+   * @param titlePosition  the position for the title
+   * @param titleFont  the font of the title
+   * @param titleColor  the color of the title
    */
   // @ConstructorProperties({"border", "title", "titleJustification", "titlePosition", "titleFont", "titleColor"})
   public TitledBorder2(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Color titleColor) {
@@ -190,12 +190,12 @@ public class TitledBorder2 extends AbstractBorder {
   /**
    * Paints the border for the specified component with the
    * specified position and size.
-   * @param c the component for which this border is being painted
-   * @param g the paint graphics
-   * @param x the x position of the painted border
-   * @param y the y position of the painted border
-   * @param width the width of the painted border
-   * @param height the height of the painted border
+   * @param c  the component for which this border is being painted
+   * @param g  the paint graphics
+   * @param x  the x position of the painted border
+   * @param y  the y position of the painted border
+   * @param width  the width of the painted border
+   * @param height  the height of the painted border
    */
   @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary", "checkstyle:linelength"})
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -304,8 +304,8 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Reinitialize the insets parameter with this Border's current Insets.
-   * @param c the component for which this border insets value applies
-   * @param insets the object to be reinitialized
+   * @param c  the component for which this border insets value applies
+   * @param insets  the object to be reinitialized
    */
   @SuppressWarnings("PMD.AvoidReassigningParameters")
   @Override public Insets getBorderInsets(Component c, Insets insets) {
@@ -425,7 +425,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the border of the titled border.
-   * @param border the border
+   * @param border  the border
    */
   public void setBorder(Border border) {
     this.border = border;
@@ -433,7 +433,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-position of the titled border.
-   * @param titlePosition the position for the border
+   * @param titlePosition  the position for the border
    */
   public void setTitlePosition(int titlePosition) {
     switch (titlePosition) {
@@ -453,7 +453,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-justification of the titled border.
-   * @param titleJustification the justification for the border
+   * @param titleJustification  the justification for the border
    */
   public void setTitleJustification(int titleJustification) {
     switch (titleJustification) {
@@ -472,7 +472,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-font of the titled border.
-   * @param titleFont the font for the border title
+   * @param titleFont  the font for the border title
    */
   public void setTitleFont(Font titleFont) {
     this.titleFont = titleFont;
@@ -480,7 +480,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-color of the titled border.
-   * @param titleColor the color for the border title
+   * @param titleColor  the color for the border title
    */
   public void setTitleColor(Color titleColor) {
     this.titleColor = titleColor;
@@ -489,7 +489,7 @@ public class TitledBorder2 extends AbstractBorder {
   /**
    * Returns the minimum dimensions this border requires
    * in order to fully display the border and title.
-   * @param c the component where this border will be drawn
+   * @param c  the component where this border will be drawn
    * @return the {@code Dimension} object
    */
   @SuppressWarnings("PMD.ConfusingTernary")

@@ -104,7 +104,7 @@ class MagneticDesktopManager extends DefaultDesktopManager {
       JDesktopPane desktop = (JDesktopPane) c;
       int e = x;
       int n = y;
-      int w = desktop.getSize().width - frame.getSize().width  - e;
+      int w = desktop.getSize().width - frame.getSize().width - e;
       int s = desktop.getSize().height - frame.getSize().height - n;
       if (isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
         super.dragFrame(frame, getX(e, w), getY(n, s));

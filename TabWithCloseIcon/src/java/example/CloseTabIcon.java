@@ -53,7 +53,7 @@ public class CloseTabIcon implements Icon {
 
   /**
    * Creates a new instance of <code>CloseTabIcon</code>.
-   * @param fileIcon the additional fileicon, if there is one set
+   * @param fileIcon  the additional fileicon, if there is one set
    */
   public CloseTabIcon(Icon fileIcon) {
     this.fileIcon = fileIcon;
@@ -65,10 +65,10 @@ public class CloseTabIcon implements Icon {
    * Draw the icon at the specified location. Icon implementations may use the
    * Component argument to get properties useful for painting, e.g. the
    * foreground or background color.
-   * @param c the component which the icon belongs to
-   * @param g the graphic object to draw on
-   * @param x the upper left point of the icon in the x direction
-   * @param y the upper left point of the icon in the y direction
+   * @param c  the component which the icon belongs to
+   * @param g  the graphic object to draw on
+   * @param x  the upper left point of the icon in the x direction
+   * @param y  the upper left point of the icon in the y direction
    */
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     // boolean doPaintCloseIcon = true;
