@@ -262,8 +262,7 @@ class ChangeLookAndFeelAction extends AbstractAction {
       Class<?> lnfClass = Class.forName(laf);
       LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
       return newLnF.isSupportedLookAndFeel();
-    } catch (ClassNotFoundException | InstantiationException
-        | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
       return false;
     }
   }
