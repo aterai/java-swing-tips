@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
           frame.setIcon(true);
         }
       } catch (PropertyVetoException ex) {
-        ex.printStackTrace();
+        throw new IllegalStateException(ex);
       }
     });
     b.setToolTipText("create new InternalFrame");
@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
         try {
           f.setClosed(true);
         } catch (PropertyVetoException ex) {
-          ex.printStackTrace();
+          throw new IllegalStateException(ex);
         }
       });
     });

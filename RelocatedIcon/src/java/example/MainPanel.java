@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
     try {
       f.setIcon(true);
     } catch (PropertyVetoException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
   }
 

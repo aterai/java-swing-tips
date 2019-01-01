@@ -164,7 +164,7 @@ class DraggableInternalFrame extends JInternalFrame {
         try {
           setSelected(Objects.nonNull(e.getNewValue()));
         } catch (PropertyVetoException ex) {
-          ex.printStackTrace();
+          throw new IllegalStateException(ex);
         }
       }
     });

@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         try {
           internal.setSelected(Objects.nonNull(e.getNewValue()));
         } catch (PropertyVetoException ex) {
-          ex.printStackTrace();
+          throw new IllegalStateException(ex);
         }
         // System.out.println("---------------------");
       }
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
     //     try {
     //       internal.setSelected(false);
     //     } catch (PropertyVetoException ex) {
-    //       ex.printStackTrace();
+    //       throw new IllegalStateException(ex);
     //     }
     //   }
     //   @Override public void windowGainedFocus(FocusEvent e) {
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     //     try {
     //       internal.setSelected(true);
     //     } catch (PropertyVetoException ex) {
-    //       ex.printStackTrace();
+    //       throw new IllegalStateException(ex);
     //     }
     //   }
     // });
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     //   try {
     //     internal.setSelected(true);
     //   } catch (PropertyVetoException ex) {
-    //     ex.printStackTrace();
+    //     throw new IllegalStateException(ex);
     //   }
     //   // internal.requestFocusInWindow();
     // });
