@@ -11,27 +11,42 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea logger = new JTextArea();
+  private final JButton cancel = new JButton("cancel");
+  private final JButton button = new JButton("Stop 5sec");
+  private final DisableInputLayerUI<JComponent> layerUI = new DisableInputLayerUI<>();
+  private transient Thread worker;
+
   private MainPanel() {
     super(new BorderLayout());
 
-    DisableInputLayerUI<JComponent> layerUI = new DisableInputLayerUI<>();
-    JButton button = new JButton("Stop 5sec");
+    cancel.setEnabled(false);
+    cancel.addActionListener(e -> {
+      if (worker != null) {
+        worker.interrupt();
+      }
+    });
+
     button.addActionListener(e -> {
-      layerUI.setInputBlock(true);
+      setInputBlock(true);
       SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-      Thread work = new Thread() {
+      worker = new Thread() {
         @Override public void run() {
+          String msg = "Done";
           try {
             Thread.sleep(5000);
           } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            msg = "Interrupted";
           }
-          layerUI.setInputBlock(false);
+          append(msg);
+          setInputBlock(false);
           loop.exit();
         }
       };
-      work.start();
-      loop.enter();
+      worker.start();
+      if (!loop.enter()) {
+        append("Error");
+      }
     });
 
     JPanel p = new JPanel();
@@ -39,8 +54,18 @@ public final class MainPanel extends JPanel {
     p.add(new JTextField(10));
     p.add(button);
     add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea("dummy")));
+    add(new JScrollPane(logger));
+    add(cancel, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public void setInputBlock(boolean flg) {
+    layerUI.setInputBlock(flg);
+    cancel.setEnabled(flg);
+  }
+
+  public void append(String str) {
+    logger.append(str + "\n");
   }
 
   public static void main(String... args) {
