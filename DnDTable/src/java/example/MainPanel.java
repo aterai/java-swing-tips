@@ -184,7 +184,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     try {
       e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new TableDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
   }
 

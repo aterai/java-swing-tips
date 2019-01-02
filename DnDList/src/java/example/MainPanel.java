@@ -140,7 +140,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     try {
       e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new ListDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
   }
 

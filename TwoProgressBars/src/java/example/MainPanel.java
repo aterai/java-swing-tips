@@ -281,7 +281,6 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //             try {
 //               text = get();
 //             } catch (Exception ex) {
-//               ex.printStackTrace();
 //               text = "Exception";
 //             }
 //           }

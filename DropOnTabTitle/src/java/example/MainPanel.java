@@ -91,7 +91,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     try {
       e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, (DragSourceListener) this);
     } catch (InvalidDnDOperationException ex) {
-      ex.printStackTrace();
+      throw new IllegalStateException(ex);
     }
   }
 

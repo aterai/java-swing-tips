@@ -405,7 +405,7 @@ class TabDragGestureListener implements DragGestureListener {
             try {
               e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabbedPane), new TabDragSourceListener());
             } catch (InvalidDnDOperationException ex) {
-              ex.printStackTrace();
+              throw new IllegalStateException(ex);
             }
           }
         });
