@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
             setKeepHidden.setAccessible(true);
             setKeepHidden.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
           } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            ex.printStackTrace();
+            throw new UnsupportedOperationException(ex);
           }
           return null;
         }

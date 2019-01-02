@@ -92,7 +92,6 @@ public final class MainPanel extends JPanel {
   //         buffer = out.toByteArray();
   //         return buffer;
   //       } catch (IOException ex) {
-  //         ex.printStackTrace();
   //         return null;
   //       }
   //     }

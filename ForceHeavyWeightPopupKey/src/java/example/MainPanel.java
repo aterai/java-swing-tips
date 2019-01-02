@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
           field.setAccessible(true);
           label.putClientProperty(field.get(null), Boolean.TRUE);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
-          ex.printStackTrace();
+          throw new UnsupportedOperationException(ex);
         }
         return null;
       }

@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             uninstallKeyboardActions.setAccessible(true);
             uninstallKeyboardActions.invoke(getUI(), slider);
           } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            ex.printStackTrace();
+            throw new UnsupportedOperationException(ex);
           }
           return null;
         }
