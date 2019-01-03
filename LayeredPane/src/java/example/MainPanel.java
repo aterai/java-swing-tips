@@ -20,7 +20,9 @@ public final class MainPanel extends JPanel {
     // title, resizable, closable, maximizable, iconifiable
     JInternalFrame jif = new JInternalFrame("AlwaysOnTop", true, false, true, true);
     jif.setSize(180, 180);
-    desktop.add(jif, Integer.valueOf(JLayeredPane.MODAL_LAYER + 1));
+    Integer layer = Integer.valueOf(JLayeredPane.MODAL_LAYER + 1);
+    int position = 0;
+    desktop.add(jif, layer, position);
     jif.setVisible(true);
     // desktop.getDesktopManager().activateFrame(jif);
     add(desktop);
