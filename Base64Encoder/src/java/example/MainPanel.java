@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
         try {
           textArea.setText(Base64.getEncoder().encodeToString(Files.readAllBytes(path)));
         } catch (IOException ex) {
-          ex.printStackTrace();
+          textArea.setText("error: " + path);
         }
         // try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
         //   BufferedImage image = ImageIO.read(file);
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         //   // textArea.setText(new String(encoded, StandardCharsets.ISO_8859_1));
         //   textArea.setText(Base64.getEncoder().encodeToString(bos.toByteArray()));
         // } catch (IOException ex) {
-        //   ex.printStackTrace();
+        //   textArea.setText("error: " + file.getAbsolutePath());
         // }
       }
     });
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
       try (InputStream is = new ByteArrayInputStream(Base64.getDecoder().decode(b64.getBytes(StandardCharsets.ISO_8859_1)))) {
         label.setIcon(new ImageIcon(ImageIO.read(is)));
       } catch (IOException ex) {
-        ex.printStackTrace();
+        label.setIcon(null);
       }
     });
 
