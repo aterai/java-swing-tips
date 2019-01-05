@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
       //   pos = text.indexOf(pattern, nextp);
       // }
     } catch (BadLocationException | PatternSyntaxException ex) {
-      ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(jtc);
     }
   }
 

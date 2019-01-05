@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
         pos = end;
       }
     } catch (BadLocationException | PatternSyntaxException ex) {
-      // ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(field);
       field.setBackground(WARNING_COLOR);
     }
     repaint();

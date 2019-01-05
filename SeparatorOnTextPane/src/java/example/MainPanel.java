@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     try {
       kit.insertHTML(doc, doc.getLength(), "<br />", 0, 0, null);
     } catch (BadLocationException | IOException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex); // should never happen
     }
   }
 

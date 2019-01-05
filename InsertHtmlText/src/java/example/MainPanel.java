@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
       try {
         doc.insertAfterStart(element, tag);
       } catch (BadLocationException | IOException ex) {
-        ex.printStackTrace();
+        UIManager.getLookAndFeel().provideErrorFeedback(editor);
       }
     });
 
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
       try {
         doc.insertBeforeEnd(element, tag);
       } catch (BadLocationException | IOException ex) {
-        ex.printStackTrace();
+        UIManager.getLookAndFeel().provideErrorFeedback(editor);
       }
     });
 

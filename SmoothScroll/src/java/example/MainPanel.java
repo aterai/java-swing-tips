@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
         }
       }).start();
     } catch (BadLocationException ex) {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(textArea);
     }
   }
 

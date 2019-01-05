@@ -116,7 +116,8 @@ public final class MainPanel extends JPanel {
         ImageIO.write(image, "jpeg", tmp);
         label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
       } catch (IOException ex) {
-        ex.printStackTrace();
+        label.setIcon(null);
+        throw new UncheckedIOException(ex);
       }
     });
   }

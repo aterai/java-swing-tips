@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         textArea.setCaretPosition(elem.getStartOffset());
         // textArea.requestFocus();
       } catch (BadLocationException ex) {
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
       }
     });
     // frame.getRootPane().setDefaultButton(button);
