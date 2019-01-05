@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -141,10 +142,11 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 
+    TableColumnModel cm = table.getColumnModel();
     Insets i = this.getInsets();
     lrect.x = i.left;
     lrect.y = i.top;
-    lrect.width = table.getColumnModel().getColumn(column).getWidth() - table.getColumnModel().getColumnMargin() - i.right - lrect.x;
+    lrect.width = cm.getColumn(column).getWidth() - cm.getColumnMargin() - i.right - lrect.x;
     lrect.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - lrect.y;
     irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
     trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;

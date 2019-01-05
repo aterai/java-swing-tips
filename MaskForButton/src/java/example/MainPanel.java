@@ -8,11 +8,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
-// import java.util.List;
-// import java.util.stream.Stream;
 import javax.swing.*;
-// import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -27,8 +23,10 @@ public final class MainPanel extends JPanel {
     tabbedPane.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         int button = e.getButton();
+        boolean isB2Clicked = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+
         System.out.println(button);
-        System.out.println("BUTTON2 mouseClicked: " + Objects.toString((e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0));
+        System.out.println("BUTTON2 mouseClicked: " + isB2Clicked);
 
         // boolean isB1Double = e.getClickCount() == 2 && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
         // boolean isB2Down = InputEvent.getMaskForButton(button) == InputEvent.BUTTON2_DOWN_MASK;
@@ -43,11 +41,13 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void mousePressed(MouseEvent e) {
-        System.out.println("BUTTON2 mousePressed: " + Objects.toString((e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0));
+        boolean mousePressed = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+        System.out.println("BUTTON2 mousePressed: " + mousePressed);
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        System.out.println("BUTTON2 mouseReleased: " + Objects.toString((e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0));
+        boolean mouseReleased = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+        System.out.println("BUTTON2 mouseReleased: " + mouseReleased);
       }
     });
     add(tabbedPane);
