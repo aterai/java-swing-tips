@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       try {
         UIManager.setLookAndFeel(new MetalLookAndFeel());
       } catch (UnsupportedLookAndFeelException ex) {
-        ex.printStackTrace();
+        throw new IllegalStateException(ex); // should never happen
       }
       // Update the ComponentUIs for all Components. This
       // needs to be invoked for all windows.
