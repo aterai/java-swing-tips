@@ -153,7 +153,7 @@ class TextAreaHandler extends StreamHandler {
         setEncoding(null);
       } catch (IOException ex2) {
         // doing a setEncoding with null should always work.
-        throw new RuntimeException(ex2);
+        assert false;
       }
     }
   }
