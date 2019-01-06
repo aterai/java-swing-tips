@@ -16,6 +16,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -45,8 +46,7 @@ public final class MainPanel extends JPanel {
             List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
             for (Object o: list) {
               if (o instanceof File) {
-                File file = (File) o;
-                model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
+                model.addPath(((File) o).toPath());
               }
             }
             dtde.dropComplete(true);
@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
 //           if (o instanceof File) {
 //             File file = (File) o;
 //             // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-//             model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
+//             model.addPath(file.toPath());
 //           }
 //         }
 //         return true;
@@ -143,8 +143,8 @@ class FileModel extends DefaultTableModel {
   };
   private int number;
 
-  public void addFileName(FileName t) {
-    Object[] obj = {number, t.getName(), t.getAbsolutePath()};
+  public void addPath(Path path) {
+    Object[] obj = {number, path.getFileName(), path.toAbsolutePath()};
     super.addRow(obj);
     number++;
   }
@@ -178,38 +178,12 @@ class FileModel extends DefaultTableModel {
   }
 }
 
-class FileName {
-  private String name;
-  private String absolutePath;
-
-  protected FileName(String name, String absolutePath) {
-    this.name = name;
-    this.absolutePath = absolutePath;
-  }
-
-  public void setName(String str) {
-    name = str;
-  }
-
-  public void setAbsolutePath(String str) {
-    absolutePath = str;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getAbsolutePath() {
-    return absolutePath;
-  }
-}
-
 class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
   protected TablePopupMenu() {
     super();
-    delete = add("delete");
+    delete = add("Remove only from JTable");
     delete.addActionListener(e -> {
       JTable table = (JTable) getInvoker();
       DefaultTableModel model = (DefaultTableModel) table.getModel();
