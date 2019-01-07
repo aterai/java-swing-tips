@@ -154,10 +154,16 @@ class TableNextMatchKeyHandler extends KeyAdapter {
   // @see javax/swing/JList#getNextMatch(String prefix, int startIndex, Position.Bias bias)
   // @see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
   public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
+    // int max = table.getRowCount();
+    // if (Objects.isNull(prefix) || startingRow < 0 || startingRow >= max) {
+    //   throw new IllegalArgumentException();
+    // }
+    Objects.requireNonNull(prefix, "Must supply non-null prefix");
     int max = table.getRowCount();
-    if (Objects.isNull(prefix) || startingRow < 0 || startingRow >= max) {
-      throw new IllegalArgumentException();
+    if (startingRow < 0 || startingRow >= max) {
+      throw new IllegalArgumentException("(0 <= startingRow < max) is false");
     }
+
     String uprefix = prefix.toUpperCase(Locale.ENGLISH);
 
     // start search from the next/previous element froom the

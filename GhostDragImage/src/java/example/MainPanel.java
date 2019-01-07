@@ -243,7 +243,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
 
   private static <E> BufferedImage createCompactDragImage(JList<E> source, int w, int h) {
     if (w <= 0 || h <= 0) {
-      return null;
+      throw new IllegalArgumentException("width and height must be > 0");
     }
     int[] selectedIndices = source.getSelectedIndices();
     BufferedImage br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
