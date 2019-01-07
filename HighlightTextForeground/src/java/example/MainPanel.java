@@ -153,7 +153,10 @@ public class MainPanel extends JPanel {
           pos = end;
         }
       } catch (BadLocationException ex) {
-        throw new RuntimeException(ex); // should never happen
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
       }
     });
     JLabel label = layerUI.hint;
@@ -173,7 +176,10 @@ public class MainPanel extends JPanel {
         doc.setCharacterAttributes(hh.getStartOffset(), hh.getEndOffset() - hh.getStartOffset(), s, true);
         scrollToCenter(textPane, hh.getStartOffset());
       } catch (BadLocationException ex) {
-        throw new RuntimeException(ex); // should never happen
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
       }
     }
     label.setText(String.format("%02d / %02d%n", current + 1, hits));

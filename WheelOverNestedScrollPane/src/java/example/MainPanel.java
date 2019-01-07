@@ -59,7 +59,10 @@ public final class MainPanel extends JPanel {
       doc.insertString(doc.getLength(), "\n", null);
       doc.insertString(doc.getLength(), TEXT, null);
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
     add(new JLayer<>(new JScrollPane(textPane), new WheelScrollLayerUI()));
     // add(new JScrollPane(textPane));

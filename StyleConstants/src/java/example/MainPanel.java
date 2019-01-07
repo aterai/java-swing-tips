@@ -78,7 +78,10 @@ public final class MainPanel extends JPanel {
     try {
       doc.insertString(doc.getLength(), str + "\n", doc.getStyle(style));
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
   }
 

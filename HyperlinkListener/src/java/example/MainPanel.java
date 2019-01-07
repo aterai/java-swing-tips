@@ -69,7 +69,10 @@ public final class MainPanel extends JPanel {
       doc.insertString(doc.getLength(), LINK + "\n", doc.getStyle("button"));
       // doc.insertString(doc.getLength(), "\n", null);
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
     return editorPane;
   }

@@ -149,7 +149,10 @@ public final class MainPanel extends JPanel {
         Document doc = area.getDocument();
         doc.remove(doc.getLength() - 1, 1);
       } catch (BadLocationException ex) {
-        throw new RuntimeException(ex); // should never happen
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
       }
     }
   }

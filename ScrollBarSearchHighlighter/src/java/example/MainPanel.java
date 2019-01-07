@@ -182,7 +182,10 @@ class HighlightIcon implements Icon {
         g2.fillRect(0, itop + s.y, getIconWidth(), h);
       }
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
 
     // paint Thumb
@@ -233,7 +236,10 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
       }
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
   }
 }
@@ -262,7 +268,10 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
       }
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
   }
 }

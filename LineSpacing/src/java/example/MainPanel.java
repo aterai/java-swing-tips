@@ -66,7 +66,10 @@ public final class MainPanel extends JPanel {
       StyledDocument doc = textPane.getStyledDocument();
       doc.insertString(doc.getLength(), "134500698\n", attr);
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
     // StyledDocument doc = new DefaultStyledDocument();
     // MutableAttributeSet a = new SimpleAttributeSet();

@@ -108,7 +108,10 @@ class ParagraphWithEopmView extends ParagraphView {
       g2.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
       g2.dispose();
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
   }
 }

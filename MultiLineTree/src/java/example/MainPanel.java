@@ -239,7 +239,10 @@ class CellTextArea2 extends JTextArea {
         }
       }
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
     setRows(lineCount);
     setColumns(1 + maxWidth / getColumnWidth());

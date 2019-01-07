@@ -110,7 +110,10 @@ public class MainPanel extends JPanel {
     try {
       highlighter.addHighlight(start, end, HIGHLIGHT);
     } catch (BadLocationException ex) {
-      throw new RuntimeException(ex); // should never happen
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
     }
   }
 
