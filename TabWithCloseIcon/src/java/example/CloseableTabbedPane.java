@@ -478,7 +478,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
    * @param horizontalTextPosition  the horizontal position of the text
-   *   (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
+   *     (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
    */
   protected CloseableTabbedPaneUI(int horizontalTextPosition) {
     super();

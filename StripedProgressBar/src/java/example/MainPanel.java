@@ -145,14 +145,14 @@ class StripedProgressBarUI extends BasicProgressBarUI {
       int x = getAnimationIndex();
       GeneralPath p = new GeneralPath();
       if (dir) {
-        p.moveTo(boxRect.x,       boxRect.y);
+        p.moveTo(boxRect.x, boxRect.y);
         p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w,     boxRect.y + boxRect.height);
+        p.lineTo(boxRect.x + w, boxRect.y + boxRect.height);
         p.lineTo(boxRect.x + w * .5f, boxRect.y);
       } else {
-        p.moveTo(boxRect.x,       boxRect.y + boxRect.height);
+        p.moveTo(boxRect.x, boxRect.y + boxRect.height);
         p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w,     boxRect.y);
+        p.lineTo(boxRect.x + w, boxRect.y);
         p.lineTo(boxRect.x + w * .5f, boxRect.y);
       }
       p.closePath();
