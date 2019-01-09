@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
@@ -81,11 +82,13 @@ public final class MainPanel extends JPanel {
   private static void insertBr(HTMLEditorKit kit, HTMLDocument doc) {
     try {
       kit.insertHTML(doc, doc.getLength(), "<br />", 0, 0, null);
-    } catch (BadLocationException | IOException ex) {
+    } catch (BadLocationException ex) {
       // should never happen
       RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
       wrap.initCause(ex);
       throw wrap;
+    } catch (IOException ex) {
+      throw new UncheckedIOException(ex);
     }
   }
 
