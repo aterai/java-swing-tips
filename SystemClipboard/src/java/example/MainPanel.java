@@ -19,24 +19,26 @@ public final class MainPanel extends JPanel {
   public MainPanel() {
     super(new BorderLayout());
     button.addActionListener(e -> {
+      String str = "";
+      ImageIcon image = null;
       try {
         Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
         if (Objects.isNull(t)) {
           Toolkit.getDefaultToolkit().beep();
           return;
         }
-        String str = "";
-        ImageIcon image = null;
         if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
           image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
         } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
           str = Objects.toString(t.getTransferData(DataFlavor.stringFlavor));
         }
-        label.setText(str);
-        label.setIcon(image);
       } catch (UnsupportedFlavorException | IOException ex) {
-        ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
+        str = ex.getMessage();
+        image = null;
       }
+      label.setText(str);
+      label.setIcon(image);
     });
 
     add(new JScrollPane(label));

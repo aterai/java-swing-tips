@@ -81,12 +81,12 @@ public class MainPanel extends JPanel {
               largeLabel.setIcon(new ImageIcon(sun.awt.shell.ShellFolder.getShellFolder(file).getIcon(true)));
             }
             dtde.dropComplete(true);
-            return;
+          } else {
+            dtde.rejectDrop();
           }
         } catch (UnsupportedFlavorException | IOException ex) {
-          ex.printStackTrace();
+          dtde.rejectDrop();
         }
-        dtde.rejectDrop();
       }
     };
     setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));

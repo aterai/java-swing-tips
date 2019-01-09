@@ -179,9 +179,8 @@ class CellIconTransferHandler extends TransferHandler {
       }
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
-      ex.printStackTrace();
+      return false;
     }
-    return false;
   }
 }
 

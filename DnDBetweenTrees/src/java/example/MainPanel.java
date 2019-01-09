@@ -131,7 +131,7 @@ class TreeTransferHandler extends TransferHandler {
       Transferable t = support.getTransferable();
       nodes = (DefaultMutableTreeNode[]) t.getTransferData(FLAVOR);
     } catch (UnsupportedFlavorException | IOException ex) {
-      ex.printStackTrace();
+      return false;
     }
     TransferHandler.DropLocation tdl = support.getDropLocation();
     if (tdl instanceof JTree.DropLocation) {

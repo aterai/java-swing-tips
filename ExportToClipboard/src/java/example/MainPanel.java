@@ -196,9 +196,8 @@ class ListItemTransferHandler extends TransferHandler {
       addCount = target.equals(source) ? values.size() : 0;
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
-      ex.printStackTrace();
+      return false;
     }
-    return false;
   }
 
   @Override public boolean importData(JComponent comp, Transferable t) {

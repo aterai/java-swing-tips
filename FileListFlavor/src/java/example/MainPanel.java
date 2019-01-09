@@ -50,12 +50,12 @@ public final class MainPanel extends JPanel {
               }
             }
             dtde.dropComplete(true);
-            return;
+          } else {
+            dtde.rejectDrop();
           }
         } catch (UnsupportedFlavorException | IOException ex) {
-          ex.printStackTrace();
+          dtde.rejectDrop();
         }
-        dtde.rejectDrop();
       }
     };
 

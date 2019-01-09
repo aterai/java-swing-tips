@@ -380,9 +380,8 @@ class ListItemTransferHandler extends TransferHandler {
       addCount = values.size();
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
-      ex.printStackTrace();
+      return false;
     }
-    return false;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {

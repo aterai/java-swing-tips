@@ -152,12 +152,12 @@ class FileDropTargetAdapter extends DropTargetAdapter {
           }
         }
         dtde.dropComplete(true);
-        return;
+      } else {
+        dtde.rejectDrop();
       }
     } catch (UnsupportedFlavorException | IOException ex) {
-      ex.printStackTrace();
+      dtde.rejectDrop();
     }
-    dtde.rejectDrop();
   }
 }
 
