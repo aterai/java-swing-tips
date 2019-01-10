@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -149,8 +150,9 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         long size = ps.create(codebase, 64_000);
         System.out.println("Cache created - size: " + size);
       } catch (IOException ioex) {
-        // System.err.println("Application codebase is not a valid URL?!");
-        ioex.printStackTrace();
+        // PMD: PreserveStackTrace false positive when using UncheckedIOException in the nested try-catch blocks?
+        // throw new UncheckedIOException("Application codebase is not a valid URL?!", ioex);
+        assert false : "Application codebase is not a valid URL?!";
       }
     }
   }
@@ -172,7 +174,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         // e.close();
       }
     } catch (IOException ex) {
-      ex.printStackTrace();
+      throw new UncheckedIOException(ex);
     }
   }
 }
