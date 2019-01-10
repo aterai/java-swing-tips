@@ -31,11 +31,7 @@ public final class MainPanel extends JPanel {
     return new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
       @Override public boolean isCellEditable(EventObject e) {
         Object o = tree.getLastSelectedPathComponent();
-        if (super.isCellEditable(e) && o instanceof TreeNode) {
-          return ((TreeNode) o).isLeaf();
-        } else {
-          return false;
-        }
+        return super.isCellEditable(e) && o instanceof TreeNode && ((TreeNode) o).isLeaf();
       }
     };
   }

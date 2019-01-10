@@ -15,18 +15,19 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected boolean isPressed;
+  protected boolean isShiftPressed;
   protected final JLabel label = new JLabel();
   protected final JScrollPane scroll = new JScrollPane(label);
   protected final JScrollBar verticalBar = scroll.getVerticalScrollBar();
   protected final JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
   protected final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
     @Override public boolean isVisible() {
-      if (isPressed) {
-        return false;
-      } else {
-        return super.isVisible();
-      }
+      return !isShiftPressed && super.isVisible();
+      // if (isShiftPressed) {
+      //   return false;
+      // } else {
+      //   return super.isVisible();
+      // }
     }
 
     @Override public Dimension getPreferredSize() {
@@ -61,12 +62,12 @@ public class MainPanel extends JPanel {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "released");
     am.put("pressed", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        isPressed = true;
+        isShiftPressed = true;
       }
     });
     am.put("released", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        isPressed = false;
+        isShiftPressed = false;
       }
     });
 
