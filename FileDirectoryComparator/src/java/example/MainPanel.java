@@ -152,21 +152,22 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
 
 class FileTransferHandler extends TransferHandler {
   @Override public boolean importData(TransferHandler.TransferSupport support) {
+    if (!canImport(support)) {
+      return false;
+    }
     try {
-      if (canImport(support)) {
-        // FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
-        // List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-        // model.setFiles((File[]) list.toArray(new File[list.size()]));
-        DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
-        for (Object o: (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
-          if (o instanceof File) {
-            File file = (File) o;
-            // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-            model.addRow(Collections.nCopies(3, file).toArray());
-          }
+      // FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
+      // List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+      // model.setFiles((File[]) list.toArray(new File[list.size()]));
+      DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
+      for (Object o: (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+        if (o instanceof File) {
+          File file = (File) o;
+          // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
+          model.addRow(Collections.nCopies(3, file).toArray());
         }
-        return true;
       }
+      return true;
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
     }
