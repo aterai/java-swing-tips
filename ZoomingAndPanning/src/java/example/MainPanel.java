@@ -10,21 +10,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private transient ZoomAndPanHandler zoomAndPanHandler;
-  private transient Image img;
+  private final ImageIcon icon;
 
   public MainPanel() {
     super(new BorderLayout());
-    try {
-      img = ImageIO.read(getClass().getResource("CRW_3857_JFR.jpg"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
+    icon = new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -43,7 +37,7 @@ public final class MainPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setTransform(zoomAndPanHandler.getCoordAndZoomTransform());
-    g2.drawImage(img, 0, 0, null);
+    icon.paintIcon(this, g2, 0, 0);
     g2.dispose();
   }
 
