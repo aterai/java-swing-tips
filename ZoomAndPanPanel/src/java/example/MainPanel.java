@@ -9,20 +9,38 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    try {
-      Image img = ImageIO.read(getClass().getResource("CRW_3857_JFR.jpg"));
-      add(new JScrollPane(new ZoomAndPanePanel(img)));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
+
+    Image img = Optional.ofNullable(getClass().getResource("CRW_3857_JFR.jpg"))
+        .map(u -> {
+          try {
+            return ImageIO.read(u);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
+
+    add(new JScrollPane(new ZoomAndPanePanel(img)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String... args) {
@@ -72,7 +90,7 @@ class ZoomAndPanePanel extends JPanel {
     // AffineTransform at = g2.getTransform();
     // at.concatenate(zoomTransform);
     // g2.setTransform(at);
-    // g2.drawImage(img, 0, 0, this);
+    // g2.drawImage(img, 0, 0, this); // icon.paintIcon(this, g2, 0, 0);
     // g2.fill(r);
 
     // or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
@@ -168,5 +186,35 @@ class DragScrollListener extends MouseAdapter {
 
   @Override public void mouseReleased(MouseEvent e) {
     e.getComponent().setCursor(defCursor);
+  }
+}
+
+// How to Use Icons (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 1000;
+  }
+
+  @Override public int getIconHeight() {
+    return 1000;
   }
 }
