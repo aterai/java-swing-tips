@@ -75,14 +75,27 @@ public final class MainPanel extends JPanel {
   }
 
   private TexturePaint makeImageTexture() {
-    BufferedImage bi = null;
-    try {
-      bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      throw new IllegalArgumentException(ex);
-    }
+    // unkaku_w.png http://www.viva-edo.com/komon/edokomon.html
+    BufferedImage bi = Optional.ofNullable(getClass().getResource("unkaku_w.png"))
+        .map(url -> {
+          try {
+            return ImageIO.read(url);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+  }
+
+  private BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   private TexturePaint makeCheckerTexture() {

@@ -11,6 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -48,8 +49,15 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p3));
 
     URL url = getClass().getResource("tokeidai.jpg");
-    BufferedImage bi = getFilteredImage(url);
-    desktop.setBorder(new CentredBackgroundBorder(bi));
+    BufferedImage image = Optional.ofNullable(url)
+        .map(u -> {
+          try {
+            return ImageIO.read(u);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
+    desktop.setBorder(new CentredBackgroundBorder(image));
     // [JDK-6655001] D3D/OGL: Window translucency doesn't work with accelerated pipelines - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6655001
     // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
@@ -107,15 +115,15 @@ public final class MainPanel extends JPanel {
     return new TexturePaint(img, new Rectangle(16, 16));
   }
 
-  private static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image;
-    try {
-      image = ImageIO.read(url);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-    }
-    return image;
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String... args) {

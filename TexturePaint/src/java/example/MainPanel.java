@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -15,13 +16,15 @@ public final class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
-    BufferedImage bi = null;
-    try {
-      bi = ImageIO.read(getClass().getResource("16x16.png"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      throw new IllegalArgumentException(ex);
-    }
+
+    BufferedImage bi = Optional.ofNullable(getClass().getResource("16x16.png"))
+        .map(url -> {
+          try {
+            return ImageIO.read(url);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
     texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
 
     add(new JLabel("@title@"));
@@ -35,6 +38,17 @@ public final class MainPanel extends JPanel {
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
     super.paintComponent(g);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String... args) {

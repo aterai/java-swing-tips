@@ -12,6 +12,7 @@ import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -101,13 +102,15 @@ public final class MainPanel extends JPanel {
   }
 
   private BufferedImage getFilteredImage(URL url) {
-    BufferedImage image;
-    try {
-      image = ImageIO.read(url);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-    }
+    BufferedImage image = Optional.ofNullable(url)
+        .map(u -> {
+          try {
+            return ImageIO.read(u);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
+
     BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     for (int i = 0; i < b.length; i++) {
@@ -116,6 +119,17 @@ public final class MainPanel extends JPanel {
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
     op.filter(image, dest);
     return dest;
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html

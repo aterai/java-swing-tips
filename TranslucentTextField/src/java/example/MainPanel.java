@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -61,18 +61,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private TexturePaint makeTexturePaint() {
-    // Viva! edo > http://www.viva-edo.com/komon/edokomon.html
-    URL url = getClass().getResource("unkaku_w.gif");
-    BufferedImage bi = null;
-    try {
-      bi = ImageIO.read(url);
-      // bi = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      throw new IllegalArgumentException(ex);
-    }
+  public TexturePaint makeTexturePaint() {
+    // unkaku_w.gif http://www.viva-edo.com/komon/edokomon.html
+    BufferedImage bi = Optional.ofNullable(getClass().getResource("unkaku_w.gif"))
+        .map(url -> {
+          try {
+            return ImageIO.read(url);
+          } catch (IOException ex) {
+            return makeMissingImage();
+          }
+        }).orElseGet(() -> makeMissingImage());
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   @Override protected void paintComponent(Graphics g) {
