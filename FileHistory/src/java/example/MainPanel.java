@@ -8,7 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +20,10 @@ public final class MainPanel extends JPanel {
   private static final int MAX_HISTORY = 3;
   private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
-  private final List<String> fileHistoryCache = new ArrayList<>();
+  private final List<Path> fileHistoryCache = new ArrayList<>();
   private final JMenuItem noFile = new JMenuItem("(Empty)");
   private JMenu fileHistoryMenu;
+
 
   private MainPanel() {
     super(new BorderLayout());
@@ -59,9 +61,10 @@ public final class MainPanel extends JPanel {
     } else {
       fm.remove(noFile);
       for (int i = 0; i < fileHistoryCache.size(); i++) {
-        String name = fileHistoryCache.get(i);
+        Path name = fileHistoryCache.get(i);
         String num = Integer.toString(i + 1);
-        JMenuItem mi = fileHistoryMenu.add(new HistoryAction(new File(name).getAbsolutePath()));
+        // String path = Paths.get(name).toAbsolutePath().toString();
+        JMenuItem mi = fileHistoryMenu.add(new HistoryAction(name));
         mi.setText(num + ": " + name);
         mi.setMnemonic(num.codePointAt(0));
         // fileHistoryMenu.add(mi);
@@ -69,17 +72,16 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void updateHistory(String str) {
+  protected void updateHistory(Path path) {
     fileHistoryMenu.removeAll();
-    fileHistoryCache.remove(str);
-    fileHistoryCache.add(0, str);
+    fileHistoryCache.remove(path);
+    fileHistoryCache.add(0, path);
     if (fileHistoryCache.size() > MAX_HISTORY) {
       fileHistoryCache.remove(fileHistoryCache.size() - 1);
     }
     for (int i = 0; i < fileHistoryCache.size(); i++) {
-      String name = fileHistoryCache.get(i);
+      Path name = fileHistoryCache.get(i);
       String num = Integer.toString(i + 1);
-      // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
       JMenuItem mi = new JMenuItem(new HistoryAction(name));
       mi.setText(num + ": " + name);
       mi.setMnemonic(num.codePointAt(0));
@@ -88,25 +90,22 @@ public final class MainPanel extends JPanel {
   }
 
   private class HistoryAction extends AbstractAction {
-    // private final File file;
-    // protected HistoryAction(File file) {
-    //   super();
-    //   this.file = file;
-    // }
-    private final String fileName;
+    private final Path path;
 
-    protected HistoryAction(String fileName) {
+    protected HistoryAction(Path path) {
       super();
-      this.fileName = fileName;
+      this.path = path;
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      Object[] obj = {"Open the file.\n",
+      Object[] obj = {
+        "Open the file.\n",
         "This example do nothing\n",
-        " and move the file to the beginning of the history."};
+        " and move the file to the beginning of the history."
+      };
       JComponent c = (JComponent) e.getSource();
       JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
-      updateHistory(fileName);
+      updateHistory(path);
     }
   }
 
@@ -117,44 +116,30 @@ public final class MainPanel extends JPanel {
   private Action[] getActions() {
     return new Action[] {
       new NewAction(),
-      new OpenAction(),
       new ExitAction(),
       new HelpAction(),
       new VersionAction()
     };
-    // return defaultActions;
   }
-  // private final Action[] defaultActions = {
-  //   new NewAction(),
-  //   new OpenAction(),
-  //   new ExitAction(),
-  //   new HelpAction(),
-  //   new VersionAction(),
-  // };
 
-  private class OpenAction extends AbstractAction {
-    private int count;
+  private class NewAction extends AbstractAction {
+    private int counter;
 
-    protected OpenAction() {
-      super("open");
+    protected NewAction() {
+      super("new");
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      System.out.println("-------- OpenAction --------");
-      // File file = null;
-      // JFileChooser fileChooser = new JFileChooser();
-      // int retvalue = fileChooser.showOpenDialog(this);
-      // if (retvalue == JFileChooser.APPROVE_OPTION) {
-      //   file = fileChooser.getSelectedFile();
-      // }
-      Object[] obj = {"Select files with JFileChooser.\n",
+      Object[] obj = {
+        "Create a new file.\n",
         "This example do nothing\n",
-        " and pretend to generate an appropriate file name and open it."};
+        " and pretend to generate an appropriate file name and open it."
+      };
       JComponent c = (JComponent) e.getSource();
       JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
-      String fileName = "C:/tmp/dummy.jpg." + count + "~";
-      updateHistory(fileName);
-      count++;
+      String fileName = "C:/tmp/dummy.jpg." + counter + "~";
+      updateHistory(Paths.get(fileName));
+      counter++;
     }
   }
 
@@ -178,16 +163,6 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-}
-
-class NewAction extends AbstractAction {
-  protected NewAction() {
-    super("new");
-  }
-
-  @Override public void actionPerformed(ActionEvent e) {
-    // dummy
   }
 }
 
