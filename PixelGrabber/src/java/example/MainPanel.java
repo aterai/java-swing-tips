@@ -8,36 +8,28 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    BufferedImage image;
-    try {
-      image = ImageIO.read(MainPanel.class.getResource("screenshot.png"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      return;
-    }
+    ImageIcon icon = new ImageIcon(getClass().getResource("screenshot.png"));
+    int width = icon.getIconWidth();
+    int height = icon.getIconHeight();
+    Image image = icon.getImage();
 
-    CardLayout cardLayout = new CardLayout();
-    JPanel p = new JPanel(cardLayout);
-
-    int width = image.getWidth(p);
-    int height = image.getHeight(p);
-
-    MemoryImageSource producer = makeRoundedMemoryImageSource(image, width, height);
-    BufferedImage bi = new BufferedImage(image.getWidth(p), image.getHeight(p), BufferedImage.TYPE_INT_ARGB);
-    Image img = p.createImage(producer);
-    Graphics g = bi.createGraphics();
-    g.drawImage(img, 0, 0, null);
-    g.dispose();
+    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    makeRoundedMemoryImageSource(image, width, height).ifPresent(producer -> {
+      Image img = createImage(producer);
+      Graphics g = bi.createGraphics();
+      g.drawImage(img, 0, 0, null);
+      g.dispose();
+    });
 
     // BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     // Graphics2D g2 = bi.createGraphics();
@@ -62,6 +54,8 @@ public final class MainPanel extends JPanel {
     //   ex.printStackTrace();
     // }
 
+    CardLayout cardLayout = new CardLayout();
+    JPanel p = new JPanel(cardLayout);
     p.add(new JLabel(new ImageIcon(image)), "original");
     p.add(new JLabel(new ImageIcon(bi)), "rounded");
 
@@ -82,14 +76,21 @@ public final class MainPanel extends JPanel {
     return area;
   }
 
-  private static MemoryImageSource makeRoundedMemoryImageSource(BufferedImage image, int width, int height) {
+  private static Optional<MemoryImageSource> makeRoundedMemoryImageSource(Image image, int width, int height) {
     int[] pix = new int[height * width];
     PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
+      System.err.println("interrupted waiting for pixels!");
       ex.printStackTrace();
+      return Optional.empty();
     }
+    if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
+      System.err.println("image fetch aborted or errored");
+      return Optional.empty();
+    }
+
     Area area = makeNorthWestConer();
     Rectangle r = area.getBounds();
 
@@ -156,7 +157,7 @@ public final class MainPanel extends JPanel {
     //   }
     // }
 
-    return new MemoryImageSource(width, height, pix, 0, width);
+    return Optional.of(new MemoryImageSource(width, height, pix, 0, width));
   }
 
   public static void main(String... args) {
