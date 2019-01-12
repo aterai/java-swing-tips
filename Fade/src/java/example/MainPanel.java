@@ -5,32 +5,25 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected Fade mode = Fade.IN;
-  protected final Timer animator = new Timer(25, null);
-  protected int alpha = 10;
-  protected transient BufferedImage icon;
+public final class MainPanel extends JPanel {
+  private Fade mode = Fade.IN;
+  private int alpha = 10;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
-    try {
-      icon = ImageIO.read(MainPanel.class.getResource("test.png"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
+    Timer animator = new Timer(25, null);
+
+    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
     Component fade = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * .1f));
-        g2.drawImage(icon, null, 0, 0);
+        icon.paintIcon(this, g2, 0, 0);
         g2.dispose();
       }
     };
