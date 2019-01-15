@@ -82,6 +82,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setViewportBorder(BorderFactory.createEmptyBorder());
       }
+
       @Override public Dimension getMinimumSize() {
         return super.getPreferredSize();
       }
