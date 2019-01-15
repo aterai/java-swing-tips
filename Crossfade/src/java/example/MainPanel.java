@@ -5,13 +5,13 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected int alpha = 10;
-  protected Crossfade mode = Crossfade.IN;
+public final class MainPanel extends JPanel {
+  private Crossfade mode = Crossfade.IN;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     Class<?> clz = MainPanel.class;
@@ -19,16 +19,18 @@ public class MainPanel extends JPanel {
     ImageIcon icon1 = new ImageIcon(clz.getResource("test.png"));
     ImageIcon icon2 = new ImageIcon(clz.getResource("test.jpg"));
     JButton button = new JButton("change");
+
+    AtomicInteger alpha = new AtomicInteger(10);
     Component crossfade = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getBackground());
         g2.fillRect(0, 0, getWidth(), getHeight());
         if (check.isSelected()) {
-          g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha * .1f));
+          g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha.get() * .1f));
         }
         g2.drawImage(icon1.getImage(), 0, 0, icon1.getIconWidth(), icon1.getIconHeight(), this);
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * .1f));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha.get() * .1f));
         g2.drawImage(icon2.getImage(), 0, 0, icon2.getIconWidth(), icon2.getIconHeight(), this);
         g2.dispose();
       }
@@ -36,10 +38,10 @@ public class MainPanel extends JPanel {
 
     Timer animator = new Timer(50, null);
     animator.addActionListener(e -> {
-      if (mode == Crossfade.IN && alpha < 10) {
-        alpha += 1;
-      } else if (mode == Crossfade.OUT && alpha > 0) {
-        alpha -= 1;
+      if (mode == Crossfade.IN && alpha.get() < 10) {
+        alpha.incrementAndGet(); // alpha += 1;
+      } else if (mode == Crossfade.OUT && alpha.get() > 0) {
+        alpha.decrementAndGet(); // alpha -= 1;
       } else {
         animator.stop();
       }
