@@ -74,16 +74,18 @@ public final class MainPanel extends JPanel {
     // // @see https://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
     // textPane.addCaretListener(new VisibleCaretListener());
 
-    JScrollPane scrollPane = new JScrollPane(
-        textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+    JScrollPane scrollPane = new JScrollPane(textPane) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setViewportBorder(BorderFactory.createEmptyBorder());
+      }
       @Override public Dimension getMinimumSize() {
         return super.getPreferredSize();
       }
     };
-
-    scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-    scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
 
     add(makeTitledPanel("JTextField", new JTextField(str)));
     add(makeTitledPanel("JTextPane+StyledDocument+JScrollPane", scrollPane));

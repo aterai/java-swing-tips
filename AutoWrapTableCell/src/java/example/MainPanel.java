@@ -80,7 +80,12 @@ public final class MainPanel extends JPanel {
     table.setShowGrid(false);
     table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
     // table.setIntercellSpacing(new Dimension());
-    add(new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+
+    JScrollPane scroll = new JScrollPane(table);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+    add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
