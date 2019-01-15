@@ -119,8 +119,8 @@ public final class MainPanel extends JPanel {
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setColumnHeaderView(colHeader);
     scroll.setRowHeaderView(rowHeader);
-    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setBackground(Color.WHITE);
 
     return scroll;

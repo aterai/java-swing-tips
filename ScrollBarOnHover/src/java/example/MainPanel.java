@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
     textArea.addMouseListener(new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         JScrollPane sp = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) e.getSource());
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
       }
 
       @Override public void mouseExited(MouseEvent e) {
         JScrollPane sp = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) e.getSource());
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
       }
     });
 
@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
 
   private static JScrollPane makeScrollPane(JComponent c) {
     JScrollPane scroll = new JScrollPane(c);
-    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     return scroll;
   }
 
@@ -90,9 +90,9 @@ class ScrollBarOnHoverLayerUI extends LayerUI<JScrollPane> {
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     int id = e.getID();
     if (id == MouseEvent.MOUSE_ENTERED) {
-      l.getView().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+      l.getView().setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     } else if (id == MouseEvent.MOUSE_EXITED) {
-      l.getView().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+      l.getView().setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     }
     // super.processMouseEvent(e, l);
   }

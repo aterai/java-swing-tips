@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }

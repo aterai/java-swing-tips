@@ -84,8 +84,8 @@ public final class MainPanel extends JPanel {
 
     JScrollPane scroll = new JScrollPane(monthList);
     scroll.setColumnHeaderView(header);
-    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     JLabel label = new JLabel(" ", SwingConstants.CENTER);
 
