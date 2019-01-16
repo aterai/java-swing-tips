@@ -42,12 +42,8 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JTextField) {
-          JTextField tf = (JTextField) c;
-          tf.setOpaque(false);
-        } else if (c instanceof JCheckBox) {
-          JCheckBox cb = (JCheckBox) c;
-          cb.setBackground(getSelectionBackground());
+        if (c instanceof JComponent) {
+          ((JComponent) c).setOpaque(false);
         }
         return c;
       }
@@ -200,17 +196,15 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     setHorizontalAlignment(SwingConstants.CENTER);
     setBorderPainted(true);
     setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    setOpaque(false);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    setHorizontalAlignment(SwingConstants.CENTER);
     if (isSelected) {
-      // setOpaque(true);
-      setOpaque(false);
       setForeground(table.getSelectionForeground());
-      // super.setBackground(table.getSelectionBackground());
       super.setBackground(SELECTION_BACKGROUND);
     } else {
-      setOpaque(false);
       setForeground(table.getForeground());
       setBackground(table.getBackground());
     }
