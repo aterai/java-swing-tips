@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Optional;
 import javax.swing.*;
 
@@ -43,7 +44,8 @@ public final class MainPanel extends JPanel {
       // }
 
       Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-        .ifPresent(a -> a.actionPerformed(null));
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "viewTypeDetails")));
+
       // Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
       // if (Objects.nonNull(detailsAction)) {
       //   detailsAction.actionPerformed(null);

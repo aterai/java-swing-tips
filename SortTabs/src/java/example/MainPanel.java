@@ -137,7 +137,7 @@ class EditableTabbedPane extends JTabbedPane {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          startEditing.actionPerformed(null);
+          startEditing.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
         }
       }
     });
@@ -161,9 +161,10 @@ class EditableTabbedPane extends JTabbedPane {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           JTextField tabEditor = getEditor();
-          Optional.ofNullable(tabEditor.getActionMap().get("rename-tab"))
+          String cmd = "rename-tab";
+          Optional.ofNullable(tabEditor.getActionMap().get(cmd))
             .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
-            .ifPresent(a -> a.actionPerformed(null));
+            .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, cmd)));
         }
       });
     }

@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
     button3.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-        .ifPresent(a -> a.actionPerformed(null));
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
       stream(chooser)
         .filter(JTable.class::isInstance)
         .map(JTable.class::cast)

@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
       // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
       Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
       if (Objects.nonNull(detailsAction)) {
-        detailsAction.actionPerformed(null);
+        detailsAction.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, "viewTypeDetails"));
       }
 
       // TEST1:

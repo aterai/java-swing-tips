@@ -61,6 +61,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TabTitleEditListener extends MouseAdapter implements ChangeListener, DocumentListener {
+  protected static final String START = "start-editing";
+  protected static final String CANCEL = "cancel-editing";
+  protected static final String RENAME = "rename-tab-title";
   protected final JTextField editor = new JTextField();
   protected final JTabbedPane tabbedPane;
   protected int editingIdx = -1;
@@ -87,7 +90,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
       if (editingIdx >= 0 && !title.isEmpty()) {
         tabbedPane.setTitleAt(editingIdx, title);
       }
-      cancelEditing.actionPerformed(null);
+      cancelEditing.actionPerformed(new ActionEvent(tabbedPane, ActionEvent.ACTION_PERFORMED, CANCEL));
     }
   };
   protected final Action cancelEditing = new AbstractAction() {
@@ -110,15 +113,15 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     editor.setBorder(BorderFactory.createEmptyBorder());
     editor.addFocusListener(new FocusAdapter() {
       @Override public void focusLost(FocusEvent e) {
-        renameTabTitle.actionPerformed(null);
+        renameTabTitle.actionPerformed(new ActionEvent(tabbedPane, ActionEvent.ACTION_PERFORMED, RENAME));
       }
     });
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap am = editor.getActionMap();
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
-    am.put("cancel-editing", cancelEditing);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab-title");
-    am.put("rename-tab-title", renameTabTitle);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
+    am.put(CANCEL, cancelEditing);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), RENAME);
+    am.put(RENAME, renameTabTitle);
     editor.getDocument().addDocumentListener(this);
     // editor.addKeyListener(new KeyAdapter() {
     //   @Override public void keyPressed(KeyEvent e) {
@@ -132,12 +135,12 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     //     }
     //   }
     // });
-    tabbedPane.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
-    tabbedPane.getActionMap().put("start-editing", startEditing);
+    tabbedPane.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), START);
+    tabbedPane.getActionMap().put(START, startEditing);
   }
 
   @Override public void stateChanged(ChangeEvent e) {
-    renameTabTitle.actionPerformed(null);
+    renameTabTitle.actionPerformed(new ActionEvent(tabbedPane, ActionEvent.ACTION_PERFORMED, RENAME));
   }
 
   @Override public void insertUpdate(DocumentEvent e) {
@@ -154,9 +157,9 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     Rectangle r = tabbedPane.getBoundsAt(tabbedPane.getSelectedIndex());
     boolean isDoubleClick = e.getClickCount() >= 2;
     if (isDoubleClick && r.contains(e.getPoint())) {
-      startEditing.actionPerformed(null);
+      startEditing.actionPerformed(new ActionEvent(tabbedPane, ActionEvent.ACTION_PERFORMED, START));
     } else {
-      renameTabTitle.actionPerformed(null);
+      renameTabTitle.actionPerformed(new ActionEvent(tabbedPane, ActionEvent.ACTION_PERFORMED, RENAME));
     }
   }
 

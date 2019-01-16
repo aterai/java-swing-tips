@@ -155,7 +155,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public void mousePressed(MouseEvent e) {
       Object o = e.getSource();
       if (o instanceof TableCellEditor) {
-        actionPerformed(null);
+        actionPerformed(new ActionEvent(o, ActionEvent.ACTION_PERFORMED, ""));
       } else if (o instanceof JButton) {
         // DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
         ButtonModel m = ((JButton) e.getComponent()).getModel();

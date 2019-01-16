@@ -73,6 +73,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
         Optional.ofNullable(((JComponent) comp).getRootPane())
           .ifPresent(r -> r.setGlassPane(glassPane));
       }
+      glassPane.removeAll();
       glassPane.add(editor);
       glassPane.setVisible(true);
 
@@ -248,7 +249,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
       Dimension dim = src.getSize();
       rect.setBounds(getTitleBounds(src, 0, 0, dim.width, dim.height));
       if (rect.contains(e.getPoint())) {
-        startEditing.actionPerformed(null);
+        startEditing.actionPerformed(new ActionEvent(src, ActionEvent.ACTION_PERFORMED, ""));
       }
     }
   }
@@ -277,7 +278,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            renameTitle.actionPerformed(null);
+            renameTitle.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
           }
         }
       });

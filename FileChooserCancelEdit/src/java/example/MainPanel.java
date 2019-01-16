@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
 
   private static void setViewTypeDetails(JFileChooser fileChooser) {
     Optional.ofNullable(fileChooser.getActionMap().get("viewTypeDetails"))
-      .ifPresent(a -> a.actionPerformed(null));
+      .ifPresent(a -> a.actionPerformed(new ActionEvent(fileChooser, ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
   }
 
   private static void append(JTextArea log, String str) {
