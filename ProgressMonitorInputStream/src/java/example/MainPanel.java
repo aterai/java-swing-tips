@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 
     try {
       InputStream is = urlConnection.getInputStream();
-      ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getTopLevelAncestor(), "Loading", is);
+      ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is);
       monitor = pmis.getProgressMonitor();
       monitor.setNote(" "); // Need for JLabel#getPreferredSize
       monitor.setMillisToDecideToPopup(0);
