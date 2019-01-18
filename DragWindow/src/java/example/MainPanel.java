@@ -30,6 +30,8 @@ public final class MainPanel {
           });
         } catch (InterruptedException | InvocationTargetException ex) {
           ex.printStackTrace();
+          splashScreen.setVisible(false);
+          splashScreen.dispose();
         }
       }
     }.start();

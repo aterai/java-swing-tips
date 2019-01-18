@@ -91,17 +91,19 @@ public class MainPanel extends JPanel {
         }
         runButton.setEnabled(true);
         monitor.close();
-        String text = null;
         if (isCancelled()) {
-          text = "Cancelled";
+          area.append("Cancelled\n");
         } else {
           try {
-            text = get();
-          } catch (InterruptedException | ExecutionException ex) {
-            text = "Interrupted";
+            String text = get();
+            area.append(text + "\n");
+          } catch (InterruptedException ex) {
+            area.append("Interrupted\n");
+          } catch (ExecutionException ex) {
+            ex.printStackTrace();
+            area.append(String.format("Error: %s%n", ex.getMessage()));
           }
         }
-        area.append(text + "\n");
         area.setCaretPosition(area.getDocument().getLength());
       }
     };

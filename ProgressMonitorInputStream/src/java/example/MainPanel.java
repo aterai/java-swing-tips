@@ -48,10 +48,27 @@ public final class MainPanel extends JPanel {
     b.setEnabled(false);
     textArea.setText("");
 
-    URLConnection urlConnection = getUrlConnection();
-    if (Objects.isNull(urlConnection)) {
+    // Random random = new Random();
+    // Charset cs = Charset.forName("EUC-JP");
+    int index = 19; // 1 + random.nextInt(27-1);
+    String path = String.format("https://docs.oracle.com/javase/8/docs/api/index-files/index-%d.html", index);
+    // String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
+    // String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
+    // String path = "https://ateraimemo.com/";
+    append(path);
+
+    URLConnection urlConnection = null;
+    try {
+      // URLConnection urlConnection = getUrlConnection(path);
+      urlConnection = new URL(path).openConnection();
+    } catch (IOException ex) {
+      ex.printStackTrace();
+      textArea.setText("error: " + ex.getMessage());
       return;
     }
+    append("urlConnection.getContentEncoding(): " + urlConnection.getContentEncoding());
+    append("urlConnection.getContentType(): " + urlConnection.getContentType());
+
     Charset cs = getCharset(urlConnection, "UTF-8");
     int length = urlConnection.getContentLength();
 
@@ -68,6 +85,7 @@ public final class MainPanel extends JPanel {
       new MonitorTask(pmis, cs, length).execute();
     } catch (IOException ex) {
       ex.printStackTrace();
+      textArea.setText("error: " + ex.getMessage());
     }
   }
 
@@ -87,27 +105,6 @@ public final class MainPanel extends JPanel {
     }
     System.out.println(cs);
     return cs;
-  }
-
-  private static URLConnection getUrlConnection() {
-    // Random random = new Random();
-    // Charset cs = Charset.forName("EUC-JP");
-    int index = 19; // 1 + random.nextInt(27-1);
-    String path = String.format("https://docs.oracle.com/javase/8/docs/api/index-files/index-%d.html", index);
-    // String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
-    // String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
-    // String path = "https://ateraimemo.com/";
-    System.out.println(path);
-
-    URLConnection urlConnection = null;
-    try {
-      urlConnection = new URL(path).openConnection();
-      System.out.println("urlConnection.getContentEncoding(): " + urlConnection.getContentEncoding());
-      System.out.println("urlConnection.getContentType(): " + urlConnection.getContentType());
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-    return urlConnection;
   }
 
   private class MonitorTask extends BackgroundTask {
@@ -134,11 +131,13 @@ public final class MainPanel extends JPanel {
           pmis.close();
         }
         text = isCancelled() ? "Cancelled" : get();
-      } catch (IOException | InterruptedException | ExecutionException ex) {
+      } catch (InterruptedException ex) {
+        text = "Interrupted";
+      } catch (IOException | ExecutionException ex) {
         ex.printStackTrace();
-        text = "Exception";
+        text = "Error:" + ex.getMessage();
       }
-      System.out.println(text);
+      append(text);
     }
   }
 
@@ -148,9 +147,13 @@ public final class MainPanel extends JPanel {
 
   protected void processChunks(List<Chunk> chunks) {
     chunks.forEach(c -> {
-      textArea.append(c.line + "\n");
+      append(c.line);
       monitor.setNote(c.note);
     });
+  }
+
+  protected void append(String str) {
+    textArea.append(str + "\n");
     textArea.setCaretPosition(textArea.getDocument().getLength());
   }
 
@@ -216,7 +219,7 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     //     publish(new Chunk(line, note));
     //   }
     // } catch (InterruptedException | IOException ex) {
-    //   System.out.println("Exception");
+    //   append("Exception");
     //   ret = "Exception";
     //   cancel(true);
     // }
@@ -234,8 +237,7 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
         publish(new Chunk(line, note));
       }
     } catch (InterruptedException ex) {
-      System.out.println("Exception");
-      ret = "Exception";
+      ret = "Interrupted";
       cancel(true);
     }
     return ret;

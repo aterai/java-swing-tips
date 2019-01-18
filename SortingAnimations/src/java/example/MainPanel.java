@@ -166,12 +166,16 @@ public class MainPanel extends JPanel {
         return;
       }
       setComponentEnabled(true);
+      String text = null;
       try {
-        String text = isCancelled() ? "Cancelled" : get();
-        System.out.println(text);
-      } catch (InterruptedException | ExecutionException ex) {
-        System.out.println("Interrupted");
+        text = isCancelled() ? "Cancelled" : get();
+      } catch (InterruptedException ex) {
+        text = "Interrupted";
+      } catch (ExecutionException ex) {
+        ex.printStackTrace();
+        text = "Error: " + ex.getMessage();
       }
+      System.out.println(text);
       repaint();
     }
   }
