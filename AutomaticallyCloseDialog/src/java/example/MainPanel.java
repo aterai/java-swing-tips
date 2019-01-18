@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("show");
     button.addActionListener(e -> {
-      Component p = SwingUtilities.getRoot(button);
+      Container p = getRootPane();
       String title = "Automatically close dialog";
       int r = JOptionPane.showConfirmDialog(p, label, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       switch (r) {

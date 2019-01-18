@@ -32,9 +32,8 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("Override JFileChooser#approveSelection()");
     button.addActionListener(e -> {
-      // int retvalue = fileChooser.showSaveDialog(SwingUtilities.getRoot((Component) e.getSource()));
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int ret = fileChooser.showOpenDialog(getRootPane());
+      if (ret == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         System.out.println(file);
       }

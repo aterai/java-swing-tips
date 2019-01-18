@@ -84,8 +84,8 @@ public final class MainPanel extends JPanel {
           });
         });
       }
-      int retvalue = fileChooser.showOpenDialog(SwingUtilities.getRoot(button));
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int ret = fileChooser.showOpenDialog(getRootPane());
+      if (ret == JFileChooser.APPROVE_OPTION) {
         String path = fileChooser.getSelectedFile().getAbsolutePath();
         field.setText(path);
         log.append(path + "\n");
