@@ -174,7 +174,6 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public void updateUI() {
       removeMouseListener(listener);
       super.updateUI();
-      setBorder(UIManager.getBorder("Table.noFocusBorder"));
       listener = new MouseAdapter() {
         @Override public void mousePressed(MouseEvent e) {
           fireEditingStopped();
@@ -189,6 +188,7 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
       removeActionListener(handler);
       removeMouseListener(handler);
       super.updateUI();
+      setBorder(UIManager.getBorder("Table.noFocusBorder"));
       setOpaque(false);
       setFocusable(false);
       setRolloverEnabled(false);
