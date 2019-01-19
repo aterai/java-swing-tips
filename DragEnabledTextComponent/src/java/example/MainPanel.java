@@ -35,7 +35,8 @@ public final class MainPanel extends JPanel {
     });
 
     EventQueue.invokeLater(() -> {
-      Component c = SwingUtilities.getRoot(getRootPane());
+      // Component c = SwingUtilities.getRoot(getRootPane());
+      Container c = getTopLevelAncestor();
       if (c instanceof JFrame) {
         ((JFrame) c).setTransferHandler(new TransferHandler() {
           @Override public boolean canImport(TransferSupport info) {

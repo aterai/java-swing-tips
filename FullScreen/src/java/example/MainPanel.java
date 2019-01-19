@@ -50,7 +50,8 @@ public class MainPanel extends JPanel {
         // } else {
 
         // // click on the X
-        Component c = SwingUtilities.getRoot(getRootPane());
+        // Component c = SwingUtilities.getRoot(getRootPane());
+        Container c = getTopLevelAncestor();
         if (c instanceof JDialog) {
           JDialog d = (JDialog) c;
           d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
@@ -64,7 +65,8 @@ public class MainPanel extends JPanel {
   }
 
   protected final void toggleFullScreenWindow() {
-    Component c = SwingUtilities.getRoot(getRootPane());
+    // Component c = SwingUtilities.getRoot(getRootPane());
+    Container c = getTopLevelAncestor();
     if (c instanceof JDialog) {
       JDialog dialog = (JDialog) c;
       GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();

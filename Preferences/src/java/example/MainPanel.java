@@ -48,7 +48,8 @@ public class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
 
     EventQueue.invokeLater(() -> {
-      Component c = SwingUtilities.getRoot(getRootPane());
+      // Component c = SwingUtilities.getRoot(getRootPane());
+      Container c = getTopLevelAncestor();
       if (c instanceof JFrame) {
         JFrame frame = (JFrame) c;
         frame.addWindowListener(handler);

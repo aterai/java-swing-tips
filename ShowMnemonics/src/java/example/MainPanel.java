@@ -23,9 +23,13 @@ public final class MainPanel extends JPanel {
     showMnemonicsCheck.addActionListener(e -> {
       UIManager.put(SHOW_MNEMONICS, ((JCheckBox) e.getSource()).isSelected());
       if (UIManager.getLookAndFeel() instanceof WindowsLookAndFeel) {
-        System.out.println("isMnemonicHidden: " + WindowsLookAndFeel.isMnemonicHidden());
+        // System.out.println("isMnemonicHidden: " + WindowsLookAndFeel.isMnemonicHidden());
         WindowsLookAndFeel.setMnemonicHidden(true);
-        SwingUtilities.getRoot(this).repaint();
+        // SwingUtilities.getRoot(this).repaint();
+        Container c = getTopLevelAncestor();
+        if (c != null) {
+          c.repaint();
+        }
       }
     });
     add(showMnemonicsCheck);
