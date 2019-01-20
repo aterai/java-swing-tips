@@ -51,11 +51,14 @@ public final class MainPanel extends JPanel {
       exp.addExpansionListener(rl);
     });
 
-    JPanel panel = new JPanel(new BorderLayout());
+    JPanel panel = new JPanel(new BorderLayout()) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(120, 0);
+      }
+    };
     panel.add(northBox, BorderLayout.NORTH);
     panel.add(centerBox);
     panel.add(southBox, BorderLayout.SOUTH);
-    panel.setMinimumSize(new Dimension(120, 0));
 
     JSplitPane sp = new JSplitPane();
     sp.setLeftComponent(panel);

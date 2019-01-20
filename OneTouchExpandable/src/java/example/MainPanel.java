@@ -11,29 +11,25 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+
+    JScrollPane s1 = new JScrollPane(new JTable(6, 3)) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(0, 100);
+      }
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
+    JScrollPane s2 = new JScrollPane(new JTree()) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(0, 100);
       }
     };
 
-    JScrollPane s1 = new JScrollPane(new JTable(model));
-    JScrollPane s2 = new JScrollPane(new JTree());
-    s1.setMinimumSize(new Dimension(0, 100));
-    s2.setMinimumSize(new Dimension(0, 100));
-
-    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(s1);
+    splitPane.setBottomComponent(s2);
     splitPane.setOneTouchExpandable(true);
     // splitPane.setDividerLocation(0);
 
@@ -43,8 +39,6 @@ public final class MainPanel extends JPanel {
     // } catch (UnavailableServiceException ex) {
     //   bs = null;
     // }
-    s1.setMinimumSize(new Dimension(0, 100));
-    s2.setMinimumSize(new Dimension(0, 100));
     // if (bs == null) {
     if (splitPane.getUI() instanceof BasicSplitPaneUI) {
       AccessController.doPrivileged(new PrivilegedAction<Void>() {
@@ -62,8 +56,6 @@ public final class MainPanel extends JPanel {
       });
     }
     // } else {
-    //   // s1.setMinimumSize(new Dimension());
-    //   // s2.setMinimumSize(new Dimension());
     //   // EventQueue.invokeLater(new Runnable() {
     //   //   @Override public void run() {
     //   //     splitPane.setDividerLocation(1d);

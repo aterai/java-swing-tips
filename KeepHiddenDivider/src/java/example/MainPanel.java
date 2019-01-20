@@ -9,51 +9,45 @@ import java.awt.event.ActionEvent;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
-  protected final String[] columnNames = {"String", "Integer", "Boolean"};
-  protected final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  protected final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  protected final JTable table = new JTable(model);
-  protected final JScrollPane s1 = new JScrollPane(new JTable(model));
-  protected final JScrollPane s2 = new JScrollPane(new JTree());
-  protected final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
-
-  protected final Action minAction = new AbstractAction("Min:Action") {
-    @Override public void actionPerformed(ActionEvent e) {
-      splitPane.requestFocusInWindow();
-      EventQueue.invokeLater(() -> {
-        Action selectMinAction = splitPane.getActionMap().get("selectMin");
-        selectMinAction.actionPerformed(new ActionEvent(splitPane, 1001, null));
-      });
-    }
-  };
-  protected final Action maxAction = new AbstractAction("Max:Action") {
-    @Override public void actionPerformed(ActionEvent e) {
-      splitPane.requestFocusInWindow();
-      EventQueue.invokeLater(() -> {
-        Action selectMaxAction = splitPane.getActionMap().get("selectMax");
-        e.setSource(splitPane);
-        selectMaxAction.actionPerformed(e);
-      });
-    }
-  };
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
-    table.setAutoCreateRowSorter(true);
+
+    JScrollPane s1 = new JScrollPane(new JTable(5, 3)) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(0, 100);
+      }
+    };
+    JScrollPane s2 = new JScrollPane(new JTree()) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(0, 100);
+      }
+    };
+
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(s1);
+    splitPane.setBottomComponent(s2);
     splitPane.setOneTouchExpandable(true);
-    s1.setMinimumSize(new Dimension(0, 100));
-    s2.setMinimumSize(new Dimension(0, 100));
+
+    Action minAction = new AbstractAction("Min:Action") {
+      @Override public void actionPerformed(ActionEvent e) {
+        splitPane.requestFocusInWindow();
+        Action selectMin = splitPane.getActionMap().get("selectMin");
+        EventQueue.invokeLater(() -> {
+          selectMin.actionPerformed(new ActionEvent(splitPane, e.getID(), "selectMin"));
+        });
+      }
+    };
+    Action maxAction = new AbstractAction("Max:Action") {
+      @Override public void actionPerformed(ActionEvent e) {
+        splitPane.requestFocusInWindow();
+        Action selectMax = splitPane.getActionMap().get("selectMax");
+        EventQueue.invokeLater(() -> {
+          selectMax.actionPerformed(new ActionEvent(splitPane, e.getID(), e.getActionCommand()));
+        });
+      }
+    };
 
     JPanel north = new JPanel(new GridLayout(0, 2, 5, 5));
     north.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
