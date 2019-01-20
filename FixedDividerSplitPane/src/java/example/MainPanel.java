@@ -11,7 +11,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTree()), new JScrollPane(new JTextArea()));
+    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    sp.setTopComponent(new JScrollPane(new JTree()));
+    sp.setBottomComponent(new JScrollPane(new JTextArea()));
     sp.setOneTouchExpandable(true);
 
     JCheckBox check1 = new JCheckBox("setEnabled(...)", true);

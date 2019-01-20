@@ -59,8 +59,11 @@ public final class MainPanel extends JPanel {
 
     table.setAutoCreateRowSorter(true);
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTable(model)), new JScrollPane(table));
+    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    sp.setTopComponent(new JScrollPane(new JTable(model)));
+    sp.setBottomComponent(new JScrollPane(table));
     sp.setResizeWeight(.5);
+
     add(sp);
     setPreferredSize(new Dimension(320, 240));
   }

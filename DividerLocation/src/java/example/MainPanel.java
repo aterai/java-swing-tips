@@ -25,7 +25,9 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTable(model)), new JScrollPane(new JTree()));
+    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    sp.setTopComponent(new JScrollPane(new JTable(model)));
+    sp.setBottomComponent(new JScrollPane(new JTree()));
 
     JRadioButton r0 = new JRadioButton("0.0", true);
     r0.addItemListener(e -> {
