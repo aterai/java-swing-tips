@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     rightPane.setContinuousLayout(true);
     rightPane.setResizeWeight(.5);
 
-    JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    JSplitPane centerPane = new JSplitPane(); // JSplitPane.HORIZONTAL_SPLIT
     centerPane.setLeftComponent(leftPane);
     centerPane.setRightComponent(rightPane);
     centerPane.setContinuousLayout(true);
