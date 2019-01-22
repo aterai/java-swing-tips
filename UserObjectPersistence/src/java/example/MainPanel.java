@@ -80,7 +80,8 @@ public final class MainPanel extends JPanel {
         return;
       }
       // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("output.xml"))))) {
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
         DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
         m.addTreeModelListener(new CheckBoxStatusUpdateListener());
         tree.setModel(m);

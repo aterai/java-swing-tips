@@ -93,7 +93,8 @@ public final class MainPanel extends JPanel {
     p.add(new JScrollPane(textArea));
 
     // JLabel l = new JLabel("Starburst.svg(drag here)");
-    // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
+    // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+    //     l, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
     // p.add(l, BorderLayout.NORTH);
     return p;
   }
@@ -144,10 +145,12 @@ public final class MainPanel extends JPanel {
     // outer.setMinimum(r2 + 1);
     Path2D star = SvgUtils.makeStar(r1, r2, vc);
     label.setIcon(new StarIcon(star, antialias));
+    String style = styleField.getText().trim();
     int min = Math.min(r1, r2);
     int max = Math.max(r1, r2);
-    String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", max, min, vc);
-    StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, styleField.getText().trim(), desc);
+    String fmt = "addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"";
+    String desc = String.format(fmt, max, min, vc);
+    StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, style, desc);
 
     // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
     // FontRenderContext frc = new FontRenderContext(null, true, true);
@@ -266,15 +269,16 @@ class StarIcon implements Icon {
   }
 }
 
-// import java.nio.charset.StandardCharsets;
 // class FileWriter {
 //   private final File file;
+//
 //   protected FileWriter(File file) {
 //     this.file = file;
 //   }
+//
 //   public void writeData(String str) {
-//     try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
-//       writer.write(str, 0, str.length());
+//     try (Writer bw = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
+//       bw.write(str, 0, str.length());
 //     } catch (IOException ex) {
 //       ex.printStackTrace();
 //     }

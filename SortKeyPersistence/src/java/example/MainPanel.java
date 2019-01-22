@@ -67,7 +67,8 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
         @SuppressWarnings("unchecked")
         List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
         DefaultTableModel model = (DefaultTableModel) xd.readObject();

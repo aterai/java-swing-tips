@@ -70,7 +70,8 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))))) {
+      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
         DefaultTableModel m = (DefaultTableModel) xd.readObject();
         table.setModel(m);
       }
