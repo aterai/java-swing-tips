@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -82,7 +81,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void loadFile(String path) {
-    try (Stream<String> lines = Files.lines(Paths.get(path), Charset.forName("UTF-8"))) {
+    try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
       String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
