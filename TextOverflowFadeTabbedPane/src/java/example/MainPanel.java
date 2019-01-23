@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
     List<? extends JTabbedPane> list = Arrays.asList(
         makeTestTabbedPane(new ClippedTitleTabbedPane()),
-        makeTestTabbedPane(new TextOverfloFadeTabbedPane()));
+        makeTestTabbedPane(new TextOverflowFadeTabbedPane()));
 
     JPanel p = new JPanel(new GridLayout(list.size(), 1));
     list.forEach(p::add);
@@ -154,12 +154,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 }
 
-class TextOverfloFadeTabbedPane extends ClippedTitleTabbedPane {
-  protected TextOverfloFadeTabbedPane() {
+class TextOverflowFadeTabbedPane extends ClippedTitleTabbedPane {
+  protected TextOverflowFadeTabbedPane() {
     super();
   }
 
-  protected TextOverfloFadeTabbedPane(int tabPlacement) {
+  protected TextOverflowFadeTabbedPane(int tabPlacement) {
     super(tabPlacement);
   }
 
