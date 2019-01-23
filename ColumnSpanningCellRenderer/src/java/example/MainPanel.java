@@ -53,7 +53,8 @@ public final class MainPanel extends JPanel {
   private static OptionPaneDescription makeOptionPaneDescription(String type) {
     String key = type + "Icon";
     Icon icon = UIManager.getIcon("OptionPane." + key);
-    String msg = String.format("public static final int %s_MESSAGE%nUsed for %s messages.", type.toUpperCase(Locale.ENGLISH), type);
+    String fmt = "public static final int %s_MESSAGE%nUsed for %s messages.";
+    String msg = String.format(fmt, type.toUpperCase(Locale.ENGLISH), type);
     return new OptionPaneDescription(key, icon, msg);
   }
 

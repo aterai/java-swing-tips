@@ -19,7 +19,8 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> addInternalFrame(desktop));
 
     long lv = button.getMultiClickThreshhold();
-    JSpinner spinner = new JSpinner(new SpinnerNumberModel(Long.valueOf(lv), Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100)));
+    SpinnerModel m = new SpinnerNumberModel(Long.valueOf(lv), Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100));
+    JSpinner spinner = new JSpinner(m);
     spinner.addChangeListener(e -> button.setMultiClickThreshhold((long) ((JSpinner) e.getSource()).getValue()));
 
     JMenuBar mb = new JMenuBar();

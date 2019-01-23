@@ -51,18 +51,17 @@ public final class MainPanel extends JPanel {
     UIManager.put("Slider.onlyLeftMouseButtonDrag", false);
     JSlider slider2 = new JSlider();
     slider2.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    JLayer<Component> layer = new JLayer<>(slider2, new DisableLeftPressedLayerUI<>());
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     box.add(makeTitledPanel("Default", slider0));
     box.add(Box.createVerticalStrut(20));
-
-    JLabel label = new JLabel(" disable scroll due to click in track");
-    box.add(label);
+    box.add(new JLabel(" disable scroll due to click in track"));
     box.add(Box.createVerticalStrut(10));
     box.add(makeTitledPanel("Override TrackListener#shouldScroll(...): false", slider1));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", new JLayer<>(slider2, new DisableLeftPressedLayerUI<>())));
+    box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", layer));
     box.add(Box.createVerticalGlue());
     for (Component c: box.getComponents()) {
       ((JComponent) c).setAlignmentX(0f);
