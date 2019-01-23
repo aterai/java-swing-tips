@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("html JLabel fade out", new FadeOutLabel("<html>" + text)));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("JLabel TextLayout fade out", new TextOverfloFadeLabel(text)));
+    box.add(makeTitledPanel("JLabel TextLayout fade out", new TextOverflowFadeLabel(text)));
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("JLabel BufferedImage fade out", new FadingOutLabel(text)));
     box.add(Box.createVerticalGlue());
@@ -96,11 +96,11 @@ class FadeOutLabel extends JLabel {
   }
 }
 
-class TextOverfloFadeLabel extends JLabel {
+class TextOverflowFadeLabel extends JLabel {
   private static final int LENGTH = 20;
   private static final float DIFF = .05f;
 
-  protected TextOverfloFadeLabel(String text) {
+  protected TextOverflowFadeLabel(String text) {
     super(text);
   }
 

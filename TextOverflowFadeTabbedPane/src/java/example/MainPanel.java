@@ -168,16 +168,16 @@ class TextOverflowFadeTabbedPane extends ClippedTitleTabbedPane {
     JPanel p = new JPanel(new BorderLayout(2, 0));
     p.setOpaque(false);
     p.add(new JLabel(icon), BorderLayout.WEST);
-    p.add(new TextOverfloFadeLabel(title));
+    p.add(new TextOverflowFadeLabel(title));
     setTabComponentAt(index, p);
   }
 }
 
-class TextOverfloFadeLabel extends JLabel {
+class TextOverflowFadeLabel extends JLabel {
   private static final int LENGTH = 20;
   private static final float DIFF = .05f;
 
-  protected TextOverfloFadeLabel(String text) {
+  protected TextOverflowFadeLabel(String text) {
     super(text);
   }
 
