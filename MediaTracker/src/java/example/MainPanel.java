@@ -17,15 +17,19 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
-  private static final int IMAGE_ID = 0;
+  private final AtomicInteger imageId = new AtomicInteger(0);
   private final FileModel model = new FileModel();
   private final JTable table = new JTable(model);
   private transient MediaTracker tracker;
@@ -46,7 +50,8 @@ public final class MainPanel extends JPanel {
           Transferable transferable = dtde.getTransferable();
           ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
               .stream().filter(File.class::isInstance).map(File.class::cast)
-              .forEach(MainPanel.this::addImageFile);
+              .map(File::toPath)
+              .forEach(MainPanel.this::addImage);
           dtde.dropComplete(true);
         } else {
           dtde.rejectDrop();
@@ -75,26 +80,29 @@ public final class MainPanel extends JPanel {
     col.setResizable(false);
 
     try {
-      addImageFile(new File(getClass().getResource("test.png").toURI()));
+      addImage(Paths.get(getClass().getResource("test.png").toURI()));
     } catch (URISyntaxException ex) {
       ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(this);
     }
+
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void addImageFile(File file) {
-    String path = file.getAbsolutePath();
-    Image img = Toolkit.getDefaultToolkit().createImage(path);
+  protected void addImage(Path path) {
+    int id = imageId.getAndIncrement();
+    Image img = Toolkit.getDefaultToolkit().createImage(path.toAbsolutePath().toString());
     tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker((Container) this));
-    tracker.addImage(img, IMAGE_ID);
+    tracker.addImage(img, id);
     try {
-      tracker.waitForID(IMAGE_ID);
+      tracker.waitForID(id);
     } catch (InterruptedException ex) {
       ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(this);
     } finally {
-      if (!tracker.isErrorID(IMAGE_ID)) {
-        model.addRowData(new RowData(file.getName(), path, img.getWidth(this), img.getHeight(this)));
+      if (!tracker.isErrorID(id)) {
+        model.addRowData(new RowData(id, path, img.getWidth(this), img.getHeight(this)));
       }
       tracker.removeImage(img);
     }
@@ -131,14 +139,12 @@ class FileModel extends DefaultTableModel {
       new ColumnContext("Width", Integer.class, false),
       new ColumnContext("Height", Integer.class, false)
   );
-  private int number;
 
   public void addRowData(RowData t) {
     Object[] obj = {
-      number, t.getName(), t.getComment(), t.getWidth(), t.getHeight()
+      t.getId(), t.getName(), t.getAbsolutePath(), t.getWidth(), t.getHeight()
     };
     super.addRow(obj);
-    number++;
   }
 
   @Override public boolean isCellEditable(int row, int col) {
@@ -171,14 +177,16 @@ class FileModel extends DefaultTableModel {
 }
 
 class RowData {
+  private final int id;
   private String name;
-  private String comment;
+  private String absolutepath;
   private int width;
   private int height;
 
-  protected RowData(String name, String comment, int width, int height) {
-    this.name = name;
-    this.comment = comment;
+  protected RowData(int id, Path path, int width, int height) {
+    this.id = id;
+    this.name = Objects.toString(path.getFileName());
+    this.absolutepath = Objects.toString(path.toAbsolutePath());
     this.width = width;
     this.height = height;
   }
@@ -187,8 +195,8 @@ class RowData {
     name = str;
   }
 
-  public void setComment(String str) {
-    comment = str;
+  public void setAbsolutePath(String str) {
+    absolutepath = str;
   }
 
   public void setWidth(int width) {
@@ -199,12 +207,16 @@ class RowData {
     this.height = height;
   }
 
+  public int getId() {
+    return id;
+  }
+
   public String getName() {
     return name;
   }
 
-  public String getComment() {
-    return comment;
+  public String getAbsolutePath() {
+    return absolutepath;
   }
 
   public int getWidth() {
