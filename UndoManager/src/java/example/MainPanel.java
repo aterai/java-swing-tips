@@ -33,12 +33,12 @@ public final class MainPanel extends JPanel {
     tc.getDocument().addUndoableEditListener(manager);
     tc.getActionMap().put("undo", new UndoAction(manager));
     tc.getActionMap().put("redo", new RedoAction(manager));
+
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
-    // Java 10:
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "undo");
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "redo");
+    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), "undo");
+    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), "redo");
   }
 
   private static class UndoAction extends AbstractAction {

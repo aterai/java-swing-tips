@@ -25,9 +25,10 @@ public final class MainPanel extends JPanel {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
       }
     });
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = field2.getInputMap(JComponent.WHEN_FOCUSED);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), amKey);
-    // Java 10: im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), amKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifiers), amKey);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

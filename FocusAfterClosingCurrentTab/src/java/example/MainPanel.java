@@ -54,11 +54,12 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("d", new JLabel("ddd"));
     tabbedPane.addTab("ee", new JLabel("eee"));
 
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), CLOSE_CURRENT_TAB);
-    // Java 10:
-    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), CLOSE_CURRENT_TAB);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, modifiers), CLOSE_CURRENT_TAB);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), CLOSE_CURRENT_TAB);
+
     tabbedPane.getActionMap().put(CLOSE_CURRENT_TAB, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JTabbedPane t = (JTabbedPane) e.getSource();

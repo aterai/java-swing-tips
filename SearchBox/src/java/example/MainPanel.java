@@ -106,10 +106,10 @@ public class MainPanel extends JPanel {
     showHideButton.setAction(showHideAction);
     showHideButton.setFocusable(false);
 
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
-    // Java 10:
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
+    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
     getActionMap().put("open-searchbox", showHideAction);
 
     add(controls, BorderLayout.NORTH);

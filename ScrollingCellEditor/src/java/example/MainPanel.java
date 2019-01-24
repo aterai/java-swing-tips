@@ -84,9 +84,9 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
     textArea.setLineWrap(true);
     textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 
-    KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-    // Java 10:
-    // KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, modifiers);
     textArea.getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
     textArea.getActionMap().put(KEY, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -168,9 +168,9 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     setLineWrap(true);
 //     setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 //
-//     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-//     // Java 10:
-//     // KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+//     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+//     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+//     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, modifiers);
 //     getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
 //     getActionMap().put(KEY, new AbstractAction() {
 //       @Override public void actionPerformed(ActionEvent e) {

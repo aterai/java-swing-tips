@@ -128,11 +128,12 @@ public class MainPanel extends JPanel {
     searchBox.add(button, BorderLayout.EAST);
     searchBox.setVisible(false);
 
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap imap = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
-    // Java 10:
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "open-searchbox");
+    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
     imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
+
     p.getActionMap().put("open-searchbox", showHideAction);
     p.getActionMap().put("close-searchbox", hideAction);
 
