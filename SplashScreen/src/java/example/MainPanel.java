@@ -14,6 +14,7 @@ public final class MainPanel extends JPanel {
       Thread.sleep(5000); // dummy task
     } catch (InterruptedException ex) {
       ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(this);
     }
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));

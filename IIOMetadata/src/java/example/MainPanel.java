@@ -67,6 +67,8 @@ public final class MainPanel extends JPanel {
       print(buf, root, 0);
     } catch (IOException ex) {
       ex.printStackTrace();
+      buf.append(ex.getMesage() + "\n");
+      UIManager.getLookAndFeel().provideErrorFeedback(this);
     }
     JTextArea log = new JTextArea(buf.toString());
     JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));

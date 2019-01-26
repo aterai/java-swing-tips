@@ -30,6 +30,8 @@ public final class MainPanel extends JPanel {
       textPane.read(reader, "text");
     } catch (IOException ex) {
       ex.printStackTrace();
+      textPane.setText(ex.getMessage());
+      UIManager.getLookAndFeel().provideErrorFeedback(textPane);
     }
 
     // TreeMap fontMap = new TreeMap();

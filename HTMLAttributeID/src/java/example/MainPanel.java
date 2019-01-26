@@ -76,6 +76,8 @@ public class MainPanel extends JPanel {
         }, Boolean.TRUE);
       } catch (IOException ex) {
         ex.printStackTrace();
+        textArea.append(String.format("%s%n", ex.getMessage()));
+        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
       }
     }
   };

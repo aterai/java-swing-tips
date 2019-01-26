@@ -144,6 +144,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
       pg.grabPixels();
     } catch (InterruptedException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     return pallet;
   }

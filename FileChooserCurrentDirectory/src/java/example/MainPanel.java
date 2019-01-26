@@ -47,6 +47,7 @@ public final class MainPanel extends JPanel {
       field.setText(new File(".").getCanonicalPath());
     } catch (IOException ex) {
       ex.printStackTrace();
+      UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
 
     JButton button1 = new JButton("setCurrentDirectory");

@@ -271,6 +271,7 @@ final class GradientPalletUtils {
       pg.grabPixels();
     } catch (InterruptedException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     return pallet;
   }
