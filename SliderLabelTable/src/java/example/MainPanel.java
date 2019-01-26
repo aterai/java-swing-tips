@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
               "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
               "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
               "wi0126-16.png")
-        .forEach(s -> labelTable.put(labelTable.size(), new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT)));
+        .forEach(s -> labelTable.put(labelTable.size(), makeLabel(s)));
 
     labelTable.put(labelTable.size(), new JButton("aaa"));
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 10, 0);
@@ -64,6 +64,10 @@ public final class MainPanel extends JPanel {
     add(box);
     setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JLabel makeLabel(String path) {
+    return new JLabel(path, new ImageIcon(getClass().getResource(path)), SwingConstants.RIGHT);
   }
 
   public static void main(String... args) {

@@ -47,7 +47,9 @@ public final class MainPanel extends JPanel {
 
     JScrollPane scroll = new JScrollPane(table);
     scroll.setRowHeaderView(rowHeader);
-    scroll.getRowHeader().addChangeListener(e -> scroll.getVerticalScrollBar().setValue(((JViewport) e.getSource()).getViewPosition().y));
+    scroll.getRowHeader().addChangeListener(e -> {
+      scroll.getVerticalScrollBar().setValue(((JViewport) e.getSource()).getViewPosition().y);
+    });
     scroll.setComponentPopupMenu(new TablePopupMenu());
     table.setInheritsPopupMenu(true);
 

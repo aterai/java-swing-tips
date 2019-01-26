@@ -73,7 +73,8 @@ public final class MainPanel extends JPanel {
   //   }
   // });
   // // DragGestureListener
-  // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY, new DragGestureListener() {
+  // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+  //     label, DnDConstants.ACTION_COPY, new DragGestureListener() {
   //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
   //     Transferable t = new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {

@@ -164,8 +164,8 @@ class DnDTree extends JTree {
       MutableTreeNode draggingNode = (MutableTreeNode) getSelectionPath().getLastPathComponent();
       DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-      TreeNode parent = targetNode.getParent();
-      if (parent instanceof DefaultMutableTreeNode && Arrays.asList(((DefaultMutableTreeNode) parent).getPath()).contains(draggingNode)) {
+      TreeNode p = targetNode.getParent();
+      if (p instanceof DefaultMutableTreeNode && Arrays.asList(((DefaultMutableTreeNode) p).getPath()).contains(draggingNode)) {
         // Trying to drop a parent node to a child node
         rejectDrag(dtde);
         return;

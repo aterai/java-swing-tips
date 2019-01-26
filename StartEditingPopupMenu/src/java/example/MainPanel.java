@@ -79,15 +79,15 @@ public final class MainPanel extends JPanel {
 
 class TreePopupMenu extends JPopupMenu {
   protected TreePath path;
-  protected final JTextField textField = new JTextField();
+  protected final JTextField field = new JTextField();
   protected final JMenuItem editItem;
   protected final JMenuItem editDialogItem;
 
   protected TreePopupMenu() {
     super();
-    textField.addAncestorListener(new AncestorListener() {
+    field.addAncestorListener(new AncestorListener() {
       @Override public void ancestorAdded(AncestorEvent e) {
-        textField.requestFocusInWindow();
+        field.requestFocusInWindow();
       }
 
       @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
@@ -111,14 +111,14 @@ class TreePopupMenu extends JPopupMenu {
       Object node = path.getLastPathComponent();
       if (node instanceof DefaultMutableTreeNode) {
         DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-        textField.setText(leaf.getUserObject().toString());
+        field.setText(leaf.getUserObject().toString());
         JTree tree = (JTree) getInvoker();
-        int ret = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int ret = JOptionPane.showConfirmDialog(tree, field, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (ret == JOptionPane.OK_OPTION) {
-          Optional.ofNullable(textField.getText().trim())
+          Optional.ofNullable(field.getText().trim())
             .filter(str -> !str.isEmpty())
             .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
-          // String str = textField.getText().trim();
+          // String str = field.getText().trim();
           // if (!str.isEmpty()) {
           //   ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);
           // }

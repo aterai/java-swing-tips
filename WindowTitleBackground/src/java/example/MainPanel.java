@@ -74,7 +74,9 @@ public final class MainPanel extends JPanel {
         String key = Objects.toString(model.getValueAt(row, KEY_COLIDX));
         Color color = (Color) model.getValueAt(row, COLOR_COLIDX);
         UIManager.put(key, new ColorUIResource(color));
-        EventQueue.invokeLater(() -> Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI));
+        EventQueue.invokeLater(() -> {
+          Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI);
+        });
       }
     });
 

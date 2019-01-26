@@ -20,10 +20,14 @@ public final class MainPanel extends JPanel {
 
     JTree tree = new JTree();
     tree.setComponentPopupMenu(new TreePopupMenu());
-    tree.getSelectionModel().addTreeSelectionListener(e -> Optional.ofNullable(e.getNewLeadSelectionPath()).ifPresent(this::updateLabel));
+    tree.getSelectionModel().addTreeSelectionListener(e -> {
+      Optional.ofNullable(e.getNewLeadSelectionPath()).ifPresent(this::updateLabel);
+    });
 
     JCheckBox check = new JCheckBox("JTree#setRootVisible(...)", true);
-    check.addActionListener(e -> tree.setRootVisible(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      tree.setRootVisible(((JCheckBox) e.getSource()).isSelected());
+    });
 
     JPanel p = new JPanel(new GridLayout(0, 1, 2, 2));
     p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));

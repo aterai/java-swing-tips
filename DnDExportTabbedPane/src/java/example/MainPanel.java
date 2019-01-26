@@ -82,9 +82,13 @@ public final class MainPanel extends JPanel {
 
   private static Component makeCheckBoxPanel(JTabbedPane tabs) {
     JCheckBox tc = new JCheckBox("Top", true);
-    tc.addActionListener(e -> tabs.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+    tc.addActionListener(e -> {
+      tabs.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT);
+    });
     JCheckBox sc = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    sc.addActionListener(e -> tabs.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+    sc.addActionListener(e -> {
+      tabs.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
+    });
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p.add(tc);
     p.add(sc);
@@ -681,7 +685,8 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Optional.ofNullable(tabbedPane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabbedPane = Optional.ofNullable(tabbedPane)
+        .orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {

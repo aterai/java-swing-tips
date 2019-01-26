@@ -18,10 +18,11 @@ public final class MainPanel extends JPanel {
 
     JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    JScrollBar vsb = scrollPane.getVerticalScrollBar();
 
-    JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100_000, 1));
+    JSpinner spinner = new JSpinner(new SpinnerNumberModel(vsb.getUnitIncrement(1), 1, 100_000, 1));
     spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));
-    spinner.addChangeListener(e -> scrollPane.getVerticalScrollBar().setUnitIncrement((Integer) ((JSpinner) e.getSource()).getValue()));
+    spinner.addChangeListener(e -> vsb.setUnitIncrement((Integer) ((JSpinner) e.getSource()).getValue()));
     Box box = Box.createHorizontalBox();
     box.add(new JLabel("Unit Increment:"));
     box.add(Box.createHorizontalStrut(2));

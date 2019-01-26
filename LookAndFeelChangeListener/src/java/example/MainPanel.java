@@ -111,11 +111,13 @@ public class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> {
       append("--------\n" + str);
 
-      append(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON + ": " + UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
-      dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
+      String focusKey = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+      append(focusKey + ": " + UIManager.getBoolean(focusKey));
+      dfbaiCheck.setSelected(UIManager.getBoolean(focusKey));
 
-      append(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR + ": " + UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
-      ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
+      String dashedKey = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+      append(dashedKey + ": " + UIManager.getBoolean(dashedKey));
+      ddfiCheck.setSelected(UIManager.getBoolean(dashedKey));
     });
   }
 
