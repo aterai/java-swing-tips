@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
 
     JLabel label4 = new JLabel("ComboBox:", SwingConstants.RIGHT);
     label4.setDisplayedMnemonic('C');
-    Component comboBox = new JComboBox<String>();
+    Component comboBox = new JComboBox<>();
     addRow(label4, comboBox, p, c);
 
     JButton button = new JButton("JComboBox#requestFocusInWindow() Test");
