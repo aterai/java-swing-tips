@@ -20,9 +20,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
   private static final String PATTERN = "[Ff]rame";
   private static final Color SELECTION_COLOR = new Color(0xC8_64_64_FF, true);
   private static final Color HIGHLIGHT_COLOR = new Color(0x64_FF_FF_32, true);
-  private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOR);
+  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(HIGHLIGHT_COLOR);
   private final JEditorPane area = new JEditorPane();
 
   public MainPanel() {

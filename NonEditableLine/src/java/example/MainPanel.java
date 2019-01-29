@@ -10,17 +10,18 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.Element;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     int maskRange = 2;
-    Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
+    HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.GRAY);
     JTextArea textArea = new JTextArea();
     textArea.setText("aaaaaaaasdfasdfasdfasdf\nasdfasdfasdfasdfasdfasdf\n1234567890\naaaaaaaaaaaaaaaaaasdfasd");
     ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter(maskRange));

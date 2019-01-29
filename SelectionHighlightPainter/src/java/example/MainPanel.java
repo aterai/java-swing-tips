@@ -8,8 +8,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.View;
 
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     field1.setSelectedTextColor(Color.RED);
     field1.setSelectionColor(Color.GREEN);
 
-    Highlighter.HighlightPainter selectionPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.WHITE) {
+    HighlightPainter selectionPainter = new DefaultHighlightPainter(Color.WHITE) {
       @Override public Shape paintLayer(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c, View view) {
         Shape s = super.paintLayer(g, offs0, offs1, bounds, c, view);
         if (s instanceof Rectangle) {
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     Caret caret = new DefaultCaret() {
-      @Override protected Highlighter.HighlightPainter getSelectionPainter() {
+      @Override protected HighlightPainter getSelectionPainter() {
         return selectionPainter;
       }
     };

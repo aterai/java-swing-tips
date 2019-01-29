@@ -12,8 +12,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
 
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
   private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
-  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   protected String query;
 
   @Override public void updateUI() {

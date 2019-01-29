@@ -10,7 +10,9 @@ import javax.swing.*;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -84,7 +86,7 @@ public final class MainPanel extends JPanel {
 
 class FocusCaret extends DefaultCaret {
   private static final Color COLOR = Color.GRAY.brighter();
-  private static final Highlighter.HighlightPainter NONFOCUS = new DefaultHighlighter.DefaultHighlightPainter(COLOR);
+  private static final HighlightPainter NONFOCUS = new DefaultHighlightPainter(COLOR);
 
   @Override public void focusLost(FocusEvent e) {
     super.focusLost(e);

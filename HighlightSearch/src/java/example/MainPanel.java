@@ -18,9 +18,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public class MainPanel extends JPanel {
@@ -40,8 +41,8 @@ public class MainPanel extends JPanel {
       + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
-  private final transient Highlighter.HighlightPainter currentPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);
-  private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(Color.ORANGE);
+  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JTextArea textArea = new JTextArea();
   private final JTextField field = new JTextField("Swing");
   private final JButton prevButton = new JButton("⋀");

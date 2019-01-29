@@ -15,8 +15,10 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Element;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML;
@@ -25,7 +27,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
 public class MainPanel extends JPanel {
-  protected static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  protected static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   protected final JTextArea textArea = new JTextArea();
   protected final JEditorPane editorPane = new JEditorPane();
   protected final JTextField field = new JTextField("3");

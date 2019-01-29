@@ -10,9 +10,10 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
       + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
-  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
 
   private MainPanel() {
     super(new BorderLayout());

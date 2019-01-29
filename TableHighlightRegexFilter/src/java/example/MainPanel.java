@@ -17,8 +17,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public final class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
@@ -111,7 +112,7 @@ public final class MainPanel extends JPanel {
 
 class HighlightTableCellRenderer extends JTextField implements TableCellRenderer {
   private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
-  private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private String pattern = "";
   private String prev;
 

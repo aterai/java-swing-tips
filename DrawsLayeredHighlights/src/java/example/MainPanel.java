@@ -13,8 +13,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
@@ -32,7 +34,7 @@ public class MainPanel extends JPanel {
       + " so you can test yourself on what you've learned.\n"
       + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-  private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JCheckBox check = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
   private final JTextField field = new JTextField("Swing");
   private final JTextArea textArea = new JTextArea(INIT_TXT);

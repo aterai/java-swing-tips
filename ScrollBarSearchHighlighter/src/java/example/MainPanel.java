@@ -15,13 +15,14 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final Highlighter.HighlightPainter HIGHLIGHT = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   private static final String PATTERN = "Swing";
   private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
       + "Lesson: Learning Swing by Example\n"
@@ -190,7 +191,8 @@ class HighlightIcon implements Icon {
 
     // paint Thumb
     if (scrollbar.isVisible()) {
-      // JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+      // JViewport vport = Objects.requireNonNull(
+      //     (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
       // Rectangle thumbRect = vport.getBounds();
       thumbRect.height = range.getExtent();
       thumbRect.y = range.getValue(); // vport.getViewPosition().y;
