@@ -21,24 +21,25 @@ import javax.swing.tree.MutableTreeNode;
 public final class MainPanel extends JPanel {
   private final DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
   private final JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
-  private final JCheckBox sort0 = new JCheckBox("0: bubble sort");
-  private final JCheckBox sort1 = new JCheckBox("1: bubble sort");
-  private final JCheckBox sort2 = new JCheckBox("2: selection sort");
-  // private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort"); // JDK 1.6.0
-  private final JCheckBox sort3 = new JCheckBox("3: TimSort"); // JDK 1.7.0
+  // private final JRadioButton sort0 = new JRadioButton("0: bubble sort");
+  private final JRadioButton sort1 = new JRadioButton("1: bubble sort");
+  private final JRadioButton sort2 = new JRadioButton("2: selection sort");
+  // private final JRadioButton sort3 = new JRadioButton("3: iterative merge sort"); // JDK 1.6.0
+  private final JRadioButton sort3 = new JRadioButton("3: TimSort"); // JDK 1.7.0
+  private final JRadioButton reset = new JRadioButton("reset");
 
   public MainPanel() {
     super(new BorderLayout());
     JPanel box = new JPanel(new GridLayout(2, 2));
     ActionListener listener = e -> {
-      JCheckBox check = (JCheckBox) e.getSource();
-      if (check.isSelected()) {
+      JRadioButton check = (JRadioButton) e.getSource();
+      if (check.equals(reset)) {
+        tree.setModel(new DefaultTreeModel(root));
+      } else {
         TreeUtil.COMPARE_COUNTER.set(0);
         TreeUtil.SWAP_COUNTER.set(0);
         DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
-        if (check.equals(sort0)) {
-          TreeUtil.sortTree0(r);
-        } else if (check.equals(sort1)) {
+        if (check.equals(sort1)) {
           TreeUtil.sortTree1(r);
         } else if (check.equals(sort2)) {
           TreeUtil.sortTree2(r);
@@ -47,13 +48,13 @@ public final class MainPanel extends JPanel {
         }
         log(check.getText());
         tree.setModel(new DefaultTreeModel(r));
-      } else {
-        tree.setModel(new DefaultTreeModel(root));
       }
       TreeUtil.expandAll(tree);
     };
-    Stream.of(sort0, sort1, sort2, sort3).forEach(check -> {
+    ButtonGroup bg = new ButtonGroup();
+    Stream.of(reset, sort1, sort2, sort3).forEach(check -> {
       box.add(check);
+      bg.add(check);
       check.addActionListener(listener);
     });
     add(box, BorderLayout.SOUTH);
@@ -98,7 +99,6 @@ public final class MainPanel extends JPanel {
 }
 
 final class TreeUtil {
-  private static final boolean DEBUG = true;
   public static final AtomicInteger COMPARE_COUNTER = new AtomicInteger();
   public static final AtomicInteger SWAP_COUNTER = new AtomicInteger();
 
@@ -126,46 +126,41 @@ final class TreeUtil {
 
   private TreeUtil() { /* Singleton */ }
 
-  // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
-  public static void sortTree0(DefaultMutableTreeNode root) {
-    for (int i = 0; i < root.getChildCount(); i++) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
-      for (int j = 0; j < i; j++) {
-        DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-        COMPARE_COUNTER.getAndIncrement();
-        if (tnc.compare(node, prevNode) < 0) {
-          root.insert(node, j);
-          root.insert(prevNode, i);
-          SWAP_COUNTER.getAndIncrement();
-          if (DEBUG) {
-            i--;
-            break;
-          }
-        }
-      }
-      if (!node.isLeaf()) { // = if (node.getChildCount() > 0) {
-        sortTree0(node);
-      }
-    }
-  }
+  // // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
+  // public static void sortTree0(DefaultMutableTreeNode root) {
+  //   for (int i = 0; i < root.getChildCount(); i++) {
+  //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
+  //     for (int j = 0; j < i; j++) {
+  //       DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
+  //       COMPARE_COUNTER.getAndIncrement();
+  //       if (tnc.compare(node, prevNode) < 0) {
+  //         root.insert(node, j);
+  //         root.insert(prevNode, i);
+  //         SWAP_COUNTER.getAndIncrement();
+  //         i--; // add
+  //         break;
+  //       }
+  //     }
+  //     if (!node.isLeaf()) {
+  //       sortTree0(node);
+  //     }
+  //   }
+  // }
 
-  // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
   public static void sortTree1(DefaultMutableTreeNode root) {
     int n = root.getChildCount();
     for (int i = 0; i < n - 1; i++) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
-      for (int j = i + 1; j < n; j++) {
-        DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-        if (tnc.compare(node, prevNode) > 0) {
-          SWAP_COUNTER.getAndIncrement();
-          root.insert(node, j);
-          root.insert(prevNode, i);
-          i--;
-          break;
+      for (int j = n - 1; j > i; j--) {
+        DefaultMutableTreeNode curNode = (DefaultMutableTreeNode) root.getChildAt(j);
+        DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j - 1);
+        if (!prevNode.isLeaf()) {
+          sortTree1(prevNode);
         }
-      }
-      if (!node.isLeaf()) { // = if (node.getChildCount() > 0) {
-        sortTree1(node);
+        if (tnc.compare(prevNode, curNode) > 0) {
+          SWAP_COUNTER.getAndIncrement();
+          root.insert(curNode, j - 1);
+          root.insert(prevNode, j);
+        }
       }
     }
   }
