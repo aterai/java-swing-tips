@@ -98,26 +98,26 @@ final class LookAndFeelUtil {
 
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");
-    ButtonGroup lafRadioGroup = new ButtonGroup();
+    ButtonGroup lafGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
-      menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafRadioGroup));
+      menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
     }
     return menu;
   }
 
-  private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafRadioGroup) {
+  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
     JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
     lafItem.setActionCommand(lafClassName);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafRadioGroup.getSelection();
+      ButtonModel m = lafGroup.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
       }
     });
-    lafRadioGroup.add(lafItem);
+    lafGroup.add(lafItem);
     return lafItem;
   }
 
