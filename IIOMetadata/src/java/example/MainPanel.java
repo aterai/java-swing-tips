@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
       print(buf, root, 0);
     } catch (IOException ex) {
       ex.printStackTrace();
-      buf.append(String.format("%s%n", ex.getMesage()));
+      buf.append(String.format("%s%n", ex.getMessage()));
       UIManager.getLookAndFeel().provideErrorFeedback(this);
     }
     JTextArea log = new JTextArea(buf.toString());
