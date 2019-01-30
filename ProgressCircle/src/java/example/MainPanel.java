@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
-    progress1.setForeground(new Color(0xAA_FF_AA_AA));
+    progress1.setForeground(new Color(0xAA_FF_AA_AA, true));
     progress2.setStringPainted(true);
     progress2.setFont(progress2.getFont().deriveFont(24f));
 
