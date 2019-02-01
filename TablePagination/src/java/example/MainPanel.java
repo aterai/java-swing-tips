@@ -36,7 +36,9 @@ public final class MainPanel extends JPanel {
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
     table.setRowSorter(sorter);
 
-    IntStream.rangeClosed(1, 2016).forEach(i -> model.addRow(new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."}));
+    IntStream.rangeClosed(1, 2016)
+        .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
+        .forEach(model::addRow);
 
     initLinkBox(100, 1);
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));

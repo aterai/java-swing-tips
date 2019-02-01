@@ -39,19 +39,21 @@ public final class MainPanel extends JPanel {
     box.add(new JButton("333"));
     KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-    // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-    Set<AWTKeyStroke> forwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+    int ftk = KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS;
+    // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(ftk));
+    Set<AWTKeyStroke> forwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(ftk));
     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
-    // frame.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-    focusManager.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+    // frame.setFocusTraversalKeys(ftk, forwardKeys);
+    focusManager.setDefaultFocusTraversalKeys(ftk, forwardKeys);
 
-    // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-    Set<AWTKeyStroke> backwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+    int btk = KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS;
+    // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(btk));
+    Set<AWTKeyStroke> backwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(btk));
     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
-    // frame.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
-    focusManager.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+    // frame.setFocusTraversalKeys(btk, backwardKeys);
+    focusManager.setDefaultFocusTraversalKeys(btk, backwardKeys);
 
     setFocusCycleRoot(true);
     setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {

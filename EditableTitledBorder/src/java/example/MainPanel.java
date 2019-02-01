@@ -112,17 +112,16 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     this(border, title, LEADING, DEFAULT_POSITION, null, null, c);
   }
 
-  protected EditableTitledBorder(Border border, String title, int titleJustification, int titlePosition, Component c) {
-    this(border, title, titleJustification, titlePosition, null, null, c);
+  protected EditableTitledBorder(Border border, String title, int justification, int pos, Component c) {
+    this(border, title, justification, pos, null, null, c);
   }
 
-  protected EditableTitledBorder(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Component c) {
-    this(border, title, titleJustification, titlePosition, titleFont, null, c);
+  protected EditableTitledBorder(Border border, String title, int justification, int pos, Font font, Component c) {
+    this(border, title, justification, pos, font, null, c);
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  protected EditableTitledBorder(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Color titleColor, Component c) {
-    super(border, title, titleJustification, titlePosition, titleFont, titleColor);
+  protected EditableTitledBorder(Border border, String title, int justification, int pos, Font font, Color color, Component c) {
+    super(border, title, justification, pos, font, color);
     this.comp = c;
     comp.addMouseListener(this);
     editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");

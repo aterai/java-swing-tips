@@ -64,9 +64,11 @@ public final class MainPanel extends JPanel {
       if (b64.isEmpty()) {
         return;
       }
-      try (InputStream is = new ByteArrayInputStream(Base64.getDecoder().decode(b64.getBytes(StandardCharsets.ISO_8859_1)))) {
-        label.setIcon(new ImageIcon(ImageIO.read(is)));
+      byte[] bytes = b64.getBytes(StandardCharsets.ISO_8859_1);
+      try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(bytes))) {
+        label.setIcon(new ImageIcon(ImageIO.read(input)));
       } catch (IOException ex) {
+        ex.printStackTrace();
         label.setIcon(null);
       }
     });
