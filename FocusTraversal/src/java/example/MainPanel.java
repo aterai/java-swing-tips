@@ -41,11 +41,7 @@ public final class MainPanel extends JPanel {
     FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
     FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
-        if (c instanceof JTextComponent) {
-          return ((JTextComponent) c).isEditable();
-        } else {
-          return super.accept(c);
-        }
+        return c instanceof JTextComponent ? ((JTextComponent) c).isEditable() : super.accept(c);
       }
     };
 
