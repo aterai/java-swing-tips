@@ -363,19 +363,23 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     }
 
     if (Objects.nonNull(lowerLeft)) {
-      lowerLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, hsbR.y, leftToRight ? rowHeadR.width : vsbR.width, hsbR.height);
+      lowerLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, hsbR.y,
+                          leftToRight ? rowHeadR.width : vsbR.width, hsbR.height);
     }
 
     if (Objects.nonNull(lowerRight)) {
-      lowerRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, hsbR.y, leftToRight ? vsbR.width : rowHeadR.width, hsbR.height);
+      lowerRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, hsbR.y,
+                           leftToRight ? vsbR.width : rowHeadR.width, hsbR.height);
     }
 
     if (Objects.nonNull(upperLeft)) {
-      upperLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, colHeadR.y, leftToRight ? rowHeadR.width : vsbR.width, colHeadR.height);
+      upperLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, colHeadR.y,
+                          leftToRight ? rowHeadR.width : vsbR.width, colHeadR.height);
     }
 
     if (Objects.nonNull(upperRight)) {
-      upperRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, colHeadR.y, leftToRight ? vsbR.width : rowHeadR.width, colHeadR.height);
+      upperRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, colHeadR.y,
+                           leftToRight ? vsbR.width : rowHeadR.width, colHeadR.height);
     }
   }
 

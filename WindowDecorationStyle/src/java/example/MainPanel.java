@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return menu;
   // }
-  // protected JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
+  // protected JMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
   //   JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
   //   lafItem.setActionCommand(lafClassName);
   //   lafItem.setHideActionText(true);
