@@ -155,7 +155,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     double mx = cx - thumb.getWidth() / 4d + v / 2d;
     Path2D triangle = new Path2D.Double();
     triangle.moveTo(mx, cy - v);
-    triangle.lineTo(mx - v,  cy);
+    triangle.lineTo(mx - v, cy);
     triangle.lineTo(mx, cy + v);
     triangle.lineTo(mx, cy - v);
     triangle.closePath();

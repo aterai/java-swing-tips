@@ -171,7 +171,7 @@ class SpinnerLayout implements LayoutManager {
     Insets insets = parent.getInsets();
 
     if (Objects.isNull(nextButton) && Objects.isNull(previousButton)) {
-      setBounds(editor, insets.left,  insets.top, width - insets.left - insets.right, height - insets.top - insets.bottom);
+      setBounds(editor, insets.left, insets.top, width - insets.left - insets.right, height - insets.top - insets.bottom);
       return;
     }
 

@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(2, 2));
     Icon emptyIcon = new EmptyIcon();
-    UIManager.put("Tree.openIcon",    emptyIcon);
-    UIManager.put("Tree.closedIcon",  emptyIcon);
-    UIManager.put("Tree.leafIcon",    emptyIcon);
-    UIManager.put("Tree.expandedIcon",  emptyIcon);
+    UIManager.put("Tree.openIcon", emptyIcon);
+    UIManager.put("Tree.closedIcon", emptyIcon);
+    UIManager.put("Tree.leafIcon", emptyIcon);
+    UIManager.put("Tree.expandedIcon", emptyIcon);
     UIManager.put("Tree.collapsedIcon", emptyIcon);
     UIManager.put("Tree.leftChildIndent", 10);
     UIManager.put("Tree.rightChildIndent", 0);

@@ -80,12 +80,12 @@ public final class MainPanel extends JPanel {
 
 enum VerticalOrientation {
   DEFAULT_POSITION(TitledBorder.DEFAULT_POSITION, "Default Position"),
-  ABOVE_TOP(TitledBorder.ABOVE_TOP,         "Above Top"),
-  TOP(TitledBorder.TOP,               "Top"),
-  BELOW_TOP(TitledBorder.BELOW_TOP,         "Below Top"),
-  ABOVE_BOTTOM(TitledBorder.ABOVE_BOTTOM,     "Above Bottom"),
-  BOTTOM(TitledBorder.BOTTOM,           "Bottom"),
-  BELOW_BOTTOM(TitledBorder.BELOW_BOTTOM,     "Below Bottom");
+  ABOVE_TOP(TitledBorder.ABOVE_TOP, "Above Top"),
+  TOP(TitledBorder.TOP, "Top"),
+  BELOW_TOP(TitledBorder.BELOW_TOP, "Below Top"),
+  ABOVE_BOTTOM(TitledBorder.ABOVE_BOTTOM, "Above Bottom"),
+  BOTTOM(TitledBorder.BOTTOM, "Bottom"),
+  BELOW_BOTTOM(TitledBorder.BELOW_BOTTOM, "Below Bottom");
   public final int mode;
   private final String description;
   VerticalOrientation(int mode, String description) {
@@ -100,11 +100,11 @@ enum VerticalOrientation {
 
 enum Justification {
   DEFAULT_JUSTIFICATION(TitledBorder.DEFAULT_JUSTIFICATION, "Default Justification"),
-  LEFT(TitledBorder.LEFT,                   "Left"),
-  CENTER(TitledBorder.CENTER,                 "Center"),
-  RIGHT(TitledBorder.RIGHT,                 "Right"),
-  LEADING(TitledBorder.LEADING,               "Leading"),
-  TRAILING(TitledBorder.TRAILING,               "Trailing");
+  LEFT(TitledBorder.LEFT, "Left"),
+  CENTER(TitledBorder.CENTER, "Center"),
+  RIGHT(TitledBorder.RIGHT, "Right"),
+  LEADING(TitledBorder.LEADING, "Leading"),
+  TRAILING(TitledBorder.TRAILING, "Trailing");
   public final int mode;
   private final String description;
   Justification(int mode, String description) {

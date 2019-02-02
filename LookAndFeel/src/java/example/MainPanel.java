@@ -112,11 +112,11 @@ final class LookAndFeelUtil {
     JMenu lafMenu = new JMenu("Look&Feel");
     JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
     mi.setSelected(true); // this is the default l&f
-    createLafMenuItem(lafMenu, lafMenuGroup, "Mac",   MAC);
-    createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
+    createLafMenuItem(lafMenu, lafMenuGroup, "Mac", MAC);
+    createLafMenuItem(lafMenu, lafMenuGroup, "Motif", MOTIF);
     createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
-    createLafMenuItem(lafMenu, lafMenuGroup, "GTK",   GTK);
-    createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
+    createLafMenuItem(lafMenu, lafMenuGroup, "GTK", GTK);
+    createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus", NIMBUS);
     return lafMenu;
   }
 

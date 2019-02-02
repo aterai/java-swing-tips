@@ -57,10 +57,10 @@ class PlusIcon implements Icon {
     int a = w / 2;
     int b = w / 3;
     w -= 2;
-    g2.drawLine(a,   b,   a,   w - b);
-    g2.drawLine(a - 1, b,   a - 1, w - b);
-    g2.drawLine(b,   a,   w - b, a);
-    g2.drawLine(b,   a - 1, w - b, a - 1);
+    g2.drawLine(a, b, a, w - b);
+    g2.drawLine(a - 1, b, a - 1, w - b);
+    g2.drawLine(b, a, w - b, a);
+    g2.drawLine(b, a - 1, w - b, a - 1);
     g2.dispose();
   }
 

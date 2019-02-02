@@ -111,20 +111,20 @@ public class CloseTabIcon implements Icon {
 
     g2.setPaint(mouseover ? Color.ORANGE : Color.BLACK);
     // g2.setPaint(Color.BLACK);
-    g2.drawLine(x + 1,  yp,    x + 12, yp);
-    g2.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
-    g2.drawLine(x,    yp + 1,  x,    yp + 12);
-    g2.drawLine(x + 13, yp + 1,  x + 13, yp + 12);
-    g2.drawLine(x + 3,  yp + 3,  x + 10, yp + 10);
+    g2.drawLine(x + 1, yp, x + 12, yp);
+    g2.drawLine(x + 1, yp + 13, x + 12, yp + 13);
+    g2.drawLine(x, yp + 1, x, yp + 12);
+    g2.drawLine(x + 13, yp + 1, x + 13, yp + 12);
+    g2.drawLine(x + 3, yp + 3, x + 10, yp + 10);
 
     // if (mouseover) {
     //   g.setColor(Color.GRAY);
     // }
-    g2.drawLine(x + 3,  yp + 4, x + 9,  yp + 10);
-    g2.drawLine(x + 4,  yp + 3, x + 10, yp + 9);
-    g2.drawLine(x + 10, yp + 3, x + 3,  yp + 10);
-    g2.drawLine(x + 10, yp + 4, x + 4,  yp + 10);
-    g2.drawLine(x + 9,  yp + 3, x + 3,  yp + 9);
+    g2.drawLine(x + 3, yp + 4, x + 9, yp + 10);
+    g2.drawLine(x + 4, yp + 3, x + 10, yp + 9);
+    g2.drawLine(x + 10, yp + 3, x + 3, yp + 10);
+    g2.drawLine(x + 10, yp + 4, x + 4, yp + 10);
+    g2.drawLine(x + 9, yp + 3, x + 3, yp + 9);
     g2.dispose();
 
     // if (Objects.nonNull(fileIcon)) {

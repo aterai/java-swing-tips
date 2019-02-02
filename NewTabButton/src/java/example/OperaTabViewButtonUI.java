@@ -93,15 +93,15 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
   }
 
   public static void tabPainter(Graphics2D g2, Rectangle r) {
-    Rectangle r1 = new Rectangle(r.x, r.y,          r.width, r.height / 2);
-    Rectangle r2 = new Rectangle(r.x, r.y + r.height / 2,   r.width, r.height / 2);
+    Rectangle r1 = new Rectangle(r.x, r.y, r.width, r.height / 2);
+    Rectangle r2 = new Rectangle(r.x, r.y + r.height / 2, r.width, r.height / 2);
     Rectangle r3 = new Rectangle(r.x, r.y + r.height / 2 - 2, r.width, r.height / 4);
 
     g2.setPaint(new GradientPaint(0, r1.y, new Color(132, 162, 180), 0, r1.y + r1.height, new Color(103, 133, 152), true));
     g2.fill(r1);
-    g2.setPaint(new GradientPaint(0, r2.y, new Color(50, 73, 87),  0, r2.y + r2.height, new Color(60, 86, 101),   true));
+    g2.setPaint(new GradientPaint(0, r2.y, new Color(50, 73, 87), 0, r2.y + r2.height, new Color(60, 86, 101), true));
     g2.fill(r2);
-    g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30),   0, r3.y + r3.height, new Color(0, 0, 0, 5),  true));
+    g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30), 0, r3.y + r3.height, new Color(0, 0, 0, 5), true));
     g2.fill(r3);
 
     g2.setPaint(new Color(39, 56, 67)); // g2.setPaint(Color.GREEN);

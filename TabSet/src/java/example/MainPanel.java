@@ -21,12 +21,12 @@ public class MainPanel extends JPanel {
         int ox = getInsets().left;
         int h = getHeight();
         g.setColor(Color.RED);
-        g.drawLine(ox,     0, ox,     h);
+        g.drawLine(ox, 0, ox, h);
         g.drawLine(ox + 100, 0, ox + 100, h);
         g.drawLine(ox + 200, 0, ox + 200, h);
         g.drawLine(ox + 300, 0, ox + 300, h);
         g.setColor(Color.ORANGE);
-        g.drawLine(ox +  50, 0, ox +  50, h);
+        g.drawLine(ox + 50, 0, ox + 50, h);
         g.drawLine(ox + 150, 0, ox + 150, h);
         g.drawLine(ox + 250, 0, ox + 250, h);
       }

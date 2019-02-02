@@ -155,11 +155,11 @@ class ArrowToggleButtonBarCellIcon implements Icon {
     int h2 = (int) (h * .5 + .5);
     int w2 = TH;
     Path2D p = new Path2D.Double();
-    p.moveTo(0,    0);
+    p.moveTo(0, 0);
     p.lineTo(w - w2, 0);
-    p.lineTo(w,    h2);
+    p.lineTo(w, h2);
     p.lineTo(w - w2, h);
-    p.lineTo(0,    h);
+    p.lineTo(0, h);
     if (c != parent.getComponent(0)) {
       p.lineTo(w2, h2);
     }
@@ -224,8 +224,8 @@ class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
     int h2 = (int) (h * .5 + .5);
     Path2D p = new Path2D.Double();
     p.moveTo(w - h2, 0);
-    p.quadTo(w,    0,    w,    h2);
-    p.quadTo(w,    0 + h,  w - h2, h);
+    p.quadTo(w, 0, w, h2);
+    p.quadTo(w, 0 + h, w - h2, h);
     if (c == parent.getComponent(0)) {
       // :first-child
       p.lineTo(r, h);
