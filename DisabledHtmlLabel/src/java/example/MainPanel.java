@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DisabledHtmlLabel extends JLabel {
-  private static final ColorConvertOp COLOR_CONVERT = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+  private static final ColorConvertOp GRAY_CCO = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
   private transient BufferedImage shadow;
 
   protected DisabledHtmlLabel(String text) {
@@ -109,7 +109,7 @@ class DisabledHtmlLabel extends JLabel {
       // print(g2);
       paint(g2);
       g2.dispose();
-      shadow = COLOR_CONVERT.filter(source, null);
+      shadow = GRAY_CCO.filter(source, null);
     }
     super.setEnabled(b);
   }

@@ -127,11 +127,11 @@ class TableRowTransferHandler extends TransferHandler {
     // for (int i: indices) {
     //   list.add(model.getDataVector().get(i));
     // }
-    // Object[] transferedObjects = list.toArray();
+    // Object[] transferData = list.toArray();
     indices = table.getSelectedRows();
     @SuppressWarnings("JdkObsolete")
-    List<?> transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());
-    // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+    List<?> transferData = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());
+    // return new DataHandler(transferData, localObjectFlavor.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {localObjectFlavor};
@@ -143,7 +143,7 @@ class TableRowTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (isDataFlavorSupported(flavor)) {
-          return transferedObjects;
+          return transferData;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }

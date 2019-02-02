@@ -218,15 +218,15 @@ class ArrayListModel<E> extends AbstractListModel<E> {
 final class SpringLayoutUtil {
   private SpringLayoutUtil() { /* Singleton */ }
 
-  public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float sx, float sy, float sw, float sh) {
+  public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float x, float y, float w, float h) {
     Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
     Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
 
     SpringLayout.Constraints c = layout.getConstraints(child);
-    c.setX(Spring.scale(panelw, sx));
-    c.setY(Spring.scale(panelh, sy));
-    c.setWidth(Spring.scale(panelw, sw));
-    c.setHeight(Spring.scale(panelh, sh));
+    c.setX(Spring.scale(panelw, x));
+    c.setY(Spring.scale(panelh, y));
+    c.setWidth(Spring.scale(panelw, w));
+    c.setHeight(Spring.scale(panelh, h));
 
     parent.add(child);
   }
