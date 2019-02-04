@@ -61,10 +61,10 @@ class StarPanel1 extends JPanel {
     // <blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
     GeneralPath p = new GeneralPath();
     p.moveTo(-w / 4f, -h / 12f);
-    p.lineTo(+w / 4f, -h / 12f);
-    p.lineTo(-w / 6f,  h / 4f);
-    p.lineTo(+0,    -h / 4f);
-    p.lineTo(+w / 6f,  h / 4f);
+    p.lineTo(w / 4f, -h / 12f);
+    p.lineTo(-w / 6f, h / 4f);
+    p.lineTo(0, -h / 4f);
+    p.lineTo(w / 6f, h / 4f);
     p.closePath();
     // </blockquote>
 
@@ -84,10 +84,10 @@ class StarPanel2 extends JPanel {
     int h = getHeight();
     Polygon p = new Polygon();
     p.addPoint(Math.round(-w / 4f), Math.round(-h / 12f));
-    p.addPoint(Math.round(+w / 4f), Math.round(-h / 12f));
-    p.addPoint(Math.round(-w / 6f), Math.round(+h / 4f));
-    p.addPoint(0,           Math.round(-h / 4f));
-    p.addPoint(Math.round(+w / 6f), Math.round(+h / 4f));
+    p.addPoint(Math.round(w / 4f), Math.round(-h / 12f));
+    p.addPoint(Math.round(-w / 6f), Math.round(h / 4f));
+    p.addPoint(0, Math.round(-h / 4f));
+    p.addPoint(Math.round(w / 6f), Math.round(h / 4f));
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(w / 2, h / 2);
@@ -123,11 +123,11 @@ class StarPanel3 extends JPanel {
 //     int h = getHeight();
 //     Path2D p = new Path2D.Double();
 //     p.moveTo(-w / 4.0, -h / 12.0);
-//     p.quadTo(   0.0, -h / 4.0,  +w / 4.0, -h / 12.0);
-//     p.quadTo(+w / 6.0, +h / 4.0,  -w / 6.0, +h / 4.0);
-//     p.quadTo(-w / 4.0, -h / 12.0,    0.0, -h / 4.0);
-//     p.quadTo(+w / 4.0, -h / 12.0, +w / 6.0, +h / 4.0);
-//     p.quadTo(-w / 6.0, +h / 4.0,  -w / 4.0, -h / 12.0);
+//     p.quadTo(0.0, -h / 4.0, w / 4.0, -h / 12.0);
+//     p.quadTo(w / 6.0, h / 4.0, -w / 6.0, h / 4.0);
+//     p.quadTo(-w / 4.0, -h / 12.0, 0.0, -h / 4.0);
+//     p.quadTo(w / 4.0, -h / 12.0, w / 6.0, h / 4.0);
+//     p.quadTo(-w / 6.0, h / 4.0, -w / 4.0, -h / 12.0);
 //     p.closePath();
 //     g2.translate(w / 2, h / 2);
 //     g2.setPaint(Color.YELLOW);
@@ -143,15 +143,15 @@ class StarIcon0 implements Icon {
 
   protected StarIcon0() {
     // <blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
-    path.moveTo(50     * .8, 0      * .8);
+    path.moveTo(50.000 * .8, 0.0000 * .8);
     path.lineTo(61.803 * .8, 38.196 * .8);
-    path.lineTo(100    * .8, 38.196 * .8);
+    path.lineTo(100.00 * .8, 38.196 * .8);
     path.lineTo(69.098 * .8, 61.804 * .8);
-    path.lineTo(80.902 * .8, 100    * .8);
-    path.lineTo(50     * .8, 76.394 * .8);
-    path.lineTo(19.098 * .8, 100    * .8);
+    path.lineTo(80.902 * .8, 100.00 * .8);
+    path.lineTo(50.000 * .8, 76.394 * .8);
+    path.lineTo(19.098 * .8, 100.00 * .8);
     path.lineTo(30.902 * .8, 61.804 * .8);
-    path.lineTo(0      * .8, 38.196 * .8);
+    path.lineTo(0.0000 * .8, 38.196 * .8);
     path.lineTo(38.197 * .8, 38.196 * .8);
     path.closePath();
     // </blockquote>
