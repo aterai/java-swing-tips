@@ -41,6 +41,9 @@ public final class MainPanel extends JPanel {
       }
 
       private void resetViewportPosition(int idx) {
+        if (getTabCount() <= 0) {
+          return;
+        }
         Component o = getScrollableViewport();
         if (o instanceof JViewport) {
           JViewport viewport = (JViewport) o;
@@ -53,7 +56,7 @@ public final class MainPanel extends JPanel {
         if (getTabCount() > 0) {
           resetViewportPosition(0);
           super.removeTabAt(index);
-          resetViewportPosition(Math.max(0, index - 1));
+          resetViewportPosition(index - 1);
         } else {
           super.removeTabAt(index);
         }
