@@ -36,7 +36,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     // b.setForeground(Color.GREEN);
     if (b instanceof TabButton) {
       TabButton tabViewButton = (TabButton) b;
-      tabViewButton.setTextColor(new Color(100, 100, 100));
+      tabViewButton.setTextColor(new Color(0x64_64_64));
       tabViewButton.setPressedTextColor(Color.GRAY);
       tabViewButton.setRolloverTextColor(Color.BLACK);
       tabViewButton.setRolloverSelectedTextColor(Color.GRAY);
