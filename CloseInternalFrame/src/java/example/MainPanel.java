@@ -197,12 +197,12 @@ class CloseIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
     g2.setPaint(color);
-    g2.drawLine(4,  4, 11, 11);
-    g2.drawLine(4,  5, 10, 11);
-    g2.drawLine(5,  4, 11, 10);
-    g2.drawLine(11, 4,  4, 11);
-    g2.drawLine(11, 5,  5, 11);
-    g2.drawLine(10, 4,  4, 10);
+    g2.drawLine(4, 4, 11, 11);
+    g2.drawLine(4, 5, 10, 11);
+    g2.drawLine(5, 4, 11, 10);
+    g2.drawLine(11, 4, 4, 11);
+    g2.drawLine(11, 5, 5, 11);
+    g2.drawLine(10, 4, 4, 10);
     g2.dispose();
   }
 
