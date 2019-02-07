@@ -4,8 +4,6 @@
 
 package example;
 
-import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +28,25 @@ public final class MainPanel extends JPanel {
     //   BorderFactory.createLineBorder(new Color(127, 157, 185)),
     //   BorderFactory.createLineBorder(UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
 
-    JSpinner spinner2 = new JSpinner();
+    System.out.println(UIManager.getColor("TextField.shadow"));
+    System.out.println(UIManager.getColor("TextField.darkShadow"));
+    System.out.println(UIManager.getColor("TextField.light"));
+    System.out.println(UIManager.getColor("TextField.highlight"));
+    System.out.println(UIManager.getBorder("Spinner.border"));
+    System.out.println(UIManager.getBoolean("Spinner.editorBorderPainted"));
+
+    JSpinner spinner2 = new JSpinner() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        Color borderColor = UIManager.getColor("TextField.shadow");
+        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
+        editor.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, borderColor));
+        JTextField field = editor.getTextField();
+        field.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+      }
+    };
     spinner2.setEnabled(false);
-    spinner2.setBorder(BorderFactory.createEmptyBorder());
-    JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor) spinner2.getEditor();
-    editor2.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(127, 157, 185)));
-    JTextField field2 = editor2.getTextField();
-    field2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
     JSpinner spinner3 = new SimpleBorderSpinner();
     spinner3.setEnabled(false);
@@ -92,19 +102,28 @@ public final class MainPanel extends JPanel {
 }
 
 class SimpleBorderSpinner extends JSpinner {
+  private boolean isWindowsLnF;
+
+  @Override public void updateUI() {
+    super.updateUI();
+    isWindowsLnF = getUI().getClass().getName().contains("WindowsSpinnerUI");
+  }
+
   @Override protected void paintComponent(Graphics g) {
-    if (getUI() instanceof WindowsSpinnerUI) {
+    if (isWindowsLnF) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
                               : UIManager.getColor("FormattedTextField.inactiveBackground"));
       g2.fillRect(0, 0, getWidth(), getHeight());
       g2.dispose();
+    } else {
+      super.paintComponent(g);
     }
   }
 
   @Override protected void paintChildren(Graphics g) {
     super.paintChildren(g);
-    if (!isEnabled() && getUI() instanceof WindowsSpinnerUI) {
+    if (!isEnabled() && isWindowsLnF) {
       Rectangle r = getComponent(0).getBounds();
       r.add(getComponent(1).getBounds());
       r.width--;
