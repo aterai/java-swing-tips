@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
         }
         // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
         // if (getUI() instanceof MotifDesktopIconUI) {
-        if ("com.sun.java.swing.plaf.motif.MotifDesktopIconUI".equals(getUI().getClass().getName())) {
+        if (getUI().getClass().getName().contains("MotifDesktopIconUI")) {
           return new Dimension(64, 64 + 32);
         } else {
           return ICON_SIZE;

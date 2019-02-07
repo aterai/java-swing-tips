@@ -52,8 +52,7 @@ public final class MainPanel extends JPanel {
   protected static void initTextFieldBorder(JTextField textField) {
     EventQueue.invokeLater(() -> {
       Border b = new StringBorder(textField, "%");
-      // if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
-      if (textField.getUI().getClass().getName().startsWith("Synth")) {
+      if (textField.getUI().getClass().getName().contains("SynthFormattedTextFieldUI")) {
         Border c = textField.getBorder();
         textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
       } else {
