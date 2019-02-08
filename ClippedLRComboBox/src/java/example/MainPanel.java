@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
   }
 
   private static ComboBoxModel<PairItem> makeModel() {
-    DefaultComboBoxModel<PairItem> model = new DefaultComboBoxModel<>();
-    model.addElement(new PairItem("asdfasdf", "846876"));
-    model.addElement(new PairItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
-    model.addElement(new PairItem("asdfasdf.1234567890.1234567890.1234567890.e", "qwerqwer.1234567890.1234567890.1234567890"));
-    model.addElement(new PairItem("14234125", "64345424543523452345234523684"));
-    model.addElement(new PairItem("hjklhjk", "addElement"));
-    model.addElement(new PairItem("aaaaaaaa", "ddd"));
-    model.addElement(new PairItem("bbbbbbbb", "eeeee"));
-    model.addElement(new PairItem("cccccccc", "fffffff"));
-
-    return model;
+    String name = "loooooooooooooooooooooooooooooooooong.1234567890.1234567890";
+    DefaultComboBoxModel<PairItem> m = new DefaultComboBoxModel<>();
+    m.addElement(new PairItem("asdfasdf", "846876"));
+    m.addElement(new PairItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
+    m.addElement(new PairItem(name, "qwerqwer.1234567890.1234567890.1234567890"));
+    m.addElement(new PairItem("14234125", "64345424543523452345234523684"));
+    m.addElement(new PairItem("hjklhjk", "addElement"));
+    m.addElement(new PairItem("aaaaaaaa", "ddd"));
+    m.addElement(new PairItem("bbbbbbbb", "eeeee"));
+    m.addElement(new PairItem("cccccccc", "fffffff"));
+    return m;
   }
 
   public static void main(String... args) {

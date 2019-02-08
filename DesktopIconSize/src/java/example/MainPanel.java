@@ -10,9 +10,10 @@ import java.beans.PropertyVetoException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected static final Dimension ICON_SIZE = new Dimension(150, 40);
+  protected static final Dimension ICONSZ = new Dimension(150, 40);
   protected final JDesktopPane desktop = new JDesktopPane();
-  protected final JCheckBox check = new JCheckBox(String.format("JDesktopIcon: %dx%d", ICON_SIZE.width, ICON_SIZE.height));
+  protected final String str = String.format("JDesktopIcon: %dx%d", ICONSZ.width, ICONSZ.height);
+  protected final JCheckBox check = new JCheckBox(str);
 
   public MainPanel() {
     super(new BorderLayout());
@@ -58,7 +59,7 @@ public class MainPanel extends JPanel {
         if (getUI().getClass().getName().contains("MotifDesktopIconUI")) {
           return new Dimension(64, 64 + 32);
         } else {
-          return ICON_SIZE;
+          return ICONSZ;
         }
       }
     });
@@ -88,7 +89,7 @@ public class MainPanel extends JPanel {
   public static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      UIManager.put("DesktopIcon.width", ICON_SIZE.width);
+      UIManager.put("DesktopIcon.width", ICONSZ.width);
       // TEST:
       // Font font = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));

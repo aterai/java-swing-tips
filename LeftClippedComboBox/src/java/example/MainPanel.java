@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     m.addElement("\\asdfsadfs\\afsdfasdf\\asdfasdfasd.avi");
     m.addElement("aaaabbbcc.pdf");
     m.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
-    m.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
+    m.addElement("http://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
     return m;
   }
 

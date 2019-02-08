@@ -27,7 +27,9 @@ public final class MainPanel extends JPanel {
     table.getTableHeader().setReorderingAllowed(false);
 
     JCheckBox checkBox = new JCheckBox("disable column dragging", true);
-    checkBox.addActionListener(e -> table.getTableHeader().setReorderingAllowed(!((JCheckBox) e.getSource()).isSelected()));
+    checkBox.addActionListener(e -> {
+      table.getTableHeader().setReorderingAllowed(!((JCheckBox) e.getSource()).isSelected());
+    });
 
     add(checkBox, BorderLayout.NORTH);
     add(new JScrollPane(table));

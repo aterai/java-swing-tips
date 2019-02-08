@@ -18,8 +18,12 @@ public final class MainPanel extends JPanel {
     JLabel label1 = new JLabel(BLACK_CIRCLE, SwingConstants.CENTER);
     JLabel label2 = new JLabel("", SwingConstants.CENTER);
 
-    Timer timer1 = new Timer(600, e -> label1.setText(BLACK_CIRCLE.equals(label1.getText()) ? WHITE_CIRCLE : BLACK_CIRCLE));
-    Timer timer2 = new Timer(300, e -> label2.setText("".equals(label2.getText()) ? "!!!Warning!!!" : ""));
+    Timer timer1 = new Timer(600, e -> {
+      label1.setText(BLACK_CIRCLE.equals(label1.getText()) ? WHITE_CIRCLE : BLACK_CIRCLE);
+    });
+    Timer timer2 = new Timer(300, e -> {
+      label2.setText("".equals(label2.getText()) ? "!!!Warning!!!" : "");
+    });
     addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
         if (e.getComponent().isDisplayable()) {

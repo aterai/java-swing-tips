@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
-      {"owner", EnumSet.allOf(Permissions.class)}, // EnumSet.of(Permissions.READ, Permissions.WRITE, Permissions.EXECUTE)},
+      {"owner", EnumSet.allOf(Permissions.class)},
       {"group", EnumSet.of(Permissions.READ)},
       {"other", EnumSet.noneOf(Permissions.class)}
     };

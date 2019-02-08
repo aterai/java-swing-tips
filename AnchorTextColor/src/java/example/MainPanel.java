@@ -182,8 +182,8 @@ public final class MainPanel extends JPanel {
 //       g.fillRect(0, 0, size.width, size.height);
 //     }
 //
-//     ButtonModel model = b.getModel();
-//     if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+//     ButtonModel n = b.getModel();
+//     if (!n.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
 //       g.setColor(Color.BLUE);
 //       g.drawLine(viewRect.x, viewRect.y + viewRect.height,
 //            viewRect.x + viewRect.width, viewRect.y + viewRect.height);
