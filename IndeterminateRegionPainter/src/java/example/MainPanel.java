@@ -54,9 +54,9 @@ public final class MainPanel extends JPanel {
     //       System.out.println(x);
     //       GeneralPath p = new GeneralPath();
     //       p.moveTo(boxRect.x + w * .5f, boxRect.y);
-    //       p.lineTo(boxRect.x + w,     boxRect.y + boxRect.height);
+    //       p.lineTo(boxRect.x + w, boxRect.y + boxRect.height);
     //       p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-    //       p.lineTo(boxRect.x,       boxRect.y);
+    //       p.lineTo(boxRect.x, boxRect.y);
     //       p.closePath();
     //       Graphics2D g2 = (Graphics2D) g.create();
     //       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -186,18 +186,18 @@ class ProgressListener implements PropertyChangeListener {
 class IndeterminateRegionPainter extends AbstractRegionPainter {
   // Copied from javax.swing.plaf.nimbus.ProgressBarPainter.java
   private static final String NIMBUS_ORANGE = "nimbusOrange";
-  private final Color color17 = decodeColor(NIMBUS_ORANGE,   0f,      0f,      0f,     -156);
-  private final Color color18 = decodeColor(NIMBUS_ORANGE, -.015796512f,   .02094239f, -.15294117f,   0);
-  private final Color color19 = decodeColor(NIMBUS_ORANGE, -.004321605f,   .02094239f, -.0745098f,  0);
-  private final Color color20 = decodeColor(NIMBUS_ORANGE, -.008021399f,   .02094239f, -.10196078f,   0);
-  private final Color color21 = decodeColor(NIMBUS_ORANGE, -.011706904f,  -.1790576f,  -.02352941f,   0);
-  private final Color color22 = decodeColor(NIMBUS_ORANGE, -.048691254f,   .02094239f, -.3019608f,  0);
-  private final Color color23 = decodeColor(NIMBUS_ORANGE,  .003940329f,  -.7375322f,   .17647058f,   0);
-  private final Color color24 = decodeColor(NIMBUS_ORANGE,  .005506739f,  -.46764207f,  .109803915f,  0);
-  private final Color color25 = decodeColor(NIMBUS_ORANGE,  .0042127445f, -.18595415f,  .04705882f,   0);
+  private final Color color17 = decodeColor(NIMBUS_ORANGE,  .0000000000f,  .00000000f,  .0000000000f, -156);
+  private final Color color18 = decodeColor(NIMBUS_ORANGE, -.0157965120f,  .02094239f, -.1529411700f, 0);
+  private final Color color19 = decodeColor(NIMBUS_ORANGE, -.0043216050f,  .02094239f, -.0745098000f, 0);
+  private final Color color20 = decodeColor(NIMBUS_ORANGE, -.0080213990f,  .02094239f, -.1019607800f, 0);
+  private final Color color21 = decodeColor(NIMBUS_ORANGE, -.0117069040f, -.17905760f, -.0235294100f, 0);
+  private final Color color22 = decodeColor(NIMBUS_ORANGE, -.0486912540f,  .02094239f, -.3019608000f, 0);
+  private final Color color23 = decodeColor(NIMBUS_ORANGE,  .0039403290f, -.73753220f,  .1764705800f, 0);
+  private final Color color24 = decodeColor(NIMBUS_ORANGE,  .0055067390f, -.46764207f,  .1098039150f, 0);
+  private final Color color25 = decodeColor(NIMBUS_ORANGE,  .0042127445f, -.18595415f,  .0470588200f, 0);
   private final Color color26 = decodeColor(NIMBUS_ORANGE,  .0047626942f,  .02094239f,  .0039215684f, 0);
-  private final Color color27 = decodeColor(NIMBUS_ORANGE,  .0047626942f, -.15147138f,  .1607843f,  0);
-  private final Color color28 = decodeColor(NIMBUS_ORANGE,  .010665476f,  -.27317524f,  .25098038f,   0);
+  private final Color color27 = decodeColor(NIMBUS_ORANGE,  .0047626942f, -.15147138f,  .1607843000f, 0);
+  private final Color color28 = decodeColor(NIMBUS_ORANGE,  .0106654760f, -.27317524f,  .2509803800f, 0);
   private final PaintContext ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(29, 19), false);
   private Rectangle2D rect = new Rectangle2D.Float();
   private Path2D path = new Path2D.Float();
