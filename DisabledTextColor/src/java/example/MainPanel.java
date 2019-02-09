@@ -9,18 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final JCheckBox cbx1 = new JCheckBox("default", true);
-  protected final JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
-  protected final JLabel label = new JLabel("label disabledForeground");
-  protected final JButton button = new JButton("button disabledText");
-  protected final JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
-  protected final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
-  protected final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
-  protected final List<? extends JComponent> clist = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
-  protected final JCheckBox cbx = new JCheckBox("setEnabled");
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
     // RadioButton.disabledText
     // ComboBox.disabledForeground
@@ -41,6 +31,16 @@ public class MainPanel extends JPanel {
     UIManager.put("Button.disabledText", Color.YELLOW);
     UIManager.put("Label.disabledForeground", Color.ORANGE);
 
+    JCheckBox cbx1 = new JCheckBox("default", true);
+    JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
+    JLabel label = new JLabel("label disabledForeground");
+    JButton button = new JButton("button disabledText");
+    JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
+    JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
+    JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
+    List<? extends JComponent> clist = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
+
+    JCheckBox cbx = new JCheckBox("setEnabled");
     cbx.addActionListener(e -> {
       boolean flg = ((JCheckBox) e.getSource()).isSelected();
       clist.forEach(c -> c.setEnabled(flg));

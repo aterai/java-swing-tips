@@ -43,9 +43,10 @@ public final class MainPanel extends JPanel {
 
     JButton button3 = new JButton("JTable tooltips");
     button3.addActionListener(e -> {
+      String key = "viewTypeDetails";
       JFileChooser chooser = new JFileChooser();
-      Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
+      Optional.ofNullable(chooser.getActionMap().get(key))
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key)));
       stream(chooser)
         .filter(JTable.class::isInstance)
         .map(JTable.class::cast)

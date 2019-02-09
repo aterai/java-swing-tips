@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
   }
 
   public static JComboBox<String> makeComboBox() {
-    JComboBox<String> combo = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
-    combo.setEditable(true);
-    combo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), combo.getBorder()));
-    return combo;
+    JComboBox<String> c = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
+    c.setEditable(true);
+    c.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), c.getBorder()));
+    return c;
   }
 
   public static TableCellRenderer makeComboTableCellRenderer(JComboBox<String> combo) {

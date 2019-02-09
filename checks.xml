@@ -42,8 +42,8 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
         <module name="LineLength">
-            <property name="max" value="140"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|throws|@Override.*|&lt;html"/>
+            <property name="max" value="120"/>
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|throws|catch|JOptionPane|@Override.*|&lt;html"/>
         </module>
         <module name="AvoidStarImport">
             <property name="excludes" value="java.awt,javax.swing"/>

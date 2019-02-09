@@ -13,22 +13,22 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
 
-    TitledBorder topTitle1 = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "TitledBorder");
-    topTitle1.setTitleJustification(TitledBorder.CENTER);
+    TitledBorder b1 = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "TitledBorder");
+    b1.setTitleJustification(TitledBorder.CENTER);
 
     JPanel p1 = new JPanel();
-    p1.setBorder(topTitle1);
+    p1.setBorder(b1);
 
     Border raisedBevel = BorderFactory.createRaisedBevelBorder();
     Border topLine = BorderFactory.createMatteBorder(10, 0, 0, 0, Color.GRAY.brighter());
     Border loweredBevel = BorderFactory.createLoweredBevelBorder();
     Border compound1 = BorderFactory.createCompoundBorder(raisedBevel, topLine);
     Border compound2 = BorderFactory.createCompoundBorder(compound1, loweredBevel);
-    TitledBorder topTitle2 = BorderFactory.createTitledBorder(compound2, "CompoundBorder");
-    topTitle2.setTitleJustification(TitledBorder.CENTER);
+    TitledBorder b2 = BorderFactory.createTitledBorder(compound2, "CompoundBorder");
+    b2.setTitleJustification(TitledBorder.CENTER);
 
     JPanel p2 = new JPanel();
-    p2.setBorder(topTitle2);
+    p2.setBorder(b2);
 
     add(p1);
     add(p2);

@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     messageButton.addActionListener(e -> {
       TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
       if (icons.length > 0) {
-        icons[0].displayMessage("caption", "text text text text", messageType.getItemAt(messageType.getSelectedIndex()));
+        icons[0].displayMessage("caption", "text text", messageType.getItemAt(messageType.getSelectedIndex()));
       }
     });
     JPanel p = new JPanel();
