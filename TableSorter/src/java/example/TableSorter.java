@@ -273,7 +273,8 @@ public class TableSorter extends AbstractTableModel {
   }
 
   public void setColumnComparator(Class<?> type, Comparator<?> comparator) {
-    // Optional.ofNullable(comparator).ifPresentOrElse(c -> columnComparators.put(type, c), () -> columnComparators.remove(type));
+    // Optional.ofNullable(comparator)
+    //     .ifPresentOrElse(c -> columnComparators.put(type, c), () -> columnComparators.remove(type));
     if (Objects.isNull(comparator)) {
       columnComparators.remove(type);
     } else {

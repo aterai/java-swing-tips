@@ -43,12 +43,15 @@ public final class MainPanel extends JPanel {
     tree.setCellRenderer(new DefaultTreeCellRenderer() {
       private final Color selectionBackground = new Color(0x39_69_8A);
       @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean isLeaf, int row, boolean focused) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
-        if (selected) {
-          c.setBackground(selectionBackground);
-          c.setOpaque(true);
-        } else {
-          c.setOpaque(false);
+        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
+        if (c instanceof JComponent) {
+          JComponent jc = (JComponent) c;
+          if (selected) {
+            jc.setBackground(selectionBackground);
+            jc.setOpaque(true);
+          } else {
+            jc.setOpaque(false);
+          }
         }
         return c;
       }

@@ -29,18 +29,18 @@ public final class MainPanel extends JPanel {
     JTree tree2 = new JTree();
     tree2.setCellRenderer(new DefaultTreeCellRenderer() {
       // private void init() {
-      //   setLeafIcon(sun.swing.DefaultLookup.getIcon(this, ui, "Tree.leafIcon"));
-      //   setClosedIcon(sun.swing.DefaultLookup.getIcon(this, ui, "Tree.closedIcon"));
-      //   setOpenIcon(sun.swing.DefaultLookup.getIcon(this, ui, "Tree.openIcon"));
-      //   setTextSelectionColor(sun.swing.DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
-      //   setTextNonSelectionColor(sun.swing.DefaultLookup.getColor(this, ui, "Tree.textForeground"));
-      //   setBackgroundSelectionColor(sun.swing.DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
-      //   setBackgroundNonSelectionColor(sun.swing.DefaultLookup.getColor(this, ui, "Tree.textBackground"));
-      //   setBorderSelectionColor(sun.swing.DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
-      //   // drawsFocusBorderAroundIcon = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
-      //   // drawDashedFocusIndicator = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
-      //   // fillBackground = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
-      //   Insets margins = sun.swing.DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
+      //   setLeafIcon(DefaultLookup.getIcon(this, ui, "Tree.leafIcon"));
+      //   setClosedIcon(DefaultLookup.getIcon(this, ui, "Tree.closedIcon"));
+      //   setOpenIcon(DefaultLookup.getIcon(this, ui, "Tree.openIcon"));
+      //   setTextSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
+      //   setTextNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textForeground"));
+      //   setBackgroundSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
+      //   setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
+      //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
+      //   // drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
+      //   // drawDashedFocusIndicator = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
+      //   // fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
+      //   Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
       //   if (margins != null) {
       //     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
       //   }
@@ -51,8 +51,10 @@ public final class MainPanel extends JPanel {
       // }
 
       @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        c.setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value.toString() : null);
+        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        if (c instanceof JComponent) {
+          ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value.toString() : null);
+        }
         return c;
       }
     });
