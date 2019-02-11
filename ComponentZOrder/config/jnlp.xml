@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ComponentZOrder" />
+  <property name="jnlp.Name"     value="ComponentZOrder" />
+  <property name="jnlp.name"     value="componentzorder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/componentzorder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComponentZOrder.html" />
+</project>
