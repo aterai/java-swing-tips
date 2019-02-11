@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1d;
     c.weighty = 1d;
-    // c.gridx = RELATIVE;
+    // c.gridx = GridBagConstraints.RELATIVE;
     // c.gridx = 0;
     p2.add(new JScrollPane(new JTable(6, 3)), c);
     // c.gridx = 1;
