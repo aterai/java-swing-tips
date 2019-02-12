@@ -65,7 +65,9 @@ class TricoloreLabel extends JComponent {
     FontRenderContext frc = g2.getFontRenderContext();
     GlyphVector gv = font.createGlyphVector(frc, text);
     Rectangle2D b = gv.getVisualBounds();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
+    double cx = w / 2d - b.getCenterX();
+    double cy = h / 2d - b.getCenterY();
+    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
 
     double d = b.getHeight() / 3d;
     Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
@@ -111,7 +113,9 @@ class LineSplittingLabel extends JComponent {
     FontRenderContext frc = g2.getFontRenderContext();
     Shape shape = new TextLayout(text, font, frc).getOutline(null);
     Rectangle2D b = shape.getBounds2D();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
+    double cx = w / 2d - b.getCenterX();
+    double cy = h / 2d - b.getCenterY();
+    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
 
     Shape s = toCenterAtf.createTransformedShape(shape);
     g2.setPaint(Color.BLACK);

@@ -178,7 +178,10 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     currentColor = (Color) value;
     button.setIcon(new ColorIcon(currentColor));
-    button.setText(String.format("(%d, %d, %d)", currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue()));
+    int r = currentColor.getRed();
+    int g = currentColor.getGreen();
+    int b = currentColor.getBlue();
+    button.setText(String.format("(%d, %d, %d)", r, g, b));
     return button;
   }
 }
