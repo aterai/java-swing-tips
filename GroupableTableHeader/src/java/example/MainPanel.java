@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
@@ -165,11 +165,13 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
       int groupHeight = 0;
       for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
         ColumnGroup cg = (ColumnGroup) o;
-        Rectangle groupRect = (Rectangle) h.get(cg);
-        if (Objects.isNull(groupRect)) {
-          groupRect = new Rectangle(cellRect.getLocation(), cg.getSize(header));
-          h.put(cg, groupRect);
-        }
+        Rectangle groupRect = Optional.ofNullable(h.get(cg))
+            .orElseGet(() -> {
+              Rectangle r = new Rectangle(cellRect.getLocation(), cg.getSize(header));
+              h.put(cg, r);
+              return r;
+            });
+
         paintCellGroup(g, groupRect, cg);
         groupHeight += groupRect.height;
         cellRect.height = headerHeight - groupHeight;
@@ -183,13 +185,10 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
   private Component getHeaderRenderer(int columnIndex) {
     TableColumn tc = header.getColumnModel().getColumn(columnIndex);
-    TableCellRenderer renderer = tc.getHeaderRenderer();
-    if (Objects.isNull(renderer)) {
-      renderer = header.getDefaultRenderer();
-    }
+    TableCellRenderer r = Optional.ofNullable(tc.getHeaderRenderer()).orElseGet(() -> header.getDefaultRenderer());
     boolean hasFocus = !header.isPaintingForPrint() && header.hasFocus();
     // && (columnIndex == getSelectedColumnIndex())
-    return renderer.getTableCellRendererComponent(header.getTable(), tc.getHeaderValue(), false, hasFocus, -1, columnIndex);
+    return r.getTableCellRendererComponent(header.getTable(), tc.getHeaderValue(), false, hasFocus, -1, columnIndex);
   }
 
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
@@ -199,8 +198,8 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
   }
 
   private void paintCellGroup(Graphics g, Rectangle cellRect, ColumnGroup columnGroup) {
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    Component c = renderer.getTableCellRendererComponent(header.getTable(), columnGroup.getHeaderValue(), false, false, -1, -1);
+    TableCellRenderer r = header.getDefaultRenderer();
+    Component c = r.getTableCellRendererComponent(header.getTable(), columnGroup.getHeaderValue(), false, false, -1, -1);
     rendererPane.paintComponent(g, c, header, cellRect.x, cellRect.y, cellRect.width, cellRect.height, true);
   }
 
@@ -259,10 +258,7 @@ class ColumnGroup {
    * @param obj TableColumn or ColumnGroup
    */
   public void add(Object obj) {
-    if (Objects.isNull(obj)) {
-      return;
-    }
-    list.add(obj);
+    Optional.ofNullable(obj).ifPresent(list::add);
   }
 
   public List<?> getColumnGroupList(TableColumn c, List<Object> g) {
@@ -286,8 +282,8 @@ class ColumnGroup {
   }
 
   public Dimension getSize(JTableHeader header) {
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    Component c = renderer.getTableCellRendererComponent(header.getTable(), getHeaderValue(), false, false, -1, -1);
+    TableCellRenderer r = header.getDefaultRenderer();
+    Component c = r.getTableCellRendererComponent(header.getTable(), getHeaderValue(), false, false, -1, -1);
     int width = 0;
     for (Object obj: list) {
       if (obj instanceof TableColumn) {
