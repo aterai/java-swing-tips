@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     AlignedLabel portLabel = new AlignedLabel("Port:");
     AlignedLabel userLabel = new AlignedLabel("User Name:");
     AlignedLabel passwordLabel = new AlignedLabel("Password:");
-    AlignedLabel.groupLabels(Arrays.asList(fileNameLabel, filesOfTypeLabel, hostLabel, portLabel, userLabel, passwordLabel));
+    AlignedLabel.groupLabels(fileNameLabel, filesOfTypeLabel, hostLabel, portLabel, userLabel, passwordLabel);
 
     Border innerBorder = BorderFactory.createEmptyBorder(5, 2, 5, 5);
 
@@ -127,9 +127,8 @@ class AlignedLabel extends JLabel {
     return super.getPreferredSize().width;
   }
 
-  public static void groupLabels(List<AlignedLabel> group) {
-    for (AlignedLabel al: group) {
-      al.group = group;
-    }
+  public static void groupLabels(AlignedLabel... list) {
+    List<AlignedLabel> group = Arrays.asList(list);
+    group.forEach(al -> al.group = group);
   }
 }

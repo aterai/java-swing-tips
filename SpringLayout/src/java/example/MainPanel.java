@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,7 +16,7 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(layout);
     panel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
 
-    JLabel l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
+    JLabel l1 = new JLabel("label: 5%, 5%, 90%, 55%", SwingConstants.CENTER);
     l1.setOpaque(true);
     l1.setBackground(Color.ORANGE);
     l1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
@@ -24,8 +25,8 @@ public final class MainPanel extends JPanel {
     // JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
     // l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
 
-    setScaleAndAdd(panel, layout, l1, .05f, .05f, .90f, .55f);
-    setScaleAndAdd(panel, layout, l2, .50f, .65f, .40f, .30f);
+    setScaleAndAdd(panel, layout, l1, new Rectangle2D.Float(.05f, .05f, .90f, .55f));
+    setScaleAndAdd(panel, layout, l2, new Rectangle2D.Float(.50f, .65f, .40f, .30f));
 
     // addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
@@ -36,15 +37,15 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float sx, float sy, float sw, float sh) {
+  private static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, Rectangle2D.Float r) {
     Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
     Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
 
     SpringLayout.Constraints c = layout.getConstraints(child);
-    c.setX(Spring.scale(panelw, sx));
-    c.setY(Spring.scale(panelh, sy));
-    c.setWidth(Spring.scale(panelw, sw));
-    c.setHeight(Spring.scale(panelh, sh));
+    c.setX(Spring.scale(panelw, r.x));
+    c.setY(Spring.scale(panelh, r.y));
+    c.setWidth(Spring.scale(panelw, r.width));
+    c.setHeight(Spring.scale(panelh, r.height));
 
     parent.add(child);
   }

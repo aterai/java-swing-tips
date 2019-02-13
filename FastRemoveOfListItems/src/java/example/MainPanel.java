@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -218,15 +219,15 @@ class ArrayListModel<E> extends AbstractListModel<E> {
 final class SpringLayoutUtil {
   private SpringLayoutUtil() { /* Singleton */ }
 
-  public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, float x, float y, float w, float h) {
+  public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, Rectangle2D.Float r) {
     Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
     Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
 
     SpringLayout.Constraints c = layout.getConstraints(child);
-    c.setX(Spring.scale(panelw, x));
-    c.setY(Spring.scale(panelh, y));
-    c.setWidth(Spring.scale(panelw, w));
-    c.setHeight(Spring.scale(panelh, h));
+    c.setX(Spring.scale(panelw, r.x));
+    c.setY(Spring.scale(panelh, r.y));
+    c.setWidth(Spring.scale(panelw, r.width));
+    c.setHeight(Spring.scale(panelh, r.height));
 
     parent.add(child);
   }
@@ -248,9 +249,9 @@ final class SpringLayoutUtil {
 
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout);
-    setScaleAndAdd(p, layout, spl, .05f, .05f, .40f, .90f);
-    setScaleAndAdd(p, layout, cpn, .45f, .05f, .10f, .90f);
-    setScaleAndAdd(p, layout, spr, .55f, .05f, .40f, .90f);
+    setScaleAndAdd(p, layout, spl, new Rectangle2D.Float(.05f, .05f, .40f, .90f));
+    setScaleAndAdd(p, layout, cpn, new Rectangle2D.Float(.45f, .05f, .10f, .90f));
+    setScaleAndAdd(p, layout, spr, new Rectangle2D.Float(.55f, .05f, .40f, .90f));
     return p;
   }
 }
