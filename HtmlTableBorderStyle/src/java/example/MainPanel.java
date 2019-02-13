@@ -10,12 +10,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   public static final String TXT = "aaaaaaaaaa";
 
-  public static final String TD1 = "<td style='background-color:white;border-right:1px solid green;border-top:1px solid blue'>%s</td>";
-  public static final String TABLE_STYLE1 = "style='border-left:1px solid red;border-bottom:1px solid red;background-color:yellow'";
+  public static final String TD1 =
+      "<td style='background-color:white;border-right:1px solid green;border-top:1px solid blue'>%s</td>";
+  public static final String TABLE_STYLE1 =
+      "style='border-left:1px solid red;border-bottom:1px solid red;background-color:yellow'";
   public static final String TABLE_CELLPD1 = " cellspacing='0px' cellpadding='5px'";
 
-  public static final String TD2 = "<td style='background-color:white;border-right:1px solid green;border-bottom:1px solid blue'>%s</td>";
-  public static final String TABLE_STYLE2 = "style='border-left:1px solid red;border-top:1px solid red;background-color:yellow'";
+  public static final String TD2 =
+      "<td style='background-color:white;border-right:1px solid green;border-bottom:1px solid blue'>%s</td>";
+  public static final String TABLE_STYLE2 =
+      "style='border-left:1px solid red;border-top:1px solid red;background-color:yellow'";
   public static final String TABLE_CELLPD2 = " cellspacing='0px' cellpadding='5px'";
 
   // https://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html

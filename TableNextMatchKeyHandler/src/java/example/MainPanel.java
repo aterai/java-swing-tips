@@ -123,12 +123,12 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     }
     lastTime = time;
 
-    selectAndScrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
+    scrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
   }
 
-  private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIdx, boolean startingSelection) {
+  private static void scrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIdx, boolean startSelection) {
     int start = startIdx;
-    boolean isStartingSelection = startingSelection;
+    boolean isStartingSelection = startSelection;
     if (start < 0 || start >= max) {
       if (e.isShiftDown()) {
         start = max - 1;

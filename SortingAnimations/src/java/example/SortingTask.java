@@ -24,14 +24,14 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
   private final Rectangle repaintArea;
   private final SortAlgorithms sortAlgorithm;
 
-  public SortingTask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
+  public SortingTask(SortAlgorithms sortAlgorithm, int num, List<Double> array, Rectangle r, double fx, double fy) {
     super();
     this.sortAlgorithm = sortAlgorithm;
-    this.number = number;
+    this.number = num;
     this.array = array;
-    this.rect = rect;
-    this.factorx = factorx;
-    this.factory = factory;
+    this.rect = r;
+    this.factorx = fx;
+    this.factory = fy;
     this.repaintArea = new Rectangle(rect);
     this.repaintArea.grow(5, 5);
   }

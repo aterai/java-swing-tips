@@ -163,7 +163,8 @@ class ParagraphWithEopmView extends ParagraphView {
 class WhitespaceLabelView extends LabelView {
   private static final String IDEOGRAPHIC_SPACE = "　"; // "\u3000";
   private static final Color MARK_COLOR = new Color(130, 140, 120);
-  private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
+  private static final BasicStroke DASHED = new BasicStroke(
+      1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
 
   protected WhitespaceLabelView(Element elem) {
     super(elem);

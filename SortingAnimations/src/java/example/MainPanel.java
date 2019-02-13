@@ -141,8 +141,8 @@ public class MainPanel extends JPanel {
   }
 
   private class SortPaintTask extends SortingTask {
-    protected SortPaintTask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
-      super(sortAlgorithm, number, array, rect, factorx, factory);
+    protected SortPaintTask(SortAlgorithms sortAlgorithm, int num, List<Double> array, Rectangle r, double fx, double fy) {
+      super(sortAlgorithm, num, array, r, fx, fy);
     }
 
     @Override protected void process(List<Rectangle> chunks) {

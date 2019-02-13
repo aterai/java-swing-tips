@@ -203,7 +203,8 @@ class LineFocusTable extends JTable {
 enum Type { START, END; }
 
 class DotBorder extends EmptyBorder {
-  private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
+  private static final BasicStroke DASHED = new BasicStroke(
+      1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
   private static final Color DOT_COLOR = new Color(200, 150, 150);
   public final Set<Type> type = EnumSet.noneOf(Type.class);
 

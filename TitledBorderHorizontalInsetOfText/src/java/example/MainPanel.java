@@ -17,24 +17,29 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(0, 1, 5, 5));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    add(makeComp("override TitledBorder#paintBorder(...)", new TitledBorder(TITLE + "1") {
+    Border b1 = new TitledBorder(TITLE + "1") {
       @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         super.paintBorder(c, g, x + 10, y, width, height);
       }
-    }));
-    add(makeComp("override TitledBorder#getBorderInsets(...)", new TitledBorder(TITLE + "2") {
+    };
+    add(makeComp("override TitledBorder#paintBorder(...)", b1));
+
+    Border b2 = new TitledBorder(TITLE + "2") {
       @Override public Insets getBorderInsets(Component c, Insets insets) {
         Insets i = super.getBorderInsets(c, insets);
         i.left += 10;
         return i;
       }
-    }));
+    };
+    add(makeComp("override TitledBorder#getBorderInsets(...)", b2));
 
     JLabel label = new JLabel(TITLE + "3", null, SwingConstants.LEFT);
     label.setBorder(new EmptyBorder(0, 5, 0, 5));
-    add(makeComp("ComponentTitledBorder + EmptyBorder", new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"))));
+    Border b3 = new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"));
+    add(makeComp("ComponentTitledBorder + EmptyBorder", b3));
 
-    add(makeComp("TitledBorder2: copied from TitledBorder", new TitledBorder2(TITLE + "4")));
+    Border b4 = new TitledBorder2(TITLE + "4");
+    add(makeComp("TitledBorder2: copied from TitledBorder", b4));
 
     setPreferredSize(new Dimension(320, 240));
   }

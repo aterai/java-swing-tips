@@ -102,7 +102,8 @@ class TableOfContents {
 }
 
 class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
-  protected static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
+  protected static final BasicStroke READER = new BasicStroke(
+      1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
   protected int pn = -1;
   protected final Point pnPt = new Point();
   protected int rxs;
@@ -259,7 +260,8 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 // }
 
 class TableOfContentsTree extends JTree {
-  protected static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
+  protected static final BasicStroke READER = new BasicStroke(
+      1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
   protected boolean isSynth;
 
   protected TableOfContentsTree(TreeModel model) {
