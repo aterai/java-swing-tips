@@ -100,8 +100,9 @@ public final class MainPanel extends JPanel {
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
     }
-    System.out.println("Menu.useMenuBarBackgroundForTopLevel: " + UIManager.getBoolean("Menu.useMenuBarBackgroundForTopLevel"));
-    // TEST: UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.FALSE);
+    String key = "Menu.useMenuBarBackgroundForTopLevel";
+    System.out.println(key + ": " + UIManager.getBoolean(key));
+    // TEST: UIManager.put(key, Boolean.FALSE);
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());

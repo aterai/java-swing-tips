@@ -399,7 +399,8 @@ class DnDTabbedPane extends JTabbedPane {
   private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
     private Point startPt;
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
-    // Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
+    // Toolkit tk = Toolkit.getDefaultToolkit();
+    // Integer gestureMotionThreshold = (Integer) tk.getDesktopProperty("DnD.gestureMotionThreshold");
 
     private void repaintDropLocation() {
       Component c = getRootPane().getGlassPane();
@@ -499,7 +500,8 @@ class TabTransferHandler extends TransferHandler {
   protected TabTransferHandler() {
     super();
     System.out.println("TabTransferHandler");
-    // localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
+    // localObjectFlavor = new ActivationDataFlavor(
+    //     DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
     localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
   }
 

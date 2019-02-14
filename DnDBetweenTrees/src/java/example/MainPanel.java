@@ -77,7 +77,8 @@ public final class MainPanel extends JPanel {
 class TreeTransferHandler extends TransferHandler {
   // protected static final DataFlavor FLAVOR = new ActivationDataFlavor(
   //   DefaultMutableTreeNode[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of TreeNode");
-  protected static final DataFlavor FLAVOR = new DataFlavor(DefaultMutableTreeNode[].class, "Array of DefaultMutableTreeNode");
+  private static final String NAME = "Array of DefaultMutableTreeNode";
+  protected static final DataFlavor FLAVOR = new DataFlavor(DefaultMutableTreeNode[].class, NAME);
   protected JTree source;
 
   @Override protected Transferable createTransferable(JComponent c) {

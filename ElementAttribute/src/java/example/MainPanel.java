@@ -28,7 +28,9 @@ public final class MainPanel extends JPanel {
   private static final String HTML_TEXT = "<html><body>"
       + "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />"
       + "<div title='tooltip: div[@title]'>div tag: div div div div</div>"
-      + "<div style='padding: 2 24;'><img src='" + MainPanel.class.getResource("favicon.png") + "' alt='16x16 favicon' />&nbsp;"
+      + "<div style='padding: 2 24;'><img src='"
+      + MainPanel.class.getResource("favicon.png")
+      + "' alt='16x16 favicon' />&nbsp;"
       + "<a href='https://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>"
       + "</body></html>";
   private String tooltip;

@@ -30,7 +30,8 @@ public final class MainPanel extends JPanel {
         g.drawImage(image.getImage(), 5, 0, c);
       }
     }));
-    add(makeComponent("ComponentTitledBorder", new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"))));
+    Border border = new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"));
+    add(makeComponent("ComponentTitledBorder", border));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }

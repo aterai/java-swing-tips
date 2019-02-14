@@ -68,8 +68,9 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    String help = "FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP";
+    add(new JScrollPane(new JTextArea(help)));
     add(box, BorderLayout.SOUTH);
-    add(new JScrollPane(new JTextArea("FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP")));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -85,15 +86,15 @@ public final class MainPanel extends JPanel {
   //   // JDialog dialog = pane.createDialog(parent, title, style);
   //   JDialog dialog = pane.createDialog(parent, title);
   //
-  //   Set<AWTKeyStroke> forwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+  //   Set<AWTKeyStroke> forwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(ftk));
   //   forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
   //   forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
-  //   dialog.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+  //   dialog.setFocusTraversalKeys(ftk, forwardKeys);
   //
-  //   Set<AWTKeyStroke> backwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+  //   Set<AWTKeyStroke> backwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(btk));
   //   backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
   //   backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
-  //   dialog.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+  //   dialog.setFocusTraversalKeys(btk, backwardKeys);
   //
   //   pane.selectInitialValue();
   //   // dialog.show();

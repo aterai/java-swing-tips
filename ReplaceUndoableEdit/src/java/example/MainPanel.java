@@ -126,7 +126,8 @@ class CustomUndoPlainDocument extends PlainDocument {
     // }
     Optional.ofNullable(compoundEdit).ifPresent(ce -> ce.addEdit(e.getEdit()));
     // JDK9:
-    // Optional.ofNullable(compoundEdit).ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
+    // Optional.ofNullable(compoundEdit)
+    //     .ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
   }
 
   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {

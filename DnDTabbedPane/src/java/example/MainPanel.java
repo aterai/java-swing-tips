@@ -375,7 +375,8 @@ class TabDragSourceListener implements DragSourceListener {
     // JComponent glassPane = (JComponent) e.getDragSourceContext();
     // SwingUtilities.convertPointFromScreen(glassPt, glassPane);
     // int targetIdx = getTargetTabIndex(glassPt);
-    // if (getTabAreaBounds().contains(glassPt) && targetIdx >= 0 && targetIdx != dragTabIndex && targetIdx != dragTabIndex + 1) {
+    // if (getTabAreaBounds().contains(glassPt) && targetIdx >= 0 &&
+    //     targetIdx != dragTabIndex && targetIdx != dragTabIndex + 1) {
     //   e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
     //   glassPane.setCursor(DragSource.DefaultMoveDrop);
     // } else {

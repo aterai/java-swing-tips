@@ -206,7 +206,8 @@ class CellButtonsMouseListener extends MouseAdapter {
   }
 
   private static <E> JButton getButton(JList<E> list, Point pt, int index) {
-    Component c = list.getCellRenderer().getListCellRendererComponent(list, list.getPrototypeCellValue(), index, false, false);
+    E proto = list.getPrototypeCellValue();
+    Component c = list.getCellRenderer().getListCellRendererComponent(list, proto, index, false, false);
     Rectangle r = list.getCellBounds(index, index);
     c.setBounds(r);
     // c.doLayout(); // may be needed for mone LayoutManager
