@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
         System.out.println(button);
         System.out.println("BUTTON2 mouseClicked: " + isB2Clicked);
 
-        // boolean isB1Double = e.getClickCount() == 2 && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
-        // boolean isB2Down = InputEvent.getMaskForButton(button) == InputEvent.BUTTON2_DOWN_MASK;
         boolean isB1Double = e.getClickCount() == 2 && button == 1;
+        // = e.getClickCount() == 2 && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
         boolean isB2Down = MouseInfo.getNumberOfButtons() > 2 && button == 2;
+        // = InputEvent.getMaskForButton(button) == InputEvent.BUTTON2_DOWN_MASK;
 
         JTabbedPane tabbedPane = (JTabbedPane) e.getComponent();
         int idx = tabbedPane.indexAtLocation(e.getX(), e.getY());
