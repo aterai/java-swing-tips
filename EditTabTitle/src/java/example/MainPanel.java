@@ -9,25 +9,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String INFO = " Start editing: Double-Click, Enter-Key\n"
-      + " Commit rename: field-focusLost, Enter-Key\n"
-      + "Cancel editing: Esc-Key, title.isEmpty\n";
-
   private MainPanel() {
     super(new BorderLayout());
+
+    String help = String.join("\n", Arrays.asList(
+        " Start editing: Double-Click, Enter-Key",
+        " Commit rename: field-focusLost, Enter-Key",
+        "Cancel editing: Esc-Key, title.isEmpty"));
+    JTextArea area = new JTextArea(help);
+    area.setEditable(false);
+
     JTabbedPane tabbedPane = new EditableTabbedPane();
-    // for (int i = 0; i < 5; i++) {
-    //   String title = "Tab " + i;
-    //   tabbedPane.addTab(title, new JLabel(title));
-    //   tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
-    // }
-    JTextArea a = new JTextArea(INFO);
-    a.setEditable(false);
-    tabbedPane.addTab("Shortcuts", new JScrollPane(a));
+    tabbedPane.addTab("Shortcuts", new JScrollPane(area));
     tabbedPane.addTab("badfasdf", new JLabel("bbbbbbbbbbbafasdf"));
     tabbedPane.addTab("cccc", new JScrollPane(new JTree()));
     tabbedPane.addTab("ddddddd", new JButton("dadfasdfasd"));
@@ -66,7 +64,6 @@ class EditableTabbedPane extends JTabbedPane {
       getRootPane().setGlassPane(glassPane);
       Rectangle rect = getBoundsAt(getSelectedIndex());
       Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
-      // rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
       rect.setLocation(p);
       rect.grow(-2, -2);
       editor.setBounds(rect);
@@ -86,12 +83,10 @@ class EditableTabbedPane extends JTabbedPane {
     @Override public void actionPerformed(ActionEvent e) {
       if (!editor.getText().trim().isEmpty()) {
         setTitleAt(getSelectedIndex(), editor.getText());
-        // Java 1.6.0 ---->
         Component c = getTabComponentAt(getSelectedIndex());
         if (c instanceof JComponent) {
           ((JComponent) c).revalidate();
         }
-        // <----
       }
       glassPane.setVisible(false);
     }
@@ -100,10 +95,14 @@ class EditableTabbedPane extends JTabbedPane {
   protected EditableTabbedPane() {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
-    editor.getActionMap().put("rename-tab", renameTab);
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
-    editor.getActionMap().put("cancel-editing", cancelEditing);
+
+    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+
+    ActionMap am = editor.getActionMap();
+    am.put("rename-tab", renameTab);
+    am.put("cancel-editing", cancelEditing);
 
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
@@ -132,7 +131,6 @@ class EditableTabbedPane extends JTabbedPane {
       });
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
-          // if (Objects.nonNull(rect) && !rect.contains(e.getPoint())) {
           if (!getEditorTextField().getBounds().contains(e.getPoint())) {
             renameTab.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
           }

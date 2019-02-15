@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -18,21 +19,29 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public final class MainPanel extends JPanel {
-  private static final String INFO = " Start editing: Double-Click, Enter-Key\n"
-      + " Commit rename: field-focusLost, Enter-Key\n"
-      + "Cancel editing: Esc-Key, title.isEmpty\n";
-  private final JTabbedPane tabbedPane = new JTabbedPane();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
-    tabbedPane.addChangeListener(l);
-    tabbedPane.addMouseListener(l);
-    tabbedPane.addTab("Shortcuts", new JTextArea(INFO));
-    tabbedPane.addTab("badfasdfa", new JLabel("bbbbbbbbbbbafasdf"));
-    tabbedPane.addTab("cccc", new JScrollPane(new JTree()));
-    tabbedPane.addTab("dddddddd", new JLabel("dadfasdfasd"));
-    add(tabbedPane);
+    String help = String.join("\n", Arrays.asList(
+        " Start editing: Double-Click, Enter-Key",
+        " Commit rename: field-focusLost, Enter-Key",
+        "Cancel editing: Esc-Key, title.isEmpty"));
+
+    JTabbedPane tabs = new JTabbedPane() {
+      private transient TabTitleEditListener listener;
+      @Override public void updateUI() {
+        removeChangeListener(listener);
+        removeMouseListener(listener);
+        super.updateUI();
+        listener = new TabTitleEditListener(this);
+        addChangeListener(listener);
+        addMouseListener(listener);
+      }
+    };
+    tabs.addTab("Shortcuts", new JTextArea(help));
+    tabs.addTab("badfasdfa", new JLabel("bbbbbbbbbbbafasdf"));
+    tabs.addTab("cccc", new JScrollPane(new JTree()));
+    tabs.addTab("dddddddd", new JLabel("dadfasdfasd"));
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
