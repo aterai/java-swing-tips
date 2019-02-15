@@ -164,8 +164,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JPanel renderer = new JPanel(new BorderLayout());
   private final JLabel icon = new JLabel();
   private final JLabel text = new JLabel();
-  private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
-  private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerBorder);
+  private final Border insideBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
+  private final Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+  private final Border emptyBorder = BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
   private final Border compoundFocusBorder;
   private final boolean isSynth;
 
@@ -185,7 +186,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
       } else {
         b = BorderFactory.createLineBorder(bsColor);
       }
-      compoundFocusBorder = BorderFactory.createCompoundBorder(b, innerBorder);
+      compoundFocusBorder = BorderFactory.createCompoundBorder(b, insideBorder);
     }
 
     icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));

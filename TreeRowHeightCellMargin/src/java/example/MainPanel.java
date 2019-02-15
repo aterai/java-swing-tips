@@ -70,15 +70,16 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JPanel renderer = new JPanel(new BorderLayout());
   private final JLabel icon = new JLabel();
   private final JLabel text = new JLabel();
-  private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
-  private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerBorder);
+  private final Border insideBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
+  private final Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+  private final Border emptyBorder = BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
   private final Border compoundFocusBorder;
 
   protected CompoundTreeCellRenderer() {
     super();
     Color bsColor = getBorderSelectionColor();
     Color focusBgsColor = new Color(~getBackgroundSelectionColor().getRGB());
-    compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), innerBorder);
+    compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), insideBorder);
 
     icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
     text.setBorder(emptyBorder);
@@ -112,7 +113,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
     return renderer;
   }
-  // @Override public void paint(Graphics g) {}
+
+  // @Override public void paint(Graphics g) { /* Empty painter */ }
 }
 
 class DotBorder extends LineBorder {
