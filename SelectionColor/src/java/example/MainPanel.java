@@ -12,6 +12,7 @@ import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,16 +61,15 @@ public final class MainPanel extends JPanel {
     area.setSelectedTextColor(Color.WHITE);
     area.setBackground(new Color(0x0, true)); // Nimbus
     area.setSelectionColor(SELECTION_COLOR);
-    area.setText("<html><pre>"
-        + "public static void createAndShowGui() {<br />"
-        + "  <span class='highlight'>JFrame</span> frame = new JFrame();<br />"
-        + "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"
-        + "  frame.getContentPane().add(new MainPanel());<br />"
-        + "  frame.pack();<br />"
-        + "  frame.setLocationRelativeTo(null);<br />"
-        + "  frame.setVisible(true);<br />"
-        + "}<br />"
-    );
+    area.setText("<html><pre>" + String.join("<br />", Arrays.asList(
+        "public static void createAndShowGui() {",
+        "  <span class='highlight'>JFrame</span> frame = new JFrame();",
+        "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
+        "  frame.getContentPane().add(new MainPanel());",
+        "  frame.pack();",
+        "  frame.setLocationRelativeTo(null);",
+        "  frame.setVisible(true);",
+        "}")));
 
     // TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html
     // DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
