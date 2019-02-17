@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
     im.put(keyStroke, COPY_KEY);
     JPopupMenu popup = new JPopupMenu();
     popup.add(COPY_KEY).addActionListener(e -> {
-      Object o = popup.getInvoker();
-      Container c = o instanceof JComboBox ? (Container) o : SwingUtilities.getAncestorOfClass(JComboBox.class, (Component) o);
+      Component o = popup.getInvoker();
+      Container c = o instanceof JComboBox ? (Container) o : SwingUtilities.getAncestorOfClass(JComboBox.class, o);
       if (c instanceof JComboBox) {
         JComboBox<?> combo = (JComboBox<?>) c;
         Action a = combo.getActionMap().get(COPY_KEY);
