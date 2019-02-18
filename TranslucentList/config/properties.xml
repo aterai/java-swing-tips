@@ -5,7 +5,7 @@
 <property name="name"    value="example" />
 <property name="vendor"  value="Java Swing Tips - https://ateraimemo.com/" />
 <property name="version" value="1.0.0" />
-<property name="year"    value="2003-2017" />
+<property name="year"    value="2003-2019" />
 
 <!-- class -->
 <property name="main.class"        value="example.MainPanel" />
