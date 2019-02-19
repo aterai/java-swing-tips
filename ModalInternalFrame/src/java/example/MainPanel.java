@@ -10,7 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -72,11 +72,6 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_3);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
 
-    // JButton b = new JButton(new AbstractAction("dummy button") {
-    //   @Override public void actionPerformed(ActionEvent e) {
-    //     Toolkit.getDefaultToolkit().beep();
-    //   }
-    // });
     JButton b = new JButton(new DefaultEditorKit.BeepAction());
     b.setMnemonic(KeyEvent.VK_B);
     add(b, BorderLayout.SOUTH);
@@ -178,7 +173,7 @@ public final class MainPanel extends JPanel {
       modal.pack();
       // Rectangle screen = desktop.getBounds();
       // modal.setLocation(screen.x + screen.width / 2 - modal.getSize().width / 2,
-      //           screen.y + screen.height / 2 - modal.getSize().height / 2);
+      //                   screen.y + screen.height / 2 - modal.getSize().height / 2);
       getRootPane().setGlassPane(glass);
       glass.setVisible(true);
       modal.setVisible(true);
@@ -195,11 +190,11 @@ public final class MainPanel extends JPanel {
     BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
     Container titleBar = ui.getNorthPane();
     Stream.of(titleBar.getComponents())
-      .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
-      .forEach(MainPanel::removeComponentMouseListener);
+        .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
+        .forEach(MainPanel::removeComponentMouseListener);
     // for (Component c: titleBar.getComponents()) {
     //   if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
-    //     removeComponentMouseListener(c)
+    //     removeComponentMouseListener(c);
     //   }
     // }
   }
@@ -266,20 +261,20 @@ class PrintGlassPane extends JDesktopPane {
   @Override public void setVisible(boolean isVisible) {
     boolean oldVisible = isVisible();
     super.setVisible(isVisible);
-    JRootPane rootPane = getRootPane();
-    if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
-      rootPane.getLayeredPane().setVisible(!isVisible);
-    }
+    Optional.ofNullable(getRootPane())
+        .filter(rp -> isVisible() != oldVisible)
+        .ifPresent(rp -> rp.getLayeredPane().setVisible(!isVisible));
   }
 
   @Override protected void paintComponent(Graphics g) {
-    JRootPane rootPane = getRootPane();
-    if (Objects.nonNull(rootPane)) {
-      // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
-      // it is important to call print() instead of paint() here
-      // because print() doesn't affect the frame's double buffer
-      rootPane.getLayeredPane().print(g);
-    }
+    // JRootPane rootPane = getRootPane();
+    // if (Objects.nonNull(rootPane)) {
+    //   // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
+    //   // it is important to call print() instead of paint() here
+    //   // because print() doesn't affect the frame's double buffer
+    //   rootPane.getLayeredPane().print(g);
+    // }
+    Optional.ofNullable(getRootPane()).ifPresent(rp -> rp.getLayeredPane().print(g));
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(TEXTURE);
     g2.fillRect(0, 0, getWidth(), getHeight());
