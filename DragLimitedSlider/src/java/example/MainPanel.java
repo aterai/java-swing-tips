@@ -16,6 +16,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
   public static final int MAXI = 80;
+  public static final int MINI = 40;
 
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
       while (elements.hasMoreElements()) {
         JLabel label = (JLabel) elements.nextElement();
         int v = Integer.parseInt(label.getText());
-        if (v > MAXI) {
+        if (v > MAXI || v < MINI) {
           label.setForeground(Color.RED);
         }
       }
@@ -53,6 +54,8 @@ public final class MainPanel extends JPanel {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
       if (m.getValue() > MAXI) {
         m.setValue(MAXI);
+      } else if (m.getValue() < MINI) {
+        m.setValue(MINI);
       }
     });
     return slider;
@@ -70,8 +73,11 @@ public final class MainPanel extends JPanel {
           int halfThumbWidth = thumbRect.width / 2;
           int thumbLeft = e.getX() - offset;
           int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
+          int minPos = xPositionForValue(MINI) - halfThumbWidth;
           if (thumbLeft > maxPos) {
             e.translatePoint(maxPos + offset - e.getX(), 0);
+          } else if (thumbLeft < minPos) {
+            e.translatePoint(minPos + offset - e.getX(), 0);
           }
           super.mouseDragged(e);
         }
@@ -87,8 +93,11 @@ public final class MainPanel extends JPanel {
           int halfThumbWidth = thumbRect.width / 2;
           int thumbLeft = e.getX() - offset;
           int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
+          int minPos = xPositionForValue(MINI) - halfThumbWidth;
           if (thumbLeft > maxPos) {
             e.translatePoint(maxPos + offset - e.getX(), 0);
+          } else if (thumbLeft < minPos) {
+            e.translatePoint(minPos + offset - e.getX(), 0);
           }
           super.mouseDragged(e);
         }
