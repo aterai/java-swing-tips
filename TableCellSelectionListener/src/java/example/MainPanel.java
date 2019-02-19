@@ -66,7 +66,8 @@ public final class MainPanel extends JPanel {
       }
       textArea.append(String.format("row first, last: %d, %d%n", e.getFirstIndex(), e.getLastIndex()));
       ListSelectionModel m = (ListSelectionModel) e.getSource();
-      textArea.append(String.format("row anchor->lead: %d->%d%n", m.getAnchorSelectionIndex(), m.getLeadSelectionIndex()));
+      String msg = String.format("row anchor->lead: %d->%d%n", m.getAnchorSelectionIndex(), m.getLeadSelectionIndex());
+      textArea.append(msg);
       textArea.setCaretPosition(textArea.getDocument().getLength());
     });
     table2.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
@@ -75,7 +76,8 @@ public final class MainPanel extends JPanel {
       }
       textArea.append(String.format("column first, last: %d, %d%n", e.getFirstIndex(), e.getLastIndex()));
       ListSelectionModel m = (ListSelectionModel) e.getSource();
-      textArea.append(String.format("column anchor->lead: %d->%d%n", m.getAnchorSelectionIndex(), m.getLeadSelectionIndex()));
+      String msg = String.format("column anchor->lead: %d->%d%n", m.getAnchorSelectionIndex(), m.getLeadSelectionIndex());
+      textArea.append(msg);
       textArea.setCaretPosition(textArea.getDocument().getLength());
     });
 

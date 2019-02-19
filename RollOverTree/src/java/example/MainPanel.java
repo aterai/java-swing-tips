@@ -31,15 +31,18 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setCellRenderer(new DefaultTreeCellRenderer() {
           @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-            if (row == rollOverRowIndex) {
-              c.setOpaque(true);
-              c.setBackground(rolloverRowColor);
-              if (selected) {
-                c.setForeground(getTextNonSelectionColor());
+            Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+            if (c instanceof JComponent) {
+              JComponent jc = (JComponent) c;
+              if (row == rollOverRowIndex) {
+                jc.setOpaque(true);
+                jc.setBackground(rolloverRowColor);
+                if (selected) {
+                  jc.setForeground(getTextNonSelectionColor());
+                }
+              } else {
+                jc.setOpaque(false);
               }
-            } else {
-              c.setOpaque(false);
             }
             return c;
           }

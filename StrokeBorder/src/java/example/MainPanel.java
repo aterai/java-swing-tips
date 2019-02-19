@@ -37,7 +37,8 @@ public final class MainPanel extends JPanel {
     } catch (NumberFormatException ex) {
       EventQueue.invokeLater(() -> {
         Toolkit.getDefaultToolkit().beep();
-        JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        String msg = "Invalid input.\n" + ex.getMessage();
+        JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
       });
       return DEFAULT_DASHARRAY;
     }

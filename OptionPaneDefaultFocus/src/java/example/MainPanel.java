@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
   private static JButton makeButton2(JTextField textField, JTextArea textArea) {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
-      JOptionPane pane = new JOptionPane(textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, null, null);
+      JOptionPane pane = new JOptionPane(textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
       JDialog dialog = pane.createDialog(textArea.getRootPane(), "Input Text");
       dialog.addWindowListener(new WindowAdapter() {
         @Override public void windowOpened(WindowEvent e) {
