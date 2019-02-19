@@ -15,15 +15,17 @@ import java.text.AttributedString;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "This lesson provides an introduction to"
-      + " Graphical User Interface (GUI) programming with Swing and the NetBeans IDE."
-      + " As you learned in the \"Hello World!\" lesson, the NetBeans IDE is a free,"
-      + " open-source, cross-platform integrated development environment with built-in"
-      + " support for the Java programming language.";
+  private static final String[] TEXT = {
+    "This lesson provides an introduction to",
+    "Graphical User Interface (GUI) programming with Swing and the NetBeans IDE.",
+    "As you learned in the \"Hello World!\" lesson, the NetBeans IDE is a free,",
+    "open-source, cross-platform integrated development environment with built-in",
+    "support for the Java programming language."
+  };
 
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = new DropcapLabel(TEXT);
+    JLabel label = new DropcapLabel(String.join(" ", TEXT));
     label.setFont(new Font(Font.SERIF, Font.PLAIN, 17));
     label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(label);

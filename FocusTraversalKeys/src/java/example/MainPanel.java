@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.*;
-// import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -18,8 +17,11 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("showOptionDialog");
     button.addActionListener(e -> {
       JComponent c = (JComponent) e.getSource();
-      String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
-              + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
+      String[] keyHelp = {
+        "FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN",
+        "BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP"
+      };
+      String info = "<html>" + String.join("<br />", keyHelp);
       int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), info);
       if (retValue == JOptionPane.YES_OPTION) {
         System.out.println("YES_OPTION");

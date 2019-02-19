@@ -25,28 +25,31 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public final class MainPanel extends JPanel {
-  private static final String HTML_TEXT = "<html><body>"
-      + "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />"
-      + "<div title='tooltip: div[@title]'>div tag: div div div div</div>"
-      + "<div style='padding: 2 24;'><img src='"
-      + MainPanel.class.getResource("favicon.png")
-      + "' alt='16x16 favicon' />&nbsp;"
-      + "<a href='https://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>"
-      + "</body></html>";
+  private static final String[] HTML_TEXT = {
+    "<html><body>",
+    "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />",
+    "<div title='tooltip: div[@title]'>div tag: div div div div</div>",
+    "<div style='padding: 2 24;'><img src='",
+    Objects.toString(MainPanel.class.getResource("favicon.png")),
+    "' alt='16x16 favicon' />&nbsp;",
+    "<a href='https://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>",
+    "</body></html>"
+  };
   private String tooltip;
 
   private MainPanel() {
     super(new BorderLayout());
+    String html = String.join("\n", HTML_TEXT);
 
     JEditorPane editor1 = new CustomTooltipEditorPane();
     editor1.setEditorKit(new HTMLEditorKit());
-    editor1.setText(HTML_TEXT);
+    editor1.setText(html);
     editor1.setEditable(false);
     ToolTipManager.sharedInstance().registerComponent(editor1);
 
     JEditorPane editor2 = new JEditorPane();
     editor2.setEditorKit(new TooltipEditorKit());
-    editor2.setText(HTML_TEXT);
+    editor2.setText(html);
     editor2.setEditable(false);
     editor2.addHyperlinkListener(e -> {
       JEditorPane editorPane = (JEditorPane) e.getSource();

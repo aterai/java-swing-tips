@@ -20,24 +20,26 @@ import javax.swing.text.Highlighter.HighlightPainter;
 
 public class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
-  private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
-      + "Lesson: Learning Swing by Example\n"
-      + "This lesson explains the concepts you need to\n"
-      + " use Swing components in building a user interface.\n"
-      + " First we examine the simplest Swing application you can write.\n"
-      + " Then we present several progressively complicated examples of creating\n"
-      + " user interfaces using components in the javax.swing package.\n"
-      + " We cover several Swing components, such as buttons, labels, and text areas.\n"
-      + " The handling of events is also discussed,\n"
-      + " as are layout management and accessibility.\n"
-      + " This lesson ends with a set of questions and exercises\n"
-      + " so you can test yourself on what you've learned.\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+  private static final String[] INIT_TXT = {
+    "Trail: Creating a GUI with JFC/Swing",
+    "Lesson: Learning Swing by Example",
+    "This lesson explains the concepts you need to",
+    " use Swing components in building a user interface.",
+    " First we examine the simplest Swing application you can write.",
+    " Then we present several progressively complicated examples of creating",
+    " user interfaces using components in the javax.swing package.",
+    " We cover several Swing components, such as buttons, labels, and text areas.",
+    " The handling of events is also discussed,",
+    " as are layout management and accessibility.",
+    " This lesson ends with a set of questions and exercises",
+    " so you can test yourself on what you've learned.",
+    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  };
 
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JCheckBox check = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
   private final JTextField field = new JTextField("Swing");
-  private final JTextArea textArea = new JTextArea(INIT_TXT);
+  private final JTextArea textArea = new JTextArea(String.join("\n", INIT_TXT));
 
   public MainPanel() {
     super(new BorderLayout(5, 5));

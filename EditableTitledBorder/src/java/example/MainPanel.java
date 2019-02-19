@@ -18,9 +18,11 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
-  private static final String INFO = " Start editing: Double-Click\n"
-      + " Commit rename: field-focusLost, Enter-Key\n"
-      + "Cancel editing: Esc-Key, title.isEmpty\n";
+  private static final String[] HELP = {
+    " Start editing: Double-Click",
+    " Commit rename: field-focusLost, Enter-Key",
+    "Cancel editing: Esc-Key, title.isEmpty"
+  };
 
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
@@ -28,7 +30,7 @@ public final class MainPanel extends JPanel {
     JScrollPane l1 = new JScrollPane(new JTree());
     l1.setBorder(new EditableTitledBorder("JTree aaaaaaaaaaaaa", l1));
 
-    JScrollPane l2 = new JScrollPane(new JTextArea(INFO));
+    JScrollPane l2 = new JScrollPane(new JTextArea(String.join("\n", HELP)));
     l2.setBorder(new EditableTitledBorder(null, "JTextArea", TitledBorder.RIGHT, TitledBorder.BOTTOM, l2));
 
     add(l1);

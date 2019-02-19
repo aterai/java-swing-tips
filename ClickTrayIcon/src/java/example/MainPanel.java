@@ -13,21 +13,23 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "icon.addMouseListener(new MouseAdapter() {\n"
-      + "  public void mouseClicked(MouseEvent e) {\n"
-      + "    boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;\n"
-      + "    if (isDoubleClick) {\n"
-      + "      frame.setVisible(true);\n"
-      + "    } else if (frame.isVisible()) {\n"
-      + "      frame.setExtendedState(Frame.NORMAL);\n"
-      + "      frame.toFront();\n"
-      + "    }\n"
-      + "  }\n"
-      + "});\n";
+  private static final String[] TEXT = {
+    "icon.addMouseListener(new MouseAdapter() {",
+    "  public void mouseClicked(MouseEvent e) {",
+    "    boolean isDoubleClick = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() >= 2;",
+    "    if (isDoubleClick) {",
+    "      frame.setVisible(true);",
+    "    } else if (frame.isVisible()) {",
+    "      frame.setExtendedState(Frame.NORMAL);",
+    "      frame.toFront();",
+    "    }",
+    "  }",
+    "});"
+  };
 
   private MainPanel() {
     super(new BorderLayout());
-    add(new JScrollPane(new JTextArea(TEXT)));
+    add(new JScrollPane(new JTextArea(String.join("\n", TEXT))));
     setPreferredSize(new Dimension(320, 240));
   }
 

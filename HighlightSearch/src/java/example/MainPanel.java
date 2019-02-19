@@ -25,21 +25,22 @@ import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public class MainPanel extends JPanel {
-  private static final String INIT_TXT = "Trail: Creating a GUI with JFC/Swing\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n"
-      + "Lesson: Learning Swing by Example\n"
-      + "This lesson explains the concepts you need to\n"
-      + " use Swing components in building a user interface.\n"
-      + " First we examine the simplest Swing application you can write.\n"
-      + " Then we present several progressively complicated examples of creating\n"
-      + " user interfaces using components in the javax.swing package.\n"
-      + " We cover several Swing components, such as buttons, labels, and text areas.\n"
-      + " The handling of events is also discussed,\n"
-      + " as are layout management and accessibility.\n"
-      + " This lesson ends with a set of questions and exercises\n"
-      + " so you can test yourself on what you've learned.\n"
-      + "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
-
+  private static final String[] INIT_TXT = {
+    "Trail: Creating a GUI with JFC/Swing",
+    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
+    "Lesson: Learning Swing by Example",
+    "This lesson explains the concepts you need to",
+    " use Swing components in building a user interface.",
+    " First we examine the simplest Swing application you can write.",
+    " Then we present several progressively complicated examples of creating",
+    " user interfaces using components in the javax.swing package.",
+    " We cover several Swing components, such as buttons, labels, and text areas.",
+    " The handling of events is also discussed,",
+    " as are layout management and accessibility.",
+    " This lesson ends with a set of questions and exercises",
+    " so you can test yourself on what you've learned.",
+    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  };
   private static final Color WARNING_COLOR = new Color(255, 200, 200);
   private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(Color.ORANGE);
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
@@ -56,7 +57,7 @@ public class MainPanel extends JPanel {
     super(new BorderLayout());
 
     textArea.setEditable(false);
-    textArea.setText(INIT_TXT);
+    textArea.setText(String.join("\n", INIT_TXT));
     prevButton.setActionCommand("prev");
     nextButton.setActionCommand("next");
 
