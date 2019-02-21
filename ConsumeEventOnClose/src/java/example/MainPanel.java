@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -130,9 +130,7 @@ class MenuToggleButton extends JToggleButton {
     Action action = new AbstractAction(text) {
       @Override public void actionPerformed(ActionEvent e) {
         Component b = (Component) e.getSource();
-        if (Objects.nonNull(popup)) {
-          popup.show(b, 0, b.getHeight());
-        }
+        Optional.ofNullable(popup).ifPresent(pop -> pop.show(b, 0, b.getHeight()));
       }
     };
     action.putValue(Action.SMALL_ICON, icon);

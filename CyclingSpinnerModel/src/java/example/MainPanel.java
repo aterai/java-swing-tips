@@ -10,7 +10,7 @@ import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -37,27 +37,34 @@ public final class MainPanel extends JPanel {
     JSpinner spinner03 = new JSpinner();
     spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
       @Override public Object getNextValue() {
-        Object n = super.getNextValue();
-        return Objects.nonNull(n) ? n : getMinimum();
+        // Object n = super.getNextValue();
+        // return n != null ? n : getMinimum();
+        return Optional.ofNullable(super.getNextValue()).orElseGet(() -> getMinimum());
       }
 
       @Override public Object getPreviousValue() {
-        Object n = super.getPreviousValue();
-        return Objects.nonNull(n) ? n : getMaximum();
+        // Object n = super.getPreviousValue();
+        // return n != null ? n : getMaximum();
+        return Optional.ofNullable(super.getPreviousValue()).orElseGet(() -> getMaximum());
       }
     });
 
     JSpinner spinner04 = new JSpinner();
     spinner04.setModel(new SpinnerListModel(weeks) {
       @Override public Object getNextValue() {
-        Object o = super.getNextValue();
-        return Objects.nonNull(o) ? o : getList().get(0);
+        // Object o = super.getNextValue();
+        // return o != null ? o : getList().get(0);
+        return Optional.ofNullable(super.getNextValue()).orElseGet(() -> getList().get(0));
       }
 
       @Override public Object getPreviousValue() {
-        List<?> l = getList();
-        Object o = super.getPreviousValue();
-        return Objects.nonNull(o) ? o : l.get(l.size() - 1);
+        // List<?> l = getList();
+        // Object o = super.getPreviousValue();
+        // return o != null ? o : l.get(l.size() - 1);
+        return Optional.ofNullable(super.getPreviousValue()).orElseGet(() -> {
+          List<?> l = getList();
+          return l.get(l.size() - 1);
+        });
       }
     });
     add(makeTitledPanel("default model", spinner01, spinner02));
