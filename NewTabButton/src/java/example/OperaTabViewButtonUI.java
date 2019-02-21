@@ -97,9 +97,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     Rectangle r2 = new Rectangle(r.x, r.y + r.height / 2, r.width, r.height / 2);
     Rectangle r3 = new Rectangle(r.x, r.y + r.height / 2 - 2, r.width, r.height / 4);
 
-    g2.setPaint(new GradientPaint(0, r1.y, new Color(132, 162, 180), 0, r1.y + r1.height, new Color(103, 133, 152), true));
+    g2.setPaint(new GradientPaint(0, r1.y, new Color(0x84_A2_B4), 0, r1.y + r1.height, new Color(0x67_85_98), true));
     g2.fill(r1);
-    g2.setPaint(new GradientPaint(0, r2.y, new Color(50, 73, 87), 0, r2.y + r2.height, new Color(60, 86, 101), true));
+    g2.setPaint(new GradientPaint(0, r2.y, new Color(0x32_49_54), 0, r2.y + r2.height, new Color(0x3C_56_65), true));
     g2.fill(r2);
     g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30), 0, r3.y + r3.height, new Color(0, 0, 0, 5), true));
     g2.fill(r3);

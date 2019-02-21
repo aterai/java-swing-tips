@@ -45,9 +45,9 @@ public final class MainPanel extends JPanel {
         @Override public Void run() {
           try {
             splitPane.setDividerLocation(0);
-            Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[] {Boolean.TYPE});
-            setKeepHidden.setAccessible(true);
-            setKeepHidden.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
+            Method m = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[] {Boolean.TYPE});
+            m.setAccessible(true);
+            m.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
           } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             throw new UnsupportedOperationException(ex);
           }

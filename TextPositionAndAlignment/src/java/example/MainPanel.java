@@ -19,29 +19,29 @@ public final class MainPanel extends JPanel {
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
 
-    JComboBox<Vertical> verticalAlignmentChoices = new JComboBox<>(Vertical.values());
-    verticalAlignmentChoices.setSelectedItem(Vertical.CENTER);
+    JComboBox<Vertical> verticalAlignment = new JComboBox<>(Vertical.values());
+    verticalAlignment.setSelectedItem(Vertical.CENTER);
 
-    JComboBox<Vertical> verticalTextPositionChoices = new JComboBox<>(Vertical.values());
-    verticalTextPositionChoices.setSelectedItem(Vertical.CENTER);
+    JComboBox<Vertical> verticalTextPosition = new JComboBox<>(Vertical.values());
+    verticalTextPosition.setSelectedItem(Vertical.CENTER);
 
-    JComboBox<Horizontal> horizontalAlignmentChoices = new JComboBox<>(Horizontal.values());
-    horizontalAlignmentChoices.setSelectedItem(Horizontal.CENTER);
+    JComboBox<Horizontal> horizontalAlignment = new JComboBox<>(Horizontal.values());
+    horizontalAlignment.setSelectedItem(Horizontal.CENTER);
 
-    JComboBox<Horizontal> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
-    horizontalTextPositionChoices.setSelectedItem(Horizontal.TRAILING);
+    JComboBox<Horizontal> horizontalTextPosition = new JComboBox<>(Horizontal.values());
+    horizontalTextPosition.setSelectedItem(Horizontal.TRAILING);
 
     ItemListener listener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        label.setVerticalAlignment(getSelectedItem(verticalAlignmentChoices).alignment);
-        label.setVerticalTextPosition(getSelectedItem(verticalTextPositionChoices).alignment);
-        label.setHorizontalAlignment(getSelectedItem(horizontalAlignmentChoices).alignment);
-        label.setHorizontalTextPosition(getSelectedItem(horizontalTextPositionChoices).alignment);
+        label.setVerticalAlignment(getSelectedItem(verticalAlignment).alignment);
+        label.setVerticalTextPosition(getSelectedItem(verticalTextPosition).alignment);
+        label.setHorizontalAlignment(getSelectedItem(horizontalAlignment).alignment);
+        label.setHorizontalTextPosition(getSelectedItem(horizontalTextPosition).alignment);
         label.repaint();
       }
     };
-    Stream.of(verticalAlignmentChoices, verticalTextPositionChoices, horizontalAlignmentChoices, horizontalTextPositionChoices)
-      .forEach(c -> c.addItemListener(listener));
+    Stream.of(verticalAlignment, verticalTextPosition, horizontalAlignment, horizontalTextPosition)
+        .forEach(c -> c.addItemListener(listener));
 
     JPanel p1 = new JPanel(new BorderLayout());
     p1.setBorder(BorderFactory.createTitledBorder("JLabel Test"));
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p2.add(verticalAlignmentChoices, c);
-    p2.add(verticalTextPositionChoices, c);
-    p2.add(horizontalAlignmentChoices, c);
-    p2.add(horizontalTextPositionChoices, c);
+    p2.add(verticalAlignment, c);
+    p2.add(verticalTextPosition, c);
+    p2.add(horizontalAlignment, c);
+    p2.add(horizontalTextPosition, c);
 
     add(p1);
     add(p2, BorderLayout.NORTH);

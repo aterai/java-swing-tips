@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     // super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new GradientPaint(50, 0, new Color(200, 200, 200), getWidth(), getHeight(), new Color(100, 100, 100), true));
+    g2.setPaint(new GradientPaint(50, 0, Color.GRAY, getWidth(), getHeight(), Color.DARK_GRAY, true));
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
     di.paint(g, this);

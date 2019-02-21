@@ -23,11 +23,6 @@ public class MainPanel extends JPanel {
   protected final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
     @Override public boolean isVisible() {
       return !isShiftPressed && super.isVisible();
-      // if (isShiftPressed) {
-      //   return false;
-      // } else {
-      //   return super.isVisible();
-      // }
     }
 
     @Override public Dimension getPreferredSize() {
@@ -43,9 +38,6 @@ public class MainPanel extends JPanel {
       return d;
     }
   };
-  protected final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling", true);
-  protected final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
-  protected final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
 
   public MainPanel() {
     super(new BorderLayout());
@@ -71,6 +63,7 @@ public class MainPanel extends JPanel {
       }
     });
 
+    JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling", true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -80,6 +73,7 @@ public class MainPanel extends JPanel {
       }
     });
 
+    JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -89,6 +83,7 @@ public class MainPanel extends JPanel {
       }
     });
 
+    JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
