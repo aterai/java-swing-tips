@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     // List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
     Locale locale = Locale.ENGLISH; // Locale.getDefault();
     DayOfWeek firstDayOfWeek = WeekFields.of(locale).getFirstDayOfWeek();
-    List<String> weeks = IntStream.range(0, 7)
+    List<String> weeks = IntStream.range(0, DayOfWeek.values().length)
         .mapToObj(firstDayOfWeek::plus)
         .map(dow -> dow.getDisplayName(TextStyle.SHORT_STANDALONE, locale))
         .collect(Collectors.toList());
