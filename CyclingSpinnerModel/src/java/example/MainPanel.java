@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
       @Override public Object getNextValue() {
         // Object n = super.getNextValue();
         // return n != null ? n : getMinimum();
-        return Optional.ofNullable(super.getNextValue()).orElseGet(() -> getMinimum());
+        return Optional.ofNullable(super.getNextValue()).orElseGet(this::getMinimum);
       }
 
       @Override public Object getPreviousValue() {
         // Object n = super.getPreviousValue();
         // return n != null ? n : getMaximum();
-        return Optional.ofNullable(super.getPreviousValue()).orElseGet(() -> getMaximum());
+        return Optional.ofNullable(super.getPreviousValue()).orElseGet(this::getMaximum);
       }
     });
 
