@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -16,36 +17,35 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // No effect: UIManager.put("TabbedPane.disabledAreNavigable", Boolean.TRUE);
 
-    JTabbedPane tabbedPane0 = makeTabbedPane();
-    tabbedPane0.setEnabled(false);
-    tabbedPane0.setBorder(BorderFactory.createTitledBorder("setEnabled(false)"));
+    JTabbedPane tabs0 = makeTabbedPane();
+    tabs0.setEnabled(false);
+    tabs0.setBorder(BorderFactory.createTitledBorder("setEnabled(false)"));
 
-    // JTabbedPane tabbedPane1 = makeTabbedPane();
-    // for (int i = 0; i < tabbedPane1.getTabCount(); i++) {
-    //   tabbedPane1.setEnabledAt(i, false);
+    // JTabbedPane tabs1 = makeTabbedPane();
+    // for (int i = 0; i < tabs1.getTabCount(); i++) {
+    //   tabs1.setEnabledAt(i, false);
     // }
-    // tabbedPane1.setBorder(BorderFactory.createTitledBorder("setEnabledAt(idx, false)"));
+    // tabs1.setBorder(BorderFactory.createTitledBorder("setEnabledAt(idx, false)"));
 
-    JTabbedPane tabbedPane2 = makeTabbedPane();
-    tabbedPane2.setEnabled(false);
-    for (int i = 0; i < tabbedPane2.getTabCount(); i++) {
-      tabbedPane2.setTabComponentAt(i, new JLabel(tabbedPane2.getTitleAt(i)));
-    }
-    tabbedPane2.setBorder(BorderFactory.createTitledBorder("setTabComponentAt(...)"));
+    JTabbedPane tabs2 = makeTabbedPane();
+    tabs2.setEnabled(false);
+    IntStream.range(0, tabs2.getTabCount())
+        .forEach(i -> tabs2.setTabComponentAt(i, new JLabel(tabs2.getTitleAt(i))));
+    tabs2.setBorder(BorderFactory.createTitledBorder("setTabComponentAt(...)"));
 
-    JTabbedPane tabbedPane3 = makeTabbedPane();
-    tabbedPane3.setBorder(BorderFactory.createTitledBorder("DisableInputLayerUI()"));
+    JTabbedPane tabs3 = makeTabbedPane();
+    tabs3.setBorder(BorderFactory.createTitledBorder("DisableInputLayerUI()"));
 
     JPanel p = new JPanel(new GridLayout(0, 1, 0, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    Stream.of(tabbedPane0, tabbedPane2).forEach(p::add);
-    p.add(new JLayer<Component>(tabbedPane3, new DisableInputLayerUI()));
+    Stream.of(tabs0, tabs2).forEach(p::add);
+    p.add(new JLayer<Component>(tabs3, new DisableInputLayerUI()));
 
     JButton button = new JButton("next");
     button.addActionListener(e -> {
-      int i = tabbedPane0.getSelectedIndex() + 1;
-      int next = i >= tabbedPane0.getTabCount() ? 0 : i;
-      Stream.of(tabbedPane0, tabbedPane2, tabbedPane3).forEach(t -> t.setSelectedIndex(next));
+      int i = tabs0.getSelectedIndex() + 1;
+      int next = i >= tabs0.getTabCount() ? 0 : i;
+      Stream.of(tabs0, tabs2, tabs3).forEach(t -> t.setSelectedIndex(next));
     });
 
     add(p, BorderLayout.NORTH);
@@ -61,10 +61,7 @@ public final class MainPanel extends JPanel {
         return d;
       }
     };
-    for (int i = 0; i < 4; i++) {
-      String title = "Step " + i;
-      tabs.addTab(title, new JTextField(title));
-    }
+    IntStream.range(0, 4).mapToObj(i -> "Step" + i).forEach(t -> tabs.addTab(t, new JTextField(t)));
     tabs.setFocusable(false);
     return tabs;
   }
