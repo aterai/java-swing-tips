@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
     JTextField editor03 = (JTextField) combo03.getEditor().getEditorComponent();
     Insets i = editor03.getInsets();
     editor03.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));
-    combo03.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));");
+    combo03.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top, i.left + 5, ...));");
 
     // ---- 04 ----
     JComboBox<?> combo04 = list.get(4);
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     JTextField editor04 = (JTextField) combo04.getEditor().getEditorComponent();
     Insets m = editor04.getMargin();
     editor04.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));
-    combo04.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));");
+    combo04.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top, m.left + 5, ...));");
 
     // ---- 05 ----
     JComboBox<?> combo05 = list.get(5);

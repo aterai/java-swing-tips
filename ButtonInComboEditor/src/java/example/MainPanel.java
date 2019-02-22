@@ -200,9 +200,11 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   // // Test:
   // public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
   //   RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
-  //   BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+  //   int iw = srcIcon.getIconWidth();
+  //   int ih = srcIcon.getIconHeight();
+  //   BufferedImage img = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
   //   // TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
-  //   // BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+  //   // BufferedImage img = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_RGB);
   //   Graphics g = img.getGraphics();
   //   // g.drawImage(srcIcon.getImage(), 0, 0, null);
   //   srcIcon.paintIcon(null, g, 0, 0);

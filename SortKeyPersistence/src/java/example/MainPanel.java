@@ -52,7 +52,8 @@ public final class MainPanel extends JPanel {
           xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
           xe.writeObject(table.getModel());
         }
-        // try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        // try (Reader r = new BufferedReader(new InputStreamReader(
+        //                                    new FileInputStream(file), StandardCharsets.UTF_8))) {
         try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
           textArea.read(r, "temp");
         }

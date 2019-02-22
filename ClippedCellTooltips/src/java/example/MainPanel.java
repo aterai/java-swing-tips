@@ -92,7 +92,7 @@ class ToolTipHeaderRenderer implements TableCellRenderer {
     Rectangle rect = table.getCellRect(row, column, false);
     rect.width -= i.left + i.right;
     // RowSorter<? extends TableModel> sorter = table.getRowSorter();
-    // if (Objects.nonNull(sorter) && !sorter.getSortKeys().isEmpty() && sorter.getSortKeys().get(0).getColumn() == column) {
+    // if (sorter != null && !sorter.getSortKeys().isEmpty() && sorter.getSortKeys().get(0).getColumn() == column) {
     //   rect.width -= icon.getIconWidth() + l.getIconTextGap();
     // }
 

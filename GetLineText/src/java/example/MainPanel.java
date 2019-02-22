@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
       // // <<<< String#split
 
       // // LineNumberReader >>>>
-      // try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
+      // try (LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
       //   String line = null;
       //   while ((line = lnr.readLine()) != null) {
       //     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {

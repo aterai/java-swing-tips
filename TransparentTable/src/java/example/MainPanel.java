@@ -181,7 +181,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
   //   if (Objects.nonNull(p)) {
   //     p = p.getParent();
   //   } // p should now be the JTable.
-  //   boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
+  //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
   //   return !colorMatch && super.isOpaque();
   // }
   // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     //     resizeHandler = new ComponentAdapter() {
     //       @Override public void componentResized(ComponentEvent e) {
     //         Optional.ofNullable(getTableHeader()).ifPresent(header -> {
-    //           if (Objects.isNull(header.getResizingColumn()) && getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
+    //           if (header.getResizingColumn() != null && getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
     //             TableColumnModel tcm = getColumnModel();
     //             header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
     //           }
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     // table2.getTableHeader().addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
     //     Optional.ofNullable(table2.getTableHeader()).ifPresent(header -> {
-    //       if (Objects.isNull(header.getResizingColumn()) && table2.getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
+    //       if (header.getResizingColumn() == null && table2.getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
     //         TableColumnModel tcm = table2.getColumnModel();
     //         header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
     //       }

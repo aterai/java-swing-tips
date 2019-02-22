@@ -171,16 +171,17 @@ class DocumentFilterUndoManager extends UndoManager {
 }
 
 // class CustomUndoPlainDocument extends PlainDocument {
-// //   private final UndoManager undoManager;
-// //   protected CustomUndoPlainDocument(UndoManager undoManager) {
-// //     super();
-// //     this.undoManager = undoManager;
-// //   }
+//   // private final UndoManager undoManager;
+//   // protected CustomUndoPlainDocument(UndoManager undoManager) {
+//   //   super();
+//   //   this.undoManager = undoManager;
+//   // }
 //   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //     if (length == 0) { // insert
 //       super.replace(offset, length, text, attrs);
 //     } else { // replace
-// //       undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
+//       // undoManager.undoableEditHappened(
+//       //     new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
 //       fireUndoableEditUpdate(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
 //       replaceIgnoringUndo(offset, length, text, attrs);
 //     }
@@ -194,9 +195,9 @@ class DocumentFilterUndoManager extends UndoManager {
 //     for (UndoableEditListener l: uels) {
 //       addUndoableEditListener(l);
 //     }
-// //     removeUndoableEditListener(undoManager);
-// //     super.replace(offset, length, text, attrs);
-// //     addUndoableEditListener(undoManager);
+//     // removeUndoableEditListener(undoManager);
+//     // super.replace(offset, length, text, attrs);
+//     // addUndoableEditListener(undoManager);
 //   }
 //   class ReplaceUndoableEdit extends AbstractUndoableEdit {
 //     private final String oldValue;

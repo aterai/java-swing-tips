@@ -113,7 +113,8 @@ class TableRowTransferHandler extends TransferHandler {
 
   protected TableRowTransferHandler() {
     super();
-    // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+    // localObjectFlavor = new ActivationDataFlavor(
+    //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     localObjectFlavor = new DataFlavor(List.class, "List of items");
   }
 

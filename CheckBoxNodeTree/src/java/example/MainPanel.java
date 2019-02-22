@@ -317,7 +317,7 @@ class CheckBoxNode {
 //         return leafRenderer;
 //       }
 //     }
-//     JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //     // if (selected) {
 //     //   c.setForeground(getTextSelectionColor());
 //     //   c.setBackground(getBackgroundSelectionColor());
@@ -325,7 +325,7 @@ class CheckBoxNode {
 //     //   c.setForeground(getTextNonSelectionColor());
 //     //   c.setBackground(getBackgroundNonSelectionColor());
 //     // }
-//     // c.setOpaque(false);
+//     // ((JComponent) c).setOpaque(false);
 //     return c;
 //   }
 //   private JTree tree = null;

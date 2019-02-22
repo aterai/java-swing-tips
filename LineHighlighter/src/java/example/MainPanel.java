@@ -61,7 +61,8 @@ class HighlightCursorTextArea extends JTextArea {
     super.updateUI();
     setOpaque(false);
     Caret caret = new DefaultCaret() {
-      // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
+      // [UnsynchronizedOverridesSynchronized]
+      // Unsynchronized method damage overrides synchronized method in DefaultCaret
       @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
       @Override protected synchronized void damage(Rectangle r) {
         if (Objects.nonNull(r)) {
