@@ -104,15 +104,17 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!node.isLeaf()) {
+    DefaultMutableTreeNode pnode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+    if (!pnode.isLeaf()) {
       return;
     }
-    File parent = (File) node.getUserObject();
+    File parent = (File) pnode.getUserObject();
     if (!parent.isDirectory()) {
       return;
     }
+
     JTree tree = (JTree) e.getSource();
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
         if (isCancelled()) {
@@ -122,19 +124,17 @@ class FolderSelectionListener implements TreeSelectionListener {
           cancel(true);
           return;
         }
-        for (File file: chunks) {
-          ((DefaultTreeModel) tree.getModel()).insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
-          // node.add(new DefaultMutableTreeNode(file));
-        }
-        // ((DefaultTreeModel) tree.getModel()).reload(node);
+        chunks.stream().map(DefaultMutableTreeNode::new)
+            .forEach(child -> model.insertNodeInto(child, pnode, pnode.getChildCount()));
+        // model.reload(pnode);
       }
     }.execute();
   }
 }
 
 class BackgroundTask extends SwingWorker<String, File> {
-  private final File parent;
   private final FileSystemView fileSystemView;
+  private final File parent;
 
   protected BackgroundTask(FileSystemView fileSystemView, File parent) {
     super();

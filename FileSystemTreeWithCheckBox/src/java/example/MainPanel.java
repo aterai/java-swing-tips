@@ -330,11 +330,11 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!node.isLeaf()) {
+    DefaultMutableTreeNode pnode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+    if (!pnode.isLeaf()) {
       return;
     }
-    CheckBoxNode check = (CheckBoxNode) node.getUserObject();
+    CheckBoxNode check = (CheckBoxNode) pnode.getUserObject();
     if (Objects.isNull(check)) {
       return;
     }
@@ -355,10 +355,8 @@ class FolderSelectionListener implements TreeSelectionListener {
         //   cancel(true);
         //   return;
         // }
-        for (File file: chunks) {
-          model.insertNodeInto(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)), node, node.getChildCount());
-          // node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)));
-        }
+        chunks.stream().map(file -> new CheckBoxNode(file, parentStatus)).map(DefaultMutableTreeNode::new)
+            .forEach(child -> model.insertNodeInto(child, pnode, pnode.getChildCount()));
         // model.reload(parent); // = model.nodeStructureChanged(parent);
       }
     };

@@ -11,6 +11,8 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -142,14 +144,19 @@ class TreeTransferHandler extends TransferHandler {
       DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dest.getLastPathComponent();
       JTree tree = (JTree) support.getComponent();
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      int idx = childIndex < 0 ? parent.getChildCount() : childIndex;
-      // DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
-      for (DefaultMutableTreeNode node: nodes) {
-        // sm.removeNodeFromParent(node);
-        // model.insertNodeInto(node, parent, idx++);
+      // int idx = childIndex < 0 ? parent.getChildCount() : childIndex;
+      // // DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
+      // for (DefaultMutableTreeNode node: nodes) {
+      //   // sm.removeNodeFromParent(node);
+      //   // model.insertNodeInto(node, parent, idx++);
+      //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+      //   model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx++);
+      // }
+      AtomicInteger idx = new AtomicInteger(childIndex < 0 ? parent.getChildCount() : childIndex);
+      Stream.of(nodes).forEach(node -> {
         DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-        model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx++);
-      }
+        model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx.incrementAndGet());
+      });
       return true;
     }
     return false;
