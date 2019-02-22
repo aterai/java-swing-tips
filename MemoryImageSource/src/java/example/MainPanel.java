@@ -47,9 +47,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
   private Point startPoint = new Point();
   private final transient BufferedImage backImage;
   private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(200, 150, 100, 50));
-  private final Rectangle rect = new Rectangle(320, 240);
-  private final int[] pixels = new int[rect.width * rect.height];
-  private final transient MemoryImageSource source = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
+  private static final int rw = 320;
+  private static final int rh = 240;
+  private final Rectangle rect = new Rectangle(rw, rh);
+  private final int[] pixels = new int[rw * rh];
+  private final transient MemoryImageSource source = new MemoryImageSource(rw, rh, pixels, 0, rw);
   private int penColor;
 
   protected PaintPanel() {

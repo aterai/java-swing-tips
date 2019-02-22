@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-    String msgLong = String.join(" ", Collections.nCopies(10, "This is a long error message. 1, 22, 333, 4444, 55555."));
+    String txt = "This is a long error message. 1, 22, 333, 4444, 55555.";
+    String msgLong = String.join(" ", Collections.nCopies(10, txt));
     JButton longButton = new JButton("JOptionPane: long");
     longButton.addActionListener(e -> {
       textArea.setText(msgLong);

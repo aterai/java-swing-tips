@@ -148,14 +148,14 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     // DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
     if (selected) {
-      c.setOpaque(false);
+      ((JComponent) c).setOpaque(false);
       c.setForeground(getTextSelectionColor());
       // c.setBackground(Color.BLUE); // getBackgroundSelectionColor());
     } else {
-      c.setOpaque(true);
+      ((JComponent) c).setOpaque(true);
       if (Objects.nonNull(q) && !q.isEmpty() && value.toString().startsWith(q)) {
         c.setForeground(getTextNonSelectionColor());
         c.setBackground(ROLLOVER_ROW_COLOR);

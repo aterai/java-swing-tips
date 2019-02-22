@@ -16,6 +16,7 @@ import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private static final String TEXT = "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも";
@@ -23,16 +24,16 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 0));
     JLabel lbl1 = new JLabel(TEXT);
-    lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));
+    lbl1.setBorder(makeTitledColorBorder("JLabel", Color.YELLOW));
 
     JLabel lbl2 = new WrappedLabel(TEXT);
-    lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 5), "GlyphVector"));
+    lbl2.setBorder(makeTitledColorBorder("GlyphVector", Color.GREEN));
 
     JLabel lbl3 = new WrappingLabel(TEXT);
-    lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN, 5), "LineBreakMeasurer"));
+    lbl3.setBorder(makeTitledColorBorder("LineBreakMeasurer", Color.CYAN));
 
     JTextArea lbl4 = new JTextArea(TEXT);
-    lbl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
+    lbl4.setBorder(makeTitledColorBorder("JTextArea", Color.ORANGE));
 
     // lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
     lbl4.setFont(lbl1.getFont());
@@ -45,6 +46,10 @@ public final class MainPanel extends JPanel {
     add(lbl3);
     add(lbl4);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Border makeTitledColorBorder(String title, Color color) {
+    return BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 5), title);
   }
 
   public static void main(String... args) {

@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
@@ -104,7 +103,8 @@ class JustifiedLabel extends JLabel {
     Insets ins = getInsets();
     int w = d.width - ins.left - ins.right;
     if (w != prevWidth) {
-      gvtext = getJustifiedGlyphVector(w, getText(), font, g2.getFontRenderContext());
+      GlyphVector gv = font.createGlyphVector(g2.getFontRenderContext(), getText());
+      gvtext = makeJustifiedGlyphVector(gv, w);
       prevWidth = w;
     }
     gvtext.ifPresent(gv -> {
@@ -116,8 +116,7 @@ class JustifiedLabel extends JLabel {
     g2.dispose();
   }
 
-  private static Optional<GlyphVector> getJustifiedGlyphVector(int width, String str, Font font, FontRenderContext frc) {
-    GlyphVector gv = font.createGlyphVector(frc, str);
+  private static Optional<GlyphVector> makeJustifiedGlyphVector(GlyphVector gv, int width) {
     Rectangle2D r = gv.getVisualBounds();
     float jwidth = (float) width;
     float vwidth = (float) r.getWidth();

@@ -19,8 +19,11 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-    JSpinner leftChildIndent = new JSpinner(new SpinnerNumberModel(UIManager.getInt("Tree.leftChildIndent"), -32, 32, 1));
-    JSpinner rightChildIndent = new JSpinner(new SpinnerNumberModel(UIManager.getInt("Tree.rightChildIndent"), -32, 32, 1));
+    int lci = UIManager.getInt("Tree.leftChildIndent");
+    JSpinner leftChildIndent = new JSpinner(new SpinnerNumberModel(lci, -32, 32, 1));
+
+    int rci = UIManager.getInt("Tree.rightChildIndent");
+    JSpinner rightChildIndent = new JSpinner(new SpinnerNumberModel(rci, -32, 32, 1));
 
     Box box1 = Box.createHorizontalBox();
     box1.add(new JLabel(" Tree.leftChildIndent:"));

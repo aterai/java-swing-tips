@@ -240,25 +240,25 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
 // How to Use Tabbed Panes (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-  protected final JTabbedPane tabbedPane;
+  protected final JTabbedPane tabs;
 
-  protected ButtonTabComponent(final JTabbedPane pane) {
+  protected ButtonTabComponent(JTabbedPane pane) {
     super(new BorderLayout()); // FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabs = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {
-        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+        int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabbedPane.getTitleAt(i);
+          return tabs.getTitleAt(i);
         }
         return null;
       }
 
       @Override public Icon getIcon() {
-        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+        int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabbedPane.getIconAt(i);
+          return tabs.getIconAt(i);
         }
         return null;
       }
@@ -275,9 +275,9 @@ class ButtonTabComponent extends JPanel {
 
   private class TabButtonHandler extends MouseAdapter implements ActionListener {
     @Override public void actionPerformed(ActionEvent e) {
-      int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+      int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
       if (i != -1) {
-        tabbedPane.remove(i);
+        tabs.remove(i);
       }
     }
 

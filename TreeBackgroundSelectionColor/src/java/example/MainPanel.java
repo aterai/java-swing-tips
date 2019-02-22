@@ -81,7 +81,7 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
   private Color color;
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     if (selected) {
       setParticularCondition(value);
       c.setForeground(getTextSelectionColor());
@@ -89,10 +89,10 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
       String str = Objects.toString(value, "");
       // if (leaf && !str.isEmpty() && str.codePointAt(0) == 'a') {
       if (leaf && pattern.matcher(str).matches()) {
-        c.setOpaque(true);
+        ((JComponent) c).setOpaque(true);
         c.setBackground(Color.RED);
       } else {
-        c.setOpaque(false);
+        ((JComponent) c).setOpaque(false);
         c.setBackground(getBackgroundSelectionColor());
       }
     } else {
