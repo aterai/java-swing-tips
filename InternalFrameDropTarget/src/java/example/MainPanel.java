@@ -209,7 +209,8 @@ class TableRowTransferHandler extends TransferHandler {
 
   protected TableRowTransferHandler() {
     super();
-    // localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+    // localObjectFlavor = new ActivationDataFlavor(
+    //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     localObjectFlavor = new DataFlavor(List.class, "List of items");
   }
 
@@ -226,7 +227,9 @@ class TableRowTransferHandler extends TransferHandler {
     // Object[] transferedObjects = list.toArray();
     indices = table.getSelectedRows();
     @SuppressWarnings("JdkObsolete")
-    List<?> transferedObjects = Arrays.stream(indices).mapToObj(model.getDataVector()::get).collect(Collectors.toList());
+    List<?> transferedObjects = Arrays.stream(indices)
+        .mapToObj(model.getDataVector()::get)
+        .collect(Collectors.toList());
     // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {

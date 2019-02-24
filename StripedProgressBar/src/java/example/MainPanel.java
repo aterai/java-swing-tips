@@ -26,19 +26,19 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     UIManager.put("ProgressBar.repaintInterval", 10);
 
     BoundedRangeModel model = new DefaultBoundedRangeModel();
-    JProgressBar progressBar1 = new JProgressBar(model);
-    progressBar1.setUI(new StripedProgressBarUI(true, true));
+    JProgressBar progress1 = new JProgressBar(model);
+    progress1.setUI(new StripedProgressBarUI(true, true));
 
-    JProgressBar progressBar2 = new JProgressBar(model);
-    progressBar2.setUI(new StripedProgressBarUI(true, false));
+    JProgressBar progress2 = new JProgressBar(model);
+    progress2.setUI(new StripedProgressBarUI(true, false));
 
-    JProgressBar progressBar3 = new JProgressBar(model);
-    progressBar3.setUI(new StripedProgressBarUI(false, true));
+    JProgressBar progress3 = new JProgressBar(model);
+    progress3.setUI(new StripedProgressBarUI(false, true));
 
-    JProgressBar progressBar4 = new JProgressBar(model);
-    progressBar4.setUI(new StripedProgressBarUI(false, false));
+    JProgressBar progress4 = new JProgressBar(model);
+    progress4.setUI(new StripedProgressBarUI(false, false));
 
-    List<JProgressBar> list = Arrays.asList(new JProgressBar(model), progressBar1, progressBar2, progressBar3, progressBar4);
+    List<JProgressBar> list = Arrays.asList(new JProgressBar(model), progress1, progress2, progress3, progress4);
 
     JPanel p = new JPanel(new GridLayout(5, 1));
     list.forEach(bar -> p.add(makePanel(bar)));

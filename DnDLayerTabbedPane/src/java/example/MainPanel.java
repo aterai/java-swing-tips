@@ -381,7 +381,9 @@ class DnDTabbedPane extends JTabbedPane {
     Rectangle tabbedRect = getBounds();
     int xx = tabbedRect.x;
     int yy = tabbedRect.y;
-    Rectangle compRect = Optional.ofNullable(getSelectedComponent()).map(Component::getBounds).orElseGet(Rectangle::new);
+    Rectangle compRect = Optional.ofNullable(getSelectedComponent())
+        .map(Component::getBounds)
+        .orElseGet(Rectangle::new);
     int tabPlacement = getTabPlacement();
     if (isTopBottomTabPlacement(tabPlacement)) {
       tabbedRect.height = tabbedRect.height - compRect.height;

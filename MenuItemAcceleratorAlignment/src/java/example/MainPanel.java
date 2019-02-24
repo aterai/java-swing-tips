@@ -334,7 +334,8 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
 
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
         mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
-        true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
+        true, mi.getFont(), acceleratorFont,
+        sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
     sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
     paintBackground(g2, mi, background);
@@ -379,7 +380,8 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
 
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
         mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
-        true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
+        true, mi.getFont(), acceleratorFont,
+        sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
     sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
     paintBackground(g2, mi, background);

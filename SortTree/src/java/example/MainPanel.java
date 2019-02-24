@@ -69,9 +69,12 @@ public final class MainPanel extends JPanel {
 
   private static void log(String title) {
     if (TreeUtil.SWAP_COUNTER.get() == 0) {
-      System.out.format("%-24s - compare: %3d, swap: ---%n", title, TreeUtil.COMPARE_COUNTER.get());
+      int cc = TreeUtil.COMPARE_COUNTER.get();
+      System.out.format("%-24s - compare: %3d, swap: ---%n", title, cc);
     } else {
-      System.out.format("%-24s - compare: %3d, swap: %3d%n", title, TreeUtil.COMPARE_COUNTER.get(), TreeUtil.SWAP_COUNTER.get());
+      int cc = TreeUtil.COMPARE_COUNTER.get();
+      int sc = TreeUtil.SWAP_COUNTER.get();
+      System.out.format("%-24s - compare: %3d, swap: %3d%n", title, cc, sc);
     }
   }
 
