@@ -27,11 +27,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static String makeTestHtml() {
-    return "<html><body>"
-         + "<div>0000000</div>"
-         + "<div class='highlight'>1111111111</div>"
-         + "<div>2222222222</div>"
-         + "</body></html>";
+    return String.join("\n", new String[] {
+        "<html><body>",
+        "<div>0000000</div>",
+        "<div class='highlight'>1111111111</div>",
+        "<div>2222222222</div>",
+        "</body></html>"
+    });
   }
 
   public static void main(String... args) {

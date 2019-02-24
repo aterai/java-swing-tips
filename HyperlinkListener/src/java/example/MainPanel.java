@@ -19,9 +19,11 @@ import javax.swing.text.html.HTMLDocument;
 
 public final class MainPanel extends JPanel {
   private static final String LINK = "https://ateraimemo.com/";
-  private static final String HTML_TEXT = "<html><body>"
-      + "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>"
-      + "</body></html>";
+  private static final String[] HTML_TEXT = new String[] {
+      "<html><body>",
+      "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>",
+      "</body></html>"
+  };
   private static String tooltip;
 
   private MainPanel() {
@@ -39,7 +41,7 @@ public final class MainPanel extends JPanel {
     editorPane.setEditable(editable);
     editorPane.setContentType("text/html");
     editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    editorPane.setText(HTML_TEXT);
+    editorPane.setText(String.join("\n", HTML_TEXT));
     editorPane.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
         JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());

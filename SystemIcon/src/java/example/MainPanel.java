@@ -56,8 +56,9 @@ public class MainPanel extends JPanel {
     box.add(largeLabel);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(box);
-    add(new JLabel("<html>warning: ShellFolder is internal proprietary API"
-             + "<br> and may be removed in a future release"));
+
+    String msg = "<html>warning: ShellFolder is internal proprietary API<br>and may be removed in a future release";
+    add(new JLabel(msg));
 
     DropTargetListener dtl = new DropTargetAdapter() {
       @Override public void dragOver(DropTargetDragEvent dtde) {
