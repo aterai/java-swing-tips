@@ -12,7 +12,7 @@ import javax.swing.plaf.UIResource;
 public final class MainPanel extends JPanel {
   public MainPanel() {
     super(new BorderLayout());
-    add(new JTextArea());
+    add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 

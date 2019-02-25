@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("JCheckBox#setIcon(...)");
     check.setIcon(new CheckIcon());
     add(check, BorderLayout.SOUTH);
-    add(new JTextArea());
+    add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
