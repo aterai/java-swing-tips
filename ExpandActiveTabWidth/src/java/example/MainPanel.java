@@ -80,8 +80,8 @@ class ShrinkLabel extends JLabel {
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    if (!selected) {
-      d.width = 20;
+    if (!selected && getIcon() != null) {
+      d.width = getIcon().getIconWidth();
     }
     return d;
   }
