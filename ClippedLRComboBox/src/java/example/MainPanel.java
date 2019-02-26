@@ -102,13 +102,18 @@ class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E>
     }
 
     @Override public Dimension getPreferredSize() {
-      return new Dimension(80, 0);
+      Dimension d = super.getPreferredSize();
+      d.width = 80;
+      return d;
+      // return new Dimension(80, 0);
     }
   };
   private final JPanel renderer = new JPanel(new BorderLayout()) {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
-      return new Dimension(0, d.height);
+      d.width = 0;
+      return d;
+      // return new Dimension(0, d.height);
     }
 
     @Override public void updateUI() {
