@@ -134,7 +134,7 @@ class SpinnerLayout implements LayoutManager {
   }
 
   private static Dimension preferredSize(Component c) {
-    return Optional.ofNullable(c).map(Component::getPreferredSize).orElseGet(() -> new Dimension());
+    return Optional.ofNullable(c).map(Component::getPreferredSize).orElseGet(Dimension::new);
     // Objects.nonNull(c) ? new Dimension() : c.getPreferredSize();
   }
 
