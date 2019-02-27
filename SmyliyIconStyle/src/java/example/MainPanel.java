@@ -76,8 +76,8 @@ public final class MainPanel extends JPanel {
     StyleConstants.setIcon(face, new FaceIcon());
     // StyleConstants.setForeground(face, Color.RED);
 
-    // textPane.setText("aaaa \uD83D\uDE10 aaaaaa :) asdfa :-) aaaa\n");
-    textPane.setText("aaaa 😐 aaaaaa :) asdfa :-) aaaa\n");
+    // textPane.setText("aaaa \uD83D\uDE42 aaaaaa :) asdfa :-) aaaa\n");
+    textPane.setText("aaaa 🙂 aaaaaa :) asdfa :-) aaaa\n");
 
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
