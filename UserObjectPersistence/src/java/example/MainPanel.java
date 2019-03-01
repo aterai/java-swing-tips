@@ -60,9 +60,10 @@ public final class MainPanel extends JPanel {
     save.addActionListener(e -> {
       try {
         File file = File.createTempFile("output", ".xml");
+        String[] constructorPropertyNames = {"label", "status"};
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
         try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-          xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(new String[] {"label", "status"}));
+          xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(constructorPropertyNames));
           xe.writeObject(tree.getModel());
         }
         try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
