@@ -168,17 +168,17 @@ class SpinnerLayout implements LayoutManager {
     int width = parent.getWidth();
     int height = parent.getHeight();
 
-    Insets insets = parent.getInsets();
+    Insets ins = parent.getInsets();
 
     if (Objects.isNull(nextButton) && Objects.isNull(previousButton)) {
-      setBounds(editor, insets.left, insets.top, width - insets.left - insets.right, height - insets.top - insets.bottom);
+      setBounds(editor, ins.left, ins.top, width - ins.left - ins.right, height - ins.top - ins.bottom);
       return;
     }
 
     // Dimension nextD = preferredSize(nextButton);
     // Dimension previousD = preferredSize(previousButton);
     int buttonsWidth = 100; // Math.max(nextD.width, previousD.width);
-    int editorHeight = height - (insets.top + insets.bottom);
+    int editorHeight = height - (ins.top + ins.bottom);
 
     // The arrowButtonInsets value is used instead of the JSpinner's
     // insets if not null. Defining this to be (0, 0, 0, 0) causes the
@@ -187,7 +187,7 @@ class SpinnerLayout implements LayoutManager {
     // inside the spinner's border.
     Insets buttonInsets = UIManager.getInsets("Spinner.arrowButtonInsets");
     if (Objects.isNull(buttonInsets)) {
-      buttonInsets = insets;
+      buttonInsets = ins;
     }
 
     // Deal with the spinner's componentOrientation property.
@@ -195,13 +195,13 @@ class SpinnerLayout implements LayoutManager {
     int editorWidth;
     int buttonsX;
     if (parent.getComponentOrientation().isLeftToRight()) {
-      editorX = insets.left;
-      editorWidth = width - insets.left - buttonsWidth - buttonInsets.right;
+      editorX = ins.left;
+      editorWidth = width - ins.left - buttonsWidth - buttonInsets.right;
       buttonsX = width - buttonsWidth - buttonInsets.right;
     } else {
       buttonsX = buttonInsets.left;
       editorX = buttonsX + buttonsWidth;
-      editorWidth = width - buttonInsets.left - buttonsWidth - insets.right;
+      editorWidth = width - buttonInsets.left - buttonsWidth - ins.right;
     }
 
     int nextY = buttonInsets.top;
@@ -209,7 +209,7 @@ class SpinnerLayout implements LayoutManager {
     int previousY = buttonInsets.top + nextHeight;
     int previousHeight = height - previousY - buttonInsets.bottom;
 
-    setBounds(editor, editorX, insets.top, editorWidth, editorHeight);
+    setBounds(editor, editorX, ins.top, editorWidth, editorHeight);
     setBounds(nextButton, buttonsX, nextY, buttonsWidth, nextHeight);
     setBounds(previousButton, buttonsX, previousY, buttonsWidth, previousHeight);
   }
