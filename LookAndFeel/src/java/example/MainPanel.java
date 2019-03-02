@@ -53,7 +53,9 @@ public final class MainPanel extends JPanel {
     field.setEditable(false);
     JLabel c = new JLabel() {
       @Override public Dimension getPreferredSize() {
-        return new Dimension(20, 0);
+        Dimension d = super.getPreferredSize();
+        d.width = 20;
+        return d;
       }
     };
     c.setOpaque(true);

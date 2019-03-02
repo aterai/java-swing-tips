@@ -84,7 +84,9 @@ final class MakeComponentUtil {
   public static JComponent makeLabel() {
     JLabel label = new JLabel("Height: 50") {
       @Override public Dimension getPreferredSize() {
-        return new Dimension(0, 50);
+        Dimension d = super.getPreferredSize();
+        d.height = 50;
+        return d;
       }
     };
     label.setOpaque(true);

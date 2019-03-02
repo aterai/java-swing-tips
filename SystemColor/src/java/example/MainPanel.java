@@ -52,7 +52,9 @@ public final class MainPanel extends JPanel {
     p.add(jtext);
     JLabel l = new JLabel() {
       @Override public Dimension getPreferredSize() {
-        return new Dimension(32, 0);
+        Dimension d = super.getPreferredSize():
+        d.width = 32;
+        return d;
       }
     };
     l.setOpaque(true);

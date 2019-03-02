@@ -84,7 +84,9 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     this.field = field;
     button = new JButton() {
       @Override public Dimension getPreferredSize() {
-        return new Dimension(25, 0);
+        Dimension d = super.getPreferredSize();
+        d.width = 25;
+        return d;
       }
     };
     field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));

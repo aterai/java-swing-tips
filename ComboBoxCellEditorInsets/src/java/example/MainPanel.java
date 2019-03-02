@@ -124,7 +124,8 @@ class ComboBoxPanel extends JPanel {
 //   protected JComboBox<String> comboBox = new JComboBox<String>(m) {
 //     @Override public Dimension getPreferredSize() {
 //       Dimension d = super.getPreferredSize();
-//       return new Dimension(40, d.height);
+//       d.width = 40;
+//       return d;
 //     }
 //   };
 //   protected ComboBoxPanel() {

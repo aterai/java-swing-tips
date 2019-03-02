@@ -103,7 +103,8 @@ class AlignedLabel extends JLabel {
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
     // Align the width with all other labels in group.
-    return new Dimension(getMaxWidth() + INDENT, d.height);
+    d.width = getMaxWidth() + INDENT;
+    return d;
   }
 
   private int getMaxWidth() {

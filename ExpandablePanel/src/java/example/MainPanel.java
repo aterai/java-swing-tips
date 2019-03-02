@@ -53,7 +53,9 @@ public final class MainPanel extends JPanel {
 
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getMinimumSize() {
-        return new Dimension(120, 0);
+        Dimension d = super.getMinimumSize();
+        d.width = 120;
+        return d;
       }
     };
     panel.add(northBox, BorderLayout.NORTH);
