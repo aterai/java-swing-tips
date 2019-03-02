@@ -38,28 +38,21 @@ public final class MainPanel extends JPanel {
     box.add(makeSystemColorPanel(SystemColor.scrollbar, "scrollbar"));
     box.add(makeSystemColorPanel(SystemColor.info, "info"));
     box.add(makeSystemColorPanel(SystemColor.infoText, "infoText"));
-    box.add(Box.createRigidArea(new Dimension(320, 0)));
     // box.add(Box.createVerticalStrut(10));
     // box.add(makeSystemColorPanel(new Color(0x00_4E_98), "test"));
 
     add(new JScrollPane(box));
+    setPreferredSize(new Dimension(320, 240));
   }
 
   private static Component makeSystemColorPanel(Color color, String text) {
+    String hex = Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH);
+    JTextField field = new JTextField(text + ": 0x" + hex);
+    field.setEditable(false);
+
     JPanel p = new JPanel(new BorderLayout());
-    JTextField jtext = new JTextField(text + ": 0x" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
-    jtext.setEditable(false);
-    p.add(jtext);
-    JLabel l = new JLabel() {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize():
-        d.width = 32;
-        return d;
-      }
-    };
-    l.setOpaque(true);
-    l.setBackground(color);
-    p.add(l, BorderLayout.EAST);
+    p.add(new JLabel(new ColorIcon(color)), BorderLayout.EAST);
+    p.add(field);
     return p;
   }
 
@@ -83,5 +76,29 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColorIcon implements Icon {
+  private final Color color;
+
+  protected ColorIcon(Color color) {
+    this.color = color;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.translate(x, y);
+    g2.setPaint(color);
+    g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 16;
+  }
+
+  @Override public int getIconHeight() {
+    return 16;
   }
 }
