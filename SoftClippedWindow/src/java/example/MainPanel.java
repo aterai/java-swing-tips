@@ -22,6 +22,7 @@ public final class MainPanel extends JPanel {
       img = ImageIO.read(getClass().getResource("test.jpg"));
     } catch (IOException ex) {
       ex.printStackTrace();
+      img = makeMissingImage();
     }
     BufferedImage image = img;
 
@@ -112,6 +113,15 @@ public final class MainPanel extends JPanel {
     g2.drawImage(source, 0, 0, null);
     g2.dispose();
 
+    return image;
+  }
+
+  private static BufferedImage makeMissingImage() {
+    BufferedImage image = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = image.createGraphics();
+    g2.setPaint(Color.RED);
+    g2.fillRect(0, 0, image.getWidth(), image.getHeight());
+    g2.dispose();
     return image;
   }
 
