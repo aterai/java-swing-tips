@@ -43,7 +43,7 @@
         </module>
         <module name="LineLength">
             <property name="max" value="130"/>
-            <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@.*|&lt;html"/>
+            <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@.*|&lt;html|\[JDK\-[0-9]*\]"/>
         </module>
         <module name="AvoidStarImport">
             <property name="excludes" value="java.awt,javax.swing"/>

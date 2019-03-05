@@ -171,7 +171,8 @@ class TableHeaderPopupMenu extends JPopupMenu {
       String name = column.getHeaderValue().toString();
       textField.setText(name);
       Component p = header.getRootPane();
-      int ret = JOptionPane.showConfirmDialog(p, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int ret = JOptionPane.showConfirmDialog(
+          p, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
         String str = textField.getText().trim();
         if (!str.equals(name)) {

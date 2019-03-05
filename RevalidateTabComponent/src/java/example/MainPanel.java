@@ -168,7 +168,8 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
       int idx = t.getSelectedIndex();
       String title = t.getTitleAt(idx);
       textField.setText(title);
-      int ret = JOptionPane.showConfirmDialog(t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int ret = JOptionPane.showConfirmDialog(
+          t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
         String str = textField.getText();
         if (!str.trim().isEmpty()) {

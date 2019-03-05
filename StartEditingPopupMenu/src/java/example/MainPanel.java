@@ -113,7 +113,8 @@ class TreePopupMenu extends JPopupMenu {
         DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
         field.setText(leaf.getUserObject().toString());
         JTree tree = (JTree) getInvoker();
-        int ret = JOptionPane.showConfirmDialog(tree, field, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int ret = JOptionPane.showConfirmDialog(
+            tree, field, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (ret == JOptionPane.OK_OPTION) {
           Optional.ofNullable(field.getText().trim())
             .filter(str -> !str.isEmpty())

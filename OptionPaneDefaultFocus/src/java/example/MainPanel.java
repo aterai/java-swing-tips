@@ -41,7 +41,8 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
       Component p = textArea.getRootPane();
-      int ret = JOptionPane.showConfirmDialog(p, field, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int ret = JOptionPane.showConfirmDialog(
+          p, field, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
         textArea.setText(field.getText());
       }
