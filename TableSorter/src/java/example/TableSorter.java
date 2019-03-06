@@ -429,9 +429,10 @@ public class TableSorter extends AbstractTableModel {
       // it this class can end up re-sorting on alternate cell updates -
       // which can be a performance problem for large tables. The last
       // clause avoids this problem.
-      int column = e.getColumn();
-      if (e.getFirstRow() == e.getLastRow() && column != TableModelEvent.ALL_COLUMNS && getSortingStatus(column) == NOT_SORTED) {
-        int viewIndex = getModelToView().get(e.getFirstRow());
+      int fr = e.getFirstRow();
+      int lr = e.getLastRow();
+      if (fr == lr && column != TableModelEvent.ALL_COLUMNS && getSortingStatus(column) == NOT_SORTED) {
+        int viewIndex = getModelToView().get(fr);
         fireTableChanged(new TableModelEvent(TableSorter.this, viewIndex, viewIndex, column, e.getType()));
         return;
       }
