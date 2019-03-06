@@ -7,11 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -28,8 +28,11 @@ public final class MainPanel extends JPanel {
     tree.setCellRenderer(new DefaultTreeCellRenderer() {
       @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if (value instanceof MutableTreeNode && ((DefaultMutableTreeNode) value).getUserObject() instanceof NodeObject) {
-          NodeObject uo = (NodeObject) ((DefaultMutableTreeNode) value).getUserObject();
+        Object v = Optional.ofNullable(value)
+            .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
+            .map(DefaultMutableTreeNode::getUserObject).orElse(null);
+        if (v instanceof NodeObject) {
+          NodeObject uo = (NodeObject) v;
           l.setText(Objects.toString(uo.title, ""));
           l.setIcon(uo.icon);
         } else {
