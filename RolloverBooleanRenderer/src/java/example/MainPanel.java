@@ -226,7 +226,8 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
 
   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
     // System.out.println(propertyName);
-    // if (propertyName == "border" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+    // if (propertyName == "border" ||
+    //     ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
     //   super.firePropertyChange(propertyName, oldValue, newValue);
     // }
   }
