@@ -198,7 +198,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
     if ("document".equals(propertyName)) {
       super.firePropertyChange(propertyName, oldValue, newValue);
-    } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && !Objects.equals(oldValue, newValue)) {
+    } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
       super.firePropertyChange(propertyName, oldValue, newValue);
     }
   }

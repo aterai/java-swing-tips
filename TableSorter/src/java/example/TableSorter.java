@@ -193,10 +193,10 @@ public class TableSorter extends AbstractTableModel {
       header.removeMouseListener(mouseListener);
       Optional.ofNullable(header.getDefaultRenderer())
         .filter(SortableHeaderRenderer.class::isInstance).map(SortableHeaderRenderer.class::cast)
-        .ifPresent(renderer -> header.setDefaultRenderer(renderer.tableCellRenderer));
+        .ifPresent(renderer -> header.setDefaultRenderer(renderer.cellRenderer));
       // TableCellRenderer defaultRenderer = header.getDefaultRenderer();
       // if (defaultRenderer instanceof SortableHeaderRenderer) {
-      //   header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
+      //   header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
       // }
     });
     this.tableHeader = tableHeader;
@@ -208,7 +208,7 @@ public class TableSorter extends AbstractTableModel {
     //   this.tableHeader.removeMouseListener(mouseListener);
     //   TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
     //   if (defaultRenderer instanceof SortableHeaderRenderer) {
-    //     this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
+    //     this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
     //   }
     // }
     // this.tableHeader = tableHeader;
@@ -471,14 +471,14 @@ public class TableSorter extends AbstractTableModel {
 }
 
 class SortableHeaderRenderer implements TableCellRenderer {
-  protected final TableCellRenderer tableCellRenderer;
+  protected final TableCellRenderer cellRenderer;
 
-  protected SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
-    this.tableCellRenderer = tableCellRenderer;
+  protected SortableHeaderRenderer(TableCellRenderer cellRenderer) {
+    this.cellRenderer = cellRenderer;
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    JLabel l = (JLabel) cellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     Optional.ofNullable(table.getModel())
         .filter(TableSorter.class::isInstance).map(TableSorter.class::cast)
         .ifPresent(m -> {
