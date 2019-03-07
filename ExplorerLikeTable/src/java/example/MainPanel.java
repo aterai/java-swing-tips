@@ -10,6 +10,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.util.Objects;
 import javax.swing.*;
@@ -138,7 +139,9 @@ class FileNameRenderer implements TableCellRenderer {
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
-    sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
+
+    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
+    sicon = new ImageIcon(p.createImage(ip));
 
     iconLabel = new JLabel(nicon);
     iconLabel.setBorder(BorderFactory.createEmptyBorder());
