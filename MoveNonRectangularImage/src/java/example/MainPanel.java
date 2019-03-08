@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
       image = ImageIO.read(getClass().getResource("duke.gif"));
     } catch (IOException ex) {
       ex.printStackTrace();
-      return;
+      image = makeMissingImage();
     }
     JLabel icon = makeLabelIcon(image);
     icon.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -51,6 +51,17 @@ public final class MainPanel extends JPanel {
         addMouseMotionListener(handler);
       }
     };
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String... args) {
