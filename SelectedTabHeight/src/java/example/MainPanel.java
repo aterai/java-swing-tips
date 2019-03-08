@@ -92,7 +92,8 @@ class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
   // }
 
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    if (tabPane.getSelectedIndex() != tabIndex && tabPlacement != JTabbedPane.LEFT && tabPlacement != JTabbedPane.RIGHT) {
+    boolean isTopOrBottom = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
       if (tabPlacement == JTabbedPane.TOP) {
@@ -111,7 +112,8 @@ class BasicTabHeightTabbedPaneUI extends BasicTabbedPaneUI {
   }
 
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    if (tabPane.getSelectedIndex() != tabIndex && tabPlacement != JTabbedPane.LEFT && tabPlacement != JTabbedPane.RIGHT) {
+    boolean isTopOrBottom = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
       if (tabPlacement == JTabbedPane.TOP) {

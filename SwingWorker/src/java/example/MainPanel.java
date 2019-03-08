@@ -32,7 +32,9 @@ public final class MainPanel extends JPanel {
     area.setLineWrap(true);
 
     runButton.addActionListener(e -> executeWorker());
-    cancelButton.addActionListener(e -> Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true)));
+    cancelButton.addActionListener(e -> {
+      Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
+    });
 
     Box box = Box.createHorizontalBox();
     box.add(anil);

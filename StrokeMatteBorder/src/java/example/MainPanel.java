@@ -81,9 +81,11 @@ class StrokeMatteBorder extends EmptyBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     float size = stroke.getLineWidth();
     if (size > 0) {
+      Paint color = Optional.ofNullable(this.paint)
+          .orElse(Optional.ofNullable(c).map(Component::getForeground).orElse(null));
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setStroke(this.stroke);
-      g2.setPaint(Optional.ofNullable(this.paint).orElse(Optional.ofNullable(c).map(Component::getForeground).orElse(null)));
+      g2.setPaint(color);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(x, y);
 
