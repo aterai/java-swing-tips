@@ -16,12 +16,12 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 public final class MainPanel extends JPanel {
-  private final TreeComboBox<DefaultMutableTreeNode> combo = new TreeComboBox<>();
+  private final TreeComboBox<TreeNode> combo = new TreeComboBox<>();
 
   public MainPanel() {
     super(new BorderLayout());
-    DefaultComboBoxModel<DefaultMutableTreeNode> model1 = new DefaultComboBoxModel<>();
-    DefaultComboBoxModel<DefaultMutableTreeNode> model2 = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<TreeNode> model1 = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<TreeNode> model2 = new DefaultComboBoxModel<>();
     TreeModel tm = makeModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) tm.getRoot();
     // // Java 9: Enumeration<TreeNode> depth = root.depthFirstEnumeration();
@@ -47,15 +47,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void makeComboBoxModel(DefaultComboBoxModel<DefaultMutableTreeNode> model, DefaultMutableTreeNode node) {
-    if (!node.isRoot()) {
+  private static void makeComboBoxModel(DefaultComboBoxModel<TreeNode> model, TreeNode node) {
+    if (node instanceof DefaultMutableTreeNode && !((DefaultMutableTreeNode) node).isRoot()) {
       model.addElement(node);
     }
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children()).stream()
       Collections.list((Enumeration<?>) node.children()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
+        .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
         .forEach(n -> makeComboBoxModel(model, n));
     }
   }
