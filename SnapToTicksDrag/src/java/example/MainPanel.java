@@ -69,7 +69,8 @@ public final class MainPanel extends JPanel {
     });
     slider.addMouseWheelListener(e -> {
       JSlider s = (JSlider) e.getComponent();
-      int tickSpacing = s.getMinorTickSpacing() == 0 ? s.getMajorTickSpacing() : slider.getMinorTickSpacing();
+      boolean hasMinorTickSpacing = s.getMinorTickSpacing() > 0;
+      int tickSpacing = hasMinorTickSpacing ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
       int v = s.getValue() - e.getWheelRotation() * tickSpacing;
       BoundedRangeModel m = s.getModel();
       s.setValue(Math.min(m.getMaximum(), Math.max(v, m.getMinimum())));
@@ -136,7 +137,8 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
           int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
-          int tickSpacing = slider.getMinorTickSpacing() == 0 ? slider.getMajorTickSpacing() : slider.getMinorTickSpacing();
+          boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
+          int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
           float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
           xpos -= trackLeft;
           snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
@@ -184,9 +186,8 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
           int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
-          int tickSpacing = (slider.getMinorTickSpacing() == 0)
-              ? slider.getMajorTickSpacing()
-              : slider.getMinorTickSpacing();
+          boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
+          int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
           float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
           xpos -= trackLeft;
           snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
