@@ -151,14 +151,13 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     firePropertyChange(CMD_BLOCKING, oldv, isBlocking);
   }
 
-  @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends V> l) {
-    String cmd = pce.getPropertyName();
-    if (CMD_BLOCKING.equals(cmd)) {
+  @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {
+    if (CMD_BLOCKING.equals(e.getPropertyName())) {
       AbstractButton b = l.getView();
       b.setFocusable(!isBlocking);
       b.setMnemonic(isBlocking ? 0 : b.getText().codePointAt(0));
       b.setForeground(isBlocking ? Color.RED : Color.BLACK);
-      l.getGlassPane().setVisible((Boolean) pce.getNewValue());
+      l.getGlassPane().setVisible((Boolean) e.getNewValue());
     }
   }
 }
