@@ -10,14 +10,14 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
-  private final JComboBox<VerticalOrientation> verticalOrientationChoices = new JComboBox<>(VerticalOrientation.values());
+  private final JComboBox<VerticalOrientation> positionChoices = new JComboBox<>(VerticalOrientation.values());
   private final JComboBox<Justification> justificationChoices = new JComboBox<>(Justification.values());
   private final TitledBorder border = BorderFactory.createTitledBorder("Test Test");
   private final JPanel panel = new JPanel();
 
   public MainPanel() {
     super(new BorderLayout(5, 5));
-    verticalOrientationChoices.addItemListener(e -> {
+    positionChoices.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         initTitledBorder();
       }
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p2.add(verticalOrientationChoices, c);
+    p2.add(positionChoices, c);
     p2.add(justificationChoices, c);
 
     add(p2, BorderLayout.NORTH);
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void initTitledBorder() {
-    border.setTitlePosition(verticalOrientationChoices.getItemAt(verticalOrientationChoices.getSelectedIndex()).mode);
+    border.setTitlePosition(positionChoices.getItemAt(positionChoices.getSelectedIndex()).mode);
     border.setTitleJustification(justificationChoices.getItemAt(justificationChoices.getSelectedIndex()).mode);
     panel.repaint();
   }
