@@ -15,7 +15,7 @@ import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout(2, 2));
+    super(new BorderLayout());
 
     JTable table1 = makeJTable();
     JTable table2 = makeJTable();
@@ -102,8 +102,7 @@ class TableHeaderFillerLayerUI extends LayerUI<JScrollPane> {
   @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
     if (c instanceof JTableHeader) {
-      JTableHeader header = (JTableHeader) c;
-      l.repaint(header.getBounds());
+      l.repaint(((JTableHeader) c).getBounds());
     }
   }
 }
