@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TableHeaderFiller" />
+  <property name="jnlp.Name"     value="TableHeaderFiller" />
+  <property name="jnlp.name"     value="tableheaderfiller" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tableheaderfiller/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableHeaderFiller.html" />
+</project>
