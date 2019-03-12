@@ -126,14 +126,14 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     scrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
   }
 
-  private static void scrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIdx, boolean startSelection) {
+  private void scrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIdx, boolean startSelection) {
     int start = startIdx;
-    boolean isStartingSelection = startSelection;
+    boolean startingFromSelection = startSelection;
     if (start < 0 || start >= max) {
       if (e.isShiftDown()) {
         start = max - 1;
       } else {
-        isStartingSelection = false;
+        startingFromSelection = false;
         start = 0;
       }
     }
@@ -142,7 +142,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     if (index >= 0) {
       src.getSelectionModel().setSelectionInterval(index, index);
       src.scrollRectToVisible(src.getCellRect(index, TARGET_COLUMN, true));
-    } else if (isStartingSelection) { // wrap
+    } else if (startingFromSelection) { // wrap
       index = getNextMatch(src, prefix, 0, bias);
       if (index >= 0) {
         src.getSelectionModel().setSelectionInterval(index, index);
