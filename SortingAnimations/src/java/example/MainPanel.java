@@ -136,48 +136,42 @@ public class MainPanel extends JPanel {
     }
     SortAlgorithms sa = algorithmsChoices.getItemAt(algorithmsChoices.getSelectedIndex());
     Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
-    worker = new SortPaintTask(sa, number, array, paintArea, factorx, factory);
+    worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
+      @Override protected void process(List<Rectangle> chunks) {
+        if (isCancelled()) {
+          return;
+        }
+        if (!isDisplayable()) {
+          System.out.println("process: DISPOSE_ON_CLOSE");
+          cancel(true);
+          return;
+        }
+        for (Rectangle r: chunks) {
+          panel.repaint(r);
+        }
+      }
+
+      @Override public void done() {
+        if (!isDisplayable()) {
+          System.out.println("done: DISPOSE_ON_CLOSE");
+          cancel(true);
+          return;
+        }
+        setComponentEnabled(true);
+        String text = null;
+        try {
+          text = isCancelled() ? "Cancelled" : get();
+        } catch (InterruptedException ex) {
+          text = "Interrupted";
+        } catch (ExecutionException ex) {
+          ex.printStackTrace();
+          text = "Error: " + ex.getMessage();
+        }
+        System.out.println(text);
+        repaint();
+      }
+    };
     worker.execute();
-  }
-
-  private class SortPaintTask extends SortingTask {
-    protected SortPaintTask(SortAlgorithms sortAlgorithm, int num, List<Double> array, Rectangle r, double fx, double fy) {
-      super(sortAlgorithm, num, array, r, fx, fy);
-    }
-
-    @Override protected void process(List<Rectangle> chunks) {
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
-        System.out.println("process: DISPOSE_ON_CLOSE");
-        cancel(true);
-        return;
-      }
-      for (Rectangle r: chunks) {
-        panel.repaint(r);
-      }
-    }
-
-    @Override public void done() {
-      if (!isDisplayable()) {
-        System.out.println("done: DISPOSE_ON_CLOSE");
-        cancel(true);
-        return;
-      }
-      setComponentEnabled(true);
-      String text = null;
-      try {
-        text = isCancelled() ? "Cancelled" : get();
-      } catch (InterruptedException ex) {
-        text = "Interrupted";
-      } catch (ExecutionException ex) {
-        ex.printStackTrace();
-        text = "Error: " + ex.getMessage();
-      }
-      System.out.println(text);
-      repaint();
-    }
   }
 
   public static void main(String... args) {

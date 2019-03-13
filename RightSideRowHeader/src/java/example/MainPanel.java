@@ -383,14 +383,14 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     }
   }
 
-  private void adjustForVsb(boolean wantsVsb, Rectangle available, Rectangle vsbR, Insets vpbInsets, boolean leftToRight) {
+  private void adjustForVsb(boolean wantsVsb, Rectangle available, Rectangle vsbR, Insets vpbInsets, boolean ltr) {
     int oldWidth = vsbR.width;
     if (wantsVsb) {
       int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, available.width));
       available.width -= vsbWidth;
       vsbR.width = vsbWidth;
 
-      if (leftToRight) {
+      if (ltr) { // isLeftToRight
         vsbR.x = available.x + available.width + vpbInsets.right;
       } else {
         vsbR.x = available.x - vpbInsets.left;

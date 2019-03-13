@@ -533,22 +533,22 @@ public class TitledBorder2 extends AbstractBorder {
       int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
       JLabel label = getLabel(c);
       Dimension size = label.getPreferredSize();
-      Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
+      Insets ins = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
       int baseline = label.getBaseline(size.width, size.height);
       switch (getPosition()) {
         case ABOVE_TOP:
           return baseline;
         case TOP:
-          insets.top = edge + (insets.top - size.height) / 2;
-          return insets.top < edge ? baseline : baseline + insets.top;
+          ins.top = edge + (ins.top - size.height) / 2;
+          return ins.top < edge ? baseline : baseline + ins.top;
         case BELOW_TOP:
-          return baseline + insets.top + edge;
+          return baseline + ins.top + edge;
         case ABOVE_BOTTOM:
-          return baseline + height - size.height - insets.bottom - edge;
+          return baseline + height - size.height - ins.bottom - edge;
         case BOTTOM:
-          insets.bottom = edge + (insets.bottom - size.height) / 2;
-          return insets.bottom < edge ? baseline + height - size.height : baseline + height - size.height + insets.bottom;
+          ins.bottom = edge + (ins.bottom - size.height) / 2;
+          return ins.bottom < edge ? baseline + height - size.height : baseline + height - size.height + ins.bottom;
         case BELOW_BOTTOM:
           return baseline + height - size.height;
         default:
