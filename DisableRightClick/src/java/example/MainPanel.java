@@ -163,7 +163,7 @@ class BasicComboPopup3 extends BasicComboPopup {
     super(combo);
   }
 
-  // // Fixed 8u60: mouse wheel scroll closes combobox popup
+  // // Fixed 8u60: [JDK-8033069] mouse wheel scroll closes combobox popup - Java Bug System
   // // https://bugs.openjdk.java.net/browse/JDK-8033069
   // @Override protected JScrollPane createScroller() {
   //   JScrollPane sp = new JScrollPane(list) {
