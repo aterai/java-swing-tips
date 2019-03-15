@@ -114,7 +114,6 @@ final class LookAndFeelUtil {
     return lafItem;
   }
 
-  @SuppressWarnings("checkstyle:linelength")
   private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
     String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
     if (!oldLookAndFeel.equals(lookAndFeel)) {

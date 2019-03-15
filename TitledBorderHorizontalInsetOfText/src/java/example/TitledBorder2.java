@@ -172,6 +172,7 @@ public class TitledBorder2 extends AbstractBorder {
    * @param titleColor  the color of the title
    */
   // @ConstructorProperties({"border", "title", "titleJustification", "titlePosition", "titleFont", "titleColor"})
+  @SuppressWarnings("checkstyle:linelength")
   public TitledBorder2(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Color titleColor) {
     super();
     this.title = title;

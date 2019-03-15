@@ -350,6 +350,7 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     // g.setFont(holdf);
   }
 
+  @SuppressWarnings("checkstyle:linelength")
   private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
     if (!lh.getText().isEmpty()) {
       if (Objects.nonNull(lh.getHtmlView())) {
@@ -396,6 +397,7 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     // g.setFont(holdf);
   }
 
+  @SuppressWarnings("checkstyle:linelength")
   private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
     if (!lh.getText().isEmpty()) {
       if (Objects.nonNull(lh.getHtmlView())) {
