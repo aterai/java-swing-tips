@@ -69,8 +69,8 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     for (int i = runCount - 1; i >= 0; i--) {
       int start = tabRuns[i];
       int next = tabRuns[(i == runCount - 1) ? 0 : i + 1];
-      @SuppressWarnings("PMD.ConfusingTernary") // Avoid if (x != y) ..; else ..;
-      int end = next != 0 ? next - 1 : tabCount - 1;
+      // int end = next != 0 ? next - 1 : tabCount - 1;
+      int end = next == 0 ? tabCount - 1 : next - 1;
       // for (int j = start; j <= end; j++) {
       // https://stackoverflow.com/questions/41566659/tabs-rendering-order-in-custom-jtabbedpane
       for (int j = end; j >= start; j--) {
