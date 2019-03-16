@@ -103,13 +103,18 @@ public class MainPanel extends JPanel {
     JDialog dialog = new JDialog();
     dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     dialog.addWindowListener(new WindowAdapter() {
-      @SuppressWarnings("PMD.DoNotCallSystemExit")
+      // @SuppressWarnings("PMD.DoNotCallSystemExit")
+      // @Override public void windowClosing(WindowEvent e) {
+      //   System.out.println("windowClosing:");
+      //   System.out.println("  triggered only when you click on the X");
+      //   System.out.println("  or on the close menu item in the window's system menu.'");
+      //   System.out.println("System.exit(0);");
+      //   System.exit(0); // WebStart
+      // }
       @Override public void windowClosing(WindowEvent e) {
         System.out.println("windowClosing:");
         System.out.println("  triggered only when you click on the X");
         System.out.println("  or on the close menu item in the window's system menu.'");
-        System.out.println("System.exit(0);");
-        System.exit(0); // WebStart
       }
 
       @Override public void windowClosed(WindowEvent e) {

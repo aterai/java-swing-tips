@@ -98,11 +98,11 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     maybeExit();
   }
 
-  @SuppressWarnings("PMD.DoNotCallSystemExit")
-  @Override public void windowClosed(WindowEvent e) {
-    System.out.println("windowClosed");
-    System.exit(0); // webstart
-  }
+  // @SuppressWarnings("PMD.DoNotCallSystemExit")
+  // @Override public void windowClosed(WindowEvent e) {
+  //   System.out.println("windowClosed");
+  //   System.exit(0); // webstart
+  // }
 
   // ActionListener
   @Override public void actionPerformed(ActionEvent e) {
