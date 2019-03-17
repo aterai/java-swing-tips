@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         }
       } catch (IOException ex) {
         ex.printStackTrace();
-        textArea.setText(ex.printStackTrace());
+        textArea.setText(ex.getMessage());
       }
     });
 
