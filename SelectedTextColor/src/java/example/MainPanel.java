@@ -89,6 +89,8 @@ public final class MainPanel extends JPanel {
       editor2.setText(html);
     } catch (IOException ex) {
       ex.printStackTrace();
+      editor1.setText(ex.getMessage());
+      editor2.setText(ex.getMessage());
     }
   }
 
@@ -105,6 +107,7 @@ public final class MainPanel extends JPanel {
       return engine;
     } catch (IOException | ScriptException ex) {
       ex.printStackTrace();
+      return null;
     }
 
     // try {
@@ -130,8 +133,8 @@ public final class MainPanel extends JPanel {
     //   }
     // } catch (IOException | ScriptException | URISyntaxException ex) {
     //   ex.printStackTrace();
+    //   return null;
     // }
-    return null;
   }
 
   private static String prettify(ScriptEngine engine, String src) {
