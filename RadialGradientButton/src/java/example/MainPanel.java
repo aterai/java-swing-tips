@@ -12,7 +12,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import javax.swing.*;
-// import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -65,7 +64,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// @see https://stackoverflow.com/q/45603312/230513
 class RadialGradientButton extends JButton {
   private final Timer timer1 = new Timer(10, null);
   private final Timer timer2 = new Timer(10, null);
@@ -157,6 +155,9 @@ class RadialGradientButton extends JButton {
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // Stunning hover effects with CSS variables ? Prototypr
+    // https://blog.prototypr.io/stunning-hover-effects-with-css-variables-f855e7b95330
     Color c1 = new Color(0x00_F7_23_59, true);
     Color c2 = new Color(0x64_44_05_F7, true);
 
