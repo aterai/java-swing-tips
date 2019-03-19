@@ -115,6 +115,8 @@ public final class MainPanel extends JPanel {
         label.setIcon(new ImageIcon(path));
       } catch (IOException ex) {
         ex.printStackTrace();
+        label.setText(ex.getMessage());
+        label.setIcon(null);
       }
     });
 
