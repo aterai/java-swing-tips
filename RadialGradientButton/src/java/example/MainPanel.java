@@ -64,27 +64,30 @@ public final class MainPanel extends JPanel {
   }
 }
 
+// Stunning hover effects with CSS variables ? Prototypr
+// https://blog.prototypr.io/stunning-hover-effects-with-css-variables-f855e7b95330
 class RadialGradientButton extends JButton {
-  private final Timer timer1 = new Timer(10, null);
-  private final Timer timer2 = new Timer(10, null);
-  private final Point pt = new Point();
-  private int radius;
   private static final int DELTA = 10;
   private static final double ARC_WIDTH = 32d;
   private static final double ARC_HEIGHT = 32d;
-  protected Shape shape;
-  protected Rectangle base;
+  private int radius;
+  private final float[] dist = { 0f, 1f };
+  private final Color[] colors = { new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true) };
+  private final Timer timer1 = new Timer(10, e -> {
+    radius = Math.min(200, radius + DELTA);
+    repaint();
+  });
+  private final Timer timer2 = new Timer(10, e -> {
+    radius = Math.max(0, radius - DELTA);
+    repaint();
+  });
+  private final Point pt = new Point();
+  private Shape shape;
+  private Rectangle base;
 
   protected RadialGradientButton(String title) {
     super(title);
-    timer1.addActionListener(e -> {
-      radius = Math.min(200, radius + DELTA);
-      repaint();
-    });
-    timer2.addActionListener(e -> {
-      radius = Math.max(0, radius - DELTA);
-      repaint();
-    });
+
     MouseAdapter listener = new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         timer2.stop();
@@ -124,16 +127,16 @@ class RadialGradientButton extends JButton {
     update();
   }
 
+  @Override public boolean contains(int x, int y) {
+    update();
+    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
+  }
+
   protected void update() {
     if (!getBounds().equals(base)) {
       base = getBounds();
       shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
     }
-  }
-
-  @Override public boolean contains(int x, int y) {
-    update();
-    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
   }
 
   // @Override protected void paintBorder(Graphics g) {
@@ -155,35 +158,20 @@ class RadialGradientButton extends JButton {
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-    // Stunning hover effects with CSS variables ? Prototypr
-    // https://blog.prototypr.io/stunning-hover-effects-with-css-variables-f855e7b95330
-    Color c1 = new Color(0x00_F7_23_59, true);
-    Color c2 = new Color(0x64_44_05_F7, true);
-
     // g2.setComposite(AlphaComposite.Clear);
     // g2.setPaint(new Color(0x0, true));
     // g2.fillRect(0, 0, getWidth(), getHeight());
 
     g2.setComposite(AlphaComposite.Src);
-    if (getModel().isArmed()) {
-      g2.setPaint(new Color(0xFF_AA_AA));
-    } else {
-      g2.setPaint(new Color(0xF7_23_59));
-    }
+    g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
     g2.fill(shape);
 
     if (radius > 0) {
-      int cx = pt.x - radius;
-      int cy = pt.y - radius;
       int r2 = radius + radius;
-      float[] dist = { 0f, 1f };
-      Color[] colors = { c2, c1 };
       g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
-      Shape oval = new Ellipse2D.Double(cx, cy, r2, r2);
       g2.setComposite(AlphaComposite.SrcAtop);
       g2.setClip(shape);
-      g2.fill(oval);
+      g2.fill(new Ellipse2D.Double(pt.x - radius, pt.y - radius, r2, r2));
     }
     g2.dispose();
 
@@ -192,27 +180,28 @@ class RadialGradientButton extends JButton {
 }
 
 class RadialGradientPaintButton extends JButton {
-  private final Timer timer1 = new Timer(10, null);
-  private final Timer timer2 = new Timer(10, null);
-  private final Point pt = new Point();
-  private int radius;
   private static final int DELTA = 10;
   private static final double ARC_WIDTH = 32d;
   private static final double ARC_HEIGHT = 32d;
-  protected Shape shape;
-  protected Rectangle base;
+  private int radius;
+  private final float[] dist = { 0f, 1f };
+  private final Color[] colors = { new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true) };
+  private final Timer timer1 = new Timer(10, e -> {
+    radius = Math.min(200, radius + DELTA);
+    repaint();
+  });
+  private final Timer timer2 = new Timer(10, e -> {
+    radius = Math.max(0, radius - DELTA);
+    repaint();
+  });
+  private final Point pt = new Point();
+  private Shape shape;
+  private Rectangle base;
   private transient BufferedImage buf;
 
   protected RadialGradientPaintButton(String title) {
     super(title);
-    timer1.addActionListener(e -> {
-      radius = Math.min(200, radius + DELTA);
-      repaint();
-    });
-    timer2.addActionListener(e -> {
-      radius = Math.max(0, radius - DELTA);
-      repaint();
-    });
+
     MouseAdapter listener = new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         timer2.stop();
@@ -252,6 +241,11 @@ class RadialGradientPaintButton extends JButton {
     update();
   }
 
+  @Override public boolean contains(int x, int y) {
+    update();
+    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
+  }
+
   protected void update() {
     if (!getBounds().equals(base)) {
       base = getBounds();
@@ -260,7 +254,7 @@ class RadialGradientPaintButton extends JButton {
       if (w > 0 && h > 0) {
         buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       }
-      shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0, 0, w - 1, h - 1, ARC_WIDTH, ARC_HEIGHT);
     }
     if (buf == null) {
       return;
@@ -268,38 +262,21 @@ class RadialGradientPaintButton extends JButton {
 
     Graphics2D g2 = buf.createGraphics();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Color c1 = new Color(0x00_F7_23_59, true);
-    Color c2 = new Color(0x64_44_05_F7, true);
-
     g2.setComposite(AlphaComposite.Clear);
     g2.fillRect(0, 0, getWidth(), getHeight());
 
     g2.setComposite(AlphaComposite.Src);
-    if (getModel().isArmed()) {
-      g2.setPaint(new Color(0xFF_AA_AA));
-    } else {
-      g2.setPaint(new Color(0xF7_23_59));
-    }
+    g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
     g2.fill(shape);
 
     if (radius > 0) {
-      int cx = pt.x - radius;
-      int cy = pt.y - radius;
       int r2 = radius + radius;
-      float[] dist = { 0f, 1f };
-      Color[] colors = { c2, c1 };
       g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
-      Shape oval = new Ellipse2D.Double(cx, cy, r2, r2);
       g2.setComposite(AlphaComposite.SrcAtop);
       // g2.setClip(shape);
-      g2.fill(oval);
+      g2.fill(new Ellipse2D.Double(pt.x - radius, pt.y - radius, r2, r2));
     }
     g2.dispose();
-  }
-
-  @Override public boolean contains(int x, int y) {
-    update();
-    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
   }
 
   @Override public void paintComponent(Graphics g) {
