@@ -56,6 +56,14 @@ public final class MainPanel extends JPanel {
     combo.setRenderer(new DefaultListCellRenderer() {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        String text = Objects.toString(value, "");
+        FontMetrics fm = getFontMetrics(getFont());
+        int width = getAvailableWidth(combo, index);
+        setText(getLeftClippedText(text, fm, width));
+        return this;
+      }
+
+      private int getAvailableWidth(JComboBox<String> combo, int index) {
         int itb = 0;
         int ilr = 0;
         Insets insets = getInsets();
@@ -77,46 +85,48 @@ public final class MainPanel extends JPanel {
           // availableWidth -= insets.left;
           availableWidth -= insets.left + insets.right;
         }
-        String cellText = Objects.toString(value, "");
+        return availableWidth;
+      }
+
+      private String getLeftClippedText(String text, FontMetrics fm, int availableWidth) {
         // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
         // @title Left Dot Renderer
         // @auther Rob Camick
         // FontMetrics fm = getFontMetrics(getFont());
-        // if (fm.stringWidth(cellText) > availableWidth) {
+        // if (fm.stringWidth(text) > availableWidth) {
         //   String dots = "...";
         //   int textWidth = fm.stringWidth(dots);
-        //   int nChars = cellText.length() - 1;
+        //   int nChars = text.length() - 1;
         //   while (nChars > 0) {
-        //     textWidth += fm.charWidth(cellText.charAt(nChars));
+        //     textWidth += fm.charWidth(text.charAt(nChars));
         //     if (textWidth > availableWidth) {
         //       break;
         //     }
         //     nChars--;
         //   }
-        //   setText(dots + cellText.substring(nChars + 1));
+        //   setText(dots + text.substring(nChars + 1));
         // }
         // </blockquote>
-        FontMetrics fm = getFontMetrics(getFont());
-        if (fm.stringWidth(cellText) > availableWidth) {
-          String dots = "...";
-          int textWidth = fm.stringWidth(dots);
-          int len = cellText.length();
-          // @see Unicode surrogate programming with the Java language
-          // https://www.ibm.com/developerworks/library/j-unicode/index.html
-          // https://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
-          int[] acp = new int[cellText.codePointCount(0, len)];
-          int j = acp.length;
-          for (int i = len; i > 0; i = cellText.offsetByCodePoints(i, -1)) {
-            int cp = cellText.codePointBefore(i);
-            textWidth += fm.charWidth(cp);
-            if (textWidth > availableWidth) {
-              break;
-            }
-            acp[--j] = cp;
-          }
-          setText(dots + new String(acp, j, acp.length - j));
+        if (fm.stringWidth(text) <= availableWidth) {
+          return text;
         }
-        return this;
+        String dots = "...";
+        int textWidth = fm.stringWidth(dots);
+        int len = text.length();
+        // @see Unicode surrogate programming with the Java language
+        // https://www.ibm.com/developerworks/library/j-unicode/index.html
+        // https://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
+        int[] acp = new int[text.codePointCount(0, len)];
+        int j = acp.length;
+        for (int i = len; i > 0; i = text.offsetByCodePoints(i, -1)) {
+          int cp = text.codePointBefore(i);
+          textWidth += fm.charWidth(cp);
+          if (textWidth > availableWidth) {
+            break;
+          }
+          acp[--j] = cp;
+        }
+        return dots + new String(acp, j, acp.length - j);
       }
     });
   }
