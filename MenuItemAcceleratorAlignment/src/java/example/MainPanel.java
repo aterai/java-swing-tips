@@ -207,8 +207,8 @@ final class MenuItemHelper {
     });
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  public static void paintCheckIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
+  public static void paintCheckIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                                    sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
     Optional.ofNullable(lh.getCheckIcon()).ifPresent(checkIcon -> {
       JMenuItem menuItem = lh.getMenuItem();
       ButtonModel model = menuItem.getModel();
@@ -226,8 +226,9 @@ final class MenuItemHelper {
     });
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledFg, Color accFg, Color accSelFg) {
+  public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                                  sun.swing.MenuItemLayoutHelper.LayoutResult lr,
+                                  Color disabledFg, Color accFg, Color accSelFg) {
     String text = lh.getAccText();
     if (text.isEmpty()) {
       return;
@@ -247,7 +248,9 @@ final class MenuItemHelper {
       } else {
         g.setColor(accFg);
       }
-      drawString(menuItem, g, text, viewRect.x + viewRect.width - menuItem.getIconTextGap() - accRect.width, accRect.y + ascent);
+      drawString(menuItem, g, text,
+                 viewRect.x + viewRect.width - menuItem.getIconTextGap() - accRect.width,
+                 accRect.y + ascent);
     } else {
       // *** paint the accText disabled
       if (Objects.nonNull(disabledFg)) {
@@ -272,8 +275,8 @@ final class MenuItemHelper {
     // BasicGraphicsUtils.drawString(c, (Graphics2D) g, text, x, y);
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
+  public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                                    sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
     Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
       JMenuItem menuItem = lh.getMenuItem();
       ButtonModel model = menuItem.getModel();
@@ -350,8 +353,8 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     // g.setFont(holdf);
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
+  private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                         sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
     if (!lh.getText().isEmpty()) {
       if (Objects.nonNull(lh.getHtmlView())) {
         // Text is HTML
@@ -397,8 +400,8 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     // g.setFont(holdf);
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
+  private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                         sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
     if (!lh.getText().isEmpty()) {
       if (Objects.nonNull(lh.getHtmlView())) {
         // Text is HTML
