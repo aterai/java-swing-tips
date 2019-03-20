@@ -104,11 +104,11 @@ public final class MainPanel extends JPanel {
     try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
       engine.eval("var window={}, navigator=null;");
       engine.eval(r);
-      return engine;
     } catch (IOException | ScriptException ex) {
       ex.printStackTrace();
-      return null;
+      Toolkit.getDefaultToolkit().beep(); 
     }
+    return engine;
 
     // try {
     //   URI uri = MainPanel.class.getResource("prettify.js").toURI();

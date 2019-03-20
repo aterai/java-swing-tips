@@ -74,6 +74,7 @@ public final class MainPanel extends JPanel {
       editor.setText("<pre>" + prettify(engine, txt) + "\n</pre>");
     } catch (IOException ex) {
       ex.printStackTrace();
+      editor.setText(ex.getMessage());
     }
   }
 
@@ -87,10 +88,11 @@ public final class MainPanel extends JPanel {
     try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
       engine.eval("var window={}, navigator=null;");
       engine.eval(r);
-      return engine;
     } catch (IOException | ScriptException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep(); 
     }
+    return engine;
 
     // try {
     //   URI uri = MainPanel.class.getResource("prettify.js").toURI();
@@ -115,8 +117,8 @@ public final class MainPanel extends JPanel {
     //   }
     // } catch (IOException | ScriptException | URISyntaxException ex) {
     //   ex.printStackTrace();
+    //   return null;
     // }
-    return null;
   }
 
   private static String prettify(ScriptEngine engine, String src) {

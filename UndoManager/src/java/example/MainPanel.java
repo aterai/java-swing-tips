@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
       try {
         undoManager.undo();
       } catch (CannotUndoException ex) {
-        // cue.printStackTrace();
+        // ex.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
       }
     }
