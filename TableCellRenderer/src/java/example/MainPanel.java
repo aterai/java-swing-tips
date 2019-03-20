@@ -14,8 +14,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -24,33 +22,34 @@ public final class MainPanel extends JPanel {
   private static final String STR2 = "JTextArea JTextArea JTextArea JTextArea";
   private static final String STR3 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-  private final String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
-  private final Object[][] data = {
-    {STR0, STR1, STR2}, {STR0, STR1, STR2},
-    {STR3, STR3, STR3}, {STR3, STR3, STR3}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    table.setRowHeight(50);
+
+    String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
+    Object[][] data = {
+      {STR0, STR1, STR2}, {STR0, STR1, STR2},
+      {STR3, STR3, STR3}, {STR3, STR3, STR3}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      @Override public void updateUI() {
+        getColumnModel().getColumn(1).setCellRenderer(null);
+        getColumnModel().getColumn(2).setCellRenderer(null);
+        super.updateUI();
+        setRowSelectionAllowed(true);
+        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setRowHeight(50);
+        getColumnModel().getColumn(1).setCellRenderer(new TestRenderer());
+        getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
+      }
+    };
 
     JTableHeader tableHeader = table.getTableHeader();
     tableHeader.setReorderingAllowed(false);
-
-    TableColumnModel mdl = table.getColumnModel();
-    TableColumn col = mdl.getColumn(1);
-    col.setCellRenderer(new TestRenderer());
-
-    col = mdl.getColumn(2);
-    col.setCellRenderer(new TextAreaCellRenderer());
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -159,62 +158,88 @@ class WrappedLabel extends JLabel {
   }
 }
 
-class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
+// delegation pattern
+class TextAreaCellRenderer implements TableCellRenderer {
   // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
+  private final JTextArea renderer = new JTextArea();
 
-  @Override public void updateUI() {
-    super.updateUI();
-    setLineWrap(true);
-    setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    // setName("Table.cellRenderer");
+  protected TextAreaCellRenderer() {
+    super();
+    renderer.setLineWrap(true);
+    renderer.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    // renderer.setName("Table.cellRenderer");
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
     } else {
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
     }
-    setFont(table.getFont());
-    setText(Objects.toString(value, ""));
-    return this;
+    renderer.setFont(table.getFont());
+    renderer.setText(Objects.toString(value, ""));
+    return renderer;
   }
-
-  // Overridden for performance reasons. ---->
-  @Override public boolean isOpaque() {
-    Color back = getBackground();
-    Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
-    if (o instanceof JTable) {
-      JTable table = (JTable) o;
-      boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
-      return !colorMatch && super.isOpaque();
-    } else {
-      return super.isOpaque();
-    }
-  }
-
-  @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-    if ("document".equals(propertyName)) {
-      super.firePropertyChange(propertyName, oldValue, newValue);
-    } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
-      super.firePropertyChange(propertyName, oldValue, newValue);
-    }
-  }
-
-  @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-
-  @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-
-  @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-
-  @Override public void repaint() { /* Overridden for performance reasons. */ }
-
-  @Override public void invalidate() { /* Overridden for performance reasons. */ }
-
-  @Override public void validate() { /* Overridden for performance reasons. */ }
-
-  @Override public void revalidate() { /* Overridden for performance reasons. */ }
-  // <---- Overridden for performance reasons.
 }
+
+// class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
+//   // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
+//
+//   @Override public void updateUI() {
+//     super.updateUI();
+//     setLineWrap(true);
+//     setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+//     // setName("Table.cellRenderer");
+//   }
+//
+//   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//     if (isSelected) {
+//       setForeground(table.getSelectionForeground());
+//       setBackground(table.getSelectionBackground());
+//     } else {
+//       setForeground(table.getForeground());
+//       setBackground(table.getBackground());
+//     }
+//     setFont(table.getFont());
+//     setText(Objects.toString(value, ""));
+//     return this;
+//   }
+//
+//   // Overridden for performance reasons. ---->
+//   @Override public boolean isOpaque() {
+//     Color back = getBackground();
+//     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+//     if (o instanceof JTable) {
+//       JTable table = (JTable) o;
+//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       return !colorMatch && super.isOpaque();
+//     } else {
+//       return super.isOpaque();
+//     }
+//   }
+//
+//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//     if ("document".equals(propertyName)) {
+//       super.firePropertyChange(propertyName, oldValue, newValue);
+//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
+//       super.firePropertyChange(propertyName, oldValue, newValue);
+//     }
+//   }
+//
+//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//
+//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//
+//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//
+//   @Override public void repaint() { /* Overridden for performance reasons. */ }
+//
+//   @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//
+//   @Override public void validate() { /* Overridden for performance reasons. */ }
+//
+//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//   // <---- Overridden for performance reasons.
+// }
