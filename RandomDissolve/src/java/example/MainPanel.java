@@ -10,10 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -32,12 +30,19 @@ public final class MainPanel extends JPanel {
   }
 
   private BufferedImage makeImage(URL url) {
-    BufferedImage img = null;
-    try {
-      img = ImageIO.read(url);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
+    ImageIcon icon = new ImageIcon(url);
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = img.createGraphics();
+    icon.paintIcon(this, g2, 0, 0);
+    g2.dispose();
+    // BufferedImage img = null;
+    // try {
+    //   img = ImageIO.read(url);
+    // } catch (IOException ex) {
+    //   ex.printStackTrace();
+    // }
     return img;
   }
 
