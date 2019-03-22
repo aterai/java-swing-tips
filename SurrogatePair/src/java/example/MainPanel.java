@@ -65,6 +65,7 @@ public final class MainPanel extends JPanel {
         Desktop.getDesktop().browse(path.toUri());
       } catch (IOException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
       }
       // try {
       //   File tmp = File.createTempFile("_tmp", ".html");
