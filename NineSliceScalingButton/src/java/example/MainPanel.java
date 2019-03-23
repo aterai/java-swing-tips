@@ -10,35 +10,24 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.net.URL;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    BufferedImage bi = null;
-    try {
-      // symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
-      // https://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
-      bi = ImageIO.read(getClass().getResource("symbol_scale_2.jpg"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-
-    JButton b1 = new ScalingButton("Scaling", bi);
-    JButton b2 = new NineSliceScalingButton("9-Slice Scaling", bi);
+    // symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
+    // https://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
+    BufferedImage img = makeBufferedImage(getClass().getResource("symbol_scale_2.jpg"));
+    JButton b1 = new ScalingButton("Scaling", img);
+    JButton b2 = new NineSliceScalingButton("9-Slice Scaling", img);
 
     JPanel p1 = new JPanel(new GridLayout(1, 2, 5, 5));
     p1.add(b1);
     p1.add(b2);
 
-    try {
-      bi = ImageIO.read(getClass().getResource("blue.png"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
+    BufferedImage bi = makeBufferedImage(getClass().getResource("blue.png"));
     JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
     b3.setContentAreaFilled(false);
     b3.setBorder(BorderFactory.createEmptyBorder());
@@ -63,6 +52,15 @@ public final class MainPanel extends JPanel {
     add(p1);
     add(p2, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private BufferedImage makeBufferedImage(URL url) {
+    ImageIcon ic = new ImageIcon(url);
+    BufferedImage bi = new BufferedImage(ic.getIconWidth(), ic.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    ic.paintIcon(this, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   private static BufferedImage makeFilteredImage(BufferedImage src, ImageFilter filter) {
