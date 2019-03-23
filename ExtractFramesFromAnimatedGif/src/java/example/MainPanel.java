@@ -38,6 +38,7 @@ public final class MainPanel extends JPanel {
       loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
     } catch (IOException ex) {
       ex.printStackTrace();
+      label.setText(ex.getMessage());
     }
     add(label, BorderLayout.WEST);
     add(new JScrollPane(box));
