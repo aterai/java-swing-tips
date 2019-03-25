@@ -59,12 +59,9 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 
     Insets i = c.getInsets();
     b.getSize(size);
-    viewRect.x = i.left;
-    viewRect.y = i.top;
-    viewRect.width = size.width - i.right - viewRect.x;
-    viewRect.height = size.height - i.bottom - viewRect.y;
-    iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
-    textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
+    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
         c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
@@ -82,8 +79,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     } else {
       g.setColor(new Color(220, 220, 220));
     }
-    g.fillRect(viewRect.x, viewRect.y,
-           viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+    g.fillRect(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
 
     Color color = new Color(255, 120, 40);
     if (model.isSelected()) {

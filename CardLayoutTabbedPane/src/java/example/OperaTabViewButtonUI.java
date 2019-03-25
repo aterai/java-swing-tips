@@ -50,12 +50,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
 
     Insets i = c.getInsets();
     c.getSize(size);
-    viewRect.x = i.left;
-    viewRect.y = i.top;
-    viewRect.width = size.width - i.right - viewRect.x;
-    viewRect.height = size.height - i.bottom - viewRect.y;
-    iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
-    textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
+    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
 
     Graphics2D g2 = (Graphics2D) g.create();
     // g2.setPaint(Color.CYAN); // c.getBackground());

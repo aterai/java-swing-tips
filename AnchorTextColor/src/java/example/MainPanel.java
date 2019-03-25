@@ -134,10 +134,10 @@ public final class MainPanel extends JPanel {
 //
 // class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //   private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
-//   private final Dimension size;
-//   private final Rectangle viewRect;
-//   private final Rectangle iconRect;
-//   private final Rectangle textRect;
+//   private final Dimension size = new Dimension();
+//   private final Rectangle viewRect = new Rectangle();
+//   private final Rectangle iconRect = new Rectangle();
+//   private final Rectangle textRect = new Rectangle();
 //
 //   public static LinkViewButtonUI createUI(JButton b) {
 // //     b.setForeground(Color.BLUE);
@@ -145,13 +145,7 @@ public final class MainPanel extends JPanel {
 // //     b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //     return LINKVIEW_BUTTON_UI;
 //   }
-//   protected BasicLinkViewButtonUI() {
-//     super();
-//     size = new Dimension();
-//     viewRect = new Rectangle();
-//     iconRect = new Rectangle();
-//     textRect = new Rectangle();
-//   }
+//
 //   @Override public synchronized void paint(Graphics g, JComponent c) {
 //     if (!(c instanceof AbstractButton)) {
 //       return;
@@ -163,12 +157,9 @@ public final class MainPanel extends JPanel {
 //
 //     Insets i = c.getInsets();
 //     b.getSize(size);
-//     viewRect.x = i.left;
-//     viewRect.y = i.top;
-//     viewRect.width = size.width - i.right - viewRect.x;
-//     viewRect.height = size.height - i.bottom - viewRect.y;
-//     iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
-//     textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
+//     viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+//     iconRect.setBounds(0, 0, 0, 0);
+//     textRect.setBounds(0, 0, 0, 0);
 //
 //     String text = SwingUtilities.layoutCompoundLabel(
 //       c, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),

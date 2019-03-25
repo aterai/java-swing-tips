@@ -117,10 +117,10 @@ public final class MainPanel extends JPanel {
 class LinkViewButtonUI extends BasicButtonUI {
   // protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
   protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
-  protected final Dimension size;
-  protected final Rectangle viewRect;
-  protected final Rectangle iconRect;
-  protected final Rectangle textRect;
+  protected final Dimension size = new Dimension();
+  protected final Rectangle viewRect = new Rectangle();
+  protected final Rectangle iconRect = new Rectangle();
+  protected final Rectangle textRect = new Rectangle();
 
   public static ButtonUI createUI(JButton b, String href) {
     b.setForeground(Color.BLUE);
@@ -159,14 +159,6 @@ class LinkViewButtonUI extends BasicButtonUI {
     return new LinkViewButtonUI();
   }
 
-  protected LinkViewButtonUI() {
-    super();
-    size = new Dimension();
-    viewRect = new Rectangle();
-    iconRect = new Rectangle();
-    textRect = new Rectangle();
-  }
-
   @Override public void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;
@@ -177,12 +169,9 @@ class LinkViewButtonUI extends BasicButtonUI {
 
     Insets i = c.getInsets();
     b.getSize(size);
-    viewRect.x = i.left;
-    viewRect.y = i.top;
-    viewRect.width = size.width - i.right - viewRect.x;
-    viewRect.height = size.height - i.bottom - viewRect.y;
-    iconRect.setBounds(0, 0, 0, 0); // .x = iconRect.y = iconRect.width = iconRect.height = 0;
-    textRect.setBounds(0, 0, 0, 0); // .x = textRect.y = textRect.width = textRect.height = 0;
+    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
         c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
