@@ -74,6 +74,7 @@ public final class MainPanel extends JPanel {
           }
         } catch (InterruptedException | ExecutionException ex) {
           ex.printStackTrace();
+          Toolkit.getDefaultToolkit().beep();
         }
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
