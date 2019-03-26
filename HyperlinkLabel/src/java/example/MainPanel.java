@@ -38,13 +38,13 @@ public final class MainPanel extends JPanel {
 
     Action browseAction = new AbstractAction(siteLink) {
       @Override public void actionPerformed(ActionEvent e) {
-        Toolkit.getDefaultToolkit().beep();
         try {
-          if (!Desktop.isDesktopSupported()) {
+          if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(new URI(siteLink));
           }
         } catch (IOException | URISyntaxException ex) {
           ex.printStackTrace();
+          Toolkit.getDefaultToolkit().beep();
         }
       }
     };

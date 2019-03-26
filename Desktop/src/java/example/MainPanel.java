@@ -26,6 +26,7 @@ public final class MainPanel extends JPanel {
         try {
           Desktop.getDesktop().browse(new URI(MYSITE));
         } catch (IOException | URISyntaxException ex) {
+          ex.printStackTrace();
           textArea.setText(ex.getMessage());
         }
         textArea.setText(e.toString());

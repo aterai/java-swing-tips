@@ -248,11 +248,12 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         // Web Start
         // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
         // bs.showDocument(url);
-        if (Desktop.isDesktopSupported()) { // JDK 1.6.0
+        if (Desktop.isDesktopSupported()) {
           Desktop.getDesktop().browse(url.toURI());
         }
       } catch (URISyntaxException | IOException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
       }
     }
   }
