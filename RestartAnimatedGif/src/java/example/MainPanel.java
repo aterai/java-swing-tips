@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
       bi = ImageIO.read(url);
     } catch (IOException ex) {
       ex.printStackTrace();
-      return;
+      bi = makeMissingImage();
     }
     ImageIcon icon9 = new ImageIcon(bi);
     ImageIcon animatedIcon = new ImageIcon(url);
@@ -80,6 +80,17 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
     return p;
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String... args) {
