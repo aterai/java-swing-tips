@@ -108,13 +108,18 @@ class ZoomAndPanHandler extends MouseAdapter {
   // https://community.oracle.com/thread/1263955
   // How to implement Zoom & Pan in Java using Graphics2D
   private Point transformPoint(Point p1) {
-    Point p2 = new Point();
-    try {
-      AffineTransform inverse = coordAndZoomTransform.createInverse();
-      inverse.transform(p1, p2);
-    } catch (NoninvertibleTransformException ex) {
-      ex.printStackTrace();
+    AffineTransform inverse = coordAndZoomTransform;
+    boolean hasInverse = coordAndZoomTransform.getDeterminant() != 0d;
+    if (hasInverse) {
+      try {
+        inverse = coordAndZoomTransform.createInverse();
+      } catch (NoninvertibleTransformException ex) {
+        // should never happen
+        assert false;
+      }
     }
+    Point p2 = new Point();
+    inverse.transform(p1, p2);
     return p2;
   }
 
