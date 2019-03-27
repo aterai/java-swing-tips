@@ -77,6 +77,7 @@ public final class MainPanel extends JPanel {
         ZipUtil.zip(path, tgt);
       } catch (IOException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
         // LOGGER.info("Cant zip! : " + path.toString());
       }
     });
@@ -129,6 +130,7 @@ public final class MainPanel extends JPanel {
         ZipUtil.unzip(path, destDir);
       } catch (IOException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
         // LOGGER.info("Cant unzip! : " + path.toString());
       }
     });
