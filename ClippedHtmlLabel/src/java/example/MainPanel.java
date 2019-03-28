@@ -38,14 +38,11 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    try {
-      model.addRow(new Object[] {0, "FrontPage", new URL("https://ateraimemo.com/")});
-      model.addRow(new Object[] {1, "Java Swing Tips", new URL("https://ateraimemo.com/Swing.html")});
-      model.addRow(new Object[] {2, "Example", new URL("http://www.example.com/")});
-      model.addRow(new Object[] {3, "Example.jp", new URL("http://www.example.jp/")});
-    } catch (MalformedURLException ex) {
-      ex.printStackTrace();
-    }
+
+    model.addRow(new Object[] {0, "FrontPage", makeUrl("https://ateraimemo.com/")});
+    model.addRow(new Object[] {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")});
+    model.addRow(new Object[] {2, "Example", makeUrl("http://www.example.com/")});
+    model.addRow(new Object[] {3, "Example.jp", makeUrl("http://www.example.jp/")});
 
     JTable table1 = makeTable(model);
     UrlRenderer1 renderer1 = new UrlRenderer1();
@@ -65,6 +62,15 @@ public final class MainPanel extends JPanel {
     sp.setResizeWeight(.5);
     add(sp);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static URL makeUrl(String path) {
+    try {
+      return new URL(path);
+    } catch (MalformedURLException ex) {
+      ex.printStackTrace();
+      return null;
+    }
   }
 
   private static JTable makeTable(DefaultTableModel model) {
