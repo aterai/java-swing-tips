@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     JTextPane textPane = new JTextPane();
 
     makeFont(getClass().getResource("mona.ttf")).ifPresent(font -> {
-      System.out.println(font.toString());
+      // System.out.println(font.toString());
       textPane.setFont(font.deriveFont(10f));
       // textPane.setDocument(doc);
     });
@@ -73,9 +73,10 @@ public final class MainPanel extends JPanel {
       return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
     } catch (IOException | FontFormatException ex) {
       ex.printStackTrace();
+      return Optional.empty();
     }
-    return Optional.empty();
   }
+
   // private static Document makeDocument(URL url, String encoding) {
   //   DefaultStyledDocument doc = new DefaultStyledDocument();
   //   try (Reader reader = new InputStreamReader(url.openStream(), encoding);

@@ -225,7 +225,7 @@ final class TextureUtil {
   public static TexturePanel makeTexturePanel(JLabel label, URL url) {
     // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
     // Digital display font: Copyright (c) Yourname, Inc.
-    Font font = makeFont(url);
+    Font font = makeFont(url).orElseGet(label::getFont);
     label.setFont(font.deriveFont(80f));
     label.setBackground(new Color(0x0, true));
     label.setOpaque(false);
@@ -240,14 +240,13 @@ final class TextureUtil {
     return p;
   }
 
-  private static Font makeFont(URL url) {
-    Font font = null;
+  private static Optional<Font> makeFont(URL url) {
     try (InputStream is = url.openStream()) {
-      font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+      return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
     } catch (IOException | FontFormatException ex) {
       ex.printStackTrace();
+      return Optional.empty();
     }
-    return font;
   }
 }
 
