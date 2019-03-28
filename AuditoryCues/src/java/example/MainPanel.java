@@ -66,6 +66,7 @@ public final class MainPanel extends JPanel {
       clip.start();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
   }
   // import java.security.*;

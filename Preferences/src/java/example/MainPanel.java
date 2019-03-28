@@ -27,6 +27,7 @@ public class MainPanel extends JPanel {
         handler.prefs.flush();
       } catch (BackingStoreException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
       }
       Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
     });
@@ -116,6 +117,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
       prefs.flush();
     } catch (BackingStoreException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
   }
 
@@ -128,11 +130,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
       if (pt.x < 0 || pt.y < 0) {
         return;
       }
-      try {
-        pos.setLocation(pt);
-      } catch (IllegalComponentStateException ex) {
-        ex.printStackTrace();
-      }
+      pos.setLocation(pt);
     }
   }
 

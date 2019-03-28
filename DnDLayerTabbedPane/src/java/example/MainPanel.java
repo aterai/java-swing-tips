@@ -70,6 +70,7 @@ public final class MainPanel extends JPanel {
         t.getDropTarget().addDropTargetListener(dropTargetListener);
       } catch (TooManyListenersException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
       }
     });
 
