@@ -21,9 +21,12 @@ public final class MainPanel extends JPanel {
     JMenuBar menuBar = new JMenuBar();
     JMenu menu = new JMenu("JMenu");
     menuBar.add(menu);
+
     menu.add(new JCheckBoxMenuItem("default"));
+    Icon defIcon = UIManager.getIcon("CheckBoxMenuItem.checkIcon");
     UIManager.put("CheckBoxMenuItem.checkIcon", new CheckIcon());
     menu.add(new JCheckBoxMenuItem("checkIcon test"));
+    UIManager.put("CheckBoxMenuItem.checkIcon", defIcon);
 
     JMenu menu2 = new JMenu("JMenu2");
     JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem("setIcon");
@@ -68,7 +71,7 @@ class CheckIcon implements Icon {
       g2.translate(x, y);
       g2.setPaint(m.isSelected() ? Color.ORANGE : Color.GRAY);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.fillOval(0, 2, getIconWidth() - 4, getIconHeight() - 4);
+      g2.fillOval(1, 1, getIconWidth() - 2, getIconHeight() - 2);
       g2.dispose();
     }
   }
