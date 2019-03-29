@@ -132,6 +132,7 @@ public final class MainPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JFrame frame = new JFrame();
     frame.setUndecorated(true);

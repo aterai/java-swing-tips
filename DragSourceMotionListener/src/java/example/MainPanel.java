@@ -36,6 +36,7 @@ public final class MainPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JFrame f1 = new JFrame("@title@");
     JFrame f2 = new JFrame();

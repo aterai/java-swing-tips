@@ -361,7 +361,7 @@
       <compilerarg line="-XDcompilePolicy=simple"/>
       <compilerarg value="-processorpath"/>
       <compilerarg pathref="processorpath.ref"/>
-      <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF -Xep:CatchAndPrintStackTrace:OFF" />
+      <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
       <compilerarg value="-J-Dfile.encoding=UTF-8" />
       <!-- compilerarg value="-J-Dsun.jnu.encoding=UTF-8" / -->
     </javac>

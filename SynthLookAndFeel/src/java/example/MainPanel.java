@@ -46,6 +46,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(synth);
     } catch (IOException | ParseException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     // try {
     //   SynthLookAndFeel synth = new SynthLookAndFeel();

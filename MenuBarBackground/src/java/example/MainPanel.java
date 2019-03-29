@@ -99,6 +99,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     String key = "Menu.useMenuBarBackgroundForTopLevel";
     System.out.println(key + ": " + UIManager.getBoolean(key));

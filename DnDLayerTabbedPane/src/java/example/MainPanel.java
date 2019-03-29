@@ -115,6 +115,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     TabTransferHandler handler = new TabTransferHandler();
     JCheckBoxMenuItem check = new JCheckBoxMenuItem("Ghost image: Heavyweight");

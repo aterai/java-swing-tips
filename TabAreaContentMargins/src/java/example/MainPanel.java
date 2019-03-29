@@ -53,6 +53,7 @@ public final class MainPanel extends JPanel {
       d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(i.top, 0, i.bottom, 0));
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

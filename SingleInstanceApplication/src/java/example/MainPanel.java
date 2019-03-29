@@ -32,6 +32,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     // if (counter.getInstanceCount() > 1) {
     //   JOptionPane.showMessageDialog(null, "An instance of the application is already running...");

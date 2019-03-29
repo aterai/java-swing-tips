@@ -131,6 +131,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

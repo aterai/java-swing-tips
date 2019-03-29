@@ -44,6 +44,7 @@ public final class MainPanel extends JPanel {
       // UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", new ArrowIcon());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
 
     JMenuBar menuBar = new JMenuBar();

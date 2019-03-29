@@ -99,6 +99,7 @@ public class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JDialog dialog = new JDialog();
     dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

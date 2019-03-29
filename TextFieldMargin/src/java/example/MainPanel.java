@@ -67,6 +67,7 @@ public final class MainPanel extends JPanel {
       UIManager.put("TextField.margin", new InsetsUIResource(m.top, m.left + 5, m.bottom, m.right));
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

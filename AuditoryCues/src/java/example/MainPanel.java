@@ -121,6 +121,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
     // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.defaultCueList"));
@@ -164,6 +165,7 @@ final class LookAndFeelUtil {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
       }
     });
     lafGroup.add(lafItem);

@@ -48,6 +48,7 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
     UIManager.put("PopupMenuUI", "example.CustomPopupMenuUI");
     // contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
