@@ -63,22 +63,26 @@ public class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(2));
 
     for (int i = 0; i < BIT_LENGTH; i++) {
-      BigInteger l = BigInteger.ONE.shiftLeft(i);
-      JCheckBox c = new JCheckBox(Integer.toString(i + 1), !status.and(l).equals(BigInteger.ZERO));
-      // c.setSelected(!status.and(l).equals(BigInteger.ZERO));
-      c.addActionListener(e -> {
-        JCheckBox cb = (JCheckBox) e.getSource();
-        BigInteger newValue = cb.isSelected() ? status.or(l) : status.xor(l);
-        undoSupport.postEdit(new StatusEdit(status, newValue));
-        status = newValue;
-        label.setText(print(status));
-      });
-      panel.add(c);
+      panel.add(makeCheckBox(i));
     }
     add(label, BorderLayout.NORTH);
     add(panel);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JCheckBox makeCheckBox(int idx) {
+    BigInteger l = BigInteger.ONE.shiftLeft(idx);
+    JCheckBox c = new JCheckBox(Integer.toString(idx + 1), !status.and(l).equals(BigInteger.ZERO));
+    // c.setSelected(!status.and(l).equals(BigInteger.ZERO));
+    c.addActionListener(e -> {
+      JCheckBox cb = (JCheckBox) e.getSource();
+      BigInteger newValue = cb.isSelected() ? status.or(l) : status.xor(l);
+      undoSupport.postEdit(new StatusEdit(status, newValue));
+      status = newValue;
+      label.setText(print(status));
+    });
+    return c;
   }
 
   protected final void updateCheckBoxes(BigInteger value) {
