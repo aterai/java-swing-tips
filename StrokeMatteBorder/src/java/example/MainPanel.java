@@ -32,10 +32,9 @@ public final class MainPanel extends JPanel {
     Border dashed = new StrokeMatteBorder(0, 0, 1, 1, dashedStroke, Color.BLACK);
     for (c.gridy = 0; c.gridy < row; c.gridy++) {
       for (c.gridx = 0; c.gridx < column; c.gridx++) {
-        JLabel l = new JLabel(String.format(Locale.ENGLISH, "%d%d", c.gridx, c.gridy), SwingConstants.CENTER);
+        JLabel l = makeLabel(String.format(Locale.ENGLISH, "%d%d", c.gridx, c.gridy));
         l.setBorder(BorderFactory.createCompoundBorder(
-            dashed,
-            BorderFactory.createEmptyBorder(1, 1, 0, 0)));
+            dashed, BorderFactory.createEmptyBorder(1, 1, 0, 0)));
         p.add(l, c);
       }
     }
@@ -43,6 +42,10 @@ public final class MainPanel extends JPanel {
         BorderFactory.createEmptyBorder(15, 15, 15 + 1, 15 + 1),
         new StrokeMatteBorder(1, 1, 0, 0, dashedStroke, Color.RED)));
     return p;
+  }
+
+  private static JLabel makeLabel(String title) {
+    return new JLabel(title, SwingConstants.CENTER);
   }
 
   public static void main(String... args) {
