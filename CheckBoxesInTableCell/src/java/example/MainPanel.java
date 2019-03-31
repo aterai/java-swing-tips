@@ -102,7 +102,7 @@ class CheckBoxesPanel extends JPanel {
     setOpaque(false);
     setBackground(BGC);
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    EventQueue.invokeLater(() -> initButtons());
+    EventQueue.invokeLater(this::initButtons);
   }
 
   private void initButtons() {

@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 
     addButton.addActionListener(e -> {
       sorter.setSortKeys(null);
-      IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
+      IntStream.range(0, 100).mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i}).forEach(model::addRow);
     });
 
     add(scroll);
