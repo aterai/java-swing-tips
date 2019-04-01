@@ -1,10 +1,5 @@
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-/**
-@version 1.0 02/25/99
-@author Nobuo Tamemasa
-modified by aterai aterai@outlook.com
-*/
 
 package example;
 
@@ -24,6 +19,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+// @version 1.0 02/25/99
+// @author Nobuo Tamemasa
+// modified by aterai aterai@outlook.com
 public class SortableTableModel extends DefaultTableModel {
   @SuppressWarnings("unchecked")
   public final void sortByColumn(int column, boolean isAscent) {
