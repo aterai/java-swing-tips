@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("makeImage(16, Color.WHITE)");
     button2.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser() {
-        @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+        @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
           JDialog dialog = super.createDialog(parent);
           dialog.setIconImage(makeImage(16, Color.WHITE));
           return dialog;

@@ -10,8 +10,6 @@ import java.math.BigInteger;
 import java.util.Collections;
 import javax.swing.*;
 import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
@@ -105,12 +103,12 @@ public class MainPanel extends JPanel {
       this.newValue = newValue;
     }
 
-    @Override public void undo() throws CannotUndoException {
+    @Override public void undo() { // throws CannotUndoException {
       super.undo();
       updateCheckBoxes(oldValue);
     }
 
-    @Override public void redo() throws CannotRedoException {
+    @Override public void redo() { // throws CannotRedoException {
       super.redo();
       updateCheckBoxes(newValue);
     }
