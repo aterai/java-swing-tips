@@ -57,33 +57,32 @@ class BasicTransferable implements Transferable {
    * for providing the data (from most richly descriptive to least descriptive).
    * @return an array of data flavors in which this data can be transferred
    */
-  @SuppressWarnings("LocalVariableName")
   @Override public DataFlavor[] getTransferDataFlavors() {
     DataFlavor[] richerFlavors = getRicherFlavors();
-    int nRicher = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
-    int nHtml = isHtmlSupported() ? htmlFlavors.length : 0;
-    int nPlain = isPlainSupported() ? plainFlavors.length : 0;
-    int nString = isPlainSupported() ? stringFlavors.length : 0;
-    int nFlavors = nRicher + nHtml + nPlain + nString;
-    DataFlavor[] flavors = new DataFlavor[nFlavors];
+    int numRicher = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+    int numHtml = isHtmlSupported() ? htmlFlavors.length : 0;
+    int numPlain = isPlainSupported() ? plainFlavors.length : 0;
+    int numString = isPlainSupported() ? stringFlavors.length : 0;
+    int numFlavors = numRicher + numHtml + numPlain + numString;
+    DataFlavor[] flavors = new DataFlavor[numFlavors];
 
     // fill in the array
-    int nDone = 0;
-    // if (nRicher > 0) {
-    System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
-    nDone += nRicher;
+    int numDone = 0;
+    // if (numRicher > 0) {
+    System.arraycopy(richerFlavors, 0, flavors, numDone, numRicher);
+    numDone += numRicher;
     // }
-    // if (nHtml > 0) {
-    System.arraycopy(htmlFlavors, 0, flavors, nDone, nHtml);
-    nDone += nHtml;
+    // if (numHtml > 0) {
+    System.arraycopy(htmlFlavors, 0, flavors, numDone, numHtml);
+    numDone += numHtml;
     // }
-    // if (nPlain > 0) {
-    System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
-    nDone += nPlain;
+    // if (numPlain > 0) {
+    System.arraycopy(plainFlavors, 0, flavors, numDone, numPlain);
+    numDone += numPlain;
     // }
-    // if (nString > 0) {
-    System.arraycopy(stringFlavors, 0, flavors, nDone, nString);
-    //   nDone += nString;
+    // if (numString > 0) {
+    System.arraycopy(stringFlavors, 0, flavors, numDone, numString);
+    //   numDone += numString;
     // }
     return flavors;
   }
@@ -147,8 +146,8 @@ class BasicTransferable implements Transferable {
 
   protected boolean isRicherFlavor(DataFlavor flavor) {
     // DataFlavor[] richerFlavors = getRicherFlavors();
-    // int nFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
-    // for (int i = 0; i < nFlavors; i++) {
+    // int numFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+    // for (int i = 0; i < numFlavors; i++) {
     //   if (richerFlavors[i].equals(flavor)) {
     //     return true;
     //   }

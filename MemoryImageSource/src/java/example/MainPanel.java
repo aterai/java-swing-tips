@@ -73,27 +73,26 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     g2.dispose();
   }
 
-  @SuppressWarnings("LocalVariableName")
   @Override public void mouseDragged(MouseEvent e) {
-    double xDelta = e.getX() - startPoint.getX();
-    double yDelta = e.getY() - startPoint.getY();
-    double delta = Math.max(Math.abs(xDelta), Math.abs(yDelta));
+    double xdelta = e.getX() - startPoint.getX();
+    double ydelta = e.getY() - startPoint.getY();
+    double delta = Math.max(Math.abs(xdelta), Math.abs(ydelta));
 
-    double xIncrement = xDelta / delta;
-    double yIncrement = yDelta / delta;
-    double xStart = startPoint.x;
-    double yStart = startPoint.y;
+    double xincrement = xdelta / delta;
+    double yincrement = ydelta / delta;
+    double xstart = startPoint.x;
+    double ystart = startPoint.y;
     Point pt = new Point();
     for (int i = 0; i < delta; i++) {
-      pt.setLocation((int) xStart, (int) yStart);
+      pt.setLocation((int) xstart, (int) ystart);
       // if (pt.x < 0 || pt.y < 0 || pt.x >= rect.width || pt.y >= rect.height) {
       if (!rect.contains(pt)) {
         break;
       }
       paintStamp(pt, penColor);
       // src.newPixels(pt.x - 2, pt.y - 2, 4, 4);
-      xStart += xIncrement;
-      yStart += yIncrement;
+      xstart += xincrement;
+      ystart += yincrement;
     }
     startPoint = e.getPoint();
   }
