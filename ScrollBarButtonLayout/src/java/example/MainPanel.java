@@ -54,14 +54,14 @@ public final class MainPanel extends JPanel {
 
 // Copied from javax.swing.plaf.basic.BasicScrollBarUI
 class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
-  @SuppressWarnings({"PMD.ExcessiveMethodLength", "checkstyle:variabledeclarationusagedistance"})
+  @SuppressWarnings("PMD.ExcessiveMethodLength")
   @Override protected void layoutVScrollbar(JScrollBar sb) {
     Dimension sbSize = sb.getSize();
     Insets sbInsets = sb.getInsets();
 
     /* Width and left edge of the buttons and thumb. */
-    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
-    int itemX = sbInsets.left;
+    // int itemW = sbSize.width - sbInsets.left - sbInsets.right;
+    // int itemX = sbInsets.left;
 
     /* Nominal locations of the buttons, assuming their preferred
      * size will fit.
@@ -73,7 +73,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     int incrButtonH = incrButton.getPreferredSize().height;
 
     // int decrButtonY = sbInsets.top;
-    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+    // int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
     int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
 
     /* The thumb must fit within the height left over after we
@@ -125,6 +125,12 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
       decrButtonH = sbAvailButtonH / 2;
       incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
     }
+
+    /* Width and left edge of the buttons and thumb. */
+    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
+    int itemX = sbInsets.left;
+    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+
     decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
     incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);
 
@@ -160,14 +166,14 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 }
 
 class MetalCustomScrollBarUI extends MetalScrollBarUI {
-  @SuppressWarnings({"PMD.ExcessiveMethodLength", "checkstyle:variabledeclarationusagedistance"})
+  @SuppressWarnings("PMD.ExcessiveMethodLength")
   @Override protected void layoutVScrollbar(JScrollBar sb) {
     Dimension sbSize = sb.getSize();
     Insets sbInsets = sb.getInsets();
 
     /* Width and left edge of the buttons and thumb. */
-    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
-    int itemX = sbInsets.left;
+    // int itemW = sbSize.width - sbInsets.left - sbInsets.right;
+    // int itemX = sbInsets.left;
 
     /* Nominal locations of the buttons, assuming their preferred
      * size will fit.
@@ -179,7 +185,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     int incrButtonH = incrButton.getPreferredSize().height;
 
     // int decrButtonY = sbInsets.top;
-    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+    // int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
     int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
 
     /* The thumb must fit within the height left over after we
@@ -231,6 +237,12 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
       decrButtonH = sbAvailButtonH / 2;
       incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
     }
+
+    /* Width and left edge of the buttons and thumb. */
+    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
+    int itemX = sbInsets.left;
+    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+
     decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
     incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);
 
