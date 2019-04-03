@@ -17,21 +17,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    add(makeUI());
-    setOpaque(false);
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Component makeUI() {
-    JInternalFrame internal = new JInternalFrame("@title@");
-    BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
-    Component title = ui.getNorthPane();
-    for (MouseMotionListener l: title.getListeners(MouseMotionListener.class)) {
-      title.removeMouseMotionListener(l);
-    }
-    DragWindowListener dwl = new DragWindowListener();
-    title.addMouseListener(dwl);
-    title.addMouseMotionListener(dwl);
 
     JButton closeButton = new JButton("close");
     closeButton.addActionListener(e -> {
@@ -46,8 +31,26 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(new JTree()));
     p.add(closeButton, BorderLayout.SOUTH);
+
+    JInternalFrame internal = makeInternalFrame();
     internal.getContentPane().add(p);
     internal.setVisible(true);
+
+    add(internal);
+    setOpaque(false);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JInternalFrame makeInternalFrame() {
+    JInternalFrame internal = new JInternalFrame("@title@");
+    BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
+    Component title = ui.getNorthPane();
+    for (MouseMotionListener l: title.getListeners(MouseMotionListener.class)) {
+      title.removeMouseMotionListener(l);
+    }
+    DragWindowListener dwl = new DragWindowListener();
+    title.addMouseListener(dwl);
+    title.addMouseMotionListener(dwl);
 
     KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
     focusManager.addPropertyChangeListener(e -> {
