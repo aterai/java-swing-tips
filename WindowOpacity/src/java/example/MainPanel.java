@@ -20,15 +20,15 @@ public final class MainPanel extends JPanel {
   public MainPanel() {
     super();
     setBackground(new Color(.5f, .8f, .5f, .5f));
-    add(new JLabel("aaa: "));
+    add(new JLabel("JLabel: "));
     add(new JTextField(10));
-    add(new JButton("bbb"));
+    add(new JButton("JButton"));
 
     String[] model = {"Color(.5f, .8f, .5f, .5f)", "ImageTexturePaint", "CheckerTexturePaint"};
     JComboBox<String> combo = new JComboBox<>(model);
 
     // if (System.getProperty("java.version").startsWith("1.7.0")) {
-    //   // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
+    //   // JDK 1.7.0 Translucency JFrame + JComboBox bug???
     //   // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
     //   // [JDK-7156657] Version 7 doesn't support translucent popup menus against a translucent window - Java Bug System
     //   // https://bugs.openjdk.java.net/browse/JDK-7156657
@@ -125,11 +125,6 @@ public final class MainPanel extends JPanel {
   }
 
   public static void createAndShowGui() {
-    // try {
-    //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-    //   ex.printStackTrace();
-    // }
     JFrame.setDefaultLookAndFeelDecorated(true);
     JFrame frame = new JFrame("@title@");
     // frame.setUndecorated(true);
@@ -145,6 +140,7 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
 // // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
 // // [JDK-7156657] Version 7 doesn't support translucent popup menus against a translucent window - Java Bug System
 // // https://bugs.openjdk.java.net/browse/JDK-7156657
@@ -158,6 +154,8 @@ public final class MainPanel extends JPanel {
 //       }
 //     });
 //   }
+//
 //   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+//
 //   @Override public void popupMenuCanceled(PopupMenuEvent e) {}
 // }
