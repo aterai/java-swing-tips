@@ -213,7 +213,7 @@ class AnimatedLabel extends JLabel {
 }
 
 class AnimeIcon implements Icon {
-  private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
+  private static final Color ELLIPSE_COLOR = new Color(0x80_80_80);
   private static final double R = 2d;
   private static final double SX = 1d;
   private static final double SY = 1d;

@@ -171,7 +171,7 @@ class LightboxGlassPane extends JPanel {
 }
 
 class AnimeIcon implements Icon {
-  private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
+  private static final Color ELLIPSE_COLOR = new Color(0x80_80_80);
   private static final double R = 2d;
   private static final double SX = 0d;
   private static final double SY = 0d;

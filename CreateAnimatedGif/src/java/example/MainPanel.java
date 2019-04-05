@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
 
 public final class MainPanel extends JPanel {
   private static final int DELAY = 10;
-  private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
+  private static final Color ELLIPSE_COLOR = new Color(0x80_80_80);
   private static final double R = 20d;
   private static final double SX = 20d;
   private static final double SY = 20d;
