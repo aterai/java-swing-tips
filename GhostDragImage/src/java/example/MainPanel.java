@@ -177,8 +177,9 @@ class ListItemTransferHandler extends TransferHandler {
     // boolean insert = dl.isInsert();
     int max = listModel.getSize();
     int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
+    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+    // index = Math.min(index, max);
+    index = index >= 0 && index < max ? index : max;
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);

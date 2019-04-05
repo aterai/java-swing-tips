@@ -323,8 +323,9 @@ class TableRowTransferHandler extends TransferHandler {
     // boolean insert = dl.isInsert();
     int max = model.getRowCount();
     int index = dl.getRow();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
+    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+    // index = Math.min(index, max);
+    index = index >= 0 && index < max ? index : max;
     addIndex = index;
     // target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     try {
