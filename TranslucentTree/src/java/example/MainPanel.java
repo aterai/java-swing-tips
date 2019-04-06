@@ -120,9 +120,9 @@ class TransparentRootPane extends JRootPane {
     int sz = cs * cs;
     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
-    g2.setPaint(new Color(220, 220, 220));
+    g2.setPaint(new Color(0xDC_DC_DC));
     g2.fillRect(0, 0, sz, sz);
-    g2.setPaint(new Color(200, 200, 200, 200));
+    g2.setPaint(new Color(0xC8_C8_C8_C8, true));
     for (int i = 0; i * cs < sz; i++) {
       for (int j = 0; j * cs < sz; j++) {
         if ((i + j) % 2 == 0) {

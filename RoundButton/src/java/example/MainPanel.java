@@ -111,7 +111,7 @@ class RoundedCornerButton extends JButton {
     // setModel(new DefaultButtonModel());
     // init(text, icon);
     // setContentAreaFilled(false);
-    // setBackground(new Color(250, 250, 250));
+    // setBackground(new Color(0xFA_FA_FA));
     // initShape();
   }
 
@@ -119,7 +119,7 @@ class RoundedCornerButton extends JButton {
     super.updateUI();
     setContentAreaFilled(false);
     setFocusPainted(false);
-    setBackground(new Color(250, 250, 250));
+    setBackground(new Color(0xFA_FA_FA));
     initShape();
   }
 
@@ -239,7 +239,7 @@ class ShapeButton extends JButton {
     setBorder(BorderFactory.createEmptyBorder());
     setContentAreaFilled(false);
     setFocusPainted(false);
-    setBackground(new Color(250, 250, 250));
+    setBackground(new Color(0xFA_FA_FA));
   }
 
   private void paintFocusAndRollover(Graphics2D g2, Color color) {

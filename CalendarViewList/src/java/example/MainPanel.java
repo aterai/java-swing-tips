@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
           // String s = dow.getDisplayName(TextStyle.SHORT_STANDALONE, l);
           // setText(s.substring(0, Math.min(2, s.length())));
           setText(dow.getDisplayName(TextStyle.SHORT_STANDALONE, l));
-          setBackground(new Color(220, 220, 220));
+          setBackground(new Color(0xDC_DC_DC));
         }
         return this;
       }

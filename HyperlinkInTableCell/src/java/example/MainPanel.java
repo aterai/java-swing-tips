@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     model.addRow(new Object[] {3, "Example.jp", makeUrl("http://www.example.jp/")});
 
     JTable table = new JTable(model) {
-      private final Color evenColor = new Color(250, 250, 250);
+      private final Color evenColor = new Color(0xFA_FA_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         c.setForeground(getForeground());

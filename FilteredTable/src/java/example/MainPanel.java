@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     model.addRowData(new RowData("Name 0", "Test aa"));
 
     JTable table = new JTable(model) {
-      private final Color evenColor = new Color(250, 250, 250);
+      private final Color evenColor = new Color(0xFA_FA_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {

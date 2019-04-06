@@ -124,7 +124,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
       arrowButton.setFocusPainted(false);
       arrowButton.setContentAreaFilled(false);
       arrowButton.setBorder(BorderFactory.createCompoundBorder(
-          BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(127, 157, 185)),
+          BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(0x7F_9D_B9)),
           BorderFactory.createEmptyBorder(1, 1, 1, 1)));
     }
   }

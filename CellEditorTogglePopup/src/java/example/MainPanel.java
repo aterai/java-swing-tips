@@ -29,10 +29,11 @@ public final class MainPanel extends JPanel {
     comboBox.addAncestorListener(new AncestorListener() {
       @Override public void ancestorAdded(AncestorEvent e) {
         System.out.println("ancestorAdded");
-        e.getComponent().setEnabled(false);
+        Component c = e.getComponent();
+        c.setEnabled(false);
         EventQueue.invokeLater(() -> {
           System.out.println("invokeLater");
-          e.getComponent().setEnabled(true);
+          c.setEnabled(true);
         });
       }
 

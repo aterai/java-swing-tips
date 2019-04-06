@@ -130,7 +130,7 @@ class CompoundButton extends JButton {
     });
     setFocusPainted(false);
     setContentAreaFilled(false);
-    setBackground(new Color(250, 250, 250));
+    setBackground(new Color(0xFA_FA_FA));
     initShape();
   }
 

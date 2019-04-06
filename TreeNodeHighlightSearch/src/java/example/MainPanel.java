@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
 
 //*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-  private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
+  private static final Color ROLLOVER_ROW_COLOR = new Color(0xDC_F0_FF);
   protected String query;
   private boolean rollOver;
 
@@ -138,7 +138,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 /*/
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-  private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
+  private static final Color ROLLOVER_ROW_COLOR = new Color(0xDC_F0_FF);
   public String q;
   @Override public void updateUI() {
     setTextSelectionColor(null);
