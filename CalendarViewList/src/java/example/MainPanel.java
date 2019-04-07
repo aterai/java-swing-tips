@@ -189,11 +189,11 @@ public final class MainPanel extends JPanel {
       if (YearMonth.from(value).equals(YearMonth.from(getCurrentLocalDate()))) {
         DayOfWeek dow = value.getDayOfWeek();
         if (value.isEqual(realLocalDate)) {
-          fgc = new Color(100, 255, 100);
+          fgc = new Color(0x64_FF_64);
         } else if (dow == DayOfWeek.SUNDAY) {
-          fgc = new Color(255, 100, 100);
+          fgc = new Color(0xFF_64_64);
         } else if (dow == DayOfWeek.SATURDAY) {
-          fgc = new Color(100, 100, 255);
+          fgc = new Color(0x64_64_FF);
         }
       } else {
         fgc = Color.GRAY;

@@ -126,7 +126,7 @@ class TablePopupMenu extends JPopupMenu {
 class DnDTable extends JTable implements DragGestureListener, Transferable {
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-  private static final Color LINE_COLOR = new Color(255, 100, 100);
+  private static final Color LINE_COLOR = new Color(0xFF_64_64);
   private final Rectangle targetLine = new Rectangle();
   protected int draggedIndex = -1;
   protected int targetIndex = -1;
