@@ -79,7 +79,7 @@ class WarningSpinner extends JSpinner {
     JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
     ftf.setFormatterFactory(makeFFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
-      private final Color errorBackground = new Color(255, 200, 200);
+      private final Color errorBackground = new Color(0xFF_C8_C8);
       @Override public void changedUpdate(DocumentEvent e) {
         updateEditValid();
       }

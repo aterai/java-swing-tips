@@ -19,7 +19,7 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
 public class MainPanel extends JPanel {
-  private static final Color WARNING_COLOR = new Color(255, 200, 200);
+  private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private static final String[] INIT_TXT = {
     "Trail: Creating a GUI with JFC/Swing",
     "Lesson: Learning Swing by Example",

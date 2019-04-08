@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"));
 
-  private static final Color WARNING_COLOR = new Color(255, 200, 200);
+  private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private static final Color CURRENT_COLOR = new Color(0xAA_00_64_00, true);
   private static final Color HIGHLIGHT_COLOR = new Color(0x64_DD_DD_00, true);
   private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(CURRENT_COLOR);

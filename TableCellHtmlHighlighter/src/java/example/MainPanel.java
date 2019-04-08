@@ -18,7 +18,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private static final Color WARNING_COLOR = new Color(255, 200, 200);
+  private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private final JTextField field = new JTextField("ab+");
   private final HighlightTableCellRenderer renderer = new HighlightTableCellRenderer();
 
