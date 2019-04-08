@@ -15,12 +15,14 @@ public final class MainPanel extends JPanel {
     {"Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\", ""},
     {"Ctrl", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "Enter", ""},
     {"Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "", "↑"},
-    {"Fn", "Alt", "                         ", "Alt", "←", "↓", "→"}
+    {"Fn", "Alt", "                           ", "Alt", "←", "↓", "→"}
   };
 
   private MainPanel() {
     super(new BorderLayout(2, 2));
     Component keyboard = makeKeyboardPanel();
+    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(keyboard));
+
     JPanel box = new JPanel(new FlowLayout(FlowLayout.CENTER));
     box.add(keyboard);
 
@@ -34,12 +36,11 @@ public final class MainPanel extends JPanel {
     JPanel keyboard = new JPanel(new GridBagLayout());
 
     GridBagConstraints c = new GridBagConstraints();
-    c.weightx = 1d;
-    c.weighty = 1d;
     c.fill = GridBagConstraints.BOTH;
-    c.gridheight = 1;
-    c.gridx = 0;
-
+    // c.weightx = 1d;
+    // c.weighty = 1d;
+    // c.gridheight = 1;
+    // c.gridx = 0;
     c.gridy = 50;
     for (int i = 0; i < KEYS[0].length * 2; i++) {
       c.gridx = i;
@@ -64,7 +65,6 @@ public final class MainPanel extends JPanel {
         c.gridx += c.gridwidth;
       }
     }
-    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(keyboard));
     return keyboard;
   }
 
