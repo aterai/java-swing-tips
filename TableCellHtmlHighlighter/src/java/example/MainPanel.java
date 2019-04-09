@@ -127,7 +127,7 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
       Matcher matcher = Pattern.compile(pattern).matcher(txt);
       int pos = 0;
       StringBuilder buf = new StringBuilder("<html>");
-      while (matcher.find(pos)) {
+      while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
         int end = matcher.end();
         buf.append(String.format(SPAN, txt.substring(pos, start), txt.substring(start, end)));

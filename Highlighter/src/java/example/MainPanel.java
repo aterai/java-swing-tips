@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
       String text = doc.getText(0, doc.getLength());
       Matcher matcher = Pattern.compile(pattern).matcher(text);
       int pos = 0;
-      while (matcher.find(pos)) {
+      while (matcher.find(pos) && !matcher.group().isEmpty()) {
         pos = matcher.end();
         highlighter.addHighlight(matcher.start(), pos, HIGHLIGHT);
       }

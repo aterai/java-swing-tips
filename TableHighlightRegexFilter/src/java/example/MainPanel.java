@@ -145,7 +145,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     if (Objects.nonNull(pattern) && !pattern.isEmpty() && !Objects.equals(pattern, prev)) {
       Matcher matcher = Pattern.compile(pattern).matcher(txt);
       int pos = 0;
-      while (matcher.find(pos)) {
+      while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
         int end = matcher.end();
         try {
