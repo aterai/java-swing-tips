@@ -154,7 +154,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
     Component c = list.getCellRenderer().getListCellRendererComponent(list, prototype, index, false, false);
     Rectangle r = list.getCellBounds(index, index);
     c.setBounds(r);
-    // c.doLayout(); // may be needed for mone LayoutManager
+    // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout) // *1
     pt.translate(-r.x, -r.y);
     // Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
     // if (b instanceof JButton) {
@@ -180,7 +180,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
   protected JButton button;
 
   protected ButtonsRenderer(DefaultListModel<E> model) {
-    super(new BorderLayout());
+    super(new BorderLayout()); // *1
     this.model = model;
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
     setOpaque(true);

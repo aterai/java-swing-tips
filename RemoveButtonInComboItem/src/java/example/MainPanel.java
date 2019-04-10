@@ -211,7 +211,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     Component c = list.getCellRenderer().getListCellRendererComponent(list, proto, index, false, false);
     Rectangle r = list.getCellBounds(index, index);
     c.setBounds(r);
-    // c.doLayout(); // may be needed for mone LayoutManager
+    // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout) // *1
     pt.translate(-r.x, -r.y);
     Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
     if (b instanceof JButton) {
@@ -226,7 +226,7 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
   private static final Color EVEN_COLOR = new Color(230, 255, 230);
   protected int targetIndex;
   protected int rolloverIndex = -1;
-  private final JPanel panel = new JPanel(new BorderLayout()) {
+  private final JPanel panel = new JPanel(new BorderLayout()) { // *1
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
       d.width = 0;
