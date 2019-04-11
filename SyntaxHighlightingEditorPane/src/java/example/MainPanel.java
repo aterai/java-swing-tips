@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
       engine.eval(r);
     } catch (IOException | ScriptException ex) {
       ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep(); 
+      Toolkit.getDefaultToolkit().beep();
     }
     return engine;
 
