@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RollOverList<E> extends JList<E> {
-  protected static final Color ROLLOVER_BACKGROUND = new Color(220, 240, 255);
+  protected static final Color ROLLOVER_BACKGROUND = new Color(0xDC_F0_FF);
   protected transient RollOverListener rollOverListener;
   protected int rollOverRowIndex = -1;
 

@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
 }
 
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
-  private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
+  private static final Color BACKGROUND_SELECTION_COLOR = new Color(0xDC_F0_FF);
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   protected String query;
 

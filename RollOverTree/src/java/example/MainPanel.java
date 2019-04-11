@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
   private static JTree makeTree(TreeModel model) {
     return new JTree(model) {
-      private final Color rolloverRowColor = new Color(220, 240, 255);
+      private final Color rolloverRowColor = new Color(0xDC_F0_FF);
       private int rollOverRowIndex = -1;
       private transient MouseMotionListener listener;
       @Override public void updateUI() {

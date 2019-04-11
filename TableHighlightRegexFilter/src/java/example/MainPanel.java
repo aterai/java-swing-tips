@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightTableCellRenderer extends JTextField implements TableCellRenderer {
-  private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
+  private static final Color BACKGROUND_SELECTION_COLOR = new Color(0xDC_F0_FF);
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private String pattern = "";
   private String prev;
