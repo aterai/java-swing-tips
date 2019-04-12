@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
       for (int col = 0; col < KEYS[row].length; col++) {
         String key = KEYS[row][col];
         int len = key.length();
-        c.gridwidth = len > 10 ? 14 :
-                      len > 4  ?  4 :
-                      len > 1  ?  3 :
-                      len == 1 ?  2 : 1;
+        c.gridwidth = len > 10 ? 14
+                    : len > 4  ? 4
+                    : len > 1  ? 3
+                    : len == 1 ? 2 : 1;
         if (key.isEmpty()) {
           keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE), c);
         } else {
