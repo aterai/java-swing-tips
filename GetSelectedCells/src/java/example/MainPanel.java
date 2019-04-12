@@ -135,7 +135,7 @@ class TablePopupMenu extends JPopupMenu {
       for (int row: table.getSelectedRows()) {
         for (int col: table.getSelectedColumns()) {
           Boolean b = (Boolean) table.getValueAt(row, col);
-          table.setValueAt(b ^= true, row, col);
+          table.setValueAt(!b, row, col);
         }
       }
     });
