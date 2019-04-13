@@ -19,9 +19,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    List<JSlider> list = Arrays.asList(
-        makeSilder("Default SnapToTicks"),
-        makeSilder("Custom SnapToTicks"));
+    JSlider s = makeSlider("Custom SnapToTicks");
+    initSlider(s);
+    List<JSlider> list = Arrays.asList(makeSlider("Default SnapToTicks"), s);
 
     JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
     check.addActionListener(e -> {
@@ -42,17 +42,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider makeSilder(String title) {
-    JSlider slider = new JSlider(0, 100, 50);
-    // JSlider slider = new JSlider(-50, 50, 0);
+  private static JSlider makeSlider(String title) {
+    JSlider slider = new JSlider(0, 100, 50); // new JSlider(-50, 50, 0);
     slider.setBorder(BorderFactory.createTitledBorder(title));
     slider.setMajorTickSpacing(10);
     slider.setSnapToTicks(true);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
-    if (title.startsWith("Default")) {
-      return slider;
-    }
+    return slider;
+  }
+
+  private static void initSlider(JSlider slider) {
     slider.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RIGHT_ARROW");
     slider.getActionMap().put("RIGHT_ARROW", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -80,7 +80,6 @@ public final class MainPanel extends JPanel {
     } else {
       slider.setUI(new MetalSnapToTicksDragSliderUI());
     }
-    return slider;
   }
 
   public static void main(String... args) {
