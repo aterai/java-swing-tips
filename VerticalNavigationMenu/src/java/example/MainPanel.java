@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
 
 // https://ateraimemo.com/Swing/TreeRowSelection.html
 class RowSelectionTree extends JTree {
-  public static final Color SELC = new Color(100, 150, 200);
+  public static final Color SELC = new Color(0x64_96_C8);
   private transient TreeWillExpandListener listener;
 
   @Override protected void paintComponent(Graphics g) {

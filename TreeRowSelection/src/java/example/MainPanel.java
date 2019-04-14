@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RowSelectionTree extends JTree {
-  public static final Color SELC = new Color(100, 150, 200);
+  public static final Color SELC = new Color(0x64_96_C8);
   // private Handler handler;
 
   @Override protected void paintComponent(Graphics g) {
