@@ -45,14 +45,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultComboBoxModel<SiteItem> makeTestModel(ImageIcon image1, ImageIcon image2) {
+  private static DefaultComboBoxModel<SiteItem> makeTestModel(Icon i1, Icon i2) {
     DefaultComboBoxModel<SiteItem> model = new DefaultComboBoxModel<>();
-    model.addElement(new SiteItem("https://ateraimemo.com/", image1, true));
-    model.addElement(new SiteItem("https://ateraimemo.com/Swing.html", image1, true));
-    model.addElement(new SiteItem("https://ateraimemo.com/JavaWebStart.html", image1, true));
-    model.addElement(new SiteItem("https://github.com/aterai/java-swing-tips", image2, true));
-    model.addElement(new SiteItem("https://java-swing-tips.blogspot.com/", image2, true));
-    model.addElement(new SiteItem("http://www.example.com/", image2, false));
+    model.addElement(new SiteItem("https://ateraimemo.com/", i1, true));
+    model.addElement(new SiteItem("https://ateraimemo.com/Swing.html", i1, true));
+    model.addElement(new SiteItem("https://ateraimemo.com/JavaWebStart.html", i1, true));
+    model.addElement(new SiteItem("https://github.com/aterai/java-swing-tips", i2, true));
+    model.addElement(new SiteItem("https://java-swing-tips.blogspot.com/", i2, true));
+    model.addElement(new SiteItem("http://www.example.com/", i2, false));
     return model;
   }
 
@@ -292,10 +292,10 @@ class SiteComboBoxLayout implements LayoutManager {
 
 class SiteItem {
   public final String url;
-  public final ImageIcon favicon;
+  public final Icon favicon;
   public final boolean hasRss;
 
-  protected SiteItem(String url, ImageIcon icon, boolean hasRss) {
+  protected SiteItem(String url, Icon icon, boolean hasRss) {
     this.url = url;
     this.favicon = icon;
     this.hasRss = hasRss;
