@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ScrollableTracksViewportWidth" />
+  <property name="jnlp.Name"     value="ScrollableTracksViewportWidth" />
+  <property name="jnlp.name"     value="scrollabletracksviewportwidth" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollabletracksviewportwidth/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollableTracksViewportWidth.html" />
+</project>
