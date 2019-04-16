@@ -179,7 +179,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
       if (isAnimatingCell()) {
         float alpha = .1f;
         for (Shape s: flipbookFrames) {
-          g2.setPaint(new Color(.5f, .5f, .5f, alpha));
+          g2.setPaint(makeColor(alpha));
           g2.fill(s);
           alpha += .1f;
         }
@@ -193,5 +193,9 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
       }
       g2.dispose();
     }
+  }
+
+  protected static Color makeColor(float alpha) {
+    return new Color(.5f, .5f, .5f, alpha);
   }
 }
