@@ -10,6 +10,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -164,14 +166,25 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   private static DefaultMutableTreeNode deepCopyTreeNode(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
-    for (int i = 0; i < src.getChildCount(); i++) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
-      DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-      tgt.add(clone);
-      if (!node.isLeaf()) {
-        deepCopyTreeNode(node, clone);
-      }
-    }
+    // Java 9: Collections.list(src.children()).stream()
+    Collections.list((Enumeration<?>) src.children()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(node -> {
+          DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+          tgt.add(clone);
+          if (!node.isLeaf()) {
+            deepCopyTreeNode(node, clone);
+          }
+        });
+    // for (int i = 0; i < src.getChildCount(); i++) {
+    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
+    //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+    //   tgt.add(clone);
+    //   if (!node.isLeaf()) {
+    //     deepCopyTreeNode(node, clone);
+    //   }
+    // }
     return tgt;
   }
 
