@@ -156,27 +156,28 @@ class FileTransferHandler extends TransferHandler {
     if (!canImport(support)) {
       return false;
     }
+    List<?> list;
     try {
-      // FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
-      // List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-      // model.setFiles((File[]) list.toArray(new File[list.size()]));
-      DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
-      for (Object o: (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
-        if (o instanceof File) {
-          File file = (File) o;
-          // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-          model.addRow(Collections.nCopies(3, file).toArray());
-        }
-      }
-      return true;
+      list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
     }
+    DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
+    list.stream().filter(File.class::isInstance).map(File.class::cast)
+        .map(f -> Collections.nCopies(3, f).toArray()).forEach(model::addRow);
+    // for (Object o: list) {
+    //   if (o instanceof File) {
+    //     File file = (File) o;
+    //     model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
+    //   }
+    // }
+    return true;
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
     return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
   }
+
   // @Override public boolean importData(JComponent component, Transferable transferable) {
   //   try {
   //     if (canImport(component, transferable.getTransferDataFlavors())) {
@@ -194,6 +195,7 @@ class FileTransferHandler extends TransferHandler {
   //   }
   //   return false;
   // }
+
   // @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
   //   for (DataFlavor f: flavors) {
   //     if (DataFlavor.javaFileListFlavor.equals(f)) {
