@@ -153,9 +153,9 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
 
 class FileTransferHandler extends TransferHandler {
   @Override public boolean importData(TransferHandler.TransferSupport support) {
-    if (!canImport(support)) {
-      return false;
-    }
+    // if (!canImport(support)) {
+    //   return false;
+    // }
     List<?> list;
     try {
       list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);

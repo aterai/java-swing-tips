@@ -164,21 +164,23 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 
 // class FileTransferHandler extends TransferHandler {
 //   @Override public boolean importData(TransferHandler.TransferSupport support) {
+//     if (!canImport(support)) {
+//       return false;
+//     }
 //     try {
-//       if (canImport(support)) {
-//         for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
-//           if (o instanceof File) {
-//             File file = (File) o;
-//             System.out.println(file.getAbsolutePath());
-//           }
+//       for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+//         if (o instanceof File) {
+//           File file = (File) o;
+//           System.out.println(file.getAbsolutePath());
 //         }
-//         return true;
 //       }
+//       return true;
 //     } catch (Exception ex) {
 //       ex.printStackTrace();
 //     }
 //     return false;
 //   }
+//
 //   @Override public boolean canImport(TransferHandler.TransferSupport support) {
 //     return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
 //   }

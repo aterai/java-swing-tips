@@ -167,9 +167,9 @@ class LabelTransferHandler extends TransferHandler {
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
     System.out.println("importData");
-    if (!canImport(support)) {
-      return false;
-    }
+    // if (!canImport(support)) {
+    //   return false;
+    // }
     DragPanel target = (DragPanel) support.getComponent();
     try {
       DragPanel src = (DragPanel) support.getTransferable().getTransferData(localObjectFlavor);

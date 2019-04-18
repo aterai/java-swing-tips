@@ -627,9 +627,9 @@ class TabTransferHandler extends TransferHandler {
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
     System.out.println("importData");
-    if (!canImport(support)) {
-      return false;
-    }
+    // if (!canImport(support)) {
+    //   return false;
+    // }
 
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     DnDTabbedPane.DropLocation dl = target.getDropLocation();
