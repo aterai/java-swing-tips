@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private final RowDataModel model = new RowDataModel();
   private final transient TableRowSorter<? extends RowDataModel> sorter = new TableRowSorter<>(model);
   private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(240, 255, 250);
+    private final Color evenColor = new Color(0xF0_FF_FA);
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
       Component c = super.prepareRenderer(tcr, row, column);
       if (isRowSelected(row)) {

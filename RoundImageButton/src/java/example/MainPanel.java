@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     //   }
     // };
     box.setOpaque(true);
-    box.setBackground(new Color(120, 120, 160));
+    box.setBackground(new Color(0x78_78_A0));
     box.add(Box.createHorizontalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
 

@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     box.add(new JCheckBox("JCheckBox 1"));
     box.add(Box.createVerticalStrut(10));
 
-    box.add(new TitledSeparator("TitledBorder ABOVE TOP", new Color(100, 180, 200), 2, TitledBorder.ABOVE_TOP));
+    box.add(new TitledSeparator("TitledBorder ABOVE TOP", new Color(0x64_B4_C8), 2, TitledBorder.ABOVE_TOP));
     box.add(new JCheckBox("JCheckBox 2"));
     box.add(new JCheckBox("JCheckBox 3"));
     box.add(Box.createVerticalStrut(10));

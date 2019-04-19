@@ -153,7 +153,7 @@ class HighlightListener extends MouseAdapter {
 }
 
 class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
-  private static final Color HIGHLIGHT = new Color(255, 150, 50);
+  private static final Color HIGHLIGHT = new Color(0xFF_96_32);
   private final transient HighlightListener highlighter;
 
   protected RolloverDefaultTableCellRenderer(HighlightListener highlighter) {
