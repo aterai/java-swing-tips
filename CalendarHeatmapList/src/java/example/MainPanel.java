@@ -35,9 +35,9 @@ public final class MainPanel extends JPanel {
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     }
   };
-  public final Color color = new Color(50, 200, 50);
+  public final Color color = new Color(0x32_C8_32);
   public final List<Icon> activityIcons = Arrays.asList(
-      new ColorIcon(new Color(200, 200, 200)),
+      new ColorIcon(new Color(0xC8_C8_C8)),
       new ColorIcon(color.brighter()),
       new ColorIcon(color),
       new ColorIcon(color.darker()),

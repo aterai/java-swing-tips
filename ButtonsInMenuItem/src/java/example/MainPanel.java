@@ -182,7 +182,7 @@ class ToggleButtonBarCellIcon implements Icon {
     if (c instanceof AbstractButton) {
       ButtonModel m = ((AbstractButton) c).getModel();
       if (m.isPressed()) {
-        color = new Color(200, 200, 255);
+        color = new Color(0xC8_C8_FF);
       } else if (m.isSelected() || m.isRollover()) {
         borderColor = Color.GRAY;
       }

@@ -168,7 +168,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
 }
 
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
-  protected static final Color EVEN_COLOR = new Color(230, 255, 230);
+  protected static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
   protected final JTextArea textArea = new JTextArea();
   protected final JButton deleteButton = new JButton("delete");
   protected final JButton copyButton = new JButton("copy");
