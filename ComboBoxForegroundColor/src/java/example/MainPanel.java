@@ -96,7 +96,7 @@ class ColorItem implements Serializable {
 
 class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
-  private final Color sbgc = new Color(240, 245, 250);
+  private final Color sbgc = new Color(0xF0_F5_FA);
   private final JComboBox<E> combo;
 
   protected ComboForegroundRenderer(JComboBox<E> combo) {
@@ -121,7 +121,7 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
 
 class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
-  private final Color sbgc = new Color(240, 245, 250);
+  private final Color sbgc = new Color(0xF0_F5_FA);
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     if (index < 0) {

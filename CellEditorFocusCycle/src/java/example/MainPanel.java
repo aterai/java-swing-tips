@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         // putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         setSelectionForeground(Color.BLACK);
-        setSelectionBackground(new Color(220, 220, 255));
+        setSelectionBackground(new Color(0xDC_DC_FF));
         TableColumn c = getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());
         c.setCellEditor(new CheckBoxesEditor());

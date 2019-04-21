@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setOpaque(true);
         setForeground(Color.WHITE);
-        setBackground(new Color(91, 155, 213));
+        setBackground(new Color(0x5B_9B_D5));
         setFocusPainted(false);
         setContentAreaFilled(false);
         setBorder(border);

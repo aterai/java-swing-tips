@@ -62,8 +62,8 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightListener extends MouseAdapter {
-  private static final Color HIGHLIGHT1 = new Color(200, 200, 255);
-  private static final Color HIGHLIGHT2 = new Color(240, 240, 255);
+  private static final Color HIGHLIGHT1 = new Color(0xC8_C8_FF);
+  private static final Color HIGHLIGHT2 = new Color(0xF0_F0_FF);
   private int vrow = -1; // viewRowIndex
   private int vcol = -1; // viewColumnIndex
 

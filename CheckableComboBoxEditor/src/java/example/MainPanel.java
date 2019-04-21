@@ -118,7 +118,7 @@ class ComboItem {
 }
 
 class CheckComboBoxRenderer<E extends ComboItem> implements ListCellRenderer<E> {
-  private static final Color SBGC = new Color(100, 200, 255);
+  private static final Color SBGC = new Color(0x64_C8_FF);
   private final EditorPanel renderer = new EditorPanel(new ComboItem());
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
