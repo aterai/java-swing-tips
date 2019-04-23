@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     JList<String> list = new DnDList<>();
     list.setModel(model);
     list.setCellRenderer(new DefaultListCellRenderer() {
-      private final Color ec = new Color(240, 240, 240);
+      private final Color ec = new Color(0xF0_F0_F0);
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         if (isSelected) {

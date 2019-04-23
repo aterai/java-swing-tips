@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      private final Color evenColor = new Color(240, 240, 250);
+      private final Color evenColor = new Color(0xF0_F0_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {
@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ComboCellRenderer implements TableCellRenderer {
-  protected static final Color EVEN_COLOR = new Color(240, 240, 250);
+  protected static final Color EVEN_COLOR = new Color(0xF0_F0_FA);
   protected JButton button;
   protected final JComboBox<String> combo = new JComboBox<String>() {
     @Override public void updateUI() {
@@ -165,7 +165,7 @@ class ComboCellRenderer implements TableCellRenderer {
 }
 
 // class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
-//   protected static final Color EVEN_COLOR = new Color(240, 240, 250);
+//   protected static final Color EVEN_COLOR = new Color(0xF0_F0_FA);
 //   protected JButton button;
 //   @Override public void updateUI() {
 //     super.updateUI();

@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 
 class SilhouetteIcon implements Icon, Serializable {
   private static final long serialVersionUID = 1L;
-  private static final Color PIECE_PAINT = new Color(150, 100, 20);
+  private static final Color PIECE_PAINT = new Color(0x96_64_14);
   private final Font font;
   private final String str;
   private final int size;
