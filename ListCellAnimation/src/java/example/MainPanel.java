@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 }
 
 class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, HierarchyListener {
-  private static final Color SELECTEDCOLOR = new Color(230, 230, 255);
+  private static final Color SELECTEDCOLOR = new Color(0xE6_E6_FF);
   protected final AnimeIcon icon = new AnimeIcon();
   private final MarqueeLabel label = new MarqueeLabel();
   private final Timer animator;

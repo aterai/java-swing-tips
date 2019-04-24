@@ -81,7 +81,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     }
     g.fillRect(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
 
-    Color color = new Color(255, 120, 40);
+    Color color = new Color(0xFF_78_28);
     if (model.isSelected()) {
       g.setColor(color);
       g.drawLine(viewRect.x + 1, viewRect.y - 2, viewRect.x + viewRect.width - 1, viewRect.y - 2);

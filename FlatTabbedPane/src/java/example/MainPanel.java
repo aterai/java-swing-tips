@@ -9,8 +9,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-  public static final Color SELECTED_BG = new Color(255, 150, 0);
-  public static final Color UNSELECTED_BG = new Color(255, 50, 0);
+  public static final Color SELECTED_BG = new Color(0xFF_96_00);
+  public static final Color UNSELECTED_BG = new Color(0xFF_32_00);
 
   private MainPanel() {
     super(new BorderLayout());

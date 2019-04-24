@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
-  private static final Color LINE_COLOR = new Color(100, 100, 255);
+  private static final Color LINE_COLOR = new Color(0x64_64_FF);
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
   private final Rectangle targetLine = new Rectangle();

@@ -93,7 +93,7 @@ class ImageCaptionLabel extends JLabel {
   @Override public void updateUI() {
     super.updateUI();
     setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(222, 222, 222)),
+        BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
     setLayout(new OverlayLayout(this) {
       @Override public void layoutContainer(Container parent) {

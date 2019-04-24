@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     }
   };
   private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(245, 245, 245);
+    private final Color evenColor = new Color(0xF5_F5_F5);
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
       Component c = super.prepareRenderer(tcr, row, column);
       if (isRowSelected(row)) {
