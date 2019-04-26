@@ -83,7 +83,7 @@ class MyViewFactory implements ViewFactory {
 
 class ParagraphWithEopmView extends ParagraphView {
   // private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
-  private static final Color MARK_COLOR = new Color(120, 130, 110);
+  private static final Color MARK_COLOR = new Color(0x78_82_6E);
 
   protected ParagraphWithEopmView(Element elem) {
     super(elem);
@@ -119,7 +119,7 @@ class ParagraphWithEopmView extends ParagraphView {
 
 // TEST:
 // class ParagraphMarkIcon implements Icon {
-//   private static final Color MARK_COLOR = new Color(120, 130, 110);
+//   private static final Color MARK_COLOR = new Color(0x78_82_6E);
 //   private final Polygon paragraphMark = new Polygon();
 //   protected ParagraphMarkIcon() {
 //     paragraphMark.addPoint(1, 7);
