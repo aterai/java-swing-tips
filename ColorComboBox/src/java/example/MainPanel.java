@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
 
 class AlternateRowColorComboBox<E> extends JComboBox<E> {
   private static final Color EVEN_BGCOLOR = new Color(0xE1_FF_E1);
-  private static final Color ODD_BGCOLOR = new Color(0xFF_FF_FF);
+  private static final Color ODD_BGCOLOR = Color.WHITE;
   private transient ItemListener itemColorListener;
 
   protected AlternateRowColorComboBox() {
