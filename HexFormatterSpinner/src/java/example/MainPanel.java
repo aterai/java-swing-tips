@@ -13,13 +13,17 @@ import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
 public class MainPanel extends JPanel {
-  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(0x51DE, 0x0, 0x10FFFF, 1));
+  // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
+  private final SpinnerModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
+  private final JSpinner spinner = new JSpinner(nm);
   private final JPanel fontPanel = new GlyphPaintPanel();
   protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
@@ -135,15 +139,28 @@ public class MainPanel extends JPanel {
   private static DefaultFormatterFactory makeFFactory() {
     DefaultFormatter formatter = new DefaultFormatter() {
       @Override public Object stringToValue(String text) throws ParseException {
-        return Integer.valueOf(text, 16);
+        Pattern pattern = Pattern.compile("^\\s*(\\p{XDigit}{1,6})\\s*$");
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+          Integer iv = Integer.valueOf(text, 16);
+          if (iv <= Character.MAX_CODE_POINT) {
+            return iv;
+          }
+        }
+        Toolkit.getDefaultToolkit().beep();
+        throw new ParseException(text, 0);
+
         // try {
         //   return Integer.valueOf(text, 16);
         // } catch (NumberFormatException ex) {
-        //   throw new ParseException(text, 0);
+        //   Toolkit.getDefaultToolkit().beep();
+        //   ParseException wrap = new ParseException(text, 0);
+        //   wrap.initCause(ex);
+        //   throw wrap;
         // }
       }
-      // private static final String MASK = "000000";
 
+      // private static final String MASK = "000000";
       @Override public String valueToString(Object value) throws ParseException {
         // String str = MASK + Integer.toHexString((Integer) value).toUpperCase(Locale.ENGLISH);
         // int i = str.length() - MASK.length();
