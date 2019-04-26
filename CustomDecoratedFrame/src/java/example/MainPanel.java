@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
   private final SideLabel bottomright = new SideLabel(Side.SE);
   private final JPanel contentPanel = new JPanel(new BorderLayout());
   private final JPanel resizePanel = new JPanel(new BorderLayout()) {
-    private final Color borderColor = new Color(100, 100, 100);
+    private final Color borderColor = new Color(0x64_64_64);
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
       int w = getWidth();
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
       }
     };
     frame.setUndecorated(true);
-    frame.setBackground(new Color(255, 255, 255, 0));
+    frame.setBackground(new Color(0x0, true));
 
     JPanel title = new JPanel(new BorderLayout());
     MouseInputListener dwl = new DragWindowListener();
