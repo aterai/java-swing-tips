@@ -13,23 +13,25 @@ import javax.swing.event.MouseInputListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    add(makeTitledPanel("Default", new JScrollPane(makeList(true))));
-    add(makeTitledPanel("clearSelection", new JScrollPane(makeList(false))));
+    add(makeTitledPanel("Default", new JScrollPane(new JList<>(makeModel()))));
+    add(makeTitledPanel("clearSelection", new JScrollPane(makeList(makeModel()))));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JList<String> makeList(boolean def) {
+  private static ListModel<String> makeModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("aaaaaaa");
     model.addElement("bbbbbbbbbbbbb");
     model.addElement("cccccccccc");
     model.addElement("ddddddddd");
     model.addElement("eeeeeeeeee");
-    if (def) {
-      return new JList<>(model);
-    }
-    JList<String> list = new JList<String>(model) {
+    return model;
+  }
+
+  private static JList<String> makeList(ListModel<String> model) {
+    return new JList<String>(model) {
       private transient MouseInputListener listener;
+
       @Override public void updateUI() {
         removeMouseListener(listener);
         removeMouseMotionListener(listener);
@@ -48,7 +50,7 @@ public final class MainPanel extends JPanel {
     // list.setFixedCellWidth(64);
     // list.setFixedCellHeight(64);
     // list.setVisibleRowCount(0);
-    return list;
+    // return list;
   }
 
   private static Component makeTitledPanel(String title, Component c) {

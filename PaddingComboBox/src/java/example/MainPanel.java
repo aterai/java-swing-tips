@@ -142,7 +142,7 @@ public final class MainPanel extends JPanel {
     model.addElement("bbb1");
     model.addElement("bbb12");
 
-    JComboBox<String> combo = new JComboBox<String>(model) {
+    return new JComboBox<String>(model) {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
@@ -158,7 +158,6 @@ public final class MainPanel extends JPanel {
         // ???: ((JLabel) lcr).setBorder(getPaddingBorder(false));
       }
     };
-    return combo;
   }
 
   public static void main(String... args) {

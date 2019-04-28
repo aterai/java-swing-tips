@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
-    JComboBox<E> combo = new JComboBox<E>(model) {
+    return new JComboBox<E>(model) {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(BorderFactory.createEmptyBorder());
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     // combo.setBackground(Color.WHITE);
     // combo.setOpaque(true);
     // combo.setEditable(true);
-    return combo;
+    // return combo;
   }
 
   public static void main(String... args) {
