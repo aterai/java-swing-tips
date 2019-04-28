@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model);
     // // TEST:
     // JTable table = new JTable(model) {
-    //   protected final Color evenColor = new Color(240, 240, 255);
+    //   protected final Color evenColor = new Color(0xF0_F0_FF);
     //   @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
     //     Component c = super.prepareRenderer(tcr, row, column);
     //     if (isRowSelected(row)) {
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
 }
 
 class StripeTableRenderer extends DefaultTableCellRenderer {
-  private static final Color EVEN_COLOR = new Color(240, 240, 255);
+  private static final Color EVEN_COLOR = new Color(0xF0_F0_FF);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
