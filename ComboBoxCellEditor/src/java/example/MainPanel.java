@@ -67,11 +67,17 @@ public final class MainPanel extends JPanel {
         // }
       }
 
-      @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+      @Override public void treeNodesInserted(TreeModelEvent e) {
+        /* not needed */
+      }
 
-      @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
+      @Override public void treeNodesRemoved(TreeModelEvent e) {
+        /* not needed */
+      }
 
-      @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
+      @Override public void treeStructureChanged(TreeModelEvent e) {
+        /* not needed */
+      }
     });
     add(new JScrollPane(tree));
     add(new JScrollPane(textArea), BorderLayout.SOUTH);

@@ -6,4 +6,6 @@ package example;
 
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
-public class SearchBarComboBoxUI extends BasicComboBoxUI { /* ComboBoxUI */ }
+public class SearchBarComboBoxUI extends BasicComboBoxUI {
+  /* ComboBoxUI */
+}

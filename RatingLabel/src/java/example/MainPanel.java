@@ -175,11 +175,17 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
     repaintIcon(clicked);
   }
 
-  @Override public void mouseDragged(MouseEvent e) { /* not needed */ }
+  @Override public void mouseDragged(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mousePressed(MouseEvent e) { /* not needed */ }
+  @Override public void mousePressed(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+  @Override public void mouseReleased(MouseEvent e) {
+    /* not needed */
+  }
 }
 
 class SelectedImageFilter extends RGBImageFilter {

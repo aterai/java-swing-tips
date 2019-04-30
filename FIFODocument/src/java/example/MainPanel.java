@@ -116,9 +116,13 @@ class FifoDocumentListener implements DocumentListener {
     }
   }
 
-  @Override public void removeUpdate(DocumentEvent e) { /* not needed */ }
+  @Override public void removeUpdate(DocumentEvent e) {
+    /* not needed */
+  }
 
-  @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+  @Override public void changedUpdate(DocumentEvent e) {
+    /* not needed */
+  }
 }
 
 class FifoDocumentFilter extends DocumentFilter {

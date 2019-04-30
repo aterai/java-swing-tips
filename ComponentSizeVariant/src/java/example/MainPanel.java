@@ -72,7 +72,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class SizeVariantUtil {
-  private SizeVariantUtil() { /* Singleton */ }
+  private SizeVariantUtil() {
+    /* Singleton */
+  }
 
   public static JMenu createSizeVariantMenu() {
     JMenu menu = new JMenu("Resizing a Component");

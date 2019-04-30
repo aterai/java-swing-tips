@@ -187,7 +187,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class SvgUtils {
-  private SvgUtils() { /* HideUtilityClassConstructor */ }
+  private SvgUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
     StringBuilder sb = new StringBuilder(200);

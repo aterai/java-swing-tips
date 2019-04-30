@@ -41,9 +41,13 @@ public class MainPanel extends JPanel {
         append("\nisEnterSelectablePopup: " + UIManager.getBoolean("ComboBox.isEnterSelectablePopup"));
       }
 
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        /* not needed */
+      }
 
-      @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuCanceled(PopupMenuEvent e) {
+        /* not needed */
+      }
     });
     // combo.addActionListener(e -> append("ActionListener: " + combo.getSelectedItem()));
     combo.addItemListener(e -> {

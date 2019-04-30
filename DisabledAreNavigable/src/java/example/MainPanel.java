@@ -127,7 +127,9 @@ class ExitAction extends AbstractAction {
 }
 
 final class ManuBarUtil {
-  private ManuBarUtil() { /* Singleton */ }
+  private ManuBarUtil() {
+    /* Singleton */
+  }
 
   public static JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar();
@@ -182,7 +184,9 @@ final class ManuBarUtil {
 final class LookAndFeelUtil {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() { /* Singleton */ }
+  private LookAndFeelUtil() {
+    /* Singleton */
+  }
 
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");

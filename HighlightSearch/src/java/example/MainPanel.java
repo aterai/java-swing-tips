@@ -164,7 +164,9 @@ public class MainPanel extends JPanel {
   }
 
   private class HighlightHandler implements DocumentListener, ActionListener {
-    @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+    @Override public void changedUpdate(DocumentEvent e) {
+      /* not needed */
+    }
 
     @Override public void insertUpdate(DocumentEvent e) {
       changeHighlight();

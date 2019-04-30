@@ -116,7 +116,9 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
     }
   }
 
-  @Override public void keyTyped(KeyEvent e) { /* empty */ }
+  @Override public void keyTyped(KeyEvent e) {
+    /* empty */
+  }
 
   private void fire(Object c) {
     if (c instanceof JTextComponent) {

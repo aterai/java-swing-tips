@@ -45,7 +45,9 @@ public final class MainPanel extends JPanel {
     // https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/_nimbusDefaults.html
     UIDefaults d = new UIDefaults();
     d.put("TextArea.borderPainter", new Painter<JComponent>() {
-      @Override public void paint(Graphics2D g, JComponent c, int w, int h) { /* Empty painter */ }
+      @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+        /* Empty painter */
+      }
     });
     MultiLineTableCellRenderer r = new MultiLineTableCellRenderer();
     r.putClientProperty("Nimbus.Overrides", d);

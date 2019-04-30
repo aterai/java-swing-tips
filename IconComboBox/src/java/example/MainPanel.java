@@ -113,7 +113,10 @@ public final class MainPanel extends JPanel {
 }
 
 final class ComboBoxUtil {
-  private ComboBoxUtil() { /* Singleton */ }
+  private ComboBoxUtil() {
+    /* Singleton */
+  }
+
   // public static Border makeIconComboBorder(JComponent comp, ImageIcon icon) {
   //   Icon wrappedIcon = new Icon() {
   //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -124,9 +127,11 @@ final class ComboBoxUtil {
   //       g.drawImage(icon.getImage(), 0, yy, c);
   //       g.translate(-x, -y);
   //     }
+  //
   //     @Override public int getIconWidth() {
   //       return icon.getIconWidth();
   //     }
+  //
   //     @Override public int getIconHeight() {
   //       Insets is = comp.getInsets();
   //       return comp.getPreferredSize().height - is.top - is.bottom;

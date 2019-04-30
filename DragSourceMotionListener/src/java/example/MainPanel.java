@@ -21,7 +21,9 @@ import javax.swing.*;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
 public final class MainPanel {
-  private MainPanel() { /* Singleton */ }
+  private MainPanel() {
+    /* Singleton */
+  }
 
   public static void main(String... args) {
     EventQueue.invokeLater(new Runnable() {

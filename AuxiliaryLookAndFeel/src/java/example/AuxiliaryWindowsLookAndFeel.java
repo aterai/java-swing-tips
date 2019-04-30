@@ -29,7 +29,9 @@ public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
 
   @Override public UIDefaults getDefaults() {
     UIDefaults table = new UIDefaults() {
-      @Override protected void getUIError(String msg) { /* not needed */ }
+      @Override protected void getUIError(String msg) {
+        /* not needed */
+      }
     };
     // String packageName = "example.AuxiliaryWindows";
     Object[] uiDefaults = {

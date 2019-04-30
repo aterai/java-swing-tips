@@ -288,7 +288,9 @@ class RadialGradientPaintButton extends JButton {
 }
 
 final class TextureUtils {
-  private TextureUtils() { /* HideUtilityClassConstructor */ }
+  private TextureUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;

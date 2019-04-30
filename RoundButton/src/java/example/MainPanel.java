@@ -290,7 +290,9 @@ class DummySizeIcon implements Icon {
     shape = s;
   }
 
-  @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    /* Empty icon */
+  }
 
   @Override public int getIconWidth() {
     return shape.getBounds().width;

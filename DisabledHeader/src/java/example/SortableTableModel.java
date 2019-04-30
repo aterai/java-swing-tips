@@ -211,7 +211,9 @@ class EmptyIcon implements Icon {
     this.size = size;
   }
 
-  @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    /* Empty icon */
+  }
 
   @Override public int getIconWidth() {
     return size.width;

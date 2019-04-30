@@ -132,13 +132,23 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
     e.getComponent().repaint();
   }
 
-  @Override public void mouseDragged(MouseEvent e) { /* not needed */ }
+  @Override public void mouseDragged(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+  @Override public void mouseClicked(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+  @Override public void mouseEntered(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mousePressed(MouseEvent e) { /* not needed */ }
+  @Override public void mousePressed(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+  @Override public void mouseReleased(MouseEvent e) {
+    /* not needed */
+  }
 }

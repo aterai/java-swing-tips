@@ -136,9 +136,13 @@ class TreePopupMenu extends JPopupMenu {
             requestFocusInWindow();
           }
 
-          @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+          @Override public void ancestorMoved(AncestorEvent e) {
+            /* not needed */
+          }
 
-          @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+          @Override public void ancestorRemoved(AncestorEvent e) {
+            /* not needed */
+          }
         };
         addAncestorListener(listener);
       }

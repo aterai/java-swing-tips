@@ -391,7 +391,9 @@ class TabDragSourceListener implements DragSourceListener {
     // glassPane.setVisible(false);
   }
 
-  @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
+  }
 }
 
 class TabDragGestureListener implements DragGestureListener {
@@ -445,7 +447,9 @@ class TabDropTargetListener implements DropTargetListener {
     });
   }
 
-  @Override public void dropActionChanged(DropTargetDragEvent e) { /* not needed */ }
+  @Override public void dropActionChanged(DropTargetDragEvent e) {
+    /* not needed */
+  }
 
   @Override public void dragOver(DropTargetDragEvent e) {
     Component c = e.getDropTargetContext().getComponent();

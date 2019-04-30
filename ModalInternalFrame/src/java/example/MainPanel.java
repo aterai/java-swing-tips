@@ -286,7 +286,9 @@ class PrintGlassPane extends JDesktopPane {
 final class TextureUtils {
   private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
 
-  private TextureUtils() { /* HideUtilityClassConstructor */ }
+  private TextureUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;

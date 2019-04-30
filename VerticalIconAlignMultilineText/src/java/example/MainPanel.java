@@ -90,7 +90,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class HtmlViewUtil {
-  private HtmlViewUtil() { /* Singleton */ }
+  private HtmlViewUtil() {
+    /* Singleton */
+  }
 
   public static int getFirstLineCenterY(String text, AbstractButton c, Rectangle iconRect) {
     int y = 0;

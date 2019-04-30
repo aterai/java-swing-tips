@@ -209,7 +209,9 @@ class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 final class TreeUtil {
-  private TreeUtil() { /* Singleton */ }
+  private TreeUtil() {
+    /* Singleton */
+  }
 
   public static void searchTree(JTree tree, TreePath path, String q) {
     Object o = path.getLastPathComponent();

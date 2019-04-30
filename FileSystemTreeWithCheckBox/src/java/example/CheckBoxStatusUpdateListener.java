@@ -117,9 +117,15 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         });
   }
 
-  @Override public void treeNodesInserted(TreeModelEvent e) { /* not needed */ }
+  @Override public void treeNodesInserted(TreeModelEvent e) {
+    /* not needed */
+  }
 
-  @Override public void treeNodesRemoved(TreeModelEvent e) { /* not needed */ }
+  @Override public void treeNodesRemoved(TreeModelEvent e) {
+    /* not needed */
+  }
 
-  @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
+  @Override public void treeStructureChanged(TreeModelEvent e) {
+    /* not needed */
+  }
 }

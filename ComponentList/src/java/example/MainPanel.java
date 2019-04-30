@@ -80,7 +80,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class MakeComponentUtil {
-  private MakeComponentUtil() { /* Singleton */ }
+  private MakeComponentUtil() {
+    /* Singleton */
+  }
 
   public static JComponent makeLabel() {
     JLabel label = new JLabel("Height: 50") {

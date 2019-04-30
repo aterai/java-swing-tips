@@ -83,7 +83,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class TextUtils {
-  private TextUtils() { /* HideUtilityClassConstructor */ }
+  private TextUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   // @see javax.swint.text.Utilities.getWordStart(...)
   public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {

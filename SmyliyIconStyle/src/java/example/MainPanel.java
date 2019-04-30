@@ -29,7 +29,9 @@ public final class MainPanel extends JPanel {
 
     StyledDocument doc = textPane.getStyledDocument();
     doc.addDocumentListener(new DocumentListener() {
-      @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+      @Override public void changedUpdate(DocumentEvent e) {
+        /* not needed */
+      }
 
       @Override public void insertUpdate(DocumentEvent e) {
         update((DefaultStyledDocument) e.getDocument(), e.getOffset());

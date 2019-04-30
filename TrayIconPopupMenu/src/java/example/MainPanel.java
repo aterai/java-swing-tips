@@ -73,7 +73,9 @@ public final class MainPanel extends JPanel {
 
     // init JPopupMenu
     popup.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        /* not needed */
+      }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
         dummy.setVisible(false);
@@ -138,7 +140,9 @@ public final class MainPanel extends JPanel {
 }
 
 final class TrayIconPopupMenuUtil {
-  private TrayIconPopupMenuUtil() { /* Singleton */ }
+  private TrayIconPopupMenuUtil() {
+    /* Singleton */
+  }
 
   // Try to find GraphicsConfiguration, that includes mouse pointer position
   private static GraphicsConfiguration getGraphicsConfiguration(Point p) {

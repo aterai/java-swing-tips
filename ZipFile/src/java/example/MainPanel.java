@@ -170,7 +170,9 @@ public final class MainPanel extends JPanel {
 final class ZipUtil {
   private static final Logger LOGGER = Logger.getLogger(ZipUtil.class.getName());
 
-  private ZipUtil() { /* HideUtilityClassConstructor */ }
+  private ZipUtil() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static void zip(Path srcDir, Path zip) throws IOException {
     try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {

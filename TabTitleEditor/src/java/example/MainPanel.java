@@ -161,7 +161,9 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     updateTabSize();
   }
 
-  @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+  @Override public void changedUpdate(DocumentEvent e) {
+    /* not needed */
+  }
 
   @Override public void mouseClicked(MouseEvent e) {
     Rectangle r = tabbedPane.getBoundsAt(tabbedPane.getSelectedIndex());

@@ -110,7 +110,11 @@ class SelectItemMenuListener implements PopupMenuListener {
     c.setSelectedItem(c.getEditor().getItem());
   }
 
-  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    /* not needed */
+  }
 
-  @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    /* not needed */
+  }
 }

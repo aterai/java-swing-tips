@@ -250,7 +250,9 @@ class ListItem {
 final class TextureUtils {
   private static final Color DEFAULT_COLOR = new Color(0xEE_32_32_32, true);
 
-  private TextureUtils() { /* HideUtilityClassConstructor */ }
+  private TextureUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;

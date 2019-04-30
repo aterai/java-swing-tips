@@ -116,9 +116,13 @@ class SelectItemMenuListener implements PopupMenuListener {
     c.setSelectedItem(c.getEditor().getItem());
   }
 
-  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    /* not needed */
+  }
 
-  @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    /* not needed */
+  }
 }
 
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/misc/FieldValidatorProject/src/FieldValidator.java

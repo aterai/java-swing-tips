@@ -173,7 +173,9 @@ enum SlideInAnimation {
 final class AnimationUtil {
   private static final int N = 3;
 
-  private AnimationUtil() { /* Singleton */ }
+  private AnimationUtil() {
+    /* Singleton */
+  }
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
   // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH

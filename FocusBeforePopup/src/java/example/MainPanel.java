@@ -98,9 +98,13 @@ public final class MainPanel extends JPanel {
     popup1.add(copyAction);
     popup1.add(pasteAction);
     popup1.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuCanceled(PopupMenuEvent e) {
+        /* not needed */
+      }
 
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        /* not needed */
+      }
 
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         JPopupMenu pop = (JPopupMenu) e.getSource();

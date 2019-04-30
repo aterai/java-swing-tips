@@ -30,7 +30,9 @@ public final class MainPanel extends JPanel {
         append("removeUpdate");
       }
 
-      @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+      @Override public void changedUpdate(DocumentEvent e) {
+        /* not needed */
+      }
     });
 
     JTextField textField2 = new JTextField("addActionListener");

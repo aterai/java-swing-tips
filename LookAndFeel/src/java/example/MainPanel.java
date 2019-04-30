@@ -107,7 +107,9 @@ final class LookAndFeelUtil {
   // The current Look & Feel
   private static String currentLaf = METAL;
 
-  private LookAndFeelUtil() { /* Singleton */ }
+  private LookAndFeelUtil() {
+    /* Singleton */
+  }
 
   public static JMenu createLookAndFeelMenu() {
     ButtonGroup lafMenuGroup = new ButtonGroup();

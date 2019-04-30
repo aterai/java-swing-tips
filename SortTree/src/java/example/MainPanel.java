@@ -128,7 +128,9 @@ final class TreeUtil {
   private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
       .thenComparing(n -> n.getUserObject().toString());
 
-  private TreeUtil() { /* Singleton */ }
+  private TreeUtil() {
+    /* Singleton */
+  }
 
   // // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
   // public static void sortTree0(DefaultMutableTreeNode root) {

@@ -160,7 +160,9 @@ class TogglePopupHandler implements PopupMenuListener, ActionListener {
     }
   }
 
-  @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    /* not needed */
+  }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
     EventQueue.invokeLater(() -> {
@@ -169,5 +171,7 @@ class TogglePopupHandler implements PopupMenuListener, ActionListener {
     });
   }
 
-  @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    /* not needed */
+  }
 }

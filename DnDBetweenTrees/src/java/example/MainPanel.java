@@ -42,7 +42,9 @@ public final class MainPanel extends JPanel {
 
     // Disable node Cut action
     tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
+      @Override public void actionPerformed(ActionEvent e) {
+        /* Dummy action */
+      }
     });
 
     expandTree(tree);

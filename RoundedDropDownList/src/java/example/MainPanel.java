@@ -170,9 +170,13 @@ class HeavyWeightContainerListener implements PopupMenuListener {
     });
   }
 
-  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    /* not needed */
+  }
 
-  @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    /* not needed */
+  }
 }
 
 class ComboRolloverHandler extends MouseAdapter {

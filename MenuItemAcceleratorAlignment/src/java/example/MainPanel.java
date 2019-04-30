@@ -180,7 +180,9 @@ public final class MainPanel extends JPanel {
 
 // @see javax/swing/plaf/basic/BasicMenuItemUI.java
 final class MenuItemHelper {
-  private MenuItemHelper() { /* Singleton */ }
+  private MenuItemHelper() {
+    /* Singleton */
+  }
 
   public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh,
                                sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {

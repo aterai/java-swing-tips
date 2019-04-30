@@ -39,11 +39,17 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
   // }
 
   // Override all UI-specific methods your UI classes inherit.
-  @Override protected void configureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override protected void configureEditor() {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
-  @Override protected void unconfigureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override protected void unconfigureEditor() {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
-  @Override public void removeEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override public void removeEditor() {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
   @Override public void addEditor() {
     removeEditor();
@@ -62,13 +68,21 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
   // @Override public void unconfigureArrowButton() {}
   // @Override public void configureArrowButton() {}
 
-  @Override public void update(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override public void update(Graphics g, JComponent c) {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
-  @Override public void paint(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override public void paint(Graphics g, JComponent c) {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
-  @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 
-  @Override public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
+  @Override public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
+    /* Override all UI-specific methods your UI classes inherit. */
+  }
 }
 
 class BasicComboPopup2 extends BasicComboPopup {

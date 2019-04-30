@@ -126,11 +126,17 @@ class DnDTree extends JTree {
   }
 
   private class NodeDropTargetListener implements DropTargetListener {
-    @Override public void dropActionChanged(DropTargetDragEvent dtde) { /* not needed */ }
+    @Override public void dropActionChanged(DropTargetDragEvent dtde) {
+      /* not needed */
+    }
 
-    @Override public void dragEnter(DropTargetDragEvent dtde) { /* not needed */ }
+    @Override public void dragEnter(DropTargetDragEvent dtde) {
+      /* not needed */
+    }
 
-    @Override public void dragExit(DropTargetEvent dte) { /* not needed */ }
+    @Override public void dragExit(DropTargetEvent dte) {
+      /* not needed */
+    }
 
     @Override public void dragOver(DropTargetDragEvent dtde) {
       DataFlavor[] f = dtde.getCurrentDataFlavors();
@@ -300,7 +306,11 @@ class NodeDragSourceListener implements DragSourceListener {
     dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
   }
 
-  @Override public void dragOver(DragSourceDragEvent dsde) { /* not needed */ }
+  @Override public void dragOver(DragSourceDragEvent dsde) {
+    /* not needed */
+  }
 
-  @Override public void dropActionChanged(DragSourceDragEvent dsde) { /* not needed */ }
+  @Override public void dropActionChanged(DragSourceDragEvent dsde) {
+    /* not needed */
+  }
 }

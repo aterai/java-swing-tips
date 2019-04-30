@@ -122,7 +122,9 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
     }
   }
 
-  @Override public void componentHidden(ComponentEvent e) { /* not needed */ }
+  @Override public void componentHidden(ComponentEvent e) {
+    /* not needed */
+  }
 
   @Override public void componentMoved(ComponentEvent e) {
     JFrame frame = (JFrame) e.getComponent();
@@ -142,16 +144,36 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
     }
   }
 
-  @Override public void componentShown(ComponentEvent e) { /* not needed */ }
-  // @Override public void windowActivated(WindowEvent e) { /* not needed */ }
-  // @Override public void windowClosed(WindowEvent e) { /* not needed */ }
+  @Override public void componentShown(ComponentEvent e) {
+    /* not needed */
+  }
+
+  // @Override public void windowActivated(WindowEvent e) {
+  //   /* not needed */
+  // }
+
+  // @Override public void windowClosed(WindowEvent e) {
+  //   /* not needed */
+  // }
 
   @Override public void windowClosing(WindowEvent e) {
     saveLocation();
     e.getWindow().dispose();
   }
-  // @Override public void windowDeactivated(WindowEvent e) { /* not needed */ }
-  // @Override public void windowDeiconified(WindowEvent e) { /* not needed */ }
-  // @Override public void windowIconified(WindowEvent e) { /* not needed */ }
-  // @Override public void windowOpened(WindowEvent e) { /* not needed */ }
+
+  // @Override public void windowDeactivated(WindowEvent e) {
+  //   /* not needed */
+  // }
+
+  // @Override public void windowDeiconified(WindowEvent e) {
+  //   /* not needed */
+  // }
+
+  // @Override public void windowIconified(WindowEvent e) {
+  //   /* not needed */
+  // }
+
+  // @Override public void windowOpened(WindowEvent e) {
+  //   /* not needed */
+  // }
 }

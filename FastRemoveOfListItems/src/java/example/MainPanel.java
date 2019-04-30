@@ -218,7 +218,9 @@ class ArrayListModel<E> extends AbstractListModel<E> {
 }
 
 final class SpringLayoutUtil {
-  private SpringLayoutUtil() { /* Singleton */ }
+  private SpringLayoutUtil() {
+    /* Singleton */
+  }
 
   public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, Rectangle2D.Float r) {
     Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);

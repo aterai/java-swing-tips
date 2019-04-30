@@ -287,9 +287,13 @@ class TableDragSourceListener implements DragSourceListener {
     e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
   }
 
-  @Override public void dragOver(DragSourceDragEvent e) { /* not needed */ }
+  @Override public void dragOver(DragSourceDragEvent e) {
+    /* not needed */
+  }
 
-  @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
+  }
 
   @Override public void dragDropEnd(DragSourceDropEvent e) {
     // e.getDragSourceContext().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

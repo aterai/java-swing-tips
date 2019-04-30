@@ -52,7 +52,9 @@ final class NimbusTabbedPanePainterUtils {
   public static final int STROKE_SIZE = 2;
   public static final int ARC = 10;
 
-  private NimbusTabbedPanePainterUtils() { /* HideUtilityClassConstructor */ }
+  private NimbusTabbedPanePainterUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static void configureUI() {
     UIDefaults d = UIManager.getLookAndFeelDefaults();

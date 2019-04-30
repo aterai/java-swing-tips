@@ -73,7 +73,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
           combo.getEditor().setItem(str);
         }
 
-        @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+        @Override public void popupMenuCanceled(PopupMenuEvent e) {
+          /* not needed */
+        }
       };
     }
     return popupMenuListener;
@@ -221,9 +223,13 @@ class SearchEngineListCellRenderer<E extends SearchEngine> implements ListCellRe
 }
 
 class SearchBarLayout implements LayoutManager {
-  @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
+  @Override public void addLayoutComponent(String name, Component comp) {
+    /* not needed */
+  }
 
-  @Override public void removeLayoutComponent(Component comp) { /* not needed */ }
+  @Override public void removeLayoutComponent(Component comp) {
+    /* not needed */
+  }
 
   @Override public Dimension preferredLayoutSize(Container parent) {
     return parent.getPreferredSize();

@@ -20,7 +20,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("Slider.horizontalThumbIcon", new Icon() {
-      @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+      @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        /* Empty icon */
+      }
 
       @Override public int getIconWidth() {
         return 15;
@@ -256,7 +258,9 @@ class GradientPalletSliderUI extends MetalSliderUI {
 }
 
 final class GradientPalletUtils {
-  private GradientPalletUtils() { /* HideUtilityClassConstructor */ }
+  private GradientPalletUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static int[] makeGradientPallet() {
     BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
@@ -295,7 +299,9 @@ final class GradientPalletUtils {
 }
 
 final class TextureUtils {
-  private TextureUtils() { /* HideUtilityClassConstructor */ }
+  private TextureUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;

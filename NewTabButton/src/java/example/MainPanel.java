@@ -283,9 +283,13 @@ class TabLayout implements LayoutManager, Serializable {
   private static final long serialVersionUID = 1L;
   private static final int TAB_WIDTH = 100;
 
-  @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
+  @Override public void addLayoutComponent(String name, Component comp) {
+    /* not needed */
+  }
 
-  @Override public void removeLayoutComponent(Component comp) { /* not needed */ }
+  @Override public void removeLayoutComponent(Component comp) {
+    /* not needed */
+  }
 
   @Override public Dimension preferredLayoutSize(Container parent) {
     synchronized (parent.getTreeLock()) {

@@ -117,21 +117,33 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF_00_00_00 : 0x0;
   }
 
-  @Override public void mouseMoved(MouseEvent e) { /* not needed */ }
+  @Override public void mouseMoved(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseExited(MouseEvent e) { /* not needed */ }
+  @Override public void mouseExited(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+  @Override public void mouseEntered(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+  @Override public void mouseReleased(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+  @Override public void mouseClicked(MouseEvent e) {
+    /* not needed */
+  }
 }
 
 final class TextureUtils {
   private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
 
-  private TextureUtils() { /* HideUtilityClassConstructor */ }
+  private TextureUtils() {
+    /* HideUtilityClassConstructor */
+  }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;

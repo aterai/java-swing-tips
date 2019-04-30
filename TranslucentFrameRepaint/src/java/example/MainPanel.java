@@ -179,7 +179,9 @@ enum TexturePaints {
 }
 
 final class TextureUtil {
-  private TextureUtil() { /* Singleton */ }
+  private TextureUtil() {
+    /* Singleton */
+  }
 
   public static TexturePaint makeImageTexture() {
     // unkaku_w.png http://www.viva-edo.com/komon/edokomon.html

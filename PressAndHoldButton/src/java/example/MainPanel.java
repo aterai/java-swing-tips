@@ -164,9 +164,13 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
     }
   }
 
-  @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+  @Override public void mouseEntered(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+  @Override public void mouseClicked(MouseEvent e) {
+    /* not needed */
+  }
 }
 
 class MenuContext {

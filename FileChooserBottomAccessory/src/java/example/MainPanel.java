@@ -145,7 +145,9 @@ class EncodingFileChooserUI extends MetalFileChooserUI {
 }
 
 final class SwingUtils {
-  private SwingUtils() { /* Singleton */ }
+  private SwingUtils() {
+    /* Singleton */
+  }
 
   public static Stream<Component> stream(Container parent) {
     return Stream.of(parent.getComponents())

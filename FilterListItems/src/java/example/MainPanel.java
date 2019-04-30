@@ -66,7 +66,9 @@ public final class MainPanel extends JPanel {
         filter();
       }
 
-      @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+      @Override public void changedUpdate(DocumentEvent e) {
+        /* not needed */
+      }
     });
 
     add(field, BorderLayout.NORTH);

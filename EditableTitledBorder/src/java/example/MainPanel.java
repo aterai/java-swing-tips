@@ -257,13 +257,21 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     }
   }
 
-  @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+  @Override public void mouseEntered(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseExited(MouseEvent e) { /* not needed */ }
+  @Override public void mouseExited(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mousePressed(MouseEvent e) { /* not needed */ }
+  @Override public void mousePressed(MouseEvent e) {
+    /* not needed */
+  }
 
-  @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+  @Override public void mouseReleased(MouseEvent e) {
+    /* not needed */
+  }
 
   protected JTextField getEditorTextField() {
     return editor;

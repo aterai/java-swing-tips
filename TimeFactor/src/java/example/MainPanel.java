@@ -75,7 +75,9 @@ public final class MainPanel extends JPanel {
 final class LookAndFeelUtil {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() { /* Singleton */ }
+  private LookAndFeelUtil() {
+    /* Singleton */
+  }
 
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");

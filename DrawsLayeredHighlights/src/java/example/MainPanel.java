@@ -66,7 +66,9 @@ public class MainPanel extends JPanel {
         fireDocumentChangeEvent();
       }
 
-      @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+      @Override public void changedUpdate(DocumentEvent e) {
+        /* not needed */
+      }
     });
     fireDocumentChangeEvent();
     EventQueue.invokeLater(() -> {

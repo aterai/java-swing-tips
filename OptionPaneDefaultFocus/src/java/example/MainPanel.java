@@ -119,7 +119,11 @@ class FocusAncestorListener implements AncestorListener {
     e.getComponent().requestFocusInWindow();
   }
 
-  @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
 
-  @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
+  }
 }

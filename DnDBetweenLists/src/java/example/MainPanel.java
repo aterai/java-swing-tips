@@ -52,7 +52,9 @@ public final class MainPanel extends JPanel {
     // Disable row Cut, Copy, Paste
     ActionMap map = list.getActionMap();
     Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
+      @Override public void actionPerformed(ActionEvent e) {
+        /* Dummy action */
+      }
     };
     map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
     map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);

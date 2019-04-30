@@ -6,4 +6,6 @@ package example;
 
 import javax.swing.plaf.basic.BasicButtonUI;
 
-public class TabViewButtonUI extends BasicButtonUI { /* ButtonUI */ }
+public class TabViewButtonUI extends BasicButtonUI {
+  /* ButtonUI */
+}

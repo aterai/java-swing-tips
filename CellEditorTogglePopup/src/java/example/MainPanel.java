@@ -43,7 +43,9 @@ public final class MainPanel extends JPanel {
         // e.getComponent().setEnabled(false);
       }
 
-      @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+      @Override public void ancestorMoved(AncestorEvent e) {
+        /* not needed */
+      }
     });
     table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
 

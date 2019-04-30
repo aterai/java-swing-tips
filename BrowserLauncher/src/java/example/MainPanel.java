@@ -76,7 +76,9 @@ public final class MainPanel extends JPanel {
 final class BrowserLauncher {
   private static final String ERR_MSG = "Error attempting to launch web browser";
 
-  private BrowserLauncher() { /* Singleton */ }
+  private BrowserLauncher() {
+    /* Singleton */
+  }
 
   public static void openUrl(String url) {
     String osName = System.getProperty("os.name");

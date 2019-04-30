@@ -95,9 +95,13 @@ class TextComponentPopupMenu extends JPopupMenu {
         e.getComponent().requestFocusInWindow();
       }
 
-      @Override public void ancestorMoved(AncestorEvent e) { /* not needed */ }
+      @Override public void ancestorMoved(AncestorEvent e) {
+        /* not needed */
+      }
 
-      @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+      @Override public void ancestorRemoved(AncestorEvent e) {
+        /* not needed */
+      }
     });
     tc.getDocument().addUndoableEditListener(manager);
     tc.getActionMap().put("undo", undoAction);
@@ -107,7 +111,9 @@ class TextComponentPopupMenu extends JPopupMenu {
     imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
 
     addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+      @Override public void popupMenuCanceled(PopupMenuEvent e) {
+        /* not needed */
+      }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
         undoAction.setEnabled(true);
