@@ -211,7 +211,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
     setOpaque(true);
 
     // System.out.println(UIManager.get("nimbusFocus"));
-    Border b = BorderFactory.createLineBorder(new Color(115, 164, 209));
+    Border b = BorderFactory.createLineBorder(new Color(0x73_A4_D1)); // Color(115, 164, 209));
     fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1, 4, 1, 4));
     setBorder(epb);
     // setMargin(new Insets(0, 0, 0, 0));
