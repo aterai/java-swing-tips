@@ -223,7 +223,7 @@ class CellButtonsMouseListener extends MouseAdapter {
 }
 
 class ButtonsRenderer<E> implements ListCellRenderer<E> {
-  private static final Color EVEN_COLOR = new Color(230, 255, 230);
+  private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
   protected int targetIndex;
   protected int rolloverIndex = -1;
   private final JPanel panel = new JPanel(new BorderLayout()) { // *1
