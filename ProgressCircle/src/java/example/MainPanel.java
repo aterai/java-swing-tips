@@ -10,7 +10,6 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Random;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
@@ -148,14 +147,12 @@ class ProgressCircleUI extends BasicProgressBarUI {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  private final Random rnd = new Random();
-
   @Override public String doInBackground() {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
       try { // dummy task
-        Thread.sleep(rnd.nextInt(50) + 1);
+        Thread.sleep(50);
       } catch (InterruptedException ex) {
         return "Interrupted";
       }
