@@ -185,6 +185,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
   //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
   //   return !colorMatch && super.isOpaque();
   // }
+  //
   // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
   //   // System.out.println(propertyName);
   //   // String literal pool
@@ -194,12 +195,33 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
   //     super.firePropertyChange(propertyName, oldValue, newValue);
   //   }
   // }
-  // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint() { /* Overridden for performance reasons. */ }
-  // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-  // @Override public void validate() { /* Overridden for performance reasons. */ }
-  // @Override public void revalidate() { /* Overridden for performance reasons. */ }
+  //
+  // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void repaint(long tm, int x, int y, int width, int height) {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void repaint(Rectangle r) {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void repaint() {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void invalidate() {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void validate() {
+  //   /* Overridden for performance reasons. */
+  // }
+  //
+  // @Override public void revalidate() {
+  //   /* Overridden for performance reasons. */
+  // }
   // // <---- Overridden for performance reasons.
 }

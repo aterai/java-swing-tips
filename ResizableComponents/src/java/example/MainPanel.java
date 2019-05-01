@@ -28,7 +28,10 @@ public class MainPanel extends JPanel {
     popup.add("tree").addActionListener(e -> createTree());
 
     layeredPane.setComponentPopupMenu(popup);
-    // layeredPane.addMouseListener(new MouseAdapter() { /* Dummy listener */ }); // ??? for 1.5.0
+    // ??? for 1.5.0
+    // layeredPane.addMouseListener(new MouseAdapter() {
+    //   /* Dummy listener */
+    // });
     add(layeredPane);
     toolbar.add(new AbstractAction("add table") {
       @Override public void actionPerformed(ActionEvent e) {

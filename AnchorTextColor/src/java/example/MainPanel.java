@@ -93,12 +93,15 @@ public final class MainPanel extends JPanel {
 //
 // class HyperlinkButton extends JButton {
 //   private static final String UI_CLASS_ID = "LinkViewButtonUI";
+//
 // //   @Override public String getUIClassID() {
 // //     return UI_CLASS_ID;
 // //   }
+// //
 // //   @Override public void setUI(LinkViewButtonUI ui) {
 // //     super.setUI(ui);
 // //   }
+//
 //   @Override public void updateUI() {
 //     super.updateUI();
 //     if (UIManager.get(UI_CLASS_ID) == null) {
@@ -110,28 +113,36 @@ public final class MainPanel extends JPanel {
 //     setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
 //     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //   }
+//
 //   public LinkViewButtonUI getUI() {
 //     return BasicLinkViewButtonUI.createUI(this);
 //   }
+//
 //   protected HyperlinkButton() {
 //     this(null, null);
 //   }
+//
 //   protected HyperlinkButton(Icon icon) {
 //     this(null, icon);
 //   }
+//
 //   protected HyperlinkButton(String text) {
 //     this(text, null);
 //   }
+//
 //   protected HyperlinkButton(Action a) {
 //     this();
 //     super.setAction(a);
 //   }
+//
 //   protected HyperlinkButton(String text, Icon icon) {
 //     super(text, icon);
 //   }
 // }
 //
-// class LinkViewButtonUI extends BasicButtonUI { /* ButtonUI */ }
+// class LinkViewButtonUI extends BasicButtonUI {
+//   /* ButtonUI */
+// }
 //
 // class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //   private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
@@ -141,9 +152,9 @@ public final class MainPanel extends JPanel {
 //   private final Rectangle textRect = new Rectangle();
 //
 //   public static LinkViewButtonUI createUI(JButton b) {
-// //     b.setForeground(Color.BLUE);
-// //     b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
-// //     b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//     // b.setForeground(Color.BLUE);
+//     // b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
+//     // b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //     return LINKVIEW_BUTTON_UI;
 //   }
 //

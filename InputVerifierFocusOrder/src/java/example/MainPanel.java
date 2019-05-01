@@ -100,7 +100,9 @@ public class MainPanel extends JPanel {
     //   @Override public void removeUpdate(DocumentEvent e) {
     //     System.out.println("removeUpdate");
     //   }
-    //   @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
+    //   @Override public void changedUpdate(DocumentEvent e) {
+    //     /* not needed */
+    //   }
     // });
     return textField;
   }

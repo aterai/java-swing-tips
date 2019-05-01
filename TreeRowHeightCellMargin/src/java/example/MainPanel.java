@@ -115,7 +115,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     return renderer;
   }
 
-  // @Override public void paint(Graphics g) { /* Empty painter */ }
+  // @Override public void paint(Graphics g) {
+  //   /* Empty painter */
+  // }
 }
 
 class DotBorder extends LineBorder {

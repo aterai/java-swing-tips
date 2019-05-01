@@ -253,18 +253,32 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     }
 //   }
 //
-//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//   @Override public void repaint(long tm, int x, int y, int width, int height) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//   @Override public void repaint(Rectangle r) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint() { /* Overridden for performance reasons. */ }
+//   @Override public void repaint() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//   @Override public void invalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void validate() { /* Overridden for performance reasons. */ }
+//   @Override public void validate() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//   @Override public void revalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //   // <---- Overridden for performance reasons.
 // }
