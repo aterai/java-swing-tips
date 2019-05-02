@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
     Box accordion = Box.createVerticalBox();
     accordion.setOpaque(true);
-    accordion.setBackground(new Color(180, 180, 255));
+    accordion.setBackground(new Color(0xB4_B4_FF));
     accordion.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
     makeExpansionPanelList().forEach(p -> {
       accordion.add(p);
@@ -126,7 +126,7 @@ abstract class AbstractExpansionPanel extends JPanel {
     super(new BorderLayout());
     this.title = title;
     label = new JLabel("▼ " + title) {
-      private final Color bgc = new Color(200, 200, 255);
+      private final Color bgc = new Color(0xC8_C8_FF);
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         // Insets ins = getInsets();
@@ -148,7 +148,7 @@ abstract class AbstractExpansionPanel extends JPanel {
     panel = makePanel();
     panel.setVisible(false);
     panel.setOpaque(true);
-    panel.setBackground(new Color(240, 240, 255));
+    panel.setBackground(new Color(0xF0_F0_FF));
     Border outBorder = BorderFactory.createMatteBorder(0, 2, 2, 2, Color.WHITE);
     Border inBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
     Border border = BorderFactory.createCompoundBorder(outBorder, inBorder);
