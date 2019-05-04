@@ -93,11 +93,11 @@ public final class MainPanel extends JPanel {
         }
         DayOfWeek dow = d.getDayOfWeek();
         if (d.isEqual(realLocalDate)) {
-          setBackground(new Color(220, 255, 220));
+          setBackground(new Color(0xDC_FF_DC));
         } else if (dow == DayOfWeek.SUNDAY) {
-          setBackground(new Color(255, 220, 220));
+          setBackground(new Color(0xFF_DC_DC));
         } else if (dow == DayOfWeek.SATURDAY) {
-          setBackground(new Color(220, 220, 255));
+          setBackground(new Color(0xDC_DC_FF));
         } else {
           setBackground(Color.WHITE);
         }
