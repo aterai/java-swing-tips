@@ -159,16 +159,16 @@ class ScrollPaneLayerUI extends LayerUI<JScrollPane> {
       if (value + extent < maximum) {
         int w = rect.width;
         int h = rect.height;
-        int pad = 6;
+        int shd = 6;
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.translate(rect.x + w - pad, rect.y);
+        g2.translate(rect.x + w - shd, rect.y);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(new Color(0x08_00_00_00, true));
-        for (int i = 0; i < pad; i++) {
-          g2.fillRect(i, 0, pad - i, h);
+        for (int i = 0; i < shd; i++) {
+          g2.fillRect(i, 0, shd - i, h);
         }
         // g2.setPaint(Color.RED);
-        g2.fillRect(pad - 2, 0, 2, h); // Make the edge a bit darker
+        g2.fillRect(shd - 2, 0, 2, h); // Make the edge a bit darker
         g2.dispose();
       }
     }
