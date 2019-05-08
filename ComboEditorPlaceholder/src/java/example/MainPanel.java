@@ -128,8 +128,7 @@ class PlaceholderLayerUI<E extends JTextComponent> extends LayerUI<E> {
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if (c instanceof JLayer) {
-      JLayer jlayer = (JLayer) c;
-      JTextComponent tc = (JTextComponent) jlayer.getView();
+      JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
       if (tc.getText().length() == 0 && !tc.hasFocus()) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(INACTIVE);
@@ -146,14 +145,14 @@ class PlaceholderLayerUI<E extends JTextComponent> extends LayerUI<E> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer) c).setLayerEventMask(AWTEvent.FOCUS_EVENT_MASK);
+      ((JLayer<?>) c).setLayerEventMask(AWTEvent.FOCUS_EVENT_MASK);
     }
   }
 
   @Override public void uninstallUI(JComponent c) {
     super.uninstallUI(c);
     if (c instanceof JLayer) {
-      ((JLayer) c).setLayerEventMask(0);
+      ((JLayer<?>) c).setLayerEventMask(0);
     }
   }
 
