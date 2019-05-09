@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
     JMenuBar mb = new JMenuBar();
     JMenu menu = makeMenu(mb.add(new JMenu("Default")));
     // menu.getPopupMenu().setPreferredSize(new Dimension(200, 0));
+    System.out.println(menu.getPopupMenu().getPreferredSize());
 
     menu = makeMenu(mb.add(new JMenu("BoxHStrut")));
     menu.add(Box.createHorizontalStrut(200));
