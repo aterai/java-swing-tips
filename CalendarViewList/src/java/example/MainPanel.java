@@ -11,6 +11,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
@@ -33,7 +34,7 @@ public final class MainPanel extends JPanel {
       getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     }
   };
-  public final LocalDate realLocalDate = LocalDate.now();
+  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
   public LocalDate getCurrentLocalDate() {
@@ -173,7 +174,7 @@ public final class MainPanel extends JPanel {
 
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("YYYY / MM").withLocale(Locale.getDefault())));
+    yearMonthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
     monthList.setModel(new CalendarViewListModel(localDate));
   }
 
