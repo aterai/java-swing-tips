@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   public static final Dimension CELLSZ = new Dimension(10, 10);
-  public final LocalDate currentLocalDate = LocalDate.now();
+  public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
   public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
     @Override public void updateUI() {
       setCellRenderer(null);

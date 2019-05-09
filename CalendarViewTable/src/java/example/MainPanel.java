@@ -8,6 +8,7 @@ import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
@@ -20,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
-  public final LocalDate realLocalDate = LocalDate.now();
+  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JLabel dateLabel = new JLabel(realLocalDate.toString(), SwingConstants.CENTER);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable();
