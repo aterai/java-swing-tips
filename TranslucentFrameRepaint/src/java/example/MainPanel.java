@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,10 +25,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-    JLabel label = new JLabel(LocalTime.now().format(formatter), SwingConstants.CENTER);
+    JLabel label = new JLabel(LocalTime.now(ZoneId.systemDefault()).format(formatter), SwingConstants.CENTER);
     Timer timer = new Timer(100, null);
     timer.addActionListener(e -> {
-      label.setText(LocalTime.now().format(formatter));
+      label.setText(LocalTime.now(ZoneId.systemDefault()).format(formatter));
       Container parent = SwingUtilities.getUnwrappedParent(label);
       if (Objects.nonNull(parent) && parent.isOpaque()) {
         repaintWindowAncestor(label);

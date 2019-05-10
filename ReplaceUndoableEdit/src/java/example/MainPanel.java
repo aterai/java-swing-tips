@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -59,9 +60,9 @@ public class MainPanel extends JPanel {
       doc.setDocumentFilter(undoManager2.getDocumentFilter());
     }
 
-    JButton button = new JButton("setText(LocalDateTime.now())");
+    JButton button = new JButton("setText(LocalDateTime.now(ZoneId.systemDefault()))");
     button.addActionListener(e -> {
-      String str = LocalDateTime.now().toString();
+      String str = LocalDateTime.now(ZoneId.systemDefault()).toString();
       Stream.of(textField0, textField1, textField2).forEach(tf -> tf.setText(str));
     });
 

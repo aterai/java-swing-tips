@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
 
     JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
-      LocalDateTime date = LocalDateTime.now();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
 
       DefaultTreeModel model1 = (DefaultTreeModel) tree1.getModel();
       DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode) model1.getRoot();

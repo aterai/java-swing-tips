@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     JSpinner spinner0 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
     spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
-    LocalDateTime d = LocalDateTime.now();
+    LocalDateTime d = LocalDateTime.now(ZoneId.systemDefault());
     LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
     LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
 

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
     t.addTab("JTree", new JScrollPane(tree));
 
     timer = new Timer(1000, e -> {
-      LocalDateTime date = LocalDateTime.now();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
 
       // JTable
       model.addRow(new Object[] {date.toString(), model.getRowCount(), false});

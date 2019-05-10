@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -21,7 +22,9 @@ public final class MainPanel extends JPanel {
 
   private static Component makeList() {
     DefaultListModel<String> m = new DefaultListModel<>();
-    IntStream.range(0, 50).forEach(i -> m.addElement(String.format("%05d: %s", i, LocalDateTime.now().toString())));
+    IntStream.range(0, 50).forEach(i -> {
+      m.addElement(String.format("%05d: %s", i, LocalDateTime.now(ZoneId.systemDefault()).toString()));
+    });
     return new JList<>(m);
   }
 

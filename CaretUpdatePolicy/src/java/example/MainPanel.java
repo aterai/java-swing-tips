@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -19,7 +20,7 @@ public class MainPanel extends JPanel {
   protected final JTextArea textArea0 = new JTextArea();
   protected final JTextArea textArea1 = new JTextArea();
   protected final JTextArea textArea2 = new JTextArea();
-  // TEST: Timer timer = new Timer(500, e -> test(LocalDateTime.now().toString()));
+  // TEST: Timer timer = new Timer(500, e -> test(LocalDateTime.now(ZoneId.systemDefault()).toString()));
   // TEST: Thread thread;
   protected transient SwingWorker<String, String> worker;
 
@@ -71,9 +72,9 @@ public class MainPanel extends JPanel {
           return "Interrupted";
         }
         if (check.isSelected()) {
-          publish(LocalDateTime.now().toString()); // On EDT
+          publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
         } else {
-          test(LocalDateTime.now().toString()); // Not on EDT
+          test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
         }
       }
     }
@@ -105,7 +106,7 @@ public class MainPanel extends JPanel {
     // if (Objects.isNull(thread)) {
     //   thread = new Thread(() -> {
     //     while (thread != null) {
-    //       test(LocalDateTime.now().toString());
+    //       test(LocalDateTime.now(ZoneId.systemDefault()).toString());
     //       try {
     //         Thread.sleep(1000);
     //       } catch (InterruptedException ex) {
@@ -125,9 +126,9 @@ public class MainPanel extends JPanel {
               return "Interrupted";
             }
             if (check.isSelected()) {
-              publish(LocalDateTime.now().toString()); // On EDT
+              publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
             } else {
-              test(LocalDateTime.now().toString()); // Not on EDT
+              test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
             }
           }
         }

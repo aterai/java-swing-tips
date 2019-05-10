@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -72,13 +73,13 @@ public final class MainPanel extends JPanel {
 
     JButton button1 = new JButton("add tab");
     button1.addActionListener(e -> {
-      String title = LocalTime.now().toString();
+      String title = LocalTime.now(ZoneId.systemDefault()).toString();
       tabbedPane.addTab(title, new JLabel(title));
     });
 
     JButton button2 = new JButton("add tab with focus");
     button2.addActionListener(e -> {
-      String title = LocalTime.now().toString();
+      String title = LocalTime.now(ZoneId.systemDefault()).toString();
       tabbedPane.addTab(title, new JLabel(title));
       tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
     });

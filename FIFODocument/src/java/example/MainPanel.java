@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -20,7 +21,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
   private final Timer timer = new Timer(200, e -> {
-    String s = LocalDateTime.now().toString();
+    String s = LocalDateTime.now(ZoneId.systemDefault()).toString();
     textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
   });
 

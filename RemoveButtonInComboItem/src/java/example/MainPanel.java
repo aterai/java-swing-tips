@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("add");
     button.addActionListener(e -> {
-      String str = LocalDateTime.now().toString();
+      String str = LocalDateTime.now(ZoneId.systemDefault()).toString();
       Stream.of(c0, c1, c2, c3).forEach(c -> {
         MutableComboBoxModel<String> m = (MutableComboBoxModel<String>) c.getModel();
         m.insertElementAt(str, m.getSize());

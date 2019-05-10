@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.EventObject;
@@ -22,8 +23,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private final String[] columnNames = {"LocalDateTime", "String", "Boolean"};
   private final Object[][] data = {
-    {LocalDateTime.now(), "aaa", true}, {LocalDateTime.now(), "bbb", false},
-    {LocalDateTime.now(), "CCC", true}, {LocalDateTime.now(), "DDD", false}
+    {LocalDateTime.now(ZoneId.systemDefault()), "aaa", true}, {LocalDateTime.now(ZoneId.systemDefault()), "bbb", false},
+    {LocalDateTime.now(ZoneId.systemDefault()), "CCC", true}, {LocalDateTime.now(ZoneId.systemDefault()), "DDD", false}
   };
   private final TableModel model = new DefaultTableModel(data, columnNames) {
     @Override public Class<?> getColumnClass(int column) {
@@ -117,7 +118,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
       comboBox.setModel(new DefaultComboBoxModel<LocalDateTime>() {
         @Override public LocalDateTime getElementAt(int index) {
           // if (index >= 0 && index < getSize()) {
-          return LocalDateTime.now().plusDays(index);
+          return LocalDateTime.now(ZoneId.systemDefault()).plusDays(index);
         }
 
         @Override public int getSize() {

@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -15,7 +16,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JButton button = new JButton("JButton JButton");
 
-    Timer timer = new Timer(4000, e -> printInfo(button, LocalTime.now().toString()));
+    Timer timer = new Timer(4000, e -> printInfo(button, LocalTime.now(ZoneId.systemDefault()).toString()));
 
     JCheckBox vcheck = new JCheckBox("setVisible", true);
     vcheck.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));

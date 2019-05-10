@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -100,7 +101,7 @@ class EnterAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    LOGGER.info(String.format("%s%n  %s%n", LocalDateTime.now().toString(), textField.getText()));
+    LOGGER.info(String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()).toString(), textField.getText()));
   }
 }
 

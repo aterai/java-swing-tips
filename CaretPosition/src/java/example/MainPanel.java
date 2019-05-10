@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -24,7 +25,7 @@ public final class MainPanel extends JPanel {
     jtp.setEditable(false);
     stopButton.setEnabled(false);
 
-    timer = new Timer(200, e -> append(LocalDateTime.now().toString()));
+    timer = new Timer(200, e -> append(LocalDateTime.now(ZoneId.systemDefault()).toString()));
     startButton.addActionListener(e -> timerStart());
     stopButton.addActionListener(e -> timerStop());
     clearButton.addActionListener(e -> {

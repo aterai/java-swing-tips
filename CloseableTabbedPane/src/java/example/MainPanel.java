@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -36,7 +37,7 @@ public final class MainPanel extends JPanel {
 
     JButton addTabButton = new JButton("add tab");
     addTabButton.addActionListener(e -> {
-      String title = LocalTime.now().toString();
+      String title = LocalTime.now(ZoneId.systemDefault()).toString();
       Stream.of(tabbedPane0, tabbedPane1).forEach(t -> t.addTab(title, new JLabel(title)));
     });
 
