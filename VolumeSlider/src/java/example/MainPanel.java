@@ -106,25 +106,19 @@ class TriSliderUI extends MetalSliderUI {
       g2.fillRect(0, -cy, cw, cy * 2);
 
       int trackLeft = 0;
-      int trackRight = 0;
-      // int trackTop = 0;
-      // int trackBottom = 0;
+      int trackRight = trackRect.width - 1;
+      // int trackBottom = (trackRect.height - 1) - getThumbOverhang();
+      // int trackTop = trackBottom - (getTrackWidth() - 1);
 
-      // trackBottom = (trackRect.height - 1) - getThumbOverhang();
-      // trackTop = trackBottom - (getTrackWidth() - 1);
-      trackRight = trackRect.width - 1;
-
-      int middleOfThumb = 0;
-      // int fillTop = 0;
-      // int fillBottom = 0;
-      int fillLeft = 0;
-      int fillRight = 0;
-
-      middleOfThumb = thumbRect.x + thumbRect.width / 2;
+      int middleOfThumb = thumbRect.x + thumbRect.width / 2;
       middleOfThumb -= trackRect.x; // To compensate for the g.translate()
       // fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
       // fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
 
+      // int fillTop = 0;
+      // int fillBottom = 0;
+      int fillLeft = 0;
+      int fillRight = 0;
       if (drawInverted()) {
         fillLeft = middleOfThumb;
         fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
