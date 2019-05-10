@@ -223,22 +223,22 @@ class DnDTabbedPane extends JTabbedPane {
     }
     for (int i = 0; i < getTabCount(); i++) {
       if (getBoundsAt(i).contains(p)) {
-        return new DropLocation(p, i);
+        return new DnDTabbedPane.DropLocation(p, i);
       }
     }
     if (getTabAreaBounds().contains(p)) {
-      return new DropLocation(p, getTabCount());
+      return new DnDTabbedPane.DropLocation(p, getTabCount());
     }
-    return new DropLocation(p, -1);
+    return new DnDTabbedPane.DropLocation(p, -1);
     // switch (dropMode) {
     //   case INSERT:
     //     for (int i = 0; i < getTabCount(); i++) {
     //       if (getBoundsAt(i).contains(p)) {
-    //         return new DropLocation(p, i);
+    //         return new DnDTabbedPane.DropLocation(p, i);
     //       }
     //     }
     //     if (getTabAreaBounds().contains(p)) {
-    //       return new DropLocation(p, getTabCount());
+    //       return new DnDTabbedPane.DropLocation(p, getTabCount());
     //     }
     //     break;
     //   case USE_SELECTION:
@@ -248,7 +248,7 @@ class DnDTabbedPane extends JTabbedPane {
     //     assert false : "Unexpected drop mode";
     //     break;
     // }
-    // return new DropLocation(p, -1);
+    // return new DnDTabbedPane.DropLocation(p, -1);
   }
 
   public final DnDTabbedPane.DropLocation getDropLocation() {
@@ -260,7 +260,7 @@ class DnDTabbedPane extends JTabbedPane {
   // @Override Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
   //   DropLocation old = dropLocation;
   //   if (Objects.isNull(location) || !forDrop) {
-  //     dropLocation = new DropLocation(new Point(), -1);
+  //     dropLocation = new DnDTabbedPane.DropLocation(new Point(), -1);
   //   } else if (location instanceof DropLocation) {
   //     dropLocation = (DropLocation) location;
   //   }
@@ -269,9 +269,9 @@ class DnDTabbedPane extends JTabbedPane {
   // }
 
   public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
-    DropLocation old = dropLocation;
+    DnDTabbedPane.DropLocation old = dropLocation;
     if (Objects.isNull(location) || !forDrop) {
-      dropLocation = new DropLocation(new Point(), -1);
+      dropLocation = new DnDTabbedPane.DropLocation(new Point(), -1);
     } else {
       dropLocation = location;
     }
@@ -329,8 +329,8 @@ class DnDTabbedPane extends JTabbedPane {
 
   public Optional<Rectangle> getDropLineRect() {
     int index = Optional.ofNullable(getDropLocation())
-        .filter(DropLocation::isDroppable)
-        .map(DropLocation::getIndex)
+        .filter(DnDTabbedPane.DropLocation::isDroppable)
+        .map(DnDTabbedPane.DropLocation::getIndex)
         .orElse(-1);
     if (index < 0) {
       RECT_LINE.setBounds(0, 0, 0, 0);
@@ -449,7 +449,7 @@ class DnDTabbedPane extends JTabbedPane {
         th.exportAsDrag(src, e, TransferHandler.MOVE);
         RECT_LINE.setBounds(0, 0, 0, 0);
         src.getRootPane().getGlassPane().setVisible(true);
-        src.updateTabDropLocation(new DropLocation(tabPt, -1), null, true);
+        src.updateTabDropLocation(new DnDTabbedPane.DropLocation(tabPt, -1), null, true);
         startPt = null;
       }
     }
@@ -541,7 +541,7 @@ class TabTransferHandler extends TransferHandler {
       return false;
     }
     support.setDropAction(TransferHandler.MOVE);
-    DropLocation tdl = support.getDropLocation();
+    TransferHandler.DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     target.autoScrollTest(pt);

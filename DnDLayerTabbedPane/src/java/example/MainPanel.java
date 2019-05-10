@@ -251,22 +251,22 @@ class DnDTabbedPane extends JTabbedPane {
     }
     for (int i = 0; i < getTabCount(); i++) {
       if (getBoundsAt(i).contains(p)) {
-        return new DropLocation(p, i);
+        return new DnDTabbedPane.DropLocation(p, i);
       }
     }
     if (getTabAreaBounds().contains(p)) {
-      return new DropLocation(p, getTabCount());
+      return new DnDTabbedPane.DropLocation(p, getTabCount());
     }
-    return new DropLocation(p, -1);
+    return new DnDTabbedPane.DropLocation(p, -1);
     // switch (dropMode) {
     //   case INSERT:
     //     for (int i = 0; i < getTabCount(); i++) {
     //       if (getBoundsAt(i).contains(p)) {
-    //         return new DropLocation(p, i);
+    //         return new DnDTabbedPane.DropLocation(p, i);
     //       }
     //     }
     //     if (getTabAreaBounds().contains(p)) {
-    //       return new DropLocation(p, getTabCount());
+    //       return new DnDTabbedPane.DropLocation(p, getTabCount());
     //     }
     //     break;
     //   case USE_SELECTION:
@@ -276,30 +276,17 @@ class DnDTabbedPane extends JTabbedPane {
     //     assert false : "Unexpected drop mode";
     //     break;
     // }
-    // return new DropLocation(p, -1);
+    // return new DnDTabbedPane.DropLocation(p, -1);
   }
 
   public final DnDTabbedPane.DropLocation getDropLocation() {
     return dropLocation;
   }
-  // // WARNING:
-  // // The method DnDTabbedPane.setDropLocation(TransferHandler.DropLocation, Object, boolean)
-  // // does not override the inherited method from JComponent since it is private to a different package
-  // @Override Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
-  //   DropLocation old = dropLocation;
-  //   if (Objects.isNull(location) || !forDrop) {
-  //     dropLocation = new DropLocation(new Point(), -1);
-  //   } else if (location instanceof DropLocation) {
-  //     dropLocation = (DropLocation) location;
-  //   }
-  //   firePropertyChange("dropLocation", old, dropLocation);
-  //   return null;
-  // }
 
   public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
-    DropLocation old = dropLocation;
+    DnDTabbedPane.DropLocation old = dropLocation;
     if (Objects.isNull(location) || !forDrop) {
-      dropLocation = new DropLocation(new Point(), -1);
+      dropLocation = new DnDTabbedPane.DropLocation(new Point(), -1);
     } else {
       dropLocation = location;
     }
