@@ -159,9 +159,8 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
       state.clear();
       return;
     }
-    Integer value = null;
     Integer obj = state.get(col);
-    value = obj != null && obj == DOWN ? UP : DOWN;
+    Integer value = obj != null && obj == DOWN ? UP : DOWN;
     state.clear();
     state.put(col, value);
   }
