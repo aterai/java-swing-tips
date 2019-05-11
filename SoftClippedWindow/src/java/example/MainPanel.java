@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makePanel(BufferedImage image) {
+  private Component makePanel(BufferedImage image) {
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(image.getWidth(this) / 2, image.getHeight(this) / 2);
