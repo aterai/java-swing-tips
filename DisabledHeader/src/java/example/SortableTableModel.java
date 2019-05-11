@@ -9,9 +9,9 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -40,16 +40,17 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     this.ascending = ascending;
   }
 
-  @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+  @SuppressWarnings("unchecked")
   @Override public int compare(Object one, Object two) {
-    if (one instanceof Vector && two instanceof Vector) {
-      Comparable<Object> o1 = (Comparable<Object>) ((Vector<Object>) one).get(index);
-      Comparable<Object> o2 = (Comparable<Object>) ((Vector<Object>) two).get(index);
+    if (one instanceof List && two instanceof List) {
+      Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
+      Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
       int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.<Comparable<Object>>naturalOrder()));
       return c * (ascending ? 1 : -1);
     }
     return 0;
   }
+
   // @Override public int compare(Object one, Object two) {
   //   if (one instanceof Vector && two instanceof Vector) {
   //     Object oOne = ((Vector) one).get(index);

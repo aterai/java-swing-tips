@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -183,12 +182,11 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     }
   }
 
-  @SuppressWarnings("PMD.ReplaceVectorWithList")
   private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
     if (Status.INDETERMINATE.equals(status)) {
-      List<Boolean> l = ((Vector<?>) m.getDataVector())
+      List<Boolean> l = ((List<?>) m.getDataVector())
           .stream()
-          .map(v -> (Boolean) ((Vector<?>) v).get(targetColumnIndex))
+          .map(v -> (Boolean) ((List<?>) v).get(targetColumnIndex))
           .distinct()
           .collect(Collectors.toList());
       boolean isOnlyOneSelected = l.size() == 1;
