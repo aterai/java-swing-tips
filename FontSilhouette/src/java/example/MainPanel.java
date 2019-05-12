@@ -24,15 +24,24 @@ public final class MainPanel extends JPanel {
       "♚", "♛", "♜", "♝", "♞", "♟", // "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
     };
     for (int i = 0; i < pieces.length; i++) {
-      add(initLabel(new JLabel(pieces[i], SwingConstants.CENTER), i));
+      add(initLabel(makeCharLabel(pieces[i]), i));
     }
     for (int i = 0; i < pieces.length; i++) {
-      add(initLabel(new JLabel(new SilhouetteIcon(FONT, pieces[i], SIZE)), i));
+      add(initLabel(makeIconLabel(pieces[i]), i));
     }
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static JLabel makeCharLabel(String txt) {
+    return new JLabel(txt);
+  }
+
+  private static JLabel makeIconLabel(String txt) {
+    return new JLabel(new SilhouetteIcon(FONT, txt, SIZE));
+  }
+
   private static JLabel initLabel(JLabel l, int i) {
+    l.setHorizontalAlignment(SwingConstants.CENTER);
     l.setFont(FONT);
     l.setOpaque(true);
     boolean isFirstHalf = i < 6;
@@ -108,7 +117,7 @@ class SilhouetteIcon implements Icon, Serializable {
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          area.add(new Area(path));
+          area.add(createArea(path));
           path.reset();
           break;
         default:
@@ -118,6 +127,10 @@ class SilhouetteIcon implements Icon, Serializable {
       pi.next();
     }
     return area;
+  }
+
+  private static Area createArea(Path2D path) {
+    return new Area(path);
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

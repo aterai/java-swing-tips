@@ -103,9 +103,14 @@ public final class MainPanel extends JPanel {
       } else if (node.isLeaf() || node.isRoot()) {
         continue;
       }
-      tree.collapsePath(new TreePath(node.getPath()));
+      collapseNode(tree, node);
     }
   }
+
+  private static void collapseNode(JTree tree, DefaultMutableTreeNode node) {
+    tree.collapsePath(new TreePath(node.getPath()));
+  }
+
   // private static void collapseAll(JTree tree) {
   //   int row = tree.getRowCount() - 1;
   //   while (row >= 0) { // The root node must be hidden

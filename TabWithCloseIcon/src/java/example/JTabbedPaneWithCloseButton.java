@@ -59,7 +59,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
       super.layoutContainer(parent);
       // ensure that there are at least as many close buttons as tabs
       while (tabPane.getTabCount() > closeButtons.size()) {
-        closeButtons.add(new CloseButton(tabPane, closeButtons.size()));
+        closeButtons.add(createTabCloseButton(tabPane, closeButtons.size()));
       }
       Rectangle rect = new Rectangle();
       int tabPlacement = tabPane.getTabPlacement();
@@ -79,6 +79,10 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
         tabPane.remove(closeButtons.get(i));
       }
     }
+  }
+
+  protected static AbstractButton createTabCloseButton(JTabbedPane tabbedPane, int index) {
+    return new CloseButton(tabbedPane, index);
   }
 }
 

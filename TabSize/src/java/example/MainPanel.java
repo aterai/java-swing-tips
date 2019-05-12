@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     int tabWidth = charWidth * 4;
     TabStop[] tabs = new TabStop[10];
     for (int j = 0; j < tabs.length; j++) {
-      tabs[j] = new TabStop((j + 1) * tabWidth);
+      tabs[j] = createTabStop((j + 1) * tabWidth);
     }
     TabSet tabSet = new TabSet(tabs);
     // MutableAttributeSet attributes = new SimpleAttributeSet();
@@ -41,6 +41,10 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(textArea), BorderLayout.NORTH);
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TabStop createTabStop(float pos) {
+    return new TabStop(pos);
   }
 
   public static void main(String... args) {

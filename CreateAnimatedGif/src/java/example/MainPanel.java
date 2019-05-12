@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < list.size() * DELAY; i++) {
           paintFrame(image, list);
           Collections.rotate(list, 1);
-          writer.writeToSequence(new IIOImage(image, null, metadata), null);
+          writeToSequence(writer, image, metadata);
           metadata = null;
         }
         writer.endWriteSequence();
@@ -138,6 +138,10 @@ public final class MainPanel extends JPanel {
       g2.fill(s);
     });
     g2.dispose();
+  }
+
+  private static void writeToSequence(ImageWriter writer, BufferedImage image, IIOMetadata meta) throws IOException {
+    writer.writeToSequence(new IIOImage(image, null, meta), null);
   }
 
   public static void main(String... args) {

@@ -60,12 +60,16 @@ public final class MainPanel extends JPanel {
         if (key.isEmpty()) {
           keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE), c);
         } else {
-          keyboard.add(new KeyButton(key, len <= 2), c);
+          keyboard.add(createKeyButton(key, len <= 2), c);
         }
         c.gridx += c.gridwidth;
       }
     }
     return keyboard;
+  }
+
+  private static AbstractButton createKeyButton(String key, boolean square) {
+    return new KeyButton(key, square);
   }
 
   public static void main(String... args) {
