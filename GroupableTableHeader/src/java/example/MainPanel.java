@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -117,12 +118,16 @@ class GroupableTableHeader extends JTableHeader {
 
   public List<?> getColumnGroups(TableColumn col) {
     for (ColumnGroup cg: columnGroups) {
-      List<?> groups = cg.getColumnGroupList(col, new ArrayList<>());
+      List<?> groups = cg.getColumnGroupList(col, createMutableList());
       if (!groups.isEmpty()) {
         return groups;
       }
     }
     return Collections.emptyList();
+  }
+
+  private static <E> List<E> createMutableList() {
+    return new ArrayList<>();
   }
 
   private void writeObject(ObjectOutputStream stream) throws IOException {
@@ -167,7 +172,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         ColumnGroup cg = (ColumnGroup) o;
         Rectangle groupRect = Optional.ofNullable(h.get(cg))
             .orElseGet(() -> {
-              Rectangle r = new Rectangle(cellRect.getLocation(), cg.getSize(header));
+              Rectangle r = createRect(cellRect.getLocation(), cg.getSize(header));
               h.put(cg, r);
               return r;
             });
@@ -180,6 +185,10 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
       paintCell(g, cellRect, column);
       cellRect.x += cellRect.width;
     }
+  }
+
+  private static Rectangle createRect(Point p, Dimension d) {
+    return new Rectangle(p, d);
   }
 
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
@@ -269,13 +278,17 @@ class ColumnGroup {
     }
     for (Object obj: list) {
       if (obj instanceof ColumnGroup) {
-        List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, new ArrayList<>(g));
+        List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, createMutableList(g));
         if (!groups.isEmpty()) {
           return groups;
         }
       }
     }
     return Collections.emptyList();
+  }
+
+  private static <E> List<E> createMutableList(Collection<? extends E> c) {
+    return new ArrayList<>(c);
   }
 
   public Object getHeaderValue() {

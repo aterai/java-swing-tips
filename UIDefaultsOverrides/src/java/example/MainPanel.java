@@ -252,7 +252,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
 
     int prefH = getPreferredSize().height;
     while (rowColHeight.size() <= row) {
-      rowColHeight.add(new ArrayList<>(column));
+      rowColHeight.add(createMutableList(column));
     }
     List<Integer> colHeights = rowColHeight.get(row);
     while (colHeights.size() <= column) {
@@ -266,5 +266,9 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
       }
     }
     return maxH;
+  }
+
+  private static <E> List<E> createMutableList(int initialCapacity) {
+    return new ArrayList<>(initialCapacity);
   }
 }

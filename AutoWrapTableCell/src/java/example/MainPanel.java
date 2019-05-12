@@ -163,7 +163,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 
     int preferredHeight = renderer.getPreferredSize().height;
     while (rowAndCellHeights.size() <= row) {
-      rowAndCellHeights.add(new ArrayList<>(column));
+      rowAndCellHeights.add(createMutableList(column));
     }
     List<Integer> list = rowAndCellHeights.get(row);
     while (list.size() <= column) {
@@ -174,6 +174,10 @@ class TextAreaCellRenderer implements TableCellRenderer {
     if (table.getRowHeight(row) != max) {
       table.setRowHeight(row, max);
     }
+  }
+
+  private static <E> List<E> createMutableList(int initialCapacity) {
+    return new ArrayList<>(initialCapacity);
   }
 }
 
