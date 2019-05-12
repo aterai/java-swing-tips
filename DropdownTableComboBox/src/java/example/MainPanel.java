@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
@@ -21,17 +20,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
-  @SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "JdkObsolete"})
   private MainPanel() {
     super(new BorderLayout());
 
-    List<Vector<Object>> aseries = new ArrayList<>();
-    aseries.add(new Vector<>(Arrays.asList("A1", 594, 841)));
-    aseries.add(new Vector<>(Arrays.asList("A2", 420, 594)));
-    aseries.add(new Vector<>(Arrays.asList("A3", 297, 420)));
-    aseries.add(new Vector<>(Arrays.asList("A4", 210, 297)));
-    aseries.add(new Vector<>(Arrays.asList("A5", 148, 210)));
-    aseries.add(new Vector<>(Arrays.asList("A6", 105, 148)));
+    List<List<Object>> aseries = new ArrayList<>();
+    aseries.add(Arrays.asList("A1", 594, 841));
+    aseries.add(Arrays.asList("A2", 420, 594));
+    aseries.add(Arrays.asList("A3", 297, 420));
+    aseries.add(Arrays.asList("A4", 210, 297));
+    aseries.add(Arrays.asList("A5", 148, 210));
+    aseries.add(Arrays.asList("A6", 105, 148));
 
     String[] columns = {"A series", "width", "height"};
 
@@ -51,7 +49,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    DropdownTableComboBox<Vector<Object>> combo = new DropdownTableComboBox<>(aseries, model);
+    DropdownTableComboBox<List<Object>> combo = new DropdownTableComboBox<>(aseries, model);
     // combo.addActionListener(e -> {
     //   List<Object> rowData = combo.getSelectedRow();
     //   wtf.setText(Objects.toString(rowData.get(1)));
@@ -64,10 +62,9 @@ public final class MainPanel extends JPanel {
         htf.setText(Objects.toString(rowData.get(2)));
       }
     });
-    ListCellRenderer<? super Vector<Object>> renderer = combo.getRenderer();
-    combo.setRenderer(new ListCellRenderer<Vector<Object>>() {
-      @SuppressWarnings("PMD.ReplaceVectorWithList")
-      @Override public Component getListCellRendererComponent(JList<? extends Vector<Object>> list, Vector<Object> value, int index, boolean isSelected, boolean cellHasFocus) {
+    ListCellRenderer<? super List<Object>> renderer = combo.getRenderer();
+    combo.setRenderer(new ListCellRenderer<List<Object>>() {
+      @Override public Component getListCellRendererComponent(JList<? extends List<Object>> list, List<Object> value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         c.setOpaque(true);
         if (isSelected) {
@@ -123,7 +120,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DropdownTableComboBox<E extends Vector<Object>> extends JComboBox<E> {
+class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
   protected final transient HighlightListener highlighter = new HighlightListener();
   protected final JTable table = new JTable() {
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -155,7 +152,7 @@ class DropdownTableComboBox<E extends Vector<Object>> extends JComboBox<E> {
     this.list = list;
     table.setModel(model);
     list.forEach(this::addItem);
-    list.forEach(model::addRow);
+    list.forEach(v -> model.addRow(v.toArray(new Object[0])));
   }
 
   @Override public void updateUI() {
