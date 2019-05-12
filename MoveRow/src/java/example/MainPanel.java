@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -254,7 +254,6 @@ class InitAction extends AbstractAction {
     this.table = table;
   }
 
-  @SuppressWarnings("PMD.ReplaceVectorWithList")
   @Override public void actionPerformed(ActionEvent e) {
     if (table.isEditing()) {
       table.getCellEditor().stopCellEditing();
@@ -265,12 +264,9 @@ class InitAction extends AbstractAction {
     }
     RowDataModel model = (RowDataModel) table.getModel();
     RowDataModel nmodel = new RowDataModel();
-    Vector<?> dv = model.getDataVector();
+    List<?> dv = model.getDataVector();
     for (int i = 0; i < row; i++) {
-      // RowData test = model.getRowData(i);
-      Vector<?> v = (Vector<?>) dv.get(i);
-      // new RowData((String) v.get(1), (String) v.get(2));
-      nmodel.addRowData(new RowData(Objects.toString(v.get(1)), Objects.toString(v.get(2))));
+      nmodel.addRowData(makeRowData((List<?>) dv.get(i)));
     }
     JTableHeader h = table.getTableHeader();
     TableCellRenderer tcr = h.getDefaultRenderer();
@@ -282,6 +278,10 @@ class InitAction extends AbstractAction {
     table.setAutoCreateColumnsFromModel(false);
     table.setModel(nmodel);
     table.clearSelection();
+  }
+
+  private static RowData makeRowData(List<?> list) {
+    return new RowData(Objects.toString(list.get(1)), Objects.toString(list.get(2)));
   }
 }
 
