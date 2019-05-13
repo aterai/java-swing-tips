@@ -44,7 +44,7 @@ class ColorWheel extends JPanel {
   private static final int SIZE = 180;
   private final transient BufferedImage image;
 
-  public ColorWheel() {
+  protected ColorWheel() {
     super();
     image = updateImage();
     setPreferredSize(new Dimension(320, 240));
