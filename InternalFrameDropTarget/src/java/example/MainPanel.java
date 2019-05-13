@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -310,7 +309,6 @@ class TableRowTransferHandler extends TransferHandler {
     return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
-  @SuppressWarnings("PMD.ReplaceVectorWithList")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
     if (!canImport(info)) {
       return false;
@@ -337,7 +335,8 @@ class TableRowTransferHandler extends TransferHandler {
       }
       for (Object o: values) {
         int i = index++;
-        model.insertRow(i, (Vector<?>) o);
+        // model.insertRow(i, (Vector<?>) o);
+        model.insertRow(i, ((List<?>) o).toArray(new Object[0]));
         target.getSelectionModel().addSelectionInterval(i, i);
       }
       return true;
