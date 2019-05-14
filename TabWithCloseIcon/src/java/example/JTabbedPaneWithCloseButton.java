@@ -81,7 +81,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     }
   }
 
-  protected static AbstractButton createTabCloseButton(JTabbedPane tabbedPane, int index) {
+  protected static JButton createTabCloseButton(JTabbedPane tabbedPane, int index) {
     return new CloseButton(tabbedPane, index);
   }
 }
