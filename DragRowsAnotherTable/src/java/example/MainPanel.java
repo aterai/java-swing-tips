@@ -191,21 +191,17 @@ class TableRowTransferHandler extends TransferHandler {
       if (Objects.equals(source, target)) {
         addCount = values.size();
       }
+      Object[] atype = new Object[0];
       for (Object o: values) {
-        int i = index++;
-        // model.insertRow(i, (Vector<?>) o);
-        // model.insertRow(i, ((List<?>) o).toArray(new Object[0]));
-        insertRow(model, i, (List<?>) o);
-        target.getSelectionModel().addSelectionInterval(i, i);
+        int row = index++;
+        // model.insertRow(row, (Vector<?>) o);
+        model.insertRow(row, ((List<?>) o).toArray(atype));
+        target.getSelectionModel().addSelectionInterval(row, row);
       }
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
     }
-  }
-
-  private static void insertRow(DefaultTableModel model, int row, List<?> rowData) {
-    model.insertRow(row, rowData.toArray(new Object[0]));
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
