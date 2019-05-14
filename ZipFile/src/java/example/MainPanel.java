@@ -174,6 +174,7 @@ final class ZipUtil {
     /* HideUtilityClassConstructor */
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   public static void zip(Path srcDir, Path zip) throws IOException {
     try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {
       List<Path> files = s.collect(Collectors.toList());

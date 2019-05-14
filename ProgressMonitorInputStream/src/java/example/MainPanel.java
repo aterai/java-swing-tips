@@ -204,6 +204,7 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     this.length = length;
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public String doInBackground() {
     String ret = "Done";
     // try (BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs))) {

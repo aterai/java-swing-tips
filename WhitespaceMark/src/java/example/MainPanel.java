@@ -72,6 +72,7 @@ public final class MainPanel extends JPanel {
 class CustomEditorKit extends StyledEditorKit {
   private final MutableAttributeSet attrs = new SimpleAttributeSet();
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public void install(JEditorPane c) {
     FontMetrics fm = c.getFontMetrics(c.getFont());
     int tabLength = fm.charWidth('m') * 4;

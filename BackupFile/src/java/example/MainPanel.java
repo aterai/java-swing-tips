@@ -213,6 +213,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     }
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private File renameAndBackup(File file, String newfilename) throws IOException {
     boolean simpleRename = false;
     File testFile = null;
@@ -245,6 +246,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     return null;
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private boolean renameAndShiftBackup(File file) {
     File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold + 1));
     publish(new Message("古いバックアップファイルを削除", MessageType.REGULAR));

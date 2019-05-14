@@ -122,6 +122,7 @@ public final class MainPanel extends JPanel {
   //   return h;
   // }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
     if (Objects.isNull(im.allKeys())) {
       return;

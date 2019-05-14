@@ -157,6 +157,7 @@ class Progress {
 class BackgroundTask extends SwingWorker<String, Progress> {
   private final Random rnd = new Random();
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public String doInBackground() {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
@@ -177,6 +178,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     return "Done";
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void convertFileToSomething() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();

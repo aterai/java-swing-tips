@@ -42,6 +42,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void initHistory() {
     JMenu fm = BAR_FACTORY.getMenu("file");
     if (Objects.nonNull(fileHistoryMenu)) {
@@ -72,6 +73,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   protected void updateHistory(Path path) {
     fileHistoryMenu.removeAll();
     fileHistoryCache.remove(path);

@@ -173,6 +173,7 @@ abstract class AbstractExpansionPanel extends JPanel {
   // notification on this event type.The event instance
   // is lazily created using the parameters passed into
   // the fire method.
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   protected void fireExpansionEvent() {
     // Guaranteed to return a non-null array
     Object[] listeners = listenerList.getListenerList();

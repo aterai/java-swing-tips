@@ -120,6 +120,7 @@ public final class MainPanel extends JPanel {
 // http://www.oracle.com/technetwork/java/persistence4-140124.html
 // https://ateraimemo.com/Swing/PersistenceDelegate.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
     super.initialize(type, oldInstance, newInstance, encoder);
     DefaultTableModel m = (DefaultTableModel) oldInstance;

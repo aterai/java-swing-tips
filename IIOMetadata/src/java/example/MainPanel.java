@@ -185,6 +185,7 @@ class XmlTreeNode implements TreeNode {
   //   return new ArrayList<>(list);
   // }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void loadChildren() {
     NodeList cn = xmlNode.getChildNodes();
     int count = cn.getLength();

@@ -190,6 +190,7 @@ class BackgroundTask extends SwingWorker<Integer, ProgressValue> {
     this.lengthOfTask = lengthOfTask;
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override protected Integer doInBackground() {
     int current = 0;
     while (current <= lengthOfTask && !isCancelled()) {
