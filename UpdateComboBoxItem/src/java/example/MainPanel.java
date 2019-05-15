@@ -161,9 +161,15 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);
   }
+
+  // // @SuppressWarnings("PMD.UseVarargs")
   // protected CheckedComboBox(E[] m) {
   //   super(m);
   // }
+
+  @SafeVarargs protected CheckedComboBox(E... m) {
+    super(m);
+  }
 
   @Override public Dimension getPreferredSize() {
     return new Dimension(200, 20);
