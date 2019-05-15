@@ -259,8 +259,12 @@ class CheckedComboBox3<E extends CheckableItem> extends CheckedComboBox<E> {
 }
 
 class CheckableComboBoxModel<E> extends DefaultComboBoxModel<E> {
-  @SuppressWarnings("PMD.UseVarargs")
-  protected CheckableComboBoxModel(E[] items) {
+  // @SuppressWarnings("PMD.UseVarargs")
+  // protected CheckableComboBoxModel(E[] items) {
+  //   super(items);
+  // }
+
+  @SafeVarargs protected CheckableComboBoxModel(E... items) {
     super(items);
   }
 

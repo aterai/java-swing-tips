@@ -101,6 +101,7 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
   @Override public SearchBarComboBoxUI getUI() {
     return (SearchBarComboBoxUI) ui;
   }
+
   // @Override public void setUI(SearchBarComboBoxUI newUI) {
   //   super.setUI(newUI);
   // }
@@ -123,6 +124,7 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
     //   SwingUtilities.updateComponentTreeUI((Component) renderer);
     // }
   }
+
   // protected JSearchBar() {
   //   super();
   //   setModel(new DefaultComboBoxModel<>());
@@ -135,17 +137,18 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
     // init();
   }
 
-  @SafeVarargs
-  protected JSearchBar(E... items) {
+  @SafeVarargs protected JSearchBar(E... items) {
     super(items);
     // setModel(new DefaultComboBoxModel<>(items));
     // init();
   }
+
   // protected JSearchBar(Vector<?> items) {
   //   super();
   //   setModel(new DefaultComboBoxModel(items));
   //   init();
   // }
+
   // private void init() {
   //   installAncestorListener();
   //   // setUIProperty("opaque", true);
