@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
 
 class HeaderRenderer extends JButton implements TableCellRenderer {
   protected static final int BUTTON_WIDTH = 16;
-  protected static final Color BUTTONBGC = new Color(200, 200, 200, 100);
+  protected static final Color BUTTONBGC = new Color(0x64_C8_C8_C8, true);
   protected final JPopupMenu pop;
   protected int rolloverIndex = -1;
   protected final transient MouseInputListener handler = new MouseInputAdapter() {
