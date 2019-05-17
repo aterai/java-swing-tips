@@ -188,14 +188,15 @@ class LabelWithToolBox extends JLabel {
   }
 
   private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
-    RescaleOp op = new RescaleOp(
-        new float[] {.5f, .5f, .5f, 1f},
-        new float[] {0f, 0f, 0f, 0f}, null);
-    BufferedImage img = new BufferedImage(
-        srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-    Graphics g = img.getGraphics();
-    srcIcon.paintIcon(null, g, 0, 0);
-    g.dispose();
+    int w = srcIcon.getIconWidth();
+    int h = srcIcon.getIconHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = img.createGraphics();
+    srcIcon.paintIcon(null, g2, 0, 0);
+    float[] scaleFactors = {.5f, .5f, .5f, 1f};
+    float[] offsets = {0f, 0f, 0f, 0f};
+    RescaleOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
+    g2.dispose();
     return new ImageIcon(op.filter(img, null));
   }
 }

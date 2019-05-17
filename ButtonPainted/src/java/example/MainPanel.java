@@ -67,14 +67,14 @@ public final class MainPanel extends JPanel {
   }
 
   private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
-    RescaleOp op = new RescaleOp(
-        new float[] {1.2f, 1.2f, 1.2f, 1f},
-        new float[] {0f, 0f, 0f, 0f}, null);
-    BufferedImage img = new BufferedImage(
-        srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    int w = srcIcon.getIconWidth();
+    int h = srcIcon.getIconHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
-    // g2.drawImage(srcIcon.getImage(), 0, 0, null);
     srcIcon.paintIcon(null, g2, 0, 0);
+    float[] scaleFactors = {1.2f, 1.2f, 1.2f, 1f};
+    float[] offsets = {0f, 0f, 0f, 0f};
+    RescaleOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
     g2.dispose();
     return new ImageIcon(op.filter(img, null));
   }
