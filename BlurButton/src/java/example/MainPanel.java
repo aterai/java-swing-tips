@@ -104,7 +104,7 @@ class BlurJButton extends JButton {
       g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
       super.paintComponent(g2);
       g2.dispose();
-      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
+      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, this);
     }
   }
 }
@@ -133,9 +133,10 @@ class BlurButton extends JButton {
       g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
       super.paintComponent(g2);
       g2.dispose();
-      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
+      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, this);
     }
   }
+
   // @Override public Dimension getPreferredSize() {
   //   Dimension d = super.getPreferredSize();
   //   d.width += 3 * 3;

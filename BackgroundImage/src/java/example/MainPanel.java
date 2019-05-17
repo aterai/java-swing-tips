@@ -8,11 +8,11 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final ImageIcon bgimage;
+  private final ImageIcon icon;
 
   private MainPanel() {
     super(new BorderLayout());
-    bgimage = new ImageIcon(getClass().getResource("16x16.png"));
+    icon = new ImageIcon(getClass().getResource("16x16.png"));
     add(new JLabel("@title@"));
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
@@ -20,16 +20,17 @@ public final class MainPanel extends JPanel {
 
   @Override protected void paintComponent(Graphics g) {
     Dimension d = getSize();
-    int w = bgimage.getIconWidth();
-    int h = bgimage.getIconHeight();
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    Image image = icon.getImage();
     for (int i = 0; i * w < d.width; i++) {
       for (int j = 0; j * h < d.height; j++) {
-        g.drawImage(bgimage.getImage(), i * w, j * h, w, h, null);
+        g.drawImage(image, i * w, j * h, w, h, this);
       }
     }
     // for (int x = 0; x < d.width; x += w) {
     //   for (int y = 0; y < d.height; y += h) {
-    //     g.drawImage(bgimage.getImage(), x, y, w, h, this);
+    //     g.drawImage(image, x, y, w, h, this);
     //   }
     // }
     super.paintComponent(g);
