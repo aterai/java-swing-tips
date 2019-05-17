@@ -533,7 +533,7 @@ class GhostGlassPane extends JComponent {
     draggingGhostOp.ifPresent(img -> {
       double xx = location.getX() - img.getWidth(this) / 2d;
       double yy = location.getY() - img.getHeight(this) / 2d;
-      g2.drawImage(img, (int) xx, (int) yy, null);
+      g2.drawImage(img, (int) xx, (int) yy, this);
     });
     g2.setPaint(lineColor);
     g2.fill(lineRect);

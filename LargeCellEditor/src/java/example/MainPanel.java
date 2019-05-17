@@ -133,7 +133,7 @@ class IconTable extends JTable {
         g2.fillRoundRect(r.x - i, r.y + XOFF, r.width + i + i, r.height - XOFF + i, 5, 5);
       }
       g2.dispose();
-      g.drawImage(bufimg, 0, 0, null);
+      g.drawImage(bufimg, 0, 0, this);
     }
   };
 

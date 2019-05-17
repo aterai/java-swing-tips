@@ -67,10 +67,10 @@ class ColorWheel extends JPanel {
     g2d.fill(new Ellipse2D.Float(0f, 0f, s, s));
 
     g2d.setComposite(AlphaComposite.SrcAtop);
-    g2d.drawImage(image, 0, 0, null);
+    g2d.drawImage(image, 0, 0, this);
     g2d.dispose();
 
-    g2.drawImage(buf, null, (getWidth() - s) / 2, (getHeight() - s) / 2);
+    g2.drawImage(buf, (getWidth() - s) / 2, (getHeight() - s) / 2, this);
     g2.dispose();
   }
 

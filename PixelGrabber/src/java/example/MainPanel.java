@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     makeRoundedMemoryImageSource(image, width, height).ifPresent(producer -> {
       Image img = createImage(producer);
       Graphics g = bi.createGraphics();
-      g.drawImage(img, 0, 0, null);
+      g.drawImage(img, 0, 0, this);
       g.dispose();
     });
 

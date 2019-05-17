@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     BufferedImage source = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics g = source.createGraphics();
-    g.drawImage(icon.getImage(), 0, 0, null);
+    g.drawImage(icon.getImage(), 0, 0, this);
     g.dispose();
     ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
     BufferedImage destination = colorConvert.filter(source, null);
