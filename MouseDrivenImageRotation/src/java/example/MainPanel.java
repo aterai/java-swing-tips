@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
 class DraggableImageMouseListener extends MouseAdapter {
   private static final BasicStroke BORDER_STROKE = new BasicStroke(4f);
   private static final Color BORDER_COLOR = Color.WHITE;
-  private static final Color HOVER_COLOR = new Color(100, 255, 200, 100);
+  private static final Color HOVER_COLOR = new Color(0x64_64_FF_C8, true);
   private static final int IR = 40;
   private static final int OR = IR * 3;
   private final Shape border;

@@ -284,7 +284,7 @@ class PrintGlassPane extends JDesktopPane {
 }
 
 final class TextureUtils {
-  private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
+  private static final Color DEFAULT_COLOR = new Color(0x64_64_64_64, true);
 
   private TextureUtils() {
     /* HideUtilityClassConstructor */
