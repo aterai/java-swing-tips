@@ -158,8 +158,7 @@ class ListItemTransferHandler extends TransferHandler {
     ListCellRenderer<? super E> renderer = source.getCellRenderer();
     for (int i: source.getSelectedIndices()) {
       Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
-      Rectangle rect = source.getCellBounds(i, i);
-      SwingUtilities.paintComponent(g2, c, source, rect);
+      SwingUtilities.paintComponent(g2, c, source, source.getCellBounds(i, i));
     }
     g2.dispose();
     return bi;
