@@ -182,8 +182,7 @@ class VerticalFlipLayerUI<V extends Component> extends LayerUI<V> {
       super.paint(g2, c);
       g2.dispose();
 
-      Image image = c.createImage(buf.getSource());
-      g.drawImage(image, 0, 0, null);
+      g.drawImage(buf, 0, 0, null);
     } else {
       super.paint(g, c);
     }
