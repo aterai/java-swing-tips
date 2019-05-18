@@ -56,7 +56,9 @@ public final class MainPanel extends JPanel {
 
   private BufferedImage makeBufferedImage(URL url) {
     ImageIcon ic = new ImageIcon(url);
-    BufferedImage bi = new BufferedImage(ic.getIconWidth(), ic.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    int w = ic.getIconWidth();
+    int h = ic.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
     ic.paintIcon(this, g2, 0, 0);
     g2.dispose();
@@ -66,7 +68,9 @@ public final class MainPanel extends JPanel {
   private static BufferedImage makeFilteredImage(BufferedImage src, ImageFilter filter) {
     ImageProducer ip = src.getSource();
     Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, filter));
-    BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    int w = img.getWidth(null);
+    int h = img.getHeight(null);
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics g = bi.createGraphics();
     g.drawImage(img, 0, 0, null);
     g.dispose();
