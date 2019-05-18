@@ -54,11 +54,6 @@ public final class MainPanel extends JPanel {
       table.setRowHeight(i, CELLSIZE + a);
     }
 
-    // JTextField editor = new JTextField();
-    // editor.setHorizontalAlignment(SwingConstants.CENTER);
-    // editor.setBorder(BorderFactory.createLineBorder(Color.RED));
-    // table.setDefaultEditor(Integer.class, new DefaultCellEditor(editor));
-
     table.setCellSelectionEnabled(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -72,7 +67,20 @@ public final class MainPanel extends JPanel {
     table.setRowMargin(0);
     table.getColumnModel().setColumnMargin(0);
 
-    table.setDefaultRenderer(Integer.class, new SudokuCellRenderer(data, table.getFont()));
+    JTextField editor = new JTextField();
+    editor.setHorizontalAlignment(SwingConstants.CENTER);
+    // editor.setBorder(BorderFactory.createLineBorder(Color.RED));
+    table.setDefaultEditor(Integer.class, new DefaultCellEditor(editor) {
+      @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        Object v = Objects.equals(value, 0) ? "" : value;
+        return super.getTableCellEditorComponent(table, v, isSelected, row, column);
+      }
+
+      @Override public Object getCellEditorValue() {
+        return editor.getText().isEmpty() ? 0 : super.getCellEditorValue();
+      }
+    });
+    table.setDefaultRenderer(Integer.class, new SudokuCellRenderer(data));
 
     TableColumnModel m = table.getColumnModel();
     m.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -96,7 +104,6 @@ public final class MainPanel extends JPanel {
   }
 
   private static class SudokuCellRenderer extends DefaultTableCellRenderer {
-    private final Font font;
     private final Font bold;
     private final Border b0 = BorderFactory.createMatteBorder(0, 0, BORDERWIDTH1, BORDERWIDTH1, Color.GRAY);
     private final Border b1 = BorderFactory.createMatteBorder(0, 0, BORDERWIDTH2, BORDERWIDTH2, Color.BLACK);
@@ -106,26 +113,26 @@ public final class MainPanel extends JPanel {
     private final Border b3 = BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(0, 0, 0, BORDERWIDTH2, Color.BLACK),
         BorderFactory.createMatteBorder(0, 0, BORDERWIDTH1, 0, Color.GRAY));
-    private final Integer[][] data;
+    private final Integer[][] mask;
 
-    protected SudokuCellRenderer(Integer[][] src, Font font) {
+    @SuppressWarnings("PMD.UseVarargs")
+    protected SudokuCellRenderer(Integer[][] src) {
       super();
-      this.font = font;
-      this.bold = font.deriveFont(Font.BOLD);
+      this.bold = getFont().deriveFont(Font.BOLD);
       Integer[][] dest = new Integer[src.length][src[0].length];
       for (int i = 0; i < src.length; i++) {
         System.arraycopy(src[i], 0, dest[i], 0, src[0].length);
       }
-      this.data = dest;
+      this.mask = dest;
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      boolean isEditable = data[row][column] == 0;
+      boolean isEditable = mask[row][column] == 0;
       super.getTableCellRendererComponent(table, value, isEditable && isSelected, hasFocus, row, column);
       if (isEditable && Objects.equals(value, 0)) {
         this.setText(" ");
       }
-      setFont(isEditable ? font : bold);
+      setFont(isEditable ? getFont() : bold);
       setHorizontalAlignment(CENTER);
       boolean rf = (row + 1) % 3 == 0;
       boolean cf = (column + 1) % 3 == 0;
