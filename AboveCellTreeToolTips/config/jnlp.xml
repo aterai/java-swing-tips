@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST AboveCellTreeToolTips" />
+  <property name="jnlp.Name"     value="AboveCellTreeToolTips" />
+  <property name="jnlp.name"     value="abovecelltreetooltips" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/abovecelltreetooltips/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/AboveCellTreeToolTips.html" />
+</project>
