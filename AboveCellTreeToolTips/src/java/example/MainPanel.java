@@ -17,26 +17,29 @@ import javax.swing.tree.TreeSelectionModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new GridLayout(1, 0));
+    super(new BorderLayout());
+
+    JTree tree0 = new JTree(new DefaultTreeModel(makeTreeRoot())) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setCellRenderer(new TooltipTreeCellRenderer());
+      }
+    };
+    ToolTipManager.sharedInstance().registerComponent(tree0);
 
     JTree tree1 = new TooltipTree(new DefaultTreeModel(makeTreeRoot()));
     ToolTipManager.sharedInstance().registerComponent(tree1);
 
-    JTree tree2 = new JTree(new DefaultTreeModel(makeTreeRoot())) {
-      @Override public void updateUI() {
-        super.updateUI();
-        // setRowHeight(24);
-        setCellRenderer(new TooltipTreeCellRenderer());
-      }
-    };
-    ToolTipManager.sharedInstance().registerComponent(tree2);
-
     JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(makeTitledPanel("Default location", tree0));
     p.add(makeTitledPanel("Draw directly above the cell", tree1));
-    p.add(makeTitledPanel("Default location", tree2));
 
-    add(p);
-    add(new JLabel("dummy panel"));
+    JSplitPane sp = new JSplitPane();
+    sp.setResizeWeight(.5);
+    sp.setLeftComponent(p);
+    sp.setRightComponent(new JLabel("dummy panel"));
+
+    add(sp);
     setPreferredSize(new Dimension(320, 240));
   }
 
