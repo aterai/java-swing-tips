@@ -200,7 +200,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     return new SearchBarLayout();
   }
 
-  private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
+  protected static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
     int w = srcIcon.getIconWidth();
     int h = srcIcon.getIconHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
