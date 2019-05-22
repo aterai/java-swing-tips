@@ -188,7 +188,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
 }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
-  protected static final Color SELECTED_COLOR = new Color(50, 100, 255, 64);
+  protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   private final JLabel label = new JLabel("", (Icon) null, SwingConstants.CENTER) {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
