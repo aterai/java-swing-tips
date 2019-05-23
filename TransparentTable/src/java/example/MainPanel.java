@@ -42,6 +42,14 @@ public final class MainPanel extends JPanel {
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
         super.updateUI();
+        setAutoCreateRowSorter(true);
+        setRowSelectionAllowed(true);
+        setFillsViewportHeight(true);
+        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
+        setOpaque(false);
+        setBackground(alphaZero);
+
         TableModel m = getModel();
         for (int i = 0; i < m.getColumnCount(); i++) {
           TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
@@ -63,13 +71,6 @@ public final class MainPanel extends JPanel {
         return c;
       }
     };
-    table.setAutoCreateRowSorter(true);
-    table.setRowSelectionAllowed(true);
-    table.setFillsViewportHeight(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
-    table.setOpaque(false);
-    table.setBackground(alphaZero);
 
     TexturePaint texture = makeImageTexture();
     JScrollPane scroll = new JScrollPane(table) {
@@ -144,84 +145,41 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
-  @Override public void updateUI() {
-    super.updateUI();
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setBorderPainted(true);
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+class TranslucentBooleanRenderer implements TableCellRenderer {
+  private final JCheckBox renderer = new JCheckBox() {
+    @Override public void updateUI() {
+      super.updateUI();
+      // NG???: setHorizontalAlignment(SwingConstants.CENTER);
+      setBorderPainted(true);
+      setBorderPaintedFlat(true);
+      setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      setOpaque(false);
+    }
+
+    @Override protected void paintComponent(Graphics g) {
+      if (!isOpaque()) {
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+      }
+      super.paintComponent(g);
+    }
+  };
+
+  protected TranslucentBooleanRenderer() {
+    renderer.setHorizontalAlignment(SwingConstants.CENTER);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    setHorizontalAlignment(SwingConstants.CENTER);
     if (isSelected) {
-      setOpaque(true);
-      setForeground(table.getSelectionForeground());
-      super.setBackground(table.getSelectionBackground());
+      renderer.setOpaque(true);
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
     } else {
-      setOpaque(false);
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      renderer.setOpaque(false);
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
     }
-    setSelected(Objects.equals(value, Boolean.TRUE));
-    return this;
+    renderer.setSelected(Objects.equals(value, Boolean.TRUE));
+    return renderer;
   }
-
-  @Override protected void paintComponent(Graphics g) {
-    if (!isOpaque()) {
-      g.setColor(getBackground());
-      g.fillRect(0, 0, getWidth(), getHeight());
-    }
-    super.paintComponent(g);
-  }
-
-  // // Overridden for performance reasons. ---->
-  // @Override public boolean isOpaque() {
-  //   Color back = getBackground();
-  //   Component p = getParent();
-  //   if (Objects.nonNull(p)) {
-  //     p = p.getParent();
-  //   } // p should now be the JTable.
-  //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
-  //   return !colorMatch && super.isOpaque();
-  // }
-  //
-  // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-  //   // System.out.println(propertyName);
-  //   // String literal pool
-  //   // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-  //   boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-  //   if (flag && !Objects.equals(oldValue, newValue)) {
-  //     super.firePropertyChange(propertyName, oldValue, newValue);
-  //   }
-  // }
-  //
-  // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void repaint(long tm, int x, int y, int width, int height) {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void repaint(Rectangle r) {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void repaint() {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void invalidate() {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void validate() {
-  //   /* Overridden for performance reasons. */
-  // }
-  //
-  // @Override public void revalidate() {
-  //   /* Overridden for performance reasons. */
-  // }
-  // // <---- Overridden for performance reasons.
 }
