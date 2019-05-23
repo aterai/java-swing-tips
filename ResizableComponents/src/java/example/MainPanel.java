@@ -12,7 +12,11 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
 public class MainPanel extends JPanel {
-  protected final JLayeredPane layeredPane = new JLayeredPane();
+  protected final JLayeredPane layeredPane = new JLayeredPane() {
+    @Override public boolean isOptimizedDrawingEnabled() {
+      return false;
+    }
+  };
   protected final JToolBar toolbar = new JToolBar("Resizable Components");
   protected final Point pt = new Point();
 
