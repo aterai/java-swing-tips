@@ -53,38 +53,42 @@ public final class MainPanel extends JPanel {
         c.setForeground(Color.BLACK);
         return c;
       }
-    };
-    // table.setAutoCreateRowSorter(true);
-    table.setRowSelectionAllowed(true);
-    table.setFillsViewportHeight(true);
-    table.setShowVerticalLines(false);
-    // table.setShowHorizontalLines(false);
-    table.setFocusable(false);
-    // table.setCellSelectionEnabled(false);
-    table.setIntercellSpacing(new Dimension(0, 1));
-    table.setRowHeight(24);
-    table.setSelectionForeground(table.getForeground());
-    table.setSelectionBackground(new Color(0, 0, 100, 50));
 
-    JCheckBox checkBox = new JCheckBox() {
-      @Override protected void paintComponent(Graphics g) {
-        g.setColor(new Color(0, 0, 100, 50));
-        g.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
+      @Override public void updateUI() {
+        super.updateUI();
+        // setAutoCreateRowSorter(true);
+        setRowSelectionAllowed(true);
+        setFillsViewportHeight(true);
+        setShowVerticalLines(false);
+        // setShowHorizontalLines(false);
+        setFocusable(false);
+        // setCellSelectionEnabled(false);
+        setIntercellSpacing(new Dimension(0, 1));
+        setRowHeight(24);
+        setSelectionForeground(getForeground());
+        setSelectionBackground(new Color(0, 0, 100, 50));
+
+        JCheckBox checkBox = new JCheckBox() {
+          @Override protected void paintComponent(Graphics g) {
+            g.setColor(new Color(0, 0, 100, 50));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            super.paintComponent(g);
+          }
+        };
+        checkBox.setOpaque(false);
+        checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+        setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+
+        setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
+        setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
+        setOpaque(false);
+        setBackground(alphaZero);
+        // setGridColor(alphaZero);
+        getTableHeader().setDefaultRenderer(new TransparentHeader());
+        getTableHeader().setOpaque(false);
+        getTableHeader().setBackground(alphaZero);
       }
     };
-    checkBox.setOpaque(false);
-    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-    table.setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
-
-    table.setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
-    table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
-    table.setOpaque(false);
-    table.setBackground(alphaZero);
-    // table.setGridColor(alphaZero);
-    table.getTableHeader().setDefaultRenderer(new TransparentHeader());
-    table.getTableHeader().setOpaque(false);
-    table.getTableHeader().setBackground(alphaZero);
 
     TexturePaint texture = makeImageTexture();
     JScrollPane scroll = new JScrollPane(table) {
@@ -187,63 +191,40 @@ class TranslucentObjectRenderer extends DefaultTableCellRenderer {
   }
 }
 
-class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
+class TranslucentBooleanRenderer implements TableCellRenderer {
   private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
+  private final JCheckBox renderer = new JCheckBox() {
+    @Override public void updateUI() {
+      super.updateUI();
+      // NG???: setHorizontalAlignment(SwingConstants.CENTER);
+      setBorderPainted(true);
+      setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      setOpaque(false);
+    }
 
-  @Override public void updateUI() {
-    super.updateUI();
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setBorderPainted(true);
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    setOpaque(false);
+    @Override protected void paintComponent(Graphics g) {
+      if (!isOpaque()) {
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+      }
+      super.paintComponent(g);
+    }
+  };
+
+  protected TranslucentBooleanRenderer() {
+    // OK???
+    renderer.setHorizontalAlignment(SwingConstants.CENTER);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    setHorizontalAlignment(SwingConstants.CENTER);
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      super.setBackground(SELECTION_BACKGROUND);
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(SELECTION_BACKGROUND);
     } else {
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
     }
-    setSelected(Objects.equals(value, Boolean.TRUE));
-    return this;
+    renderer.setSelected(Objects.equals(value, Boolean.TRUE));
+    return renderer;
   }
-
-  @Override protected void paintComponent(Graphics g) {
-    if (!isOpaque()) {
-      g.setColor(getBackground());
-      g.fillRect(0, 0, getWidth(), getHeight());
-    }
-    super.paintComponent(g);
-  }
-
-  // // Overridden for performance reasons. ---->
-  // @Override public boolean isOpaque() {
-  //   Color back = getBackground();
-  //   Component p = getParent();
-  //   if (Objects.nonNull(p)) {
-  //     p = p.getParent();
-  //   } // p should now be the JTable.
-  //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
-  //   return !colorMatch && super.isOpaque();
-  // }
-  // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-  //   // System.out.println(propertyName);
-  //   // String literal pool
-  //   // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-  //   boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-  //   if (flag && !Objects.equals(oldValue, newValue)) {
-  //     super.firePropertyChange(propertyName, oldValue, newValue);
-  //   }
-  // }
-  // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-  // @Override public void repaint() { /* Overridden for performance reasons. */ }
-  // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-  // @Override public void validate() { /* Overridden for performance reasons. */ }
-  // @Override public void revalidate() { /* Overridden for performance reasons. */ }
-  // // <---- Overridden for performance reasons.
 }
