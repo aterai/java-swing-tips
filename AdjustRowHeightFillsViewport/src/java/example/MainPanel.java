@@ -28,12 +28,12 @@ public final class MainPanel extends JPanel {
     private void updateRowsHeight(JViewport vport) {
       int height = vport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
-      int defautlRowHeight = height / rowCount;
-      if ((height != prevHeight || rowCount != prevCount) && defautlRowHeight > 0) {
-        int over = height - rowCount * defautlRowHeight;
+      int defaultRowHeight = height / rowCount;
+      if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
+        int over = height - rowCount * defaultRowHeight;
         for (int i = 0; i < rowCount; i++) {
           int a = over > 0 ? i == rowCount - 1 ? over : 1 : 0;
-          setRowHeight(i, defautlRowHeight + a);
+          setRowHeight(i, defaultRowHeight + a);
           over--;
         }
       }
