@@ -56,6 +56,7 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(table);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    // TEST: scroll.addComponentListener(new TableRowHeidhtAdjuster());
     scroll.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
         Component c = e.getComponent();
@@ -96,3 +97,28 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
+// // TEST when not considering adding rows
+// class TableRowHeidhtAdjuster extends ComponentAdapter {
+//   private int prevHeight = -1;
+//
+//   @Override public void componentResized(ComponentEvent e) {
+//     Component c = e.getComponent();
+//     if (c instanceof JScrollPane) {
+//       JScrollPane scroll = (JScrollPane) c;
+//       JTable table = (JTable) scroll.getViewport().getView();
+//       int height = scroll.getViewportBorderBounds().height;
+//       int rowCount = table.getModel().getRowCount();
+//       int rowHeight = height / rowCount;
+//       if (height != prevHeight && rowHeight > 0) {
+//         int over = height - rowCount * rowHeight;
+//         for (int i = 0; i < rowCount; i++) {
+//           int a = over > 0 ? i == rowCount - 1 ? over : 1 : 0;
+//           table.setRowHeight(i, rowHeight + a);
+//           over--;
+//         }
+//       }
+//       prevHeight = height;
+//     }
+//   }
+// }
