@@ -30,11 +30,12 @@ public final class MainPanel extends JPanel {
       int rowCount = getModel().getRowCount();
       int defaultRowHeight = height / rowCount;
       if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
-        int over = height - rowCount * defaultRowHeight;
+        // int remainder = height - rowCount * defaultRowHeight;
+        int remainder = height % rowCount;
         for (int i = 0; i < rowCount; i++) {
-          int a = over > 0 ? i == rowCount - 1 ? over : 1 : 0;
+          int a = remainder > 0 ? i == rowCount - 1 ? remainder : 1 : 0;
           setRowHeight(i, defaultRowHeight + a);
-          over--;
+          remainder--;
         }
       }
       prevHeight = height;
@@ -111,11 +112,11 @@ public final class MainPanel extends JPanel {
 //       int rowCount = table.getModel().getRowCount();
 //       int rowHeight = height / rowCount;
 //       if (height != prevHeight && rowHeight > 0) {
-//         int over = height - rowCount * rowHeight;
+//         int remainder = height % rowCount;
 //         for (int i = 0; i < rowCount; i++) {
-//           int a = over > 0 ? i == rowCount - 1 ? over : 1 : 0;
+//           int a = remainder > 0 ? i == rowCount - 1 ? remainder : 1 : 0;
 //           table.setRowHeight(i, rowHeight + a);
-//           over--;
+//           remainder--;
 //         }
 //       }
 //       prevHeight = height;
