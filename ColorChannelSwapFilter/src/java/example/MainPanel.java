@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("Turn the progress bar red");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      progress02.setForeground(b ? new Color(255, 0, 0, 100) : progress01.getForeground());
+      progress02.setForeground(b ? new Color(0x64_FF_00_00, true) : progress01.getForeground());
       layerUI.isPreventing = b;
       p.repaint();
     });
