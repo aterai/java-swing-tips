@@ -12,6 +12,7 @@ import javax.swing.plaf.UIResource;
 public final class MainPanel extends JPanel {
   public MainPanel() {
     super(new BorderLayout());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -50,11 +51,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    MainPanel p = new MainPanel();
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(p);
-    frame.setJMenuBar(p.createMenuBar());
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

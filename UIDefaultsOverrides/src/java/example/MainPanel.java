@@ -65,6 +65,8 @@ public final class MainPanel extends JPanel {
 
     table2.setDefaultRenderer(String.class, r);
 
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
+
     add(new JScrollPane(table1));
     add(new JScrollPane(table2));
     setPreferredSize(new Dimension(320, 240));
@@ -121,11 +123,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    MainPanel p = new MainPanel();
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(p);
-    frame.setJMenuBar(p.createMenuBar());
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

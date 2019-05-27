@@ -10,6 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -76,7 +77,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(createMenuBar());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
