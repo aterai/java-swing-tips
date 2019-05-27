@@ -38,6 +38,8 @@ public final class MainPanel extends JPanel {
     button.setMnemonic(KeyEvent.VK_D);
     add(button);
 
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -78,7 +80,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(createMenuBar());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

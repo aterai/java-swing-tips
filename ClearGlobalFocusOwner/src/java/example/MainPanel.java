@@ -19,6 +19,18 @@ public final class MainPanel extends JPanel {
     p.add(new JButton("button"));
     add(p);
     add(new JLabel("JFrame:mouseClicked -> clearGlobalFocusOwner"), BorderLayout.SOUTH);
+
+    EventQueue.invokeLater(() -> {
+      JRootPane root = getRootPane();
+      root.setJMenuBar(createMenuBar());
+      root.addMouseListener(new MouseAdapter() {
+        @Override public void mouseClicked(MouseEvent e) {
+          System.out.println("clicked");
+          KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+        }
+      });
+    });
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -30,7 +42,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  private static JMenuBar makeMenuBar() {
+  private static JMenuBar createMenuBar() {
     JMenuBar menubar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     fileMenu.add("dummy");
@@ -46,13 +58,6 @@ public final class MainPanel extends JPanel {
       Toolkit.getDefaultToolkit().beep();
     }
     JFrame frame = new JFrame("@title@");
-    frame.setJMenuBar(makeMenuBar());
-    frame.addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        System.out.println("clicked");
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-      }
-    });
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();

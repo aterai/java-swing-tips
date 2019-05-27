@@ -10,11 +10,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JLabel(new ImageIcon(getClass().getResource("test.png"))));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JMenuBar makeMenuBar() {
+  private static JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar();
     JMenu menu = new JMenu("File");
     mb.add(menu);
@@ -55,7 +56,6 @@ public final class MainPanel extends JPanel {
 
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.setJMenuBar(makeMenuBar());
     frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);

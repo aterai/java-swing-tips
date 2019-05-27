@@ -12,6 +12,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JCheckBox check = new JCheckBox("JCheckBox#setIcon(...)");
     check.setIcon(new CheckIcon());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(check, BorderLayout.SOUTH);
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
@@ -56,7 +57,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(createMenuBar());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
