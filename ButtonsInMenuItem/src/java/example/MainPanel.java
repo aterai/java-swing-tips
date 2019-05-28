@@ -19,11 +19,12 @@ import javax.swing.text.DefaultEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createManuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static JMenuBar makeManuBar() {
+  public static JMenuBar createManuBar() {
     Component edit = makeEditButtonBar(Arrays.asList(
         makeButton("Cut", new DefaultEditorKit.CutAction()),
         makeButton("Copy", new DefaultEditorKit.CopyAction()),
@@ -129,7 +130,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(makeManuBar());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
