@@ -21,10 +21,11 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private final ZoneId zid = ZoneId.systemDefault();
   private final String[] columnNames = {"LocalDateTime", "String", "Boolean"};
   private final Object[][] data = {
-    {LocalDateTime.now(ZoneId.systemDefault()), "aaa", true}, {LocalDateTime.now(ZoneId.systemDefault()), "bbb", false},
-    {LocalDateTime.now(ZoneId.systemDefault()), "CCC", true}, {LocalDateTime.now(ZoneId.systemDefault()), "DDD", false}
+    {LocalDateTime.now(zid), "aaa", true}, {LocalDateTime.now(zid), "bbb", false},
+    {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false}
   };
   private final TableModel model = new DefaultTableModel(data, columnNames) {
     @Override public Class<?> getColumnClass(int column) {
