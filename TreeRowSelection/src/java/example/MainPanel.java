@@ -56,14 +56,12 @@ class RowSelectionTree extends JTree {
     g.fillRect(0, 0, getWidth(), getHeight());
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(SELC);
-    Arrays.stream(getSelectionRows()).forEach(i -> {
-      Rectangle r = getRowBounds(i);
-      g2.fillRect(0, r.y, getWidth(), r.height);
-    });
     // for (int i: getSelectionRows()) {
     //   Rectangle r = getRowBounds(i);
     //   g2.fillRect(0, r.y, getWidth(), r.height);
     // }
+    Arrays.stream(getSelectionRows()).mapToObj(this::getRowBounds)
+        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
     super.paintComponent(g);
     if (hasFocus()) {
       Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
