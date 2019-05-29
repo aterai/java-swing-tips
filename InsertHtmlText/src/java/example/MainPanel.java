@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     insertAfterStart.addActionListener(e -> {
       HTMLDocument doc = (HTMLDocument) editor.getDocument();
       Element element = doc.getElement("log");
-      String date = LocalDateTime.now(ZoneId.systemDefault()).toString();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
       String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", date);
       try {
         doc.insertAfterStart(element, tag);
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     insertBeforeEnd.addActionListener(e -> {
       HTMLDocument doc = (HTMLDocument) editor.getDocument();
       Element element = doc.getElement("log");
-      String date = LocalDateTime.now(ZoneId.systemDefault()).toString();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
       String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", date);
       try {
         doc.insertBeforeEnd(element, tag);

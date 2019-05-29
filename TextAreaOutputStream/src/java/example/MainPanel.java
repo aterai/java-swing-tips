@@ -101,7 +101,7 @@ class EnterAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    LOGGER.info(String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()).toString(), textField.getText()));
+    LOGGER.info(String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()), textField.getText()));
   }
 }
 

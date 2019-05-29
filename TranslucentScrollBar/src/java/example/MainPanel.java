@@ -22,9 +22,9 @@ public final class MainPanel extends JPanel {
 
   private static Component makeList() {
     DefaultListModel<String> m = new DefaultListModel<>();
-    IntStream.range(0, 50).forEach(i -> {
-      m.addElement(String.format("%05d: %s", i, LocalDateTime.now(ZoneId.systemDefault()).toString()));
-    });
+    IntStream.range(0, 50)
+        .mapToObj(i -> String.format("%05d: %s", i, LocalDateTime.now(ZoneId.systemDefault())))
+        .forEach(m::addElement);
     return new JList<>(m);
   }
 
