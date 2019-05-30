@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     });
 
     JComponent glass = new JPanel(new BorderLayout()) {
-      private final Color backgroundColor = new Color(100, 100, 200, 100);
+      private final Color backgroundColor = new Color(0x64_64_64_C8, true);
       @Override protected void paintComponent(Graphics g) {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getWidth(), getHeight());

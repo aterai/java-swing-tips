@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     label.setFont(new Font(Font.SERIF, Font.PLAIN, 17));
     label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(label);
-    setBorder(BorderFactory.createLineBorder(new Color(100, 200, 200, 100), 10));
+    setBorder(BorderFactory.createLineBorder(new Color(0x64_64_C8_C8, true), 10));
     setPreferredSize(new Dimension(320, 240));
   }
 
