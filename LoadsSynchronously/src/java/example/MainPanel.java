@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.Element;
@@ -34,8 +33,8 @@ public final class MainPanel extends JPanel {
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    // URL path = getClass().getResource("CRW_3857_JFR.jpg");
-    String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
+    // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
+    String path = getClass().getResource("CRW_3857_JFR.jpg").toString();
 
     int w = 2048;
     int h = 1360;
@@ -54,16 +53,14 @@ public final class MainPanel extends JPanel {
     //   tracker.removeImage(img);
     // }
 
-    String str = String.join("\n", Collections.nCopies(50, TEXT));
-    StringBuilder sb0 = new StringBuilder(str);
-    StringBuilder sb1 = new StringBuilder(str);
+    String dmyHtml1 = String.join("\n", Collections.nCopies(50, TEXT));
+    String dmyHtml2 = String.join("\n", Collections.nCopies(3, TEXT));
 
-    sb0.append(String.format("<p><img src='%s'></p>", path));
-    sb1.append(String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h));
-    IntStream.range(0, 3).forEach(i -> {
-      sb0.append(TEXT);
-      sb1.append(TEXT);
-    });
+    StringBuilder sb0 = new StringBuilder(dmyHtml1);
+    sb0.append(String.format("<p><img src='%s'></p>", path)).append(dmyHtml2);
+
+    StringBuilder sb1 = new StringBuilder(dmyHtml1);
+    sb1.append(String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h)).append(dmyHtml2);
 
     String st0 = sb0.toString();
     editor0.setEditorKit(new HTMLEditorKit());
@@ -75,6 +72,8 @@ public final class MainPanel extends JPanel {
     editor1.setText(st1);
     tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
+    // [JDK-8223384] ImageView incorrectly calculates size when synchronously loaded - Java Bug System
+    // https://bugs.openjdk.java.net/browse/JDK-8223384
     editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());
     tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));
 
