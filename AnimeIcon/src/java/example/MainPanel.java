@@ -258,7 +258,7 @@ class AnimatedLabel extends JLabel {
 
 // // TEST: 2
 // class AnimeIcon implements Icon {
-//   private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
+//   private static final Color ELLIPSE_COLOR = new Color(0xE6_B3_B3);
 //   private final List<Shape> list = new ArrayList<>();
 //   private final Dimension dim;
 //   private boolean running;
@@ -311,7 +311,7 @@ class AnimatedLabel extends JLabel {
 
 // TEST: 3
 class AnimeIcon implements Icon {
-  private static final Color ELLIPSE_COLOR = new Color(.9f, .7f, .7f);
+  private static final Color ELLIPSE_COLOR = new Color(0xE6_B3_B3);
   private final List<Shape> list = new ArrayList<>();
   private final Dimension dim;
   private boolean running;
@@ -371,7 +371,7 @@ class AnimeIcon implements Icon {
 // // TEST: 4
 // class AnimeIcon implements Icon {
 //   private static final int R = 4;
-//   private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
+//   private static final Color ELLIPSE_COLOR = new Color(0xE6_B3_B3);
 //   private final Dimension dim;
 //   private boolean running;
 //   private final List<Shape> list = new ArrayList<>();

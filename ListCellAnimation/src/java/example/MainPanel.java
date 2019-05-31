@@ -186,7 +186,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
         // flipbookFrames.add(flipbookFrames.remove(0));
         Collections.rotate(flipbookFrames, 1);
       } else {
-        g2.setPaint(new Color(.6f, .6f, .6f));
+        g2.setPaint(new Color(0x99_99_99));
         for (Shape s: flipbookFrames) {
           g2.fill(s);
         }
