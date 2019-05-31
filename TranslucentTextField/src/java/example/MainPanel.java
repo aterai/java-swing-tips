@@ -14,7 +14,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);
+  private static final Color BG_COLOR = new Color(0x64_FF_CC_CC, true);
   private transient TexturePaint texture;
 
   public MainPanel() {
