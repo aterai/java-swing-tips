@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -78,8 +79,9 @@ public final class MainPanel extends JPanel {
     JButton close = new JButton("close");
     close.addActionListener(e -> {
       Component c = (Component) e.getSource();
-      Window window = SwingUtilities.getWindowAncestor(c);
-      window.dispose();
+      // Window window = SwingUtilities.getWindowAncestor(c);
+      // window.dispose();
+      Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
 
     Box box = Box.createHorizontalBox();
