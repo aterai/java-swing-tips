@@ -10,6 +10,7 @@ import java.awt.event.HierarchyListener;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -91,8 +92,13 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     Insets i = l.getInsets();
-    Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
-    Rectangle rect = c.getBounds();
+    // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
+    // Rectangle rect = c.getBounds();
+    Class<JViewport> clz = JViewport.class;
+    Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
+        .filter(clz::isInstance).map(clz::cast)
+        .map(JViewport::getBounds)
+        .orElseGet(() -> new Rectangle());
     rect.width -= i.left + i.right;
     FontMetrics fm = l.getFontMetrics(l.getFont());
     String str = Objects.toString(value, "");
@@ -110,11 +116,14 @@ class BalloonToolTip extends JToolTip {
     listener = e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        Component w = SwingUtilities.getRoot(c);
-        if (w instanceof JWindow) {
-          System.out.println("Popup$HeavyWeightWindow");
-          ((JWindow) w).setBackground(new Color(0x0, true));
-        }
+        // Component w = SwingUtilities.getRoot(c);
+        // if (w instanceof JWindow) {
+        //   System.out.println("Popup$HeavyWeightWindow");
+        //   ((JWindow) w).setBackground(new Color(0x0, true));
+        // }
+        Optional.ofNullable(SwingUtilities.getRoot(c))
+           .filter(JWindow.class::isInstance).map(JWindow.class::cast)
+           .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
     addHierarchyListener(listener);
