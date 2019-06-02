@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -76,7 +77,9 @@ class SplitPaneWrapper extends JPanel {
       int size = getOrientedSize(splitPane);
       double proportionalLoc = splitPane.getDividerLocation() / (double) size;
       super.doLayout();
-      int state = ((Frame) SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
+      int state = Optional.ofNullable(getTopLevelAncestor())
+          .filter(Frame.class::isInstance).map(Frame.class::cast)
+          .map(Frame::getExtendedState).orElse(Frame.NORMAL);
       if (splitPane.isShowing() && state != prevState) {
         EventQueue.invokeLater(() -> {
           int s = getOrientedSize(splitPane);
