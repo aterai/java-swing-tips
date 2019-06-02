@@ -214,12 +214,8 @@ class CellButtonsMouseListener extends MouseAdapter {
     c.setBounds(r);
     // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout) // *1
     pt.translate(-r.x, -r.y);
-    Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-    if (b instanceof JButton) {
-      return (JButton) b;
-    } else {
-      return null;
-    }
+    return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
+        .filter(JButton.class::isInstance).map(JButton.class::cast).orElse(null);
   }
 }
 
