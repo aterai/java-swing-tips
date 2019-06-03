@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -35,14 +36,27 @@ public final class MainPanel extends JPanel {
       getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     }
+
+    @Override public String getToolTipText(MouseEvent e) {
+      Point p = e.getPoint();
+      int idx = locationToIndex(p);
+      Rectangle rect = getCellBounds(idx, idx);
+      if (idx < 0 || !rect.contains(p.x, p.y)) {
+        return null;
+      }
+      Contribution value = getModel().getElementAt(idx);
+      String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
+      return actTxt + " contribution on " + value.date.toString();
+    }
+
   };
   public final Color color = new Color(0x32_C8_32);
   public final List<Icon> activityIcons = Arrays.asList(
-      new ColorIcon(new Color(0xC8_C8_C8)),
-      new ColorIcon(color.brighter()),
-      new ColorIcon(color),
-      new ColorIcon(color.darker()),
-      new ColorIcon(color.darker().darker()));
+      new ContributionIcon(new Color(0xC8_C8_C8)),
+      new ContributionIcon(color.brighter()),
+      new ContributionIcon(color),
+      new ContributionIcon(color.darker()),
+      new ContributionIcon(color.darker().darker()));
 
   private MainPanel() {
     super(new BorderLayout());
@@ -134,12 +148,9 @@ public final class MainPanel extends JPanel {
       // Contribution v = Optional.ofNullable(value).orElseGet(() -> list.getPrototypeCellValue());
       JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (value.date.isAfter(currentLocalDate)) {
-        l.setIcon(new ColorIcon(Color.WHITE));
-        l.setToolTipText(null);
+        l.setIcon(new ContributionIcon(Color.WHITE));
       } else {
         l.setIcon(activityIcons.get(value.activity));
-        String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
-        l.setToolTipText(actTxt + " contribution on " + value.date.toString());
       }
       return l;
     }
@@ -189,21 +200,21 @@ class Contribution {
 class CalendarViewListModel extends AbstractListModel<Contribution> {
   public static final int WEEK_VIEW = 27;
   private final LocalDate startDate;
-  private final Map<LocalDate, Integer> contributionActivity = new ConcurrentHashMap<>(getSize());
+  private final int displayDays;
+  private final Map<LocalDate, Integer> contributionActivity;
 
   protected CalendarViewListModel(LocalDate date) {
     super();
-    WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    int dow = date.get(weekFields.dayOfWeek()) - 1;
-    // int wby = date.get(weekFields.weekOfWeekBasedYear());
-    startDate = date.minusWeeks(WEEK_VIEW - 1).minusDays(dow);
+    int dow = date.get(WeekFields.of(Locale.getDefault()).dayOfWeek());
+    this.startDate = date.minusWeeks(WEEK_VIEW - 1).minusDays(dow - 1);
+    this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
+    this.contributionActivity = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
-    int size = DayOfWeek.values().length * WEEK_VIEW;
-    IntStream.range(0, size).forEach(i -> contributionActivity.put(startDate.plusDays(i), rnd.nextInt(5)));
+    IntStream.range(0, displayDays).forEach(i -> contributionActivity.put(startDate.plusDays(i), rnd.nextInt(5)));
   }
 
   @Override public int getSize() {
-    return DayOfWeek.values().length * WEEK_VIEW;
+    return displayDays;
   }
 
   @Override public Contribution getElementAt(int index) {
@@ -212,10 +223,10 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
   }
 }
 
-class ColorIcon implements Icon {
+class ContributionIcon implements Icon {
   private final Color color;
 
-  protected ColorIcon(Color color) {
+  protected ContributionIcon(Color color) {
     this.color = color;
   }
 

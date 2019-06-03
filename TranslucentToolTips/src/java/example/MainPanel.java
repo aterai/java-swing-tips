@@ -30,6 +30,8 @@ public final class MainPanel extends JPanel {
   public static final Dimension CELLSZ = new Dimension(10, 10);
   public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
   public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
+    private transient JToolTip tip;
+
     @Override public void updateUI() {
       setCellRenderer(null);
       super.updateUI();
@@ -42,29 +44,39 @@ public final class MainPanel extends JPanel {
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     }
 
+    @Override public String getToolTipText(MouseEvent e) {
+      Point p = e.getPoint();
+      int idx = locationToIndex(p);
+      Rectangle rect = getCellBounds(idx, idx);
+      if (idx < 0 || !rect.contains(p.x, p.y)) {
+        return null;
+      }
+      Contribution value = getModel().getElementAt(idx);
+      String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
+      return "<html>" + actTxt + " contribution <span style='color:#C8C8C8'> on " + value.date.toString();
+    }
+
     @Override public Point getToolTipLocation(MouseEvent e) {
       Point p = e.getPoint();
-      ListCellRenderer<? super Contribution> r = getCellRenderer();
       int i = locationToIndex(p);
       Rectangle rect = getCellBounds(i, i);
-      if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(rect) && rect.contains(p.x, p.y)) {
-        Contribution value = getModel().getElementAt(i);
-        Component renderer = r.getListCellRendererComponent(this, value, i, false, false);
-        if (renderer instanceof JComponent) {
-          String tipText = ((JComponent) renderer).getToolTipText();
-          JToolTip tip = createToolTip();
-          tip.setTipText(tipText);
-          Dimension d = tip.getPreferredSize();
-          int gap = 2;
-          return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
-        }
+
+      String toolTipText = getToolTipText(e);
+      if (Objects.nonNull(toolTipText)) {
+        JToolTip tip = createToolTip();
+        tip.setTipText(toolTipText);
+        Dimension d = tip.getPreferredSize();
+        int gap = 2;
+        return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
       }
       return null;
     }
 
     @Override public JToolTip createToolTip() {
-      JToolTip tip = new BalloonToolTip();
-      tip.setComponent(this);
+      if (tip == null) {
+        tip = new BalloonToolTip();
+        tip.setComponent(this);
+      }
       return tip;
     }
   };
@@ -163,11 +175,8 @@ public final class MainPanel extends JPanel {
       JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (value.date.isAfter(currentLocalDate)) {
         l.setIcon(new ContributionIcon(Color.WHITE));
-        l.setToolTipText(null);
       } else {
         l.setIcon(activityIcons.get(value.activity));
-        String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
-        l.setToolTipText("<html>" + actTxt + " contribution <span style='color:#C8C8C8'> on " + value.date.toString());
       }
       return l;
     }
@@ -217,20 +226,21 @@ class Contribution {
 class CalendarViewListModel extends AbstractListModel<Contribution> {
   public static final int WEEK_VIEW = 27;
   private final LocalDate startDate;
-  private final Map<LocalDate, Integer> contributionActivity = new ConcurrentHashMap<>(getSize());
+  private final int displayDays;
+  private final Map<LocalDate, Integer> contributionActivity;
 
   protected CalendarViewListModel(LocalDate date) {
     super();
-    WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    int dow = date.get(weekFields.dayOfWeek()) - 1;
-    startDate = date.minusWeeks(WEEK_VIEW - 1).minusDays(dow);
+    int dow = date.get(WeekFields.of(Locale.getDefault()).dayOfWeek());
+    this.startDate = date.minusWeeks(WEEK_VIEW - 1).minusDays(dow - 1);
+    this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
+    this.contributionActivity = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
-    int size = DayOfWeek.values().length * WEEK_VIEW;
-    IntStream.range(0, size).forEach(i -> contributionActivity.put(startDate.plusDays(i), rnd.nextInt(5)));
+    IntStream.range(0, displayDays).forEach(i -> contributionActivity.put(startDate.plusDays(i), rnd.nextInt(5)));
   }
 
   @Override public int getSize() {
-    return DayOfWeek.values().length * WEEK_VIEW;
+    return displayDays;
   }
 
   @Override public Contribution getElementAt(int index) {
