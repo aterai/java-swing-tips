@@ -129,63 +129,67 @@ class RemoveButtonComboBox<E> extends JComboBox<E> {
 }
 
 class CellButtonsMouseListener extends MouseAdapter {
-  private int prevIndex = -1;
-  private JButton prevButton;
+  // private int prevIndex = -1;
+  // private JButton prevButton;
 
-  private static void rectRepaint(JComponent c, Rectangle rect) {
-    Optional.ofNullable(rect).ifPresent(c::repaint);
-  }
+  // private static void rectRepaint(JComponent c, Rectangle rect) {
+  //   Optional.ofNullable(rect).ifPresent(c::repaint);
+  // }
 
   @Override public void mouseMoved(MouseEvent e) {
     JList<?> list = (JList<?>) e.getComponent();
     Point pt = e.getPoint();
     int index = list.locationToIndex(pt);
-    if (!list.getCellBounds(index, index).contains(pt)) {
-      if (prevIndex >= 0) {
-        Rectangle r = list.getCellBounds(prevIndex, prevIndex);
-        rectRepaint(list, r);
-      }
-      index = -1;
-      prevButton = null;
-      return;
-    }
-    if (index >= 0) {
-      JButton button = getButton(list, pt, index);
-      ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) list.getCellRenderer();
-      if (Objects.nonNull(button)) {
-        renderer.rolloverIndex = index;
-        if (!button.equals(prevButton)) {
-          Rectangle r = list.getCellBounds(prevIndex, index);
-          rectRepaint(list, r);
-        }
-      } else {
-        renderer.rolloverIndex = -1;
-        Rectangle r = null;
-        if (prevIndex == index) {
-          if (prevIndex >= 0 && Objects.nonNull(prevButton)) {
-            r = list.getCellBounds(prevIndex, prevIndex);
-          }
-        } else {
-          r = list.getCellBounds(index, index);
-        }
-        rectRepaint(list, r);
-        prevIndex = -1;
-      }
-      prevButton = button;
-    }
-    prevIndex = index;
+    // if (!list.getCellBounds(index, index).contains(pt)) {
+    //   if (prevIndex >= 0) {
+    //     Rectangle r = list.getCellBounds(prevIndex, prevIndex);
+    //     rectRepaint(list, r);
+    //   }
+    //   prevIndex = -1;
+    //   prevButton = null;
+    //   return;
+    // }
+    // if (index >= 0) {
+    //   JButton button = getButton(list, pt, index);
+    //   ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) list.getCellRenderer();
+    //   if (Objects.nonNull(button)) {
+    //     renderer.rolloverIndex = index;
+    //     if (!button.equals(prevButton)) {
+    //       Rectangle r = list.getCellBounds(prevIndex, index);
+    //       rectRepaint(list, r);
+    //     }
+    //   } else {
+    //     renderer.rolloverIndex = -1;
+    //     Rectangle r = null;
+    //     if (prevIndex == index) {
+    //       if (prevIndex >= 0 && Objects.nonNull(prevButton)) {
+    //         r = list.getCellBounds(prevIndex, prevIndex);
+    //       }
+    //     } else {
+    //       r = list.getCellBounds(index, index);
+    //     }
+    //     rectRepaint(list, r);
+    //     prevIndex = -1;
+    //   }
+    //   prevButton = button;
+    // }
+    // prevIndex = index;
+    ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) list.getCellRenderer();
+    renderer.rolloverIndex = Objects.nonNull(getButton(list, pt, index)) ? index : -1;
+    list.repaint(); // repaint all cells
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    JList<?> list = (JList<?>) e.getComponent();
-    Point pt = e.getPoint();
-    int index = list.locationToIndex(pt);
-    if (index >= 0) {
-      JButton button = getButton(list, pt, index);
-      if (Objects.nonNull(button)) {
-        rectRepaint(list, list.getCellBounds(index, index));
-      }
-    }
+    e.getComponent().repaint(); // repaint all cells
+    // JList<?> list = (JList<?>) e.getComponent();
+    // Point pt = e.getPoint();
+    // int index = list.locationToIndex(pt);
+    // if (index >= 0) {
+    //   JButton button = getButton(list, pt, index);
+    //   if (Objects.nonNull(button)) {
+    //     rectRepaint(list, list.getCellBounds(index, index));
+    //   }
+    // }
   }
 
   @Override public void mouseReleased(MouseEvent e) {
@@ -196,10 +200,12 @@ class CellButtonsMouseListener extends MouseAdapter {
       JButton button = getButton(list, pt, index);
       if (Objects.nonNull(button)) {
         button.doClick();
-        Rectangle r = list.getCellBounds(index, index);
-        rectRepaint(list, r);
+        // Rectangle r = list.getCellBounds(index, index);
+        // rectRepaint(list, r);
       }
     }
+    ((ButtonsRenderer<?>) list.getCellRenderer()).rolloverIndex = -1;
+    list.repaint(); // repaint all cells
   }
 
   @Override public void mouseExited(MouseEvent e) {
@@ -251,6 +257,7 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
       boolean isMoreThanOneItem = m.getSize() > 1;
       if (isMoreThanOneItem && m instanceof MutableComboBoxModel) {
         ((MutableComboBoxModel<?>) m).removeElementAt(targetIndex);
+        comboBox.setSelectedIndex(-1);
         comboBox.showPopup();
       }
     });
@@ -271,13 +278,11 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
       panel.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
     }
     boolean showDeleteButton = list.getModel().getSize() > 1;
+    deleteButton.setVisible(showDeleteButton);
     if (showDeleteButton) {
       boolean isRollover = index == rolloverIndex;
-      deleteButton.setVisible(true);
       deleteButton.getModel().setRollover(isRollover);
       deleteButton.setForeground(isRollover ? Color.WHITE : list.getForeground());
-    } else {
-      deleteButton.setVisible(false);
     }
     panel.add(l);
     return panel;
