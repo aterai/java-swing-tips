@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     editor1.setText("Default\n" + TEST);
 
     JTextPane editor2 = new JTextPane() {
-      protected float fontSize;
+      private float fontSize;
       @Override public void doLayout() {
         Insets i = getInsets();
         float f = .08f * (getWidth() - i.left - i.right);

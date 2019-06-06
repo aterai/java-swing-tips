@@ -13,8 +13,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public class MainPanel extends JPanel {
-  protected final String[] columnNames = {"A", "B", "C"};
-  protected final Object[][] data = {
+  private final String[] columnNames = {"A", "B", "C"};
+  private final Object[][] data = {
     {"0, 0", "0, 1", "0, 2"},
     {"1, 0", "1, 1", "1, 2"},
     {"2, 0", "2, 1", "2, 2"},
@@ -26,12 +26,12 @@ public class MainPanel extends JPanel {
     {"8, 0", "8, 1", "8, 2"},
     {"9, 0", "9, 1", "9, 2"}
   };
-  protected final TableModel model = new DefaultTableModel(data, columnNames) {
+  private final TableModel model = new DefaultTableModel(data, columnNames) {
     @Override public Class<?> getColumnClass(int column) {
       return getValueAt(0, column).getClass();
     }
   };
-  protected final JTable table = new JTable(model) {
+  private final JTable table = new JTable(model) {
     private final Color evenColor = new Color(0xFA_FA_FA);
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
       Component c = super.prepareRenderer(tcr, row, column);
@@ -45,10 +45,10 @@ public class MainPanel extends JPanel {
       return c;
     }
   };
-  protected final JSpinner rowField;
-  protected final JSpinner colField;
-  protected final JCheckBox toggle = new JCheckBox("toggle", false);
-  protected final JCheckBox extend = new JCheckBox("extend", false);
+  private final JSpinner rowField;
+  private final JSpinner colField;
+  private final JCheckBox toggle = new JCheckBox("toggle", false);
+  private final JCheckBox extend = new JCheckBox("extend", false);
 
   public MainPanel() {
     super(new BorderLayout());

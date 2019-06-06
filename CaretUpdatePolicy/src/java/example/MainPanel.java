@@ -14,15 +14,15 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 public class MainPanel extends JPanel {
-  protected final JCheckBox check = new JCheckBox("on EDT", true);
-  protected final JButton start = new JButton("Start");
-  protected final JButton stop = new JButton("Stop");
-  protected final JTextArea textArea0 = new JTextArea();
-  protected final JTextArea textArea1 = new JTextArea();
-  protected final JTextArea textArea2 = new JTextArea();
+  private final JCheckBox check = new JCheckBox("on EDT", true);
+  private final JButton start = new JButton("Start");
+  private final JButton stop = new JButton("Stop");
+  private final JTextArea textArea0 = new JTextArea();
+  private final JTextArea textArea1 = new JTextArea();
+  private final JTextArea textArea2 = new JTextArea();
   // TEST: Timer timer = new Timer(500, e -> test(LocalDateTime.now(ZoneId.systemDefault()).toString()));
   // TEST: Thread thread;
-  protected transient SwingWorker<String, String> worker;
+  private transient SwingWorker<String, String> worker;
 
   public MainPanel() {
     super(new BorderLayout());

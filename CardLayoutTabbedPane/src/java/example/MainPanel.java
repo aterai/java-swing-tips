@@ -69,11 +69,11 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
-  protected final CardLayout cardLayout = new CardLayout();
-  protected final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
-  protected final JPanel wrapPanel = new JPanel(new BorderLayout());
-  protected final JPanel contentsPanel = new JPanel(cardLayout);
-  protected final ButtonGroup bg = new ButtonGroup();
+  private final CardLayout cardLayout = new CardLayout();
+  private final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
+  private final JPanel wrapPanel = new JPanel(new BorderLayout());
+  private final JPanel contentsPanel = new JPanel(cardLayout);
+  private final ButtonGroup bg = new ButtonGroup();
 
   protected CardLayoutTabbedPane() {
     super(new BorderLayout());

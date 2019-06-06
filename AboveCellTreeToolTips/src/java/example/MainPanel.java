@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TooltipTree extends JTree {
-  protected final JLabel label = new JLabel() {
+  private final JLabel label = new JLabel() {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
       d.height = getRowHeight();

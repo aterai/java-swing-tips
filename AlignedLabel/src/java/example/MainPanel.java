@@ -92,8 +92,8 @@ public final class MainPanel extends JPanel {
 class AlignedLabel extends JLabel {
   private static final int INDENT = 10;
   // private AlignedLabel[] group;
-  protected List<AlignedLabel> group;
-  protected int maxWidth;
+  private List<AlignedLabel> group;
+  private int maxWidth;
 
   protected AlignedLabel(String text) {
     super(text);

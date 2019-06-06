@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class MainPanel extends JPanel {
-  protected final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
+  private final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
   private final String[] columnNames = {"A", "B", "C"};
   private final Object[][] data = {
     {"aaa", "eeee", "l"}, {"bbb", "ff", "ggg"},

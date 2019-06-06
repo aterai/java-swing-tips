@@ -17,13 +17,13 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected final JTextArea area = new JTextArea();
-  protected final JProgressBar bar = new JProgressBar();
-  protected final JPanel statusPanel = new JPanel(new BorderLayout());
-  protected final JButton runButton = new JButton("run");
-  protected final JButton cancelButton = new JButton("cancel");
-  protected final AnimatedLabel anil = new AnimatedLabel();
-  protected transient BackgroundTask worker;
+  private final JTextArea area = new JTextArea();
+  private final JProgressBar bar = new JProgressBar();
+  private final JPanel statusPanel = new JPanel(new BorderLayout());
+  private final JButton runButton = new JButton("run");
+  private final JButton cancelButton = new JButton("cancel");
+  private final AnimatedLabel anil = new AnimatedLabel();
+  private transient BackgroundTask worker;
 
   public MainPanel() {
     super(new BorderLayout());

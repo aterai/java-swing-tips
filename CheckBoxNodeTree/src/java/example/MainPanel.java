@@ -132,7 +132,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 // delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private final JCheckBox checkBox = new JCheckBox() {
-    protected transient ActionListener handler;
+    private transient ActionListener handler;
     @Override public void updateUI() {
       removeActionListener(handler);
       super.updateUI();

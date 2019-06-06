@@ -155,7 +155,7 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
 }
 
 class TableHeaderPopupMenu extends JPopupMenu {
-  protected int index = -1;
+  private int index = -1;
 
   protected TableHeaderPopupMenu() {
     super();

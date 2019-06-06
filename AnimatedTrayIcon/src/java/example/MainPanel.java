@@ -9,11 +9,11 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected final JDialog dialog = new JDialog();
-  protected final Timer animator = new Timer(100, null);
-  protected final transient Image[] imglist = new Image[4];
-  protected final transient TrayIcon icon;
-  protected int idx;
+  private final JDialog dialog = new JDialog();
+  private final Timer animator = new Timer(100, null);
+  private final transient Image[] imglist = new Image[4];
+  private final transient TrayIcon icon;
+  private int idx;
 
   public MainPanel() {
     super();

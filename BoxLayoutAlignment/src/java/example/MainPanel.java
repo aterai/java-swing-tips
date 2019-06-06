@@ -11,7 +11,7 @@ import java.util.Optional;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
+  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
 
   public MainPanel() {
     super(new BorderLayout(5, 5));

@@ -67,7 +67,7 @@ class TabChangeListener implements ChangeListener {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-  protected transient int count;
+  private transient int count;
   private final JMenuItem closePage;
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
