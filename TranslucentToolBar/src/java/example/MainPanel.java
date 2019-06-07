@@ -54,12 +54,12 @@ public final class MainPanel extends JPanel {
 class LabelWithToolBox extends JLabel {
   public static final int DELAY = 8;
   protected final Timer animator = new Timer(DELAY, null);
-  protected transient ToolBoxHandler handler;
+  private transient ToolBoxHandler handler;
   protected boolean isHidden;
   protected int counter;
   protected int yy;
   private final JToolBar toolBox = new JToolBar() {
-    protected transient MouseListener listener;
+    private transient MouseListener listener;
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(getBackground());

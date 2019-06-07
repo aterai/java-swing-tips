@@ -151,7 +151,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private final JPanel panel = new JPanel(new BorderLayout());
   private final TriStateCheckBox checkBox = new TriStateCheckBox() {
-    protected transient ActionListener handler;
+    private transient ActionListener handler;
     @Override public void updateUI() {
       removeActionListener(handler);
       super.updateUI();

@@ -13,7 +13,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class MainPanel extends JPanel implements HierarchyListener {
-  protected transient SwingWorker<String, Void> worker;
+  private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {
     super(new BorderLayout());

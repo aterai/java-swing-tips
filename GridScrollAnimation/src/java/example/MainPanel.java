@@ -104,7 +104,7 @@ class ScrollAction extends AbstractAction {
   protected final Point vec;
   protected final JScrollPane scrollPane;
   protected final Timer scroller = new Timer(5, null);
-  protected transient ActionListener listener;
+  private transient ActionListener listener;
   protected int count;
 
   protected ScrollAction(String name, JScrollPane scrollPane, Point vec) {

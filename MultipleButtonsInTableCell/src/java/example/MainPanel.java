@@ -197,7 +197,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 
 // // inheritence to extend a class
 // class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   protected final JTable table;
 //   private class EditingStopHandler extends MouseAdapter implements ActionListener {
 //     @Override public void mousePressed(MouseEvent e) {

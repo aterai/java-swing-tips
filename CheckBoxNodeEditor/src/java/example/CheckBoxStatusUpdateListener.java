@@ -595,7 +595,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //
 //   // Copied from AbstractCellEditor
 //   protected EventListenerList listenerList = new EventListenerList();
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }

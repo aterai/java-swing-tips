@@ -147,7 +147,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 //
 // class SpinnerEditor extends SpinnerPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     this.setBackground(table.getSelectionBackground());
 //     spinner.setValue((Integer) value);
@@ -319,7 +319,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 //
 // class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   protected ButtonsEditor() {
 //     super();
 //     buttons.get(0).addActionListener(new ActionListener() {

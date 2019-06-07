@@ -20,7 +20,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
   protected final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
   protected final JCheckBox check = new JCheckBox("setStringPainted");
   protected final JButton button = new JButton("Test");
-  protected transient SwingWorker<String, Void> worker;
+  private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {
     super(new BorderLayout());

@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
   };
   private final JTable table = new JTable(model) {
     protected static final int MODEL_COLIDX = 0;
-    protected transient HeaderCheckBoxHandler handler;
+    private transient HeaderCheckBoxHandler handler;
     @Override public void updateUI() {
       // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
       // https://bugs.openjdk.java.net/browse/JDK-6788475

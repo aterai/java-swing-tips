@@ -157,7 +157,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 // // inheritence to extend a class
 // class TextAreaCellEditor extends JTextArea implements TableCellEditor {
 //   private static final String KEY = "Stop-Cell-Editing";
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   private final JScrollPane scroll;
 //
 //   protected TextAreaCellEditor() {

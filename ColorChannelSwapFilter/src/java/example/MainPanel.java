@@ -18,7 +18,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel {
-  protected transient SwingWorker<String, Void> worker;
+  private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {
     super(new BorderLayout());

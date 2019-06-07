@@ -149,7 +149,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 
 // // TEST:
 // class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //
 //   @Override public void updateUI() {
 //     super.updateUI();

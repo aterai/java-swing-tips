@@ -15,7 +15,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel implements HierarchyListener {
-  protected transient SwingWorker<String, Void> worker;
+  private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {
     super(new BorderLayout());

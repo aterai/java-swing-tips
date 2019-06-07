@@ -179,7 +179,7 @@ class EditableTabbedPane extends JTabbedPane {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-  protected transient int count;
+  private transient int count;
   private final JMenuItem sortTabs;
   private final JMenuItem closePage;
   private final JMenuItem closeAll;

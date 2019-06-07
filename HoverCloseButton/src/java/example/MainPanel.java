@@ -160,7 +160,7 @@ class CloseTabIcon implements Icon {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-  protected transient int count;
+  private transient int count;
   private final JMenuItem closeAll;
 
   protected TabbedPanePopupMenu() {

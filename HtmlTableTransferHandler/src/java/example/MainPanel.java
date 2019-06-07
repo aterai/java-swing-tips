@@ -209,7 +209,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 
 // // inheritence to extend a class
 // class DateEditor extends JSpinner implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //   private final JSpinner.DateEditor editor;
 //
 //   protected DateEditor() {

@@ -202,7 +202,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 //
 // class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //
 //   protected ComboBoxCellEditor() {
 //     super();

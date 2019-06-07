@@ -193,7 +193,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 //
 // class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
-//   protected transient ChangeEvent changeEvent;
+//   private transient ChangeEvent changeEvent;
 //
 //   protected RadioButtonsEditor() {
 //     super();

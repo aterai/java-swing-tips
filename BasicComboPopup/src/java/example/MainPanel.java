@@ -123,7 +123,7 @@ public class MainPanel extends JPanel {
 
 class EditorComboPopup extends BasicComboPopup {
   protected final JTextComponent textArea;
-  protected transient MouseListener listener;
+  private transient MouseListener listener;
 
   protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
     super(cb);

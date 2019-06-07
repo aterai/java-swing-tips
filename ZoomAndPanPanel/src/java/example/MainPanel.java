@@ -71,8 +71,8 @@ class ZoomAndPanePanel extends JPanel {
   protected final AffineTransform zoomTransform = new AffineTransform();
   protected final transient Image img;
   protected final Rectangle imgrect;
-  protected transient ZoomHandler handler;
-  protected transient DragScrollListener listener;
+  private transient ZoomHandler handler;
+  private transient DragScrollListener listener;
 
   protected ZoomAndPanePanel(Image img) {
     super();

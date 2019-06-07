@@ -13,7 +13,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  protected transient JFileChooser fileChooser;
+  private transient JFileChooser fileChooser;
 
   public MainPanel() {
     super(new GridBagLayout());

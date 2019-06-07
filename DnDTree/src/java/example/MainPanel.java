@@ -94,8 +94,8 @@ public final class MainPanel extends JPanel {
 // Java Swing Hacks - HACK #26: DnD JTree
 // https://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-  protected transient DragGestureRecognizer dragGestureRecognizer;
-  protected transient DropTarget dropTarget;
+  private transient DragGestureRecognizer dragGestureRecognizer;
+  private transient DropTarget dropTarget;
   protected TreeNode dropTargetNode;
   protected TreeNode draggedNode;
 

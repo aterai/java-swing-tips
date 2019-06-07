@@ -40,7 +40,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
    */
   // protected JViewport headerViewport;
 
-  protected transient CloseableTabIconHandler handler;
+  private transient CloseableTabIconHandler handler;
 
   // /**
   //  * The normal closeicon.

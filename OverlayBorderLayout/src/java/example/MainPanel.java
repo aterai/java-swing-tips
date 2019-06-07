@@ -21,7 +21,7 @@ import javax.swing.tree.TreePath;
 public class MainPanel extends JPanel {
   protected final JTree tree = new JTree();
   protected final JTextField field = new JTextField("b", 10) {
-    protected transient AncestorListener listener;
+    private transient AncestorListener listener;
     @Override public void updateUI() {
       removeAncestorListener(listener);
       super.updateUI();
