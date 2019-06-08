@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.Objects;
 import javax.swing.*;
 
-public class HtmlTableTransferHandler extends TransferHandler {
-  protected final boolean canStartDrag(JComponent c) {
+public final class HtmlTableTransferHandler extends TransferHandler {
+  protected boolean canStartDrag(JComponent c) {
     if (c instanceof JTable) {
       JTable table = (JTable) c;
       return table.getRowSelectionAllowed() || table.getColumnSelectionAllowed();
@@ -46,7 +46,7 @@ public class HtmlTableTransferHandler extends TransferHandler {
     return cols;
   }
 
-  protected final void appendTag(StringBuilder htmlBuf, Object obj) {
+  protected void appendTag(StringBuilder htmlBuf, Object obj) {
     if (obj instanceof Date) {
       String v = Objects.toString((Date) obj, "");
       htmlBuf.append("  <td><time>" + v + "</time></td>\n");

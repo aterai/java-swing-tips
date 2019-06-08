@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
 
-public class JTabbedPaneWithCloseIcons extends JTabbedPane {
+public final class JTabbedPaneWithCloseIcons extends JTabbedPane {
   public JTabbedPaneWithCloseIcons() {
     super();
     addMouseListener(new MouseAdapter() {

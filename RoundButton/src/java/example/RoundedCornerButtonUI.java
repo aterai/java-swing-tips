@@ -11,13 +11,13 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-public class RoundedCornerButtonUI extends BasicButtonUI {
+public final class RoundedCornerButtonUI extends BasicButtonUI {
   private static final double ARC_WIDTH = 16d;
   private static final double ARC_HEIGHT = 16d;
   private static final int FOCUS_STROKE = 2;
-  protected final Color fc = new Color(100, 150, 255);
-  protected final Color ac = new Color(220, 225, 230);
-  protected final Color rc = Color.ORANGE;
+  private final Color fc = new Color(100, 150, 255);
+  private final Color ac = new Color(220, 225, 230);
+  private final Color rc = Color.ORANGE;
   private Shape shape;
   private Shape border;
   private Shape base;
@@ -94,11 +94,11 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
     super.paint(g, c);
   }
 
-  protected final boolean isShapeContains(Point pt) {
+  protected boolean isShapeContains(Point pt) {
     return shape != null && shape.contains(pt.x, pt.y);
   }
 
-  protected final void initShape(Component c) {
+  protected void initShape(Component c) {
     if (!c.getBounds().equals(base)) {
       base = c.getBounds();
       shape = new RoundRectangle2D.Double(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
@@ -110,7 +110,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
     }
   }
 
-  protected final void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
+  protected void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
     g2.setPaint(new GradientPaint(0, 0, color, c.getWidth() - 1, c.getHeight() - 1, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(c.getBackground());

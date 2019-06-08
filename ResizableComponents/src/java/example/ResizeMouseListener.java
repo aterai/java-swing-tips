@@ -10,7 +10,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-public class ResizeMouseListener extends MouseInputAdapter {
+public final class ResizeMouseListener extends MouseInputAdapter {
   private static final Dimension MIN = new Dimension(50, 50);
   private static final Dimension MAX = new Dimension(500, 500);
   private int cursor;

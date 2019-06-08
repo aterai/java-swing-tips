@@ -29,7 +29,7 @@ import javax.swing.text.View;
  * type) use the method addTab(String, Component, Icon). Only clicking the 'X'
  * closes the tab.
  */
-public class CloseableTabbedPane extends JTabbedPane { // implements MouseListener, MouseMotionListener {
+public final class CloseableTabbedPane extends JTabbedPane { // implements MouseListener, MouseMotionListener {
   /**
    * The <code>EventListenerList</code>.
    */
@@ -201,7 +201,7 @@ public class CloseableTabbedPane extends JTabbedPane { // implements MouseListen
     return closeit;
   }
 
-  public final Point getHeaderViewPosition() {
+  public Point getHeaderViewPosition() {
     return Stream.of(getComponents())
       .filter(JViewport.class::isInstance)
       .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))

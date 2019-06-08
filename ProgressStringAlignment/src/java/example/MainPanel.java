@@ -14,12 +14,12 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 
-public class MainPanel extends JPanel implements HierarchyListener {
-  protected final BoundedRangeModel model = new DefaultBoundedRangeModel();
-  protected final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
-  protected final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-  protected final JCheckBox check = new JCheckBox("setStringPainted");
-  protected final JButton button = new JButton("Test");
+public final class MainPanel extends JPanel implements HierarchyListener {
+  private final BoundedRangeModel model = new DefaultBoundedRangeModel();
+  private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
+  private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
+  private final JCheckBox check = new JCheckBox("setStringPainted");
+  private final JButton button = new JButton("Test");
   private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {

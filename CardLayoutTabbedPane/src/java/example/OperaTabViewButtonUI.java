@@ -12,7 +12,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
-public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
+public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
   private static final int CLOSEICON_WIDTH = 12;
   private final Dimension size = new Dimension();

@@ -18,11 +18,11 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
-public class ReorderbleList<E extends ListItem> extends JList<E> {
+public final class ReorderbleList<E extends ListItem> extends JList<E> {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient MouseInputListener rbl;
   private Color rubberBandColor;
-  protected final Path2D rubberBand = new Path2D.Double();
+  private final Path2D rubberBand = new Path2D.Double();
 
   public ReorderbleList(ListModel<E> model) {
     super(model);
@@ -77,7 +77,7 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
            : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
-  protected final Path2D getRubberBand() {
+  protected Path2D getRubberBand() {
     return rubberBand;
   }
 

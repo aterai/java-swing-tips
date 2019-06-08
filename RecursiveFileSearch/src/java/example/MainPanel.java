@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected class FileSearchTask extends RecursiveFileSearchTask {
+  protected final class FileSearchTask extends RecursiveFileSearchTask {
     protected FileSearchTask(File dir) {
       super(dir);
     }

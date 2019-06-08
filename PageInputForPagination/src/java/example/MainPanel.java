@@ -99,7 +99,7 @@ public class MainPanel extends JPanel {
     initFilterAndButtons();
   }
 
-  protected class TableUpdateTask extends LoadTask {
+  protected final class TableUpdateTask extends LoadTask {
     protected TableUpdateTask(int max, int itemsPerPage) {
       super(max, itemsPerPage);
       field.setEditable(false);

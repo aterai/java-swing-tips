@@ -6,7 +6,7 @@ package example;
 
 import javax.swing.*;
 
-public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
+public final class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
   @Override public String getName() {
     return "AuxiliaryWindows";
   }

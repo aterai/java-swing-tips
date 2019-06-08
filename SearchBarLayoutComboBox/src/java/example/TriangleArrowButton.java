@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
-public class TriangleArrowButton extends JButton {
+public final class TriangleArrowButton extends JButton {
   private static Icon triangleIcon = new TriangleIcon();
 
   @Override protected void paintComponent(Graphics g) {

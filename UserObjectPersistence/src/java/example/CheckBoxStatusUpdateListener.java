@@ -24,7 +24,7 @@ import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-public class CheckBoxStatusUpdateListener implements TreeModelListener {
+public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   private boolean adjusting;
 
   @Override public void treeNodesChanged(TreeModelEvent e) {

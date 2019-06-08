@@ -11,7 +11,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPopupMenuUI;
 
-public class CustomPopupMenuUI extends BasicPopupMenuUI {
+public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   public static final int OFF = 4;
   public static final int ARC = 2;
   public static final float ALPHA = .12f;
@@ -115,7 +115,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     return image;
   }
 
-  protected static class ShadowBorderInPanel extends AbstractBorder {
+  private static class ShadowBorderInPanel extends AbstractBorder {
     @Override public Insets getBorderInsets(Component c) {
       return new Insets(0, 0, OFF, OFF);
     }

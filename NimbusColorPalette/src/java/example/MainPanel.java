@@ -12,7 +12,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel implements HierarchyListener {
   private transient SwingWorker<String, Void> worker;
 
   public MainPanel() {

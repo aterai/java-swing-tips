@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected class TreePopupMenu extends JPopupMenu {
+  protected final class TreePopupMenu extends JPopupMenu {
     private static final int NODE_MAXIMUM_LEVELS = 2;
 
     protected TreePopupMenu() {

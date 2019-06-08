@@ -14,8 +14,8 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final transient WindowPreferencesHandler handler = new WindowPreferencesHandler();
+public final class MainPanel extends JPanel {
+  public final transient WindowPreferencesHandler handler = new WindowPreferencesHandler();
 
   public MainPanel() {
     super(new BorderLayout());

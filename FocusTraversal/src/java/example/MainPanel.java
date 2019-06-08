@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> debugPrint());
   }
 
-  protected class FocusTraversalPolicyChangeAction extends AbstractAction {
+  protected final class FocusTraversalPolicyChangeAction extends AbstractAction {
     private final FocusTraversalPolicy policy;
 
     protected FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {

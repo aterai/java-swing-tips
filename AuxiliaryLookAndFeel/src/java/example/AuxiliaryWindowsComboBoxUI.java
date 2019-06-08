@@ -19,7 +19,7 @@ import javax.swing.plaf.basic.ComboPopup;
 
 // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
 // ???: Don't extend visual look and feels.
-public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
+public final class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
   public static ComponentUI createUI(JComponent c) {
     return new AuxiliaryWindowsComboBoxUI();
   }

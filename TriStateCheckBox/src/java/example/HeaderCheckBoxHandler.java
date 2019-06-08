@@ -17,7 +17,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
+public final class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
   private final JTable table;
   private final int targetColumnIndex;
 
