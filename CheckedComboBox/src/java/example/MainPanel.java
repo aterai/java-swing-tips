@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
 // }
 
 class CheckableItem {
-  public final String text;
+  private final String text;
   private boolean selected;
 
   protected CheckableItem(String text, boolean selected) {

@@ -140,7 +140,7 @@ class HeaderRenderer implements TableCellRenderer {
 }
 
 class TriStateActionListener implements ActionListener {
-  protected Icon icon;
+  private Icon icon;
 
   public void setIcon(Icon icon) {
     this.icon = icon;
