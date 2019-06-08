@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-  protected TreePath path;
+  private TreePath path;
 
   protected TreePopupMenu() {
     super();

@@ -13,15 +13,15 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
-public class MainPanel extends JPanel {
-  protected final JProgressBar progress1 = new JProgressBar() {
+public final class MainPanel extends JPanel {
+  private final JProgressBar progress1 = new JProgressBar() {
     @Override public void updateUI() {
       super.updateUI();
       setUI(new ProgressCircleUI());
       setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
     }
   };
-  protected final JProgressBar progress2 = new JProgressBar() {
+  private final JProgressBar progress2 = new JProgressBar() {
     @Override public void updateUI() {
       super.updateUI();
       setUI(new ProgressCircleUI());
@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     progress1.setForeground(new Color(0xAA_FF_AA_AA, true));
     progress2.setStringPainted(true);
