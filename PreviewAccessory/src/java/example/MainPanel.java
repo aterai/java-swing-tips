@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private transient JFileChooser fileChooser;
 
   public MainPanel() {
