@@ -79,7 +79,7 @@ class ColorWheel extends JPanel {
   //   https://javagraphics.java.net/
   //   http://www.javased.com/index.php?source_dir=SPREAD/src/colorpicker/swing/ColorPickerPanel.java
   private BufferedImage updateImage() {
-    BufferedImage image = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
     int[] row = new int[SIZE];
     float size = (float) SIZE;
     float radius = size / 2f;
@@ -98,8 +98,8 @@ class ColorWheel extends JPanel {
         float bri = 1f;
         row[xidx] = Color.HSBtoRGB(hue, sat, bri);
       }
-      image.getRaster().setDataElements(0, yidx, SIZE, 1, row);
+      img.getRaster().setDataElements(0, yidx, SIZE, 1, row);
     }
-    return image;
+    return img;
   }
 }
