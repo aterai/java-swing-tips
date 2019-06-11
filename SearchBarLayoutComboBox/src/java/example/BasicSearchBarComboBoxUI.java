@@ -34,7 +34,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     return new BasicSearchBarComboBoxUI();
   }
 
-  // protected boolean isEditable = true;
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void installDefaults() {
     super.installDefaults();
     // comboBox.setEditable(true);
@@ -42,12 +44,18 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     // comboBox.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void installListeners() {
     super.installListeners();
     popupMenuListener = createPopupMenuListener();
     comboBox.addPopupMenuListener(popupMenuListener);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void uninstallListeners() {
     super.uninstallListeners();
     comboBox.removePopupMenuListener(popupMenuListener);
@@ -93,6 +101,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   //   return keyListener;
   // }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void configureEditor() {
     // super.configureEditor();
     // Should be in the same state as the combobox
@@ -117,10 +128,16 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "loupe");
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected JButton createArrowButton() {
     return new TriangleArrowButton();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override public void configureArrowButton() {
     super.configureArrowButton();
     if (Objects.nonNull(arrowButton)) {
@@ -135,6 +152,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void installComponents() {
     // super.installComponents();
     arrowButton = createArrowButton();
@@ -150,6 +170,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     comboBox.add(currentValuePane);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void uninstallComponents() {
     if (Objects.nonNull(loupeButton)) {
       unconfigureLoupeButton();
@@ -192,10 +215,16 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected ListCellRenderer<SearchEngine> createRenderer() {
     return new SearchEngineListCellRenderer<SearchEngine>();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected LayoutManager createLayoutManager() {
     return new SearchBarLayout();
   }

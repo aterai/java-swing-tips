@@ -25,6 +25,9 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     return new BasicTabViewButtonUI();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override protected void installDefaults(AbstractButton b) {
     super.installDefaults(b);
     b.setPreferredSize(new Dimension(0, 24));
@@ -43,12 +46,17 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
       tabViewButton.setSelectedTextColor(Color.BLACK);
     }
   }
+
   // @Override public void uninstallUI(JComponent c) {
   //   super.uninstallUI(c);
   //   this.tabViewButton = null;
   // }
+
   // @Override public void installDefaults() {}
 
+  /**
+   * {@inheritDoc}
+   */
   @Override public void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;
