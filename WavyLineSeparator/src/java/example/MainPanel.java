@@ -102,7 +102,7 @@ class WavyLineSeparator extends JSeparator {
 
   private static class WavyLineIcon implements Icon {
     private final Color sfc = UIManager.getColor("Separator.foreground");
-    protected final int orientation;
+    private final int orientation;
 
     protected WavyLineIcon() {
       this.orientation = SwingConstants.HORIZONTAL;
