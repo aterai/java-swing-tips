@@ -99,26 +99,20 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super(tabPlacement);
   }
 
+  private Insets getSynthInsets(Region region) {
+    SynthStyle style = SynthLookAndFeel.getStyle(this, region);
+    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(context, null);
+  }
+
   protected Insets getTabInsets() {
-    Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-    if (Objects.nonNull(insets)) {
-      return insets;
-    } else {
-      SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
-      SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
-      return style.getInsets(context, null);
-    }
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
+        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
   }
 
   protected Insets getTabAreaInsets() {
-    Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-    if (Objects.nonNull(insets)) {
-      return insets;
-    } else {
-      SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
-      SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
-      return style.getInsets(context, null);
-    }
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
+        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
   }
 
   @Override public void doLayout() {
