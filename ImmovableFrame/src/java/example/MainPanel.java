@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
   private static final int XOFFSET = 30;
   private static final int YOFFSET = 30;
   private static AtomicInteger openFrameCount = new AtomicInteger();
-  protected final JDesktopPane desktop = new JDesktopPane();
+  private final JDesktopPane desktop = new JDesktopPane();
 
   public MainPanel() {
     super(new BorderLayout());
@@ -42,8 +42,7 @@ public class MainPanel extends JPanel {
     desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     desktop.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        // System.out.println(e.toString());
-        immovableFrame.setSize(immovableFrame.getSize().width, desktop.getSize().height);
+        immovableFrame.setSize(immovableFrame.getSize().width, e.getComponent().getSize().height);
       }
     });
 

@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
 
     JTabbedPane tabbedPane = new ProgressJTabbedPane();
     Action addAction = new AbstractAction("Add") {
-      protected int count;
+      private int count;
       @Override public void actionPerformed(ActionEvent e) {
         Component c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
         tabbedPane.addTab("Title" + count, c);
