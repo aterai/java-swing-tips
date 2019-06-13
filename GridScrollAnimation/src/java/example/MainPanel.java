@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     GridPanel gp = new GridPanel(4, 3);
-    for (int i = 0; i < gp.cols * gp.rows; i++) {
+    for (int i = 0; i < gp.getColumns() * gp.getRows(); i++) {
       gp.add(makeDummyComponent(i));
     }
     JScrollPane scrollPane = new JScrollPane(gp);
@@ -61,21 +61,25 @@ public final class MainPanel extends JPanel {
 }
 
 class GridPanel extends JPanel implements Scrollable {
-  public final int rows;
-  public final int cols;
-  public final Dimension size;
+  private final Dimension size;
 
   protected GridPanel(int rows, int cols) {
     super(new GridLayout(rows, cols, 0, 0));
     // putClientProperty("JScrollBar.fastWheelScrolling", Boolean.FALSE);
-    this.rows = rows;
-    this.cols = cols;
     this.size = new Dimension(160 * cols, 120 * rows);
+  }
+
+  public int getRows() {
+    return ((GridLayout) getLayout()).getRows();
+  }
+
+  public int getColumns() {
+    return ((GridLayout) getLayout()).getColumns();
   }
 
   @Override public Dimension getPreferredScrollableViewportSize() {
     Dimension d = getPreferredSize();
-    return new Dimension(d.width / cols, d.height / rows);
+    return new Dimension(d.width / getColumns(), d.height / getRows());
   }
 
   @Override public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -100,12 +104,12 @@ class GridPanel extends JPanel implements Scrollable {
 }
 
 class ScrollAction extends AbstractAction {
-  protected static final double SIZE = 100d;
-  protected final Point vec;
-  protected final JScrollPane scrollPane;
-  protected final Timer scroller = new Timer(5, null);
+  private static final double SIZE = 32d;
+  private final Point vec;
+  private final JScrollPane scrollPane;
+  private final Timer scroller = new Timer(5, null);
   private transient ActionListener listener;
-  protected int count;
+  private int count;
 
   protected ScrollAction(String name, JScrollPane scrollPane, Point vec) {
     super(name);
