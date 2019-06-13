@@ -135,7 +135,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 }
 
 class TabTitleDropTargetListener implements DropTargetListener {
-  protected int targetTabIndex = -1;
+  private int targetTabIndex = -1;
 
   @Override public void dropActionChanged(DropTargetDragEvent e) {
     // repaint();
