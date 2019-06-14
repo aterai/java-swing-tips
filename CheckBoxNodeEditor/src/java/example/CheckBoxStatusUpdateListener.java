@@ -37,8 +37,8 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
 
     DefaultMutableTreeNode node;
     CheckBoxNode c; // = (CheckBoxNode) node.getUserObject();
-    boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children) && children.length == 1;
-    if (isNotRootAndOnlyOneNodeChanged) {
+    boolean isOnlyOneNodeSelected = Objects.nonNull(children) && children.length == 1;
+    if (isOnlyOneNodeSelected) {
       node = (DefaultMutableTreeNode) children[0];
       c = (CheckBoxNode) node.getUserObject();
       TreePath parent = e.getTreePath();
@@ -53,7 +53,7 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
         }
       }
       model.nodeChanged(n);
-    } else { // if (Objects.isNull(children)) {
+    } else {
       // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
       // To indicate the root has changed, childIndices and children will be null.
       node = (DefaultMutableTreeNode) model.getRoot();
@@ -63,6 +63,7 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
     model.nodeChanged(node);
     adjusting = false;
   }
+
   // private void updateParentUserObject(DefaultMutableTreeNode parent) {
   //   int selectedCount = 0;
   //   // Java 9: Enumeration<TreeNode> children = parent.children();
@@ -122,16 +123,6 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
           CheckBoxNode check = (CheckBoxNode) node.getUserObject();
           node.setUserObject(new CheckBoxNode(check.getLabel(), status));
         });
-    // // Java 9: Enumeration<TreeNode> breadth = parent.breadthFirstEnumeration();
-    // Enumeration<?> breadth = parent.breadthFirstEnumeration();
-    // while (breadth.hasMoreElements()) {
-    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
-    //   if (Objects.equals(parent, node)) {
-    //     continue;
-    //   }
-    //   CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-    //   node.setUserObject(new CheckBoxNode(check.getLabel(), status));
-    // }
   }
 
   @Override public void treeNodesInserted(TreeModelEvent e) {

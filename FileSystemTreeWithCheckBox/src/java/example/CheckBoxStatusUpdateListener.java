@@ -16,7 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-class CheckBoxStatusUpdateListener implements TreeModelListener {
+public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   private boolean adjusting;
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
@@ -53,6 +53,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     model.nodeChanged(node);
     adjusting = false;
   }
+
   // private void updateParentUserObject(DefaultMutableTreeNode parent) {
   //   int selectedCount = 0;
   //   // Java 9: Enumeration<TreeNode> children = parent.children();
@@ -105,12 +106,12 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
     }
   }
 
-  private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-    // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+  private void updateAllChildrenUserObject(DefaultMutableTreeNode parent, Status status) {
+    // Java 9: Collections.list(parent.breadthFirstEnumeration()).stream()
+    Collections.list((Enumeration<?>) parent.breadthFirstEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
-        .filter(node -> !Objects.equals(root, node))
+        .filter(node -> !Objects.equals(parent, node))
         .forEach(node -> {
           CheckBoxNode check = (CheckBoxNode) node.getUserObject();
           node.setUserObject(new CheckBoxNode(check.getFile(), status));
