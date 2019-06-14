@@ -123,8 +123,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     int mci = tbl.convertColumnIndexToModel(vci);
     if (mci == targetColumnIndex && m.getRowCount() > 0) {
       TableColumn column = columnModel.getColumn(vci);
-      Object v = column.getHeaderValue();
-      boolean b = Status.DESELECTED.equals(v);
+      boolean b = Status.DESELECTED == column.getHeaderValue();
       for (int i = 0; i < m.getRowCount(); i++) {
         m.setValueAt(b, i, mci);
       }
