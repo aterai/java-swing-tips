@@ -41,7 +41,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
-    if (Status.INDETERMINATE.equals(status)) {
+    if (status == Status.INDETERMINATE) {
       List<Boolean> l = ((List<?>) m.getDataVector()).stream()
           .map(v -> (Boolean) ((List<?>) v).get(targetColumnIndex))
           .distinct()
@@ -59,7 +59,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     }
   }
   // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-  //   if (Status.INDETERMINATE.equals(status)) {
+  //   if (status == Status.INDETERMINATE) {
   //     boolean selected = true;
   //     boolean deselected = true;
   //     for (int i = 0; i < m.getRowCount(); i++) {
@@ -92,7 +92,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     int mci = tbl.convertColumnIndexToModel(vci);
     if (mci == targetColumnIndex && m.getRowCount() > 0) {
       TableColumn column = columnModel.getColumn(vci);
-      boolean b = Status.DESELECTED == column.getHeaderValue();
+      boolean b = column.getHeaderValue() == Status.DESELECTED;
       for (int i = 0; i < m.getRowCount(); i++) {
         m.setValueAt(b, i, mci);
       }

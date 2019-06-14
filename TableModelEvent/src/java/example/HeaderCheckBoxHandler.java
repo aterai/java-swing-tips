@@ -34,7 +34,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       // System.out.println("DELETE");
       // System.out.println(status + ":   " + Status.INDETERMINATE.equals(status));
       repaint = fireDeleteEvent(m, column, status);
-    } else if (e.getType() == TableModelEvent.INSERT && !Status.INDETERMINATE.equals(status)) {
+    } else if (e.getType() == TableModelEvent.INSERT && status != Status.INDETERMINATE) {
       // System.out.println("INSERT");
       repaint = fireInsertEvent(m, column, status, e);
     } else if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
@@ -50,7 +50,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   private boolean fireDeleteEvent(TableModel m, TableColumn column, Object status) {
     if (m.getRowCount() == 0) {
       column.setHeaderValue(Status.DESELECTED);
-    } else if (Status.INDETERMINATE.equals(status)) {
+    } else if (status == Status.INDETERMINATE) {
       boolean selected = true;
       boolean deselected = true;
       for (int i = 0; i < m.getRowCount(); i++) {
@@ -72,8 +72,8 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   private boolean fireInsertEvent(TableModel m, TableColumn column, Object status, TableModelEvent e) {
-    boolean selected = Status.DESELECTED.equals(status);
-    boolean deselected = Status.SELECTED.equals(status);
+    boolean selected = status == Status.DESELECTED;
+    boolean deselected = status == Status.SELECTED;
     for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
       Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
       selected &= b;
@@ -90,7 +90,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-    if (Status.INDETERMINATE.equals(status)) {
+    if (status == Status.INDETERMINATE) {
       boolean selected = true;
       boolean deselected = true;
       for (int i = 0; i < m.getRowCount(); i++) {
@@ -123,7 +123,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     int mci = tbl.convertColumnIndexToModel(vci);
     if (mci == targetColumnIndex && m.getRowCount() > 0) {
       TableColumn column = columnModel.getColumn(vci);
-      boolean b = Status.DESELECTED == column.getHeaderValue();
+      boolean b = column.getHeaderValue() == Status.DESELECTED;
       for (int i = 0; i < m.getRowCount(); i++) {
         m.setValueAt(b, i, mci);
       }
