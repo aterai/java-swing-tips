@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     n.setBorder(BorderFactory.createTitledBorder("Highlight Search"));
 
     tree.setCellRenderer(renderer);
-    renderer.query = field.getText();
+    renderer.setQuery(field.getText());
     fireDocumentChangeEvent();
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
   protected void fireDocumentChangeEvent() {
     String q = field.getText();
-    renderer.query = q;
+    renderer.setQuery(q);
     TreePath root = tree.getPathForRow(0);
     collapseAll(tree, root);
     if (!q.isEmpty()) {
@@ -108,10 +108,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-//*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
   private static final Color ROLLOVER_ROW_COLOR = new Color(0xDC_F0_FF);
-  protected String query;
+  private String query;
   private boolean rollOver;
 
   @Override public void updateUI() {
@@ -120,6 +119,10 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     setBackgroundSelectionColor(null);
     setBackgroundNonSelectionColor(null);
     super.updateUI();
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
   }
 
   @Override public Color getBackgroundNonSelectionColor() {
@@ -138,36 +141,3 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     return c;
   }
 }
-/*/
-class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-  private static final Color ROLLOVER_ROW_COLOR = new Color(0xDC_F0_FF);
-  public String q;
-  @Override public void updateUI() {
-    setTextSelectionColor(null);
-    setTextNonSelectionColor(null);
-    setBackgroundSelectionColor(null);
-    setBackgroundNonSelectionColor(null);
-    super.updateUI();
-  }
-
-  @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    // DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-    if (selected) {
-      ((JComponent) c).setOpaque(false);
-      c.setForeground(getTextSelectionColor());
-      // c.setBackground(Color.BLUE); // getBackgroundSelectionColor());
-    } else {
-      ((JComponent) c).setOpaque(true);
-      if (Objects.nonNull(q) && !q.isEmpty() && value.toString().startsWith(q)) {
-        c.setForeground(getTextNonSelectionColor());
-        c.setBackground(ROLLOVER_ROW_COLOR);
-      } else {
-        c.setForeground(getTextNonSelectionColor());
-        c.setBackground(getBackgroundNonSelectionColor());
-      }
-    }
-    return c;
-  }
-}
-//*/

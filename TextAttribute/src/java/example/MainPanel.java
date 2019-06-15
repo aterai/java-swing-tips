@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
 
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        Object style = ((UnderlineStyle) e.getItem()).style;
+        Object style = ((UnderlineStyle) e.getItem()).getStyle();
         initUnderline(textField0, style);
         initUnderline(textField1, style);
         initUnderline(textField2, style);
@@ -91,8 +91,13 @@ enum UnderlineStyle {
   UNDERLINE_LOW_ONE_PIXEL(TextAttribute.UNDERLINE_LOW_ONE_PIXEL),
   UNDERLINE_LOW_TWO_PIXEL(TextAttribute.UNDERLINE_LOW_TWO_PIXEL),
   UNDERLINE_ON(TextAttribute.UNDERLINE_ON);
-  public final int style;
+  private final int style;
+
   UnderlineStyle(int style) {
     this.style = style;
+  }
+
+  public int getStyle() {
+    return style;
   }
 }
