@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CellIconTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(Icon.class, "Icon");
+  public static final DataFlavor ICON_FLAVOR = new DataFlavor(Icon.class, "Icon");
 
   @Override protected Transferable createTransferable(JComponent c) {
     if (c instanceof JTable) {
@@ -134,14 +134,14 @@ class CellIconTransferHandler extends TransferHandler {
       int row = table.getSelectedRow();
       int col = table.getSelectedColumn();
       if (Icon.class.isAssignableFrom(table.getColumnClass(col))) {
-        // return new DataHandler(table, localObjectFlavor.getMimeType());
+        // return new DataHandler(table, ICON_FLAVOR.getMimeType());
         return new Transferable() {
           @Override public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] {localObjectFlavor};
+            return new DataFlavor[] {ICON_FLAVOR};
           }
 
           @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return Objects.equals(localObjectFlavor, flavor);
+            return Objects.equals(ICON_FLAVOR, flavor);
           }
 
           @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
@@ -160,7 +160,7 @@ class CellIconTransferHandler extends TransferHandler {
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
     Component c = info.getComponent();
     if (c instanceof JList) {
-      return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+      return info.isDrop() && info.isDataFlavorSupported(ICON_FLAVOR);
     }
     return false;
   }
@@ -176,7 +176,7 @@ class CellIconTransferHandler extends TransferHandler {
     }
     JList<?> l = (JList<?>) info.getComponent();
     try {
-      Object o = info.getTransferable().getTransferData(localObjectFlavor);
+      Object o = info.getTransferable().getTransferData(ICON_FLAVOR);
       if (o instanceof Icon) {
         ((DefaultListModel<Object>) l.getModel()).addElement(o);
       }

@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     Timer animator = new Timer(5, null);
     ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
     Component wipe = new JComponent() {
-      protected int ww;
+      private int ww;
       @Override protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
