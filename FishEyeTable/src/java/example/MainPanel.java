@@ -92,10 +92,10 @@ class FishEyeTable extends JTable {
     Font font18 = font.deriveFont(16f);
     Font font24 = font.deriveFont(22f);
     Font font32 = font.deriveFont(30f);
-    Color color12 = new Color(250, 250, 250);
-    Color color18 = new Color(245, 245, 245);
-    Color color24 = new Color(240, 240, 240);
-    Color color32 = new Color(230, 230, 250);
+    Color color12 = new Color(0xFA_FA_FA);
+    Color color18 = new Color(0xF5_F5_F5);
+    Color color24 = new Color(0xF0_F0_F0);
+    Color color32 = new Color(0xE6_E6_FA);
 
     fishEyeRowList = Arrays.asList(
       new FishEyeRowContext(12, font12, color12),
