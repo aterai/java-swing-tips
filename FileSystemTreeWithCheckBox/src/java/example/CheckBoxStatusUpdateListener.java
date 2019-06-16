@@ -96,9 +96,9 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
     Object o = parent.getUserObject();
     if (o instanceof CheckBoxNode) {
       File file = ((CheckBoxNode) o).getFile();
-      if (list.stream().allMatch(s -> Objects.equals(s, Status.DESELECTED))) {
+      if (list.stream().allMatch(s -> s == Status.DESELECTED)) {
         parent.setUserObject(new CheckBoxNode(file, Status.DESELECTED));
-      } else if (list.stream().allMatch(s -> Objects.equals(s, Status.SELECTED))) {
+      } else if (list.stream().allMatch(s -> s == Status.SELECTED)) {
         parent.setUserObject(new CheckBoxNode(file, Status.SELECTED));
       } else {
         parent.setUserObject(new CheckBoxNode(file, Status.INDETERMINATE));
