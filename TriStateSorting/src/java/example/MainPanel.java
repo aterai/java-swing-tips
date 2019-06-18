@@ -13,24 +13,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class MainPanel extends JPanel {
-  protected final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
-  protected final JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
-  protected final String[] columnNames = {"String", "Integer", "Boolean"};
-  protected final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  protected final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  protected final JTable table = new JTable(model);
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
-
+    JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
+    JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
     ButtonGroup bg = new ButtonGroup();
     bg.add(check1);
     bg.add(check2);
@@ -38,6 +25,17 @@ public class MainPanel extends JPanel {
     p.add(check1);
     p.add(check2);
 
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
       @Override public void toggleSortOrder(int column) {
         if (!check2.isSelected() || !isSortable(column)) {
