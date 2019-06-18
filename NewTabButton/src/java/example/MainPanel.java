@@ -82,17 +82,17 @@ class CardLayoutTabbedPane extends JPanel {
     super(new BorderLayout());
     int left = 0;
     int right = 0;
-    tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, new Color(20, 30, 50)));
+    tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, new Color(0x14_1E_32)));
     contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
 
     tabPanel.setOpaque(true);
-    tabPanel.setBackground(new Color(20, 30, 50));
+    tabPanel.setBackground(new Color(0x14_1E_32));
 
     wrapPanel.setOpaque(true);
-    wrapPanel.setBackground(new Color(20, 30, 50));
+    wrapPanel.setBackground(new Color(0x14_1E_32));
 
     // contentsPanel.setOpaque(true);
-    // contentsPanel.setBackground(new Color(20, 30, 50));
+    // contentsPanel.setBackground(new Color(0x14_1E_32));
 
     wrapPanel.add(tabPanel);
     // TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
@@ -148,8 +148,8 @@ class CardLayoutTabbedPane extends JPanel {
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusPainted(false);
     close.setContentAreaFilled(false);
-    close.setPressedIcon(new CloseTabIcon(Color.BLACK));
-    close.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
+    close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
+    close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.setOpaque(false);
