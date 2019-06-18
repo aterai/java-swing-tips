@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,11 +25,10 @@ public final class MainPanel extends JPanel {
       int col = idx % gl.getColumns();
       log.append(String.format("Row: %d, Column: %d%n", row + 1, col + 1));
     };
-    for (int i = 0; i < gl.getRows() * gl.getColumns(); i++) {
-      JButton b = new JButton();
+    IntStream.range(0, gl.getRows() * gl.getColumns()).mapToObj(i -> new JButton()).forEach(b -> {
       b.addActionListener(al);
       p.add(b);
-    }
+    });
 
     add(p);
     add(new JScrollPane(log), BorderLayout.SOUTH);
