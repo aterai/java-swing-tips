@@ -94,7 +94,7 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
   }
 
   @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-    /* not needed */
+    // throw new ExpandVetoException(e, "Tree collapse cancelled");
   }
 }
 
