@@ -25,7 +25,10 @@
     <exclude name="LoosePackageCoupling" />
     <exclude name="NcssCount" />
   </rule>
-  <!-- rule ref="category/java/documentation.xml" / -->
+  <rule ref="category/java/documentation.xml">
+    <exclude name="CommentRequired" />
+    <exclude name="CommentSize" />
+  </rule>
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="MissingSerialVersionUID" />
@@ -36,4 +39,5 @@
     <exclude name="DoNotUseThreads" />
   </rule>
   <rule ref="category/java/performance.xml" />
+  <rule ref="category/java/security.xml" />
 </ruleset>
