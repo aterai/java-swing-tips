@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
     JMenuBar bar = makeMenuBar();
-    visitAll(bar, new MouseAdapter() {
+    addListenerToJMenu(bar, new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         if (check.isSelected()) {
           ((AbstractButton) e.getComponent()).doClick();
@@ -30,12 +30,6 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    // EventQueue.invokeLater(() -> {
-    //   Component c = SwingUtilities.getRoot(this);
-    //   if (c instanceof JFrame) {
-    //     ((JFrame) c).setJMenuBar(bar);
-    //   }
-    // });
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(bar));
 
     add(check, BorderLayout.SOUTH);
@@ -71,20 +65,12 @@ public final class MainPanel extends JPanel {
     return bar;
   }
 
-  private static void visitAll(Container p, MouseListener l) {
-    for (Component comp: p.getComponents()) {
-      if (comp instanceof JMenu) {
-        ((JMenu) comp).addMouseListener(l);
+  private static void addListenerToJMenu(JToolBar toolBar, MouseListener l) {
+    // for (Component menu: toolBar.getComponents()) {
+    for (MenuElement menu: toolBar.getSubElements()) {
+      if (menu instanceof JMenu) {
+        ((JMenu) menu).addMouseListener(l);
       }
-      // if (comp instanceof Container) {
-      //   Container c = (Container) comp;
-      //   if (c.getComponentCount() > 0) {
-      //     visitAll(c, l);
-      //   }
-      //   if (c instanceof JMenu) {
-      //     c.addMouseListener(l);
-      //   }
-      // }
     }
   }
 
