@@ -18,12 +18,12 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-public class MainPanel extends JPanel {
-  protected final JTree tree = new JTree();
-  protected final JTextField field = new JTextField("foo");
-  protected final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
+public final class MainPanel extends JPanel {
+  private final JTree tree = new JTree();
+  private final JTextField field = new JTextField("foo");
+  private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     field.getDocument().addDocumentListener(new DocumentListener() {
@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
     n.setBorder(BorderFactory.createTitledBorder("Search"));
 
     tree.setCellRenderer(renderer);
-    renderer.query = field.getText();
+    renderer.setQuery(field.getText());
     fireDocumentChangeEvent();
 
     add(n, BorderLayout.NORTH);
@@ -52,9 +52,9 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void fireDocumentChangeEvent() {
+  protected void fireDocumentChangeEvent() {
     String q = field.getText();
-    renderer.query = q;
+    renderer.setQuery(q);
     TreePath root = tree.getPathForRow(0);
     collapseAll(tree, root);
     if (!q.isEmpty()) {
@@ -113,7 +113,7 @@ public class MainPanel extends JPanel {
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
   private static final Color BACKGROUND_SELECTION_COLOR = new Color(0xDC_F0_FF);
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
-  protected String query;
+  private String query;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -124,12 +124,16 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     setEditable(false);
   }
 
+  public void setQuery(String query) {
+    this.query = query;
+  }
+
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     String txt = Objects.toString(value, "");
     getHighlighter().removeAllHighlights();
     setText(txt);
     setBackground(selected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-    if (Objects.nonNull(query) && !query.isEmpty() && txt.startsWith(query)) {
+    if (query != null && !query.isEmpty() && txt.startsWith(query)) {
       try {
         getHighlighter().addHighlight(0, query.length(), HIGHLIGHT);
       } catch (BadLocationException ex) {
