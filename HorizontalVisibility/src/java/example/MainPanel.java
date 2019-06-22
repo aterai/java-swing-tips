@@ -12,15 +12,15 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-public class MainPanel extends JPanel {
-  protected static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
-  protected final JCheckBox check = new JCheckBox("add EmptyThumbHandler");
-  protected final JButton caretButton = new JButton("setCaretPosition: 0");
-  protected final JButton offsetButton = new JButton("setScrollOffset: 0");
-  protected final JTextField textField1 = new JTextField(TEXT);
-  protected final JTextField textField2 = new JTextField(TEXT);
-  protected final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
-  protected final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
+public final class MainPanel extends JPanel {
+  private static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
+  private final JCheckBox check = new JCheckBox("add EmptyThumbHandler");
+  private final JButton caretButton = new JButton("setCaretPosition: 0");
+  private final JButton offsetButton = new JButton("setScrollOffset: 0");
+  private final JTextField textField1 = new JTextField(TEXT);
+  private final JTextField textField2 = new JTextField(TEXT);
+  private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
+  private final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
     @Override public void updateUI() {
       super.updateUI();
       setUI(new ArrowButtonlessScrollBarUI());
@@ -32,9 +32,9 @@ public class MainPanel extends JPanel {
       return d;
     }
   };
-  protected final transient EmptyThumbHandler handler = new EmptyThumbHandler(textField1, scroller1);
+  private final transient EmptyThumbHandler handler = new EmptyThumbHandler(textField1, scroller1);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     scroller1.setModel(textField1.getHorizontalVisibility());
     scroller2.setModel(textField2.getHorizontalVisibility());
