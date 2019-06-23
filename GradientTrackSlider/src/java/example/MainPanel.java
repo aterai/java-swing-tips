@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(200, 150, 100, 50));
+  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(0x32_C8_96_64, true));
 
   private MainPanel() {
     super(new BorderLayout());
@@ -119,9 +119,9 @@ public final class MainPanel extends JPanel {
 
 class GradientPalletSliderUI extends MetalSliderUI {
   private static final int[] GRADIENT_PALLET = GradientPalletUtils.makeGradientPallet();
-  protected Color controlDarkShadow = new Color(100, 100, 100); // MetalLookAndFeel.getControlDarkShadow();
-  protected Color controlHighlight = new Color(200, 255, 200); // MetalLookAndFeel.getControlHighlight();
-  protected Color controlShadow = new Color(0, 100, 0); // MetalLookAndFeel.getControlShadow();
+  protected Color controlDarkShadow = new Color(0x64_64_64); // MetalLookAndFeel.getControlDarkShadow();
+  protected Color controlHighlight = new Color(0xC8_FF_C8); // MetalLookAndFeel.getControlHighlight();
+  protected Color controlShadow = new Color(0x00_64_00); // MetalLookAndFeel.getControlShadow();
 
   @Override public void paintTrack(Graphics g) {
     // Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();

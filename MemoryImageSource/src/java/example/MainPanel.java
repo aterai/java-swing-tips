@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
   private Point startPoint = new Point();
   private final transient BufferedImage backImage;
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(200, 150, 100, 50));
+  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(0x32_C8_96_64, true));
   private final Rectangle rect = new Rectangle(320, 240);
   private final int[] pixels = new int[rect.width * rect.height];
   private final transient ImageProducer src = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
@@ -139,7 +139,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 }
 
 final class TextureUtils {
-  private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
+  private static final Color DEFAULT_COLOR = new Color(0x64_64_64_64, true);
 
   private TextureUtils() {
     /* HideUtilityClassConstructor */
@@ -186,7 +186,7 @@ final class TextureUtils {
 //     g2.dispose();
 //   }
 //   private static BufferedImage makeBGImage() {
-//     Color color = new Color(200, 150, 100, 50);
+//     Color color = new Color(0x32_C8_96_64, true);
 //     int cs = 6;
 //     int sz = cs * cs;
 //     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
