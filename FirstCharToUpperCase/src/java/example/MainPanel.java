@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 }
 
 class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
-  protected final JTextComponent textField;
+  private final JTextComponent textField;
 
   protected FirstCharToUpperCaseDocumentFilter(JTextComponent textField) {
     super();

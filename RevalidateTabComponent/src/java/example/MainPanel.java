@@ -162,8 +162,8 @@ class TabButton extends JButton {
 }
 
 class TabTitleRenamePopupMenu extends JPopupMenu {
-  protected final JTextField textField = new JTextField(10);
-  protected final Action renameAction = new AbstractAction("rename") {
+  private final JTextField textField = new JTextField(10);
+  private final Action renameAction = new AbstractAction("rename") {
     @Override public void actionPerformed(ActionEvent e) {
       JTabbedPane t = (JTabbedPane) getInvoker();
       int idx = t.getSelectedIndex();
@@ -181,7 +181,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
       }
     }
   };
-  protected final Action newTabAction = new AbstractAction("new tab") {
+  private final Action newTabAction = new AbstractAction("new tab") {
     @Override public void actionPerformed(ActionEvent e) {
       JTabbedPane t = (JTabbedPane) getInvoker();
       int count = t.getTabCount();
@@ -190,7 +190,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
       t.setTabComponentAt(count, new ButtonTabComponent(t));
     }
   };
-  protected final Action closeAllAction = new AbstractAction("close all") {
+  private final Action closeAllAction = new AbstractAction("close all") {
     @Override public void actionPerformed(ActionEvent e) {
       JTabbedPane t = (JTabbedPane) getInvoker();
       t.removeAll();
