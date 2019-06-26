@@ -79,7 +79,10 @@ class LightboxGlassPane extends JPanel {
   private int curimgw;
   private int curimgh;
   private final Rectangle rect = new Rectangle();
-  protected Timer animator;
+  private final Timer animator = new Timer(10, e -> {
+    animatedIcon.next();
+    repaint();
+  });
   private transient Handler handler;
 
   @Override public void updateUI() {
@@ -100,7 +103,7 @@ class LightboxGlassPane extends JPanel {
 
     @Override public void hierarchyChanged(HierarchyEvent e) {
       boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(animator)) {
+      if (isDisplayableChanged && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
     }
@@ -113,20 +116,13 @@ class LightboxGlassPane extends JPanel {
     if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
       rootPane.getLayeredPane().setVisible(!isVisible);
     }
-    boolean b = Objects.isNull(animator) || !animator.isRunning();
-    if (isVisible && b) {
+    if (isVisible && !animator.isRunning()) {
       curimgw = 40;
       curimgh = 40;
       alpha = 0f;
-      animator = new Timer(10, e -> {
-        animatedIcon.next();
-        repaint();
-      });
       animator.start();
     } else {
-      if (Objects.nonNull(animator)) {
-        animator.stop();
-      }
+      animator.stop();
     }
     animatedIcon.setRunning(isVisible);
   }
