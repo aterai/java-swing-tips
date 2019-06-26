@@ -69,12 +69,11 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final JSpinner spinner = new JSpinner(new SpinnerDateModel());
-  protected final JSpinner.DateEditor editor;
+  private final JSpinner spinner = new JSpinner(new SpinnerDateModel());
 
   protected SpinnerCellEditor() {
     super();
-    editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
     spinner.setEditor(editor);
     spinner.setBorder(BorderFactory.createEmptyBorder());
     setArrowButtonEnabled(false);
@@ -89,9 +88,10 @@ class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
         // System.out.println("getTextField");
         setArrowButtonEnabled(true);
         EventQueue.invokeLater(() -> {
-          editor.getTextField().setCaretPosition(8);
-          editor.getTextField().setSelectionStart(8);
-          editor.getTextField().setSelectionEnd(10);
+          JTextField field = (JTextField) e.getComponent();
+          field.setCaretPosition(8);
+          field.setSelectionStart(8);
+          field.setSelectionEnd(10);
         });
       }
     });
