@@ -60,8 +60,7 @@ public final class MainPanel extends JPanel {
     list.setCellRenderer(new DefaultListCellRenderer() {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        Color color = (Color) value;
-        ((JLabel) c).setForeground(color);
+        c.setForeground((Color) value);
         return c;
       }
     });
