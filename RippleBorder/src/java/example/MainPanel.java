@@ -58,24 +58,22 @@ public final class MainPanel extends JPanel {
 
 class RippleBorder extends EmptyBorder {
   protected final Timer animator;
-  protected final JComponent comp;
-  protected float count = 1f;
+  private float count = 1f;
 
-  protected RippleBorder(JComponent c, int width) {
+  protected RippleBorder(Component c, int width) {
     super(width, width, width, width);
-    this.comp = c;
     animator = new Timer(80, e -> {
-      comp.repaint();
+      c.repaint();
       count += .9f;
     });
-    comp.addMouseListener(new MouseAdapter() {
+    c.addMouseListener(new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
-        comp.setForeground(Color.RED);
+        e.getComponent().setForeground(Color.RED);
         animator.start();
       }
 
       @Override public void mouseExited(MouseEvent e) {
-        comp.setForeground(Color.BLACK);
+        e.getComponent().setForeground(Color.BLACK);
       }
     });
   }
@@ -86,7 +84,7 @@ class RippleBorder extends EmptyBorder {
       return;
     }
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(Color.WHITE);
+    g2.setPaint(Color.WHITE); // c.getBackground().brighter());
     float a = 1f / count;
     boolean shouldBeHidden = .12f - a > 1.0e-2;
     if (shouldBeHidden) {
