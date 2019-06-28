@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -14,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -109,25 +109,23 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     dialog.setVisible(true);
 
     animator.removeActionListener(listener);
-    listener = new ActionListener() {
-      private int counter;
-      @Override public void actionPerformed(ActionEvent e) {
-        counter += STEP;
-        double a = 1d;
-        if (slideInAnimation == SlideInAnimation.EASE_IN) {
-          a = AnimationUtil.easeIn(counter / (double) d.height);
-        } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
-          a = AnimationUtil.easeOut(counter / (double) d.height);
-        } else { // EASE_IN_OUT
-          a = AnimationUtil.easeInOut(counter / (double) d.height);
-        }
-        int visibleHeight = (int) (.5 + a * d.height);
-        if (visibleHeight >= d.height) {
-          visibleHeight = d.height;
-          animator.stop();
-        }
-        dialog.setLocation(new Point(dx, dy - visibleHeight));
+    AtomicInteger count = new AtomicInteger();
+    listener = e -> {
+      double v = count.addAndGet(STEP) / (double) d.height;
+      double a = 1d;
+      if (slideInAnimation == SlideInAnimation.EASE_IN) {
+        a = AnimationUtil.easeIn(v);
+      } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
+        a = AnimationUtil.easeOut(v);
+      } else { // EASE_IN_OUT
+        a = AnimationUtil.easeInOut(v);
       }
+      int visibleHeight = (int) (.5 + a * d.height);
+      if (visibleHeight >= d.height) {
+        visibleHeight = d.height;
+        animator.stop();
+      }
+      dialog.setLocation(new Point(dx, dy - visibleHeight));
     };
     animator.addActionListener(listener);
     animator.start();

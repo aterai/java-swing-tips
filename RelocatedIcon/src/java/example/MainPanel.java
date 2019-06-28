@@ -5,11 +5,10 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyVetoException;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -31,15 +30,13 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("relocate");
     button.addActionListener(e -> doReIconify(desktop));
 
+    AtomicInteger count = new AtomicInteger();
     JButton addButton = new JButton("add");
-    addButton.addActionListener(new ActionListener() {
-      private int num;
-      @Override public void actionPerformed(ActionEvent e) {
-        JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
-        desktop.add(f);
-        desktop.getDesktopManager().activateFrame(f);
-        num++;
-      }
+    addButton.addActionListener(e -> {
+      int n = count.getAndIncrement();
+      JInternalFrame f = createFrame("#" + n, n * 10, n * 10);
+      desktop.add(f);
+      desktop.getDesktopManager().activateFrame(f);
     });
 
     JToolBar toolbar = new JToolBar("toolbar");

@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -76,15 +76,14 @@ public class MainPanel extends JPanel {
 
   protected final void createActionPerformed() {
     model.addRow(new Object[] {"New name", model.getRowCount(), false});
-    new Timer(DELAY, new ActionListener() {
-      private int index = table.convertRowIndexToView(model.getRowCount() - 1);
-      private int height = START_HEIGHT;
-      @Override public void actionPerformed(ActionEvent e) {
-        if (height < END_HEIGHT) {
-          table.setRowHeight(index, height++);
-        } else {
-          ((Timer) e.getSource()).stop();
-        }
+    int index = table.convertRowIndexToView(model.getRowCount() - 1);
+    AtomicInteger height = new AtomicInteger(START_HEIGHT);
+    new Timer(DELAY, e -> {
+      int h = height.getAndIncrement();
+      if (h < END_HEIGHT) {
+        table.setRowHeight(index, h);
+      } else {
+        ((Timer) e.getSource()).stop();
       }
     }).start();
   }
@@ -94,19 +93,17 @@ public class MainPanel extends JPanel {
     if (selection.length == 0) {
       return;
     }
-    new Timer(DELAY, new ActionListener() {
-      private int height = END_HEIGHT;
-      @Override public void actionPerformed(ActionEvent e) {
-        height--;
-        if (height > START_HEIGHT) {
-          for (int i = selection.length - 1; i >= 0; i--) {
-            table.setRowHeight(selection[i], height);
-          }
-        } else {
-          ((Timer) e.getSource()).stop();
-          for (int i = selection.length - 1; i >= 0; i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
-          }
+    AtomicInteger height = new AtomicInteger(END_HEIGHT);
+    new Timer(DELAY, e -> {
+      int h = height.getAndDecrement();
+      if (h > START_HEIGHT) {
+        for (int i = selection.length - 1; i >= 0; i--) {
+          table.setRowHeight(selection[i], h);
+        }
+      } else {
+        ((Timer) e.getSource()).stop();
+        for (int i = selection.length - 1; i >= 0; i--) {
+          model.removeRow(table.convertRowIndexToModel(selection[i]));
         }
       }
     }).start();

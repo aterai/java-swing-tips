@@ -5,8 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
@@ -14,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -103,13 +102,11 @@ class CardLayoutTabbedPane extends JPanel {
     add(wrapPanel, BorderLayout.NORTH);
     add(contentsPanel);
 
+    AtomicInteger count = new AtomicInteger();
     button.setBorder(BorderFactory.createEmptyBorder());
-    button.addActionListener(new ActionListener() {
-      private int count;
-      @Override public void actionPerformed(ActionEvent e) {
-        addTab("new tab:" + count, new JLabel("xxx:" + count));
-        count++;
-      }
+    button.addActionListener(e -> {
+      int n = count.getAndIncrement();
+      addTab("new tab:" + n, new JLabel("xxx:" + n));
     });
   }
 
