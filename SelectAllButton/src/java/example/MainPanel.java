@@ -11,18 +11,18 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
-  protected final String[] columnNames = {"String", "Integer", "Boolean"};
-  protected final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  protected final TableModel model = new DefaultTableModel(data, columnNames) {
+public final class MainPanel extends JPanel {
+   private final String[] columnNames = {"String", "Integer", "Boolean"};
+   private final Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+  private final TableModel model = new DefaultTableModel(data, columnNames) {
     @Override public Class<?> getColumnClass(int column) {
       return getValueAt(0, column).getClass();
     }
   };
-  protected final JTable table = new JTable(model);
+  private final JTable table = new JTable(model);
   private final Action selectAllAction = new AbstractAction("selectAll") {
     @Override public void actionPerformed(ActionEvent e) {
       e.setSource(table);
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JPanel p = new JPanel();
