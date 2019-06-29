@@ -117,7 +117,7 @@ class TranslucentPopupMenu extends JPopupMenu {
       Container p = getTopLevelAncestor();
       if (p instanceof JWindow) {
         System.out.println("Heavy weight");
-        ((JWindow) p).setBackground(ALPHA_ZERO);
+        p.setBackground(ALPHA_ZERO);
       } else {
         System.out.println("Light weight");
       }

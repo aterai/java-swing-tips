@@ -230,7 +230,7 @@ class DropShadowPopupMenu extends JPopupMenu {
     EventQueue.invokeLater(() -> {
       Container top = getTopLevelAncestor();
       if (top instanceof JWindow) { // HeavyWeight Popup
-        ((JWindow) top).setBackground(new Color(0x0, true)); // JDK 1.7.0
+        top.setBackground(new Color(0x0, true)); // JDK 1.7.0
       }
     });
     super.show(c, x, y);

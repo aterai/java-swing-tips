@@ -119,7 +119,7 @@ class BalloonToolTip extends JToolTip {
         // Component w = SwingUtilities.getRoot(c);
         // if (w instanceof JWindow) {
         //   System.out.println("Popup$HeavyWeightWindow");
-        //   ((JWindow) w).setBackground(new Color(0x0, true));
+        //   w.setBackground(new Color(0x0, true));
         // }
         Optional.ofNullable(SwingUtilities.getRoot(c))
            .filter(JWindow.class::isInstance).map(JWindow.class::cast)

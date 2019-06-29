@@ -163,7 +163,7 @@ class HeavyWeightContainerListener implements PopupMenuListener {
           if (top instanceof JWindow) {
             // https://ateraimemo.com/Swing/DropShadowPopup.html
             System.out.println("HeavyWeightContainer");
-            ((JWindow) top).setBackground(new Color(0x0, true));
+            top.setBackground(new Color(0x0, true));
           }
         }
       }
