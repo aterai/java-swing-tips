@@ -4,5 +4,5 @@
   <property name="jnlp.Name"     value="ViewportBorderBounds" />
   <property name="jnlp.name"     value="viewportborderbounds" />
   <property name="jnlp.codebase" value="https://ateraimemo.com/swing/syntaxhighlightingeditorpane/" />
-  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/viewportborderbounds.html" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ViewportBorderBounds.html" />
 </project>
