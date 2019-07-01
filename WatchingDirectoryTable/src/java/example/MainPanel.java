@@ -48,16 +48,14 @@ public final class MainPanel extends JPanel {
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     Thread worker = new Thread() {
       @Override public void run() {
-        WatchService watcher = null;
-        try {
-          watcher = FileSystems.getDefault().newWatchService();
+        try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
           dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
           append("register: " + dir);
+          processEvents(dir, watcher);
+          loop.exit();
         } catch (IOException ex) {
           throw new UncheckedIOException(ex);
         }
-        processEvents(dir, watcher);
-        loop.exit();
       }
     };
     worker.start();

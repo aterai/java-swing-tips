@@ -71,18 +71,23 @@ public final class MainPanel extends JPanel {
 
     Charset cs = getCharset(urlConnection, "UTF-8");
     int length = urlConnection.getContentLength();
-
-    try {
-      InputStream is = urlConnection.getInputStream();
-      ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is);
+    SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+    try (InputStream is = urlConnection.getInputStream();
+         ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is)) {
       monitor = pmis.getProgressMonitor();
       monitor.setNote(" "); // Need for JLabel#getPreferredSize
       monitor.setMillisToDecideToPopup(0);
       monitor.setMillisToPopup(0);
       monitor.setMinimum(0);
       monitor.setMaximum(length);
-
-      new MonitorTask(pmis, cs, length).execute();
+      MonitorTask task = new MonitorTask(pmis, cs, length) {
+        @Override public void done() {
+          super.done();
+          loop.exit();
+        }
+      };
+      task.execute();
+      loop.enter();
     } catch (IOException ex) {
       ex.printStackTrace();
       textArea.setText("error: " + ex.getMessage());

@@ -84,9 +84,10 @@ public final class MainPanel extends JPanel {
 
   protected static List<Integer> getWidthRaitoArray(String text, int length) {
     try {
-      Stream<Integer> a = Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
-      Stream<Integer> b = Stream.generate(() -> 1).limit(length);
-      return Stream.concat(a, b).limit(length).collect(Collectors.toList());
+      return Stream.concat(
+          Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf),
+          Stream.generate(() -> 1).limit(length)
+      ).limit(length).collect(Collectors.toList());
     } catch (NumberFormatException ex) {
       Toolkit.getDefaultToolkit().beep();
       JOptionPane.showMessageDialog(null, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

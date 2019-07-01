@@ -6,11 +6,12 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
-import javax.sound.sampled.AudioFormat;
+import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -36,12 +37,18 @@ public final class MainPanel extends JPanel {
   }
 
   protected void loadAndPlayAudio(String path) {
-    try (AudioInputStream sound = AudioSystem.getAudioInputStream(getClass().getResource(path))) {
-      AudioFormat format = sound.getFormat();
-      DataLine.Info di = new DataLine.Info(Clip.class, format);
-      Clip clip = (Clip) AudioSystem.getLine(di);
+    try (AudioInputStream sound = AudioSystem.getAudioInputStream(getClass().getResource(path));
+         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, sound.getFormat()))) {
+      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      clip.addLineListener(e -> {
+        LineEvent.Type t = e.getType();
+        if (Objects.equals(t, LineEvent.Type.STOP) || Objects.equals(t, LineEvent.Type.CLOSE)) {
+          loop.exit();
+        }
+      });
       clip.open(sound);
       clip.start();
+      loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();

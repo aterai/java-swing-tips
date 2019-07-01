@@ -6,10 +6,12 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -30,14 +32,15 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
 
     JButton button1 = new JButton("showMessageDialog1");
-    button1.addActionListener(e -> JOptionPane.showMessageDialog(panel, "showMessageDialog1"));
+    button1.addActionListener(e -> {
+      UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
+      JOptionPane.showMessageDialog(panel, "showMessageDialog1");
+    });
 
     JButton button2 = new JButton("showMessageDialog2");
     button2.addActionListener(e -> {
       UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
-      loadAndPlayAudio("notice2.wav");
-      JOptionPane.showMessageDialog(panel, "showMessageDialog2");
-      UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
+      showMessageDialogAndPlayAudio(panel, "showMessageDialog2", "notice2.wav");
     });
 
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -58,17 +61,28 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private void loadAndPlayAudio(String audioResource) {
-    try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource))) {
-      DataLine.Info info = new DataLine.Info(Clip.class, soundStream.getFormat());
-      Clip clip = (Clip) AudioSystem.getLine(info);
+  private void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
+    try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource));
+         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, soundStream.getFormat()))) {
+
+      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      clip.addLineListener(e -> {
+        LineEvent.Type t = e.getType();
+        System.out.println(t);
+        if (Objects.equals(t, LineEvent.Type.STOP) || Objects.equals(t, LineEvent.Type.CLOSE)) {
+          loop.exit();
+        }
+      });
       clip.open(soundStream);
       clip.start();
+      JOptionPane.showMessageDialog(p, msg);
+      loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
   }
+
   // import java.security.*;
   // private byte[] loadAudioData(String soundFile) {
   //   if (soundFile == null) {
