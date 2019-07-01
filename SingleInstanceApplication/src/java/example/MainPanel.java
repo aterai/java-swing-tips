@@ -5,9 +5,10 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.Objects;
 import javax.swing.*;
 // import com.sun.tools.attach.*;
 
@@ -39,28 +40,25 @@ public final class MainPanel extends JPanel {
     //   return;
     // }
 
+    SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     // Java Swing Hacks #68
-    ServerSocket socket = null;
-    try {
-      socket = new ServerSocket(38_765);
+    try (ServerSocket socket = new ServerSocket(38_765)) {
+      JFrame frame = new JFrame("@title@");
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      frame.getContentPane().add(new MainPanel());
+      frame.pack();
+      frame.setResizable(false);
+      frame.setLocationRelativeTo(null);
+      frame.setVisible(true);
+      frame.addWindowListener(new WindowAdapter() {
+        @Override public void windowClosing(WindowEvent e) {
+          loop.exit();
+        }
+      });
+      loop.enter();
     } catch (IOException ex) {
-      socket = null;
-    }
-    if (Objects.isNull(socket)) {
-      // String stag = "<html><center><br /><br /><br /><br /><br />";
-      // String etag = "<br /><br /><br /><br /><br /><br /></center>";
-      // JOptionPane.showMessageDialog(null, stag + "An instance of the application is already running..." + etag);
-      // System.exit(0);
       JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
-      return;
     }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setResizable(false);
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 
