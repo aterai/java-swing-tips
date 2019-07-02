@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
 class CustomCellEditor extends DefaultCellEditor {
   private static final int BUTTON_WIDTH = 20;
-  protected final JButton button = new JButton();
+  private final JButton button = new JButton();
 
   protected CustomCellEditor(JTextField field) {
     super(field);
@@ -76,14 +76,13 @@ class CustomCellEditor extends DefaultCellEditor {
 
 // class CustomComponentCellEditor extends AbstractCellEditor implements TableCellEditor {
 class CustomComponentCellEditor extends DefaultCellEditor {
-  protected final JTextField field;
-  protected JButton button;
+  private final JTextField field;
   private final JPanel panel = new JPanel(new BorderLayout());
 
   protected CustomComponentCellEditor(JTextField field) {
     super(field);
     this.field = field;
-    button = new JButton() {
+    JButton button = new JButton() {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         d.width = 25;
@@ -95,6 +94,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     panel.add(button, BorderLayout.EAST);
     panel.setFocusable(false);
   }
+
   // public Object getCellEditorValue() {
   //   // System.out.println("  " + field.getText());
   //   return field.getText();
@@ -149,11 +149,10 @@ class CustomComponent extends JPanel {
   // }
   // public final CustomTextField field = new CustomTextField();
   public final JTextField field = new JTextField();
-  protected JButton button;
+  private final JButton button = new JButton();
 
   protected CustomComponent() {
     super(new BorderLayout());
-    button = new JButton();
     // this.setFocusable(false);
     this.add(field);
     this.add(button, BorderLayout.EAST);
