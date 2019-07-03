@@ -135,13 +135,12 @@ class PropertyTable extends JTable {
 
 // delegation pattern
 class DateEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final JSpinner spinner;
-  protected final JSpinner.DateEditor editor;
+  private final JSpinner spinner;
 
   protected DateEditor() {
     super();
     spinner = new JSpinner(new SpinnerDateModel());
-    editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
     spinner.setEditor(editor);
     setArrowButtonEnabled(false);
     editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
@@ -152,12 +151,12 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
       }
 
       @Override public void focusGained(FocusEvent e) {
-        // System.out.println("getTextField");
         setArrowButtonEnabled(true);
         EventQueue.invokeLater(() -> {
-          editor.getTextField().setCaretPosition(8);
-          editor.getTextField().setSelectionStart(8);
-          editor.getTextField().setSelectionEnd(10);
+          JTextField field = (JTextField) e.getComponent();
+          field.setCaretPosition(8);
+          field.setSelectionStart(8);
+          field.setSelectionEnd(10);
         });
       }
     });
@@ -332,11 +331,11 @@ class ColorRenderer extends DefaultTableCellRenderer {
 
 // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java
 class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
-  protected static final String EDIT = "edit";
-  protected final JButton button = new JButton();
-  protected final JColorChooser colorChooser;
-  protected final JDialog dialog;
-  protected Color currentColor;
+  private static final String EDIT = "edit";
+  private final JButton button = new JButton();
+  private final JColorChooser colorChooser;
+  private final JDialog dialog;
+  private Color currentColor;
 
   protected ColorEditor() {
     super();
