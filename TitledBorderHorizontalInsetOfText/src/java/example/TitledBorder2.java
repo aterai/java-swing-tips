@@ -46,12 +46,12 @@ import javax.swing.plaf.basic.BasicHTML;
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "HiddenField"})
 public class TitledBorder2 extends AbstractBorder {
   // @see javax/swing/border/TitledBorder.java
-  protected String title;
-  protected Border border;
-  protected int titlePosition;
-  protected int titleJustification;
-  protected Font titleFont;
-  protected Color titleColor;
+  private String title;
+  private Border border;
+  private int titlePosition;
+  private int titleJustification;
+  private Font titleFont;
+  private Color titleColor;
 
   private final JLabel label;
 
