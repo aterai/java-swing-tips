@@ -172,12 +172,13 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
 }
 
 class ProgressBarRenderer extends DefaultTreeCellRenderer {
-  protected int nodeWidth = 100;
-  protected static int barHeight = 4;
-  private final JProgressBar progress = new JProgressBar(0, 100) {
+  // protected int nodeWidth = 100;
+  protected static final int BAR_HEIGHT = 4;
+  private final JProgressBar progress = new JProgressBar() {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
-      d.setSize(nodeWidth, barHeight);
+      // d.setSize(nodeWidth, BAR_HEIGHT);
+      d.height = BAR_HEIGHT;
       return d;
     }
 
@@ -205,16 +206,16 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
       int i = n.getValue();
       progress.setValue(i);
 
-      FontMetrics metrics = c.getFontMetrics(c.getFont());
-      int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.title);
-      nodeWidth = ww;
+      // FontMetrics metrics = c.getFontMetrics(c.getFont());
+      // int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.getTitle());
+      // nodeWidth = ww;
 
       renderer.removeAll();
       renderer.add(c);
       if (i < progress.getMaximum()) {
         renderer.add(progress, BorderLayout.SOUTH);
       }
-      // renderer.add(i < progress.getMaximum() ? progress : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+      // renderer.add(i < progress.getMaximum() ? progress : Box.createVerticalStrut(BAR_HEIGHT), BorderLayout.SOUTH);
       c = renderer;
     }
     return c;
@@ -228,7 +229,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 }
 
 class ProgressObject {
-  public final String title;
+  private final String title;
   private int value;
 
   protected ProgressObject() {
@@ -246,6 +247,10 @@ class ProgressObject {
 
   public int getValue() {
     return value;
+  }
+
+  public String getTitle() {
+    return title;
   }
 
   @Override public String toString() {
