@@ -68,14 +68,14 @@ public final class MainPanel extends JPanel {
 }
 
 class DragScrollingListener extends MouseAdapter {
-  protected static final int VELOCITY = 5;
-  protected static final int DELAY = 10;
-  protected static final double GRAVITY = .95;
-  protected final Cursor dc = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-  protected final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  protected final Timer scroller;
-  protected final Point startPt = new Point();
-  protected final Point delta = new Point();
+  private static final int VELOCITY = 5;
+  private static final int DELAY = 10;
+  private static final double GRAVITY = .95;
+  private final Cursor dc = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Timer scroller;
+  private final Point startPt = new Point();
+  private final Point delta = new Point();
 
   protected DragScrollingListener(JComponent c) {
     super();
