@@ -199,8 +199,8 @@ class Chunk {
 
 class BackgroundTask extends SwingWorker<String, Chunk> {
   protected final ProgressMonitorInputStream pmis;
-  protected final Charset cs;
-  protected final int length;
+  private final Charset cs;
+  private final int length;
 
   protected BackgroundTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
     super();
