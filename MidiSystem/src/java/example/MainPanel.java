@@ -15,28 +15,47 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final byte END_OF_TRACK = 0x2F;
-  private final JButton start = makeButton("start");
-  private final JButton pause = makeButton("pause");
-  private final JButton reset = makeButton("reset");
-  protected long tickpos;
-  protected Sequencer sequencer;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
+    JButton start = makeButton("start");
+    JButton pause = makeButton("pause");
+    pause.setEnabled(false);
+    JButton reset = makeButton("reset");
 
     URL url = getClass().getResource("Mozart_toruko_k.mid");
     SwingWorker<Void, Long> worker = new SwingWorker<Void, Long>() {
+      protected long tickpos;
       @Override public Void doInBackground() {
-        try (Sequencer s = MidiSystem.getSequencer()) {
-          sequencer = s;
+        try (Sequencer sequencer = MidiSystem.getSequencer()) {
           sequencer.open();
           sequencer.setSequence(MidiSystem.getSequence(url));
           sequencer.addMetaEventListener(e -> {
             if (e.getType() == END_OF_TRACK) {
               publish(0L);
             }
+          });
+
+          EventQueue.invokeLater(() -> {
+            start.addActionListener(e -> {
+              sequencer.setTickPosition(tickpos);
+              sequencer.start();
+              initButtons(false);
+            });
+
+            pause.addActionListener(e -> {
+              publish(sequencer.getTickPosition());
+              sequencer.stop();
+              initButtons(true);
+            });
+
+            reset.addActionListener(e -> {
+              sequencer.stop();
+              tickpos = 0;
+              initButtons(true);
+            });
           });
 
           try {
@@ -67,9 +86,14 @@ public class MainPanel extends JPanel {
         }
       }
 
-      @Override public void done() {
-        tickpos = 0;
-        initButtons(true);
+      // @Override public void done() {
+      //   tickpos = 0;
+      //   initButtons(true);
+      // }
+
+      protected void initButtons(boolean flg) {
+        start.setEnabled(flg);
+        pause.setEnabled(!flg);
       }
     };
     worker.execute();
@@ -81,29 +105,6 @@ public class MainPanel extends JPanel {
       }
     });
 
-    start.addActionListener(e -> {
-      sequencer.setTickPosition(tickpos);
-      sequencer.start();
-      initButtons(false);
-    });
-
-    pause.setEnabled(false);
-    pause.addActionListener(e -> {
-      sequencer.stop();
-      initButtons(true);
-    });
-
-    reset.addActionListener(e -> {
-      sequencer.stop();
-      tickpos = 0;
-      initButtons(true);
-    });
-
-    JTextArea label = new JTextArea("Wolfgang Amadeus Mozart\nPiano Sonata No. 11 in A major, K 331\n(Turkish Rondo)");
-    label.setBorder(BorderFactory.createTitledBorder("MIDI"));
-    label.setEditable(false);
-    label.setBackground(getBackground());
-
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
     box.add(Box.createHorizontalGlue());
@@ -111,15 +112,18 @@ public class MainPanel extends JPanel {
     box.add(pause);
     box.add(reset);
 
-    add(label);
+    add(makeTitle(getBackground()));
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void initButtons(boolean flg) {
-    start.setEnabled(flg);
-    pause.setEnabled(!flg);
+  private static Component makeTitle(Color bgc) {
+    JTextArea label = new JTextArea("Wolfgang Amadeus Mozart\nPiano Sonata No. 11 in A major, K 331\n(Turkish Rondo)");
+    label.setBorder(BorderFactory.createTitledBorder("MIDI"));
+    label.setEditable(false);
+    label.setBackground(bgc);
+    return label;
   }
 
   private static JButton makeButton(String title) {
