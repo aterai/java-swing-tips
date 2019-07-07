@@ -73,13 +73,13 @@ public final class MainPanel extends JPanel {
 
 class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
   private static final int MARGIN = 2; // < 3
-  protected boolean drawsFocusBorderAroundIcon;
-  protected boolean drawDashedFocusIndicator;
-  protected boolean fillBackground;
-  protected Color treeBgsColor;
-  protected Color focusBgsColor;
-  // protected boolean selected;
-  // protected boolean hasFocus;
+  private boolean drawsFocusBorderAroundIcon;
+  private boolean drawDashedFocusIndicator;
+  private boolean fillBackground;
+  private Color treeBgsColor;
+  private Color focusBgsColor;
+  // private boolean selected;
+  // private boolean hasFocus;
 
   @Override public void updateUI() {
     super.updateUI();
