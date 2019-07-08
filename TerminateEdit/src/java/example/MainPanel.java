@@ -15,59 +15,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
-  protected final String[] columnNames = {"String", "Integer"};
-  protected final Object[][] data = {
-    {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
-  };
-  protected final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  protected final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xFA_FA_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-  protected final JComboBox<? extends Enum<?>> combobox = new JComboBox<>(AutoResizeMode.values());
-  protected final JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
-  protected final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
-  protected final JCheckBox teoflCheck = new JCheckBox("terminateEditOnFocusLost", true);
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
-    table.setAutoCreateRowSorter(true);
+    JTable table = makeTable();
 
-    // // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
-    // // https://bugs.openjdk.java.net/browse/JDK-4330950
-    // frame.addWindowListener(new WindowAdapter() {
-    //   @Override public void windowClosing(WindowEvent e) {
-    //     // if (table.isEditing()) {
-    //     //   table.getCellEditor().stopCellEditing();
-    //     // }
-    //     // System.out.println(table.getValueAt(0, 1));
-    //   }
-    // });
-    // frame.addWindowStateListener(new WindowStateListener() {
-    //   @Override public void windowStateChanged(WindowEvent e) {
-    //     if (frame.getExtendedState() == Frame.MAXIMIZED_BOTH && table.isEditing()) {
-    //       table.getCellEditor().stopCellEditing();
-    //     }
-    //   }
-    // });
-
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
+    JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
     DefaultCellEditor dce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
     dce.getComponent().addFocusListener(new FocusAdapter() {
       @Override public void focusLost(FocusEvent e) {
@@ -79,8 +32,8 @@ public class MainPanel extends JPanel {
         }
       }
     });
-    // table.setSurrendersFocusOnKeystroke(true);
 
+    JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
     table.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         if (!headerCheck.isSelected()) {
@@ -105,12 +58,14 @@ public class MainPanel extends JPanel {
 
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
+    JComboBox<? extends Enum<?>> combobox = new JComboBox<>(AutoResizeMode.values());
     combobox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        table.setAutoResizeMode(((AutoResizeMode) e.getItem()).mode);
+        table.setAutoResizeMode(((AutoResizeMode) e.getItem()).getAutoResizeMode());
       }
     });
 
+    JCheckBox teoflCheck = new JCheckBox("terminateEditOnFocusLost", true);
     teoflCheck.addActionListener(e -> {
       boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
       table.putClientProperty("terminateEditOnFocusLost", isSelected);
@@ -126,6 +81,36 @@ public class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeTable() {
+    String[] columnNames = {"String", "Integer"};
+    Object[][] data = {
+      {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+    };
+    table.setAutoCreateRowSorter(true);
+    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    // table.setSurrendersFocusOnKeystroke(true);
+    return table;
   }
 
   public static void main(String... args) {
@@ -163,8 +148,13 @@ public class MainPanel extends JPanel {
 enum AutoResizeMode {
   AUTO_RESIZE_OFF(JTable.AUTO_RESIZE_OFF),
   AUTO_RESIZE_ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
-  public final int mode;
+  private final int mode;
+
   AutoResizeMode(int mode) {
     this.mode = mode;
+  }
+
+  public int getAutoResizeMode() {
+    return mode;
   }
 }
