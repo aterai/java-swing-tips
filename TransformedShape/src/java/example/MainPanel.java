@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
 }
 
 class FontRotateAnimation extends JComponent {
-  protected int rotate;
-  protected Shape shape;
+  private int rotate;
+  private Shape shape;
   private final Timer animator = new Timer(10, null);
 
   protected FontRotateAnimation(String str) {
