@@ -484,7 +484,7 @@ class DnDTabData {
 }
 
 class TabTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor;
+  protected final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
   protected DnDTabbedPane source;
   protected final JLabel label = new JLabel() {
     // Free the pixel: GHOST drag and drop, over multiple windows
@@ -506,7 +506,6 @@ class TabTransferHandler extends TransferHandler {
     System.out.println("TabTransferHandler");
     // localObjectFlavor = new ActivationDataFlavor(
     //     DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
-    localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     dialog.add(label);
     // dialog.setAlwaysOnTop(true); // Web Start
     dialog.setOpacity(.5f);

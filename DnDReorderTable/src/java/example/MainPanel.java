@@ -105,17 +105,16 @@ public final class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor;
+  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
   protected int[] indices;
   protected int addIndex = -1; // Location where items were added
   protected int addCount; // Number of items added.
 
-  protected TableRowTransferHandler() {
-    super();
-    // localObjectFlavor = new ActivationDataFlavor(
-    //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-    localObjectFlavor = new DataFlavor(List.class, "List of items");
-  }
+  // protected TableRowTransferHandler() {
+  //   super();
+  //   localObjectFlavor = new ActivationDataFlavor(
+  //       Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+  // }
 
   @Override protected Transferable createTransferable(JComponent c) {
     c.getRootPane().getGlassPane().setVisible(true);

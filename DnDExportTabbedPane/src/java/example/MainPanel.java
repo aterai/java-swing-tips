@@ -498,16 +498,15 @@ class DnDTabData {
 }
 
 class TabTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor;
+  protected final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
   protected DnDTabbedPane source;
 
-  protected TabTransferHandler() {
-    super();
-    System.out.println("TabTransferHandler");
-    // localObjectFlavor = new ActivationDataFlavor(
-    //     DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
-    localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
-  }
+  // protected TabTransferHandler() {
+  //   super();
+  //   System.out.println("TabTransferHandler");
+  //   localObjectFlavor = new ActivationDataFlavor(
+  //       DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
+  // }
 
   @Override protected Transferable createTransferable(JComponent c) {
     System.out.println("createTransferable");

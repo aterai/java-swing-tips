@@ -105,7 +105,7 @@ class Handler extends MouseAdapter {
 }
 
 class LabelTransferHandler extends TransferHandler {
-  private final DataFlavor localObjectFlavor;
+  private final DataFlavor localObjectFlavor = new DataFlavor(DragPanel.class, "DragPanel");
   private final JLabel label = new JLabel() {
     @Override public boolean contains(int x, int y) {
       return false;
@@ -117,7 +117,6 @@ class LabelTransferHandler extends TransferHandler {
     super("Text");
     // System.out.println("LabelTransferHandler");
     // localObjectFlavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
-    localObjectFlavor = new DataFlavor(DragPanel.class, "DragPanel");
     window.add(label);
     // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
     // window.setAlwaysOnTop(true);

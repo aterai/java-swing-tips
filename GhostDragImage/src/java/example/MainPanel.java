@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor;
+  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
   protected int[] indices;
   protected int addIndex = -1; // Location where items were added
   protected int addCount; // Number of items added.
@@ -96,8 +96,6 @@ class ListItemTransferHandler extends TransferHandler {
     super();
     // localObjectFlavor = new ActivationDataFlavor(
     //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-    localObjectFlavor = new DataFlavor(List.class, "List of items");
-
     LABEL.setOpaque(true);
     LABEL.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     LABEL.setHorizontalAlignment(SwingConstants.CENTER);

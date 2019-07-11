@@ -108,19 +108,18 @@ class ListPopupMenu extends JPopupMenu {
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor;
+  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
   protected JList<?> source;
   protected int[] indices;
   protected int addIndex = -1; // Location where items were added
   protected int addCount; // Number of items added.
 
-  protected ListItemTransferHandler() {
-    super();
-    // localObjectFlavor = new ActivationDataFlavor(
-    //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-    // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
-    localObjectFlavor = new DataFlavor(List.class, "List of items");
-  }
+  // protected ListItemTransferHandler() {
+  //   super();
+  //   localObjectFlavor = new ActivationDataFlavor(
+  //       Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
+  //   // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
+  // }
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
