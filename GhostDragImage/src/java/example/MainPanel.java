@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
-  protected int[] indices;
-  protected int addIndex = -1; // Location where items were added
-  protected int addCount; // Number of items added.
+  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
+  private int[] indices;
+  private int addIndex = -1; // Location where items were added
+  private int addCount; // Number of items added.
   protected static final JLabel LABEL = new JLabel() {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
@@ -108,14 +108,14 @@ class ListItemTransferHandler extends TransferHandler {
     c.getRootPane().getGlassPane().setVisible(true);
     indices = source.getSelectedIndices();
     List<?> transferedObjects = source.getSelectedValuesList();
-    // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+    // return new DataHandler(transferedObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {localObjectFlavor};
+        return new DataFlavor[] {FLAVOR};
       }
 
       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return Objects.equals(localObjectFlavor, flavor);
+        return Objects.equals(FLAVOR, flavor);
       }
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
@@ -129,7 +129,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+    return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -179,7 +179,7 @@ class ListItemTransferHandler extends TransferHandler {
     index = index >= 0 && index < max ? index : max;
     addIndex = index;
     try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
+      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       for (Object o: values) {
         int i = index++;
         listModel.add(i, o);

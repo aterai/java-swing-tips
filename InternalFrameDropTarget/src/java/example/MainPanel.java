@@ -203,11 +203,11 @@ public final class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
-  protected int[] indices;
-  protected int addIndex = -1; // Location where items were added
-  protected int addCount; // Number of items added.
-  protected Component source;
+  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
+  private int[] indices;
+  private int addIndex = -1; // Location where items were added
+  private int addCount; // Number of items added.
+  private Component source;
 
   // protected TableRowTransferHandler() {
   //   super();
@@ -231,14 +231,14 @@ class TableRowTransferHandler extends TransferHandler {
     List<?> transferedObjects = Arrays.stream(indices)
         .mapToObj(model.getDataVector()::get)
         .collect(Collectors.toList());
-    // return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
+    // return new DataHandler(transferedObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {localObjectFlavor};
+        return new DataFlavor[] {FLAVOR};
       }
 
       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return Objects.equals(localObjectFlavor, flavor);
+        return Objects.equals(FLAVOR, flavor);
       }
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
@@ -295,7 +295,7 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isSupported = info.isDataFlavorSupported(localObjectFlavor) && isDroppableTableIntersection(info);
+    boolean isSupported = info.isDataFlavorSupported(FLAVOR) && isDroppableTableIntersection(info);
     boolean canDrop = info.isDrop() && isSupported;
     // XXX bug? The cursor flickering problem with JTableHeader:
     // info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
@@ -328,7 +328,7 @@ class TableRowTransferHandler extends TransferHandler {
     addIndex = index;
     // target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
+      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       if (Objects.equals(source, target)) {
         addCount = values.size();
       }
