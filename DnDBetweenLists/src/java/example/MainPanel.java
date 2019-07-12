@@ -90,11 +90,11 @@ public final class MainPanel extends JPanel {
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(List.class, "List of items");
-  protected JList<?> source;
-  protected int[] indices;
-  protected int addIndex = -1; // Location where items were added
-  protected int addCount; // Number of items added.
+  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
+  private JList<?> source;
+  private int[] indices;
+  private int addIndex = -1; // Location where items were added
+  private int addCount; // Number of items added.
 
   // protected ListItemTransferHandler() {
   //   super();
@@ -111,11 +111,11 @@ class ListItemTransferHandler extends TransferHandler {
     List<?> transferedObjects = source.getSelectedValuesList();
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {localObjectFlavor};
+        return new DataFlavor[] {FLAVOR};
       }
 
       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return Objects.equals(localObjectFlavor, flavor);
+        return Objects.equals(FLAVOR, flavor);
       }
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
@@ -129,7 +129,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+    return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -154,7 +154,7 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     try {
       // Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
-      List<?> values = (List<?>) info.getTransferable().getTransferData(localObjectFlavor);
+      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       for (Object o: values) {
         int i = index++;
         listModel.add(i, o);
