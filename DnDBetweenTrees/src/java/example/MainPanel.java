@@ -86,7 +86,7 @@ class TreeTransferHandler extends TransferHandler {
   //   DefaultMutableTreeNode[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of TreeNode");
   private static final String NAME = "Array of DefaultMutableTreeNode";
   protected static final DataFlavor FLAVOR = new DataFlavor(DefaultMutableTreeNode[].class, NAME);
-  protected JTree source;
+  private JTree source;
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JTree) c;
