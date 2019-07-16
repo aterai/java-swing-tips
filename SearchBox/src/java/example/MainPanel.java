@@ -25,8 +25,8 @@ public class MainPanel extends JPanel {
   protected final List<TreePath> rollOverPathLists = new ArrayList<>();
   protected boolean isHidden = true;
   protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
-    protected int controlsHeight;
-    protected int controlsPreferredHeight;
+    private int controlsHeight;
+    private int controlsPreferredHeight;
     @Override public Dimension preferredLayoutSize(Container target) {
       // synchronized (target.getTreeLock()) {
       Dimension ps = super.preferredLayoutSize(target);
