@@ -36,6 +36,10 @@ public final class MainPanel extends JPanel {
         addMouseMotionListener(handler);
         addMouseListener(handler);
       }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
     };
     JScrollPane scroll = new JScrollPane(table);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -68,9 +72,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DragScrollingListener extends MouseAdapter {
-  private static final int VELOCITY = 5;
-  private static final int DELAY = 10;
-  private static final double GRAVITY = .95;
+  public static final int VELOCITY = 5;
+  public static final int DELAY = 10;
+  public static final double GRAVITY = .95;
   private final Cursor dc = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
   private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Timer scroller;
@@ -98,9 +102,7 @@ class DragScrollingListener extends MouseAdapter {
     c.setEnabled(false);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      startPt.setLocation(cp);
+      startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), p));
       scroller.stop();
     }
   }
