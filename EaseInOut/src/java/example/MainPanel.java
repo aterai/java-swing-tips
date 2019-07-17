@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ImageCaptionLabel extends JLabel {
-  protected final JTextArea textArea = new JTextArea() {
+  private final JTextArea textArea = new JTextArea() {
     private transient MouseListener listener;
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
@@ -82,7 +82,7 @@ class ImageCaptionLabel extends JLabel {
     //   return false;
     // }
   };
-  protected final transient LabelHandler handler = new LabelHandler(textArea);
+  private final transient LabelHandler handler = new LabelHandler(textArea);
 
   protected void dispatchMouseEvent(MouseEvent e) {
     Component src = e.getComponent();
