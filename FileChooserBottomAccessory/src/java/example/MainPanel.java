@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
       };
       int retvalue = fileChooser.showSaveDialog(getRootPane());
       if (retvalue == JFileChooser.APPROVE_OPTION) {
-        String enc = "\nEncoding: " + ((EncodingFileChooserUI) fileChooser.getUI()).combo.getSelectedItem();
+        String enc = "\nEncoding: " + ((EncodingFileChooserUI) fileChooser.getUI()).getSelectedEncoding();
         log.setText(fileChooser.getSelectedFile().getAbsolutePath() + enc);
       }
     });
@@ -102,10 +102,14 @@ public final class MainPanel extends JPanel {
 }
 
 class EncodingFileChooserUI extends MetalFileChooserUI {
-  public final JComboBox<String> combo = new JComboBox<>(new String[] {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"});
+  private final JComboBox<String> combo = new JComboBox<>(new String[] {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"});
 
   protected EncodingFileChooserUI(JFileChooser filechooser) {
     super(filechooser);
+  }
+
+  public String getSelectedEncoding() {
+    return combo.getItemAt(combo.getSelectedIndex());
   }
 
   @Override public void installComponents(JFileChooser fc) {
