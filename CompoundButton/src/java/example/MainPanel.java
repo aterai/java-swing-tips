@@ -90,9 +90,6 @@ enum ButtonLocation {
 }
 
 class CompoundButton extends JButton {
-  protected final Color fc = new Color(100, 150, 255, 200);
-  protected final Color ac = new Color(230, 230, 230);
-  protected final Color rc = Color.ORANGE;
   protected transient Shape shape;
   protected transient Shape base;
   protected final ButtonLocation bl;
@@ -103,6 +100,9 @@ class CompoundButton extends JButton {
     this.dim = d;
     this.bl = bl;
     setIcon(new Icon() {
+      private final Color fc = new Color(100, 150, 255, 200);
+      private final Color ac = new Color(230, 230, 230);
+      private final Color rc = Color.ORANGE;
       @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
