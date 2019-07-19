@@ -92,18 +92,21 @@ public final class MainPanel extends JPanel {
         } else {
           setForeground(Color.GRAY);
         }
-        DayOfWeek dow = d.getDayOfWeek();
         if (d.isEqual(realLocalDate)) {
           setBackground(new Color(0xDC_FF_DC));
-        } else if (dow == DayOfWeek.SUNDAY) {
-          setBackground(new Color(0xFF_DC_DC));
-        } else if (dow == DayOfWeek.SATURDAY) {
-          setBackground(new Color(0xDC_DC_FF));
         } else {
-          setBackground(Color.WHITE);
+          setBackground(getDayOfWeekColor(d.getDayOfWeek()));
         }
       }
       return this;
+    }
+
+    private Color getDayOfWeekColor(DayOfWeek dow) {
+      switch (dow) {
+        case SUNDAY: return new Color(0xFF_DC_DC);
+        case SATURDAY: return new Color(0xDC_DC_FF);
+        default: return Color.WHITE;
+      }
     }
   }
 
