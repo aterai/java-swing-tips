@@ -21,16 +21,11 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-public class MainPanel extends JPanel {
-  protected ClipboardService cs;
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new GridLayout(2, 1));
-    try {
-      cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
-    } catch (UnavailableServiceException ex) {
-      cs = null;
-    }
+
+    ClipboardService cs = getClipboardService();
     JTextArea textArea = new JTextArea() {
       @Override public void copy() {
         if (Objects.nonNull(cs)) {
@@ -64,6 +59,14 @@ public class MainPanel extends JPanel {
     add(makeTitledPanel("ClipboardService", new JScrollPane(textArea)));
     add(makeTitledPanel("Default", new JScrollPane(new JTextArea())));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ClipboardService getClipboardService() {
+    try {
+      return (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+    } catch (UnavailableServiceException ex) {
+      return null;
+    }
   }
 
   private static Component makeTitledPanel(String title, Component c) {
