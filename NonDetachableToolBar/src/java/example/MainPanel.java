@@ -10,50 +10,49 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
-public class MainPanel extends JPanel {
-  protected final JToolBar toolbar = new JToolBar("toolbar") {
-    @Override public void updateUI() {
-      super.updateUI();
-      if (getUI() instanceof WindowsToolBarUI) {
-        setUI(new WindowsToolBarUI() {
-          @Override public void setFloating(boolean b, Point p) {
-            if (detachable.isSelected()) {
-              super.setFloating(b, p);
-            } else {
-              super.setFloating(false, p);
-            }
-          }
-        });
-      } else {
-        setUI(new BasicToolBarUI() {
-          @Override public void setFloating(boolean b, Point p) {
-            if (detachable.isSelected()) {
-              super.setFloating(b, p);
-            } else {
-              super.setFloating(false, p);
-            }
-          }
-        });
-      }
-    }
-  };
-  protected final JCheckBox movable = new JCheckBox("Floatable(movable)", true);
-  protected final JCheckBox detachable = new JCheckBox("Floating(detachable)", false);
-  protected final JComboBox<String> combo = new JComboBox<>(makeModel());
-  protected final JButton button = new JButton("button");
+public final class MainPanel extends JPanel {
+  private final JCheckBox movable = new JCheckBox("Floatable(movable)", true);
+  private final JButton button = new JButton("button");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JCheckBox detachable = new JCheckBox("Floating(detachable)", false);
 
-    button.setFocusable(false);
+    JToolBar toolbar = new JToolBar("toolbar") {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsToolBarUI) {
+          setUI(new WindowsToolBarUI() {
+            @Override public void setFloating(boolean b, Point p) {
+              if (detachable.isSelected()) {
+                super.setFloating(b, p);
+              } else {
+                super.setFloating(false, p);
+              }
+            }
+          });
+        } else {
+          setUI(new BasicToolBarUI() {
+            @Override public void setFloating(boolean b, Point p) {
+              if (detachable.isSelected()) {
+                super.setFloating(b, p);
+              } else {
+                super.setFloating(false, p);
+              }
+            }
+          });
+        }
+      }
+    };
     toolbar.add(new JLabel("label"));
     toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
     toolbar.add(button);
     toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
-    toolbar.add(combo);
+    toolbar.add(new JComboBox<>(makeModel()));
     toolbar.add(Box.createGlue());
 
     movable.addActionListener(e -> toolbar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
+    button.setFocusable(false);
 
     JPanel p = new JPanel();
     p.add(movable);
