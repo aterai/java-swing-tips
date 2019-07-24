@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerPanel extends JPanel {
-  public final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 0, 200, 1));
+  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 0, 200, 1));
 
   protected SpinnerPanel() {
     super(new GridBagLayout());
@@ -90,6 +90,10 @@ class SpinnerPanel extends JPanel {
     setOpaque(true);
     add(spinner, c);
   }
+
+  protected JSpinner getSpinner() {
+    return spinner;
+  }
 }
 
 class SpinnerRenderer implements TableCellRenderer {
@@ -97,7 +101,7 @@ class SpinnerRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-    renderer.spinner.setValue((Integer) value);
+    renderer.getSpinner().setValue((Integer) value);
     return renderer;
   }
 }
@@ -107,12 +111,12 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     renderer.setBackground(table.getSelectionBackground());
-    renderer.spinner.setValue((Integer) value);
+    renderer.getSpinner().setValue((Integer) value);
     return renderer;
   }
 
   @Override public Object getCellEditorValue() {
-    return renderer.spinner.getValue();
+    return renderer.getSpinner().getValue();
   }
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
@@ -123,7 +127,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 
   @Override public boolean stopCellEditing() {
     try {
-      renderer.spinner.commitEdit();
+      renderer.getSpinner().commitEdit();
     } catch (ParseException ex) {
       Toolkit.getDefaultToolkit().beep();
       return false;
