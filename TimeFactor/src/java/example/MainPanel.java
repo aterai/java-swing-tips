@@ -13,7 +13,8 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Number lv = (Number) UIManager.get("Tree.timeFactor");
+    Object o = UIManager.get("Tree.timeFactor");
+    Number lv = o instanceof Number ? (Number) o : 500L;
     spinner.setModel(new SpinnerNumberModel(lv, 0L, 5000L, 500L));
     UIManager.put("List.timeFactor", 5000L);
 
