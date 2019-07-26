@@ -87,8 +87,8 @@ class SliderRednerer implements TableCellRenderer {
 }
 
 class SliderEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final JSlider renderer = new JSlider();
-  protected int prev;
+  private final JSlider renderer = new JSlider();
+  private int prev;
 
   protected SliderEditor() {
     super();
