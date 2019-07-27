@@ -113,8 +113,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class StripedProgressBarUI extends BasicProgressBarUI {
-  protected final boolean dir;
-  protected final boolean slope;
+  private final boolean dir;
+  private final boolean slope;
 
   protected StripedProgressBarUI(boolean dir, boolean slope) {
     super();
