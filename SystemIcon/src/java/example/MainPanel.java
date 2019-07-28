@@ -21,33 +21,40 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 // import sun.awt.shell.ShellFolder;
 
-public class MainPanel extends JPanel {
-  protected final JLabel smallLabel = new JLabel() {
-    @Override public Dimension getPreferredSize() {
-      return new Dimension(16 + 1, 16 + 1);
-    }
-
-    @Override public Dimension getMaximumSize() {
-      return getPreferredSize();
-    }
-  };
-  protected final JLabel largeLabel = new JLabel() {
-    @Override public Dimension getPreferredSize() {
-      return new Dimension(32 + 1, 32 + 1);
-    }
-
-    @Override public Dimension getMaximumSize() {
-      return getPreferredSize();
-    }
-  };
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super();
-    smallLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-    smallLabel.setAlignmentY(BOTTOM_ALIGNMENT);
+    JLabel smallLabel = new JLabel() {
+      @Override public Dimension getPreferredSize() {
+        return new Dimension(16 + 1, 16 + 1);
+      }
 
-    largeLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-    largeLabel.setAlignmentY(BOTTOM_ALIGNMENT);
+      @Override public Dimension getMaximumSize() {
+        return getPreferredSize();
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        setAlignmentY(BOTTOM_ALIGNMENT);
+      }
+    };
+
+    JLabel largeLabel = new JLabel() {
+      @Override public Dimension getPreferredSize() {
+        return new Dimension(32 + 1, 32 + 1);
+      }
+
+      @Override public Dimension getMaximumSize() {
+        return getPreferredSize();
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        setAlignmentY(BOTTOM_ALIGNMENT);
+      }
+    };
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createTitledBorder("drop File"));
