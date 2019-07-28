@@ -54,11 +54,11 @@ public final class MainPanel extends JPanel {
 }
 
 class TableHeaderTabbedPane extends JPanel {
-  protected final CardLayout cardLayout = new CardLayout();
-  protected final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
-  protected final JPanel contentsPanel = new JPanel(cardLayout);
-  protected final TableColumnModel model;
+  private final CardLayout cardLayout = new CardLayout();
+  private final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
+  private final JPanel contentsPanel = new JPanel(cardLayout);
   private final JTableHeader header;
+  private final TableColumnModel model;
   protected Object selectedColumn;
   protected int rolloverColumn = -1;
 
@@ -117,11 +117,13 @@ class TableHeaderTabbedPane extends JPanel {
 
   private class TableHeaderMouseInputHandler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-      int idx = ((JTableHeader) e.getComponent()).columnAtPoint(e.getPoint());
+      JTableHeader h = (JTableHeader) e.getComponent();
+      int idx = h.columnAtPoint(e.getPoint());
       if (idx < 0) {
         return;
       }
-      Object title = model.getColumn(idx).getHeaderValue();
+      TableColumnModel m = (TableColumnModel) h.getColumnModel();
+      Object title = m.getColumn(idx).getHeaderValue();
       cardLayout.show(contentsPanel, Objects.toString(title));
       selectedColumn = title;
     }
