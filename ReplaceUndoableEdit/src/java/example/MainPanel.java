@@ -21,37 +21,22 @@ import javax.swing.text.PlainDocument;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoManager;
 
-public class MainPanel extends JPanel {
-  protected final JTextField textField0 = new JTextField("default");
-  protected final JTextField textField1 = new JTextField();
-  protected final JTextField textField2 = new JTextField();
-  protected final UndoManager undoManager0 = new UndoManager();
-  protected final UndoManager undoManager1 = new UndoManager();
-  protected final DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
-  protected final Action undoAction = new AbstractAction("undo") {
-    @Override public void actionPerformed(ActionEvent e) {
-      Stream.of(undoManager0, undoManager1, undoManager2)
-        .filter(UndoManager::canUndo)
-        .forEach(UndoManager::undo);
-    }
-  };
-  protected final Action redoAction = new AbstractAction("redo") {
-    @Override public void actionPerformed(ActionEvent e) {
-      Stream.of(undoManager0, undoManager1, undoManager2)
-        .filter(UndoManager::canRedo)
-        .forEach(UndoManager::redo);
-    }
-  };
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
 
+    UndoManager undoManager0 = new UndoManager();
+    JTextField textField0 = new JTextField("default");
     textField0.getDocument().addUndoableEditListener(undoManager0);
 
+    UndoManager undoManager1 = new UndoManager();
+    JTextField textField1 = new JTextField();
     textField1.setDocument(new CustomUndoPlainDocument());
     textField1.setText("aaaaaaaaaaaaaaaaaaaaa");
     textField1.getDocument().addUndoableEditListener(undoManager1);
 
+    DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
+    JTextField textField2 = new JTextField();
     textField2.setText("bbbbbbbbbbbbbbb");
     Document d = textField2.getDocument();
     if (d instanceof AbstractDocument) {
@@ -60,11 +45,26 @@ public class MainPanel extends JPanel {
       doc.setDocumentFilter(undoManager2.getDocumentFilter());
     }
 
-    JButton button = new JButton("setText(LocalDateTime.now(ZoneId.systemDefault()))");
+    JButton button = new JButton("setText(LocalDateTime.now(...))");
     button.addActionListener(e -> {
       String str = LocalDateTime.now(ZoneId.systemDefault()).toString();
       Stream.of(textField0, textField1, textField2).forEach(tf -> tf.setText(str));
     });
+
+    Action undoAction = new AbstractAction("undo") {
+      @Override public void actionPerformed(ActionEvent e) {
+        Stream.of(undoManager0, undoManager1, undoManager2)
+          .filter(UndoManager::canUndo)
+          .forEach(UndoManager::undo);
+      }
+    };
+    Action redoAction = new AbstractAction("redo") {
+      @Override public void actionPerformed(ActionEvent e) {
+        Stream.of(undoManager0, undoManager1, undoManager2)
+          .filter(UndoManager::canRedo)
+          .forEach(UndoManager::redo);
+      }
+    };
 
     JPanel p = new JPanel();
     p.add(new JButton(undoAction));

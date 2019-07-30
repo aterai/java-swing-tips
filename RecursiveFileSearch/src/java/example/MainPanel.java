@@ -292,7 +292,7 @@ public final class MainPanel extends JPanel {
 
 class RecursiveFileSearchTask extends SwingWorker<String, Message> {
   protected int scount;
-  protected final File dir;
+  private final File dir;
 
   protected RecursiveFileSearchTask(File dir) {
     super();
