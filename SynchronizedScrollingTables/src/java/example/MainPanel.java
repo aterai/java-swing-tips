@@ -10,26 +10,26 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   public static final int FIXED_COLUMNRANGE = 2;
   // <blockquote cite="FixedColumnExample.java">
   // @auther Nobuo Tamemasa
   private static final String ES = "";
-  protected final Object[][] data = {
+  private final Object[][] data = {
     {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
     {3, 33,  ES,  ES, "C"}, {4,  1, ES,  ES, ES},
     {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
   };
-  protected final String[] columnNames = {"1", "2", "a", "b", "c"};
+  private final String[] columnNames = {"1", "2", "a", "b", "c"};
   // </blockquote>
-  protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
     @Override public Class<?> getColumnClass(int column) {
       return column < FIXED_COLUMNRANGE ? Integer.class : Object.class;
     }
   };
-  protected final JTable table;
+  private final JTable table;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JTable leftTable = makeTable(model);
