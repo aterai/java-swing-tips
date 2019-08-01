@@ -66,11 +66,14 @@ public class MainPanel extends JPanel {
 
   protected final void updateFont(Font font) {
     FontUIResource fontResource = new FontUIResource(font);
-    for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
-      if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
-        UIManager.put(o, fontResource);
-      }
-    }
+    // for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
+    //   if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
+    //     UIManager.put(o, fontResource);
+    //   }
+    // }
+    UIManager.getLookAndFeelDefaults().entrySet().stream()
+      .filter(e -> e.getKey().toString().toLowerCase(Locale.ENGLISH).endsWith("font"))
+      .forEach(e -> UIManager.put(e.getKey(), fontResource));
     recursiveUpdateUI(this); // SwingUtilities.updateComponentTreeUI(this);
     Container c = getTopLevelAncestor();
     if (c instanceof Window) {
