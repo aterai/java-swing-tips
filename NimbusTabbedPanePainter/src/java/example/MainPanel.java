@@ -51,6 +51,12 @@ final class NimbusTabbedPanePainterUtils {
   public static final int OVERPAINT = 6;
   public static final int STROKE_SIZE = 2;
   public static final int ARC = 10;
+  public static final Color CONTENT_BACKGROUND = Color.LIGHT_GRAY;
+  public static final Color CONTENT_BORDER = Color.ORANGE; // Color.GRAY;
+  public static final Color TAB_TABAREA_MASK = Color.GREEN; // CONTENT_BACKGROUND;
+  public static final Color TAB_BACKGROUND = Color.PINK; // CONTENT_BORDER;
+  public static final Color TABAREA_BACKGROUND = Color.CYAN; // CONTENT_BACKGROUND;
+  public static final Color TABAREA_BORDER = Color.RED; // CONTENT_BORDER;
 
   private NimbusTabbedPanePainterUtils() {
     /* HideUtilityClassConstructor */
@@ -69,7 +75,7 @@ final class NimbusTabbedPanePainterUtils {
     d.put("TabbedPane:TabbedPaneTabArea[Enabled+MouseOver].backgroundPainter", tabAreaPainter);
     d.put("TabbedPane:TabbedPaneTabArea[Enabled+Pressed].backgroundPainter", tabAreaPainter);
 
-    d.put("TabbedPane:TabbedPaneContent.backgroundPainter", new TabContentPainter());
+    d.put("TabbedPane:TabbedPaneContent.backgroundPainter", new TabbedPaneContentPainter());
 
     Painter<JComponent> tabPainter = new TabPainter(false);
     d.put("TabbedPane:TabbedPaneTab[Enabled+MouseOver].backgroundPainter", tabPainter);
@@ -91,7 +97,7 @@ final class NimbusTabbedPanePainterUtils {
 
     protected TabPainter(boolean selected) {
       this.selected = selected;
-      this.color = selected ? Color.WHITE : Color.ORANGE;
+      this.color = selected ? CONTENT_BACKGROUND : TAB_BACKGROUND;
     }
 
     @Override public void paint(Graphics2D g, JComponent c, int width, int height) {
@@ -101,18 +107,32 @@ final class NimbusTabbedPanePainterUtils {
       int y = 3;
       Graphics2D g2 = (Graphics2D) g.create(0, 0, width, height + a);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      int w = width - r - 1;
-      int h = height + r;
-      g2.setPaint(new Color(0, 0, 0, 20));
-      RoundRectangle2D rrect = new RoundRectangle2D.Double(0, 0, w, h, r, r);
-      for (int i = 0; i < x; i++) {
-        rrect.setFrame(x - i, y - i, w + i + i, h);
-        g2.fill(rrect);
-      }
-      g2.setColor(color);
-      g2.fill(new RoundRectangle2D.Double(x, y, w, h + OVERPAINT, r, r));
+
+      int w = width - x;
+      int h = height + a;
+
+      // Paint tab shadow
       if (selected) {
-        g2.setColor(Color.GREEN);
+        g2.setPaint(new Color(0, 0, 0, 20));
+        RoundRectangle2D rrect = new RoundRectangle2D.Double(0, 0, w, h, r, r);
+        for (int i = 0; i < x; i++) {
+          rrect.setFrame(x - i, y - i, w + i + i, h);
+          g2.fill(rrect);
+        }
+      }
+
+      // Fill tab background
+      g2.setColor(color);
+      g2.fill(new RoundRectangle2D.Double(x, y, w - 1, h + a, r, r));
+
+      if (selected) {
+        // Draw a border
+        g2.setStroke(new BasicStroke(STROKE_SIZE));
+        g2.setPaint(TABAREA_BORDER);
+        g2.draw(new RoundRectangle2D.Double(x, y, w - 1, h + a, r, r));
+
+        // Overpaint the overexposed area with the background color
+        g2.setColor(TAB_TABAREA_MASK);
         g2.fill(new Rectangle2D.Double(0, height + STROKE_SIZE, width, OVERPAINT));
       }
       g2.dispose();
@@ -125,25 +145,25 @@ final class NimbusTabbedPanePainterUtils {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
       Shape r = new RoundRectangle2D.Double(0, h - OVERPAINT, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
-      g2.setPaint(Color.CYAN);
+      g2.setPaint(TABAREA_BACKGROUND);
       g2.fill(r);
-      g2.setColor(Color.RED);
+      g2.setColor(TABAREA_BORDER);
       g2.setStroke(new BasicStroke(STROKE_SIZE));
       g2.draw(r);
       g2.dispose();
     }
   }
 
-  protected static class TabContentPainter implements Painter<JComponent> {
+  protected static class TabbedPaneContentPainter implements Painter<JComponent> {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(0, -OVERPAINT);
 
       Shape r = new RoundRectangle2D.Double(0, 0, w - STROKE_SIZE, h - STROKE_SIZE + OVERPAINT, ARC, ARC);
-      g2.setPaint(Color.WHITE);
+      g2.setPaint(CONTENT_BACKGROUND);
       g2.fill(r);
-      g2.setColor(Color.ORANGE);
+      g2.setColor(CONTENT_BORDER);
       g2.setStroke(new BasicStroke(STROKE_SIZE));
       g2.draw(r);
       g2.dispose();
