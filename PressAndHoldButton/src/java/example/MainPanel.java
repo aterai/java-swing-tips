@@ -80,7 +80,7 @@ class PressAndHoldButton extends JButton {
 
 class PressAndHoldHandler extends AbstractAction implements MouseListener {
   public final JPopupMenu pop = new JPopupMenu();
-  public final ButtonGroup bg = new ButtonGroup();
+  private final ButtonGroup bg = new ButtonGroup();
   private AbstractButton arrowButton;
   private final Timer holdTimer = new Timer(1000, null);
 
