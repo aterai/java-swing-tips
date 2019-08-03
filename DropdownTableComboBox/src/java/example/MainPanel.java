@@ -121,8 +121,8 @@ public final class MainPanel extends JPanel {
 }
 
 class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
-  protected final transient HighlightListener highlighter = new HighlightListener();
-  protected final JTable table = new JTable() {
+  private final JTable table = new JTable() {
+    private transient HighlightListener highlighter;
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
       Component c = super.prepareRenderer(renderer, row, column);
       c.setForeground(Color.BLACK);
@@ -140,12 +140,13 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
       removeMouseListener(highlighter);
       removeMouseMotionListener(highlighter);
       super.updateUI();
+      highlighter = new HighlightListener();
       addMouseListener(highlighter);
       addMouseMotionListener(highlighter);
       getTableHeader().setReorderingAllowed(false);
     }
   };
-  protected final List<E> list;
+  private final List<E> list;
 
   protected DropdownTableComboBox(List<E> list, DefaultTableModel model) {
     super();
