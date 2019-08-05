@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) { 
+      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
         ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         return c;
