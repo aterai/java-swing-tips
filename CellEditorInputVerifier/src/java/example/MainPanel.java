@@ -19,7 +19,6 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NumberFormatter;
-// import javax.swing.text.PlainDocument;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -129,7 +128,6 @@ class IntegerInputVerifier extends InputVerifier {
 // http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with a Document Filter
 class IntegerDocumentFilter extends DocumentFilter {
-  // int currentValue = 0;
   @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     if (Objects.nonNull(text)) {
       replace(fb, offset, 0, text, attr);
