@@ -144,6 +144,15 @@ class ProgressCircleUI extends BasicProgressBarUI {
       paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
     }
   }
+
+  // https://ateraimemo.com/Swing/ProgressBarSelectionColor.html
+  // @Override protected Color getSelectionForeground() {
+  //   return Color.GREEN; // Not used in ProgressCircleUI
+  // }
+
+  // @Override protected Color getSelectionBackground() {
+  //   return Color.RED; // a progress string color
+  // }
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
