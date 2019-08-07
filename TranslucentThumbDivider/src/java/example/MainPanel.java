@@ -132,7 +132,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
       updateThumbLocation(((JLayer<?>) c).getView(), thumb);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(new Color(255, 100, 100, 100));
+      g2.setPaint(new Color(0x64_FF_64_64, true));
       g2.fill(thumb);
       if (dividerEnabled) {
         paintDivider(g2);

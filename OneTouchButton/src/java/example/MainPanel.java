@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("SplitPane.centerOneTouchButtons", true);
 
     UIManager.put("SplitPaneDivider.border", BorderFactory.createLineBorder(Color.RED, 10));
-    UIManager.put("SplitPaneDivider.draggingColor", new Color(255, 100, 100, 100));
+    UIManager.put("SplitPaneDivider.draggingColor", new Color(0x64_FF_64_64, true));
 
     JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT) {
       @Override public void updateUI() {
