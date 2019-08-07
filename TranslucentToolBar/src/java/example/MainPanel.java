@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     super();
     JLabel label = new LabelWithToolBox(new ImageIcon(getClass().getResource("test.png")));
     label.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(222, 222, 222)),
+        BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
     add(label);
     setPreferredSize(new Dimension(320, 240));
