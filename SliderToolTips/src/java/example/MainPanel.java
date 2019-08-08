@@ -168,7 +168,7 @@ class SliderPopupListener extends MouseAdapter {
 
   protected void updateToolTip(MouseEvent e) {
     JSlider slider = (JSlider) e.getComponent();
-    int intValue = (int) slider.getValue();
+    int intValue = slider.getValue();
     if (prevValue != intValue) {
       label.setText(String.format("%03d", slider.getValue()));
       Point pt = e.getPoint();
@@ -199,8 +199,6 @@ class SliderPopupListener extends MouseAdapter {
 class SliderMouseWheelListener implements MouseWheelListener {
   @Override public void mouseWheelMoved(MouseWheelEvent e) {
     JSlider s = (JSlider) e.getComponent();
-    int i = (int) s.getValue() - e.getWheelRotation();
-    BoundedRangeModel m = s.getModel();
-    s.setValue(Math.min(Math.max(i, m.getMinimum()), m.getMaximum()));
+    s.setValue(s.getValue() - e.getWheelRotation());
   }
 }

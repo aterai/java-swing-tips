@@ -19,16 +19,16 @@ public final class MainPanel extends JPanel {
     slider.setPaintLabels(true);
     slider.addChangeListener(e -> {
       JSlider source = (JSlider) e.getSource();
-      int intValue = (int) source.getValue() * 10;
-      spinner.setValue(intValue);
+      spinner.setValue(source.getValue() * 10);
     });
     slider.addMouseWheelListener(e -> {
       JSlider source = (JSlider) e.getComponent();
-      int intValue = (int) source.getValue() - e.getWheelRotation();
-      BoundedRangeModel model = source.getModel();
-      if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
-        slider.setValue(intValue);
-      }
+      slider.setValue(source.getValue() - e.getWheelRotation());
+      // int intValue = source.getValue() - e.getWheelRotation();
+      // BoundedRangeModel model = source.getModel();
+      // if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
+      //   slider.setValue(intValue);
+      // }
     });
 
     spinner.addChangeListener(e -> {

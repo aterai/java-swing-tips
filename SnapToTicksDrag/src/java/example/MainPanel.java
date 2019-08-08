@@ -71,9 +71,10 @@ public final class MainPanel extends JPanel {
       JSlider s = (JSlider) e.getComponent();
       boolean hasMinorTickSpacing = s.getMinorTickSpacing() > 0;
       int tickSpacing = hasMinorTickSpacing ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
-      int v = s.getValue() - e.getWheelRotation() * tickSpacing;
-      BoundedRangeModel m = s.getModel();
-      s.setValue(Math.min(m.getMaximum(), Math.max(v, m.getMinimum())));
+      s.setValue(s.getValue() - e.getWheelRotation() * tickSpacing);
+      // int v = s.getValue() - e.getWheelRotation() * tickSpacing;
+      // BoundedRangeModel m = s.getModel();
+      // s.setValue(Math.min(m.getMaximum(), Math.max(v, m.getMinimum())));
     });
     if (slider.getUI() instanceof WindowsSliderUI) {
       slider.setUI(new WindowsSnapToTicksDragSliderUI(slider));
