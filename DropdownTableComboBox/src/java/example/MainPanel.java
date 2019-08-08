@@ -122,11 +122,11 @@ public final class MainPanel extends JPanel {
 
 class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
   private final JTable table = new JTable() {
-    private transient HighlightListener highlighter;
+    private transient HighlightListener mouseHandler;
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
       Component c = super.prepareRenderer(renderer, row, column);
       c.setForeground(Color.BLACK);
-      if (highlighter.isHighlightableRow(row)) {
+      if (mouseHandler != null && mouseHandler.isHighlightableRow(row)) {
         c.setBackground(new Color(0xFF_C8_C8));
       } else if (isRowSelected(row)) {
         c.setBackground(Color.CYAN);
@@ -137,12 +137,12 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
     }
 
     @Override public void updateUI() {
-      removeMouseListener(highlighter);
-      removeMouseMotionListener(highlighter);
+      removeMouseListener(mouseHandler);
+      removeMouseMotionListener(mouseHandler);
       super.updateUI();
-      highlighter = new HighlightListener();
-      addMouseListener(highlighter);
-      addMouseMotionListener(highlighter);
+      mouseHandler = new HighlightListener();
+      addMouseListener(mouseHandler);
+      addMouseMotionListener(mouseHandler);
       getTableHeader().setReorderingAllowed(false);
     }
   };
