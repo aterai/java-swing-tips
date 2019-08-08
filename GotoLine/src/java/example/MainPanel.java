@@ -17,12 +17,13 @@ import javax.swing.text.Document;
 import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
+  private static final int MIN = 1;
+  private static final int MAX = 2000;
 
   private MainPanel() {
     super(new BorderLayout());
-
-    JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 1, 2000, 1));
-    JTextArea textArea = new JTextArea(String.join("\n", Collections.nCopies(2000, "aaaaaaaaaaaaa")));
+    SpinnerNumberModel model = new SpinnerNumberModel(100, MIN, MAX, 1);
+    JTextArea textArea = new JTextArea(String.join("\n", Collections.nCopies(MAX, "aaaaaaaaaaaaa")));
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setRowHeaderView(new LineNumberView(textArea));
@@ -31,7 +32,8 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       Document doc = textArea.getDocument();
       Element root = doc.getDefaultRootElement();
-      int i = Math.max(1, Math.min(root.getElementCount(), (Integer) spinner.getValue()));
+      // int i = Math.max(MIN, Math.min(root.getElementCount(), model.getNumber().intValue()));
+      int i = model.getNumber().intValue();
       try {
         Element elem = root.getElement(i - 1);
         Rectangle rect = textArea.modelToView(elem.getStartOffset());
@@ -48,7 +50,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
     JPanel p = new JPanel(new BorderLayout());
-    p.add(spinner);
+    p.add(new JSpinner(model));
     p.add(button, BorderLayout.EAST);
     add(p, BorderLayout.NORTH);
     add(scroll);

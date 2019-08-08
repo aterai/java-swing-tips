@@ -17,7 +17,7 @@ import javax.swing.text.Document;
 import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
-  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 1, 2000, 1));
+  private final SpinnerNumberModel model = new SpinnerNumberModel(100, 1, 2000, 1);
   private final JTextArea textArea = new JTextArea();
   private final JScrollPane scroll = new JScrollPane(textArea);
 
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
     JPanel panel = new JPanel(new BorderLayout());
-    panel.add(spinner);
+    panel.add(new JSpinner(model));
     panel.add(button, BorderLayout.EAST);
 
     add(panel, BorderLayout.NORTH);
@@ -45,7 +45,8 @@ public final class MainPanel extends JPanel {
   private void startScroll() {
     Document doc = textArea.getDocument();
     Element root = doc.getDefaultRootElement();
-    int ln = Math.max(1, Math.min(root.getElementCount(), (Integer) spinner.getValue()));
+    // int ln = Math.max(1, Math.min(root.getElementCount(), model.getNumber().intValue()));
+    int ln = model.getNumber().intValue();
     try {
       Element elem = root.getElement(ln - 1);
       Rectangle dest = textArea.modelToView(elem.getStartOffset());
