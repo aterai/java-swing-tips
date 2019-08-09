@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     // JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
     // DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(dateFormat).toFormat());
     // DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
-    // JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+    // JFormattedTextField ftf = editor.getTextField();
     // ftf.setHorizontalAlignment(SwingConstants.LEFT);
     // ftf.setColumns(10);
     // ftf.setEditable(true);
@@ -219,7 +219,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
 
     EventQueue.invokeLater(() -> {
       formatter.setValueClass(LocalDateTime.class);
-      JFormattedTextField ftf = (JFormattedTextField) getTextField();
+      JFormattedTextField ftf = getTextField();
       try {
         String maxString = formatter.valueToString(model.getStart());
         String minString = formatter.valueToString(model.getEnd());

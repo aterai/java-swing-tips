@@ -76,7 +76,7 @@ class WarningSpinner extends JSpinner {
   protected WarningSpinner(SpinnerNumberModel model) {
     super(model);
     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) getEditor();
-    JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+    JFormattedTextField ftf = editor.getTextField();
     ftf.setFormatterFactory(makeFFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
       private final Color errorBackground = new Color(0xFF_C8_C8);
@@ -135,7 +135,7 @@ class WarningSpinner extends JSpinner {
 //   private static JSpinner makeSpinner2(SpinnerNumberModel m) {
 //     JSpinner s = new JSpinner(m);
 //     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
-//     JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+//     JFormattedTextField ftf = editor.getTextField();
 //     ftf.setFormatterFactory(makeFFactory2(m));
 //     ftf.addFocusListener(new FocusAdapter() {
 //       @Override public void focusLost(FocusEvent e) {

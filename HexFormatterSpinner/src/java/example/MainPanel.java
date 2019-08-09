@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 
     spinner.addChangeListener(e -> fontPanel.repaint());
     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
-    JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+    JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
     ftf.setFormatterFactory(makeFFactory());
 
