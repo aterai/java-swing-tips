@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
+public final class MainPanel extends JPanel {
+  private final SpinnerNumberModel model = new SpinnerNumberModel(9, 0, 100, 1);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
 
     JPanel p1 = new TestPanel();
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
       panel.add(c);
     });
 
-    spinner.addChangeListener(e -> list.forEach(Component::revalidate));
+    model.addChangeListener(e -> list.forEach(Component::revalidate));
 
     JPanel np = new JPanel(new GridLayout(1, 2));
     np.add(new JLabel("BoxLayout.X_AXIS", SwingConstants.CENTER));
@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
 
     JPanel sp = new JPanel(new BorderLayout());
     sp.add(new JLabel("MinimumSize: "), BorderLayout.WEST);
-    sp.add(spinner);
+    sp.add(new JSpinner(model));
 
     add(np, BorderLayout.NORTH);
     add(panel);
@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
 
       @Override public Dimension getMinimumSize() {
         return Optional.ofNullable(super.getMinimumSize()).map(d -> {
-          int i = ((Integer) spinner.getValue()).intValue();
+          int i = model.getNumber().intValue();
           d.setSize(i, i);
           return d;
         }).orElse(null);

@@ -22,7 +22,7 @@ import javax.swing.text.DefaultFormatterFactory;
 
 public class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
-  private final SpinnerModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
+  private final SpinnerNumberModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
   private final JSpinner spinner = new JSpinner(nm);
   private final JPanel fontPanel = new GlyphPaintPanel();
   protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
   public MainPanel() {
     super(new BorderLayout());
 
-    spinner.addChangeListener(e -> fontPanel.repaint());
+    nm.addChangeListener(e -> fontPanel.repaint());
     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
   }
 
   protected final String getCharacterString() {
-    int code = ((Integer) spinner.getValue()).intValue();
+    int code = nm.getNumber().intValue();
     // char[] ca = Character.toChars(code);
     // int len = Character.charCount(code);
     // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
