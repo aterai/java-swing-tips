@@ -9,20 +9,16 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JComboBox<String> comboBox = new JComboBox<>(makeModel());
-  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    spinner.addChangeListener(e -> {
-      JSpinner source = (JSpinner) e.getSource();
-      Integer newValue = (Integer) source.getValue();
-      comboBox.setMaximumRowCount(newValue);
-    });
+
+    JComboBox<String> comboBox = new JComboBox<>(makeModel());
+    SpinnerNumberModel m = new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1);
+    m.addChangeListener(e -> comboBox.setMaximumRowCount(m.getNumber().intValue()));
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    box.add(makeTitledPanel("JComboBox#setMaximumRowCount:", spinner));
+    box.add(makeTitledPanel("JComboBox#setMaximumRowCount:", new JSpinner(m)));
     box.add(Box.createVerticalStrut(10));
     box.add(comboBox);
 

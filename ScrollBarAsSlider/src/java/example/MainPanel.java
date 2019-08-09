@@ -17,18 +17,17 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     JScrollBar scrollbar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
-    JSpinner spinner = new JSpinner(new SpinnerNumberModel(VALUE, MIN, MAX, STEP));
+    SpinnerNumberModel model = new SpinnerNumberModel(VALUE, MIN, MAX, STEP);
 
     scrollbar.setUnitIncrement(STEP);
-    scrollbar.getModel().addChangeListener(e -> spinner.setValue(((BoundedRangeModel) e.getSource()).getValue()));
+    scrollbar.getModel().addChangeListener(e -> model.setValue(((BoundedRangeModel) e.getSource()).getValue()));
 
-    spinner.addChangeListener(e -> {
-      JSpinner source = (JSpinner) e.getSource();
-      Integer iv = (Integer) source.getValue();
-      scrollbar.setValue(iv);
+    model.addChangeListener(e -> {
+      SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
+      scrollbar.setValue(source.getNumber().intValue());
     });
 
-    add(makeTitledPanel("JSpinner", spinner));
+    add(makeTitledPanel("JSpinner", new JSpinner(model)));
     add(makeTitledPanel("JScrollBar", scrollbar));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));

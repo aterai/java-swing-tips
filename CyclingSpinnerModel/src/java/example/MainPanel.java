@@ -28,14 +28,11 @@ public final class MainPanel extends JPanel {
         .map(dow -> dow.getDisplayName(TextStyle.SHORT_STANDALONE, locale))
         .collect(Collectors.toList());
 
-    JSpinner spinner01 = new JSpinner();
-    spinner01.setModel(new SpinnerNumberModel(20, 0, 59, 1));
+    SpinnerModel model1 = new SpinnerNumberModel(20, 0, 59, 1);
 
-    JSpinner spinner02 = new JSpinner();
-    spinner02.setModel(new SpinnerListModel(weeks));
+    SpinnerModel model2 = new SpinnerListModel(weeks);
 
-    JSpinner spinner03 = new JSpinner();
-    spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
+    SpinnerModel model3 = new SpinnerNumberModel(20, 0, 59, 1) {
       @Override public Object getNextValue() {
         // Object n = super.getNextValue();
         // return n != null ? n : getMinimum();
@@ -47,10 +44,9 @@ public final class MainPanel extends JPanel {
         // return n != null ? n : getMaximum();
         return Optional.ofNullable(super.getPreviousValue()).orElseGet(this::getMaximum);
       }
-    });
+    };
 
-    JSpinner spinner04 = new JSpinner();
-    spinner04.setModel(new SpinnerListModel(weeks) {
+    SpinnerModel model4 = new SpinnerListModel(weeks) {
       @Override public Object getNextValue() {
         // Object o = super.getNextValue();
         // return o != null ? o : getList().get(0);
@@ -66,9 +62,10 @@ public final class MainPanel extends JPanel {
           return l.get(l.size() - 1);
         });
       }
-    });
-    add(makeTitledPanel("default model", spinner01, spinner02));
-    add(makeTitledPanel("cycling model", spinner03, spinner04));
+    };
+
+    add(makeTitledPanel("default model", new JSpinner(model1), new JSpinner(model2)));
+    add(makeTitledPanel("cycling model", new JSpinner(model3), new JSpinner(model4)));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }

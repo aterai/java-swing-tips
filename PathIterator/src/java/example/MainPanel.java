@@ -15,9 +15,6 @@ public final class MainPanel extends JPanel {
   private final SpinnerNumberModel outer = new SpinnerNumberModel(40, 10, 1000, 1);
   private final SpinnerNumberModel inner = new SpinnerNumberModel(30, 10, 1000, 1);
   private final SpinnerNumberModel vcModel = new SpinnerNumberModel(20, 3, 100, 1);
-  private final JSpinner spinner1 = new JSpinner(outer);
-  private final JSpinner spinner2 = new JSpinner(inner);
-  private final JSpinner vcSpinner = new JSpinner(vcModel);
   private final JTextField styleField = new JTextField("stroke:none; fill:pink");
   private final JCheckBox check = new JCheckBox("Antialias", true);
   private final JLabel label = new JLabel();
@@ -28,9 +25,9 @@ public final class MainPanel extends JPanel {
 
     initStar();
     ChangeListener cl = e -> initStar();
-    spinner1.addChangeListener(cl);
-    spinner2.addChangeListener(cl);
-    vcSpinner.addChangeListener(cl);
+    outer.addChangeListener(cl);
+    inner.addChangeListener(cl);
+    vcModel.addChangeListener(cl);
     check.addChangeListener(cl);
 
     label.setVerticalAlignment(SwingConstants.CENTER);
@@ -72,9 +69,9 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p.add(spinner1, c);
-    p.add(spinner2, c);
-    p.add(vcSpinner, c);
+    p.add(new JSpinner(outer), c);
+    p.add(new JSpinner(inner), c);
+    p.add(new JSpinner(vcModel), c);
     return p;
   }
 
