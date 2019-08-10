@@ -20,8 +20,10 @@ import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
   private static final String FILE_NAME = "example.txt";
-  private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 6, 1));
-  private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));
+  private final SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, 6, 1);
+  private final JSpinner spinner1 = new JSpinner(model1);
+  private final SpinnerNumberModel model2 = new SpinnerNumberModel(2, 0, 6, 1);
+  private final JSpinner spinner2 = new JSpinner(model2);
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
   private final JTextPane jtp = new JTextPane();
   private final JButton ok = new JButton("Create new " + FILE_NAME);
@@ -41,9 +43,7 @@ public final class MainPanel extends JPanel {
 
     ok.addActionListener(e -> {
       File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
-      int i1 = ((Integer) spinner1.getValue()).intValue();
-      int i2 = ((Integer) spinner2.getValue()).intValue();
-      new BackgroundTask(file, i1, i2) {
+      new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
         @Override protected void process(List<Message> chunks) {
           if (isCancelled()) {
             return;
@@ -92,12 +92,10 @@ public final class MainPanel extends JPanel {
     spinner2.setEditor(editor2);
 
     ChangeListener cl = e -> {
-      int i1 = ((Integer) spinner1.getValue()).intValue();
-      int i2 = ((Integer) spinner2.getValue()).intValue();
-      label.setText(Objects.toString(i1 + i2));
+      label.setText(Objects.toString(model1.getNumber().intValue() + model2.getNumber().intValue()));
     };
-    spinner1.addChangeListener(cl);
-    spinner2.addChangeListener(cl);
+    model1.addChangeListener(cl);
+    model2.addChangeListener(cl);
 
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 

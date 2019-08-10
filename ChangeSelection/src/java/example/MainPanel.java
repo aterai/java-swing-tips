@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private final String[] columnNames = {"A", "B", "C"};
   private final Object[][] data = {
     {"0, 0", "0, 1", "0, 2"},
@@ -45,18 +45,15 @@ public class MainPanel extends JPanel {
       return c;
     }
   };
-  private final JSpinner rowField;
-  private final JSpinner colField;
+  private final SpinnerNumberModel rowField = new SpinnerNumberModel(1, 0, model.getRowCount() - 1, 1);
+  private final SpinnerNumberModel colField = new SpinnerNumberModel(2, 0, model.getColumnCount() - 1, 1);
   private final JCheckBox toggle = new JCheckBox("toggle", false);
   private final JCheckBox extend = new JCheckBox("extend", false);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     table.setCellSelectionEnabled(true);
     // table.setAutoCreateRowSorter(true);
-
-    rowField = new JSpinner(new SpinnerNumberModel(1, 0, model.getRowCount() - 1, 1));
-    colField = new JSpinner(new SpinnerNumberModel(2, 0, model.getColumnCount() - 1, 1));
 
     table.getActionMap().put("clear-selection", new AbstractAction("clear-selection") {
       @Override public void actionPerformed(ActionEvent e) {
@@ -70,16 +67,16 @@ public class MainPanel extends JPanel {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     box.add(new JLabel("row:"));
-    box.add(rowField);
+    box.add(new JSpinner(rowField));
     box.add(new JLabel(" col:"));
-    box.add(colField);
+    box.add(new JSpinner(colField));
     box.add(toggle);
     box.add(extend);
 
     JButton changeSelection = new JButton("changeSelection");
     changeSelection.addActionListener(e -> {
-      int row = (Integer) rowField.getValue();
-      int col = (Integer) colField.getValue();
+      int row = rowField.getNumber().intValue();
+      int col = colField.getNumber().intValue();
 
       table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
       // table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());

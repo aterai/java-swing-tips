@@ -16,17 +16,17 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridBagLayout());
     p.add(progressBar);
 
-    int cycleTime = UIManager.getInt("ProgressBar.cycleTime");
-    JSpinner cycleTimeSpinner = new JSpinner(new SpinnerNumberModel(cycleTime, 1_000, 10_000, 100));
+    int ctv = UIManager.getInt("ProgressBar.cycleTime");
+    SpinnerNumberModel cycleTime = new SpinnerNumberModel(ctv, 1_000, 10_000, 100);
 
-    int repaintInterval = UIManager.getInt("ProgressBar.repaintInterval");
-    JSpinner repaintIntervalSpinner = new JSpinner(new SpinnerNumberModel(repaintInterval, 10, 100, 10));
+    int riv = UIManager.getInt("ProgressBar.repaintInterval");
+    SpinnerNumberModel repaintInterval = new SpinnerNumberModel(riv, 10, 100, 10);
 
     JButton button = new JButton("UIManager.put");
     button.addActionListener(e -> {
       progressBar.setIndeterminate(false);
-      UIManager.put("ProgressBar.repaintInterval", (Integer) repaintIntervalSpinner.getValue());
-      UIManager.put("ProgressBar.cycleTime", (Integer) cycleTimeSpinner.getValue());
+      UIManager.put("ProgressBar.repaintInterval", repaintInterval.getNumber().intValue());
+      UIManager.put("ProgressBar.cycleTime", cycleTime.getNumber().intValue());
       progressBar.setIndeterminate(true);
     });
 
@@ -37,9 +37,9 @@ public final class MainPanel extends JPanel {
     JPanel sp = new JPanel(new GridLayout(3, 2, 5, 5));
     sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     sp.add(new JLabel("ProgressBar.cycleTime:", SwingConstants.RIGHT));
-    sp.add(cycleTimeSpinner);
+    sp.add(new JSpinner(cycleTime));
     sp.add(new JLabel("ProgressBar.repaintInterval:", SwingConstants.RIGHT));
-    sp.add(repaintIntervalSpinner);
+    sp.add(new JSpinner(repaintInterval));
     sp.add(Box.createHorizontalStrut(5));
     sp.add(box);
 
