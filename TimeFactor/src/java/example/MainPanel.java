@@ -9,13 +9,13 @@ import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JSpinner spinner = new JSpinner();
+  private final SpinnerNumberModel spmodel;
 
   private MainPanel() {
     super(new BorderLayout());
     Object o = UIManager.get("Tree.timeFactor");
     Number lv = o instanceof Number ? (Number) o : 500L;
-    spinner.setModel(new SpinnerNumberModel(lv, 0L, 5000L, 500L));
+    spmodel = new SpinnerNumberModel(lv, 0L, 5000L, 500L);
     UIManager.put("List.timeFactor", 5000L);
 
     String[] model = {"a", "aa", "b", "bbb", "bbc"};
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     combo.setPrototypeDisplayValue("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
 
     JPanel p = new JPanel();
-    p.add(spinner);
+    p.add(new JSpinner(spmodel));
     p.add(combo);
 
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
   }
 
   @Override public void updateUI() {
-    Long lv = Optional.ofNullable(spinner).map(s -> (Long) s.getModel().getValue()).orElse(1000L);
+    Long lv = Optional.ofNullable(spmodel).map(m -> m.getNumber().longValue()).orElse(1000L);
     UIManager.put("ComboBox.timeFactor", lv);
     UIManager.put("List.timeFactor", lv);
     UIManager.put("Table.timeFactor", lv);

@@ -18,15 +18,14 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("add");
     button.addActionListener(e -> addInternalFrame(desktop));
 
-    long lv = button.getMultiClickThreshhold();
-    SpinnerModel m = new SpinnerNumberModel(Long.valueOf(lv), Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100));
-    JSpinner spinner = new JSpinner(m);
-    spinner.addChangeListener(e -> button.setMultiClickThreshhold((long) ((JSpinner) e.getSource()).getValue()));
+    Long lv = Long.valueOf(button.getMultiClickThreshhold());
+    SpinnerNumberModel m = new SpinnerNumberModel(lv, Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100));
+    m.addChangeListener(e -> button.setMultiClickThreshhold(m.getNumber().longValue()));
 
     JMenuBar mb = new JMenuBar();
     mb.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     mb.add(new JLabel("MultiClickThreshhold: "));
-    mb.add(spinner);
+    mb.add(new JSpinner(m));
     mb.add(Box.createHorizontalGlue());
     mb.add(button);
 
