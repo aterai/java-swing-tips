@@ -161,12 +161,12 @@ public final class MainPanel extends JPanel {
           int bottom = height - insets.bottom;
           int left = insets.left;
           int right = width - insets.right;
-          Component nc = getLayoutComponent(parent, BorderLayout.NORTH);
-          if (Objects.nonNull(nc)) {
-            Dimension d = nc.getPreferredSize();
+          Component ec = getLayoutComponent(parent, BorderLayout.EAST);
+          if (Objects.nonNull(ec)) {
+            Dimension d = ec.getPreferredSize();
             JScrollBar vsb = scroll.getVerticalScrollBar();
             int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
-            nc.setBounds(right - d.width - vsw, top, d.width, bottom - top);
+            ec.setBounds(right - d.width - vsw, top, d.width, bottom - top);
           }
           Component cc = getLayoutComponent(parent, BorderLayout.CENTER);
           if (Objects.nonNull(cc)) {
@@ -175,7 +175,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    p.add(minimap, BorderLayout.NORTH);
+    p.add(minimap, BorderLayout.EAST);
     p.add(scroll);
     add(p);
     add(box, BorderLayout.SOUTH);
