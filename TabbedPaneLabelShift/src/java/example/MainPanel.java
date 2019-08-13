@@ -14,33 +14,33 @@ public final class MainPanel extends JPanel {
     System.out.println(UIManager.getLookAndFeelDefaults().get("TabbedPane.labelShift"));
 
     int slsiv = UIManager.getLookAndFeelDefaults().getInt("TabbedPane.selectedLabelShift");
-    JSpinner slsSpinner = new JSpinner(new SpinnerNumberModel(slsiv, -5, 5, 1));
-    slsSpinner.addChangeListener(e -> {
-      JSpinner source = (JSpinner) e.getSource();
-      Integer offset = (Integer) source.getValue();
+    SpinnerNumberModel slsModel = new SpinnerNumberModel(slsiv, -5, 5, 1);
+    slsModel.addChangeListener(e -> {
+      SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
+      Integer offset = source.getNumber().intValue();
       UIManager.put("TabbedPane.selectedLabelShift", offset);
-      SwingUtilities.updateComponentTreeUI(source.getTopLevelAncestor());
+      SwingUtilities.updateComponentTreeUI(getTopLevelAncestor());
     });
 
     int lsiv = UIManager.getLookAndFeelDefaults().getInt("TabbedPane.labelShift");
-    JSpinner lsSpinner = new JSpinner(new SpinnerNumberModel(lsiv, -5, 5, 1));
-    lsSpinner.addChangeListener(e -> {
-      JSpinner source = (JSpinner) e.getSource();
-      Integer offset = (Integer) source.getValue();
+    SpinnerNumberModel lsModel = new SpinnerNumberModel(lsiv, -5, 5, 1);
+    lsModel.addChangeListener(e -> {
+      SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
+      Integer offset = source.getNumber().intValue();
       UIManager.put("TabbedPane.labelShift", offset);
-      SwingUtilities.updateComponentTreeUI(source.getTopLevelAncestor());
+      SwingUtilities.updateComponentTreeUI(getTopLevelAncestor());
     });
 
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"TabbedPane.selectedLabelShift\", offset)"));
     box1.add(new JLabel("offset = "));
-    box1.add(slsSpinner);
+    box1.add(new JSpinner(slsModel));
     box1.add(Box.createHorizontalGlue());
 
     Box box2 = Box.createHorizontalBox();
     box2.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"TabbedPane.labelShift\", offset)"));
     box2.add(new JLabel("offset = "));
-    box2.add(lsSpinner);
+    box2.add(new JSpinner(lsModel));
     box2.add(Box.createHorizontalGlue());
 
     JPanel p = new JPanel(new GridLayout(2, 1));
