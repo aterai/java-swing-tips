@@ -201,7 +201,7 @@ public final class MainPanel extends JPanel {
           .collect(Collectors.joining("\n"));
       String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
       editor.setText(html);
-      editor.moveCaretPosition(0);
+      editor.setCaretPosition(0);
     } catch (IOException ex) {
       ex.printStackTrace();
       editor.setText(ex.getMessage());
