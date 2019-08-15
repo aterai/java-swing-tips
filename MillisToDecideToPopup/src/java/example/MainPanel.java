@@ -14,8 +14,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
   protected final JTextArea area = new JTextArea();
   protected final JButton runButton = new JButton("run");
-  protected final JSpinner millisToDecide;
-  protected final JSpinner millisToPopup;
+  protected final SpinnerNumberModel millisToDecide;
+  protected final SpinnerNumberModel millisToPopup;
   // protected transient SwingWorker<String, String> worker;
   // protected transient ProgressMonitor monitor;
 
@@ -24,8 +24,8 @@ public class MainPanel extends JPanel {
     area.setEditable(false);
 
     ProgressMonitor monitorDefault = new ProgressMonitor(null, "message dummy", "note", 0, 100);
-    millisToDecide = makeSpinner(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
-    millisToPopup = makeSpinner(monitorDefault.getMillisToPopup(), 0, 5 * 1000, 100);
+    millisToDecide = new SpinnerNumberModel(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
+    millisToPopup = new SpinnerNumberModel(monitorDefault.getMillisToPopup(), 0, 5 * 1000, 100);
 
     runButton.addActionListener(e -> executeWorker((Component) e.getSource()));
 
@@ -41,8 +41,8 @@ public class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p.add(millisToDecide, c);
-    p.add(millisToPopup, c);
+    p.add(new JSpinner(millisToDecide), c);
+    p.add(new JSpinner(millisToPopup), c);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -57,8 +57,8 @@ public class MainPanel extends JPanel {
 
   protected final void executeWorker(Component c) {
     Window w = SwingUtilities.getWindowAncestor(c);
-    int toDecideToPopup = (int) millisToDecide.getValue();
-    int toPopup = (int) millisToPopup.getValue();
+    int toDecideToPopup = millisToDecide.getNumber().intValue();
+    int toPopup = millisToPopup.getNumber().intValue();
     ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
     monitor.setMillisToDecideToPopup(toDecideToPopup);
     monitor.setMillisToPopup(toPopup);
@@ -109,10 +109,6 @@ public class MainPanel extends JPanel {
     };
     worker.addPropertyChangeListener(new ProgressListener(monitor));
     worker.execute();
-  }
-
-  private static JSpinner makeSpinner(int num, int min, int max, int step) {
-    return new JSpinner(new SpinnerNumberModel(num, min, max, step));
   }
 
   public static void main(String... args) {
