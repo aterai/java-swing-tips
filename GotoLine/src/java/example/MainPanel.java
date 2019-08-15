@@ -136,7 +136,7 @@ class LineNumberView extends JComponent {
     // int lineCount = root.getElementIndex(doc.getLength());
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
-    Insets i = getBorder().getBorderInsets(this);
+    Insets i = getInsets();
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
     // return 48;
   }
@@ -161,7 +161,7 @@ class LineNumberView extends JComponent {
     int start = getLineAtPoint(base);
     int end = getLineAtPoint(base + clip.height);
     int y = start * fontHeight;
-    int rmg = getBorder().getBorderInsets(this).right;
+    int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {
       String text = Objects.toString(i + 1);
       int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
