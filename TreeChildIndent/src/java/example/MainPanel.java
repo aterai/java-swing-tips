@@ -20,16 +20,16 @@ public final class MainPanel extends JPanel {
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
     int lci = UIManager.getInt("Tree.leftChildIndent");
-    JSpinner leftChildIndent = new JSpinner(new SpinnerNumberModel(lci, -32, 32, 1));
+    SpinnerNumberModel leftChildIndent = new SpinnerNumberModel(lci, -32, 32, 1);
 
     int rci = UIManager.getInt("Tree.rightChildIndent");
-    JSpinner rightChildIndent = new JSpinner(new SpinnerNumberModel(rci, -32, 32, 1));
+    SpinnerNumberModel rightChildIndent = new SpinnerNumberModel(rci, -32, 32, 1);
 
     Box box1 = Box.createHorizontalBox();
     box1.add(new JLabel(" Tree.leftChildIndent:"));
-    box1.add(leftChildIndent);
+    box1.add(new JSpinner(leftChildIndent));
     box1.add(new JLabel(" Tree.rightChildIndent:"));
-    box1.add(rightChildIndent);
+    box1.add(new JSpinner(rightChildIndent));
 
     Box box2 = Box.createHorizontalBox();
     box2.add(Box.createHorizontalGlue());
@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
 
     Icon emptyIcon = new EmptyIcon();
     update.addActionListener(e -> {
-      UIManager.put("Tree.leftChildIndent", (Integer) leftChildIndent.getValue());
-      UIManager.put("Tree.rightChildIndent", (Integer) rightChildIndent.getValue());
+      UIManager.put("Tree.leftChildIndent", leftChildIndent.getNumber().intValue());
+      UIManager.put("Tree.rightChildIndent", rightChildIndent.getNumber().intValue());
       Icon ei;
       Icon ci;
       if (expandedIcon.isSelected()) {
