@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     JButton b1 = new JButton("OverlayLayoutButton");
     b1.setLayout(new OverlayLayout(b1));
     b1.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
-    Insets i = b1.getBorder().getBorderInsets(b1);
+    Insets i = b1.getInsets();
     b1.setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, 4));
 
     JButton b2 = new JButton("▼") {

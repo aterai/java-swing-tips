@@ -231,7 +231,7 @@ class TranslucentButtonIcon implements Icon {
   private int height;
 
   protected TranslucentButtonIcon(JComponent c) {
-    Insets i = c.getBorder().getBorderInsets(c);
+    Insets i = c.getInsets();
     Dimension d = c.getPreferredSize();
     width = d.width - i.left - i.right;
     height = d.height - i.top - i.bottom;
@@ -241,7 +241,7 @@ class TranslucentButtonIcon implements Icon {
     if (c instanceof AbstractButton) {
       AbstractButton b = (AbstractButton) c;
       // XXX: Insets i = b.getMargin();
-      Insets i = b.getBorder().getBorderInsets(b);
+      Insets i = b.getInsets();
       int w = c.getWidth();
       int h = c.getHeight();
       width = w - i.left - i.right;
