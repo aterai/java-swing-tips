@@ -36,8 +36,7 @@ public final class MainPanel extends JPanel {
 
     JTextPane textPane = new JTextPane() {
       @Override public void scrollRectToVisible(Rectangle rect) {
-        int r = getBorder().getBorderInsets(this).right;
-        rect.grow(r, 0);
+        rect.grow(getInsets().right, 0);
         super.scrollRectToVisible(rect);
       }
     };
