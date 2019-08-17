@@ -212,15 +212,8 @@ class NineSliceScalingIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-    Insets i;
-    if (cmp instanceof JComponent) {
-      i = ((JComponent) cmp).getBorder().getBorderInsets(cmp);
-    } else {
-      i = new Insets(0, 0, 0, 0);
-    }
-
+    Insets i = cmp instanceof Container ? ((Container) cmp).getInsets() : new Insets(0, 0, 0, 0);
     // g2.translate(x, y); // 1.8.0: work fine?
-
     int iw = image.getWidth(cmp);
     int ih = image.getHeight(cmp);
     width = cmp.getWidth() - i.left - i.right;
