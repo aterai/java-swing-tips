@@ -53,8 +53,7 @@ public final class MainPanel extends JPanel {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
-        Insets ins = split.getBorder().getBorderInsets(split);
-        g2.translate(-getLocation().x + ins.left, 0);
+        g2.translate(-getLocation().x + split.getInsets().left, 0);
 
         int iw = destination.getWidth(this);
         int ih = destination.getHeight(this);

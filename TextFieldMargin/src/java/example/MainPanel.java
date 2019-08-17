@@ -41,7 +41,8 @@ public final class MainPanel extends JPanel {
     System.out.println("getMargin().left: " + c.getMargin().left);
     System.out.println("getInsets().left: " + c.getInsets().left);
     System.out.println("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left);
-    return c.getBorder().getBorderInsets(c).left; // c.getMargin().left;
+    // c.getInsets() == Optional.ofNullable(c.getBorder()).map(b -> b.getBorderInsets(c)).orElse(new Insets(0, 0, 0, 0))
+    return c.getInsets().left;
   }
 
   private static Component makePanel(JTextField field) {
