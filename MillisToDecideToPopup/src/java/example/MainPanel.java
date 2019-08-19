@@ -11,23 +11,33 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final JTextArea area = new JTextArea();
-  protected final JButton runButton = new JButton("run");
-  protected final SpinnerNumberModel millisToDecide;
-  protected final SpinnerNumberModel millisToPopup;
-  // protected transient SwingWorker<String, String> worker;
-  // protected transient ProgressMonitor monitor;
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
+
+    JTextArea area = new JTextArea();
     area.setEditable(false);
 
-    ProgressMonitor monitorDefault = new ProgressMonitor(null, "message dummy", "note", 0, 100);
-    millisToDecide = new SpinnerNumberModel(monitorDefault.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
-    millisToPopup = new SpinnerNumberModel(monitorDefault.getMillisToPopup(), 0, 5 * 1000, 100);
+    ProgressMonitor dmy = new ProgressMonitor(null, "message dummy", "note", 0, 100);
+    SpinnerNumberModel millisToDecide = new SpinnerNumberModel(dmy.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
+    SpinnerNumberModel millisToPopup = new SpinnerNumberModel(dmy.getMillisToPopup(), 0, 5 * 1000, 100);
 
-    runButton.addActionListener(e -> executeWorker((Component) e.getSource()));
+    JButton runButton = new JButton("run");
+    runButton.addActionListener(e -> {
+      Window w = SwingUtilities.getWindowAncestor(runButton);
+      int toDecideToPopup = millisToDecide.getNumber().intValue();
+      int toPopup = millisToPopup.getNumber().intValue();
+      ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
+      monitor.setMillisToDecideToPopup(toDecideToPopup);
+      monitor.setMillisToPopup(toPopup);
+
+      // System.out.println(monitor.getMillisToDecideToPopup());
+      // System.out.println(monitor.getMillisToPopup());
+
+      int lengthOfTask = Math.max(10_000, toDecideToPopup * 5);
+      runButton.setEnabled(false);
+      executeWorker(monitor, lengthOfTask, runButton, area);
+    });
 
     GridBagConstraints c = new GridBagConstraints();
     c.gridx = 0;
@@ -55,19 +65,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void executeWorker(Component c) {
-    Window w = SwingUtilities.getWindowAncestor(c);
-    int toDecideToPopup = millisToDecide.getNumber().intValue();
-    int toPopup = millisToPopup.getNumber().intValue();
-    ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
-    monitor.setMillisToDecideToPopup(toDecideToPopup);
-    monitor.setMillisToPopup(toPopup);
-
-    // System.out.println(monitor.getMillisToDecideToPopup());
-    // System.out.println(monitor.getMillisToPopup());
-
-    int lengthOfTask = Math.max(10_000, toDecideToPopup * 5);
-    runButton.setEnabled(false);
+  private void executeWorker(ProgressMonitor monitor, int lengthOfTask, JButton button, JTextArea area) {
     SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
       @Override protected void process(List<String> chunks) {
         if (isCancelled()) {
@@ -89,7 +87,7 @@ public class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        runButton.setEnabled(true);
+        button.setEnabled(true);
         monitor.close();
         if (isCancelled()) {
           area.append("Cancelled\n");
