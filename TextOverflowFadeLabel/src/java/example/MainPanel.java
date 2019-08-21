@@ -119,7 +119,7 @@ class TextOverflowFadeLabel extends JLabel {
     int baseline = getBaseline(w, h);
 
     g2.setClip(rect);
-    tl.draw(g2, getInsets().left, baseline);
+    tl.draw(g2, i.left, baseline);
 
     rect.width = 1;
     float alpha = 1f;
@@ -128,7 +128,7 @@ class TextOverflowFadeLabel extends JLabel {
       alpha = Math.max(0f, alpha - DIFF);
       g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
       g2.setClip(rect);
-      tl.draw(g2, getInsets().left, baseline);
+      tl.draw(g2, i.left, baseline);
     }
     g2.dispose();
   }
