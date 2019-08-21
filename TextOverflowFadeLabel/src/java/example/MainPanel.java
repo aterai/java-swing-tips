@@ -32,11 +32,10 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeTitledPanel(String title, Component c) {
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createTitledBorder(title));
-    box.add(Box.createVerticalStrut(2));
-    box.add(c);
-    return box;
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(c);
+    return p;
   }
 
   public static void main(String... args) {
