@@ -22,6 +22,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class CheckBoxStatusUpdateListener implements TreeModelListener {
@@ -32,35 +33,39 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
       return;
     }
     adjusting = true;
-    Object[] children = e.getChildren();
-    DefaultTreeModel model = (DefaultTreeModel) e.getSource();
 
-    DefaultMutableTreeNode node;
-    CheckBoxNode c; // = (CheckBoxNode) node.getUserObject();
-    boolean isOnlyOneNodeSelected = Objects.nonNull(children) && children.length == 1;
-    if (isOnlyOneNodeSelected) {
-      node = (DefaultMutableTreeNode) children[0];
-      c = (CheckBoxNode) node.getUserObject();
+    DefaultTreeModel model = (DefaultTreeModel) e.getSource();
+    // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
+    // To indicate the root has changed, childIndices and children will be null.
+    Object[] children = e.getChildren();
+    boolean isRoot = Objects.isNull(children);
+
+    // If the parent node exists, update its status
+    if (!isRoot) {
       TreePath parent = e.getTreePath();
       DefaultMutableTreeNode n = (DefaultMutableTreeNode) parent.getLastPathComponent();
       while (Objects.nonNull(n)) {
         updateParentUserObject(n);
-        DefaultMutableTreeNode tmp = (DefaultMutableTreeNode) n.getParent();
-        if (Objects.nonNull(tmp)) {
-          n = tmp;
+        TreeNode tmp = n.getParent();
+        if (tmp instanceof DefaultMutableTreeNode) {
+          n = (DefaultMutableTreeNode) tmp;
         } else {
           break;
         }
       }
       model.nodeChanged(n);
-    } else {
-      // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
-      // To indicate the root has changed, childIndices and children will be null.
-      node = (DefaultMutableTreeNode) model.getRoot();
-      c = (CheckBoxNode) node.getUserObject();
     }
-    updateAllChildrenUserObject(node, c.getStatus());
-    model.nodeChanged(node);
+
+    // Update the status of all child nodes to be the same as the current node status
+    boolean isOnlyOneNodeSelected = Objects.nonNull(children) && children.length == 1;
+    Object current = isOnlyOneNodeSelected ? children[0] : model.getRoot();
+    if (current instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
+      CheckBoxNode c = (CheckBoxNode) node.getUserObject();
+      updateAllChildrenUserObject(node, c.getStatus());
+      model.nodeChanged(node);
+    }
+
     adjusting = false;
   }
 
