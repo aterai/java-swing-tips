@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     JPanel p2 = new JPanel() {
       @Override protected void paintComponent(Graphics g) {
         // super.paintComponent(g);
-        g.setColor(new Color(100, 50, 50, 100));
+        g.setColor(new Color(0x64_64_32_32, true));
         g.fillRect(0, 0, getWidth(), getHeight());
       }
     };
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
   private static TexturePaint makeTexturePaint() {
     BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
-    g2.setPaint(new Color(100, 120, 100, 100));
+    g2.setPaint(new Color(0x64_64_78_64, true));
     g2.fillRect(0, 0, 16, 16);
     int cs = 4;
     for (int i = 0; i * cs < 16; i++) {
