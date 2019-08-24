@@ -19,18 +19,18 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
-public class MainPanel extends JPanel {
-  protected final JTextPane jtp = new JTextPane();
-  protected final JComboBox<String> combo = new JComboBox<>(new String[] {
-      "public", "protected", "private",
-      "final", "transient", "super", "this", "return", "class"
-  });
-  protected final BasicComboPopup popup = new EditorComboPopup(jtp, combo);
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
 
+    JTextPane jtp = new JTextPane();
     jtp.setText("Shift+Tab");
+
+    JComboBox<String> combo = new JComboBox<>(new String[] {
+      "public", "protected", "private",
+      "final", "transient", "super", "this", "return", "class"
+    });
+    BasicComboPopup popup = new EditorComboPopup(jtp, combo);
 
     ActionMap amc = popup.getActionMap();
     amc.put("myUp", new AbstractAction() {
@@ -49,7 +49,10 @@ public class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
         Optional.ofNullable(combo.getItemAt(i))
-          .ifPresent(MainPanel.this::append);
+          .ifPresent(str -> {
+            popup.hide();
+            TextEditorUtils.append(jtp, str);
+          });
       }
     });
 
@@ -82,19 +85,6 @@ public class MainPanel extends JPanel {
 
     add(new JScrollPane(jtp));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  protected final void append(String str) {
-    popup.hide();
-    try {
-      Document doc = jtp.getDocument();
-      doc.insertString(jtp.getCaretPosition(), str, null);
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
-    }
   }
 
   public static void main(String... args) {
@@ -135,16 +125,7 @@ class EditorComboPopup extends BasicComboPopup {
     listener = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         hide();
-        String str = Objects.toString(comboBox.getSelectedItem());
-        try {
-          Document doc = textArea.getDocument();
-          doc.insertString(textArea.getCaretPosition(), str, null);
-        } catch (BadLocationException ex) {
-          // should never happen
-          RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-          wrap.initCause(ex);
-          throw wrap;
-        }
+        TextEditorUtils.append(textArea, Objects.toString(comboBox.getSelectedItem()));
       }
     };
     if (Objects.nonNull(list)) {
@@ -162,5 +143,23 @@ class EditorComboPopup extends BasicComboPopup {
 
   @Override public boolean isFocusable() {
     return true;
+  }
+}
+
+final class TextEditorUtils {
+  private TextEditorUtils() {
+    /* Singleton */
+  }
+
+  public static void append(JTextComponent editor, String str) {
+    try {
+      Document doc = editor.getDocument();
+      doc.insertString(editor.getCaretPosition(), str, null);
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
   }
 }
