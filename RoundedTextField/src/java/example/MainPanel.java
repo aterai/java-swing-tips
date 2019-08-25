@@ -119,7 +119,7 @@ public final class MainPanel extends JPanel {
     int sz = cs * cs;
     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
-    g2.setPaint(new Color(100, 100, 100, 50));
+    g2.setPaint(new Color(0x32_64_64_64, true));
     g2.fillRect(0, 0, sz, sz);
     for (int i = 0; i * cs < sz; i++) {
       for (int j = 0; j * cs < sz; j++) {
