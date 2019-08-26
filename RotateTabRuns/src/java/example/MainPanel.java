@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("TabbedPane.selectedLabelShift", 0);
     UIManager.put("TabbedPane.labelShift", 0);
     // TabbedPane.selectedTabPadInsets : javax.swing.plaf.InsetsUIResource[top=2,left=2,bottom=2,right=1]
-    UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(0, 2, 0, 1));
+    UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(0, 0, 0, 0));
 
     JTabbedPane tabbedPane = new JTabbedPane() {
       @Override public void updateUI() {
