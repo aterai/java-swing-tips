@@ -144,10 +144,9 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
 
 class RedGreenChannelSwapFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
-    int r = (int) ((argb >> 16) & 0xFF);
-    int g = (int) ((argb >> 8) & 0xFF);
-    int b = (int) (argb & 0xFF);
-    return (argb & 0xFF_00_00_00) | (g << 16) | (r << 8) | b;
+    int r = (argb >> 16) & 0xFF;
+    int g = (argb >> 8) & 0xFF;
+    return (argb & 0xFF_00_00_FF) | (g << 16) | (r << 8);
   }
 }
 
