@@ -200,17 +200,11 @@ class SelectedImageFilter extends RGBImageFilter {
     this.bf = Math.min(1f, bf);
     canFilterIndexColorModel = false;
   }
-  // @Override public int filterRGB(int x, int y, int argb) {
-  //   Color color = new Color(argb, true);
-  //   float[] array = new float[4];
-  //   color.getComponents(array);
-  //   return new Color(array[0] * filter[0], array[1] * filter[1], array[2] * filter[2], array[3]).getRGB();
-  // }
 
   @Override public int filterRGB(int x, int y, int argb) {
-    int r = (int) (((argb >> 16) & 0xFF) * rf);
-    int g = (int) (((argb >> 8) & 0xFF) * gf);
-    int b = (int) ((argb & 0xFF) * bf);
+    int r = Math.round(((argb >> 16) & 0xFF) * rf);
+    int g = Math.round(((argb >> 8) & 0xFF) * gf);
+    int b = Math.round((argb & 0xFF) * bf);
     return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }

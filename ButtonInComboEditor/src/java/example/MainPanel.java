@@ -319,9 +319,9 @@ class SelectedImageFilter extends RGBImageFilter {
 
   @Override public int filterRGB(int x, int y, int argb) {
     // int a = (argb >> 24) & 0xFF;
-    int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * SCALE);
-    int g = (int) Math.min(0xFF, ((argb >> 8) & 0xFF) * SCALE);
-    int b = (int) Math.min(0xFF, (argb & 0xFF) * SCALE);
+    int r = Math.min(0xFF, Math.round(((argb >> 16) & 0xFF) * SCALE));
+    int g = Math.min(0xFF, Math.round(((argb >> 8) & 0xFF) * SCALE));
+    int b = Math.min(0xFF, Math.round((argb & 0xFF) * SCALE));
     return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
   }
 }
