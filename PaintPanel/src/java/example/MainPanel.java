@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
 //     handler = new MouseAdapter() {
 //       @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
-//         Graphics2D g2 = (Graphics2D) offImage.createGraphics();
+//         Graphics2D g2 = offImage.createGraphics();
 //         g2.setStroke(new BasicStroke(3f));
 //         g2.setPaint(Color.BLACK);
 //         g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);

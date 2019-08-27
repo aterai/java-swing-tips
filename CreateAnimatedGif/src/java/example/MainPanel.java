@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void paintFrame(BufferedImage image, List<Shape> list) {
-    Graphics2D g2 = (Graphics2D) image.createGraphics();
+    Graphics2D g2 = image.createGraphics();
     g2.setPaint(Color.WHITE);
     g2.fillRect(0, 0, WIDTH, HEIGHT);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
