@@ -591,9 +591,9 @@ class TabTransferHandler extends TransferHandler {
   private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
     Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
     BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
-    Graphics g2 = image.createGraphics();
-    tabbedPane.paint(g2);
-    g2.dispose();
+    Graphics g = image.createGraphics();
+    tabbedPane.paint(g);
+    g.dispose();
     if (rect.x < 0) {
       rect.translate(-rect.x, 0);
     }
