@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
 
-    JSlider slider1 = makeSilder("ChangeListener");
-    JSlider slider2 = makeSilder("TrackListener");
+    JSlider slider1 = makeSlider("ChangeListener");
+    JSlider slider2 = makeSlider("TrackListener");
     if (slider2.getUI() instanceof WindowsSliderUI) {
       slider2.setUI(new WindowsDragLimitedSliderUI(slider2));
     } else {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider makeSilder(String title) {
+  private static JSlider makeSlider(String title) {
     JSlider slider = new JSlider(0, 100, 40);
     slider.setBorder(BorderFactory.createTitledBorder(title));
     slider.setMajorTickSpacing(10);
