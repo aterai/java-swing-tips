@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     alignmentsChoices.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         ButtonAlignments ba = (ButtonAlignments) e.getItem();
-        buttons.forEach(b -> b.setAlignmentY(ba.alingment));
+        buttons.forEach(b -> b.setAlignmentY(ba.alignment));
         box.revalidate();
       }
     });
@@ -277,10 +277,10 @@ enum ButtonAlignments {
   CENTER("Center Alignment", Component.CENTER_ALIGNMENT),
   BOTTOM("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
   private final String description;
-  public final float alingment;
-  ButtonAlignments(String description, float alingment) {
+  public final float alignment;
+  ButtonAlignments(String description, float alignment) {
     this.description = description;
-    this.alingment = alingment;
+    this.alignment = alignment;
   }
 
   @Override public String toString() {
