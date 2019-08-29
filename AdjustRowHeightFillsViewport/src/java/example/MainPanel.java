@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(table);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    // TEST: scroll.addComponentListener(new TableRowHeidhtAdjuster());
+    // TEST: scroll.addComponentListener(new TableRowHeightAdjuster());
     scroll.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
         Component c = e.getComponent();
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
 }
 
 // // TEST when not considering adding rows
-// class TableRowHeidhtAdjuster extends ComponentAdapter {
+// class TableRowHeightAdjuster extends ComponentAdapter {
 //   private int prevHeight = -1;
 //
 //   @Override public void componentResized(ComponentEvent e) {
