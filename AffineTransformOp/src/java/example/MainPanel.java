@@ -111,7 +111,7 @@ public class MainPanel extends JPanel {
   }
 }
 
-enum Flip { NONE, VERTICAL, HORIZONTAL; }
+enum Flip { NONE, VERTICAL, HORIZONTAL }
 
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

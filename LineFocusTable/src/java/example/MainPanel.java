@@ -202,7 +202,7 @@ class LineFocusTable extends JTable {
   }
 }
 
-enum Type { START, END; }
+enum Type { START, END }
 
 class DotBorder extends EmptyBorder {
   private static final BasicStroke DASHED = new BasicStroke(
@@ -350,7 +350,7 @@ class TablePopupMenu extends JPopupMenu {
 // }
 //
 // class DotBorder extends EmptyBorder {
-//   public enum Type { LEAD, WEST, EAST; }
+//   public enum Type { LEAD, WEST, EAST }
 //   public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 //   private static final BasicStroke dashed = new BasicStroke(
 //       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,

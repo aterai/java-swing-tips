@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum Permissions { EXECUTE, WRITE, READ; }
+enum Permissions { EXECUTE, WRITE, READ }
 
 class CheckBoxesPanel extends JPanel {
   private static final Color BGC = new Color(0x0, true);
