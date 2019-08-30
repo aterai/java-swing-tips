@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     //       }
     //     };
     //     List<JRadioButtonMenuItem> list = new ArrayList<>();
-    //     ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+    //     MenuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
     //     for (JRadioButtonMenuItem mi: list) {
     //       mi.addActionListener(al);
     //     }
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     // });
 
     JPopupMenu popup = new JPopupMenu();
-    ManuBarUtil.initMenu(popup);
+    MenuBarUtil.initMenu(popup);
     setComponentPopupMenu(popup);
     add(disabledAreNavigableCheck);
     setPreferredSize(new Dimension(320, 240));
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
     //   ex.printStackTrace();
     // }
-    JMenuBar menuBar = ManuBarUtil.createMenuBar();
+    JMenuBar menuBar = MenuBarUtil.createMenuBar();
 
     // Stream.of(menuBar)
     //   .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
@@ -126,8 +126,8 @@ class ExitAction extends AbstractAction {
   }
 }
 
-final class ManuBarUtil {
-  private ManuBarUtil() {
+final class MenuBarUtil {
+  private MenuBarUtil() {
     /* Singleton */
   }
 

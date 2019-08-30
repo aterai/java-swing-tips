@@ -19,12 +19,12 @@ import javax.swing.text.DefaultEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createManuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static JMenuBar createManuBar() {
+  public static JMenuBar createMenuBar() {
     Component edit = makeEditButtonBar(Arrays.asList(
         makeButton("Cut", new DefaultEditorKit.CutAction()),
         makeButton("Copy", new DefaultEditorKit.CopyAction()),
