@@ -170,7 +170,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
       list.add(0);
     }
     list.set(column, preferredHeight);
-    int max = list.stream().max(Integer::compare).get();
+    int max = list.stream().max(Integer::compare).orElse(0);
     if (table.getRowHeight(row) != max) {
       table.setRowHeight(row, max);
     }
@@ -230,7 +230,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //       list.add(0);
 //     }
 //     list.set(column, preferredHeight);
-//     int max = list.stream().max(Integer::compare).get();
+//     int max = list.stream().max(Integer::compare).orElse(0);
 //     if (table.getRowHeight(row) != max) {
 //       table.setRowHeight(row, max);
 //     }
