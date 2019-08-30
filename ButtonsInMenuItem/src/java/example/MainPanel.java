@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
       Component a = (Component) e.getSource();
       Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, a);
       if (c instanceof JPopupMenu) {
-        ((JPopupMenu) c).setVisible(false);
+        c.setVisible(false);
       }
     });
     b.setText(title);

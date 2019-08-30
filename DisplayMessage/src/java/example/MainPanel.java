@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     openItem.addActionListener(e -> {
       Container c = getTopLevelAncestor();
       if (c instanceof Window) {
-        ((Window) c).setVisible(true);
+        c.setVisible(true);
       }
     });
 

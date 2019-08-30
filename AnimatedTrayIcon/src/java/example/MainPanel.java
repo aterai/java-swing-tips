@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
     item1.addActionListener(e -> {
       Container c = getTopLevelAncestor();
       if (c instanceof Window) {
-        ((Window) c).setVisible(true);
+        c.setVisible(true);
       }
     });
 
