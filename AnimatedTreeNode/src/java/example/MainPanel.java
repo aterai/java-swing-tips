@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
@@ -44,17 +43,15 @@ public final class MainPanel extends JPanel {
     });
     TreePath path = new TreePath(s1.getPath());
     // Wastefulness: icon.setImageObserver((ImageObserver) tree);
-    icon.setImageObserver(new ImageObserver() {
-      @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-        if (!tree.isShowing()) {
-          return false;
-        }
-        Rectangle cellRect = tree.getPathBounds(path);
-        if ((infoflags & (FRAMEBITS | ALLBITS)) != 0 && Objects.nonNull(cellRect)) {
-          tree.repaint(cellRect);
-        }
-        return (infoflags & (ALLBITS | ABORT)) == 0;
+    icon.setImageObserver((img, infoflags, x, y, w, h) -> {
+      if (!tree.isShowing()) {
+        return false;
       }
+      Rectangle cellRect = tree.getPathBounds(path);
+      if ((infoflags & (FRAMEBITS | ALLBITS)) != 0 && Objects.nonNull(cellRect)) {
+        tree.repaint(cellRect);
+      }
+      return (infoflags & (ALLBITS | ABORT)) == 0;
     });
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(new JScrollPane(tree));

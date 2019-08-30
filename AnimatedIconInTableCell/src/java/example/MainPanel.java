@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -40,19 +39,17 @@ public final class MainPanel extends JPanel {
   private static ImageIcon makeImageIcon(URL url, JTable table, int row, int col) {
     ImageIcon icon = new ImageIcon(url);
     // Wastefulness: icon.setImageObserver((ImageObserver) table);
-    icon.setImageObserver(new ImageObserver() {
+    icon.setImageObserver((img, infoflags, x, y, w, h) -> {
       // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-      @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-        if (!table.isShowing()) {
-          return false; // @see javax.swing.JLabel#imageUpdate(...)
-        }
-        if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) { // @see java.awt.Component#imageUpdate(...)
-          int vr = table.convertRowIndexToView(row); // JDK 1.6.0
-          int vc = table.convertColumnIndexToView(col);
-          table.repaint(table.getCellRect(vr, vc, false));
-        }
-        return (infoflags & (ALLBITS | ABORT)) == 0;
+      if (!table.isShowing()) {
+        return false; // @see javax.swing.JLabel#imageUpdate(...)
       }
+      if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) { // @see java.awt.Component#imageUpdate(...)
+        int vr = table.convertRowIndexToView(row); // JDK 1.6.0
+        int vc = table.convertColumnIndexToView(col);
+        table.repaint(table.getCellRect(vr, vc, false));
+      }
+      return (infoflags & (ALLBITS | ABORT)) == 0;
     });
     return icon;
   }

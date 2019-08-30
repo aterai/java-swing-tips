@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.net.URL;
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -33,14 +32,12 @@ public final class MainPanel extends JPanel {
   private static Icon makeImageIcon(URL url, JComboBox<?> combo, int row) {
     ImageIcon icon = new ImageIcon(url);
     // Wastefulness: icon.setImageObserver(combo);
-    icon.setImageObserver(new ImageObserver() {
+    icon.setImageObserver((img, infoflags, x, y, w, h) -> {
       // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-      @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-        if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-          repaintComboBox(combo, row);
-        }
-        return (infoflags & (ALLBITS | ABORT)) == 0;
+      if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
+        repaintComboBox(combo, row);
       }
+      return (infoflags & (ALLBITS | ABORT)) == 0;
     });
     return icon;
   }
