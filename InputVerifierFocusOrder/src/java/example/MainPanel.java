@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
   protected final void updateButton() {
     if (isAllValid()) {
       button.setEnabled(true);
-      // EventQueue.invokeLater(() -> button.requestFocusInWindow());
+      // EventQueue.invokeLater(button::requestFocusInWindow);
     } else {
       button.setEnabled(false);
     }

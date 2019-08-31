@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(MainPanel::makeMissingImage);
     texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
 
     add(new JLabel("@title@"));

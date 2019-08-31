@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(check, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
-    EventQueue.invokeLater(() -> debugPrint());
+    EventQueue.invokeLater(this::debugPrint);
   }
 
   protected final class FocusTraversalPolicyChangeAction extends AbstractAction {

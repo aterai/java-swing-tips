@@ -127,7 +127,7 @@ class CheckBoxesPanel extends JPanel {
       b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
     }
     noFocusBorder = b;
-    EventQueue.invokeLater(() -> initButtons());
+    EventQueue.invokeLater(this::initButtons);
   }
 
   private void initButtons() {

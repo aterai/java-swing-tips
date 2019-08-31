@@ -98,7 +98,7 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
     Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
         .filter(clz::isInstance).map(clz::cast)
         .map(JViewport::getBounds)
-        .orElseGet(() -> new Rectangle());
+        .orElseGet(Rectangle::new);
     rect.width -= i.left + i.right;
     FontMetrics fm = l.getFontMetrics(l.getFont());
     String str = Objects.toString(value, "");

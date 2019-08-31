@@ -193,7 +193,7 @@ final class TextureUtil {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(TextureUtil::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 

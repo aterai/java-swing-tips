@@ -119,7 +119,7 @@ public final class MainPanel extends JPanel {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(MainPanel::makeMissingImage);
 
     BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];

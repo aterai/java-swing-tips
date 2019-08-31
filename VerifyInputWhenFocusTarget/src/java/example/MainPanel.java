@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout(5, 5));
-    EventQueue.invokeLater(() -> field0.requestFocusInWindow());
+    EventQueue.invokeLater(field0::requestFocusInWindow);
     ActionListener al = e -> {
       Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
       System.out.println(c);

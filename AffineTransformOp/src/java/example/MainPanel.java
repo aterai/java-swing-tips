@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(MainPanel::makeMissingImage);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());

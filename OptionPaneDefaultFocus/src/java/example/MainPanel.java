@@ -108,7 +108,7 @@ class FocusHierarchyListener implements HierarchyListener {
   @Override public void hierarchyChanged(HierarchyEvent e) {
     Component c = e.getComponent();
     if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-      EventQueue.invokeLater(() -> c.requestFocusInWindow());
+      EventQueue.invokeLater(c::requestFocusInWindow);
     }
   }
 }

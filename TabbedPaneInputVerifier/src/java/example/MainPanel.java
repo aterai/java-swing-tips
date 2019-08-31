@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     JTextField field1 = new JTextField("100");
     List<JTextField> list = Arrays.asList(field0, field1);
 
-    EventQueue.invokeLater(() -> field0.requestFocusInWindow());
+    EventQueue.invokeLater(field0::requestFocusInWindow);
 
     list.forEach(tf -> {
       tf.setHorizontalAlignment(SwingConstants.RIGHT);

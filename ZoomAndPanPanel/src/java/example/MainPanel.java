@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(MainPanel::makeMissingImage);
 
     add(new JScrollPane(new ZoomAndPanePanel(img)));
     setPreferredSize(new Dimension(320, 240));

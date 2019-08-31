@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
           } catch (IOException ex) {
             return makeMissingImage();
           }
-        }).orElseGet(() -> makeMissingImage());
+        }).orElseGet(MainPanel::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 
