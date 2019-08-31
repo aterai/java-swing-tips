@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     c.insets = new Insets(5, 5, 5, 0);
     c.anchor = GridBagConstraints.LINE_END;
     p.add(new JLabel("Wheel:"), c);
-    p.add(new JLabel("Nomal:"), c);
+    p.add(new JLabel("Normal:"), c);
 
     c.gridx = 1;
     c.weightx = 1d;

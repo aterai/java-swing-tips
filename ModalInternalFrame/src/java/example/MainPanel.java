@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 
     menu.addSeparator();
 
-    menuItem = menu.add(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
+    menuItem = menu.add(new ModalInternalFrameAction1("InternalMessageDialog(Normal)"));
     menuItem.setMnemonic(KeyEvent.VK_1);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
 
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     return desktop;
   }
 
-  // menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
+  // menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Normal)"));
   // menuItem.setMnemonic(KeyEvent.VK_1);
   protected final class ModalInternalFrameAction1 extends AbstractAction {
     protected ModalInternalFrameAction1(String label) {
