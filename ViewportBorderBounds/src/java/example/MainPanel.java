@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str {color:#ffa0a0}");
     styleSheet.addRule(".kwd {color:#f0e68c;font-weight:bold}");
-    styleSheet.addRule(".com {color:#87ceeb0}");
+    styleSheet.addRule(".com {color:#87ceeb}");
     styleSheet.addRule(".typ {color:#98fb98}");
     styleSheet.addRule(".lit {color:#cd5c5c}");
     styleSheet.addRule(".pun {color:#ffffff}");
