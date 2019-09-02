@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
     jtp.setText("Shift+Tab");
 
     JComboBox<String> combo = new JComboBox<>(new String[] {
-      "public", "protected", "private",
-      "final", "transient", "super", "this", "return", "class"
+        "public", "protected", "private",
+        "final", "transient", "super", "this", "return", "class"
     });
     BasicComboPopup popup = new EditorComboPopup(jtp, combo);
 
@@ -48,11 +48,10 @@ public final class MainPanel extends JPanel {
     amc.put("myEnt", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
-        Optional.ofNullable(combo.getItemAt(i))
-          .ifPresent(str -> {
-            popup.hide();
-            TextEditorUtils.append(jtp, str);
-          });
+        Optional.ofNullable(combo.getItemAt(i)).ifPresent(str -> {
+          popup.hide();
+          TextEditorUtils.append(jtp, str);
+        });
       }
     });
 
