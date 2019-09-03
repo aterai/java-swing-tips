@@ -215,20 +215,29 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     return ctx;
   }
 
-  @SuppressWarnings("checkstyle:linelength")
   private Path2D decodePath1() {
     path.reset();
     path.moveTo(decodeX(1f), decodeY(.21111111f));
-    path.curveTo(decodeAnchorX(1f, -2f), decodeAnchorY(.21111111f, 0f), decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, -2f), decodeX(.21111111f), decodeY(1f));
-    path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, 2f), decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, -2f), decodeX(.21111111f), decodeY(2f));
-    path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, 2f), decodeAnchorX(1f, -2f), decodeAnchorY(2.8222225f, 0f), decodeX(1f), decodeY(2.8222225f));
-    path.curveTo(decodeAnchorX(1f, 2f), decodeAnchorY(2.8222225f, 0f), decodeAnchorX(3f, 0f), decodeAnchorY(2.8222225f, 0f), decodeX(3f), decodeY(2.8222225f));
+    path.curveTo(decodeAnchorX(1f, -2f), decodeAnchorY(.21111111f, 0f),
+                 decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, -2f),
+                 decodeX(.21111111f), decodeY(1f));
+    path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, 2f),
+                 decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, -2f),
+                 decodeX(.21111111f), decodeY(2f));
+    path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, 2f),
+                 decodeAnchorX(1f, -2f), decodeAnchorY(2.8222225f, 0f),
+                 decodeX(1f), decodeY(2.8222225f));
+    path.curveTo(decodeAnchorX(1f, 2f), decodeAnchorY(2.8222225f, 0f),
+                 decodeAnchorX(3f, 0f), decodeAnchorY(2.8222225f, 0f),
+                 decodeX(3f), decodeY(2.8222225f));
     path.lineTo(decodeX(3f), decodeY(2.3333333f));
     path.lineTo(decodeX(.6666667f), decodeY(2.3333333f));
     path.lineTo(decodeX(.6666667f), decodeY(.6666667f));
     path.lineTo(decodeX(3f), decodeY(.6666667f));
     path.lineTo(decodeX(3f), decodeY(.2f));
-    path.curveTo(decodeAnchorX(3f, 0f), decodeAnchorY(.2f, 0f), decodeAnchorX(1f, 2f), decodeAnchorY(.21111111f, 0f), decodeX(1f), decodeY(.21111111f));
+    path.curveTo(decodeAnchorX(3f, 0f), decodeAnchorY(.2f, 0f),
+                 decodeAnchorX(1f, 2f), decodeAnchorY(.21111111f, 0f),
+                 decodeX(1f), decodeY(.21111111f));
     path.closePath();
     return path;
   }

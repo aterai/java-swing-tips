@@ -172,8 +172,8 @@ public class TitledBorder2 extends AbstractBorder {
    * @param titleColor  the color of the title
    */
   // @ConstructorProperties({"border", "title", "titleJustification", "titlePosition", "titleFont", "titleColor"})
-  @SuppressWarnings("checkstyle:linelength")
-  public TitledBorder2(Border border, String title, int titleJustification, int titlePosition, Font titleFont, Color titleColor) {
+  public TitledBorder2(Border border, String title, int titleJustification,
+                       int titlePosition, Font titleFont, Color titleColor) {
     super();
     this.title = title;
     this.border = border;
@@ -198,60 +198,59 @@ public class TitledBorder2 extends AbstractBorder {
    * @param width  the width of the painted border
    * @param height  the height of the painted border
    */
-  @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary", "checkstyle:linelength"})
+  @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary"})
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-    Border border = getBorder();
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
-      JLabel label = getLabel(c);
-      Dimension size = label.getPreferredSize();
-      Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
+    Border b = getBorder();
+    String str = getTitle();
+    if (Objects.nonNull(str) && !str.isEmpty()) {
+      int edge = b instanceof TitledBorder2 ? 0 : EDGE_SPACING;
+      Dimension size = getLabel(c).getPreferredSize();
+      Insets insets = makeBorderInsets(b, c, new Insets(0, 0, 0, 0));
 
-      int borderX = x + edge;
-      int borderY = y + edge;
-      int borderW = width - edge - edge;
-      int borderH = height - edge - edge;
+      int bdrX = x + edge;
+      int bdrY = y + edge;
+      int bdrW = width - edge - edge;
+      int bdrH = height - edge - edge;
 
-      int labelY = y;
-      int labelH = size.height;
+      int lblY = y;
+      int lblH = size.height;
       int position = getPosition();
       switch (position) {
         case ABOVE_TOP:
           insets.left = 0;
           insets.right = 0;
-          borderY += labelH - edge;
-          borderH -= labelH - edge;
+          bdrY += lblH - edge;
+          bdrH -= lblH - edge;
           break;
         case TOP:
-          insets.top = edge + insets.top / 2 - labelH / 2;
+          insets.top = edge + insets.top / 2 - lblH / 2;
           if (insets.top < edge) {
-            borderY -= insets.top;
-            borderH += insets.top;
+            bdrY -= insets.top;
+            bdrH += insets.top;
           } else {
-            labelY += insets.top;
+            lblY += insets.top;
           }
           break;
         case BELOW_TOP:
-          labelY += insets.top + edge;
+          lblY += insets.top + edge;
           break;
         case ABOVE_BOTTOM:
-          labelY += height - labelH - insets.bottom - edge;
+          lblY += height - lblH - insets.bottom - edge;
           break;
         case BOTTOM:
-          labelY += height - labelH;
-          insets.bottom = edge + (insets.bottom - labelH) / 2;
+          lblY += height - lblH;
+          insets.bottom = edge + (insets.bottom - lblH) / 2;
           if (insets.bottom < edge) {
-            borderH += insets.bottom;
+            bdrH += insets.bottom;
           } else {
-            labelY -= insets.bottom;
+            lblY -= insets.bottom;
           }
           break;
         case BELOW_BOTTOM:
           insets.left = 0;
           insets.right = 0;
-          labelY += height - labelH;
-          borderH -= labelH - edge;
+          lblY += height - lblH;
+          bdrH -= lblH - edge;
           break;
         default:
           // will NOT execute because of the line preceding the switch.
@@ -259,20 +258,20 @@ public class TitledBorder2 extends AbstractBorder {
       insets.left += edge + TEXT_INSET_H;
       insets.right += edge + TEXT_INSET_H;
 
-      int labelX = x;
-      int labelW = width - insets.left - insets.right;
-      if (labelW > size.width) {
-        labelW = size.width;
+      int lblX = x;
+      int lblW = width - insets.left - insets.right;
+      if (lblW > size.width) {
+        lblW = size.width;
       }
       switch (getJustification(c)) {
         case LEFT:
-          labelX += insets.left;
+          lblX += insets.left;
           break;
         case RIGHT:
-          labelX += width - insets.right - labelW;
+          lblX += width - insets.right - lblW;
           break;
         case CENTER:
-          labelX += (width - labelW) / 2;
+          lblX += (width - lblW) / 2;
           break;
         default:
           // will NOT execute because of the line preceding the switch.
@@ -280,24 +279,25 @@ public class TitledBorder2 extends AbstractBorder {
 
       if (Objects.nonNull(border)) {
         if (position != TOP && position != BOTTOM) {
-          border.paintBorder(c, g, borderX, borderY, borderW, borderH);
+          border.paintBorder(c, g, bdrX, bdrY, bdrW, bdrH);
         } else {
-          Path2D path = new Path2D.Float();
-          path.append(new Rectangle(borderX, borderY, borderW, labelY - borderY), false);
-          path.append(new Rectangle(borderX, labelY, labelX - borderX - TEXT_SPACING, labelH), false);
-          path.append(new Rectangle(labelX + labelW + TEXT_SPACING, labelY, borderX - labelX + borderW - labelW - TEXT_SPACING, labelH), false);
-          path.append(new Rectangle(borderX, labelY + labelH, borderW, borderY - labelY + borderH - labelH), false);
+          int txsp = TEXT_SPACING;
+          Path2D p = new Path2D.Float();
+          p.append(new Rectangle(bdrX, bdrY, bdrW, lblY - bdrY), false);
+          p.append(new Rectangle(bdrX, lblY, lblX - bdrX - TEXT_SPACING, lblH), false);
+          p.append(new Rectangle(lblX + lblW + txsp, lblY, bdrX - lblX + bdrW - lblW - txsp, lblH), false);
+          p.append(new Rectangle(bdrX, lblY + lblH, bdrW, bdrY - lblY + bdrH - lblH), false);
 
           Graphics2D g2 = (Graphics2D) g.create();
-          g2.clip(path);
-          border.paintBorder(c, g2, borderX, borderY, borderW, borderH);
+          g2.clip(p);
+          border.paintBorder(c, g2, bdrX, bdrY, bdrW, bdrH);
           g2.dispose();
         }
       }
-      g.translate(labelX, labelY);
-      label.setSize(labelW, labelH);
+      g.translate(lblX, lblY);
+      label.setSize(lblW, lblH);
       label.paint(g);
-      g.translate(-labelX, -labelY);
+      g.translate(-lblX, -lblY);
     } else if (Objects.nonNull(border)) {
       border.paintBorder(c, g, x, y, width, height);
     }
@@ -310,14 +310,13 @@ public class TitledBorder2 extends AbstractBorder {
    */
   @SuppressWarnings("PMD.AvoidReassigningParameters")
   @Override public Insets getBorderInsets(Component c, Insets insets) {
-    Border border = getBorder();
-    insets = makeBorderInsets(border, c, insets);
+    Border b = getBorder();
+    insets = makeBorderInsets(b, c, insets);
 
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
-      JLabel label = getLabel(c);
-      Dimension size = label.getPreferredSize();
+    String str = getTitle();
+    if (Objects.nonNull(str) && !str.isEmpty()) {
+      int edge = b instanceof TitledBorder2 ? 0 : EDGE_SPACING;
+      Dimension size = getLabel(c).getPreferredSize();
 
       switch (getPosition()) {
         case ABOVE_TOP:
@@ -497,10 +496,9 @@ public class TitledBorder2 extends AbstractBorder {
   public Dimension getMinimumSize(Component c) {
     Insets insets = getBorderInsets(c);
     Dimension minSize = new Dimension(insets.right + insets.left, insets.top + insets.bottom);
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      JLabel label = getLabel(c);
-      Dimension size = label.getPreferredSize();
+    String str = getTitle();
+    if (Objects.nonNull(str) && !str.isEmpty()) {
+      Dimension size = getLabel(c).getPreferredSize();
 
       int position = getPosition();
       if (position != ABOVE_TOP && position != BELOW_BOTTOM) {
@@ -528,15 +526,14 @@ public class TitledBorder2 extends AbstractBorder {
     if (height < 0) {
       throw new IllegalArgumentException("Height must be >= 0");
     }
-    Border border = getBorder();
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      int edge = border instanceof TitledBorder2 ? 0 : EDGE_SPACING;
-      JLabel label = getLabel(c);
-      Dimension size = label.getPreferredSize();
-      Insets ins = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
+    Border b = getBorder();
+    String str = getTitle();
+    if (Objects.nonNull(str) && !str.isEmpty()) {
+      int edge = b instanceof TitledBorder2 ? 0 : EDGE_SPACING;
+      Dimension size = getLabel(c).getPreferredSize();
+      Insets ins = makeBorderInsets(b, c, new Insets(0, 0, 0, 0));
 
-      int baseline = label.getBaseline(size.width, size.height);
+      int baseline = getLabel(c).getBaseline(size.width, size.height);
       switch (getPosition()) {
         case ABOVE_TOP:
           return baseline;

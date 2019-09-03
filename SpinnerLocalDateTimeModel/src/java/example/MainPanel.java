@@ -118,8 +118,10 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
   private ChronoLocalDateTime<?> value;
   private TemporalUnit temporalUnit;
 
-  @SuppressWarnings("checkstyle:linelength")
-  protected SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
+  protected SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value,
+                                      Comparable<ChronoLocalDateTime<?>> start,
+                                      Comparable<ChronoLocalDateTime<?>> end,
+                                      TemporalUnit temporalUnit) {
     super();
     // if (Objects.nonNull(start) && start.compareTo(value) >= 0 || Objects.nonNull(end) && end.compareTo(value) <= 0) {
     //   throw new IllegalArgumentException("(start <= value <= end) is false");
