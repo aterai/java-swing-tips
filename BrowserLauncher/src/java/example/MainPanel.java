@@ -82,9 +82,8 @@ final class BrowserLauncher {
       if (osName.startsWith("Mac OS")) {
         Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
         // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
-        @SuppressWarnings("unchecked")
         Method openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
-        openUrl.invoke(null, new Object[] {url});
+        openUrl.invoke(null, url);
       } else if (osName.startsWith("Windows")) {
         Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);
       } else { // assume Unix or Linux
