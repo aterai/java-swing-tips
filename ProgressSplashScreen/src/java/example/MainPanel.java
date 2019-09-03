@@ -20,13 +20,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void main(String... args) {
+  public static void main(String[] args) {
     System.out.println("main start / EDT: " + EventQueue.isDispatchThread());
     createAndShowGui();
     System.out.println("main end");
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

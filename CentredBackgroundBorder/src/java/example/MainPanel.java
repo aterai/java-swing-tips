@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     area.setLineWrap(true);
     area.setOpaque(false);
     area.setText(String.join("\n", Arrays.asList(
-        "public static void createAndShowGui() {",
+        "private static void createAndShowGui() {",
         "  final JFrame frame = new JFrame();",
         "  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);",
         "  frame.getContentPane().add(new MainPanel());",
@@ -79,15 +79,11 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

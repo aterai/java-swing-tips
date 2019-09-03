@@ -125,15 +125,11 @@ public final class MainPanel extends JPanel {
       .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

@@ -116,15 +116,11 @@ public final class MainPanel extends JPanel {
     return new TexturePaint(bi, new Rectangle(sz, sz));
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     JFrame.setDefaultLookAndFeelDecorated(true);
     JFrame frame = new JFrame("@title@");
     // frame.setUndecorated(true);

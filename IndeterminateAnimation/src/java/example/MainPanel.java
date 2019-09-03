@@ -78,15 +78,11 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     return p;
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     JFrame frame = new JFrame("@title@");
     frame.setMinimumSize(new Dimension(256, 200));
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -48,15 +48,11 @@ public final class MainPanel extends JPanel {
     add(scroll);
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     WindowState windowState = new WindowState();
     SwingWorker<WindowListener, Void> worker = new LoadSaveTask(windowState) {
       @Override public void done() {

@@ -187,15 +187,11 @@ public final class MainPanel extends JPanel {
     area.setCaretPosition(area.getDocument().getLength());
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -394,14 +390,10 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     area.setCaretPosition(area.getDocument().getLength());
 //   }
 //
-//   public static void main(String... args) {
-//     EventQueue.invokeLater(new Runnable() {
-//       @Override public void run() {
-//         createAndShowGui();
-//       }
-//     });
+//   public static void main(String[] args) {
+//     EventQueue.invokeLater(MainPanel::createAndShowGui);
 //   }
-//   public static void createAndShowGui() {
+//   private static void createAndShowGui() {
 //     try {
 //       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

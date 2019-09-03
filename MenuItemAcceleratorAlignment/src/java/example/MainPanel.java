@@ -149,20 +149,16 @@ public final class MainPanel extends JPanel {
   //   return item;
   // }
 
-  public static void main(String... args) {
+  public static void main(String[] args) {
     // Locale.setDefault(Locale.ENGLISH);
     // ResourceBundle awtBundle = ResourceBundle.getBundle(
     //   "sun.awt.resources.awt", sun.util.CoreResourceBundleControl.getRBControlInstance());
     // Locale.setDefault(new Locale("xx"));
     // JMenuItem.setDefaultLocale(Locale.ENGLISH);
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

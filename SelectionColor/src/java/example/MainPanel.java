@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     area.setBackground(new Color(0x0, true)); // Nimbus
     area.setSelectionColor(SELECTION_COLOR);
     area.setText("<html><pre>" + String.join("<br />", Arrays.asList(
-        "public static void createAndShowGui() {",
+        "private static void createAndShowGui() {",
         "  <span class='highlight'>JFrame</span> frame = new JFrame();",
         "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
         "  frame.getContentPane().add(new MainPanel());",
@@ -154,15 +154,11 @@ public final class MainPanel extends JPanel {
     jtc.repaint();
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

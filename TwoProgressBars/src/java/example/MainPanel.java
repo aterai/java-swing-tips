@@ -117,15 +117,11 @@ public final class MainPanel extends JPanel {
     area.setCaretPosition(area.getDocument().getLength());
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -312,14 +308,11 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     area.setCaretPosition(area.getDocument().getLength());
 //   }
 //
-//   public static void main(String... args) {
-//     EventQueue.invokeLater(new Runnable() {
-//       @Override public void run() {
-//         createAndShowGui();
-//       }
-//     });
+//   public static void main(String[] args) {
+//     EventQueue.invokeLater(MainPanel::createAndShowGui);
 //   }
-//   public static void createAndShowGui() {
+//
+//   private static void createAndShowGui() {
 //     try {
 //       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -341,6 +334,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     this.progressBar = progressBar;
 //     this.progressBar.setValue(0);
 //   }
+//
 //   @Override public void propertyChange(PropertyChangeEvent e) {
 //     String strPropertyName = e.getPropertyName();
 //     if ("progress".equals(strPropertyName)) {
@@ -350,12 +344,14 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     }
 //   }
 // }
+//
 // class SubProgressListener implements PropertyChangeListener {
 //   private final JProgressBar progressBar;
 //   protected SubProgressListener(JProgressBar progressBar) {
 //     this.progressBar = progressBar;
 //     this.progressBar.setValue(0);
 //   }
+//
 //   @Override public void propertyChange(PropertyChangeEvent e) {
 //     String strPropertyName = e.getPropertyName();
 //     if ("progress2".equals(strPropertyName)) {

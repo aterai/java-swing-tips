@@ -86,15 +86,11 @@ public final class MainPanel extends JPanel {
     return image;
   }
 
-  public static void main(String... args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        createAndShowGui();
-      }
-    });
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  public static void createAndShowGui() {
+  private static void createAndShowGui() {
     JFrame.setDefaultLookAndFeelDecorated(true);
     JFrame frame = new JFrame("@title@");
     // @see https://stackoverflow.com/questions/18224184/sizes-of-frame-icons-used-in-swing
