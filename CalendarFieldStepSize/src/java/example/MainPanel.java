@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
       @Override public Object getPreviousValue() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getDate());
-        Integer calendarField = getCalendarField();
-        Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
+        int calendarField = getCalendarField();
+        int stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
         cal.add(calendarField, -stepSize);
         // Date prev = cal.getTime();
         // Comparable start = getStart();
@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
       @Override public Object getNextValue() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getDate());
-        Integer calendarField = getCalendarField();
-        Integer stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
+        int calendarField = getCalendarField();
+        int stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
         cal.add(calendarField, stepSize);
         // Date next = cal.getTime();
         // Comparable end = getEnd();
