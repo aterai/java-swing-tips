@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
     addHierarchyListener(e -> {
       boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (isDisplayableChanged && !e.getComponent().isDisplayable() && worker != null) {
+      if (isDisplayableChanged && !e.getComponent().isDisplayable()) {
         worker.interrupt();
       }
     });
