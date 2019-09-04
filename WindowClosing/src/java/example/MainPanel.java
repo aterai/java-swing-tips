@@ -19,22 +19,20 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JTextArea textarea = new JTextArea("JFrame Conditional Close Test");
+    JTextArea textArea = new JTextArea("JFrame Conditional Close Test");
     JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
     JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
 
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        Component c = getTopLevelAncestor();
-        if (c instanceof JFrame) {
-          JFrame frame = (JFrame) c;
-          SaveHandler handler = new SaveHandler(frame);
-          handler.addEnabledFlagComponent(saveButton);
-          frame.addWindowListener(handler);
-          textarea.getDocument().addDocumentListener(handler);
-          exitButton.addActionListener(handler);
-          saveButton.addActionListener(handler);
-        }
+    EventQueue.invokeLater(() -> {
+      Component c = getTopLevelAncestor();
+      if (c instanceof JFrame) {
+        JFrame frame = (JFrame) c;
+        SaveHandler handler = new SaveHandler(frame);
+        handler.addEnabledFlagComponent(saveButton);
+        frame.addWindowListener(handler);
+        textArea.getDocument().addDocumentListener(handler);
+        exitButton.addActionListener(handler);
+        saveButton.addActionListener(handler);
       }
     });
     exitButton.setActionCommand(SaveHandler.CMD_EXIT);
@@ -48,7 +46,7 @@ public final class MainPanel extends JPanel {
     box.add(saveButton);
 
     add(box, BorderLayout.SOUTH);
-    add(new JScrollPane(textarea));
+    add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -76,7 +74,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SaveHandler extends WindowAdapter implements DocumentListener, ActionListener {
-  // public static final String ASTERISK_TITLEBAR = "unsaved";
+  // public static final String ASTERISK_TITLE_BAR = "unsaved";
   public static final String CMD_SAVE = "save";
   public static final String CMD_EXIT = "exit";
   private final JFrame frame;
@@ -98,7 +96,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
   // @SuppressWarnings("PMD.DoNotCallSystemExit")
   // @Override public void windowClosed(WindowEvent e) {
   //   System.out.println("windowClosed");
-  //   System.exit(0); // webstart
+  //   System.exit(0); // webStart
   // }
 
   // ActionListener

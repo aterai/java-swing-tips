@@ -23,7 +23,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 public final class MainPanel extends JPanel {
   public static final Color BACKGROUND = Color.BLACK;
   public static final Color FOREGROUND = Color.WHITE;
-  public static final Color SELECTIONFOREGROUND = Color.ORANGE;
+  public static final Color SELECTION_FOREGROUND = Color.ORANGE;
   public static final Color PANEL_BACKGROUND = Color.GRAY;
 
   private MainPanel() {
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
 
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
-    UIManager.put("ComboBox.selectionForeground", SELECTIONFOREGROUND);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
     UIManager.put("ComboBox.selectionBackground", BACKGROUND);
 
     UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
     model.addElement("5555555555555555555555");
     model.addElement("6789000000000");
     model.addElement("aaa");
-    model.addElement("bbbbbb");
+    model.addElement("999999999");
     return model;
   }
 
@@ -149,18 +149,16 @@ public final class MainPanel extends JPanel {
 
 class HeavyWeightContainerListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        JComboBox<?> combo = (JComboBox<?>) e.getSource();
-        Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-        if (a instanceof JPopupMenu) {
-          JPopupMenu pop = (JPopupMenu) a;
-          Container top = pop.getTopLevelAncestor();
-          if (top instanceof JWindow) {
-            // https://ateraimemo.com/Swing/DropShadowPopup.html
-            System.out.println("HeavyWeightContainer");
-            top.setBackground(new Color(0x0, true));
-          }
+    EventQueue.invokeLater(() -> {
+      JComboBox<?> combo = (JComboBox<?>) e.getSource();
+      Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+      if (a instanceof JPopupMenu) {
+        JPopupMenu pop = (JPopupMenu) a;
+        Container top = pop.getTopLevelAncestor();
+        if (top instanceof JWindow) {
+          // https://ateraimemo.com/Swing/DropShadowPopup.html
+          System.out.println("HeavyWeightContainer");
+          top.setBackground(new Color(0x0, true));
         }
       }
     });
