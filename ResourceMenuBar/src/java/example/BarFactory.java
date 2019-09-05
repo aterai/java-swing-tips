@@ -160,7 +160,7 @@ public final class BarFactory {
         .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
         .filter(txt -> !txt.isEmpty())
         .ifPresent(txt -> {
-          if (mitext.indexOf(txt) < 0) {
+          if (!mitext.contains(txt)) {
             menu.setText(String.format("%s (%s)", mitext, txt));
           }
           menu.setMnemonic(txt.codePointAt(0));
@@ -187,7 +187,7 @@ public final class BarFactory {
         .map(txt -> txt.toUpperCase(Locale.ENGLISH).trim())
         .filter(txt -> !txt.isEmpty())
         .ifPresent(txt -> {
-          if (mitext.indexOf(txt) < 0) {
+          if (!mitext.contains(txt)) {
             mi.setText(String.format("%s (%s)", mitext, txt));
           }
           mi.setMnemonic(txt.codePointAt(0));
