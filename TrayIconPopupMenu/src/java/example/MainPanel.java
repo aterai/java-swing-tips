@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     ButtonGroup group = new ButtonGroup();
     Box box = Box.createVerticalBox();
     Stream.of(LookAndFeelEnum.values())
-        .map(lnf -> new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)))
+        .map(lnf -> new ChangeLookAndFeelAction(lnf, Collections.singletonList(popup)))
         .map(JRadioButton::new)
         .forEach(rb -> {
           group.add(rb);

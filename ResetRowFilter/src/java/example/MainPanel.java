@@ -5,7 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     };
 
     table.setRowSorter(sorter);
-    sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
+    sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
     JCheckBox check2 = new JCheckBox("viewRowIndex < " + USER_SPECIFIED_NUMBER_OF_ROWS);
     check2.addActionListener(e -> sorter.setRowFilter(((JCheckBox) e.getSource()).isSelected() ? filter : null));

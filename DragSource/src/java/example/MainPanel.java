@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -160,7 +160,7 @@ class TempFileTransferable implements Transferable {
   }
 
   @Override public Object getTransferData(DataFlavor flavor) {
-    return Arrays.asList(file);
+    return Collections.singletonList(file);
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {

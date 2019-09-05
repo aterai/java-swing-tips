@@ -233,7 +233,7 @@ public final class BarFactory {
 class Utf8ResourceBundleControl extends ResourceBundle.Control {
   @Override public List<String> getFormats(String baseName) {
     Objects.requireNonNull(baseName, "baseName must not be null");
-    return Arrays.asList("properties");
+    return Collections.singletonList("properties");
   }
 
   @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {

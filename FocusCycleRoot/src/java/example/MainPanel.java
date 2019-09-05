@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import javax.swing.*;
@@ -40,13 +39,13 @@ public final class MainPanel extends JPanel {
 
     p2.setFocusTraversalKeys(
         KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-        Collections.<AWTKeyStroke>emptySet());
+        Collections.emptySet());
     p2.setFocusTraversalKeys(
         KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-        new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK))));
+        new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK))));
     p2.setFocusTraversalKeys(
         KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-        new HashSet<>(Arrays.asList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
+        new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
 
     add(p1);
     // p1.add(p2);
