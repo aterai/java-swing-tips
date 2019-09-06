@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     String text = "012345678901234567890123456789012345678901234567890123456789";
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("defalut JLabel ellipsis", new JLabel(text)));
+    box.add(makeTitledPanel("default JLabel ellipsis", new JLabel(text)));
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("html JLabel fade out", new FadeOutLabel("<html>" + text)));
     box.add(Box.createVerticalStrut(5));
