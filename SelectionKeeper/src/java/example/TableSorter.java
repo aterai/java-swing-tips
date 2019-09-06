@@ -39,7 +39,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -176,11 +175,9 @@ public class TableSorter extends AbstractTableModel {
     //   this.tableModel.addTableModelListener(tableModelListener);
     // }
 
-    EventQueue.invokeLater(new Runnable() {
-      @Override public void run() {
-        clearSortingState();
-        fireTableStructureChanged();
-      }
+    EventQueue.invokeLater(() -> {
+      clearSortingState();
+      fireTableStructureChanged();
     });
   }
 
@@ -240,7 +237,7 @@ public class TableSorter extends AbstractTableModel {
   private void sortingStatusChanged() {
     clearSortingState();
     fireTableDataChanged();
-    Optional.ofNullable(tableHeader).ifPresent(h -> h.repaint());
+    Optional.ofNullable(tableHeader).ifPresent(Component::repaint);
     // if (tableHeader != null) {
     //   tableHeader.repaint();
     // }
@@ -249,7 +246,7 @@ public class TableSorter extends AbstractTableModel {
   public void setSortingStatus(int column, int status) {
     Optional.of(getDirective(column))
       .filter(directive -> !EMPTY_DIRECTIVE.equals(directive))
-      .ifPresent(directive -> sortingColumns.remove(directive));
+      .ifPresent(sortingColumns::remove);
     // if (!EMPTY_DIRECTIVE.equals(directive)) {
     //   sortingColumns.remove(directive);
     // }
@@ -304,7 +301,7 @@ public class TableSorter extends AbstractTableModel {
       // }
       IntStream.range(0, tableModel.getRowCount()).forEach(row -> viewToModel.add(new Row(row)));
       if (isSorting()) {
-        Collections.sort(viewToModel, rowComparator);
+        viewToModel.sort(rowComparator);
       }
     }
     return viewToModel;
