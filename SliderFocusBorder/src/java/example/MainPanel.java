@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(20));
     box.add(makeTitledPanel("Default", slider1));
     box.add(Box.createVerticalStrut(20));
-    box.add(makeTitledPanel("Override SilderUI#paintFocus(...)", slider2));
+    box.add(makeTitledPanel("Override SliderUI#paintFocus(...)", slider2));
     box.add(Box.createVerticalGlue());
 
     add(box, BorderLayout.NORTH);
@@ -69,11 +69,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider initSlider(JSlider slider) {
+  private static void initSlider(JSlider slider) {
     slider.setMajorTickSpacing(10);
     slider.setMinorTickSpacing(5);
     slider.setPaintTicks(true);
-    return slider;
   }
 
   private static Component makeTitledPanel(String title, Component c) {

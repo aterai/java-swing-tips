@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     JSlider slider1 = makeSlider();
     JSlider slider2 = makeSlider();
     slider2.setModel(slider1.getModel());
-    setSilderUI(slider2);
+    setSliderUI(slider2);
 
     MouseAdapter ma = new SliderPopupListener();
     slider2.addMouseMotionListener(ma);
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static void setSilderUI(JSlider slider) {
+  private static void setSliderUI(JSlider slider) {
     if (slider.getUI() instanceof WindowsSliderUI) {
       slider.setUI(new WindowsTooltipSliderUI(slider));
     } else {

@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
-    setSilderUI(slider1);
+    setSliderUI(slider1);
 
     JSlider slider2 = new JSlider(0, 1000, 500);
-    setSilderUI(slider2);
+    setSliderUI(slider2);
 
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setSilderUI(JSlider slider) {
+  private static void setSliderUI(JSlider slider) {
     if (slider.getUI() instanceof WindowsSliderUI) {
       slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
     } else {
