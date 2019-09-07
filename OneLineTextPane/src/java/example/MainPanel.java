@@ -169,7 +169,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     processChangedLines(offset, 0);
   }
 
-  private void processChangedLines(int offset, int length) throws BadLocationException {
+  private void processChangedLines(int offset, int length) {
     Element root = getDefaultRootElement();
     String content = getText(0, getLength());
     int startLine = root.getElementIndex(offset);

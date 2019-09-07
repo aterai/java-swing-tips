@@ -98,7 +98,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
   }
 
-  private void applyHighlighting(String content, int line) throws BadLocationException {
+  private void applyHighlighting(String content, int line) {
     Element root = getDefaultRootElement();
     int startOffset = root.getElement(line).getStartOffset();
     int endOffset = root.getElement(line).getEndOffset() - 1;
