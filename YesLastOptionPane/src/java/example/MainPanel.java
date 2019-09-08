@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
   @Override public void updateUI() {
     UIManager.put(KEY, null);
     super.updateUI();
-    Boolean b = UIManager.getLookAndFeelDefaults().getBoolean(KEY);
+    boolean b = UIManager.getLookAndFeelDefaults().getBoolean(KEY);
     System.out.println(KEY + ": " + b);
   }
 
