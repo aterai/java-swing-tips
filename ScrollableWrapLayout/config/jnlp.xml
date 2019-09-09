@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ScrollableWrapLayout" />
+  <property name="jnlp.Name"     value="ScrollableWrapLayout" />
+  <property name="jnlp.name"     value="scrollablewraplayout" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollablewraplayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollableWrapLayout.html" />
+</project>
