@@ -63,20 +63,18 @@ public final class MainPanel extends JPanel {
       }
     });
     ListCellRenderer<? super List<Object>> renderer = combo.getRenderer();
-    combo.setRenderer(new ListCellRenderer<List<Object>>() {
-      @Override public Component getListCellRendererComponent(JList<? extends List<Object>> list, List<Object> value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setOpaque(true);
-        if (isSelected) {
-          c.setBackground(list.getSelectionBackground());
-          c.setForeground(list.getSelectionForeground());
-        } else {
-          c.setBackground(list.getBackground());
-          c.setForeground(list.getForeground());
-        }
-        c.setText(Objects.toString(value.get(0), ""));
-        return c;
+    combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      c.setOpaque(true);
+      if (isSelected) {
+        c.setBackground(list.getSelectionBackground());
+        c.setForeground(list.getSelectionForeground());
+      } else {
+        c.setBackground(list.getBackground());
+        c.setForeground(list.getForeground());
       }
+      c.setText(Objects.toString(value.get(0), ""));
+      return c;
     });
 
     EventQueue.invokeLater(() -> combo.setSelectedIndex(3));
@@ -226,7 +224,7 @@ class HighlightListener extends MouseAdapter {
     return this.vrow == row;
   }
 
-  private void setHighlighTableCell(MouseEvent e) {
+  private void setHighlightTableCell(MouseEvent e) {
     Point pt = e.getPoint();
     Component c = e.getComponent();
     if (c instanceof JTable) {
@@ -236,11 +234,11 @@ class HighlightListener extends MouseAdapter {
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    setHighlighTableCell(e);
+    setHighlightTableCell(e);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    setHighlighTableCell(e);
+    setHighlightTableCell(e);
   }
 
   @Override public void mouseExited(MouseEvent e) {
