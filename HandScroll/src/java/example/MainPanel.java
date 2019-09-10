@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
     // JDK 1.7.0
     JViewport vport = new JViewport() {
       private static final boolean WEIGHT_MIXING = false;
-      private boolean isAjusting;
+      private boolean isAdjusting;
       @Override public void revalidate() {
-        if (!WEIGHT_MIXING && isAjusting) {
+        if (!WEIGHT_MIXING && isAdjusting) {
           return;
         }
         super.revalidate();
@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
         if (WEIGHT_MIXING) {
           super.setViewPosition(p);
         } else {
-          isAjusting = true;
+          isAdjusting = true;
           super.setViewPosition(p);
-          isAjusting = false;
+          isAdjusting = false;
         }
       }
     };
