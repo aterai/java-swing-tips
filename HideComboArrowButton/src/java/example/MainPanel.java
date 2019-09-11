@@ -44,23 +44,19 @@ public final class MainPanel extends JPanel {
           }
         });
         ListCellRenderer<? super String> r = getRenderer();
-        setRenderer(new ListCellRenderer<String>() {
-          private final Color bgc = UIManager.getColor("ComboBox.background");
-          @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            c.setHorizontalAlignment(SwingConstants.RIGHT);
-            if (isSelected) {
-              c.setForeground(list.getSelectionForeground());
-              c.setBackground(list.getSelectionBackground());
-            } else {
-              c.setForeground(list.getForeground());
-              c.setBackground(bgc);
-            }
-            return c;
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JLabel c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          c.setHorizontalAlignment(SwingConstants.RIGHT);
+          if (isSelected) {
+            c.setForeground(list.getSelectionForeground());
+            c.setBackground(list.getSelectionBackground());
+          } else {
+            c.setForeground(list.getForeground());
+            c.setBackground(list.getBackground());
           }
+          return c;
         });
         setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-        // setBackground(p.getBackground());
         setOpaque(false);
         setFocusable(false);
       }
