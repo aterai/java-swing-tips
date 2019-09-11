@@ -65,12 +65,10 @@ public final class MainPanel extends JPanel {
         setUI(new NoPopupComboBoxUI());
         setFocusable(false);
         ListCellRenderer<? super String> r = getRenderer();
-        setRenderer(new ListCellRenderer<String>() {
-          @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-            JComponent c = (JComponent) r.getListCellRendererComponent(list, value, index, false, false);
-            c.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-            return c;
-          }
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JComponent c = (JComponent) r.getListCellRendererComponent(list, value, index, false, false);
+          c.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+          return c;
         });
       }
     };

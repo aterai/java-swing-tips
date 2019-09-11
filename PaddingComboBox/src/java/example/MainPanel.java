@@ -131,28 +131,26 @@ public final class MainPanel extends JPanel {
 
   protected static Border getPaddingBorder(boolean isColor) {
     return isColor ? BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(1f, .8f, .8f, .5f))
-             : BorderFactory.createEmptyBorder(0, 5, 0, 0);
+                   : BorderFactory.createEmptyBorder(0, 5, 0, 0);
   }
 
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaaaaaaaaaaaaaaaaaaaaaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("bbb1");
-    model.addElement("bbb12");
+    model.addElement("11111111111111111111111111111");
+    model.addElement("222222222222");
+    model.addElement("3333333333");
+    model.addElement("444444");
+    model.addElement("555");
 
     return new JComboBox<String>(model) {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
         ListCellRenderer<? super String> lcr = getRenderer();
-        setRenderer(new ListCellRenderer<String>() {
-          @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            l.setBorder(getPaddingBorder(false));
-            return l;
-          }
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          l.setBorder(getPaddingBorder(false));
+          return l;
         });
         // ???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0, 5, 0, 0));
         // ???: ((JLabel) lcr).setBorder(getPaddingBorder(false));

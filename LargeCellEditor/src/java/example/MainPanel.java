@@ -119,8 +119,8 @@ class IconTable extends JTable {
     @Override protected void paintComponent(Graphics g) {
       g.setColor(new Color(0x64_FF_FF_FF, true));
       g.fillRect(0, 0, getWidth(), getHeight());
-      BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g2 = bufimg.createGraphics();
+      BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2 = buffer.createGraphics();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
       g2.setPaint(Color.BLACK);
@@ -129,7 +129,7 @@ class IconTable extends JTable {
         g2.fillRoundRect(r.x - i, r.y + XOFF, r.width + i + i, r.height - XOFF + i, 5, 5);
       }
       g2.dispose();
-      g.drawImage(bufimg, 0, 0, this);
+      g.drawImage(buffer, 0, 0, this);
     }
   };
 
@@ -253,22 +253,20 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setLayoutOrientation(JList.HORIZONTAL_WRAP);
     setVisibleRowCount(0);
-    setCellRenderer(new ListCellRenderer<IconItem>() {
-      private final JLabel label = new JLabel();
-      private final Color selctedColor = new Color(0xC8_C8_FF);
-      @Override public Component getListCellRendererComponent(JList<? extends IconItem> list, IconItem value, int index, boolean isSelected, boolean cellHasFocus) {
-        label.setOpaque(true);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        if (index == rollOverRowIndex) {
-          label.setBackground(getSelectionBackground());
-        } else if (isSelected) {
-          label.setBackground(selctedColor);
-        } else {
-          label.setBackground(getBackground());
-        }
-        label.setIcon(value.small);
-        return label;
+    JLabel renderer = new JLabel();
+    Color selectedColor = new Color(0xC8_C8_FF);
+    setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      renderer.setOpaque(true);
+      renderer.setHorizontalAlignment(SwingConstants.CENTER);
+      if (index == rollOverRowIndex) {
+        renderer.setBackground(getSelectionBackground());
+      } else if (isSelected) {
+        renderer.setBackground(selectedColor);
+      } else {
+        renderer.setBackground(getBackground());
       }
+      renderer.setIcon(value.small);
+      return renderer;
     });
   }
 

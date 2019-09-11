@@ -16,9 +16,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 public final class MainPanel extends JPanel {
-  private final TreeComboBox<TreeNode> combo = new TreeComboBox<>();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     DefaultComboBoxModel<TreeNode> model1 = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<TreeNode> model2 = new DefaultComboBoxModel<>();
@@ -35,6 +33,7 @@ public final class MainPanel extends JPanel {
     // }
     makeComboBoxModel(model1, root);
     makeComboBoxModel(model2, root);
+    TreeComboBox<TreeNode> combo = new TreeComboBox<>();
     combo.setModel(model2);
     combo.setSelectedIndex(-1);
 
@@ -68,12 +67,12 @@ public final class MainPanel extends JPanel {
     // set1.add(new DefaultMutableTreeNode("111111111"));
     // set1.add(new DefaultMutableTreeNode("22222222222"));
     // set1.add(new DefaultMutableTreeNode("33333"));
-    // set2.add(new DefaultMutableTreeNode("asdfasdfas"));
+    // set2.add(new DefaultMutableTreeNode("44444444444"));
     // set2.add(set3);
-    // set2.add(new DefaultMutableTreeNode("asdf"));
-    // set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-    // set3.add(new DefaultMutableTreeNode("qwerqwer"));
-    // set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+    // set2.add(new DefaultMutableTreeNode("5555"));
+    // set3.add(new DefaultMutableTreeNode("666666666666"));
+    // set3.add(new DefaultMutableTreeNode("7777777"));
+    // set3.add(new DefaultMutableTreeNode("88888888888888888"));
     // root.add(set1);
     // root.add(set2);
     // return new DefaultTreeModel(root);
@@ -134,21 +133,19 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
   @Override public void updateUI() {
     super.updateUI();
     ListCellRenderer<? super E> renderer = getRenderer();
-    setRenderer(new ListCellRenderer<E>() {
-      @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        if (index >= 0 && value instanceof DefaultMutableTreeNode) {
-          DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-          int indent = Math.max(0, node.getLevel() - 1) * 16;
-          l.setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
-          if (!value.isLeaf()) {
-            l.setForeground(Color.WHITE);
-            l.setBackground(Color.GRAY.darker());
-          }
+    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      if (index >= 0 && value instanceof DefaultMutableTreeNode) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        int indent = Math.max(0, node.getLevel() - 1) * 16;
+        l.setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
+        if (!value.isLeaf()) {
+          l.setForeground(Color.WHITE);
+          l.setBackground(Color.GRAY.darker());
         }
-        return l;
       }
+      return l;
     });
     EventQueue.invokeLater(() -> {
       ActionMap am = getActionMap();

@@ -15,21 +15,7 @@ import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
   private final BindingMapModel model = new BindingMapModel();
-  private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xFA_FA_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-  private final JComponent[] clist = {
+  private final JComponent[] list = {
     new JComboBox<>(),
     new JDesktopPane(),
     new JFormattedTextField(),
@@ -60,8 +46,7 @@ public final class MainPanel extends JPanel {
     new JTextArea(),
     new JTextField()
   };
-  private final JComboBox<JComponent> componentChoices = new JComboBox<>(clist);
-  private final JButton button = new JButton("show");
+  private final JComboBox<JComponent> componentChoices = new JComboBox<>(list);
   private final List<Integer> focusTypes = Arrays.asList(
       JComponent.WHEN_FOCUSED,
       JComponent.WHEN_IN_FOCUSED_WINDOW,
@@ -69,22 +54,37 @@ public final class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
-    table.setAutoCreateRowSorter(true);
-    componentChoices.setRenderer(new ListCellRenderer<Component>() {
-      private final JLabel renderer = new JLabel();
-      @Override public Component getListCellRendererComponent(JList<? extends Component> list, Component value, int index, boolean isSelected, boolean cellHasFocus) {
-        renderer.setOpaque(index >= 0);
-        renderer.setText(value.getClass().getName());
-        if (isSelected) {
-          renderer.setBackground(list.getSelectionBackground());
-          renderer.setForeground(list.getSelectionForeground());
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
+
+      @Override
+      public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
         } else {
-          renderer.setBackground(list.getBackground());
-          renderer.setForeground(list.getForeground());
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
         }
-        return renderer;
+        return c;
       }
+    };
+    table.setAutoCreateRowSorter(true);
+    JLabel renderer = new JLabel();
+    componentChoices.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      renderer.setOpaque(index >= 0);
+      renderer.setText(value.getClass().getName());
+      if (isSelected) {
+        renderer.setBackground(list.getSelectionBackground());
+        renderer.setForeground(list.getSelectionForeground());
+      } else {
+        renderer.setBackground(list.getBackground());
+        renderer.setForeground(list.getForeground());
+      }
+      return renderer;
     });
+    JButton button = new JButton("show");
     button.addActionListener(e -> {
       model.setRowCount(0);
       JComponent c = componentChoices.getItemAt(componentChoices.getSelectedIndex());
@@ -103,7 +103,6 @@ public final class MainPanel extends JPanel {
   // -------->
   // // original code:
   // // ftp://ftp.oreilly.de/pub/examples/english_examples/jswing2/code/goodies/Mapper.java
-  // // modified by terai
   // private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
   //   Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<>();
   //   if (Objects.isNull(im.allKeys())) {
@@ -114,9 +113,9 @@ public final class MainPanel extends JPanel {
   //     if (h.containsKey(name)) {
   //       h.get(name).add(ks);
   //     } else {
-  //       ArrayList<KeyStroke> keylist = new ArrayList<>();
-  //       keylist.add(ks);
-  //       h.put(name, keylist);
+  //       ArrayList<KeyStroke> keyList = new ArrayList<>();
+  //       keyList.add(ks);
+  //       h.put(name, keyList);
   //     }
   //   }
   //   return h;
@@ -179,9 +178,9 @@ class BindingMapModel extends DefaultTableModel {
 
   public void addBinding(Binding t) {
     Integer ft = t.getFocusType();
-    String s = (ft == JComponent.WHEN_FOCUSED)      ? "WHEN_FOCUSED"
+    String s = (ft == JComponent.WHEN_FOCUSED) ? "WHEN_FOCUSED"
         : (ft == JComponent.WHEN_IN_FOCUSED_WINDOW) ? "WHEN_IN_FOCUSED_WINDOW"
-                                                    : "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
+        : "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
     Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
     super.addRow(obj);
   }
@@ -216,26 +215,14 @@ class BindingMapModel extends DefaultTableModel {
 }
 
 class Binding {
-  private Integer focusType;
-  private String actionName;
-  private String keyDescription;
+  private final Integer focusType;
+  private final String actionName;
+  private final String keyDescription;
 
   protected Binding(Integer focusType, String actionName, String keyDescription) {
     this.focusType = focusType;
     this.actionName = actionName;
     this.keyDescription = keyDescription;
-  }
-
-  public void setFocusType(Integer focus) {
-    focusType = focus;
-  }
-
-  public void setActionName(String str) {
-    actionName = str;
-  }
-
-  public void setKeyDescription(String str) {
-    keyDescription = str;
   }
 
   public Integer getFocusType() {
