@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.add(new JLabel("JLabel:"), BorderLayout.WEST);
     p.add(new JTextField("JTextField"));
-    p.setBorder(BorderFactory.createTitledBorder("JLabel+JTextFeild"));
+    p.setBorder(BorderFactory.createTitledBorder("JLabel + JTextField"));
 
     JPanel panel = new JPanel(new BorderLayout(25, 25));
     panel.add(makePanel(), BorderLayout.NORTH);
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
 
   private static Component makePanel() {
     JPanel p = new JPanel(new BorderLayout(5, 5));
-    p.add(new JComboBox<>(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
+    p.add(new JComboBox<>(new String[] {"1111", "2222222", "3333333"}));
 
     String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
     JComboBox<String> comboBox = new JComboBox<String>(items) {
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
       }
     };
     p.add(comboBox, BorderLayout.WEST);
-    p.setBorder(BorderFactory.createTitledBorder("JComboBox+JComboBox"));
+    p.setBorder(BorderFactory.createTitledBorder("JComboBox + JComboBox"));
     return p;
   }
 
