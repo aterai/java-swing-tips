@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -18,26 +19,25 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setRowSorter(new TableRowSorter<TableModel>(model) {
       @Override public void toggleSortOrder(int column) {
         /* Disable header click sorting */
       }
     });
-    table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
+    table.getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(80);
@@ -122,7 +122,7 @@ class TableHeaderPopupMenu extends JPopupMenu {
 
     @Override public void actionPerformed(ActionEvent e) {
       JTableHeader h = (JTableHeader) getInvoker();
-      h.getTable().getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, dir)));
+      h.getTable().getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(index, dir)));
     }
   }
 }
