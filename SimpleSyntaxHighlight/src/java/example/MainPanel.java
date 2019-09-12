@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextPane textPane = new JTextPane(new SimpleSyntaxDocument());
-    textPane.setText("red green, blue. red-green;bleu.");
+    textPane.setText("red green, blue. red-green;blue.");
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 // @author camickr
 // @author David Underhill
 // https://community.oracle.com/thread/2105230
-// modified by aterai aterai@outlook.com
+// modified by aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
   private static final char LB = '\n';
   // HashMap<String, AttributeSet> keywords = new HashMap<>();
