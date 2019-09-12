@@ -32,7 +32,7 @@ import javax.swing.text.ViewFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    String str = "red green blue aaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    String str = "red green blue 111111111111111111111111111111111";
 
     JTextPane textPane = new JTextPane() {
       @Override public void scrollRectToVisible(Rectangle rect) {
@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
 // @author camickr
 // @author David Underhill
 // https://community.oracle.com/thread/2105230
-// modified by aterai aterai@outlook.com
+// modified by aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
   private static final char LB = '\n';
   // HashMap<String, AttributeSet> keywords = new HashMap<>();
@@ -169,7 +169,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     processChangedLines(offset, 0);
   }
 
-  private void processChangedLines(int offset, int length) {
+  private void processChangedLines(int offset, int length) throws BadLocationException {
     Element root = getDefaultRootElement();
     String content = getText(0, getLength());
     int startLine = root.getElementIndex(offset);
@@ -179,7 +179,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
   }
 
-  private void applyHighlighting(String content, int line) throws BadLocationException {
+  private void applyHighlighting(String content, int line) {
     Element root = getDefaultRootElement();
     int startOffset = root.getElement(line).getStartOffset();
     int endOffset = root.getElement(line).getEndOffset() - 1;
