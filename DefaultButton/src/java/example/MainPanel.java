@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JPanel p = new JPanel(new BorderLayout(2, 2));
-    p.setBorder(BorderFactory.createTitledBorder("Dummy TextComponet"));
+    p.setBorder(BorderFactory.createTitledBorder("Dummy TextComponent"));
     p.add(new JTextField(), BorderLayout.NORTH);
     p.add(new JScrollPane(new JTextArea()));
 
