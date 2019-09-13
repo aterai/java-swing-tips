@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     super();
 
     Dimension d = new Dimension(64, 64);
-    add(new CompoundButton(d, ButtonLocation.NOTH));
+    add(new CompoundButton(d, ButtonLocation.NORTH));
     add(new CompoundButton(d, ButtonLocation.SOUTH));
     add(new CompoundButton(d, ButtonLocation.EAST));
     add(new CompoundButton(d, ButtonLocation.WEST));
@@ -54,7 +54,7 @@ class CompoundButtonPanel extends JComponent {
     this.dim = dim;
     setLayout(new OverlayLayout(this));
     add(new CompoundButton(dim, ButtonLocation.CENTER));
-    add(new CompoundButton(dim, ButtonLocation.NOTH));
+    add(new CompoundButton(dim, ButtonLocation.NORTH));
     add(new CompoundButton(dim, ButtonLocation.SOUTH));
     add(new CompoundButton(dim, ButtonLocation.EAST));
     add(new CompoundButton(dim, ButtonLocation.WEST));
@@ -71,7 +71,7 @@ class CompoundButtonPanel extends JComponent {
 
 enum ButtonLocation {
   CENTER(0f),
-  NOTH(45f),
+  NORTH(45f),
   EAST(135f),
   SOUTH(225f),
   WEST(-45f);
