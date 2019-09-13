@@ -46,8 +46,7 @@ public final class MainPanel extends JPanel {
     map.put("Button2", b2);
     ActionListener al = e -> Optional.ofNullable(box.getRootPane())
         .ifPresent(r -> r.setDefaultButton(map.get(bg.getSelection().getActionCommand())));
-    map.entrySet().stream().forEach(e -> {
-      String key = e.getKey();
+    map.forEach((key, value) -> {
       JRadioButton r = new JRadioButton(key);
       r.setActionCommand(key);
       r.addActionListener(al);
