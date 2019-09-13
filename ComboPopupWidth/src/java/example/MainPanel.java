@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
     int g = 5;
     JPanel p = new JPanel(new GridLayout(4, 2, g, g));
     p.add(combo00);
-    p.add(new JLabel("<- nomal"));
+    p.add(new JLabel("<- normal"));
     p.add(combo01);
-    p.add(new JLabel("<- nomal, editable"));
+    p.add(new JLabel("<- normal, editable"));
     p.add(combo02);
     p.add(new JLabel("<- wide"));
     p.add(combo03);
@@ -43,12 +43,12 @@ public final class MainPanel extends JPanel {
 
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd");
-    model.addElement("bbb1");
-    model.addElement("bbb12");
+    model.addElement("1111");
+    model.addElement("22222222");
+    model.addElement("3333333333");
+    model.addElement("012345678901234567890123456789012345678901234567890123456789");
+    model.addElement("444");
+    model.addElement("55555");
     return new JComboBox<>(model);
   }
 
