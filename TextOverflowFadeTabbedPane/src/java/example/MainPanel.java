@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
   private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("bbbbbbbbb"));
+    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("666666666"));
     jtp.addTab("33333333333333", new ColorIcon(Color.BLUE), new JScrollPane(new JTree()));
-    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("dddddddddd"));
-    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("e"));
+    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("7777777777"));
+    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("8"));
     return jtp;
   }
 
@@ -107,8 +107,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     Insets insets = getInsets();
     int tabPlacement = getTabPlacement();
     int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-    int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
-    int gap = 0;
+    int tabWidth; // = tabInsets.left + tabInsets.right + 3;
+    int gap;
 
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       tabWidth = areaWidth / 4;

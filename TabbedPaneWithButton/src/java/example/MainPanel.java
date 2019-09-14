@@ -91,12 +91,12 @@ public final class MainPanel extends JPanel {
     p.add(button);
     p.add(tabs);
 
-    JMenuBar menubar = new JMenuBar();
+    JMenuBar menuBar = new JMenuBar();
     JMenu m1 = new JMenu("Tab");
     m1.add("removeAll").addActionListener(e -> tabs.removeAll());
-    menubar.add(m1);
+    menuBar.add(m1);
 
-    add(menubar, BorderLayout.NORTH);
+    add(menuBar, BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -160,8 +160,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     Insets insets = getInsets();
     int tabPlacement = getTabPlacement();
     int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-    int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
-    int gap = 0;
+    int tabWidth; // = tabInsets.left + tabInsets.right + 3;
+    int gap;
 
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       tabWidth = areaWidth / 4;

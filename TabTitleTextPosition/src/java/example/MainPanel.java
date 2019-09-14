@@ -101,8 +101,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     Insets insets = getInsets();
     int tabPlacement = getTabPlacement();
     int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-    int tabWidth = 0; // = tabInsets.left + tabInsets.right + 3;
-    int gap = 0;
+    int tabWidth; // = tabInsets.left + tabInsets.right + 3;
+    int gap;
 
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       tabWidth = areaWidth / 4;
