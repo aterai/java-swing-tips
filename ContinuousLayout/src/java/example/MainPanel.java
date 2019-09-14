@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     JSplitPane leftPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    leftPane.setTopComponent(new JScrollPane(new JTextArea("aaaaaaa")));
-    leftPane.setBottomComponent(new JScrollPane(new JTextArea("bbbb")));
+    leftPane.setTopComponent(new JScrollPane(new JTextArea("1111111")));
+    leftPane.setBottomComponent(new JScrollPane(new JTextArea("2222")));
     leftPane.setContinuousLayout(true);
     leftPane.setResizeWeight(.5);
 
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     PropertyChangeListener pcl = e -> {
       if (JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
         JSplitPane source = (JSplitPane) e.getSource();
-        int location = ((Integer) e.getNewValue()).intValue();
+        int location = (int) e.getNewValue();
         JSplitPane target = Objects.equals(source, leftPane) ? rightPane : leftPane;
         if (location != target.getDividerLocation()) {
           target.setDividerLocation(location);
