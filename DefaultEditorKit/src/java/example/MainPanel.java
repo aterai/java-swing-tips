@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     panel.setBorder(BorderFactory.createTitledBorder("E-mail Address"));
     panel.add(pf1);
     panel.add(Box.createVerticalStrut(5));
-    panel.add(new JLabel("Please enter your email adress twice for confirmation:"));
+    panel.add(new JLabel("Please enter your email address twice for confirmation:"));
     panel.add(pf2);
     panel.add(Box.createVerticalStrut(5));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
