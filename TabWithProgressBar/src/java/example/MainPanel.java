@@ -79,7 +79,6 @@ class ProgressJTabbedPane extends JTabbedPane {
         if (!isDisplayable()) {
           System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
-          return;
         }
       }
 
@@ -91,7 +90,7 @@ class ProgressJTabbedPane extends JTabbedPane {
         }
         setTabComponentAt(currentIndex, label);
         setComponentAt(currentIndex, content);
-        String txt = null;
+        String txt;
         try {
           txt = get();
         } catch (InterruptedException | ExecutionException ex) {
