@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 
 class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
   // private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()), 2);
-  // private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+  // private static final Border NORMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
   private Border noFocusBorder;
   private Border focusBorder;
