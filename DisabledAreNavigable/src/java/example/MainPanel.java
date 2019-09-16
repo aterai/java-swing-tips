@@ -14,20 +14,18 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    String disabledAreNavigable = "MenuItem.disabledAreNavigable";
+    String key = "MenuItem.disabledAreNavigable";
 
-    Boolean b = UIManager.getBoolean(disabledAreNavigable);
-    System.out.println(disabledAreNavigable + ": " + b);
-    JCheckBox disabledAreNavigableCheck = new JCheckBox(disabledAreNavigable, b) {
+    boolean b = UIManager.getBoolean(key);
+    System.out.println(key + ": " + b);
+    JCheckBox check = new JCheckBox(key, b) {
       @Override public void updateUI() {
         super.updateUI();
-        setSelected(UIManager.getLookAndFeelDefaults().getBoolean(disabledAreNavigable));
-        UIManager.put(disabledAreNavigable, isSelected());
+        setSelected(UIManager.getLookAndFeelDefaults().getBoolean(key));
+        UIManager.put(key, isSelected());
       }
     };
-    disabledAreNavigableCheck.addActionListener(e -> {
-      UIManager.put(disabledAreNavigable, ((JCheckBox) e.getSource()).isSelected());
-    });
+    check.addActionListener(e -> UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
 
     // EventQueue.invokeLater(new Runnable() {
     //   @Override public void run() {
@@ -39,9 +37,9 @@ public final class MainPanel extends JPanel {
     //             if (o instanceof JRadioButtonMenuItem) {
     //               JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
     //               if (rbmi.isSelected()) {
-    //                 Boolean b = UIManager.getBoolean(disabledAreNavigable);
+    //                 Boolean b = UIManager.getBoolean(key);
     //                 System.out.println(rbmi.getText() + ": " + b);
-    //                 disabledAreNavigableCheck.setSelected(b);
+    //                 check.setSelected(b);
     //               }
     //             }
     //           }
@@ -59,7 +57,7 @@ public final class MainPanel extends JPanel {
     JPopupMenu popup = new JPopupMenu();
     MenuBarUtil.initMenu(popup);
     setComponentPopupMenu(popup);
-    add(disabledAreNavigableCheck);
+    add(check);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -100,7 +98,7 @@ class ExitAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Component root = null;
+    Component root;
     Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
     if (parent instanceof JPopupMenu) {
       JPopupMenu popup = (JPopupMenu) parent;
@@ -159,6 +157,7 @@ final class MenuBarUtil {
     p.add(new JSeparator());
     p.add(new JMenuItem(new ExitAction()));
   }
+
   // public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
   //   if (me instanceof JRadioButtonMenuItem) {
   //     list.add((JRadioButtonMenuItem) me);
@@ -170,6 +169,7 @@ final class MenuBarUtil {
   //     }
   //   }
   // }
+
   // public static Stream<MenuElement> stream(MenuElement me) {
   //   return Stream.of(me.getSubElements())
   //     .flatMap(m -> Stream.concat(Stream.of(m), stream(m)));
