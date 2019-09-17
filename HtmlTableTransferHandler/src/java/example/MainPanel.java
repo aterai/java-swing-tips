@@ -29,14 +29,15 @@ public final class MainPanel extends JPanel {
     {"Boolean", Boolean.TRUE},
     {"Color", Color.RED}
   };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override
+      public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
     JTable table1 = new PropertyTable(model);
     JTable table2 = new PropertyTable(model);
     table2.setTransferHandler(new HtmlTableTransferHandler());
@@ -70,12 +71,13 @@ public final class MainPanel extends JPanel {
 }
 
 class PropertyTable extends JTable {
-  private static final int TARGET_COLIDX = 1;
+  private static final int TARGET_COL_IDX = 1;
   private Class<?> editingClass;
 
   protected PropertyTable(TableModel model) {
     super(model);
   }
+
   // public PropertyTable(Object[][] data, String[] columnNames) {
   //   super(data, columnNames);
   // }
@@ -99,7 +101,7 @@ class PropertyTable extends JTable {
   }
 
   @Override public TableCellRenderer getCellRenderer(int row, int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
       return getDefaultRenderer(getClassAt(row, column));
     } else {
       return super.getCellRenderer(row, column);
@@ -111,7 +113,7 @@ class PropertyTable extends JTable {
   // component is saved in the TableModel. The class was saved when the
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
       editingClass = getClassAt(row, column);
       return getDefaultEditor(editingClass);
     } else {
@@ -121,7 +123,7 @@ class PropertyTable extends JTable {
   }
 
   @Override public Class<?> getColumnClass(int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
       return editingClass;
     } else {
       return super.getColumnClass(column);
@@ -175,10 +177,12 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Object getCellEditorValue() {
     return spinner.getValue();
   }
+
   // // AbstractCellEditor
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
   // }
+
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
@@ -197,12 +201,13 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     // fireEditingStopped();
     // return true;
   }
+
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   // }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class DateEditor extends JSpinner implements TableCellEditor {
 //   private transient ChangeEvent changeEvent;
 //   private final JSpinner.DateEditor editor;
@@ -218,6 +223,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //       @Override public void focusLost(FocusEvent e) {
 //         setArrowButtonEnabled(false);
 //       }
+//
 //       @Override public void focusGained(FocusEvent e) {
 //         // System.out.println("getTextField");
 //         setArrowButtonEnabled(true);
@@ -232,6 +238,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //     });
 //     setBorder(BorderFactory.createEmptyBorder());
 //   }
+//
 //   private void setArrowButtonEnabled(boolean flag) {
 //     for (Component c: getComponents()) {
 //       if (c instanceof JButton) {
@@ -239,10 +246,12 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     setValue(value);
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return getValue();
 //   }
@@ -253,9 +262,11 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     try {
 //       commitEdit();
@@ -269,18 +280,23 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -296,6 +312,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();

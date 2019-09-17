@@ -20,7 +20,6 @@ import javax.swing.tree.TreeCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Box list1 = Box.createVerticalBox();
 
     DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
@@ -45,8 +44,7 @@ public final class MainPanel extends JPanel {
     p.add(makeTitledPanel("JTree", new JScrollPane(list3)));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
-    Stream.of("aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee", "fffffffff",
-              "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")
+    Stream.of("1", "22", "333", "4444", "55555", "6666", "777", "88", "9", "00")
         .forEach(title -> {
           boolean isSelected = title.length() % 2 == 0;
           JCheckBox c = new JCheckBox(title, isSelected);
@@ -124,8 +122,8 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     addMouseMotionListener(renderer);
     putClientProperty("List.isFileList", Boolean.TRUE);
   }
-  // @see SwingUtilities2.pointOutsidePrefSize(...)
 
+  // @see SwingUtilities2.pointOutsidePrefSize(...)
   private boolean pointOutsidePrefSize(Point p) {
     int i = locationToIndex(p);
     E cbn = getModel().getElementAt(i);
@@ -259,20 +257,23 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   @Override public boolean isCellEditable(EventObject e) {
     return e instanceof MouseEvent;
   }
+
   // // AbstractCellEditor
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
+  //
   // @Override public boolean stopCellEditing() {
   //   fireEditingStopped();
   //   return true;
   // }
+  //
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   //   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
 //   private transient ActionListener handler;
 //   @Override public void updateUI() {
@@ -283,6 +284,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     handler = e -> stopCellEditing();
 //     addActionListener(handler);
 //   }
+//
 //   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
 //     if (leaf && value instanceof DefaultMutableTreeNode) {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -295,34 +297,43 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     }
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return new CheckBoxNode(getText(), isSelected());
 //   }
+//
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return e instanceof MouseEvent;
 //   }
+//
 //   // Copied from AbstractCellEditor
 //   // protected EventListenerList listenerList = new EventListenerList();
 //   // protected transient ChangeEvent changeEvent;
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -338,6 +349,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();

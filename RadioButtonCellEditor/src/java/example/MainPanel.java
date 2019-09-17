@@ -104,12 +104,13 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
 //   @Override public void updateUI() {
 //     super.updateUI();
 //     setName("Table.cellRenderer");
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     if (value instanceof Boolean) {
 //       setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
@@ -129,6 +130,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //     listener = e -> fireEditingStopped();
 //     addActionListener(listener);
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     if (value instanceof Boolean) {
 //       setBackground(table.getSelectionBackground());
@@ -137,6 +139,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //     }
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return isSelected();
 //   }
@@ -147,25 +150,32 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -181,6 +191,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();

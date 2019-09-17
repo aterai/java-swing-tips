@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"Border", "JPanel+JComboBox"};
     Object[][] data = {
-      {"AAA", "aaaaaa"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "ddddd"}
+      {"AAA", "a"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "dd"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
   }
 
   public static JComboBox<String> makeComboBox() {
-    JComboBox<String> c = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
+    JComboBox<String> c = new JComboBox<>(new String[] {"11111", "222", "3"});
     c.setEditable(true);
     c.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), c.getBorder()));
     return c;
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ComboBoxPanel extends JPanel {
-  public final JComboBox<String> comboBox = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
+  public final JComboBox<String> comboBox = new JComboBox<>(new String[] {"11111", "222", "3"});
 
   protected ComboBoxPanel() {
     super(new GridBagLayout());
@@ -125,6 +125,7 @@ class ComboBoxPanel extends JPanel {
 //       return d;
 //     }
 //   };
+//
 //   protected ComboBoxPanel() {
 //     super();
 //     setOpaque(true);
@@ -184,7 +185,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
 //   @Override public void updateUI() {
 //     super.updateUI();
@@ -209,6 +210,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     });
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     this.setBackground(table.getSelectionBackground());
 //     comboBox.setSelectedItem(value);
@@ -219,6 +221,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public Object getCellEditorValue() {
 //     return comboBox.getSelectedItem();
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     if (anEvent instanceof MouseEvent) {
 //       MouseEvent e = (MouseEvent) anEvent;
@@ -226,6 +229,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     }
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     if (comboBox.isEditable()) {
 //       comboBox.actionPerformed(new ActionEvent(this, 0, ""));
@@ -240,18 +244,23 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected final void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -267,6 +276,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -296,6 +306,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     editor.setBorder(BorderFactory.createEmptyBorder());
 //     editor.setOpaque(true);
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     removeAllItems();
 //     Component editor = getEditor().getEditorComponent();
@@ -311,6 +322,7 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     addItem(Objects.toString(value, ""));
 //     return this;
 //   }
+//
 //   // Overridden for performance reasons. ---->
 //   @Override public boolean isOpaque() {
 //     Color back = getBackground();
@@ -323,18 +335,40 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //       return super.isOpaque();
 //     }
 //   }
+//
 //   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //     // System.out.println(propertyName);
 //     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
 //     //   super.firePropertyChange(propertyName, oldValue, newValue);
 //     // }
 //   }
-//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint() { /* Overridden for performance reasons. */ }
-//   // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//   // @Override public void validate() { /* Overridden for performance reasons. */ }
-//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//
+//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   @Override public void repaint(long tm, int x, int y, int width, int height) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint(Rectangle r) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint() {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   // @Override public void invalidate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   // @Override public void validate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   @Override public void revalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //   // <---- Overridden for performance reasons.
 // }

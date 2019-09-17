@@ -56,6 +56,7 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // protected static TreeModel getDefaultTreeModel() {
   //   DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
   //   DefaultMutableTreeNode parent;
@@ -170,7 +171,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
 //   private final JTree tree;
 //   protected CheckBoxNodeEditor(JTree tree) {
@@ -179,6 +180,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     setOpaque(false);
 //     addActionListener(e -> stopCellEditing());
 //   }
+//
 //   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
 //     if (leaf && value instanceof DefaultMutableTreeNode) {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -191,9 +193,11 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     }
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return new CheckBoxNode(getText(), isSelected());
 //   }
+//
 //   @Override public boolean isCellEditable(EventObject e) {
 //     if (e instanceof MouseEvent) {
 //       MouseEvent me = (MouseEvent) e;
@@ -205,32 +209,40 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     }
 //     return false;
 //   }
+//
 //   @Override public void updateUI() {
 //     super.updateUI();
 //     setName("Tree.cellEditor");
 //   }
+//
 //   // Copied from AbstractCellEditor
 //   // protected EventListenerList listenerList = new EventListenerList();
 //   // protected transient ChangeEvent changeEvent;
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -246,6 +258,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -271,18 +284,6 @@ class CheckBoxNode {
     this.text = text;
     this.selected = selected;
   }
-  // public boolean isSelected() {
-  //   return selected;
-  // }
-  // public void setSelected(boolean newValue) {
-  //   selected = newValue;
-  // }
-  // public String getText() {
-  //   return text;
-  // }
-  // public void setText(String newValue) {
-  //   text = newValue;
-  // }
 
   @Override public String toString() {
     return text;
@@ -292,6 +293,7 @@ class CheckBoxNode {
 // // TEST:
 // class CheckBoxNodeRenderer extends DefaultTreeCellRenderer {
 //   private final JCheckBox leafRenderer = new JCheckBox();
+//   private JTree tree = null;
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     this.tree = tree;
 //     // String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
@@ -325,7 +327,7 @@ class CheckBoxNode {
 //     // ((JComponent) c).setOpaque(false);
 //     return c;
 //   }
-//   private JTree tree = null;
+//
 //   @Override public void updateUI() {
 //     if (Objects.nonNull(tree)) {
 //       tree.setCellRenderer(null);

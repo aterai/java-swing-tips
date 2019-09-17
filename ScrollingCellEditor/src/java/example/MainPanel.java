@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"JTextField", "JTextArea"};
     Object[][] data = {
       {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-      {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
+      {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -150,7 +150,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class TextAreaCellEditor extends JTextArea implements TableCellEditor {
 //   private static final String KEY = "Stop-Cell-Editing";
 //   private transient ChangeEvent changeEvent;
@@ -175,9 +175,11 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //       }
 //     });
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return getText();
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     System.out.println("getTableCellEditorComponent");
 //     setFont(table.getFont());
@@ -189,6 +191,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     });
 //     return scroll;
 //   }
+//
 //   @Override public boolean isCellEditable(EventObject e) {
 //     if (e instanceof MouseEvent) {
 //       return ((MouseEvent) e).getClickCount() >= 2;
@@ -213,22 +216,28 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //   @Override public boolean shouldSelectCell(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -244,6 +253,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -268,6 +278,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 //     // setName("Table.cellRenderer");
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     if (isSelected) {
 //       setForeground(table.getSelectionForeground());
@@ -280,6 +291,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     setText(Objects.toString(value, ""));
 //     return this;
 //   }
+//
 //   // // Overridden for performance reasons. ---->
 //   // @Override public boolean isOpaque() {
 //   //   Color back = getBackground();
@@ -290,6 +302,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //   //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
 //   //   return !colorMatch && super.isOpaque();
 //   // }
+//   //
 //   // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //   //   if ("document".equals(propertyName)
 //   //     || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName)
@@ -297,12 +310,33 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //   //     super.firePropertyChange(propertyName, oldValue, newValue);
 //   //   }
 //   // }
-//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* performance reasons. */ }
-//   // @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-//   // @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//   // @Override public void repaint() { /* Overridden for performance reasons. */ }
-//   // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//   // @Override public void validate() { /* Overridden for performance reasons. */ }
-//   // @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//   //
+//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   //   /* performance reasons. */
+//   // }
+//   //
+//   // @Override public void repaint(long tm, int x, int y, int width, int height) {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//   //
+//   // @Override public void repaint(Rectangle r) {
+//   // /* Overridden for performance reasons. */
+//   // }
+//   //
+//   // @Override public void repaint() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//   //
+//   // @Override public void invalidate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//   //
+//   // @Override public void validate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//   //
+//   // @Override public void revalidate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
 //   // // <---- Overridden for performance reasons.
 // }

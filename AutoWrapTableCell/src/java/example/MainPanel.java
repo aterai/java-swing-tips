@@ -14,7 +14,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final int AUTOWRAP_COLUMN = 1;
+  private static final int AUTO_WRAP_COLUMN = 1;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -22,9 +22,9 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"Default", "AutoWrap"};
     Object[][] data = {
       {"123456789012345678901234567890", "123456789012345678901234567890"},
-      {"aaaa", "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddx"},
-      {"bbbbb", "----------------------------------------------0"},
-      {"ccccccccccccccccccc", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
+      {"1111", "22222222222222222222222222222222222222222222222222222222"},
+      {"3333333", "----------------------------------------------0"},
+      {"4444444444444444444", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
     };
     TableModel model = new DefaultTableModel(data, columnNames);
     JTable table = new JTable(model) {
@@ -43,11 +43,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void updateUI() {
-        getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(null);
+        getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(null);
         super.updateUI();
         setEnabled(false);
         setShowGrid(false);
-        getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
+        getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
         // setIntercellSpacing(new Dimension());
       }
 
@@ -145,15 +145,14 @@ class TextAreaCellRenderer implements TableCellRenderer {
   // Calculate the new preferred height for a given row, and sets the height on the table.
   // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
   private void adjustRowHeight(JTable table, int row, int column) {
-    // The trick to get this to work properly is to set the width of the column to the
-    // textarea. The reason for this is that getPreferredSize(), without a width tries
+    // The trick for this to work properly is to set the width of the column to the
+    // text area. The reason for this is that getPreferredSize(), without a width tries
     // to place all the text in one line. By setting the size with the width of the column,
-    // getPreferredSize() returnes the proper height which the row should have in
+    // getPreferredSize() returns the proper height which the row should have in
     // order to make room for the text.
     // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
     // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
     // renderer.setSize(new Dimension(cWidth, 1000));
-
     renderer.setBounds(table.getCellRect(row, column, false));
     // renderer.doLayout();
 
@@ -177,7 +176,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
   }
 }
 
-// // inheritence to extend a class
+// // inheritance to extend a class
 // class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 //   private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
 //
@@ -205,10 +204,10 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //    * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
 //    */
 //   private void adjustRowHeight(JTable table, int row, int column) {
-//     // The trick to get this to work properly is to set the width of the column to the
-//     // textarea. The reason for this is that getPreferredSize(), without a width tries
+//     // The trick for this to work properly is to set the width of the column to the
+//     // text area. The reason for this is that getPreferredSize(), without a width tries
 //     // to place all the text in one line. By setting the size with the width of the column,
-//     // getPreferredSize() returnes the proper height which the row should have in
+//     // getPreferredSize() returns the proper height which the row should have in
 //     // order to make room for the text.
 //     // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
 //     // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
