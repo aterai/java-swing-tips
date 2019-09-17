@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         setAutoCreateRowSorter(true);
         setRowHeight(26);
-        getColumnModel().getColumn(1).setCellRenderer(new SliderRednerer());
+        getColumnModel().getColumn(1).setCellRenderer(new SliderRenderer());
         getColumnModel().getColumn(1).setCellEditor(new SliderEditor());
       }
 
@@ -70,13 +70,13 @@ public final class MainPanel extends JPanel {
 }
 
 // delegation pattern
-class SliderRednerer implements TableCellRenderer {
+class SliderRenderer implements TableCellRenderer {
   private final JSlider renderer = new JSlider();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
     if (value instanceof Integer) {
-      renderer.setValue(((Integer) value).intValue());
+      renderer.setValue((Integer) value);
     }
     return renderer;
   }
@@ -105,24 +105,24 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    Integer i = (Integer) value;
+    renderer.setValue((Integer) value);
     renderer.setBackground(table.getSelectionBackground());
-    renderer.setValue(i.intValue());
     return renderer;
   }
 
   @Override public Object getCellEditorValue() {
-    return Integer.valueOf(renderer.getValue());
+    return renderer.getValue();
   }
 }
 
-// // inheritence to extend a class
-// class SliderRednerer extends JSlider implements TableCellRenderer {
+// // inheritance to extend a class
+// class SliderRenderer extends JSlider implements TableCellRenderer {
 //   @Override public void updateUI() {
 //     super.updateUI();
 //     setName("Table.cellRenderer");
 //     setOpaque(true);
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 //     if (value instanceof Integer) {
@@ -130,6 +130,7 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //     }
 //     return this;
 //   }
+//
 //   // Overridden for performance reasons. ---->
 //   @Override public boolean isOpaque() {
 //     Color back = getBackground();
@@ -142,19 +143,41 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //       return super.isOpaque();
 //     }
 //   }
+//
 //   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //     // // System.out.println(propertyName);
 //     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
 //     //   super.firePropertyChange(propertyName, oldValue, newValue);
 //     // }
 //   }
-//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint() { /* Overridden for performance reasons. */ }
-//   @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//   @Override public void validate() { /* Overridden for performance reasons. */ }
-//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//
+//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint(long tm, int x, int y, int width, int height) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint(Rectangle r) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint() {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void invalidate() {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void validate() {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void revalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //   // <---- Overridden for performance reasons.
 // }
 //
@@ -180,12 +203,14 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //     };
 //     addChangeListener(handler);
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     Integer i = (Integer) value;
 //     this.setBackground(table.getSelectionBackground());
 //     this.setValue(i.intValue());
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return Integer.valueOf(getValue());
 //   }
@@ -196,25 +221,32 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -230,6 +262,7 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
