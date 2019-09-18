@@ -14,11 +14,11 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String PATH = "/toolbarButtonGraphics/general/";
-  private final JToolBar toolbar = new JToolBar("ToolBarButton");
 
   private MainPanel() {
     super(new BorderLayout());
 
+    JToolBar toolbar = new JToolBar("ToolBarButton");
     toolbar.setFloatable(false);
     DragHandler dh = new DragHandler();
     toolbar.addMouseListener(dh);
@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
     Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
-          "Delete24.gif", "Undo24.gif", "Redo24.gif",
-          "Help24.gif", "Open24.gif", "Save24.gif")
+      "Delete24.gif", "Undo24.gif", "Redo24.gif",
+      "Help24.gif", "Open24.gif", "Save24.gif")
       .map(this::createToolBarButton)
       .forEach(toolbar::add);
 
@@ -66,7 +66,7 @@ class DragHandler extends MouseAdapter {
   private static final Rectangle PREV_AREA = new Rectangle();
   private static final Rectangle NEXT_AREA = new Rectangle();
   private final JWindow window = new JWindow();
-  private Component draggingComonent;
+  private Component draggingComponent;
   private int index = -1;
   private final Component gap = Box.createHorizontalStrut(24);
   private final Point startPt = new Point();
@@ -86,13 +86,13 @@ class DragHandler extends MouseAdapter {
     if (Objects.equals(c, parent) || index < 0) {
       return;
     }
-    draggingComonent = c;
+    draggingComponent = c;
     swapComponentLocation(parent, c, gap, index);
 
-    window.add(draggingComonent);
+    window.add(draggingComponent);
     window.pack();
 
-    Dimension d = draggingComonent.getPreferredSize();
+    Dimension d = draggingComponent.getPreferredSize();
     Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
     SwingUtilities.convertPointToScreen(p, parent);
     window.setLocation(p);
@@ -110,14 +110,14 @@ class DragHandler extends MouseAdapter {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
 
-    if (!window.isVisible() || Objects.isNull(draggingComonent)) {
+    if (!window.isVisible() || Objects.isNull(draggingComponent)) {
       if (startPt.distance(pt) > gestureMotionThreshold) {
         startDragging(parent, pt);
       }
       return;
     }
 
-    Dimension d = draggingComonent.getPreferredSize();
+    Dimension d = draggingComponent.getPreferredSize();
     Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
     SwingUtilities.convertPointToScreen(p, parent);
     window.setLocation(p);
@@ -141,14 +141,14 @@ class DragHandler extends MouseAdapter {
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    if (!window.isVisible() || Objects.isNull(draggingComonent)) {
+    if (!window.isVisible() || Objects.isNull(draggingComponent)) {
       return;
     }
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
 
-    Component cmp = draggingComonent;
-    draggingComonent = null;
+    Component cmp = draggingComponent;
+    draggingComponent = null;
     window.setVisible(false);
 
     for (int i = 0; i < parent.getComponentCount(); i++) {

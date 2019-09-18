@@ -75,7 +75,7 @@ class RearrangingHandler extends MouseAdapter {
   private final JWindow window = new JWindow();
   private final Point startPt = new Point();
   private int index = -1;
-  private Component draggingComonent;
+  private Component draggingComponent;
   private Component gap;
   private final Point dragOffset = new Point();
 
@@ -91,17 +91,17 @@ class RearrangingHandler extends MouseAdapter {
     if (Objects.equals(c, parent) || index < 0) {
       return;
     }
-    draggingComonent = c;
-    Dimension d = draggingComonent.getSize();
+    draggingComponent = c;
+    Dimension d = draggingComponent.getSize();
 
-    Point dp = draggingComonent.getLocation();
+    Point dp = draggingComponent.getLocation();
     dragOffset.setLocation(pt.x - dp.x, pt.y - dp.y);
 
     gap = Box.createRigidArea(d);
     swapComponentLocation(parent, c, gap, index);
 
     window.setBackground(new Color(0x0, true));
-    window.add(draggingComonent);
+    window.add(draggingComponent);
     // window.setSize(d);
     window.pack();
 
@@ -110,7 +110,7 @@ class RearrangingHandler extends MouseAdapter {
   }
 
   private void updateWindowLocation(Point pt, Component parent) {
-    if (window.isVisible() && Objects.nonNull(draggingComonent)) {
+    if (window.isVisible() && Objects.nonNull(draggingComponent)) {
       Point p = new Point(pt.x - dragOffset.x, pt.y - dragOffset.y);
       SwingUtilities.convertPointToScreen(p, parent);
       window.setLocation(p);
@@ -141,7 +141,7 @@ class RearrangingHandler extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-    if (Objects.isNull(draggingComonent)) {
+    if (Objects.isNull(draggingComponent)) {
       if (startPt.distance(pt) > gestureMotionThreshold) {
         startDragging(parent, pt);
       }
@@ -174,13 +174,13 @@ class RearrangingHandler extends MouseAdapter {
     prevRect.setBounds(0, 0, 0, 0);
     window.setVisible(false);
 
-    // if (!window.isVisible() || Objects.isNull(draggingComonent) {
+    // if (!window.isVisible() || Objects.isNull(draggingComponent) {
     //   return;
     // }
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-    Component cmp = draggingComonent;
-    draggingComonent = null;
+    Component cmp = draggingComponent;
+    draggingComponent = null;
 
     for (int i = 0; i < parent.getComponentCount(); i++) {
       Component c = parent.getComponent(i);
