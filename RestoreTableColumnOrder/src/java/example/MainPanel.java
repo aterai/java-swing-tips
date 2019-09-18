@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelEvent;
@@ -76,7 +75,7 @@ public final class MainPanel extends JPanel {
 class SortableTableColumnModel extends DefaultTableColumnModel {
   // TEST: private static Comparator<TableColumn> tcc = (o1, o2) -> o1.getModelIndex() - o2.getModelIndex();
   public void restoreColumnOrder() {
-    Collections.sort(tableColumns, Comparator.comparingInt(TableColumn::getModelIndex));
+    tableColumns.sort(Comparator.comparingInt(TableColumn::getModelIndex));
     fireColumnMoved(new TableColumnModelEvent(this, 0, tableColumns.size()));
   }
 }
