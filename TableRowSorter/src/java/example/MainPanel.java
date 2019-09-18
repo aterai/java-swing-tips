@@ -33,17 +33,15 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(new TableRowSorter<>(model));
     // sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
 
-    TableCellRenderer renderer = new TableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        RowSorter<? extends TableModel> rs = table.getRowSorter();
-        if (rs instanceof DefaultRowSorter) {
-          int cmi = table.convertColumnIndexToModel(column);
-          l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
-        }
-        return l;
+    TableCellRenderer renderer = (tbl, value, isSelected, hasFocus, row, column) -> {
+      TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
+      JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+      RowSorter<? extends TableModel> rs = tbl.getRowSorter();
+      if (rs instanceof DefaultRowSorter) {
+        int cmi = tbl.convertColumnIndexToModel(column);
+        l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
       }
+      return l;
     };
     TableColumnModel columns = table.getColumnModel();
     for (int i = 0; i < columns.getColumnCount(); i++) {

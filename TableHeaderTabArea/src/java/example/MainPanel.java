@@ -11,7 +11,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -21,10 +20,10 @@ public final class MainPanel extends JPanel {
 
     TableHeaderTabbedPane tabs = new TableHeaderTabbedPane();
     tabs.setBorder(BorderFactory.createTitledBorder("CardLayout+JTableHeader"));
-    tabs.addTab("dddd", new JScrollPane(new JTree()));
-    tabs.addTab("eeee", new JLabel("kkk"));
-    tabs.addTab("ffff", new JLabel("llllllllll"));
-    tabs.addTab("gggg", new JButton("mmmmmm"));
+    tabs.addTab("111", new JScrollPane(new JTree()));
+    tabs.addTab("222", new JLabel("55555"));
+    tabs.addTab("333", new JLabel("66666"));
+    tabs.addTab("444", new JButton("77777"));
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -51,7 +50,6 @@ public final class MainPanel extends JPanel {
 
 class TableHeaderTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
-  private final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
   private final JTableHeader header;
   private final TableColumnModel model;
@@ -60,9 +58,10 @@ class TableHeaderTabbedPane extends JPanel {
 
   protected TableHeaderTabbedPane() {
     super(new BorderLayout());
-
     int left = 1;
     int right = 3;
+
+    JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
     tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
     contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
 
@@ -76,12 +75,10 @@ class TableHeaderTabbedPane extends JPanel {
     header.addMouseMotionListener(handler);
 
     TabButton l = new TabButton();
-    header.setDefaultRenderer(new TableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        l.setText(Objects.toString(value, ""));
-        l.setSelected(Objects.equals(value, selectedColumn) || Objects.equals(column, rolloverColumn));
-        return l;
-      }
+    header.setDefaultRenderer((table1, value, isSelected, hasFocus, row, column) -> {
+      l.setText(Objects.toString(value, ""));
+      l.setSelected(Objects.equals(value, selectedColumn) || Objects.equals(column, rolloverColumn));
+      return l;
     });
 
     JScrollPane sp = new JScrollPane();
@@ -176,6 +173,7 @@ class TabButton extends JRadioButton {
   @Override public String getUIClassID() {
     return UI_CLASS_ID;
   }
+
   // @Override public void setUI(TabViewButtonUI ui) {
   //   super.setUI(ui);
   // }

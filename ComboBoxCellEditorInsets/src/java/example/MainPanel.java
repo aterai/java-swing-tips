@@ -57,23 +57,21 @@ public final class MainPanel extends JPanel {
   }
 
   public static TableCellRenderer makeComboTableCellRenderer(JComboBox<String> combo) {
-    return new TableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        combo.removeAllItems();
-        JComponent editor = (JComponent) combo.getEditor().getEditorComponent();
-        editor.setOpaque(true);
-        if (isSelected) {
-          editor.setForeground(table.getSelectionForeground());
-          editor.setBackground(table.getSelectionBackground());
-          // button.setBackground(table.getSelectionBackground());
-        } else {
-          editor.setForeground(table.getForeground());
-          editor.setBackground(table.getBackground());
-          // button.setBackground(bg);
-        }
-        combo.addItem(Objects.toString(value, ""));
-        return combo;
+    return (table, value, isSelected, hasFocus, row, column) -> {
+      combo.removeAllItems();
+      JComponent editor = (JComponent) combo.getEditor().getEditorComponent();
+      editor.setOpaque(true);
+      if (isSelected) {
+        editor.setForeground(table.getSelectionForeground());
+        editor.setBackground(table.getSelectionBackground());
+        // button.setBackground(table.getSelectionBackground());
+      } else {
+        editor.setForeground(table.getForeground());
+        editor.setBackground(table.getBackground());
+        // button.setBackground(bg);
       }
+      combo.addItem(Objects.toString(value, ""));
+      return combo;
     };
   }
 

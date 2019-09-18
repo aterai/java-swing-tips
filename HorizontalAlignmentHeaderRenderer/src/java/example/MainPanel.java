@@ -36,16 +36,14 @@ public final class MainPanel extends JPanel {
     // // LnF NullPointerException
     // JTable table3 = makeTable();
     // TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
-    // table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-    //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    //     JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    //     if (table.convertColumnIndexToModel(column) == 0) {
-    //       l.setHorizontalAlignment(SwingConstants.CENTER);
-    //     } else {
-    //       l.setHorizontalAlignment(SwingConstants.LEFT);
-    //     }
-    //     return l;
+    // table3.getTableHeader().setDefaultRenderer((table, value, isSelected, hasFocus, row, column) -> {
+    //   JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    //   if (table.convertColumnIndexToModel(column) == 0) {
+    //     l.setHorizontalAlignment(SwingConstants.CENTER);
+    //   } else {
+    //     l.setHorizontalAlignment(SwingConstants.LEFT);
     //   }
+    //   return l;
     // });
 
     JTabbedPane tabs = new JTabbedPane();
