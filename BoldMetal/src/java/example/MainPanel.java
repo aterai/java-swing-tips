@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -78,76 +77,54 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-  protected TreePath path;
-  private final Action addNodeAction = new AbstractAction("add") {
-    @Override public void actionPerformed(ActionEvent e) {
+  private TreePath path;
+
+  protected TreePopupMenu() {
+    super();
+    JTextField textField = new JTextField(24) {
+      private transient AncestorListener listener;
+      @Override public void updateUI() {
+        removeAncestorListener(listener);
+        super.updateUI();
+        listener = new FocusAncestorListener();
+        addAncestorListener(listener);
+      }
+    };
+
+    add("add").addActionListener(e -> {
+      // https://ateraimemo.com/Swing/ScrollRectToVisible.html
       JTree tree = (JTree) getInvoker();
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
       DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
       DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
       model.insertNodeInto(child, parent, parent.getChildCount());
       tree.scrollPathToVisible(new TreePath(child.getPath()));
-    }
-  };
-  private final Action editNodeAction = new AbstractAction("edit") {
-    private final JTextField textField = new JTextField(24) {
-      private transient AncestorListener listener;
-      @Override public void updateUI() {
-        removeAncestorListener(listener);
-        super.updateUI();
-        listener = new AncestorListener() {
-          @Override public void ancestorAdded(AncestorEvent e) {
-            requestFocusInWindow();
-          }
-
-          @Override public void ancestorMoved(AncestorEvent e) {
-            /* not needed */
-          }
-
-          @Override public void ancestorRemoved(AncestorEvent e) {
-            /* not needed */
-          }
-        };
-        addAncestorListener(listener);
-      }
-    };
-    @Override public void actionPerformed(ActionEvent e) {
+    });
+    add("edit").addActionListener(e -> {
       Object node = path.getLastPathComponent();
-      if (node instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-        textField.setText(leaf.getUserObject().toString());
-        JTree tree = (JTree) getInvoker();
-        int ret = JOptionPane.showConfirmDialog(
-            tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (ret == JOptionPane.OK_OPTION) {
-          String str = textField.getText();
-          if (!str.trim().isEmpty()) {
-            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            model.valueForPathChanged(path, str);
-            // leaf.setUserObject(str);
-            // model.nodeChanged(leaf);
-          }
-        }
+      if (!(node instanceof DefaultMutableTreeNode)) {
+        return;
       }
-    }
-  };
-  private final Action removeNodeAction = new AbstractAction("remove") {
-    @Override public void actionPerformed(ActionEvent e) {
+      DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
+      textField.setText(leaf.getUserObject().toString());
+      JTree tree = (JTree) getInvoker();
+      int ret = JOptionPane.showConfirmDialog(
+          tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (ret == JOptionPane.OK_OPTION) {
+        tree.getModel().valueForPathChanged(path, textField.getText());
+        // leaf.setUserObject(str);
+        // model.nodeChanged(leaf);
+      }
+    });
+    addSeparator();
+    add("remove").addActionListener(e -> {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
       if (!node.isRoot()) {
         JTree tree = (JTree) getInvoker();
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.removeNodeFromParent(node);
       }
-    }
-  };
-
-  protected TreePopupMenu() {
-    super();
-    add(addNodeAction);
-    add(editNodeAction);
-    addSeparator();
-    add(removeNodeAction);
+    });
   }
 
   @Override public void show(Component c, int x, int y) {
@@ -161,5 +138,19 @@ class TreePopupMenu extends JPopupMenu {
         super.show(c, x, y);
       });
     }
+  }
+}
+
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
   }
 }

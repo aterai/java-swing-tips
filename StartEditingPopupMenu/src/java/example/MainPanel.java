@@ -8,14 +8,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import java.util.Objects;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -75,26 +73,14 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-  protected TreePath path;
-  protected final JTextField field = new JTextField();
-  protected final JMenuItem editItem;
-  protected final JMenuItem editDialogItem;
+  private TreePath path;
+  private final JMenuItem editItem;
+  private final JMenuItem editDialogItem;
 
   protected TreePopupMenu() {
     super();
-    field.addAncestorListener(new AncestorListener() {
-      @Override public void ancestorAdded(AncestorEvent e) {
-        field.requestFocusInWindow();
-      }
-
-      @Override public void ancestorMoved(AncestorEvent e) {
-        /* not needed */
-      }
-
-      @Override public void ancestorRemoved(AncestorEvent e) {
-        /* not needed */
-      }
-    });
+    JTextField field = new JTextField();
+    field.addAncestorListener(new FocusAncestorListener());
 
     editItem = add("Edit");
     editItem.addActionListener(e -> {
@@ -116,14 +102,11 @@ class TreePopupMenu extends JPopupMenu {
         JTree tree = (JTree) getInvoker();
         int ret = JOptionPane.showConfirmDialog(
             tree, field, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        // if (ret == JOptionPane.OK_OPTION && !field.getText().trim().isEmpty()) {
+        //   tree.getModel().valueForPathChanged(path, field.getText().trim());
+        // }
         if (ret == JOptionPane.OK_OPTION) {
-          Optional.ofNullable(field.getText().trim())
-            .filter(str -> !str.isEmpty())
-            .ifPresent(str -> ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str));
-          // String str = field.getText().trim();
-          // if (!str.isEmpty()) {
-          //   ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);
-          // }
+          tree.getModel().valueForPathChanged(path, field.getText());
         }
       }
     });
@@ -140,11 +123,25 @@ class TreePopupMenu extends JPopupMenu {
       // }
       TreePath[] tsp = tree.getSelectionPaths();
       path = tree.getPathForLocation(x, y); // Test: path = tree.getClosestPathForLocation(x, y);
-      boolean isEditable = tsp.length == 1 && tsp[0].equals(path);
+      boolean isEditable = tsp != null && tsp.length == 1 && tsp[0].equals(path);
       // Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
       editItem.setEnabled(isEditable);
       editDialogItem.setEnabled(isEditable);
       super.show(c, x, y);
     }
+  }
+}
+
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
   }
 }

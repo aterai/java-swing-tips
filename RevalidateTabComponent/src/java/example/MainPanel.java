@@ -158,9 +158,15 @@ class TabButton extends JButton {
 }
 
 class TabTitleRenamePopupMenu extends JPopupMenu {
-  private final JTextField textField = new JTextField(10);
-  private final Action renameAction = new AbstractAction("rename") {
-    @Override public void actionPerformed(ActionEvent e) {
+  private final JMenuItem rename;
+
+  protected TabTitleRenamePopupMenu() {
+    super();
+    JTextField textField = new JTextField(10);
+    textField.addAncestorListener(new FocusAncestorListener());
+
+    rename = add("rename");
+    rename.addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();
       int idx = t.getSelectedIndex();
       String title = t.getTitleAt(idx);
@@ -168,58 +174,44 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
       int ret = JOptionPane.showConfirmDialog(
           t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
-        String str = textField.getText();
-        if (!str.trim().isEmpty()) {
+        String str = textField.getText().trim();
+        if (!str.isEmpty()) {
           t.setTitleAt(idx, str);
-          JComponent c = (JComponent) t.getTabComponentAt(idx);
-          c.revalidate();
+          ((JComponent) t.getTabComponentAt(idx)).revalidate();
         }
       }
-    }
-  };
-  private final Action newTabAction = new AbstractAction("new tab") {
-    @Override public void actionPerformed(ActionEvent e) {
+    });
+    addSeparator();
+    add("new tab").addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();
       int count = t.getTabCount();
       String title = "Tab " + count;
       t.addTab(title, new JLabel(title));
       t.setTabComponentAt(count, new ButtonTabComponent(t));
-    }
-  };
-  private final Action closeAllAction = new AbstractAction("close all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      t.removeAll();
-    }
-  };
-
-  protected TabTitleRenamePopupMenu() {
-    super();
-    textField.addAncestorListener(new AncestorListener() {
-      @Override public void ancestorAdded(AncestorEvent e) {
-        textField.requestFocusInWindow();
-      }
-
-      @Override public void ancestorMoved(AncestorEvent e) {
-        /* not needed */
-      }
-
-      @Override public void ancestorRemoved(AncestorEvent e) {
-        /* not needed */
-      }
     });
-    add(renameAction);
-    addSeparator();
-    add(newTabAction);
-    add(closeAllAction);
+    add("close all").addActionListener(e -> ((JTabbedPane) getInvoker()).removeAll());
   }
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTabbedPane) {
       JTabbedPane t = (JTabbedPane) c;
-      renameAction.setEnabled(t.indexAtLocation(x, y) >= 0);
+      rename.setEnabled(t.indexAtLocation(x, y) >= 0);
       super.show(c, x, y);
     }
+  }
+}
+
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
   }
 }
 
