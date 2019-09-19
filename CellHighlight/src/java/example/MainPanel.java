@@ -63,7 +63,7 @@ class HighlightListener extends MouseAdapter {
   private int vrow = -1; // viewRowIndex
   private int vcol = -1; // viewColumnIndex
 
-  public Optional<? extends Color> getHighlightableCellColor(int row, int column) {
+  public Optional<? extends Color> getCellHighlightColor(int row, int column) {
     if (this.vrow == row || this.vcol == column) {
       if (this.vrow == row && this.vcol == column) {
         return Optional.of(HIGHLIGHT1);
@@ -116,14 +116,14 @@ class HighlightRenderer extends DefaultTableCellRenderer {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
     setBackground(table.getBackground());
-    highlighter.getHighlightableCellColor(row, column).ifPresent(this::setBackground);
+    highlighter.getCellHighlightColor(row, column).ifPresent(this::setBackground);
     return this;
   }
 }
 
-// class HighlightableTable extends JTable {
+// class CellHighlightTable extends JTable {
 //   private final HighlightListener highlighter;
-//   protected HighlightableTable(TableModel model) {
+//   protected CellHighlightTable(TableModel model) {
 //     super(model);
 //     highlighter = new HighlightListener(this);
 //     addMouseListener(highlighter);
