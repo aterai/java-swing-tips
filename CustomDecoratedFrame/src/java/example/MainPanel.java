@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
   private final SideLabel right = new SideLabel(Side.E);
   private final SideLabel top = new SideLabel(Side.N);
   private final SideLabel bottom = new SideLabel(Side.S);
-  private final SideLabel topleft = new SideLabel(Side.NW);
-  private final SideLabel topright = new SideLabel(Side.NE);
-  private final SideLabel bottomleft = new SideLabel(Side.SW);
-  private final SideLabel bottomright = new SideLabel(Side.SE);
+  private final SideLabel topLeft = new SideLabel(Side.NW);
+  private final SideLabel topRight = new SideLabel(Side.NE);
+  private final SideLabel bottomLeft = new SideLabel(Side.SW);
+  private final SideLabel bottomRight = new SideLabel(Side.SE);
   private final JPanel contentPanel = new JPanel(new BorderLayout());
   private final JPanel resizePanel = new JPanel(new BorderLayout()) {
     private final Color borderColor = new Color(0x64_64_64);
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     return contentPanel;
   }
 
-  public JFrame makeFrame(String str) {
+  private JFrame makeFrame(String str) {
     JFrame frame = new JFrame(str) {
       @Override public Container getContentPane() {
         return getMainContentPane();
@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
     // title.add(iconify, BorderLayout.WEST);
 
     MouseInputListener rwl = new ResizeWindowListener();
-    Stream.of(left, right, top, bottom, topleft, topright, bottomleft, bottomright).forEach(c -> {
+    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
       c.addMouseListener(rwl);
       c.addMouseMotionListener(rwl);
     });
@@ -116,14 +116,14 @@ public final class MainPanel extends JPanel {
     titlePanel.add(title, BorderLayout.CENTER);
 
     JPanel northPanel = new JPanel(new BorderLayout());
-    northPanel.add(topleft, BorderLayout.WEST);
+    northPanel.add(topLeft, BorderLayout.WEST);
     northPanel.add(titlePanel, BorderLayout.CENTER);
-    northPanel.add(topright, BorderLayout.EAST);
+    northPanel.add(topRight, BorderLayout.EAST);
 
     JPanel southPanel = new JPanel(new BorderLayout());
-    southPanel.add(bottomleft, BorderLayout.WEST);
+    southPanel.add(bottomLeft, BorderLayout.WEST);
     southPanel.add(bottom, BorderLayout.CENTER);
-    southPanel.add(bottomright, BorderLayout.EAST);
+    southPanel.add(bottomRight, BorderLayout.EAST);
 
     resizePanel.add(left, BorderLayout.WEST);
     resizePanel.add(right, BorderLayout.EAST);
@@ -210,7 +210,7 @@ class ResizeWindowListener extends MouseInputAdapter {
   @Override public void mousePressed(MouseEvent e) {
     Component p = SwingUtilities.getRoot(e.getComponent());
     if (p instanceof Window) {
-      rect.setBounds(((Window) p).getBounds());
+      rect.setBounds(p.getBounds());
     }
   }
 
@@ -219,7 +219,7 @@ class ResizeWindowListener extends MouseInputAdapter {
     Component p = SwingUtilities.getRoot(c);
     if (!rect.isEmpty() && c instanceof SideLabel && p instanceof Window) {
       Side side = ((SideLabel) c).side;
-      ((Window) p).setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
+      p.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
     }
   }
 

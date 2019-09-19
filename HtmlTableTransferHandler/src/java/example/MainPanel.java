@@ -164,7 +164,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   protected final void setArrowButtonEnabled(boolean flag) {
     for (Component c: spinner.getComponents()) {
       if (c instanceof JButton) {
-        ((JButton) c).setEnabled(flag);
+        c.setEnabled(flag);
       }
     }
   }
