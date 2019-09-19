@@ -230,7 +230,7 @@ class TextAreaOutputStream extends OutputStream {
     buffer.reset();
   }
 
-  @Override public void write(int b) throws IOException {
+  @Override public void write(int b) {
     buffer.write(b);
   }
 }
