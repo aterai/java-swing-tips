@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -59,16 +58,24 @@ public final class MainPanel extends JPanel {
 }
 
 class TablePopupMenu extends JPopupMenu {
-  protected final String[] columnNames;
-  protected final JTextField textField = new JTextField();
-  protected final Action editAction1 = new AbstractAction("Edit: setHeaderValue") {
-    @Override public void actionPerformed(ActionEvent e) {
+  private final String[] columnNames;
+  private int index = -1;
+
+  protected TablePopupMenu(String... arrays) {
+    super();
+    columnNames = new String[arrays.length];
+    System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
+
+    JTextField textField = new JTextField();
+    textField.addAncestorListener(new FocusAncestorListener());
+
+    add("Edit: setHeaderValue").addActionListener(e -> {
       JTableHeader header = (JTableHeader) getInvoker();
       TableColumn column = header.getColumnModel().getColumn(index);
       String name = column.getHeaderValue().toString();
       textField.setText(name);
       int result = JOptionPane.showConfirmDialog(
-          header.getTable(), textField, getValue(Action.NAME).toString(),
+          header.getTable(), textField, "Edit: setHeaderValue",
           JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (result == JOptionPane.OK_OPTION) {
         String str = textField.getText().trim();
@@ -77,17 +84,15 @@ class TablePopupMenu extends JPopupMenu {
           header.repaint(header.getHeaderRect(index));
         }
       }
-    }
-  };
-  protected final Action editAction2 = new AbstractAction("Edit: setColumnIdentifiers") {
-    @Override public void actionPerformed(ActionEvent e) {
+    });
+    add("Edit: setColumnIdentifiers").addActionListener(e -> {
       JTableHeader header = (JTableHeader) getInvoker();
       JTable table = header.getTable();
       DefaultTableModel model = (DefaultTableModel) table.getModel();
       String name = table.getColumnName(index);
       textField.setText(name);
       int result = JOptionPane.showConfirmDialog(
-          table, textField, getValue(Action.NAME).toString(),
+          table, textField, "Edit: setColumnIdentifiers",
           JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (result == JOptionPane.OK_OPTION) {
         String str = textField.getText().trim();
@@ -98,29 +103,7 @@ class TablePopupMenu extends JPopupMenu {
           model.setColumnIdentifiers(columnNames);
         }
       }
-    }
-  };
-  protected int index = -1;
-
-  protected TablePopupMenu(String... arrays) {
-    super();
-    columnNames = new String[arrays.length];
-    System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
-    textField.addAncestorListener(new AncestorListener() {
-      @Override public void ancestorAdded(AncestorEvent e) {
-        textField.requestFocusInWindow();
-      }
-
-      @Override public void ancestorMoved(AncestorEvent e) {
-        /* not needed */
-      }
-
-      @Override public void ancestorRemoved(AncestorEvent e) {
-        /* not needed */
-      }
     });
-    add(editAction1);
-    add(editAction2);
   }
 
   @Override public void show(Component c, int x, int y) {
@@ -134,5 +117,19 @@ class TablePopupMenu extends JPopupMenu {
       index = header.columnAtPoint(new Point(x, y));
       super.show(c, x, y);
     }
+  }
+}
+
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
   }
 }
