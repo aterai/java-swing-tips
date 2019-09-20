@@ -162,9 +162,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
       MouseEvent me = (MouseEvent) e;
       JTree tree = (JTree) me.getComponent();
       TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-      Object o = path.getLastPathComponent();
-      if (o instanceof TreeNode) {
-        return ((TreeNode) o).isLeaf();
+      if (path != null && path.getLastPathComponent() instanceof TreeNode) {
+        return ((TreeNode) path.getLastPathComponent()).isLeaf();
       }
     }
     return false;
