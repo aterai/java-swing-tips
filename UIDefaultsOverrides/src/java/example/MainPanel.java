@@ -232,15 +232,13 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
     return this;
   }
 
-  /**
-   * Calculate the new preferred height for a given row, and sets the height on the table.
-   * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
-   */
+  // Calculate the new preferred height for a given row, and sets the height on the table.
+  // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
   private int getAdjustedRowHeight(int row, int column) {
-    // The trick to get this to work properly is to set the width of the column to the
-    // textarea. The reason for this is that getPreferredSize(), without a width tries
+    // The trick for this to work properly is to set the width of the column to the
+    // text area. The reason for this is that getPreferredSize(), without a width tries
     // to place all the text in one line. By setting the size with the width of the column,
-    // getPreferredSize() returnes the proper height which the row should have in
+    // getPreferredSize() returns the proper height which the row should have in
     // order to make room for the text.
     // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
     // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
