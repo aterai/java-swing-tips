@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private final JTextField field = new JTextField("foo");
   private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
@@ -67,9 +67,9 @@ public final class MainPanel extends JPanel {
         tree.expandPath(path.getParentPath());
       }
       if (!node.isLeaf()) {
-        // Java 9: Collections.list(node.children()).stream()
-        Collections.list((Enumeration<?>) node.children()).stream()
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+        // Java 9: Collections.list(node.children())
+        Collections.list((Enumeration<?>) node.children())
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
       }
     }
   }
@@ -77,9 +77,9 @@ public final class MainPanel extends JPanel {
   private static void collapseAll(JTree tree, TreePath parent) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     if (!node.isLeaf()) {
-      // Java 9: Collections.list(node.children()).stream()
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(parent::pathByAddingChild);
+      // Java 9: Collections.list(node.children())
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(parent::pathByAddingChild);
     }
     tree.collapsePath(parent);
   }

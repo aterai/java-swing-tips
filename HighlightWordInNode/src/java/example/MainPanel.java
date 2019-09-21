@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
     }
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children())
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
     }
   }
 
@@ -80,8 +80,8 @@ public final class MainPanel extends JPanel {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children())
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(n -> collapseAll(tree, parent.pathByAddingChild(n)));
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(n -> collapseAll(tree, parent.pathByAddingChild(n)));
     }
     tree.collapsePath(parent);
   }

@@ -26,11 +26,11 @@ public class MainPanel extends JPanel {
   protected boolean isHidden = true;
   protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
     private int controlsHeight;
-    private int controlsPreferredHeight;
+
     @Override public Dimension preferredLayoutSize(Container target) {
       // synchronized (target.getTreeLock()) {
       Dimension ps = super.preferredLayoutSize(target);
-      controlsPreferredHeight = ps.height;
+      int controlsPreferredHeight = ps.height;
       if (animator.isRunning()) {
         if (isHidden) {
           if (controls.getHeight() < controlsPreferredHeight) {
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     button.setAction(findNextAction);
@@ -108,9 +108,9 @@ public class MainPanel extends JPanel {
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
-    getActionMap().put("open-searchbox", showHideAction);
+    InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-search-box");
+    getActionMap().put("open-search-box", showHideAction);
 
     add(controls, BorderLayout.NORTH);
     add(new JScrollPane(tree));
@@ -125,13 +125,13 @@ public class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("33333"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-    set2.add(new DefaultMutableTreeNode("asdf"));
+    set2.add(new DefaultMutableTreeNode("asd fas df as"));
+    set2.add(new DefaultMutableTreeNode("as df"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-    set3.add(new DefaultMutableTreeNode("qwerqwer"));
-    set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+    set3.add(new DefaultMutableTreeNode("asd fas dfa sdf"));
+    set3.add(new DefaultMutableTreeNode("qwe rqw er"));
+    set3.add(new DefaultMutableTreeNode("zvx cvz xcv zxz xcv zx cv"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
     root.add(set1);
@@ -150,14 +150,14 @@ public class MainPanel extends JPanel {
       }
       if (!node.isLeaf()) {
         // Java 9: Collections.list(node.children())
-        Collections.list((Enumeration<?>) node.children()).stream()
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
+        Collections.list((Enumeration<?>) node.children())
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
       }
     }
   }
 
   // // <blockquote cite="https://community.oracle.com/thread/1357454"
-  // //       title="how to get everything in DefaultTreeNode">
+  // //     title="how to get everything in DefaultTreeNode">
   // public void traverse(JTree tree) {
   //   TreeModel model = tree.getModel();
   //   Object root;
@@ -180,7 +180,7 @@ public class MainPanel extends JPanel {
   //     }
   //   }
   // }
-  // // <blockquote />
+  // // </blockquote>
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);

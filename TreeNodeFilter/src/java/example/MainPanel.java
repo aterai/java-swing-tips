@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
   private final JTextField field = new JTextField("foo");
   private final JTree tree = new JTree();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
 
     field.getDocument().addDocumentListener(new DocumentListener() {
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(DefaultMutableTreeNode.class::cast)
-      .forEach(node -> node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), ""))));
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(node -> node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), ""))));
 
     model.addTreeModelListener(new FilterableStatusUpdateListener());
 
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     String q = field.getText();
     TreePath rtp = tree.getPathForRow(0);
     if (q.isEmpty()) {
-      TreeUtil.resetAll(tree, rtp, true);
+      TreeUtil.resetAll(rtp, true);
       ((DefaultTreeModel) tree.getModel()).reload();
       // TreeUtil.visitAll(tree, rtp, true);
     } else {
@@ -220,32 +220,31 @@ final class TreeUtil {
         tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
       }
       if (!uo.status && !node.isLeaf()) {
-        // Java 9: return Collections.list(node.children())
+        // Java 9: return Collections.list(node.children()).stream()
         Collections.list((Enumeration<?>) node.children()).stream()
-          .filter(TreeNode.class::isInstance)
-          .map(TreeNode.class::cast)
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+            .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
       }
     }
   }
 
-  public static void resetAll(JTree tree, TreePath parent, boolean match) {
+  public static void resetAll(TreePath parent, boolean match) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
     FilterableNode uo = (FilterableNode) node.getUserObject();
     uo.status = match;
     if (!node.isLeaf()) {
-      // Java 9: Collections.list(node.children()).stream()
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(n -> resetAll(tree, parent.pathByAddingChild(n), match));
+      // Java 9: Collections.list(node.children())
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(n -> resetAll(parent.pathByAddingChild(n), match));
     }
   }
 
   public static void visitAll(JTree tree, TreePath parent, boolean expand) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     if (!node.isLeaf()) {
-      // Java 9: Collections.list(node.children()).stream()
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+      // Java 9: Collections.list(node.children())
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
     }
     if (expand) {
       tree.expandPath(parent);

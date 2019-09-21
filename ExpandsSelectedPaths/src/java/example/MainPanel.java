@@ -56,9 +56,9 @@ public final class MainPanel extends JPanel {
         tree.addSelectionPath(path);
       }
       if (!node.isLeaf()) {
-        // Java 9: Collections.list(node.children()).stream()
-        Collections.list((Enumeration<?>) node.children()).stream()
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+        // Java 9: Collections.list(node.children())
+        Collections.list((Enumeration<?>) node.children())
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
       }
     }
   }
