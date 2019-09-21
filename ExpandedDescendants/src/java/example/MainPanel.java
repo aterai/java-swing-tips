@@ -17,7 +17,7 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private Enumeration<TreePath> expandedState;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     DefaultMutableTreeNode root = makeTreeRoot();
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
       if (Objects.isNull(expandedState)) {
         return;
       }
-      Collections.list(getExpandedState()).stream().forEach(tree::expandPath);
+      Collections.list(getExpandedState()).forEach(tree::expandPath);
       setExpandedState(tree.getExpandedDescendants(rootPath));
     });
 
@@ -88,8 +88,8 @@ public final class MainPanel extends JPanel {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children())
-      Collections.list((Enumeration<?>) node.children()).stream()
-        .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+      Collections.list((Enumeration<?>) node.children())
+          .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
     }
     if (expand) {
       tree.expandPath(parent);
@@ -101,9 +101,9 @@ public final class MainPanel extends JPanel {
   protected static DefaultMutableTreeNode makeTreeRoot() {
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
     set4.add(new DefaultMutableTreeNode("22222222222"));
-    set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
-    set4.add(new DefaultMutableTreeNode("zzzzzzz"));
+    set4.add(new DefaultMutableTreeNode("eee eee eee eee"));
+    set4.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set4.add(new DefaultMutableTreeNode("zzz zz zz"));
 
     DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
     set1.add(new DefaultMutableTreeNode("3333333333333333"));
@@ -114,22 +114,22 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("222222222"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    set2.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
+    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("zzzzzzz"));
-    set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
-    set3.add(new DefaultMutableTreeNode("ccccccccc"));
+    set3.add(new DefaultMutableTreeNode("zzz zz zz"));
+    set3.add(new DefaultMutableTreeNode("aaa aaa aaa aaa"));
+    set3.add(new DefaultMutableTreeNode("ccc ccc ccc"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-    root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxx"));
+    root.add(new DefaultMutableTreeNode("xxx xxx xxx xx xx"));
     root.add(set3);
-    root.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
+    root.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
     root.add(set1);
     root.add(set2);
     root.add(new DefaultMutableTreeNode("222222222222"));
-    root.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    root.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
     return root;
   }
 
