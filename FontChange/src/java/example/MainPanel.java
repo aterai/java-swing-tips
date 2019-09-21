@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 
-public class MainPanel extends JPanel {
-  protected static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-  protected static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
-  protected static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
+public final class MainPanel extends JPanel {
+  private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+  private static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+  private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JToggleButton tgb12 = new JToggleButton("12");
@@ -64,16 +64,21 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void updateFont(Font font) {
+  private void updateFont(Font font) {
     FontUIResource fontResource = new FontUIResource(font);
     // for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
     //   if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
     //     UIManager.put(o, fontResource);
     //   }
     // }
-    UIManager.getLookAndFeelDefaults().entrySet().stream()
-      .filter(e -> e.getKey().toString().toLowerCase(Locale.ENGLISH).endsWith("font"))
-      .forEach(e -> UIManager.put(e.getKey(), fontResource));
+    // UIManager.getLookAndFeelDefaults().entrySet().stream()
+    //     .filter(e -> e.getKey().toString().toLowerCase(Locale.ENGLISH).endsWith("font"))
+    //     .forEach(e -> UIManager.put(e.getKey(), fontResource));
+    UIManager.getLookAndFeelDefaults().forEach((key, value) -> {
+      if (key.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
+        UIManager.put(key, fontResource);
+      }
+    });
     recursiveUpdateUI(this); // SwingUtilities.updateComponentTreeUI(this);
     Container c = getTopLevelAncestor();
     if (c instanceof Window) {
@@ -83,9 +88,7 @@ public class MainPanel extends JPanel {
 
   private static void recursiveUpdateUI(Container p) {
     for (Component c: p.getComponents()) {
-      if (c instanceof JToolBar) {
-        continue;
-      } else if (c instanceof JComponent) {
+      if (c instanceof JComponent && !(c instanceof JToolBar)) {
         JComponent jc = (JComponent) c;
         jc.updateUI();
         if (jc.getComponentCount() > 0) {
