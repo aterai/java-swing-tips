@@ -173,7 +173,7 @@ final class TreeUtil {
       int min = i;
       for (int j = i + 1; j < n; j++) {
         if (tnc.compare((DefaultMutableTreeNode) parent.getChildAt(min),
-                        (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
+            (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
           min = j;
         }
       }
@@ -193,10 +193,10 @@ final class TreeUtil {
   public static void sortTree2(DefaultMutableTreeNode parent) {
     // Java 9: Collections.list(parent.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(DefaultMutableTreeNode.class::cast)
-      .filter(node -> !node.isLeaf())
-      .forEach(TreeUtil::sort2);
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .filter(node -> !node.isLeaf())
+        .forEach(TreeUtil::sort2);
   }
 
   private static void sort3(DefaultMutableTreeNode parent) {
@@ -210,7 +210,7 @@ final class TreeUtil {
       children.add((DefaultMutableTreeNode) parent.getChildAt(i));
     }
 
-    Collections.sort(children, tnc);
+    children.sort(tnc);
     parent.removeAllChildren();
     children.forEach(parent::add);
   }
@@ -218,10 +218,10 @@ final class TreeUtil {
   public static void sortTree3(DefaultMutableTreeNode parent) {
     // Java 9: Collections.list(parent.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(DefaultMutableTreeNode.class::cast)
-      .filter(node -> !node.isLeaf())
-      .forEach(TreeUtil::sort3);
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .filter(node -> !node.isLeaf())
+        .forEach(TreeUtil::sort3);
   }
 
   public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
@@ -259,27 +259,27 @@ final class TreeUtil {
     set1.add(new DefaultMutableTreeNode("222222222"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    set2.add(new DefaultMutableTreeNode("eee eee eee eee e"));
+    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("zzzzzzz"));
-    set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
-    set3.add(new DefaultMutableTreeNode("ccccccccc"));
+    set3.add(new DefaultMutableTreeNode("zzz zz zz"));
+    set3.add(new DefaultMutableTreeNode("aaa aaa aaa aaa"));
+    set3.add(new DefaultMutableTreeNode("ccc ccc ccc"));
 
     set4.add(new DefaultMutableTreeNode("22222222222"));
-    set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
-    set4.add(new DefaultMutableTreeNode("zzzzzzz"));
+    set4.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
+    set4.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set4.add(new DefaultMutableTreeNode("zzz zz zz"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-    root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxx"));
+    root.add(new DefaultMutableTreeNode("xxx xxx xxx xx xx"));
     root.add(set3);
-    root.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
+    root.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
     root.add(set1);
     root.add(set2);
     root.add(new DefaultMutableTreeNode("222222222222"));
-    root.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    root.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
     return root;
   }
 
