@@ -163,7 +163,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      EventQueue.invokeLater(() -> fireEditingStopped());
+      EventQueue.invokeLater(ButtonsEditor.this::fireEditingStopped);
     }
   }
 
