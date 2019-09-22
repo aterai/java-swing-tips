@@ -44,31 +44,36 @@ public final class MainPanel extends JPanel {
 }
 
 class RowSelectionTree extends JTree {
-  public static final Color SELC = new Color(0x64_96_C8);
+  private static final Color SELECTED_COLOR = new Color(0x64_96_C8);
   // private Handler handler;
 
   @Override protected void paintComponent(Graphics g) {
+    int[] sr = getSelectionRows();
+    if (sr == null) {
+      super.paintComponent(g);
+      return;
+    }
     g.setColor(getBackground());
     g.fillRect(0, 0, getWidth(), getHeight());
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(SELC);
-    // for (int i: getSelectionRows()) {
+    g2.setPaint(SELECTED_COLOR);
+    // for (int i: sr) {
     //   Rectangle r = getRowBounds(i);
     //   g2.fillRect(0, r.y, getWidth(), r.height);
     // }
-    Arrays.stream(getSelectionRows()).mapToObj(this::getRowBounds)
+    Arrays.stream(sr).mapToObj(this::getRowBounds)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
     super.paintComponent(g);
     if (hasFocus()) {
       Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
         Rectangle r = getRowBounds(getRowForPath(path));
-        g2.setPaint(SELC.darker());
+        g2.setPaint(SELECTED_COLOR.darker());
         g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
       });
       // TreePath path = getLeadSelectionPath();
       // if (Objects.nonNull(path)) {
       //   Rectangle r = getRowBounds(getRowForPath(path));
-      //   g2.setPaint(SELC.darker());
+      //   g2.setPaint(SELECTED_COLOR.darker());
       //   g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
       // }
     }
@@ -105,7 +110,7 @@ class RowSelectionTree extends JTree {
   private static class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
       JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      l.setBackground(selected ? SELC : tree.getBackground());
+      l.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
       l.setOpaque(true);
       return l;
     }

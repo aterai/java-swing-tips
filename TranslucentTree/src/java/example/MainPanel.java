@@ -78,18 +78,23 @@ class TranslucentTree extends JTree {
 
 class TransparentTree extends JTree {
   // https://ateraimemo.com/Swing/TreeRowSelection.html
-  public static final Color SELC = new Color(0x64_64_64_FF, true);
+  private static final Color SELECTED_COLOR = new Color(0x64_64_64_FF, true);
 
   @Override protected void paintComponent(Graphics g) {
+    int[] sr = getSelectionRows();
+    if (sr == null) {
+      super.paintComponent(g);
+      return;
+    }
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(SELC);
+    g2.setPaint(SELECTED_COLOR);
     Arrays.stream(getSelectionRows()).mapToObj(this::getRowBounds)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
     super.paintComponent(g);
     if (hasFocus()) {
       Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
         Rectangle r = getRowBounds(getRowForPath(path));
-        g2.setPaint(SELC.darker());
+        g2.setPaint(SELECTED_COLOR.darker());
         g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
       });
     }
