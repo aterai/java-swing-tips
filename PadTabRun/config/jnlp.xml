@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST PadTabRun" />
+  <property name="jnlp.Name"     value="PadTabRun" />
+  <property name="jnlp.name"     value="padtabrun" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/padtabrun/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PadTabRun.html" />
+</project>
