@@ -4,12 +4,12 @@
 
 package example;
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
