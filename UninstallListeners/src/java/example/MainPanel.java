@@ -15,14 +15,27 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
-  private final JSlider slider0 = new JSlider(0, 100, 50);
-  private final JSlider slider1 = new JSlider(0, 100, 50);
-  private final JSlider slider2 = new JSlider(0, 100, 50) {
-    @Override public void updateUI() {
-      super.updateUI();
-      JSlider slider = this;
-      AccessController.doPrivileged(new PrivilegedAction<Void>() {
-        @Override public Void run() {
+  private MainPanel() {
+    super(new BorderLayout());
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    JSlider slider0 = new JSlider(0, 100, 50);
+    box.add(makeTitledSeparator("Default", slider0));
+    box.add(Box.createVerticalStrut(2));
+
+    JSlider slider1 = new JSlider(0, 100, 50);
+    slider1.setEnabled(false);
+    box.add(makeTitledSeparator("JSlider#setEnabled(false)", slider1));
+    box.add(Box.createVerticalStrut(2));
+
+    // https://community.oracle.com/thread/1360123
+    JSlider slider2 = new JSlider(0, 100, 50) {
+      @Override
+      public void updateUI() {
+        super.updateUI();
+        JSlider slider = this;
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
           try {
             // https://community.oracle.com/thread/1360123
             Class<BasicSliderUI> uiClass = BasicSliderUI.class;
@@ -36,40 +49,34 @@ public final class MainPanel extends JPanel {
             throw new UnsupportedOperationException(ex);
           }
           return null;
-        }
-      });
-    }
-  };
-  private final JSlider slider3 = new JSlider(0, 100, 50) {
-    @Override public void updateUI() {
-      super.updateUI();
-      setFocusable(false); // uninstallKeyboardActions
-      for (MouseListener l: getMouseListeners()) {
-        removeMouseListener(l);
+        });
       }
-      for (MouseMotionListener l: getMouseMotionListeners()) {
-        removeMouseMotionListener(l);
-      }
-      // removeFocusListener(focusListener);
-      // removeComponentListener(componentListener);
-      // removePropertyChangeListener(propertyChangeListener);
-      // getModel().removeChangeListener(changeListener);
-    }
-  };
-
-  public MainPanel() {
-    super(new BorderLayout());
-    slider1.setEnabled(false);
-
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-    box.add(makeTitledSeparator("Default", slider0));
-    box.add(Box.createVerticalStrut(2));
-    box.add(makeTitledSeparator("JSlider#setEnabled(false)", slider1));
-    box.add(Box.createVerticalStrut(2));
+    };
     box.add(makeTitledSeparator("BasicSliderUI#uninstallListeners(...)", slider2));
     box.add(Box.createVerticalStrut(2));
+    // uninstallKeyboardActions
+    // removeFocusListener(focusListener);
+    // removeComponentListener(componentListener);
+    // removePropertyChangeListener(propertyChangeListener);
+    // getModel().removeChangeListener(changeListener);
+
+    JSlider slider3 = new JSlider(0, 100, 50) {
+      @Override
+      public void updateUI() {
+        super.updateUI();
+        setFocusable(false); // uninstallKeyboardActions
+        for (MouseListener l : getMouseListeners()) {
+          removeMouseListener(l);
+        }
+        for (MouseMotionListener l : getMouseMotionListeners()) {
+          removeMouseMotionListener(l);
+        }
+        // removeFocusListener(focusListener);
+        // removeComponentListener(componentListener);
+        // removePropertyChangeListener(propertyChangeListener);
+        // getModel().removeChangeListener(changeListener);
+      }
+    };
     box.add(makeTitledSeparator("JSlider#removeMouseListener(...)", slider3));
     box.add(Box.createVerticalGlue());
 
