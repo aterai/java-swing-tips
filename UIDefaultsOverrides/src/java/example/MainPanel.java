@@ -22,20 +22,22 @@ public final class MainPanel extends JPanel {
     {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
     {"A2, Line1", "B2, Line1", "C2, Line1"}
   };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
 
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-  };
-  private final JTable table1 = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new GridLayout(2, 0));
 
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override
+      public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    JTable table1 = new JTable(model);
     table1.setAutoCreateRowSorter(true);
     table1.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
 
@@ -44,10 +46,13 @@ public final class MainPanel extends JPanel {
 
     // https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/_nimbusDefaults.html
     UIDefaults d = new UIDefaults();
-    d.put("TextArea.borderPainter", new Painter<JComponent>() {
-      @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-        /* Empty painter */
-      }
+    // d.put("TextArea.borderPainter", new Painter<JComponent>() {
+    //   @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
+    //     /* Empty painter */
+    //   }
+    // });
+    d.put("TextArea.borderPainter", (Painter<JComponent>) (g, c, w, h) -> {
+      /* Empty painter */
     });
     MultiLineTableCellRenderer r = new MultiLineTableCellRenderer();
     r.putClientProperty("Nimbus.Overrides", d);
@@ -73,13 +78,13 @@ public final class MainPanel extends JPanel {
   }
 
   private JCheckBoxMenuItem makeJCheckBoxMenuItem(String title, UIDefaults d) {
-    JCheckBoxMenuItem cbmi = new JCheckBoxMenuItem(title);
-    cbmi.putClientProperty("Nimbus.Overrides", d);
-    cbmi.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
-    return cbmi;
+    JCheckBoxMenuItem mi = new JCheckBoxMenuItem(title);
+    mi.putClientProperty("Nimbus.Overrides", d);
+    mi.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+    return mi;
   }
 
-  public JMenuBar createMenuBar() {
+  private JMenuBar createMenuBar() {
     UIDefaults d = new UIDefaults();
     d.put("CheckBoxMenuItem[Enabled].checkIconPainter",
         new MyCheckBoxMenuItemPainter(CheckIcon.ENABLED));
@@ -96,14 +101,14 @@ public final class MainPanel extends JPanel {
     menu.add(makeJCheckBoxMenuItem("Test1", d));
     menu.add(makeJCheckBoxMenuItem("Test2", d));
     menu.add(makeJCheckBoxMenuItem("Test3", d));
-    JCheckBoxMenuItem cbmi1 = makeJCheckBoxMenuItem("Test4", d);
-    cbmi1.setSelected(true);
-    cbmi1.setEnabled(false);
-    menu.add(cbmi1);
-    JCheckBoxMenuItem cbmi2 = makeJCheckBoxMenuItem("Test5", d);
-    cbmi2.setSelected(false);
-    cbmi2.setEnabled(false);
-    menu.add(cbmi2);
+    JCheckBoxMenuItem cmi1 = makeJCheckBoxMenuItem("Test4", d);
+    cmi1.setSelected(true);
+    cmi1.setEnabled(false);
+    menu.add(cmi1);
+    JCheckBoxMenuItem cmi2 = makeJCheckBoxMenuItem("Test5", d);
+    cmi2.setSelected(false);
+    cmi2.setEnabled(false);
+    menu.add(cmi2);
     menuBar.add(menu);
     return menuBar;
   }
@@ -128,12 +133,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum CheckIcon {
-  ENABLED_SELECTED,
-  SELECTED_MOUSEOVER,
-  ENABLED,
-  MOUSEOVER;
-}
+enum CheckIcon { ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER }
 
 // @see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
@@ -150,7 +150,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     this.ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1d, 1d);
   }
 
-  @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] eckey) {
+  @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] keys) {
     switch (state) {
       case ENABLED:
         paintcheckIconEnabled(g);

@@ -22,13 +22,11 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     def.put("nimbusOrange", new Color(255, 220, 35, 200));
 
     UIDefaults d = new UIDefaults();
-    Painter<JComponent> painter = new Painter<JComponent>() {
-      @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
-        g.setColor(new Color(100, 250, 120, 50));
-        g.fillRect(0, 0, w, h);
-        g.setColor(new Color(100, 250, 120, 150));
-        g.fillRect(3, h / 2, w - 6, h / 2 - 2);
-      }
+    Painter<JComponent> painter = (g, c, w, h) -> {
+      g.setColor(new Color(100, 250, 120, 50));
+      g.fillRect(0, 0, w, h);
+      g.setColor(new Color(100, 250, 120, 150));
+      g.fillRect(3, h / 2, w - 6, h / 2 - 2);
     };
     d.put("ProgressBar[Enabled].foregroundPainter", painter);
     d.put("ProgressBar[Enabled+Finished].foregroundPainter", painter);
