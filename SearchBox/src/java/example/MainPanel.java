@@ -53,11 +53,6 @@ public final class MainPanel extends JPanel {
 
     field.getActionMap().put("find-next", findNextAction);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
-    // EventQueue.invokeLater(new Runnable() {
-    //   @Override public void run() {
-    //     SwingUtilities.getRootPane(button).setDefaultButton(button);
-    //   }
-    // });
 
     JPanel controls = new JPanel();
     ControlPanelLayout layout = new ControlPanelLayout(controls, 5, 5);
