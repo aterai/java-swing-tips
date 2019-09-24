@@ -41,18 +41,16 @@ public final class MainPanel extends JPanel {
     // }
     // if (bs == null) {
     if (splitPane.getUI() instanceof BasicSplitPaneUI) {
-      AccessController.doPrivileged(new PrivilegedAction<Void>() {
-        @Override public Void run() {
-          try {
-            splitPane.setDividerLocation(0);
-            Method m = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[] {Boolean.TYPE});
-            m.setAccessible(true);
-            m.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
-          } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            throw new UnsupportedOperationException(ex);
-          }
-          return null;
+      AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+        try {
+          splitPane.setDividerLocation(0);
+          Method m = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", Boolean.TYPE);
+          m.setAccessible(true);
+          m.invoke(splitPane.getUI(), Boolean.TRUE);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+          throw new UnsupportedOperationException(ex);
         }
+        return null;
       });
     }
     // } else {
