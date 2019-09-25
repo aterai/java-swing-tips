@@ -27,6 +27,9 @@ public final class MainPanel extends JPanel {
     UIManager.put("TabbedPane.contentAreaColor", fgc);
     UIManager.put("TabbedPane.selected", fgc);
     UIManager.put("TabbedPane.selectHighlight", fgc);
+    // UIManager.put("TabbedPane.borderHighlightColor", fgc); // Do not work
+    // Maybe "TabbedPane.borderHightlightColor" is a typo,
+    // but this is defined in MetalTabbedPaneUI
     UIManager.put("TabbedPane.borderHightlightColor", fgc);
 
     JPanel tab1panel = new JPanel();

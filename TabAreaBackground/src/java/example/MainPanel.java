@@ -25,22 +25,22 @@ public final class MainPanel extends JPanel {
     // UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8, 8, 8, 8));
 
     // Color
-    // UIManager.put("TabbedPane.shadow",        Color.GRAY);
-    // UIManager.put("TabbedPane.darkShadow",      Color.GRAY);
-    // UIManager.put("TabbedPane.light",         Color.GRAY);
-    // UIManager.put("TabbedPane.highlight",       Color.GRAY);
-    // UIManager.put("TabbedPane.tabAreaBackground",   Color.GRAY);
-    // UIManager.put("TabbedPane.unselectedBackground",  Color.GRAY);
-    // UIManager.put("TabbedPane.background",      Color.GRAY);
-    // UIManager.put("TabbedPane.foreground",      Color.WHITE);
-    // UIManager.put("TabbedPane.focus",         Color.WHITE);
-    // UIManager.put("TabbedPane.contentAreaColor",    Color.WHITE);
-    // UIManager.put("TabbedPane.selected",        Color.WHITE);
-    // UIManager.put("TabbedPane.selectHighlight",     Color.WHITE);
+    // UIManager.put("TabbedPane.shadow", Color.GRAY);
+    // UIManager.put("TabbedPane.darkShadow", Color.GRAY);
+    // UIManager.put("TabbedPane.light", Color.GRAY);
+    // UIManager.put("TabbedPane.highlight", Color.GRAY);
+    // UIManager.put("TabbedPane.tabAreaBackground", Color.GRAY);
+    // UIManager.put("TabbedPane.unselectedBackground", Color.GRAY);
+    // UIManager.put("TabbedPane.background", Color.GRAY);
+    // UIManager.put("TabbedPane.foreground", Color.WHITE);
+    // UIManager.put("TabbedPane.focus", Color.WHITE);
+    // UIManager.put("TabbedPane.contentAreaColor", Color.WHITE);
+    // UIManager.put("TabbedPane.selected", Color.WHITE);
+    // UIManager.put("TabbedPane.selectHighlight", Color.WHITE);
     // UIManager.put("TabbedPane.borderHightlightColor", Color.WHITE);
 
     // Opaque
-    // UIManager.put("TabbedPane.tabsOpaque",  Boolean.FALSE);
+    // UIManager.put("TabbedPane.tabsOpaque", Boolean.FALSE);
     // UIManager.put("TabbedPane.contentOpaque", Boolean.FALSE);
 
     // ???
@@ -60,6 +60,9 @@ public final class MainPanel extends JPanel {
     map.put("TabbedPane.contentAreaColor", Color.WHITE);
     map.put("TabbedPane.selected", Color.WHITE);
     map.put("TabbedPane.selectHighlight", Color.WHITE);
+    // map.put("TabbedPane.borderHighlightColor", Color.WHITE); // Do not work
+    // Maybe "TabbedPane.borderHightlightColor" is a typo,
+    // but this is defined in MetalTabbedPaneUI
     map.put("TabbedPane.borderHightlightColor", Color.WHITE);
     // for (Map.Entry<String, Color> entry: map.entrySet()) {
     //   UIManager.put(entry.getKey(), entry.getValue());
