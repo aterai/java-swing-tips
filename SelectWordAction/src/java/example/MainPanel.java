@@ -83,7 +83,7 @@ final class TextUtils {
     /* HideUtilityClassConstructor */
   }
 
-  // @see javax.swint.text.Utilities.getWordStart(...)
+  // @see javax.swing.text.Utilities.getWordStart(...)
   public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
     Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
         .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
@@ -117,7 +117,7 @@ final class TextUtils {
     return offs2;
   }
 
-  // @see javax.swint.text.Utilities.getWordEnd(...)
+  // @see javax.swing.text.Utilities.getWordEnd(...)
   public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
     Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
         .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
