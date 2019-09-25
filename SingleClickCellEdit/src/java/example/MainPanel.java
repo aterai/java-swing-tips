@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     // col.setMaxWidth(50);
     // col.setResizable(false);
 
-    TableCellRenderer defaultRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(Object.class);
+    TableCellRenderer defaultRenderer = table.getDefaultRenderer(Object.class);
     UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
     DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
     modelCheck.addActionListener(e -> {
