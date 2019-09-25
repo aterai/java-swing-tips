@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(handler);
 
     // Java 9
-    // JCheckBoxMenuItem checkMenuItem = new JCheckBoxMenuItemd("doNotCloseOnMouseClick");
+    // JCheckBoxMenuItem checkMenuItem = new JCheckBoxMenuItem("doNotCloseOnMouseClick");
     // checkMenuItem.putClientProperty("CheckBoxMenuItem.doNotCloseOnMouseClick", true);
     // popup.add(checkMenuItem);
 
