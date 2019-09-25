@@ -160,9 +160,7 @@ class DragWindowListener extends MouseAdapter {
   }
 }
 
-enum SlideInAnimation {
-  EASE_IN, EASE_OUT, EASE_IN_OUT;
-}
+enum SlideInAnimation { EASE_IN, EASE_OUT, EASE_IN_OUT }
 
 final class AnimationUtil {
   private static final int N = 3;

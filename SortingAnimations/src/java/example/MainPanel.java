@@ -213,6 +213,4 @@ enum SortAlgorithms {
   }
 }
 
-enum GenerateInputs {
-  RANDOM, ASCENDING, DESCENDING;
-}
+enum GenerateInputs { RANDOM, ASCENDING, DESCENDING }

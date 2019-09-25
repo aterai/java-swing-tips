@@ -154,9 +154,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum PasswordField {
-  SHOW, HIDE;
-}
+enum PasswordField { SHOW, HIDE }
 
 // class ASCIIOnlyDocumentFilter extends DocumentFilter {
 //   // private static Pattern pattern = Pattern.compile("\\A\\p{ASCII}*\\z");

@@ -21,13 +21,9 @@ import javax.swing.text.StyledDocument;
 public final class MainPanel extends JPanel {
   private static final String FILE_NAME = "example.txt";
   private final SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, 6, 1);
-  private final JSpinner spinner1 = new JSpinner(model1);
   private final SpinnerNumberModel model2 = new SpinnerNumberModel(2, 0, 6, 1);
-  private final JSpinner spinner2 = new JSpinner(model2);
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
   private final JTextPane jtp = new JTextPane();
-  private final JButton ok = new JButton("Create new " + FILE_NAME);
-  private final JButton clear = new JButton("clear");
 
   public MainPanel() {
     super(new BorderLayout());
@@ -41,6 +37,7 @@ public final class MainPanel extends JPanel {
     StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
     StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
 
+    JButton ok = new JButton("Create new " + FILE_NAME);
     ok.addActionListener(e -> {
       File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
       new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
@@ -74,6 +71,8 @@ public final class MainPanel extends JPanel {
         }
       }.execute();
     });
+
+    JButton clear = new JButton("clear");
     clear.addActionListener(e -> jtp.setText(""));
 
     Box box = Box.createHorizontalBox();
@@ -83,17 +82,18 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(5));
     box.add(clear);
 
+    JSpinner spinner1 = new JSpinner(model1);
     JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0");
     editor1.getTextField().setEditable(false);
     spinner1.setEditor(editor1);
 
+    JSpinner spinner2 = new JSpinner(model2);
     JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(spinner2, "0");
     editor2.getTextField().setEditable(false);
     spinner2.setEditor(editor2);
 
-    ChangeListener cl = e -> {
-      label.setText(Objects.toString(model1.getNumber().intValue() + model2.getNumber().intValue()));
-    };
+    ChangeListener cl = e -> label.setText(
+        Objects.toString(model1.getNumber().intValue() + model2.getNumber().intValue()));
     model1.addChangeListener(cl);
     model2.addChangeListener(cl);
 
@@ -151,11 +151,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum MessageType {
-  REGULAR,
-  ERROR,
-  BLUE;
-}
+enum MessageType { REGULAR, ERROR, BLUE }
 
 class Message {
   public final String text;
@@ -273,4 +269,3 @@ class BackgroundTask extends SwingWorker<File, Message> {
     return String.format("%s.%d~", name, num);
   }
 }
-
