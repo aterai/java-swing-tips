@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.synth.Region;
@@ -80,12 +79,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     return style.getInsets(context, null);
   }
 
-  protected Insets getTabInsets() {
+  private Insets getTabInsets() {
     return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
         .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
   }
 
-  protected Insets getTabAreaInsets() {
+  private Insets getTabAreaInsets() {
     return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
         .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
   }
@@ -124,12 +123,13 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   //   setTabComponentAt(index, new JLabel(title, icon, SwingConstants.CENTER));
   // }
 
-  protected void updateAllTabWidth(int tabWidth, int gap) {
+  private void updateAllTabWidth(int tabWidth, int gap) {
     Dimension dim = new Dimension();
     int rest = gap;
     for (int i = 0; i < getTabCount(); i++) {
-      JComponent tab = (JComponent) getTabComponentAt(i);
-      if (Objects.nonNull(tab)) {
+      Component c = getTabComponentAt(i);
+      if (c instanceof JComponent) {
+        JComponent tab = (JComponent) c;
         int a = (i == getTabCount() - 1) ? rest : 1;
         int w = rest > 0 ? tabWidth + a : tabWidth;
         dim.setSize(w, tab.getPreferredSize().height);

@@ -49,8 +49,8 @@ public final class MainPanel extends JPanel {
       }
     };
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabbedPane.addTab("aaaa", new JLabel("aaa"));
-    tabbedPane.addTab("bbbbbb", new JLabel("bbb"));
+    tabbedPane.addTab("aa aa", new JLabel("aaa"));
+    tabbedPane.addTab("bbb bbb", new JLabel("bbb"));
     tabbedPane.addTab("ccc", new JLabel("ccc"));
     tabbedPane.addTab("d", new JLabel("ddd"));
     tabbedPane.addTab("ee", new JLabel("eee"));
@@ -177,8 +177,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     Dimension dim = new Dimension();
     int rest = gap;
     for (int i = 0; i < getTabCount(); i++) {
-      JComponent tab = (JComponent) getTabComponentAt(i);
-      if (Objects.nonNull(tab)) {
+      Component c = getTabComponentAt(i);
+      if (c instanceof JComponent) {
+        JComponent tab = (JComponent) c;
         int a = (i == getTabCount() - 1) ? rest : 1;
         int w = rest > 0 ? tabWidth + a : tabWidth;
         dim.setSize(w, tab.getPreferredSize().height);
