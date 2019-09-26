@@ -221,13 +221,13 @@ class TableRowTransferHandler extends TransferHandler {
     // for (int i: indices) {
     //   list.add(model.getDataVector().get(i));
     // }
-    // Object[] transferedObjects = list.toArray();
+    // Object[] transferredObjects = list.toArray();
     indices = table.getSelectedRows();
     @SuppressWarnings("JdkObsolete")
-    List<?> transferedObjects = Arrays.stream(indices)
+    List<?> transferredObjects = Arrays.stream(indices)
         .mapToObj(model.getDataVector()::get)
         .collect(Collectors.toList());
-    // return new DataHandler(transferedObjects, FLAVOR.getMimeType());
+    // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -239,7 +239,7 @@ class TableRowTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (isDataFlavorSupported(flavor)) {
-          return transferedObjects;
+          return transferredObjects;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -280,9 +280,8 @@ class TableRowTransferHandler extends TransferHandler {
         }
         Point pt = SwingUtilities.convertPoint(target, info.getDropLocation().getDropPoint(), dp);
         Rectangle rect = sf.getBounds().intersection(tf.getBounds());
-        if (rect.contains(pt)) {
-          return false;
-        }
+        // if (rect.contains(pt)) { return false; }
+        return !rect.contains(pt);
         // tf.moveToFront();
         // tf.getParent().repaint();
       }
