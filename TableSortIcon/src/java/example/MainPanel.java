@@ -31,16 +31,14 @@ public final class MainPanel extends JPanel {
   private final Icon customAscendingSortIcon = new ImageIcon(getClass().getResource("ascending.png"));
   private final Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
 
-  private final JButton clearButton = new JButton("clear SortKeys");
-
   private Box makeRadioPane() {
     JRadioButton r0 = new JRadioButton("Default", true);
     JRadioButton r1 = new JRadioButton("Empty");
-    JRadioButton r2 = new JRadioButton("Cumstom");
+    JRadioButton r2 = new JRadioButton("Custom");
     ActionListener al = e -> {
       JRadioButton r = (JRadioButton) e.getSource();
-      Icon ascending = null;
-      Icon descending = null;
+      Icon ascending;
+      Icon descending;
       if (r.equals(r0)) {
         ascending = UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon");
         descending = UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon");
@@ -69,9 +67,11 @@ public final class MainPanel extends JPanel {
     return box1;
   }
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     table.setRowSorter(sorter);
+
+    JButton clearButton = new JButton("clear SortKeys");
     clearButton.addActionListener(e -> sorter.setSortKeys(null));
 
     add(makeRadioPane(), BorderLayout.NORTH);
