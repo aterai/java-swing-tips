@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(0, 1, 0, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     Stream.of(tabs0, tabs2).forEach(p::add);
-    p.add(new JLayer<Component>(tabs3, new DisableInputLayerUI()));
+    p.add(new JLayer<>(tabs3, new DisableInputLayerUI()));
 
     JButton button = new JButton("next");
     button.addActionListener(e -> {
