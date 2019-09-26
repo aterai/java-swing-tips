@@ -124,7 +124,7 @@ class HeaderRenderer implements TableCellRenderer {
     l.setText(null); // XXX: Nimbus???
     // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
     // System.out.println("getPreferredSize: " + l.getPreferredSize());
-    // System.out.println("getMaximunSize: " + l.getMaximumSize());
+    // System.out.println("getMaximumSize: " + l.getMaximumSize());
     // System.out.println("----");
     // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
     //   System.out.println(l.getPreferredSize().height);
