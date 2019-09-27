@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -19,8 +18,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      int retvalue = chooser.showOpenDialog(log.getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(log.getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -29,12 +28,12 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       stream(chooser)
-        .filter(JList.class::isInstance)
-        .map(JList.class::cast)
-        .findFirst()
-        .ifPresent(MainPanel::addHierarchyListener);
-      int retvalue = chooser.showOpenDialog(log.getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+          .filter(JList.class::isInstance)
+          .map(JList.class::cast)
+          .findFirst()
+          .ifPresent(MainPanel::addHierarchyListener);
+      int retValue = chooser.showOpenDialog(log.getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -51,18 +50,16 @@ public final class MainPanel extends JPanel {
   // https://github.com/aterai/java-swing-tips/blob/master/GetComponentsRecursively/src/java/example/MainPanel.java
   public static Stream<Component> stream(Container parent) {
     return Stream.of(parent.getComponents())
-      .filter(Container.class::isInstance)
-      .map(c -> stream(Container.class.cast(c)))
-      .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance)
+        .map(c -> stream((Container) c))
+        .reduce(Stream.of(parent), Stream::concat);
   }
 
   private static void addHierarchyListener(JList<?> list) {
-    list.addHierarchyListener(new HierarchyListener() {
-      @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && e.getComponent().isShowing()) {
-          list.putClientProperty("List.isFileList", Boolean.FALSE);
-          list.setLayoutOrientation(JList.VERTICAL);
-        }
+    list.addHierarchyListener(e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && e.getComponent().isShowing()) {
+        list.putClientProperty("List.isFileList", Boolean.FALSE);
+        list.setLayoutOrientation(JList.VERTICAL);
       }
     });
   }
