@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     slider2.setPaintTicks(true);
     slider2.setPaintLabels(true);
     // slider2.setMajorTickSpacing(1);
-    ((Component) labelTable.get(0)).setForeground(Color.RED);
+    labelTable.get(0).setForeground(Color.RED);
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
