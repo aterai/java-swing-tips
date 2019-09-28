@@ -34,12 +34,7 @@ public final class MainPanel extends JPanel {
 
     JButton button0 = new JButton("Dummy");
     JButton button1 = new JButton("setText(0)");
-    button1.addActionListener(e -> {
-      list.forEach(tf -> {
-        tf.setText("0");
-      });
-    });
-
+    button1.addActionListener(e -> list.forEach(tf -> tf.setText("0")));
     button1.setVerifyInputWhenFocusTarget(false);
 
     JPanel bp = new JPanel();
