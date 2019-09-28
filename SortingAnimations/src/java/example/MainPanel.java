@@ -114,7 +114,7 @@ public class MainPanel extends JPanel {
     for (int i = 0; i < n; i++) {
       switch (gi) {
         case RANDOM:
-          array.add((double) Math.random());
+          array.add(Math.random());
           break;
         case ASCENDING:
           array.add(i / (double) n);
