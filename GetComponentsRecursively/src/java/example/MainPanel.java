@@ -115,8 +115,9 @@ public final class MainPanel extends JPanel {
   // TEST4
   public static Stream<Component> stream(Container parent) {
     return Stream.of(parent.getComponents())
-      .filter(Container.class::isInstance).map(c -> stream(Container.class.cast(c)))
-      .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance)
+        .map(c -> stream((Container) c))
+        .reduce(Stream.of(parent), Stream::concat);
   }
 
   public static void main(String[] args) {

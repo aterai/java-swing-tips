@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
           resetChoosableFileFilters();
         }
       };
-      int retvalue = fileChooser.showSaveDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showSaveDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         String enc = "\nEncoding: " + ((EncodingFileChooserUI) fileChooser.getUI()).getSelectedEncoding();
         log.setText(fileChooser.getSelectedFile().getAbsolutePath() + enc);
       }
@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
           resetChoosableFileFilters();
         }
       };
-      int retvalue = fileChooser.showSaveDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showSaveDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
     JButton button3 = new JButton("Default");
     button3.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      int retvalue = fileChooser.showSaveDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showSaveDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -98,10 +98,11 @@ public final class MainPanel extends JPanel {
 }
 
 class EncodingFileChooserUI extends MetalFileChooserUI {
-  private final JComboBox<String> combo = new JComboBox<>(new String[] {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"});
+  private final String[] model = {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"};
+  private final JComboBox<String> combo = new JComboBox<>(model);
 
-  protected EncodingFileChooserUI(JFileChooser filechooser) {
-    super(filechooser);
+  protected EncodingFileChooserUI(JFileChooser fileChooser) {
+    super(fileChooser);
   }
 
   public String getSelectedEncoding() {
@@ -115,10 +116,10 @@ class EncodingFileChooserUI extends MetalFileChooserUI {
     JLabel label = new JLabel("Encoding:") {
       @Override public Dimension getPreferredSize() {
         return SwingUtils.stream(bottomPanel)
-          .filter(JLabel.class::isInstance).map(JLabel.class::cast)
-          .findFirst()
-          .map(JLabel::getPreferredSize)
-          .orElse(super.getPreferredSize());
+            .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+            .findFirst()
+            .map(JLabel::getPreferredSize)
+            .orElse(super.getPreferredSize());
       }
     };
     label.setDisplayedMnemonic('E');
@@ -151,7 +152,8 @@ final class SwingUtils {
 
   public static Stream<Component> stream(Container parent) {
     return Stream.of(parent.getComponents())
-      .filter(Container.class::isInstance).map(c -> stream(Container.class.cast(c)))
-      .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance)
+        .map(c -> stream((Container) c))
+        .reduce(Stream.of(parent), Stream::concat);
   }
 }
