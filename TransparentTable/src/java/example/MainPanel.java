@@ -161,9 +161,9 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
     }
   };
 
-  protected TranslucentBooleanRenderer() {
-    renderer.setHorizontalAlignment(SwingConstants.CENTER);
-  }
+  // protected TranslucentBooleanRenderer() {
+  //   renderer.setHorizontalAlignment(SwingConstants.CENTER);
+  // }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
@@ -176,6 +176,7 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
       renderer.setBackground(table.getBackground());
     }
     renderer.setSelected(Objects.equals(value, Boolean.TRUE));
+    renderer.setHorizontalAlignment(SwingConstants.CENTER);
     return renderer;
   }
 }

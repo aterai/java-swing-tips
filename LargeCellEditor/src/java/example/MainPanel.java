@@ -95,13 +95,9 @@ class IconItem {
 }
 
 class IconTableCellRenderer extends DefaultTableCellRenderer {
-  @Override public void updateUI() {
-    super.updateUI();
-    setHorizontalAlignment(SwingConstants.CENTER);
-  }
-
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     setIcon(((IconItem) value).large);
+    setHorizontalAlignment(SwingConstants.CENTER);
     return this;
   }
 }
