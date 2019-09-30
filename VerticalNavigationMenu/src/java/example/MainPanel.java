@@ -126,7 +126,7 @@ class RowSelectionTree extends JTree {
     if (sr == null) {
       super.paintComponent(g);
       return;
-    } 
+    }
     g.setColor(getBackground());
     g.fillRect(0, 0, getWidth(), getHeight());
     Graphics2D g2 = (Graphics2D) g.create();

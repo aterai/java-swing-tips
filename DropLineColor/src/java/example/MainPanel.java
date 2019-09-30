@@ -132,11 +132,6 @@ public final class MainPanel extends JPanel {
     box.add(makeColorChooserButton("Table.dropLineColor"));
     box.add(makeColorChooserButton("Table.dropLineShortColor"));
 
-
-    UIManager.put("Table.dropLineShortColor", new Color(0x0, true));
-
-
-    
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(table));
     p.add(box, BorderLayout.SOUTH);
