@@ -25,19 +25,7 @@ public class MainPanel extends JPanel {
     @Override public void updateUI() {
       removeAncestorListener(listener);
       super.updateUI();
-      listener = new AncestorListener() {
-        @Override public void ancestorAdded(AncestorEvent e) {
-          e.getComponent().requestFocusInWindow();
-        }
-
-        @Override public void ancestorMoved(AncestorEvent e) {
-          /* not needed */
-        }
-
-        @Override public void ancestorRemoved(AncestorEvent e) {
-          /* not needed */
-        }
-      };
+      listener = new FocusAncestorListener();
       addAncestorListener(listener);
     }
   };
@@ -70,7 +58,7 @@ public class MainPanel extends JPanel {
 
     animator.addActionListener(e -> {
       int height = searchBox.getPreferredSize().height;
-      double h = (double) height;
+      double h = height;
       if (isHidden) {
         yy = (int) (.5 + AnimationUtil.easeInOut(++counter / h) * h);
         if (yy >= height) {
@@ -169,6 +157,20 @@ public class MainPanel extends JPanel {
   }
 }
 
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
+  }
+}
+
 class FindNextAction extends AbstractAction {
   private final JTree tree;
   private final JTextField field;
@@ -210,8 +212,8 @@ class FindNextAction extends AbstractAction {
       }
       if (!node.isLeaf()) {
         // Java 9: Collections.list(node.children())
-        Collections.list((Enumeration<?>) node.children()).stream()
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
+        Collections.list((Enumeration<?>) node.children())
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
       }
     }
   }
