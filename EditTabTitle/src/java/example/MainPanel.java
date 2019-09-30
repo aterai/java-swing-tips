@@ -81,8 +81,8 @@ class EditableTabbedPane extends JTabbedPane {
       if (!editor.getText().trim().isEmpty()) {
         setTitleAt(getSelectedIndex(), editor.getText());
         Component c = getTabComponentAt(getSelectedIndex());
-        if (c instanceof JComponent) {
-          ((JComponent) c).revalidate();
+        if (c != null) {
+          c.revalidate();
         }
       }
       glassPane.setVisible(false);

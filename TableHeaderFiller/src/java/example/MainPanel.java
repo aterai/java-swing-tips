@@ -98,8 +98,8 @@ class TableHeaderFillerLayerUI extends LayerUI<JScrollPane> {
 
   @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    if (c instanceof JTableHeader) {
-      l.repaint(((JTableHeader) c).getBounds());
+    if (e.getID() == ComponentEvent.COMPONENT_RESIZED && c instanceof JTableHeader) {
+      l.repaint(c.getBounds());
     }
   }
 }

@@ -120,8 +120,8 @@ class EditableTabbedPane extends JTabbedPane {
         if (!editor.getText().trim().isEmpty()) {
           setTitleAt(getSelectedIndex(), editor.getText());
           Component c = getTabComponentAt(getSelectedIndex());
-          if (c instanceof JComponent) {
-            ((JComponent) c).revalidate();
+          if (c != null) {
+            c.revalidate();
           }
         }
         glassPane.setVisible(false);
@@ -213,9 +213,9 @@ class TabbedPanePopupMenu extends JPopupMenu {
     closeAllButActive = add("Close all bat active");
     closeAllButActive.addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      int tabidx = tabbedPane.getSelectedIndex();
-      String title = tabbedPane.getTitleAt(tabidx);
-      Component cmp = tabbedPane.getComponentAt(tabidx);
+      int tabIdx = tabbedPane.getSelectedIndex();
+      String title = tabbedPane.getTitleAt(tabIdx);
+      Component cmp = tabbedPane.getComponentAt(tabIdx);
       tabbedPane.removeAll();
       tabbedPane.addTab(title, cmp);
     });
@@ -224,7 +224,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTabbedPane) {
       JTabbedPane tabbedPane = (JTabbedPane) c;
-      // JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+      // JDK 1.3: tabIndex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
       sortTabs.setEnabled(tabbedPane.getTabCount() > 1);
       closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
       closeAll.setEnabled(tabbedPane.getTabCount() > 0);
