@@ -13,12 +13,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new HoverCloseButtonTabbedPane();
     tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
-    tabbedPane.addTab("aaaaaa", new JScrollPane(new JTree()));
-    tabbedPane.addTab("12345678901234567890", new JScrollPane(new JLabel("asdfasdfsadf")));
-    tabbedPane.addTab("b", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JLabel", new JScrollPane(new JLabel("JLabel")));
+    tabbedPane.addTab("JSplitPane", new JSplitPane());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -54,6 +53,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
   protected HoverCloseButtonTabbedPane(int tabPlacement) {
     super(tabPlacement, SCROLL_TAB_LAYOUT);
   }
+
   // protected HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
   //   super(tabPlacement, SCROLL_TAB_LAYOUT);
   // }
@@ -66,15 +66,17 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
       private int prev = -1;
       @Override public void mouseMoved(MouseEvent e) {
         JTabbedPane source = (JTabbedPane) e.getComponent();
-        int focussed = source.indexAtLocation(e.getX(), e.getY());
-        if (focussed == prev) {
+        int focused = source.indexAtLocation(e.getX(), e.getY());
+        if (focused == prev) {
           return;
         }
         for (int i = 0; i < source.getTabCount(); i++) {
-          TabPanel tab = (TabPanel) source.getTabComponentAt(i);
-          tab.setButtonVisible(i == focussed);
+          Component c = source.getTabComponentAt(i);
+          if (c instanceof TabPanel) {
+            ((TabPanel) c).setButtonVisible(i == focused);
+          }
         }
-        prev = focussed;
+        prev = focused;
       }
     };
     addMouseMotionListener(hoverHandler);
@@ -88,7 +90,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
 
 class TabPanel extends JPanel {
   protected static final int PREFERRED_TAB_WIDTH = 80;
-  protected final JButton button = new JButton(new CloseTabIcon()) {
+  private final JButton button = new JButton(new CloseTabIcon()) {
     @Override public void updateUI() {
       super.updateUI();
       setBorder(BorderFactory.createEmptyBorder());
@@ -99,18 +101,18 @@ class TabPanel extends JPanel {
       setVisible(false);
     }
   };
-  protected final JLabel label = new JLabel() {
-    @Override public Dimension getPreferredSize() {
-      Dimension dim = super.getPreferredSize();
-      int bw = button.isVisible() ? button.getPreferredSize().width : 0;
-      return new Dimension(PREFERRED_TAB_WIDTH - bw, dim.height);
-    }
-  };
 
   protected TabPanel(JTabbedPane pane, String title, Component content) {
     super(new BorderLayout());
     setOpaque(false);
 
+    JLabel label = new JLabel() {
+      @Override public Dimension getPreferredSize() {
+        Dimension dim = super.getPreferredSize();
+        int bw = button.isVisible() ? button.getPreferredSize().width : 0;
+        return new Dimension(PREFERRED_TAB_WIDTH - bw, dim.height);
+      }
+    };
     label.setText(title);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
 
@@ -119,8 +121,10 @@ class TabPanel extends JPanel {
       pane.removeTabAt(idx);
       int count = pane.getTabCount();
       if (count > idx) {
-        TabPanel tab = (TabPanel) pane.getTabComponentAt(idx);
-        tab.setButtonVisible(true);
+        Component c = pane.getTabComponentAt(idx);
+        if (c instanceof TabPanel) {
+          ((TabPanel) c).setButtonVisible(true);
+        }
       }
     });
     add(label);
