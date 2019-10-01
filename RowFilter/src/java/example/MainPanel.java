@@ -6,58 +6,31 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   private final JCheckBox check1 = new JCheckBox("!comment.isEmpty()");
   private final JCheckBox check2 = new JCheckBox("idx % 2 == 0");
-  private final RowDataModel model = new RowDataModel();
-  private final transient TableRowSorter<? extends RowDataModel> sorter = new TableRowSorter<>(model);
-  private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xF0_FF_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    table.setRowSorter(sorter);
-    model.addRowData(new RowData("Name 1", "comment..."));
-    model.addRowData(new RowData("Name 2", "Test"));
-    model.addRowData(new RowData("Name d", ""));
-    model.addRowData(new RowData("Name c", "Test cc"));
-    model.addRowData(new RowData("Name b", "Test bb"));
-    model.addRowData(new RowData("Name a", "ff"));
-    model.addRowData(new RowData("Name 0", "Test aa"));
-    // table.setRowSorter(sorter); <- IndexOutOfBoundsException: Invalid range (add, delete, etc.)
 
-    JScrollPane scrollPane = new JScrollPane(table);
-    // scrollPane.setBackground(Color.WHITE);
-    scrollPane.getViewport().setBackground(Color.WHITE);
+    RowDataModel model = makeModel();
+    JTable table = new JTable(model);
+
+    TableRowSorter<? extends RowDataModel> sorter = new TableRowSorter<>(model);
+    table.setRowSorter(sorter);
+
     table.setComponentPopupMenu(new TablePopupMenu());
     table.setFillsViewportHeight(true);
-    table.setIntercellSpacing(new Dimension());
-    table.setShowGrid(false);
-    // table.setShowHorizontalLines(false);
-    // table.setShowVerticalLines(false);
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-    Set<RowFilter<? super RowDataModel, ? super Integer>> filters = new HashSet<>(2);
+    Collection<RowFilter<? super RowDataModel, ? super Integer>> filters = new HashSet<>(2);
     RowFilter<RowDataModel, Integer> filter1 = new RowFilter<RowDataModel, Integer>() {
       @Override public boolean include(Entry<? extends RowDataModel, ? extends Integer> entry) {
         RowDataModel m = entry.getModel();
@@ -94,13 +67,25 @@ public final class MainPanel extends JPanel {
     box.add(check1);
     box.add(check2);
     add(box, BorderLayout.NORTH);
-    add(scrollPane);
+    add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
   protected boolean canAddRow() {
     return !check1.isSelected() && !check2.isSelected();
     // return filters.isEmpty();
+  }
+
+  private static RowDataModel makeModel() {
+    RowDataModel model = new RowDataModel();
+    model.addRowData(new RowData("Name 1", "comment..."));
+    model.addRowData(new RowData("Name 2", "Test"));
+    model.addRowData(new RowData("Name d", ""));
+    model.addRowData(new RowData("Name c", "Test cc"));
+    model.addRowData(new RowData("Name b", "Test bb"));
+    model.addRowData(new RowData("Name a", "ff"));
+    model.addRowData(new RowData("Name 0", "Test aa"));
+    return model;
   }
 
   private class TablePopupMenu extends JPopupMenu {
@@ -206,20 +191,12 @@ class RowDataModel extends DefaultTableModel {
 }
 
 class RowData {
-  private String name;
-  private String comment;
+  private final String name;
+  private final String comment;
 
   protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
-  }
-
-  public void setName(String str) {
-    name = str;
-  }
-
-  public void setComment(String str) {
-    comment = str;
   }
 
   public String getName() {
