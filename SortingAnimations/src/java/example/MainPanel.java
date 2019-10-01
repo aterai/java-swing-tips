@@ -110,22 +110,7 @@ public class MainPanel extends JPanel {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
     factory = MAXY - MINY;
-    GenerateInputs gi = distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex());
-    for (int i = 0; i < n; i++) {
-      switch (gi) {
-        case RANDOM:
-          array.add(Math.random());
-          break;
-        case ASCENDING:
-          array.add(i / (double) n);
-          break;
-        case DESCENDING:
-          array.add(1d - i / (double) n);
-          break;
-        default:
-          throw new AssertionError("Unknown GenerateInputs");
-      }
-    }
+    distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex()).generate(array, n);
   }
 
   protected final void workerExecute() {
@@ -158,7 +143,7 @@ public class MainPanel extends JPanel {
           return;
         }
         setComponentEnabled(true);
-        String text = null;
+        String text;
         try {
           text = isCancelled() ? "Cancelled" : get();
         } catch (InterruptedException ex) {
@@ -213,4 +198,27 @@ enum SortAlgorithms {
   }
 }
 
-enum GenerateInputs { RANDOM, ASCENDING, DESCENDING }
+enum GenerateInputs {
+  RANDOM() {
+    @Override public void generate(List<Double> array, int n) {
+      for (int i = 0; i < n; i++) {
+        array.add(Math.random());
+      }
+    }
+  },
+  ASCENDING() {
+    @Override public void generate(List<Double> array, int n) {
+      for (int i = 0; i < n; i++) {
+        array.add(i / (double) n);
+      }
+    }
+  },
+  DESCENDING() {
+    @Override public void generate(List<Double> array, int n) {
+      for (int i = 0; i < n; i++) {
+        array.add(1d - i / (double) n);
+      }
+    }
+  };
+  abstract void generate(List<Double> array, int n);
+}

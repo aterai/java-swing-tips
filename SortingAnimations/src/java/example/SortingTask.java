@@ -87,7 +87,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     Thread.sleep(5);
   }
 
-  // Sorting Algs
+  // Sorting Algorithms
   private void isort(int n) throws InterruptedException {
     for (int i = 1; i < n; i++) {
       for (int j = i; j > 0 && array.get(j - 1) > array.get(j); j--) {
