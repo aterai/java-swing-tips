@@ -8,21 +8,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
 
@@ -57,7 +44,7 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    splitPane.setTopComponent(new JScrollPane(new JTable(model)));
+    splitPane.setTopComponent(new JScrollPane(new JTable(8, 3)));
     splitPane.setBottomComponent(new JScrollPane(new JTree()));
     splitPane.setOneTouchExpandable(true);
     splitPane.setDividerSize(32);
