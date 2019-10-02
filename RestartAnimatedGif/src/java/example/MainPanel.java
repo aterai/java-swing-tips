@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     URL url = getClass().getResource("9-0.gif");
-    BufferedImage bi = null;
+    BufferedImage bi;
     try {
       bi = ImageIO.read(url);
     } catch (IOException ex) {
