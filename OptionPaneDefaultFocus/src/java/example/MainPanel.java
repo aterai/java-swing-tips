@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
       Object selectedValue = pane.getValue();
       int result = JOptionPane.CLOSED_OPTION;
       if (selectedValue instanceof Integer) {
-        result = ((Integer) selectedValue).intValue();
+        result = (Integer) selectedValue;
       }
       if (result == JOptionPane.OK_OPTION) {
         textArea.setText(textField.getText());
