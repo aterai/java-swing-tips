@@ -112,7 +112,7 @@ class TransparentTree extends JTree {
 
 // https://ateraimemo.com/Swing/RootPaneBackground.html
 class TransparentRootPane extends JRootPane {
-  private static final TexturePaint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = makeCheckerTexture();
 
   private static TexturePaint makeCheckerTexture() {
     int cs = 6;

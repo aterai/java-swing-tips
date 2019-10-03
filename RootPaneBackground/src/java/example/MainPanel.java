@@ -20,12 +20,19 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  public static final TexturePaint TEXTURE = ImageUtil.makeCheckerTexture();
-  private final JDesktopPane desktop = new JDesktopPane() {
-    @Override public void updateUI() {
-      super.updateUI();
-      setOpaque(false);
-    }
+  public static final Paint TEXTURE = ImageUtil.makeCheckerTexture();
+
+  private MainPanel() {
+    super(new BorderLayout());
+
+    JPanel p = new TranslucentTexturePanel(TEXTURE);
+    p.add(new JButton("button"));
+    JInternalFrame frame = new JInternalFrame("InternalFrame", true, true, true, true);
+    frame.setContentPane(p);
+    frame.setSize(160, 80);
+    frame.setLocation(10, 10);
+    frame.setOpaque(false);
+    frame.setVisible(true);
     // @Override protected void paintComponent(Graphics g) {
     //   super.paintComponent(g);
     //   Graphics2D g2 = (Graphics2D) g.create();
@@ -33,20 +40,21 @@ public final class MainPanel extends JPanel {
     //   g2.fillRect(0, 0, getWidth(), getHeight());
     //   g2.dispose();
     // }
-  };
-
-  public MainPanel() {
-    super(new BorderLayout());
-
-    JPanel p = new TranslucentTexturePanel(TEXTURE);
-    p.add(new JButton("button"));
-    JInternalFrame iframe = new JInternalFrame("InternalFrame", true, true, true, true);
-    iframe.setContentPane(p);
-    iframe.setSize(160, 80);
-    iframe.setLocation(10, 10);
-    iframe.setOpaque(false);
-    iframe.setVisible(true);
-    desktop.add(iframe);
+    JDesktopPane desktop = new JDesktopPane() {
+      @Override
+      public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+      }
+      // @Override protected void paintComponent(Graphics g) {
+      //   super.paintComponent(g);
+      //   Graphics2D g2 = (Graphics2D) g.create();
+      //   g2.setPaint(new Color(100, 100, 100, 100));
+      //   g2.fillRect(0, 0, getWidth(), getHeight());
+      //   g2.dispose();
+      // }
+    };
+    desktop.add(frame);
 
     add(desktop);
     setOpaque(false);
@@ -68,7 +76,7 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@") {
       @Override protected JRootPane createRootPane() {
         return new JRootPane() {
-          // private final TexturePaint texture = makeCheckerTexture();
+          // private final Paint texture = makeCheckerTexture();
           @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
@@ -131,7 +139,7 @@ final class ImageUtil {
     return mb;
   }
 
-  public static JMenu createMenu(String key) {
+  private static JMenu createMenu(String key) {
     JMenu menu = new TransparentMenu(key);
     menu.setForeground(new Color(200, 200, 200));
     menu.setOpaque(false); // Motif lnf
@@ -194,9 +202,9 @@ final class ImageUtil {
 }
 
 class TranslucentTexturePanel extends JPanel {
-  private final transient TexturePaint texture;
+  private final transient Paint texture;
 
-  protected TranslucentTexturePanel(TexturePaint texture) {
+  protected TranslucentTexturePanel(Paint texture) {
     super();
     this.texture = texture;
   }
@@ -239,8 +247,8 @@ class CentredBackgroundBorder implements Border {
 
 // https://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
-  private static final Color POPUP_BACK = new Color(250, 250, 250, 100);
-  private static final Color POPUP_LEFT = new Color(230, 230, 230, 100);
+  private static final Paint POPUP_BACK = new Color(250, 250, 250, 100);
+  private static final Paint POPUP_LEFT = new Color(230, 230, 230, 100);
   private static final int LEFT_WIDTH = 24;
 
   @Override public boolean isOpaque() {

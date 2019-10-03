@@ -20,7 +20,7 @@ import javax.swing.border.Border;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
-  private static final TexturePaint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = makeCheckerTexture();
 
   public MainPanel() {
     super();

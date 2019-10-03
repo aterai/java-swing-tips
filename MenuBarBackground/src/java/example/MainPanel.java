@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
   private static JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar() {
-      private final transient TexturePaint texture = makeCheckerTexture();
+      private final transient Paint texture = makeCheckerTexture();
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();

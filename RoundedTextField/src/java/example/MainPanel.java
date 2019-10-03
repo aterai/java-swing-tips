@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
 public final class MainPanel extends JPanel {
-  private static final TexturePaint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = makeCheckerTexture();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
       }
     };
-    textField01.setText("aaaaaaaaaaa");
+    textField01.setText("1111111111111111");
 
     JTextField textField02 = new JTextField(20) {
       @Override protected void paintComponent(Graphics g) {
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         setBorder(new RoundedCornerBorder());
       }
     };
-    textField02.setText("bbbbbbbbbbbb");
+    textField02.setText("2222222222222");
 
     JRadioButton r1 = new JRadioButton("default", true);
     JRadioButton r2 = new JRadioButton("setOpaque(false) + TexturePaint");
@@ -153,7 +153,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerBorder extends AbstractBorder {
-  private static final Color ALPHA_ZERO = new Color(0x0, true);
+  private static final Paint ALPHA_ZERO = new Color(0x0, true);
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
@@ -181,7 +181,7 @@ class RoundedCornerBorder extends AbstractBorder {
   }
 
   public Shape getBorderShape(int x, int y, int w, int h) {
-    int r = h; // h / 2;
+    int r = h - 1; // h / 2;
     return new RoundRectangle2D.Double(x, y, w, h, r, r);
   }
 

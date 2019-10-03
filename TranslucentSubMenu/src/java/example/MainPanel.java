@@ -10,10 +10,9 @@ import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 
 public final class MainPanel extends JPanel {
-  private final JTree tree = new JTree();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JTree tree = new JTree();
     tree.setComponentPopupMenu(makePopupMenu());
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
@@ -44,7 +43,7 @@ public final class MainPanel extends JPanel {
     return mb;
   }
 
-  public static JMenu createMenu(String key) {
+  private static JMenu createMenu(String key) {
     JMenu menu = new TransparentMenu(key);
     // menu.setForeground(new Color(200, 200, 200));
     menu.setOpaque(false); // Motif lnf
@@ -81,8 +80,8 @@ public final class MainPanel extends JPanel {
 // https://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
   private static final Color ALPHA_ZERO = new Color(0x0, true);
-  private static final Color POPUP_BACK = new Color(250, 250, 250, 200);
-  private static final Color POPUP_LEFT = new Color(230, 230, 230, 200);
+  private static final Paint POPUP_BACK = new Color(250, 250, 250, 200);
+  private static final Paint POPUP_LEFT = new Color(230, 230, 230, 200);
   private static final int LEFT_WIDTH = 24;
 
   @Override public boolean isOpaque() {

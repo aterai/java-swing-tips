@@ -226,7 +226,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MyGlassPane extends JDesktopPane {
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6);
+  private static final Paint TEXTURE = TextureUtils.createCheckerTexture(6);
   // protected MyGlassPane() {
   //   super((LayoutManager) null);
   // }
@@ -250,7 +250,7 @@ class MyGlassPane extends JDesktopPane {
 }
 
 class PrintGlassPane extends JDesktopPane {
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(4);
+  private static final Paint TEXTURE = TextureUtils.createCheckerTexture(4);
   // protected PrintGlassPane() {
   //   super((LayoutManager) null);
   // }

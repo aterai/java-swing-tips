@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(0x32_C8_96_64, true));
+  private static final Paint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(0x32_C8_96_64, true));
 
   private MainPanel() {
     super(new BorderLayout());
