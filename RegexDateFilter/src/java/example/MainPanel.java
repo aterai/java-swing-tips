@@ -23,7 +23,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     Calendar cal = Calendar.getInstance();
-    cal.set(2002, 12 - 1, 31, 10, 30, 15);
+    // cal.set(2002, 12 - 1, 31, 10, 30, 15);
+    cal.set(2002, Calendar.DECEMBER, 31, 10, 30, 15);
     Date date = cal.getTime();
     cal.add(Calendar.DATE, -2);
     Date start = cal.getTime();
