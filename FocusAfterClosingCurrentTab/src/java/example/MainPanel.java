@@ -201,8 +201,7 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
-    this.tabbedPane = Optional.ofNullable(tabbedPane)
-        .orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane is null");
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {

@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -61,8 +61,7 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Optional.ofNullable(tabbedPane)
-        .orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {

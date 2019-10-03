@@ -559,7 +559,7 @@ class TabTransferHandler extends TransferHandler {
     //   }
     // }
 
-    boolean isDroppable = false;
+    boolean isDroppable;
     boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
     if (target.equals(source)) {
       // System.out.println("target == source");
@@ -712,8 +712,7 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Optional.ofNullable(tabbedPane)
-        .orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane is null");
     setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {
