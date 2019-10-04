@@ -105,14 +105,14 @@ class LightboxGlassPane extends JPanel {
     }
   }
 
-  @Override public void setVisible(boolean isVisible) {
+  @Override public void setVisible(boolean b) {
     boolean oldVisible = isVisible();
-    super.setVisible(isVisible);
+    super.setVisible(b);
     JRootPane rootPane = getRootPane();
-    if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
-      rootPane.getLayeredPane().setVisible(!isVisible);
+    if (Objects.nonNull(rootPane) && b != oldVisible) {
+      rootPane.getLayeredPane().setVisible(!b);
     }
-    if (isVisible && !animator.isRunning()) {
+    if (b && !animator.isRunning()) {
       curimgw = 40;
       curimgh = 40;
       alpha = 0f;
@@ -120,7 +120,7 @@ class LightboxGlassPane extends JPanel {
     } else {
       animator.stop();
     }
-    animatedIcon.setRunning(isVisible);
+    animatedIcon.setRunning(b);
   }
 
   @Override protected void paintComponent(Graphics g) {

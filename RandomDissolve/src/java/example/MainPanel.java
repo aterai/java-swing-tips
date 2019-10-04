@@ -71,7 +71,7 @@ class RandomDissolve extends JComponent implements ActionListener {
   private final Timer animator;
   private final transient BufferedImage image1;
   private final transient BufferedImage image2;
-  private transient BufferedImage srcimg;
+  private transient BufferedImage buf;
   private boolean mode = true;
   private int currentStage;
   private int[] src;
@@ -82,11 +82,11 @@ class RandomDissolve extends JComponent implements ActionListener {
     super();
     this.image1 = i1;
     this.image2 = i2;
-    this.srcimg = copyImage(mode ? image2 : image1);
+    this.buf = copyImage(mode ? image2 : image1);
     animator = new Timer(10, this);
   }
 
-  public boolean nextStage() {
+  private boolean nextStage() {
     if (currentStage > 0) {
       currentStage = currentStage - 1;
       for (int i = 0; i < step.length; i++) {
@@ -119,8 +119,8 @@ class RandomDissolve extends JComponent implements ActionListener {
 
   public void animationStart() {
     currentStage = STAGES;
-    srcimg = copyImage(mode ? image2 : image1);
-    src = getData(srcimg);
+    buf = copyImage(mode ? image2 : image1);
+    src = getData(buf);
     dst = getData(copyImage(mode ? image1 : image2));
     step = new int[src.length];
     mode ^= true;
@@ -136,7 +136,7 @@ class RandomDissolve extends JComponent implements ActionListener {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(getBackground());
     g2.fillRect(0, 0, getWidth(), getHeight());
-    g2.drawImage(srcimg, 0, 0, srcimg.getWidth(), srcimg.getHeight(), this);
+    g2.drawImage(buf, 0, 0, buf.getWidth(), buf.getHeight(), this);
     g2.dispose();
   }
 

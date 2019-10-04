@@ -13,12 +13,12 @@ import javax.swing.event.ChangeListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JLabel lbl1 = new JLabel("aaaaaaaaaa") {
+    JLabel lbl1 = new JLabel("11111111") {
       @Override public Dimension getPreferredSize() {
         return new Dimension(1200, 600);
       }
     };
-    JLabel lbl2 = new JLabel("bbbbbbbbbb") {
+    JLabel lbl2 = new JLabel("22222222") {
       @Override public Dimension getPreferredSize() {
         return new Dimension(600, 1200);
       }
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     JScrollPane sp2 = new JScrollPane(lbl2);
 
     ChangeListener cl = new ChangeListener() {
-      private boolean adjflg;
+      private boolean adjusting;
       @Override public void stateChanged(ChangeEvent e) {
         JViewport src = null;
         JViewport tgt = null;
@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
           src = sp2.getViewport();
           tgt = sp1.getViewport();
         }
-        if (adjflg || Objects.isNull(tgt) || Objects.isNull(src)) {
+        if (adjusting || Objects.isNull(tgt) || Objects.isNull(src)) {
           return;
         }
-        adjflg = true;
+        adjusting = true;
         Dimension dim1 = src.getViewSize();
         Dimension siz1 = src.getSize();
         Point pnt1 = src.getViewPosition();
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         d = pnt1.getX() / (dim1.getWidth() - siz1.getWidth()) * (dim2.getWidth() - siz2.getWidth());
         pnt1.x = (int) d;
         tgt.setViewPosition(pnt1);
-        adjflg = false;
+        adjusting = false;
       }
     };
     sp1.getViewport().addChangeListener(cl);
