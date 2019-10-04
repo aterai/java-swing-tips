@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
@@ -24,20 +23,20 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static JMenuBar createMenuBar() {
+  private static JMenuBar createMenuBar() {
     Component edit = makeEditButtonBar(Arrays.asList(
         makeButton("Cut", new DefaultEditorKit.CutAction()),
         makeButton("Copy", new DefaultEditorKit.CopyAction()),
         makeButton("Paste", new DefaultEditorKit.PasteAction())));
 
     JMenu menu = new JMenu("File");
-    menu.add("aaaaaaaaaa");
+    menu.add("111111111");
     menu.addSeparator();
     menu.add(makeEditMenuItem(edit));
     menu.addSeparator();
-    menu.add("bbbb");
-    menu.add("cccccc");
-    menu.add("ddddd");
+    menu.add("22222");
+    menu.add("3333");
+    menu.add("4444444");
 
     JMenuBar mb = new JMenuBar();
     mb.add(menu);
@@ -171,10 +170,8 @@ class ToggleButtonBarCellIcon implements Icon {
       p.lineTo(x, y + h);
     }
     p.closePath();
-    Area area = new Area(p);
-
-    Color color = new Color(0x0, true);
-    Color borderColor = Color.GRAY.brighter();
+    Paint color = new Color(0x0, true);
+    Paint borderColor = Color.GRAY.brighter();
     if (c instanceof AbstractButton) {
       ButtonModel m = ((AbstractButton) c).getModel();
       if (m.isPressed()) {
@@ -184,9 +181,9 @@ class ToggleButtonBarCellIcon implements Icon {
       }
     }
     g2.setPaint(color);
-    g2.fill(area);
+    g2.fill(p);
     g2.setPaint(borderColor);
-    g2.draw(area);
+    g2.draw(p);
     g2.dispose();
   }
 

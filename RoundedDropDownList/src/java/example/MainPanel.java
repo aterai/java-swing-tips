@@ -334,13 +334,13 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     p.quadTo(x + w, y + h, x + w, y + h - r);
     p.lineTo(x + w, y);
     p.closePath();
-    Area round = new Area(p);
+    // Area round = new Area(p);
 
     g2.setPaint(c.getBackground());
-    g2.fill(round);
+    g2.fill(p);
 
     g2.setPaint(c.getForeground());
-    g2.draw(round);
+    g2.draw(p);
     g2.setPaint(c.getBackground());
     g2.drawLine(x + 1, y, x + width - 2, y);
     g2.dispose();
