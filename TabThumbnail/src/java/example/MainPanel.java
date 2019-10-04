@@ -68,7 +68,7 @@ class TabThumbnailTabbedPane extends JTabbedPane {
       Graphics2D g2 = image.createGraphics();
       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
       g2.scale(SCALE, SCALE);
-      c.paint(g2);
+      c.print(g2);
       g2.dispose();
       icon = new ImageIcon(image);
     } else if (c instanceof JLabel) {

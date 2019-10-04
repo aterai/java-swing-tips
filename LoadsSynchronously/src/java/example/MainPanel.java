@@ -18,7 +18,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.ImageView;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "<span style='background-color:red'>aaaaaaaaaaaaaaaaaaa</span><br />";
+  private static final String TEXT = "<span style='background-color:red'>1111111111111111111</span><br />";
   private final JLabel label = new JLabel("screenshot");
   private final JTabbedPane tabs = new JTabbedPane();
   private final JEditorPane editor0 = new JEditorPane();
@@ -36,6 +36,15 @@ public final class MainPanel extends JPanel {
     // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
     String path = getClass().getResource("CRW_3857_JFR.jpg").toString();
 
+    String html1 = String.join("\n", Collections.nCopies(50, TEXT));
+    String html2 = String.join("\n", Collections.nCopies(3, TEXT));
+
+    String img0 = String.format("<p><img src='%s'></p>", path);
+    String st0 = html1 + img0 + html2;
+    editor0.setEditorKit(new HTMLEditorKit());
+    editor0.setText(st0);
+    tabs.addTab("default", new JScrollPane(editor0));
+
     int w = 2048;
     int h = 1360;
     // Image img = Toolkit.getDefaultToolkit().createImage(path);
@@ -52,22 +61,8 @@ public final class MainPanel extends JPanel {
     //   }
     //   tracker.removeImage(img);
     // }
-
-    String dmyHtml1 = String.join("\n", Collections.nCopies(50, TEXT));
-    String dmyHtml2 = String.join("\n", Collections.nCopies(3, TEXT));
-
-    StringBuilder sb0 = new StringBuilder(dmyHtml1);
-    sb0.append(String.format("<p><img src='%s'></p>", path)).append(dmyHtml2);
-
-    StringBuilder sb1 = new StringBuilder(dmyHtml1);
-    sb1.append(String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h)).append(dmyHtml2);
-
-    String st0 = sb0.toString();
-    editor0.setEditorKit(new HTMLEditorKit());
-    editor0.setText(st0);
-    tabs.addTab("default", new JScrollPane(editor0));
-
-    String st1 = sb1.toString();
+    String img1 = String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h);
+    String st1 = html1 + img1 + html2;
     editor1.setEditorKit(new HTMLEditorKit());
     editor1.setText(st1);
     tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
@@ -107,7 +102,7 @@ public final class MainPanel extends JPanel {
       BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
       Graphics2D g2 = image.createGraphics();
       g2.scale(s, s);
-      c.paint(g2);
+      c.print(g2);
       g2.dispose();
       try {
         File tmp = File.createTempFile("jst_tmp", ".jpg");

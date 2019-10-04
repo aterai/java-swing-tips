@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     @Override public void paintComponent(Graphics g) {
       super.paintComponent(g);
       Container c = SwingUtilities.getAncestorOfClass(JViewport.class, editor);
-      if (!(c instanceof JViewport) || editor == null) {
+      if (!(c instanceof JViewport)) {
         return;
       }
       JViewport vport = (JViewport) c;
@@ -190,7 +190,7 @@ public final class MainPanel extends JPanel {
     Graphics2D g2 = image.createGraphics();
     g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     g2.scale(SCALE, SCALE);
-    c.paint(g2);
+    c.print(g2);
     g2.dispose();
     return new ImageIcon(image);
   }
