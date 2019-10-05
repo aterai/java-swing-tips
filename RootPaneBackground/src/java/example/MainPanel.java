@@ -25,7 +25,16 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JPanel p = new TranslucentTexturePanel(TEXTURE);
+    JPanel p = new JPanel() {
+      @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(TEXTURE);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+      }
+    };
+
     p.add(new JButton("button"));
     JInternalFrame frame = new JInternalFrame("InternalFrame", true, true, true, true);
     frame.setContentPane(p);
@@ -198,23 +207,6 @@ final class ImageUtil {
     }
     g2.dispose();
     return new TexturePaint(img, new Rectangle(sz, sz));
-  }
-}
-
-class TranslucentTexturePanel extends JPanel {
-  private final transient Paint texture;
-
-  protected TranslucentTexturePanel(Paint texture) {
-    super();
-    this.texture = texture;
-  }
-
-  @Override protected void paintComponent(Graphics g) {
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(texture);
-    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
-    g2.fillRect(0, 0, getWidth(), getHeight());
-    g2.dispose();
   }
 }
 
