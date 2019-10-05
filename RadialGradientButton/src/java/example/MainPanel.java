@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     button2.setForeground(Color.WHITE);
 
     JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 50)) {
-      private final Paint texture = TextureUtils.createCheckerTexture(16, new Color(0xEE_32_32_32, true));
+      private final transient Paint texture = TextureUtils.createCheckerTexture(16, new Color(0xEE_32_32_32, true));
       @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
