@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.awt.image.RescaleOp;
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -17,40 +18,43 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
-  private final JComboBox<String> combo00 = new JComboBox<>(makeModel());
-  private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    initComboBox(combo01);
-    int g = 5;
-    JPanel p = new JPanel(new GridLayout(2, 2, g, g));
-    p.add(combo00);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+    JComboBox<String> combo = new JComboBox<String>(makeModel()) {
+      private transient PopupMenuListener listener;
+      @Override public void updateUI() {
+        removePopupMenuListener(listener);
+        super.updateUI();
+        if (getUI() instanceof WindowsComboBoxUI) {
+          setUI(new RightPopupWindowsComboBoxUI());
+        } else {
+          setUI(new RightPopupBasicComboBoxUI());
+        }
+        listener = new RightPopupMenuListener();
+        addPopupMenuListener(listener);
+      }
+    };
+
+    JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
+    p.add(new JComboBox<>(makeModel()));
     p.add(new JLabel("<- default"));
-    p.add(combo01);
+    p.add(combo);
     p.add(new JLabel("<- RightPopupMenuListener"));
-    setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
+
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void initComboBox(JComboBox<?> combo) {
-    if (combo.getUI() instanceof WindowsComboBoxUI) {
-      combo.setUI(new RightPopupWindowsComboBoxUI());
-    } else {
-      combo.setUI(new RightPopupBasicComboBoxUI());
-    }
-    combo.addPopupMenuListener(new RightPopupMenuListener());
-  }
-
   private static ComboBoxModel<String> makeModel() {
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("asdfasdfas");
-    model.addElement("bbb1");
-    model.addElement("bbb12");
+    MutableComboBoxModel<String> model = new DefaultComboBoxModel<>();
+    model.addElement("111");
+    model.addElement("2222");
+    model.addElement("33333");
+    model.addElement("444444");
+    model.addElement("5555555");
+    model.addElement("66666666");
     return model;
   }
 
@@ -112,7 +116,7 @@ class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
     return button;
   }
 
-  private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
+  private static Icon makeRolloverIcon(Icon srcIcon) {
     int w = srcIcon.getIconWidth();
     int h = srcIcon.getIconHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -120,7 +124,7 @@ class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
     srcIcon.paintIcon(null, g2, 0, 0);
     float[] scaleFactors = {1.2f, 1.2f, 1.2f, 1f};
     float[] offsets = {0f, 0f, 0f, 0f};
-    RescaleOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
+    BufferedImageOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
     g2.dispose();
     return new ImageIcon(op.filter(img, null));
   }
