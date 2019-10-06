@@ -156,19 +156,8 @@ class TableHeaderPopupMenu extends JPopupMenu {
   protected TableHeaderPopupMenu() {
     super();
     JTextField textField = new JTextField();
-    textField.addAncestorListener(new AncestorListener() {
-      @Override public void ancestorAdded(AncestorEvent e) {
-        textField.requestFocusInWindow();
-      }
+    textField.addAncestorListener(new FocusAncestorListener());
 
-      @Override public void ancestorMoved(AncestorEvent e) {
-        /* not needed */
-      }
-
-      @Override public void ancestorRemoved(AncestorEvent e) {
-        /* not needed */
-      }
-    });
     add("Edit: setHeaderValue").addActionListener(e -> {
       JTableHeader header = (JTableHeader) getInvoker();
       TableColumn column = header.getColumnModel().getColumn(index);
@@ -196,5 +185,19 @@ class TableHeaderPopupMenu extends JPopupMenu {
       index = header.columnAtPoint(new Point(x, y));
       super.show(c, x, y);
     }
+  }
+}
+
+class FocusAncestorListener implements AncestorListener {
+  @Override public void ancestorAdded(AncestorEvent e) {
+    e.getComponent().requestFocusInWindow();
+  }
+
+  @Override public void ancestorMoved(AncestorEvent e) {
+    /* not needed */
+  }
+
+  @Override public void ancestorRemoved(AncestorEvent e) {
+    /* not needed */
   }
 }
