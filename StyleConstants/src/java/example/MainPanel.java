@@ -14,15 +14,18 @@ import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
   private final JTextPane jtp = new JTextPane();
-  private final JButton ok = new JButton("Test");
-  private final JButton err = new JButton("Error");
-  private final JButton clr = new JButton("Clear");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
+    JButton ok = new JButton("Test");
     ok.addActionListener(e -> append("Test test test test", true));
+
+    JButton err = new JButton("Error");
     err.addActionListener(e -> append("Error error error error", false));
+
+    JButton clr = new JButton("Clear");
     clr.addActionListener(e -> jtp.setText(""));
+
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(ok);
