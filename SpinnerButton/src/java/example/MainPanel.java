@@ -11,15 +11,16 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 
 public final class MainPanel extends JPanel {
-  private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-  private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-  private final JSpinner spinner3 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-
   private MainPanel() {
     super(new BorderLayout());
 
+    JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     spinner1.setUI(new MySpinnerUI());
+
+    JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     searchSpinnerButtons(spinner2);
+
+    JSpinner spinner3 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     if (spinner3.getUI() instanceof WindowsSpinnerUI) {
       spinner3.setUI(new MyWinSpinnerUI());
     } else {
