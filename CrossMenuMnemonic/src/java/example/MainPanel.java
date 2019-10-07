@@ -63,15 +63,15 @@ final class MenuBarUtil {
   private static JMenu createFileMenu() {
     JMenu menu = new JMenu("File");
     menu.setMnemonic(KeyEvent.VK_F);
+    menu.add("New").setMnemonic(KeyEvent.VK_N);
     menu.add("Open").setMnemonic(KeyEvent.VK_O);
-    menu.add("Open Recent").setMnemonic(KeyEvent.VK_O);
     return menu;
   }
 
   private static JMenu createEditMenu() {
     JMenu menu = new JMenu("Edit");
     menu.setMnemonic(KeyEvent.VK_E);
-    menu.add("Cut").setMnemonic(KeyEvent.VK_C);
+    menu.add("Cut").setMnemonic(KeyEvent.VK_T);
     menu.add("Copy").setMnemonic(KeyEvent.VK_C);
     menu.add("Paste").setMnemonic(KeyEvent.VK_P);
     menu.add("Delete").setMnemonic(KeyEvent.VK_D);
@@ -82,7 +82,7 @@ final class MenuBarUtil {
     JMenu menu = new JMenu("Help");
     menu.setMnemonic(KeyEvent.VK_H);
     menu.add("About").setMnemonic(KeyEvent.VK_A);
-    menu.add("Version").setMnemonic(KeyEvent.VK_A);
+    menu.add("Version").setMnemonic(KeyEvent.VK_V);
     return menu;
   }
 }
