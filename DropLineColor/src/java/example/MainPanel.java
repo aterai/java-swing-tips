@@ -319,10 +319,10 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
+    boolean canDrop = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
     Component glassPane = ((JComponent) info.getComponent()).getRootPane().getGlassPane();
-    glassPane.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-    return isDroppable;
+    glassPane.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    return canDrop;
   }
 
   @Override public int getSourceActions(JComponent c) {

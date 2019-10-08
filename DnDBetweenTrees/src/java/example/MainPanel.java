@@ -101,7 +101,7 @@ class TreeTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return nodes;
         } else {

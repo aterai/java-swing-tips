@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final TransferHandler handler = new TableRowTransferHandler();
   private final String[] columnNames = {"String", "Integer", "Boolean"};
   private final Object[][] data = {
     {"AAA", 12, true}, {"aaa", 1, false},
@@ -31,24 +30,21 @@ public final class MainPanel extends JPanel {
     {"FFF", 19, true}, {"fff", 6, false},
     {"GGG", 92, true}, {"ggg", 0, false}
   };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      // ArrayIndexOutOfBoundsException: 0 >= 0
-      // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-      // https://bugs.openjdk.java.net/browse/JDK-6967479
-      // return getValueAt(0, column).getClass();
-      switch (column) {
-        case 0: return String.class;
-        case 1: return Number.class;
-        case 2: return Boolean.class;
-        default: return super.getColumnClass(column);
-      }
-    }
-  };
-  private final JTable table = new JTable(model);
 
   private MainPanel() {
     super(new BorderLayout());
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
+    TransferHandler handler = new TableRowTransferHandler();
+    JTable table = new JTable(model);
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);
     table.setDropMode(DropMode.INSERT_ROWS);
@@ -136,7 +132,7 @@ class TableRowTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return transferredObjects;
         } else {
@@ -147,12 +143,12 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
+    boolean canDrop = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
     // XXX bug? The cursor flickering problem with JTableHeader:
-    // info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    // info.getComponent().setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
     Component glassPane = ((JComponent) info.getComponent()).getRootPane().getGlassPane();
-    glassPane.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-    return isDroppable;
+    glassPane.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    return canDrop;
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -181,11 +177,11 @@ class TableRowTransferHandler extends TransferHandler {
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       addCount = values.size();
-      Object[] atype = new Object[0];
+      Object[] type = new Object[0];
       for (Object o: values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
-        model.insertRow(row, ((List<?>) o).toArray(atype));
+        model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
       }
       return true;

@@ -139,7 +139,7 @@ class TableRowTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return transferData;
         } else {
@@ -150,12 +150,12 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isDroppable = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
+    boolean canDrop = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
     // XXX bug? The cursor flickering problem with JTableHeader:
-    // info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    // info.getComponent().setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
     Component glassPane = ((JComponent) info.getComponent()).getRootPane().getGlassPane();
-    glassPane.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-    return isDroppable;
+    glassPane.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    return canDrop;
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -186,11 +186,11 @@ class TableRowTransferHandler extends TransferHandler {
       if (Objects.equals(source, target)) {
         addCount = values.size();
       }
-      Object[] atype = new Object[0];
+      Object[] type = new Object[0];
       for (Object o: values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
-        model.insertRow(row, ((List<?>) o).toArray(atype));
+        model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
       }
       return true;

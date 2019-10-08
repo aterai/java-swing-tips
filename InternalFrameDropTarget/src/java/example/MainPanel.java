@@ -78,13 +78,13 @@ public final class MainPanel extends JPanel {
 
     JDesktopPane p = new JDesktopPane();
 
-    JInternalFrame f1 = new JInternalFrame("aaaaaaaaa", true, true, true, true);
+    JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
     f1.add(new JScrollPane(makeDnDTable()));
     f1.setOpaque(false);
     p.add(f1, 1, 1);
     f1.setBounds(0, 0, 240, 160);
     f1.setVisible(true);
-    JInternalFrame f2 = new JInternalFrame("bbbbbbbb", true, true, true, true);
+    JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
     f2.add(new JScrollPane(makeDnDTable()));
     p.add(f2, 1, 0);
     f2.setBounds(50, 50, 240, 160);
@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
   //     Point tabPt = e.getPoint(); // e.getDragOrigin();
   //     if (startPt != null && startPt.distance(tabPt) > gestureMotionThreshold) {
   //       JTableHeader src = (JTableHeader) e.getComponent();
-  //       System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa" + src);
+  //       System.out.println("src: " + src);
   //       TransferHandler th = src.getTransferHandler();
   //       index = src.columnAtPoint(tabPt);
   //       th.exportAsDrag(src, e, TransferHandler.MOVE);
@@ -237,7 +237,7 @@ class TableRowTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return transferredObjects;
         } else {
@@ -263,7 +263,7 @@ class TableRowTransferHandler extends TransferHandler {
     return null;
   }
 
-  private boolean isDroppableTableIntersection(TransferHandler.TransferSupport info) {
+  private boolean canDropTableIntersection(TransferHandler.TransferSupport info) {
     Component c = info.getComponent();
     if (!(c instanceof JTable)) {
       return false;
@@ -290,12 +290,12 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isSupported = info.isDataFlavorSupported(FLAVOR) && isDroppableTableIntersection(info);
+    boolean isSupported = info.isDataFlavorSupported(FLAVOR) && canDropTableIntersection(info);
     boolean canDrop = info.isDrop() && isSupported;
     // XXX bug? The cursor flickering problem with JTableHeader:
-    // info.getComponent().setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    // info.getComponent().setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
     getRootGlassPane(info.getComponent())
-      .ifPresent(p -> p.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
+        .ifPresent(p -> p.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
     return canDrop;
   }
 
@@ -327,11 +327,11 @@ class TableRowTransferHandler extends TransferHandler {
       if (Objects.equals(source, target)) {
         addCount = values.size();
       }
-      Object[] atype = new Object[0];
+      Object[] type = new Object[0];
       for (Object o: values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
-        model.insertRow(row, ((List<?>) o).toArray(atype));
+        model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
       }
       return true;

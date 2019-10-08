@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("JLabel 01", new JLabel("Test"));
     tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
     tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
-    tabbedPane.addTab("JLabel 04", new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111111111<br>13412341234123446745"));
     tabbedPane.addTab("null 05", null);
     tabbedPane.addTab("JTabbedPane 06", sub);
     tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
@@ -89,13 +89,11 @@ public final class MainPanel extends JPanel {
 
   private Component makeCheckBoxPanel() {
     JCheckBox tc = new JCheckBox("Top", true);
-    tc.addActionListener(e -> {
-      tabbedPane.setTabPlacement(tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT);
-    });
+    tc.addActionListener(e -> tabbedPane.setTabPlacement(
+        tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
     JCheckBox sc = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    sc.addActionListener(e -> {
-      tabbedPane.setTabLayoutPolicy(sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
-    });
+    sc.addActionListener(e -> tabbedPane.setTabLayoutPolicy(
+        sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p.add(tc);
     p.add(sc);
@@ -121,14 +119,14 @@ public final class MainPanel extends JPanel {
     });
     JMenu menu = new JMenu("Debug");
     menu.add(check);
-    JMenuBar menubar = new JMenuBar();
-    menubar.add(menu);
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(menu);
 
     LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel(handler, layerUI));
-    frame.setJMenuBar(menubar);
+    frame.setJMenuBar(menuBar);
     frame.pack();
     frame.setLocationRelativeTo(null);
 
@@ -156,7 +154,7 @@ class DnDTabbedPane extends JTabbedPane {
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;
-    private boolean dropable = true;
+    // public boolean canDrop = true; // index >= 0;
 
     protected DropLocation(Point p, int index) {
       super(p);
@@ -165,14 +163,6 @@ class DnDTabbedPane extends JTabbedPane {
 
     public int getIndex() {
       return index;
-    }
-
-    public void setDroppable(boolean flag) {
-      dropable = flag;
-    }
-
-    public boolean isDroppable() {
-      return dropable;
     }
 
     // @Override public String toString() {
@@ -188,7 +178,7 @@ class DnDTabbedPane extends JTabbedPane {
     JButton scrollBackwardButton = null;
     for (Component c: getComponents()) {
       if (c instanceof JButton) {
-        if (Objects.isNull(scrollForwardButton) && Objects.isNull(scrollBackwardButton)) {
+        if (Objects.isNull(scrollForwardButton)) {
           scrollForwardButton = (JButton) c;
         } else if (Objects.isNull(scrollBackwardButton)) {
           scrollBackwardButton = (JButton) c;
@@ -197,8 +187,8 @@ class DnDTabbedPane extends JTabbedPane {
     }
     JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
     Optional.ofNullable(button)
-      .filter(JButton::isEnabled)
-      .ifPresent(JButton::doClick);
+        .filter(JButton::isEnabled)
+        .ifPresent(JButton::doClick);
 
     // // ArrayIndexOutOfBoundsException
     // Optional.ofNullable(getActionMap())
@@ -242,9 +232,7 @@ class DnDTabbedPane extends JTabbedPane {
 
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
   public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
-    if (dropMode != DropMode.INSERT) {
-      assert false : "Unexpected drop mode";
-    }
+    assert dropMode == DropMode.INSERT : "Unexpected drop mode";
     for (int i = 0; i < getTabCount(); i++) {
       if (getBoundsAt(i).contains(p)) {
         return new DnDTabbedPane.DropLocation(p, i);
@@ -287,7 +275,7 @@ class DnDTabbedPane extends JTabbedPane {
       dropLocation = location;
     }
     firePropertyChange("dropLocation", old, dropLocation);
-    return null;
+    return state;
   }
 
   public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
@@ -323,19 +311,20 @@ class DnDTabbedPane extends JTabbedPane {
     final Icon icon = getIconAt(prev);
     final String tip = getToolTipTextAt(prev);
     final boolean isEnabled = isEnabledAt(prev);
-    int tgtindex = prev > next ? next : next - 1;
+    int tgtIndex = prev > next ? next : next - 1;
     remove(prev);
-    insertTab(title, icon, cmp, tip, tgtindex);
-    setEnabledAt(tgtindex, isEnabled);
+    insertTab(title, icon, cmp, tip, tgtIndex);
+    setEnabledAt(tgtIndex, isEnabled);
     // When you drag'n'drop a disabled tab, it finishes enabled and selected.
     // pointed out by dlorde
     if (isEnabled) {
-      setSelectedIndex(tgtindex);
+      setSelectedIndex(tgtIndex);
     }
-    // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
+    // I have a component in all tabs (JLabel with an X to close the tab) and when I move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
-    setTabComponentAt(tgtindex, tab);
+    setTabComponentAt(tgtIndex, tab);
   }
+
   // public Rectangle getTabAreaBounds() {
   //   Rectangle tabbedRect = getBounds();
   //   Component c = getSelectedComponent();
@@ -461,9 +450,11 @@ class TabDropTargetAdapter extends DropTargetAdapter {
     Component c = dtde.getDropTargetContext().getComponent();
     System.out.println("DropTargetListener#dragEnter: " + c.getName());
   }
+
   // @Override public void dragOver(DropTargetDragEvent dtde) {
   //   // System.out.println("dragOver");
   // }
+
   // @Override public void dropActionChanged(DropTargetDragEvent dtde) {
   //   System.out.println("dropActionChanged");
   // }
@@ -490,8 +481,8 @@ class TabTransferHandler extends TransferHandler {
   protected final JWindow dialog = new JWindow();
   protected DragImageMode mode = DragImageMode.LIGHTWEIGHT;
 
-  public void setDragImageMode(DragImageMode dmode) {
-    this.mode = dmode;
+  public void setDragImageMode(DragImageMode mode) {
+    this.mode = mode;
     setDragImage(null);
   }
 
@@ -526,7 +517,7 @@ class TabTransferHandler extends TransferHandler {
         return Objects.equals(localObjectFlavor, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return new DnDTabData(source);
         } else {
@@ -559,24 +550,24 @@ class TabTransferHandler extends TransferHandler {
     //   }
     // }
 
-    boolean isDroppable;
+    boolean canDrop;
     boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
     if (target.equals(source)) {
       // System.out.println("target == source");
-      isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+      canDrop = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
     } else {
       // System.out.format("target!=source%n target: %s%n  source: %s", target.getName(), source.getName());
-      isDroppable = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
+      canDrop = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
     }
 
     // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6700748
-    target.setCursor(isDroppable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    target.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
-    support.setShowDropLocation(isDroppable);
-    dl.setDroppable(isDroppable);
-    target.updateTabDropLocation(dl, null, isDroppable);
-    return isDroppable;
+    support.setShowDropLocation(canDrop);
+    // dl.canDrop = canDrop;
+    target.updateTabDropLocation(dl, null, canDrop);
+    return canDrop;
   }
   // private static boolean isWebStart() {
   //   try {
@@ -662,7 +653,7 @@ class TabTransferHandler extends TransferHandler {
 }
 
 class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
-  private static final int LINE_WIDTH = 3;
+  private static final int LINE_SIZE = 3;
   private static final Rectangle LINE_RECT = new Rectangle();
 
   @Override public void paint(Graphics g, JComponent c) {
@@ -671,7 +662,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
       JLayer<?> layer = (JLayer<?>) c;
       DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
       Optional.ofNullable(tabbedPane.getDropLocation())
-          .filter(loc -> loc.isDroppable() && loc.getIndex() >= 0)
+          .filter(loc -> loc.getIndex() >= 0)
           .ifPresent(loc -> {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
@@ -681,7 +672,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             g2.dispose();
           });
       // DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-      // if (Objects.nonNull(loc) && loc.isDroppable() && loc.getIndex() >= 0) {
+      // if (Objects.nonNull(loc) && loc.getIndex() >= 0) {
       //   Graphics2D g2 = (Graphics2D) g.create();
       //   g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
       //   g2.setPaint(Color.RED);
@@ -698,9 +689,9 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
     // if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
     if (DnDTabbedPane.isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
-      LINE_RECT.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+      LINE_RECT.setBounds(r.x - LINE_SIZE / 2 + r.width * a, r.y, LINE_SIZE, r.height);
     } else {
-      LINE_RECT.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+      LINE_RECT.setBounds(r.x, r.y - LINE_SIZE / 2 + r.height * a, r.width, LINE_SIZE);
     }
   }
 }
