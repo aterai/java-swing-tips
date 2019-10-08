@@ -86,7 +86,7 @@ class TreeTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JTree) c;
-    TreePath[] paths = source.getSelectionPaths();
+    TreePath[] paths = Objects.requireNonNull(source.getSelectionPaths(), "SelectionPaths is null");
     DefaultMutableTreeNode[] nodes = new DefaultMutableTreeNode[paths.length];
     for (int i = 0; i < paths.length; i++) {
       nodes[i] = (DefaultMutableTreeNode) paths[i].getLastPathComponent();
@@ -187,11 +187,14 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent src, Transferable data, int action) {
-    if (action == TransferHandler.MOVE) {
+    if (action == TransferHandler.MOVE && src instanceof JTree) {
       JTree tree = (JTree) src;
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      for (TreePath path: tree.getSelectionPaths()) {
-        model.removeNodeFromParent((MutableTreeNode) path.getLastPathComponent());
+      TreePath[] selectionPaths = tree.getSelectionPaths();
+      if (selectionPaths != null) {
+        for (TreePath path : selectionPaths) {
+          model.removeNodeFromParent((MutableTreeNode) path.getLastPathComponent());
+        }
       }
     }
   }
