@@ -31,12 +31,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTree makeTree(TransferHandler hanlder) {
+  private static JTree makeTree(TransferHandler handler) {
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tree.setRootVisible(false);
     tree.setDragEnabled(true);
-    tree.setTransferHandler(hanlder);
+    tree.setTransferHandler(handler);
     tree.setDropMode(DropMode.INSERT);
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -130,7 +130,7 @@ class TreeTransferHandler extends TransferHandler {
     // if (!canImport(support)) {
     //   return false;
     // }
-    DefaultMutableTreeNode[] nodes = null;
+    DefaultMutableTreeNode[] nodes;
     try {
       Transferable t = support.getTransferable();
       nodes = (DefaultMutableTreeNode[]) t.getTransferData(FLAVOR);
