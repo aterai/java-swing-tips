@@ -12,12 +12,25 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-  private final JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
-  private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
+    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsTabbedPaneUI) {
+          setUI(new WindowsTabHeightTabbedPaneUI());
+        } else {
+          setUI(new BasicTabHeightTabbedPaneUI());
+        }
+      }
+    };
+    tabbedPane.addTab("00000", new JLabel("aaa aaa aaa aa"));
+    tabbedPane.addTab("111112", new JLabel("bbb bbb bbb bbb bb bb"));
+    tabbedPane.addTab("22222232", new JScrollPane(new JTree()));
+    tabbedPane.addTab("3333333333", new JSplitPane());
+
+    JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).tabPlacement);
@@ -30,15 +43,6 @@ public final class MainPanel extends JPanel {
     box.add(comboBox);
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-      tabbedPane.setUI(new WindowsTabHeightTabbedPaneUI());
-    } else {
-      tabbedPane.setUI(new BasicTabHeightTabbedPaneUI());
-    }
-    tabbedPane.addTab("00000", new JLabel("aaaaaaaaaaa"));
-    tabbedPane.addTab("111112", new JLabel("bbbbbbbbbbbbbbbb"));
-    tabbedPane.addTab("22222232", new JScrollPane(new JTree()));
-    tabbedPane.addTab("3333333333", new JSplitPane());
     add(tabbedPane);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
@@ -81,6 +85,7 @@ class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
   @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
     return TAB_AREA_HEIGHT; // super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
   }
+
   // @Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
   //   Rectangle tabRect = super.getTabBounds(pane, i);
   //   tabRect.translate(0, -16);
