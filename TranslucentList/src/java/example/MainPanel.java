@@ -48,7 +48,12 @@ public final class MainPanel extends JPanel {
     scroll.getViewport().setOpaque(false);
 
     JPanel panel = new JPanel(new BorderLayout()) {
-      private final Paint texture = TextureUtils.createCheckerTexture(6);
+      private transient Paint texture;
+      @Override public void updateUI() {
+        super.updateUI();
+        texture = TextureUtils.createCheckerTexture(6);
+      }
+
       @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
