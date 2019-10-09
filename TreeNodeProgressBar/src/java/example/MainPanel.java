@@ -75,27 +75,27 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("222222222"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    set2.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
+    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("zzzzzzz"));
-    set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
-    set3.add(new DefaultMutableTreeNode("ccccccccc"));
+    set3.add(new DefaultMutableTreeNode("zzz zz zz"));
+    set3.add(new DefaultMutableTreeNode("aaa aaa aaa aaa"));
+    set3.add(new DefaultMutableTreeNode("ccc ccc ccc"));
 
     set4.add(new DefaultMutableTreeNode("22222222222"));
-    set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
-    set4.add(new DefaultMutableTreeNode("zzzzzzz"));
+    set4.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
+    set4.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set4.add(new DefaultMutableTreeNode("zzz zz zz"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-    root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxx"));
+    root.add(new DefaultMutableTreeNode("xxx xxx xxx xx xx"));
     root.add(set3);
-    root.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
+    root.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
     root.add(set1);
     root.add(set2);
     root.add(new DefaultMutableTreeNode("222222222222"));
-    root.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    root.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
     return root;
   }
 
@@ -137,11 +137,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
   @Override protected TreeNode doInBackground() throws InterruptedException {
     int current = 0;
     while (current <= lengthOfTask && !isCancelled()) {
-      try {
-        Thread.sleep(sleepDummy);
-      } catch (InterruptedException ex) {
-        break;
-      }
+      Thread.sleep(sleepDummy);
       publish(100 * current++ / lengthOfTask);
     }
     return treeNode; // sleepDummy * lengthOfTask;
@@ -149,11 +145,11 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
 
   @Override protected void process(List<Integer> c) {
     String title = treeNode.getUserObject().toString();
-    Integer i = (Integer) c.get(c.size() - 1);
+    Integer i = c.get(c.size() - 1);
     ProgressObject o = new ProgressObject(title, i);
     treeNode.setUserObject(o);
     model.nodeChanged(treeNode);
-    // valueForPathChanged(path, str);
+    // model.valueForPathChanged(path, str);
   }
 
   @Override protected void done() {
