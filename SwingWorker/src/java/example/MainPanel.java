@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
   private final JButton runButton = new JButton("run");
   private final JButton cancelButton = new JButton("cancel");
   private final JProgressBar bar = new JProgressBar();
-  private final AnimatedLabel anil = new AnimatedLabel();
+  private final LoadingLabel loadingLabel = new LoadingLabel();
   private transient SwingWorker<String, String> worker;
 
   public MainPanel() {
@@ -32,12 +32,11 @@ public final class MainPanel extends JPanel {
     area.setLineWrap(true);
 
     runButton.addActionListener(e -> executeWorker());
-    cancelButton.addActionListener(e -> {
-      Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
-    });
+    cancelButton.addActionListener(e ->
+        Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true)));
 
     Box box = Box.createHorizontalBox();
-    box.add(anil);
+    box.add(loadingLabel);
     box.add(Box.createHorizontalGlue());
     box.add(runButton);
     box.add(Box.createHorizontalStrut(2));
@@ -62,7 +61,7 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      chunks.forEach(s -> appendText(s));
+      chunks.forEach(MainPanel.this::appendText);
     }
 
     @Override public void done() {
@@ -90,7 +89,7 @@ public final class MainPanel extends JPanel {
     System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
     runButton.setEnabled(false);
     cancelButton.setEnabled(true);
-    anil.startAnimation();
+    loadingLabel.startAnimation();
     statusPanel.setVisible(true);
     bar.setIndeterminate(true);
     worker = new AnimationTask();
@@ -99,7 +98,7 @@ public final class MainPanel extends JPanel {
   }
 
   protected void updateComponentDone() {
-    anil.stopAnimation();
+    loadingLabel.stopAnimation();
     runButton.setEnabled(true);
     cancelButton.setEnabled(false);
     statusPanel.setVisible(false);
@@ -132,24 +131,16 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException ex) {
-      return "Interrupted";
-    }
+    Thread.sleep(2000);
     int current = 0;
     int lengthOfTask = 120; // list.size();
     publish("Length Of Task: " + lengthOfTask);
     publish("\n------------------------------\n");
 
     while (current < lengthOfTask && !isCancelled()) {
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       setProgress(100 * current / lengthOfTask);
       publish(".");
       current++;
@@ -180,14 +171,14 @@ class ProgressListener implements PropertyChangeListener {
   }
 }
 
-class AnimatedLabel extends JLabel {
-  private final transient AnimeIcon icon = new AnimeIcon();
+class LoadingLabel extends JLabel {
+  private final transient LoadingIcon icon = new LoadingIcon();
   private final Timer animator = new Timer(100, e -> {
     icon.next();
     repaint();
   });
 
-  protected AnimatedLabel() {
+  protected LoadingLabel() {
     super();
     setIcon(icon);
     addHierarchyListener(e -> {
@@ -208,7 +199,7 @@ class AnimatedLabel extends JLabel {
   }
 }
 
-class AnimeIcon implements Icon {
+class LoadingIcon implements Icon {
   private static final Color ELLIPSE_COLOR = new Color(0x80_80_80);
   private static final double R = 2d;
   private static final double SX = 1d;
