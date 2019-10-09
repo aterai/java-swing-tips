@@ -13,7 +13,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private final JTextArea logger = new JTextArea();
   private final JButton cancel = new JButton("cancel");
-  private final JButton button = new JButton("Stop 5sec");
   private final DisableInputLayerUI<JComponent> layerUI = new DisableInputLayerUI<>();
   private transient Thread worker;
 
@@ -27,22 +26,21 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
       setInputBlock(true);
       SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-      worker = new Thread() {
-        @Override public void run() {
-          String msg = "Done";
-          try {
-            Thread.sleep(5000);
-          } catch (InterruptedException ex) {
-            msg = "Interrupted";
-          }
-          append(msg);
-          setInputBlock(false);
-          loop.exit();
+      worker = new Thread(() -> {
+        String msg = "Done";
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+          msg = "Interrupted";
         }
-      };
+        append(msg);
+        setInputBlock(false);
+        loop.exit();
+      });
       worker.start();
       if (!loop.enter()) {
         append("Error");
