@@ -19,33 +19,31 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"JSpinner", "Buttons"};
-  private final Object[][] data = {
-    {50, 100}, {100, 50}, {30, 20}, {0, 100}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    @Override public void updateUI() {
-      super.updateUI();
-      EventQueue.invokeLater(() -> {
-        TableColumn column = getColumnModel().getColumn(0);
-        column.setCellRenderer(new SpinnerRenderer());
-        column.setCellEditor(new SpinnerEditor());
-
-        column = getColumnModel().getColumn(1);
-        column.setCellRenderer(new ButtonsRenderer());
-        column.setCellEditor(new ButtonsEditor());
-        repaint();
-      });
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"JSpinner", "Buttons"};
+    Object[][] data = {
+        {50, 100}, {100, 50}, {30, 20}, {0, 100}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return Integer.class;
+      }
+    };
+    JTable table = new JTable(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        EventQueue.invokeLater(() -> {
+          TableColumn column = getColumnModel().getColumn(0);
+          column.setCellRenderer(new SpinnerRenderer());
+          column.setCellEditor(new SpinnerEditor());
+          column = getColumnModel().getColumn(1);
+          column.setCellRenderer(new ButtonsRenderer());
+          column.setCellEditor(new ButtonsEditor());
+          repaint();
+        });
+      }
+    };
     table.setRowHeight(36);
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
@@ -97,7 +95,7 @@ class SpinnerRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-    renderer.getSpinner().setValue((Integer) value);
+    renderer.getSpinner().setValue(value);
     return renderer;
   }
 }
@@ -107,16 +105,18 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     renderer.setBackground(table.getSelectionBackground());
-    renderer.getSpinner().setValue((Integer) value);
+    renderer.getSpinner().setValue(value);
     return renderer;
   }
 
   @Override public Object getCellEditorValue() {
     return renderer.getSpinner().getValue();
   }
+
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
   // }
+
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
@@ -139,6 +139,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //     super.updateUI();
 //     setName("Table.cellRenderer");
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 //     spinner.setValue((Integer) value);
@@ -153,6 +154,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //     spinner.setValue((Integer) value);
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return spinner.getValue();
 //   }
@@ -162,9 +164,11 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     try {
 //       spinner.commitEdit();
@@ -175,18 +179,23 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -202,6 +211,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -221,7 +231,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 
 class ButtonsPanel extends JPanel {
   public final List<JButton> buttons = Arrays.asList(new JButton("+"), new JButton("-"));
-  public final JLabel label = new JLabel() {
+  public final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
       d.width = 50;
@@ -232,7 +242,6 @@ class ButtonsPanel extends JPanel {
 
   protected ButtonsPanel() {
     super();
-    label.setHorizontalAlignment(SwingConstants.RIGHT);
     setOpaque(true);
     add(label);
     for (JButton b: buttons) {
