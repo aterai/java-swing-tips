@@ -422,14 +422,7 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
-    if (!support.isDrop()) {
-      return false;
-    }
-    if (!support.isDataFlavorSupported(FLAVOR)) {
-      return false;
-    }
-    JTree tree = (JTree) support.getComponent();
-    return !tree.equals(source);
+    return support.isDrop() && support.isDataFlavorSupported(FLAVOR) && !support.getComponent().equals(source);
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
