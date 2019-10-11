@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
   private transient ZoomAndPanHandler zoomAndPanHandler;
   private final ImageIcon icon;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     icon = new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"));
     setPreferredSize(new Dimension(320, 240));
@@ -78,7 +78,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     Point dragEndPoint = e.getPoint();
     Point dragStart = transformPoint(dragStartPoint);
     Point dragEnd = transformPoint(dragEndPoint);
-    coordAndZoomTransform.translate(dragEnd.x - dragStart.x, dragEnd.y - dragStart.y);
+    coordAndZoomTransform.translate(dragEnd.getX() - dragStart.getX(), dragEnd.getY() - dragStart.getY());
     dragStartPoint.setLocation(dragEndPoint);
     e.getComponent().repaint();
   }
