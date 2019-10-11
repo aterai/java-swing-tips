@@ -13,27 +13,26 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-  private final JTabbedPane tabbedPane = new JTabbedPane() {
-    @Override public String getToolTipTextAt(int index) {
-      return getTitleAt(index);
-    }
-
-    @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-      super.insertTab(title, icon, component, title, index);
-    }
-
-    @Override public void updateUI() {
-      super.updateUI();
-      if (getUI() instanceof WindowsTabbedPaneUI) {
-        setUI(new WindowsClippedTitleTabbedPaneUI());
-      } else {
-        setUI(new BasicClippedTitleTabbedPaneUI());
-      }
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    JTabbedPane tabbedPane = new JTabbedPane() {
+      @Override public String getToolTipTextAt(int index) {
+        return getTitleAt(index);
+      }
+
+      @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
+        super.insertTab(title, icon, component, title, index);
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsTabbedPaneUI) {
+          setUI(new WindowsClippedTitleTabbedPaneUI());
+        } else {
+          setUI(new BasicClippedTitleTabbedPaneUI());
+        }
+      }
+    };
     List<? extends JTabbedPane> list = Arrays.asList(
         makeTabbedPane(new JTabbedPane()),
         makeTabbedPane(tabbedPane));
@@ -42,7 +41,7 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("LEFT");
     check.addActionListener(e -> {
-      int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP;
+      int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? SwingConstants.LEFT : SwingConstants.TOP;
       list.forEach(t -> t.setTabPlacement(tabPlacement));
     });
 
@@ -54,10 +53,10 @@ public final class MainPanel extends JPanel {
   private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
     // tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
     // tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabbedPane.addTab("1111111111111111111111111111", new JLabel("aaaaaaaaaaa"));
-    tabbedPane.addTab("2", new JLabel("bbbbbbbbb"));
-    tabbedPane.addTab("33333333333333333333333333333333333333333333", new JLabel("cccccccccc"));
-    tabbedPane.addTab("444444444444", new JLabel("dddddddddddddddd"));
+    tabbedPane.addTab("1111111111111111111111111111", new JLabel("1"));
+    tabbedPane.addTab("2", new JLabel("2"));
+    tabbedPane.addTab("33333333333333333333333333333333333333333333", new JLabel("3"));
+    tabbedPane.addTab("444444444444", new JLabel("4"));
     return tabbedPane;
   }
 
@@ -92,14 +91,14 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
     // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
     int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      return (int) (width / 4);
+      return width / 4;
     } else { // TOP || BOTTOM
-      return (int) (width / tabPane.getTabCount());
+      return width / tabPane.getTabCount();
     }
   }
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
-    int fw = (int) font.getSize();
+    int fw = font.getSize();
     Rectangle tabRect = rects[tabIndex];
     Rectangle rect = new Rectangle(textRect.x + fw / 2, textRect.y, tabRect.width - fw, textRect.height);
     String clippedText = SwingUtilities.layoutCompoundLabel(
@@ -126,9 +125,9 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
     // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
     int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      return (int) (width / 4);
+      return width / 4;
     } else { // TOP || BOTTOM
-      return (int) (width / tabPane.getTabCount());
+      return width / tabPane.getTabCount();
     }
   }
 
@@ -144,7 +143,7 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
       super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
     } else {
       rect = new Rectangle(
-        textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
+          textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
       super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
     }
   }
