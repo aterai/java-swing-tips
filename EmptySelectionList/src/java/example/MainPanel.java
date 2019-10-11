@@ -8,16 +8,13 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JList<String> list1 = new JList<>(makeModel());
-  private final JList<String> list2 = new JList<>(makeModel());
-  private final JList<String> list3 = new JList<>(makeModel());
-
-  public MainPanel() {
+  private MainPanel() {
     super(new GridLayout(1, 0));
-
+    JList<String> list1 = new JList<>(makeModel());
     list1.setEnabled(false);
 
     // System.out.println(UIManager.getBorder("List.focusCellHighlightBorder"));
+    JList<String> list2 = new JList<>(makeModel());
     list2.setFocusable(false);
     list2.setSelectionModel(new DefaultListSelectionModel() {
       @Override public boolean isSelectedIndex(int index) {
@@ -25,7 +22,10 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    setListCellRenderer(list3);
+    JList<String> list3 = new JList<>(makeModel());
+    ListCellRenderer<? super String> renderer = list3.getCellRenderer(); // new DefaultListCellRenderer();
+    list3.setCellRenderer((list, value, index, isSelected, cellHasFocus) ->
+        renderer.getListCellRendererComponent(list, value, index, false, false));
 
     add(new JScrollPane(list1));
     add(new JScrollPane(list2));
@@ -35,24 +35,17 @@ public final class MainPanel extends JPanel {
 
   private static ListModel<String> makeModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("aaaaaaaaaaaa");
-    model.addElement("bbbbb");
-    model.addElement("ccc");
-    model.addElement("dddddddddddd");
-    model.addElement("eeeeeeee");
-    model.addElement("fffff");
-    model.addElement("gggggggg");
-    model.addElement("hhhhhh");
-    model.addElement("iiiiiiiiiiii");
+    model.addElement("0000000000000");
+    model.addElement("11111");
+    model.addElement("222");
+    model.addElement("333333333333");
+    model.addElement("444444444");
+    model.addElement("55555555555");
+    model.addElement("666666");
+    model.addElement("7777777777");
+    model.addElement("88888888888888");
+    model.addElement("99");
     return model;
-  }
-
-  private static void setListCellRenderer(JList<String> l) {
-    l.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        return super.getListCellRendererComponent(list, value, index, false, false);
-      }
-    });
   }
 
   public static void main(String[] args) {
