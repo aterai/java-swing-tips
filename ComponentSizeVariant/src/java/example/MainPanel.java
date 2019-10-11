@@ -88,7 +88,7 @@ final class SizeVariantUtil {
   }
 
   private static void setSizeVariant(String key) {
-    Stream.of(Frame.getWindows()).forEach(window -> {
+    Stream.of(Window.getWindows()).forEach(window -> {
       setSizeVariantAllComponents(window, key);
       SwingUtilities.updateComponentTreeUI(window);
       window.pack();

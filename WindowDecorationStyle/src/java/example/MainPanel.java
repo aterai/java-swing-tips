@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
   //   }
   // }
   // private void updateLookAndFeel() {
-  //   for (Window window: Frame.getWindows()) {
+  //   for (Window window: Window.getWindows()) {
   //     if (window instanceof RootPaneContainer) {
   //       RootPaneContainer rpc = (RootPaneContainer) window;
   //       SwingUtilities.updateComponentTreeUI(rpc.getContentPane());
@@ -225,7 +225,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Frame.getWindows()) {
+    for (Window window: Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }
