@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
   // TEST: Thread thread;
   private transient SwingWorker<String, String> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT); // default
@@ -64,19 +64,16 @@ public class MainPanel extends JPanel {
   }
 
   private class BackgroundTask extends SwingWorker<String, String> {
-    @Override public String doInBackground() {
-      while (true) {
-        try {
-          Thread.sleep(500);
-        } catch (InterruptedException ex) {
-          return "Interrupted";
-        }
+    @Override public String doInBackground() throws InterruptedException {
+      while (!isCancelled()) {
+        Thread.sleep(500);
         if (check.isSelected()) {
           publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
         } else {
           test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
         }
       }
+      return "Cancelled";
     }
   }
 
@@ -118,21 +115,6 @@ public class MainPanel extends JPanel {
     // }
     if (Objects.isNull(worker)) {
       worker = new BackgroundTask() {
-        @Override public String doInBackground() {
-          while (true) {
-            try {
-              Thread.sleep(500);
-            } catch (InterruptedException ex) {
-              return "Interrupted";
-            }
-            if (check.isSelected()) {
-              publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
-            } else {
-              test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
-            }
-          }
-        }
-
         @Override protected void process(List<String> chunks) {
           for (String message: chunks) {
             test(message);
