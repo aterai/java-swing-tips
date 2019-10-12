@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,18 +17,19 @@ public final class MainPanel extends JPanel {
     System.out.println("awt.file.showHiddenFiles: " + showHiddenProperty);
 
     JFileChooser chooser = new JFileChooser();
-    JPopupMenu pop = searchPopupMenu(chooser);
-    pop.addSeparator();
-    JCheckBoxMenuItem mi = new JCheckBoxMenuItem("isFileHidingEnabled");
-    mi.addActionListener(e -> chooser.setFileHidingEnabled(((JCheckBoxMenuItem) e.getSource()).isSelected()));
-    mi.setSelected(chooser.isFileHidingEnabled());
-    pop.add(mi);
+    Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
+      pop.addSeparator();
+      JCheckBoxMenuItem mi = new JCheckBoxMenuItem("isFileHidingEnabled");
+      mi.addActionListener(e -> chooser.setFileHidingEnabled(((JCheckBoxMenuItem) e.getSource()).isSelected()));
+      mi.setSelected(chooser.isFileHidingEnabled());
+      pop.add(mi);
+    });
 
     JTextArea log = new JTextArea();
     JButton button = new JButton("showOpenDialog");
     button.addActionListener(e -> {
-      int retvalue = chooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
