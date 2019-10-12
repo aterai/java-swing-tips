@@ -19,18 +19,17 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 // Lock JInternalPane
 // https://community.oracle.com/thread/1392111
 public class MainPanel extends JPanel {
-  private static final int XOFFSET = 30;
-  private static final int YOFFSET = 30;
+  private static final int OFFSET = 30;
   private static AtomicInteger openFrameCount = new AtomicInteger();
   private final JDesktopPane desktop = new JDesktopPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     // title, resizable, closable, maximizable, iconifiable
     JInternalFrame immovableFrame = new JInternalFrame("immovable", false, false, true, true);
     Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
-    MouseMotionListener[] actions = (MouseMotionListener[]) north.getListeners(MouseMotionListener.class);
+    MouseMotionListener[] actions = north.getListeners(MouseMotionListener.class);
     for (MouseMotionListener l: actions) {
       north.removeMouseMotionListener(l);
     }
@@ -75,7 +74,7 @@ public class MainPanel extends JPanel {
     String title = String.format("Document #%s", openFrameCount.getAndIncrement());
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     f.setSize(160, 100);
-    f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
+    f.setLocation(OFFSET * openFrameCount.intValue(), OFFSET * openFrameCount.intValue());
     return f;
   }
 
