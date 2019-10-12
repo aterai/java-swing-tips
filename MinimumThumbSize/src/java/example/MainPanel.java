@@ -10,25 +10,23 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String LF = "\n";
-  private final Dimension preferredSize = new Dimension(320, 240);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     StringBuilder buf = new StringBuilder();
-    IntStream.range(0, 1000).forEach(i -> buf.append(i + LF));
+    IntStream.range(0, 1000).forEach(i -> buf.append(i).append(LF));
 
     JSplitPane sp = new JSplitPane();
     sp.setLeftComponent(new JScrollPane(new JTextArea(buf.toString())));
 
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(32, 32));
     sp.setRightComponent(new JScrollPane(new JTextArea(buf.toString())));
-
     sp.setResizeWeight(.5);
     add(sp);
   }
 
   @Override public Dimension getPreferredSize() {
-    return preferredSize;
+    return new Dimension(320, 240);
   }
 
   public static void main(String[] args) {
