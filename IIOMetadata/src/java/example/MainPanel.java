@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     IIOMetadataNode root = null;
     Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpeg");
@@ -136,7 +136,7 @@ class XmlTreeNode implements TreeNode {
 
   public boolean isShowAttributes() {
     if (Objects.nonNull(showAttributes)) {
-      return showAttributes.booleanValue();
+      return showAttributes;
     }
     if (Objects.nonNull(parent)) {
       return parent.isShowAttributes();
@@ -199,14 +199,14 @@ class XmlTreeNode implements TreeNode {
     if (Objects.isNull(list)) {
       loadChildren();
     }
-    Iterator<XmlTreeNode> iter = list.iterator();
+    Iterator<XmlTreeNode> iterator = list.iterator();
     return new Enumeration<XmlTreeNode>() {
       @Override public boolean hasMoreElements() {
-        return iter.hasNext();
+        return iterator.hasNext();
       }
 
       @Override public XmlTreeNode nextElement() {
-        return iter.next();
+        return iterator.next();
       }
     };
   }
