@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final Set<Integer> disableIndexSet = new HashSet<>();
-  protected final JTextField field = new JTextField("1, 2, 5");
-  protected final JList<String> list = makeList(disableIndexSet);
+public final class MainPanel extends JPanel {
+  private final Set<Integer> disableIndexSet = new HashSet<>();
+  private final JTextField field = new JTextField("1, 2, 5");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
+    JList<String> list = makeList(disableIndexSet);
 
     initDisableIndex(disableIndexSet);
     ActionMap am = list.getActionMap();
@@ -65,38 +65,40 @@ public class MainPanel extends JPanel {
 
   private static JList<String> makeList(Set<Integer> disableIndexSet) {
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("aaaaaaaaaaaa");
-    model.addElement("bbbbbbbbbbbbbbbbbb");
-    model.addElement("ccccccccccc");
-    model.addElement("dddddddddddd");
-    model.addElement("eeeeeeeeeeeeeeeeeee");
-    model.addElement("fffffffffffffffffffffff");
-    model.addElement("ggggggggg");
+    model.addElement("11111111111");
+    model.addElement("222222222222222222");
+    model.addElement("3333333333333");
+    model.addElement("4444444444");
+    model.addElement("5555555555555555");
+    model.addElement("6666666666666");
+    model.addElement("777777");
 
-    JList<String> list = new JList<>(model);
-    list.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c;
-        if (disableIndexSet.contains(index)) {
-          c = super.getListCellRendererComponent(list, value, index, false, false);
-          c.setEnabled(false);
-        } else {
-          c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        }
-        return c;
+    return new JList<String>(model) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super String> renderer = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c;
+          if (disableIndexSet.contains(index)) {
+            c = renderer.getListCellRendererComponent(list, value, index, false, false);
+            c.setEnabled(false);
+          } else {
+            c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          }
+          return c;
+        });
       }
-    });
-
+    };
     // list.setSelectionModel(new DefaultListSelectionModel() {
     //   @Override public boolean isSelectedIndex(int index) {
     //     return !disableIndexSet.contains(index) && super.isSelectedIndex(index);
     //   }
     // });
-
-    return list;
+    // return list;
   }
 
-  protected final void initDisableIndex(Set<Integer> set) {
+  protected void initDisableIndex(Set<Integer> set) {
     set.clear();
     try {
       set.addAll(Stream.of(field.getText().split(","))
