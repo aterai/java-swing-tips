@@ -22,10 +22,10 @@ public class MainPanel extends JPanel {
   private final JPanel statusPanel = new JPanel(new BorderLayout());
   private final JButton runButton = new JButton("run");
   private final JButton cancelButton = new JButton("cancel");
-  private final AnimatedLabel anil = new AnimatedLabel();
+  private final LoadingLabel loadingLabel = new LoadingLabel();
   private transient BackgroundTask worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     area.setEditable(false);
     area.setLineWrap(true);
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
     });
 
     Box box = Box.createHorizontalBox();
-    box.add(anil);
+    box.add(loadingLabel);
     box.add(Box.createHorizontalGlue());
     box.add(runButton);
     box.add(cancelButton);
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
   protected final void executeWorker() {
     runButton.setEnabled(false);
     cancelButton.setEnabled(true);
-    anil.startAnimation();
+    loadingLabel.startAnimation();
     statusPanel.removeAll();
     statusPanel.add(bar);
     statusPanel.revalidate();
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        chunks.forEach(s -> appendLine(s));
+        chunks.forEach(MainPanel.this::appendLine);
       }
 
       @Override public void done() {
@@ -73,20 +73,18 @@ public class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        anil.stopAnimation();
+        loadingLabel.stopAnimation();
         runButton.setEnabled(true);
         cancelButton.setEnabled(false);
         statusPanel.remove(bar);
         statusPanel.revalidate();
         appendLine("\n");
         try {
-          if (isCancelled()) {
-            appendLine("Cancelled");
-          } else {
-            appendLine(get());
-          }
-        } catch (InterruptedException | ExecutionException ex) {
+          appendLine(isCancelled() ? "Cancelled" : get());
+        } catch (InterruptedException ex) {
           appendLine("Interrupted");
+        } catch (ExecutionException ex) {
+          appendLine("Error");
         }
         appendLine("\n\n");
       }
@@ -120,23 +118,15 @@ public class MainPanel extends JPanel {
     // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
-    // frame.setResizable(false);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ex) {
-      if (isCancelled()) {
-        cancel(true);
-      }
-      return "Interrupted";
-    }
+    Thread.sleep(1000);
     int current = 0;
     int lengthOfTask = 120; // list.size();
     publish("Length Of Task: " + lengthOfTask);
@@ -144,11 +134,7 @@ class BackgroundTask extends SwingWorker<String, String> {
     while (current < lengthOfTask && !isCancelled()) {
       publish(".");
       setProgress(100 * current / lengthOfTask);
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       current++;
     }
     return "Done";
@@ -173,14 +159,14 @@ class ProgressListener implements PropertyChangeListener {
   }
 }
 
-class AnimatedLabel extends JLabel {
+class LoadingLabel extends JLabel {
   private final transient AnimeIcon icon = new AnimeIcon();
   private final Timer animator = new Timer(100, e -> {
     icon.next();
     repaint();
   });
 
-  protected AnimatedLabel() {
+  protected LoadingLabel() {
     super();
     setIcon(icon);
     addHierarchyListener(e -> {
@@ -226,9 +212,11 @@ class AnimatedLabel extends JLabel {
 //       Collections.rotate(list, 1);
 //     }
 //   }
+//
 //   public void setRunning(boolean running) {
 //     this.running = running;
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
@@ -244,9 +232,11 @@ class AnimatedLabel extends JLabel {
 //     }
 //     g2.dispose();
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return WIDTH;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return HEIGHT;
 //   }
@@ -271,12 +261,15 @@ class AnimatedLabel extends JLabel {
 //     int d = (int) r * 2 * (1 + 3); // 2 * Math.sqrt(2) is nearly equal to 3.
 //     dim = new Dimension(d, d);
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return dim.width;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return dim.height;
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
@@ -294,12 +287,14 @@ class AnimatedLabel extends JLabel {
 //     }
 //     g2.dispose();
 //   }
+//
 //   public void next() {
 //     if (running) {
 //       // list.add(list.remove(0));
 //       Collections.rotate(list, 1);
 //     }
 //   }
+//
 //   public void setRunning(boolean running) {
 //     this.running = running;
 //   }
@@ -316,13 +311,13 @@ class AnimeIcon implements Icon {
   protected AnimeIcon() {
     super();
     int r = 4;
-    Shape s = new Ellipse2D.Double(0, 0, 2 * r, 2 * r);
+    Shape s = new Ellipse2D.Double(0d, 0d, 2d * r, 2d * r);
     for (int i = 0; i < 8; i++) {
       AffineTransform at = AffineTransform.getRotateInstance(i * 2 * Math.PI / 8);
       at.concatenate(AffineTransform.getTranslateInstance(r, r));
       list.add(at.createTransformedShape(s));
     }
-    int d = (int) r * 2 * (1 + 3);
+    int d = r * 2 * (1 + 3);
     dim = new Dimension(d, d);
   }
 
@@ -376,8 +371,8 @@ class AnimeIcon implements Icon {
 //     int d = (int) R * 2 * (1 + 3);
 //     dim = new Dimension(d, d);
 //
-//     Ellipse2D cricle = new Ellipse2D.Double(R, R, d - 2 * R, d - 2 * R);
-//     PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), R);
+//     Ellipse2D circle = new Ellipse2D.Double(R, R, d - 2 * R, d - 2 * R);
+//     PathIterator i = new FlatteningPathIterator(circle.getPathIterator(null), R);
 //     double[] coords = new double[6];
 //     int idx = 0;
 //     while (!i.isDone()) {
@@ -389,12 +384,15 @@ class AnimeIcon implements Icon {
 //       i.next();
 //     }
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return dim.width;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return dim.height;
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
@@ -409,12 +407,14 @@ class AnimeIcon implements Icon {
 //     }
 //     g2.dispose();
 //   }
+//
 //   public void next() {
 //     if (running) {
 //       // list.add(list.remove(0));
 //       Collections.rotate(list, 1);
 //     }
 //   }
+//
 //   public void setRunning(boolean running) {
 //     this.running = running;
 //   }
