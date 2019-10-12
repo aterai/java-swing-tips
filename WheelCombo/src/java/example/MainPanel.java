@@ -5,25 +5,30 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseWheelListener;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new JTextArea();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
-    JComboBox<String> combo = makeComboBox();
-    combo.addMouseWheelListener(e -> {
-      JComboBox<?> source = (JComboBox<?>) e.getComponent();
-      if (!source.hasFocus()) {
-        return;
+    JComboBox<String> combo = new JComboBox<String>(makeModel()) {
+      private transient MouseWheelListener handler;
+      @Override public void updateUI() {
+        removeMouseWheelListener(handler);
+        super.updateUI();
+        handler = e -> {
+          JComboBox<?> source = (JComboBox<?>) e.getComponent();
+          if (!source.hasFocus()) {
+            return;
+          }
+          int ni = source.getSelectedIndex() + e.getWheelRotation();
+          if (ni >= 0 && ni < source.getItemCount()) {
+            source.setSelectedIndex(ni);
+          }
+        };
+        addMouseWheelListener(handler);
       }
-      int ni = source.getSelectedIndex() + e.getWheelRotation();
-      if (ni >= 0 && ni < source.getItemCount()) {
-        source.setSelectedIndex(ni);
-      }
-    });
+    };
 
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
@@ -39,15 +44,16 @@ public final class MainPanel extends JPanel {
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
     p.add(combo, c);
-    p.add(makeComboBox(), c);
+    p.add(new JComboBox<>(makeModel()), c);
 
+    JTextArea textArea = new JTextArea();
     textArea.setText("dummy");
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox() {
+  private static ComboBoxModel<String> makeModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("111111");
     model.addElement("22222222");
@@ -57,7 +63,7 @@ public final class MainPanel extends JPanel {
     model.addElement("66666666666");
     model.addElement("77777777");
     model.addElement("88888888888");
-    return new JComboBox<>(model);
+    return model;
   }
 
   public static void main(String[] args) {
