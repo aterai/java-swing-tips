@@ -10,17 +10,16 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-  private final JTabbedPane tabs = new JTabbedPane() {
-    @Override public void updateUI() {
-      super.updateUI();
-      UIManager.put("TabbedPane.highlight", Color.GRAY);
-      setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-      setUI(new IsoscelesTrapezoidTabbedPaneUI());
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JTabbedPane tabs = new JTabbedPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        UIManager.put("TabbedPane.highlight", Color.GRAY);
+        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        setUI(new IsoscelesTrapezoidTabbedPaneUI());
+      }
+    };
     tabs.addTab("JTextArea", new JScrollPane(new JTextArea()));
     tabs.addTab("JTree", new JScrollPane(new JTree()));
     tabs.addTab("JButton", new JButton("button"));
@@ -51,8 +50,8 @@ public final class MainPanel extends JPanel {
 class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
   private static final int ADJ2 = 3;
   private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
-  private final Color tabBackgroundColor = Color.LIGHT_GRAY;
-  private final Color tabBorderColor = Color.GRAY;
+  private static final Color TAB_BACKGROUND = Color.LIGHT_GRAY;
+  private static final Color TAB_BORDER = Color.GRAY;
 
   @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
     int tabCount = tabPane.getTabCount();
@@ -114,10 +113,10 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     // trapezoid.closePath();
 
     // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
-    g2.setColor(isSelected ? selectedTabColor : tabBackgroundColor);
+    g2.setColor(isSelected ? selectedTabColor : TAB_BACKGROUND);
     g2.fill(trapezoid);
 
-    g2.setColor(tabBorderColor);
+    g2.setColor(TAB_BORDER);
     g2.draw(trapezoid);
 
     // GeneralPath shape = new GeneralPath();
