@@ -187,8 +187,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
   @Override public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
     g.setColor(Color.black);
     g.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
+    Rectangle rect = new Rectangle(dist, dist);
     for (int i = 0; i < locations.length - 2; i++) {
-      Rectangle rect = getRectangle(x, y, w, h, locations[i]);
+      rect.setLocation(getPoint(x, y, w, h, locations[i]));
       g.setColor(Color.WHITE);
       g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
       g.setColor(Color.BLACK);
@@ -196,19 +197,18 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
   }
 
-  private Rectangle getRectangle(int x, int y, int w, int h, int location) {
+  private Point getPoint(int x, int y, int w, int h, int location) {
     switch (location) {
-      case NORTH: return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
-      case SOUTH: return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
-      case WEST: return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);
-      case EAST: return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist, dist);
-      case NORTH_WEST: return new Rectangle(x, y, dist, dist);
-      case NORTH_EAST: return new Rectangle(x + w - dist, y, dist, dist);
-      case SOUTH_WEST: return new Rectangle(x, y + h - dist, dist, dist);
-      case SOUTH_EAST: return new Rectangle(x + w - dist, y + h - dist, dist, dist);
-      default: return null; // throw new AssertionError("Unknown location");
+      case NORTH: return new Point(x + w / 2 - dist / 2, y);
+      case SOUTH: return new Point(x + w / 2 - dist / 2, y + h - dist);
+      case WEST: return new Point(x, y + h / 2 - dist / 2);
+      case EAST: return new Point(x + w - dist, y + h / 2 - dist / 2);
+      case NORTH_WEST: return new Point(x, y);
+      case NORTH_EAST: return new Point(x + w - dist, y);
+      case SOUTH_WEST: return new Point(x, y + h - dist);
+      case SOUTH_EAST: return new Point(x + w - dist, y + h - dist);
+      default: return new Point(-100, -100); // throw new AssertionError("Unknown location");
     }
-    // return null;
   }
 
   @Override public int getResizeCursor(MouseEvent e) {
@@ -226,8 +226,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     if (actualBounds.contains(pt)) {
       return Cursor.DEFAULT_CURSOR;
     }
+    Rectangle r = new Rectangle(dist, dist);
     for (int i = 0; i < locations.length - 2; i++) {
-      Rectangle r = getRectangle(0, 0, w, h, locations[i]);
+      r.setLocation(getPoint(0, 0, w, h, locations[i]));
       if (r.contains(pt)) {
         return cursors[i];
       }
