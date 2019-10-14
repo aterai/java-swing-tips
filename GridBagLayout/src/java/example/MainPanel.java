@@ -9,27 +9,24 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final int GAP = 5;
-  private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"aaaaaa", "bbbbb"});
-  private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"cccccccc", "ddd"});
-  private final JButton button1 = new JButton("Open");
-  private final JButton button2 = new JButton("Open");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] model = {"000", "1111", "22222", "333333"};
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(20));
-    box.add(createCompButtonPanel1(combo1, button1, " BorderLayout:"));
+    box.add(makeBorderLayoutPanel(new JComboBox<>(model), new JButton("Open")));
     box.add(Box.createVerticalStrut(20));
-    box.add(createCompButtonPanel2(combo2, button2, "GridBagLayout:"));
+    box.add(makeGridBagLayoutPanel(new JComboBox<>(model), new JButton("Open")));
     box.add(Box.createVerticalStrut(20));
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
+  private static Component makeBorderLayoutPanel(JComponent cmp, JButton btn) {
     JPanel panel = new JPanel(new BorderLayout(GAP, GAP));
     panel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
-    panel.add(new JLabel(str), BorderLayout.WEST);
+    panel.add(new JLabel("BorderLayout:"), BorderLayout.WEST);
     panel.add(cmp);
     panel.add(btn, BorderLayout.EAST);
     Dimension d = panel.getPreferredSize();
@@ -37,7 +34,7 @@ public final class MainPanel extends JPanel {
     return panel;
   }
 
-  public static Component createCompButtonPanel2(JComponent cmp, JButton btn, String str) {
+  public static Component makeGridBagLayoutPanel(JComponent cmp, JButton btn) {
     GridBagConstraints c = new GridBagConstraints();
     JPanel panel = new JPanel(new GridBagLayout());
 
@@ -49,7 +46,7 @@ public final class MainPanel extends JPanel {
     // c.weightx = 0d;
     c.insets = new Insets(GAP, GAP, GAP, 0);
     c.anchor = GridBagConstraints.LINE_END;
-    panel.add(new JLabel(str), c);
+    panel.add(new JLabel("GridBagLayout:"), c);
 
     // c.gridx = 1;
     c.weightx = 1d;
