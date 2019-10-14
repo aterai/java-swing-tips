@@ -14,14 +14,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private final JLabel l0 = new JLabel("打率");
-  private final JLabel l1 = new JLabel("打率", SwingConstants.RIGHT);
-  private final JLabel l2 = new JustifiedLabel("打率");
-  private final JLabel l3 = new JLabel("出塁率", SwingConstants.CENTER);
-  private final JLabel l4 = new JustifiedLabel("出塁率");
-  private final JLabel l5 = new JustifiedLabel("チーム出塁率");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JPanel p = new JPanel(new GridBagLayout());
@@ -33,12 +26,12 @@ public final class MainPanel extends JPanel {
     c.insets = new Insets(5, 5, 5, 0);
     c.fill = GridBagConstraints.HORIZONTAL;
     c.gridx = 0;
-    p.add(l0, c);
-    p.add(l1, c);
-    p.add(l2, c);
-    p.add(l3, c);
-    p.add(l4, c);
-    p.add(l5, c);
+    p.add(new JLabel("打率"), c);
+    p.add(new JLabel("打率", SwingConstants.RIGHT), c);
+    p.add(new JustifiedLabel("打率"), c);
+    p.add(new JLabel("出塁率", SwingConstants.CENTER), c);
+    p.add(new JustifiedLabel("出塁率"), c);
+    p.add(new JustifiedLabel("チーム出塁率"), c);
 
     c.gridx = 1;
     c.weightx = 1d;
@@ -76,7 +69,7 @@ public final class MainPanel extends JPanel {
 }
 
 class JustifiedLabel extends JLabel {
-  private transient Optional<GlyphVector> gvtext;
+  private transient GlyphVector gvText;
   private int prevWidth = -1;
 
   protected JustifiedLabel() {
@@ -101,26 +94,26 @@ class JustifiedLabel extends JLabel {
     int w = d.width - ins.left - ins.right;
     if (w != prevWidth) {
       GlyphVector gv = font.createGlyphVector(g2.getFontRenderContext(), getText());
-      gvtext = makeJustifiedGlyphVector(gv, w);
+      gvText = makeJustifiedGlyphVector(gv, w);
       prevWidth = w;
     }
-    gvtext.ifPresent(gv -> {
+    Optional.ofNullable(gvText).ifPresent(gv -> {
       g2.setPaint(getBackground());
       g2.fillRect(0, 0, d.width, d.height);
       g2.setPaint(getForeground());
-      g2.drawGlyphVector(gv, ins.left, ins.top + font.getSize());
+      g2.drawGlyphVector(gv, ins.left, ins.top + font.getSize2D());
     });
     g2.dispose();
   }
 
-  private static Optional<GlyphVector> makeJustifiedGlyphVector(GlyphVector gv, int width) {
+  private static GlyphVector makeJustifiedGlyphVector(GlyphVector gv, int width) {
     Rectangle2D r = gv.getVisualBounds();
-    float jwidth = (float) width;
-    float vwidth = (float) r.getWidth();
-    if (jwidth > vwidth) {
+    float jw = (float) width;
+    float vw = (float) r.getWidth();
+    if (jw > vw) {
       int num = gv.getNumGlyphs();
-      float xx = (jwidth - vwidth) / (float) (num - 1);
-      float xpos = num == 1 ? (jwidth - vwidth) * .5f : 0f;
+      float xx = (jw - vw) / (float) (num - 1);
+      float xpos = num == 1 ? (jw - vw) * .5f : 0f;
       Point2D gmPos = new Point2D.Float();
       for (int i = 0; i < num; i++) {
         GlyphMetrics gm = gv.getGlyphMetrics(i);
@@ -128,8 +121,7 @@ class JustifiedLabel extends JLabel {
         gv.setGlyphPosition(i, gmPos);
         xpos += gm.getAdvance() + xx;
       }
-      return Optional.of(gv);
     }
-    return Optional.empty();
+    return gv;
   }
 }
