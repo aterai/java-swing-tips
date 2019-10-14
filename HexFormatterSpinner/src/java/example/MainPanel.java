@@ -23,14 +23,13 @@ import javax.swing.text.DefaultFormatterFactory;
 public class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
   private final SpinnerNumberModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
-  private final JSpinner spinner = new JSpinner(nm);
   private final JPanel fontPanel = new GlyphPaintPanel();
-  protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
+  protected transient Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     nm.addChangeListener(e -> fontPanel.repaint());
+    JSpinner spinner = new JSpinner(nm);
     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
@@ -70,12 +69,12 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void setFontPaintFlag(Set<FontPaint> fp) {
+  protected void setFontPaintFlag(Set<FontPaint> fp) {
     fontPaintFlag = fp;
     fontPanel.repaint();
   }
 
-  protected final String getCharacterString() {
+  protected String getCharacterString() {
     int code = nm.getNumber().intValue();
     // char[] ca = Character.toChars(code);
     // int len = Character.charCount(code);
@@ -161,13 +160,14 @@ public class MainPanel extends JPanel {
       }
 
       // private static final String MASK = "000000";
-      @Override public String valueToString(Object value) throws ParseException {
+      @Override public String valueToString(Object value) {
         // String str = MASK + Integer.toHexString((Integer) value).toUpperCase(Locale.ENGLISH);
         // int i = str.length() - MASK.length();
         // return str.substring(i);
         // String s = Integer.toHexString((Integer) value);
         // return String.format("%6S", s).replaceAll(" ", "0");
-        return String.format("%06X", (Integer) value);
+        Integer iv = (Integer) value;
+        return String.format("%06X", iv);
       }
     };
     formatter.setValueClass(Integer.class);
