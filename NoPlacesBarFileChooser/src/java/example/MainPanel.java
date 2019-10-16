@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
       JFileChooser fileChooser = new JFileChooser();
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(e -> {
       UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
       JFileChooser fileChooser = new JFileChooser();
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });

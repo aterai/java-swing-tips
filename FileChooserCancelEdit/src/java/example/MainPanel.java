@@ -24,8 +24,8 @@ public final class MainPanel extends JPanel {
         .filter(JTable.class::isInstance).map(JTable.class::cast)
         .findFirst()
         .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
-      int retvalue = fileChooser0.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser0.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         append(log, fileChooser0.getSelectedFile().getAbsolutePath());
       }
     });
@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
         .peek(table -> append(log, "isEditing: " + table.isEditing()))
         .findFirst()
         .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
-      int retvalue = fileChooser1.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser1.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         append(log, fileChooser1.getSelectedFile().getAbsolutePath());
       }
     });

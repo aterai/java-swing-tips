@@ -55,8 +55,8 @@ public final class MainPanel extends JPanel {
       File f = new File(field.getText().trim());
       JFileChooser fc = check1.isSelected() ? fc2 : fc0;
       fc.setCurrentDirectory(f);
-      int retvalue = fc.showOpenDialog(p);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fc.showOpenDialog(p);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fc.getSelectedFile().getAbsolutePath());
       }
     });
@@ -69,8 +69,8 @@ public final class MainPanel extends JPanel {
           "isAbsolute: %s, isParent: %s%n",
           f.isAbsolute(), !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
       fc.setSelectedFile(f);
-      int retvalue = fc.showOpenDialog(p);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fc.showOpenDialog(p);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fc.getSelectedFile().getAbsolutePath());
       }
       if (check2.isSelected()) {

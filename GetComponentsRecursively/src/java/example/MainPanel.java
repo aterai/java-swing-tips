@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      int retvalue = chooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
         .findFirst()
         .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
-      int retvalue = chooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });

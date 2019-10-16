@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
       // fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       // fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
       fileChooser.setMultiSelectionEnabled(true);
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText("");
         for (File file: fileChooser.getSelectedFiles()) {
           log.append(file.getAbsolutePath() + "\n");

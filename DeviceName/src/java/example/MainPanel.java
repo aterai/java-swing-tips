@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
         JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
       }
       // JFileChooser fileChooser = new JFileChooser();
-      // int retvalue = fileChooser.showOpenDialog(getRootPane());
-      // if (retvalue == JFileChooser.APPROVE_OPTION) {
+      // int retValue = fileChooser.showOpenDialog(getRootPane());
+      // if (retValue == JFileChooser.APPROVE_OPTION) {
       //   File file = fileChooser.getSelectedFile();
       //   System.out.println(file.getAbsolutePath());
       //   try {

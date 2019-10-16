@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("showOpenDialog");
     button.addActionListener(e -> {
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      System.out.println(retvalue);
-      // if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      System.out.println(retValue);
+      // if (retValue == JFileChooser.APPROVE_OPTION) {
       //   File file = fileChooser.getSelectedFile();
       //   ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
       //   combo1.setSelectedIndex(0);

@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.setApproveButtonText("開く(O)");
       // fileChooser.setApproveButtonMnemonic('O');
-      int retvalue = fileChooser.showOpenDialog(p);
-      System.out.println(retvalue);
+      int retValue = fileChooser.showOpenDialog(p);
+      System.out.println(retValue);
     });
     JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
     showSaveDialog.addActionListener(e -> {
@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
       //     fileChooser.setApproveButtonMnemonic('S');
       //   }
       // });
-      int retvalue = fileChooser.showSaveDialog(p);
-      System.out.println(retvalue);
+      int retValue = fileChooser.showSaveDialog(p);
+      System.out.println(retValue);
     });
     p.add(showOpenDialog);
     p.add(showSaveDialog);
@@ -58,13 +58,13 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder("default"));
     JButton showOpenDialog = new JButton("showOpenDialog");
     showOpenDialog.addActionListener(e -> {
-      int retvalue = defaultChooser.showOpenDialog(p);
-      System.out.println(retvalue);
+      int retValue = defaultChooser.showOpenDialog(p);
+      System.out.println(retValue);
     });
     JButton showSaveDialog = new JButton("showSaveDialog");
     showSaveDialog.addActionListener(e -> {
-      int retvalue = defaultChooser.showSaveDialog(p);
-      System.out.println(retvalue);
+      int retValue = defaultChooser.showSaveDialog(p);
+      System.out.println(retValue);
     });
     p.add(showOpenDialog);
     p.add(showSaveDialog);

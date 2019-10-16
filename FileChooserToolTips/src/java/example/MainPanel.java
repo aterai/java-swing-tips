@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      int retvalue = chooser.showOpenDialog(log.getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(log.getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel {
         .filter(JList.class::isInstance)
         .map(JList.class::cast)
         .forEach(MainPanel::setCellRenderer);
-      int retvalue = chooser.showOpenDialog(log.getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(log.getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
         .map(JTable.class::cast)
         .findFirst()
         .ifPresent(MainPanel::setCellRenderer);
-      int retvalue = chooser.showOpenDialog(log.getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(log.getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });

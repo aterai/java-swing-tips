@@ -53,8 +53,8 @@ class DefaultFileChooserAction extends AbstractAction {
   @Override public void actionPerformed(ActionEvent e) {
     JFileChooser fileChooser = new JFileChooser();
     JComponent c = (JComponent) e.getSource();
-    int retvalue = fileChooser.showOpenDialog(c.getRootPane());
-    System.out.println(retvalue);
+    int retValue = fileChooser.showOpenDialog(c.getRootPane());
+    System.out.println(retValue);
   }
 }
 
@@ -72,8 +72,8 @@ class FixedSizeFileChooserAction extends AbstractAction {
       }
     };
     JComponent c = (JComponent) e.getSource();
-    int retvalue = fileChooser.showOpenDialog(c.getRootPane());
-    System.out.println(retvalue);
+    int retValue = fileChooser.showOpenDialog(c.getRootPane());
+    System.out.println(retValue);
   }
 }
 
@@ -91,8 +91,8 @@ class MinimumSizeFileChooserAction extends AbstractAction {
       }
     };
     JComponent c = (JComponent) e.getSource();
-    int retvalue = fileChooser.showOpenDialog(c.getRootPane());
-    System.out.println(retvalue);
+    int retValue = fileChooser.showOpenDialog(c.getRootPane());
+    System.out.println(retValue);
   }
 }
 
@@ -117,7 +117,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
 //        }
 //     };
 //     JComponent c = (JComponent) e.getSource();
-//     int retvalue = fileChooser.showOpenDialog(c.getRootPane());
-//     System.out.println(retvalue);
+//     int retValue = fileChooser.showOpenDialog(c.getRootPane());
+//     System.out.println(retValue);
 //   }
 // }

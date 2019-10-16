@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
           }
         }
       };
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });

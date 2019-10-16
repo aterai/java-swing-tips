@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
     JButton listView = new JButton("List View(Default)");
     listView.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      int retvalue = chooser.showOpenDialog(p);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(p);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
       // if (Objects.nonNull(detailsAction)) {
       //   detailsAction.actionPerformed(null);
       // }
-      int retvalue = chooser.showOpenDialog(p);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(p);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });

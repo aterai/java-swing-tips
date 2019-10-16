@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       fileChooser.setLocale(combo.getItemAt(combo.getSelectedIndex()));
       SwingUtilities.updateComponentTreeUI(fileChooser);
-      int retvalue = fileChooser.showOpenDialog(getRootPane());
-      System.out.println(retvalue);
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      System.out.println(retValue);
     });
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
