@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     return preferredSize;
   }
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
@@ -47,9 +47,9 @@ public final class MainPanel extends JPanel {
         // JTable's original row height is 16.  To correctly display the
         // contents on Linux we should have set it to 18, Windows 19 and
         // Solaris 20.  As these values vary so much it's too hard to
-        // be backward compatable and try to update the row height, we're
+        // be backward compatible and try to update the row height, we're
         // therefor NOT going to adjust the row height based on font.  If the
-        // developer changes the font, it's there responsability to update
+        // developer changes the font, it's there responsibility to update
         // the row height.
         setRowHeight((int) (getRowHeight() * getSizeOfText()));
       }
