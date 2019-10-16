@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
   private static Component makeCheckBoxPanel(JTabbedPane tabs) {
     JCheckBox tc = new JCheckBox("Top", true);
     tc.addActionListener(e -> tabs.setTabPlacement(
-        tc.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+        tc.isSelected() ? SwingConstants.TOP : SwingConstants.RIGHT));
     JCheckBox sc = new JCheckBox("SCROLL_TAB_LAYOUT", true);
     sc.addActionListener(e -> tabs.setTabLayoutPolicy(
         sc.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
@@ -381,7 +381,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 
   private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
@@ -445,7 +445,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane t = (DnDTabbedPane) c;
       t.updateTabDropLocation(null, null, false);
-      t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+      t.setCursor(Cursor.getDefaultCursor());
     }
   }
 
@@ -636,7 +636,7 @@ class TabTransferHandler extends TransferHandler {
     src.getRootPane().getGlassPane().setVisible(false);
     src.updateTabDropLocation(null, null, false);
     src.repaint();
-    src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    src.setCursor(Cursor.getDefaultCursor());
   }
 }
 

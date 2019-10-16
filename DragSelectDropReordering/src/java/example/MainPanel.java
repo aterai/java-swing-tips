@@ -122,7 +122,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     int g = c.getGreen();
     int b = c.getBlue();
     return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-           : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+                 : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
   protected Path2D getRubberBand() {
@@ -331,7 +331,7 @@ class ListItemTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return transferredObjects;
         } else {
@@ -385,7 +385,7 @@ class ListItemTransferHandler extends TransferHandler {
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     System.out.println("exportDone");
     Component glassPane = c.getRootPane().getGlassPane();
-    // glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);
     cleanup(c, action == TransferHandler.MOVE);
   }

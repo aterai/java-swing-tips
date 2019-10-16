@@ -136,7 +136,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     button.setFocusPainted(false);
     button.setBorderPainted(false);
     button.setContentAreaFilled(false);
-    button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    button.setCursor(Cursor.getDefaultCursor());
     button.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
     return button;
   }
@@ -151,7 +151,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
         });
       }
     });
-    label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    label.setCursor(Cursor.getDefaultCursor());
     label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
     return label;
   }

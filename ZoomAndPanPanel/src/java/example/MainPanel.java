@@ -66,14 +66,14 @@ public final class MainPanel extends JPanel {
 class ZoomAndPanePanel extends JPanel {
   private final AffineTransform zoomTransform = new AffineTransform();
   private final transient Image img;
-  private final Rectangle imgrect;
+  private final Rectangle imageRect;
   private transient ZoomHandler handler;
   private transient DragScrollListener listener;
 
   protected ZoomAndPanePanel(Image img) {
     super();
     this.img = img;
-    this.imgrect = new Rectangle(img.getWidth(this), img.getHeight(this));
+    this.imageRect = new Rectangle(img.getWidth(this), img.getHeight(this));
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -103,7 +103,7 @@ class ZoomAndPanePanel extends JPanel {
   }
 
   @Override public Dimension getPreferredSize() {
-    Rectangle r = zoomTransform.createTransformedShape(imgrect).getBounds();
+    Rectangle r = zoomTransform.createTransformedShape(imageRect).getBounds();
     return new Dimension(r.width, r.height);
   }
 
@@ -153,7 +153,7 @@ class ZoomAndPanePanel extends JPanel {
 }
 
 class DragScrollListener extends MouseAdapter {
-  private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor defCursor = Cursor.getDefaultCursor();
   private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Point pp = new Point();
 

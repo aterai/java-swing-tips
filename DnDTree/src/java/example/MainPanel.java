@@ -22,7 +22,6 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.*;
@@ -52,11 +51,11 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("33333"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-    set2.add(new DefaultMutableTreeNode("asdf"));
+    set2.add(new DefaultMutableTreeNode("asd fas df as"));
+    set2.add(new DefaultMutableTreeNode("asd f"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
+    set3.add(new DefaultMutableTreeNode("asd fas dfa sdf"));
     set3.add(new DefaultMutableTreeNode("5555555555"));
     set3.add(new DefaultMutableTreeNode("66666666666666"));
 
@@ -101,7 +100,7 @@ class DnDTree extends JTree {
     setCellRenderer(new DnDTreeCellRenderer());
     if (Objects.isNull(dragGestureRecognizer) || Objects.isNull(dropTarget)) {
       dragGestureRecognizer = DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+          this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
       dropTarget = new DropTarget(this, new NodeDropTargetListener());
     }
   }
@@ -269,7 +268,7 @@ class TreeNodeTransferable implements Transferable {
     object = o;
   }
 
-  @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
+  @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException {
     if (isDataFlavorSupported(df)) {
       return object;
     } else {

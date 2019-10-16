@@ -366,7 +366,7 @@ class TableRowTransferHandler extends TransferHandler {
 
   private void cleanup(JComponent c, boolean remove) {
     c.getRootPane().getGlassPane().setVisible(false);
-    // c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    // c.setCursor(Cursor.getDefaultCursor());
     if (remove && Objects.nonNull(indices)) {
       DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       if (addCount > 0) {

@@ -5,8 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -37,6 +35,7 @@ public final class MainPanel extends JPanel {
     JComboBox<String> combo05 = new JComboBox<String>(makeModel()) {
       @Override public void updateUI() {
         setBorder(null);
+        setRenderer(null);
         super.updateUI();
         setEditable(true);
         ComboBoxUtil.initComboBoxRenderer(this, image);
@@ -47,6 +46,7 @@ public final class MainPanel extends JPanel {
     JComboBox<String> combo06 = new JComboBox<String>(makeModel()) {
       @Override public void updateUI() {
         setBorder(null);
+        setRenderer(null);
         super.updateUI();
         setEditable(true);
         ComboBoxUtil.initComboBoxRenderer(this, image);
@@ -55,9 +55,9 @@ public final class MainPanel extends JPanel {
     };
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("setEditable(false)", Arrays.asList(combo02)));
+    box.add(makeTitledPanel("setEditable(false)", combo02));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("setEditable(true)", Arrays.asList(combo03, combo05, combo06)));
+    box.add(makeTitledPanel("setEditable(true)", combo03, combo05, combo06));
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
@@ -65,16 +65,16 @@ public final class MainPanel extends JPanel {
 
   private static ComboBoxModel<String> makeModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("ccccccccccccccc");
+    model.addElement("aaa");
+    model.addElement("aaa, bbb");
+    model.addElement("aaa, bbb, cc");
+    model.addElement("ccc, ccc, ccc, ccc, ccc");
     model.addElement("bbb1");
     model.addElement("bbb12");
     return model;
   }
 
-  private static Component makeTitledPanel(String title, List<? extends Component> list) {
+  private static Component makeTitledPanel(String title, Component... list) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
@@ -174,7 +174,7 @@ final class ComboBoxUtil {
       c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
 
       JLabel label = new JLabel(icon);
-      label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+      label.setCursor(Cursor.getDefaultCursor());
       label.setBorder(BorderFactory.createEmptyBorder());
       c.add(label);
 
@@ -186,13 +186,12 @@ final class ComboBoxUtil {
     });
   }
 
-  public static void initComboBoxRenderer(JComboBox<String> combo, ImageIcon icon) {
-    combo.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        l.setIcon(icon);
-        return l;
-      }
+  public static <E> void initComboBoxRenderer(JComboBox<E> combo, ImageIcon icon) {
+    ListCellRenderer<? super E> renderer = combo.getRenderer();
+    combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      l.setIcon(icon);
+      return l;
     });
   }
 }

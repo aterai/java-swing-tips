@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
     };
 
     IntStream.range(0, 1000)
-      .mapToObj(i -> new Object[] {"aaaaa", i, i % 2 == 0})
-      .forEach(model::addRow);
+        .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
+        .forEach(model::addRow);
 
     JTable table = new JTable(model) {
       private transient TableTouchScreenHandler handler;
@@ -72,7 +72,7 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   public static final int VELOCITY = 5;
   public static final int DELAY = 10;
   public static final double GRAVITY = .95;
-  private final Cursor dc = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor dc = Cursor.getDefaultCursor();
   private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Timer scroller;
   private final Point startPt = new Point();

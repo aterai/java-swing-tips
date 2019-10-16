@@ -22,12 +22,12 @@ public final class MainPanel extends JPanel {
 
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    model.addElement(new ListItem("asdasdfsd", "wi0009-32.png"));
+    model.addElement(new ListItem("wi0009-32", "wi0009-32.png"));
     model.addElement(new ListItem("12345", "wi0054-32.png"));
-    model.addElement(new ListItem("ADFFDF.asd", "wi0062-32.png"));
+    model.addElement(new ListItem("wi0062-32.png", "wi0062-32.png"));
     model.addElement(new ListItem("test", "wi0063-32.png"));
     model.addElement(new ListItem("32.png", "wi0064-32.png"));
-    model.addElement(new ListItem("asdfsd.jpg", "wi0096-32.png"));
+    model.addElement(new ListItem("wi0096-32.png", "wi0096-32.png"));
     model.addElement(new ListItem("6896", "wi0111-32.png"));
     model.addElement(new ListItem("t467467est", "wi0122-32.png"));
     model.addElement(new ListItem("test123", "wi0124-32.png"));
@@ -191,7 +191,7 @@ class ListItemTransferHandler extends TransferHandler {
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     System.out.println("exportDone");
     Component glassPane = c.getRootPane().getGlassPane();
-    // glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);
     cleanup(c, action == TransferHandler.MOVE);
   }
@@ -230,7 +230,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     }
     JList<?> source = (JList<?>) c;
     int w = source.getFixedCellWidth();
-    int h = source.getFixedCellHeight() - 20; // TODO
+    int h = source.getFixedCellHeight() - 20; // TODO: 20
     setDragImage(createCompactDragImage(source, w, h));
     setDragImageOffset(new Point(w / 2, h));
     return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;

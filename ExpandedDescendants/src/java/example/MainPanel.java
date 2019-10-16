@@ -61,10 +61,7 @@ public final class MainPanel extends JPanel {
     expand.addActionListener(e -> visitAll(tree, rootPath, true));
 
     JButton collapse = new JButton("Collapse");
-    collapse.addActionListener(e -> {
-      visitAll(tree, rootPath, false);
-      // tree.expandPath(rootPath);
-    });
+    collapse.addActionListener(e -> visitAll(tree, rootPath, false));
 
     JPanel box = new JPanel(new GridLayout(1, 4));
     box.add(save);
@@ -102,7 +99,7 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
     set4.add(new DefaultMutableTreeNode("22222222222"));
     set4.add(new DefaultMutableTreeNode("eee eee eee eee"));
-    set4.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set4.add(new DefaultMutableTreeNode("bbb bbb bbb"));
     set4.add(new DefaultMutableTreeNode("zzz zz zz"));
 
     DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
@@ -115,7 +112,7 @@ public final class MainPanel extends JPanel {
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
     set2.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
-    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set2.add(new DefaultMutableTreeNode("bbb bbb"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
     set3.add(new DefaultMutableTreeNode("zzz zz zz"));
@@ -203,7 +200,7 @@ public final class MainPanel extends JPanel {
 //       }
 // //        @Override public void done() {
 // //          // frame.getGlassPane().setVisible(false);
-// //          // tree.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+// //          // tree.setCursor(Cursor.getDefaultCursor());
 // //        }
 //     };
 //     worker.execute();

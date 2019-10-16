@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
     JLabel label1 = new JLabel(image);
-    JTextField field1 = new JTextField("bbbbbbbbbb") {
+    JTextField field1 = new JTextField("1111111111111111") {
       @Override public void updateUI() {
         super.updateUI();
         add(label1);
@@ -22,14 +22,14 @@ public final class MainPanel extends JPanel {
     int w = image.getIconWidth();
     Insets m = field1.getMargin();
     field1.setMargin(new Insets(m.top, m.left + w, m.bottom, m.right));
-    label1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    label1.setCursor(Cursor.getDefaultCursor());
     label1.setBorder(BorderFactory.createEmptyBorder());
     label1.setBounds(m.left, m.top, w, image.getIconHeight());
 
     JLabel label2 = new JLabel(image);
-    label2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    label2.setCursor(Cursor.getDefaultCursor());
     label2.setBorder(BorderFactory.createEmptyBorder());
-    JTextField field2 = new JTextField("cccccccccccccccccccccccccccccccccccc") {
+    JTextField field2 = new JTextField("2222222222222222222222222222222222222") {
       @Override public void updateUI() {
         super.updateUI();
         removeAll();
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default", new JTextField("aaaaaaaaaaaa")));
+    box.add(makeTitledPanel("Default", new JTextField("000000000000")));
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("add Image(JLabel)", field1));
     box.add(Box.createVerticalStrut(5));

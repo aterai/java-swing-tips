@@ -35,18 +35,18 @@ public final class MainPanel extends JPanel {
     tab1.addTab("bbb", new JCheckBox("2222222222"));
 
     JTabbedPane tab2 = new JTabbedPane();
-    tab2.addTab("ccccc", new JLabel("3333"));
-    tab2.addTab("ddddd", new JLabel("444444444444"));
+    tab2.addTab("ccc cc", new JLabel("3333"));
+    tab2.addTab("ddd dd", new JLabel("444444444444"));
 
     JTree tree = new JTree();
     tree.setVisibleRowCount(5);
 
     Box box = Box.createVerticalBox();
-    box.add(new JLabel("aaaaaaaaaaaaaaaaaaaaaa"));
+    box.add(new JLabel("aaa aaa aaa aaa aaa aaa"));
     box.add(Box.createVerticalStrut(5));
     box.add(tab1);
     box.add(Box.createVerticalStrut(5));
-    box.add(new JCheckBox("bbbbbbbbbbbb"));
+    box.add(new JCheckBox("bbb bbb bbb bbb"));
     box.add(Box.createVerticalStrut(5));
     box.add(tab2);
     box.add(Box.createVerticalStrut(5));
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(new JScrollPane(tree));
     box.add(Box.createVerticalStrut(5));
-    box.add(new JButton("ccccc"));
+    box.add(new JButton("ccc ccc"));
     box.add(Box.createVerticalGlue());
 
     return box;
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DragScrollListener extends MouseInputAdapter {
-  private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor defCursor = Cursor.getDefaultCursor();
   private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Point pp = new Point();
 

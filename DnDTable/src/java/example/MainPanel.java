@@ -28,33 +28,32 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
-    {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final DnDTable table = new DnDTable(model) {
-    private final Color evenColor = new Color(0xFA_FA_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
+      {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    DnDTable table = new DnDTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+    };
 
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(60);
@@ -259,7 +258,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         e.dropComplete(false);
       }
       e.dropComplete(false);
-      setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+      setCursor(Cursor.getDefaultCursor());
       targetIndex = -1;
       repaint();
     }
@@ -292,6 +291,6 @@ class TableDragSourceListener implements DragSourceListener {
   }
 
   @Override public void dragDropEnd(DragSourceDropEvent e) {
-    // e.getDragSourceContext().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    // e.getDragSourceContext().setCursor(Cursor.getDefaultCursor());
   }
 }

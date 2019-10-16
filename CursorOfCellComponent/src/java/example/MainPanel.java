@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     DefaultListModel<String> model = new DefaultListModel<>();
-    Stream.of("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee").forEach(model::addElement);
+    Stream.of("aa", "bbb bbb bbb bb bb", "ccc", "ddd ddd ddd", "eee eee").forEach(model::addElement);
 
     add(new JScrollPane(new LinkCellList<>(model)));
     setPreferredSize(new Dimension(320, 240));
@@ -72,7 +72,7 @@ class LinkCellList<E> extends JList<E> {
     pt.translate(-r.x, -r.y);
     setCursor(Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
         .map(Component::getCursor)
-        .orElse(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)));
+        .orElse(Cursor.getDefaultCursor()));
   }
 }
 

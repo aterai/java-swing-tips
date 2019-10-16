@@ -97,9 +97,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
-  private static final int R = 25;
+  private static final double R = 25d;
   private final Point startPt = new Point();
-  private final Cursor dc = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private final Cursor dc = Cursor.getDefaultCursor();
   private final Cursor wc = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
   private final Ellipse2D thumb = new Ellipse2D.Double();
   private int dividerLocation;
@@ -214,9 +214,9 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
       JSplitPane splitPane = (JSplitPane) c;
       int pos = splitPane.getDividerLocation();
       if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-        thumb.setFrame(pos - R, splitPane.getHeight() / 2 - R, R + R, R + R);
+        thumb.setFrame(pos - R, splitPane.getHeight() / 2d - R, R + R, R + R);
       } else {
-        thumb.setFrame(splitPane.getWidth() / 2 - R, pos - R, R + R, R + R);
+        thumb.setFrame(splitPane.getWidth() / 2d - R, pos - R, R + R, R + R);
       }
     }
   }

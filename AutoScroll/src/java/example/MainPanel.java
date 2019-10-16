@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 class ViewportDragScrollListener extends MouseAdapter implements HierarchyListener {
   private static final int SPEED = 4;
   private static final int DELAY = 10;
-  private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private static final Cursor DC = Cursor.getDefaultCursor();
   private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Point startPt = new Point();
   private final Point move = new Point();
@@ -123,7 +123,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
 class ComponentDragScrollListener extends MouseAdapter implements HierarchyListener {
   private static final int SPEED = 4;
   private static final int DELAY = 10;
-  private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+  private static final Cursor DC = Cursor.getDefaultCursor();
   private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Point startPt = new Point();
   private final Point move = new Point();

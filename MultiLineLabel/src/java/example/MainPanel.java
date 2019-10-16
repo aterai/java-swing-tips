@@ -12,7 +12,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 public final class MainPanel extends JPanel {
-  private static final String DUMMY_TEXT = "asdfasdfasdfasdfasdfasdfasd";
+  private static final String DUMMY_TEXT = "Quartz glyph job vex'd cwm finks.";
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
   private final ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     label.setMinimumSize(label.getPreferredSize());
 
     JLabel l = new JLabel(icon);
-    l.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    l.setCursor(Cursor.getDefaultCursor());
     Box box = Box.createHorizontalBox();
     box.add(l);
     box.add(Box.createHorizontalStrut(2));
