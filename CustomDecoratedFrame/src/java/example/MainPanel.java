@@ -7,6 +7,9 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.EnumSet;
+import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -164,21 +167,73 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-  N(Cursor.N_RESIZE_CURSOR, 0, 4),
-  W(Cursor.W_RESIZE_CURSOR, 4, 0),
-  E(Cursor.E_RESIZE_CURSOR, 4, 0),
-  S(Cursor.S_RESIZE_CURSOR, 0, 4),
-  NW(Cursor.NW_RESIZE_CURSOR, 4, 4),
-  NE(Cursor.NE_RESIZE_CURSOR, 4, 4),
-  SW(Cursor.SW_RESIZE_CURSOR, 4, 4),
-  SE(Cursor.SE_RESIZE_CURSOR, 4, 4);
-  public final int cursor;
-  public final int width;
-  public final int height;
-  Side(int cursor, int width, int height) {
+  N(Cursor.N_RESIZE_CURSOR, new Dimension(0, 4), (r, d) -> {
+    r.y += d.y;
+    r.height -= d.y;
+    return r;
+  }),
+  W(Cursor.W_RESIZE_CURSOR, new Dimension(4, 0), (r, d) -> {
+    r.x += d.x;
+    r.width -= d.x;
+    return r;
+  }),
+  E(Cursor.E_RESIZE_CURSOR, new Dimension(4, 0), (r, d) -> {
+    r.width += d.x;
+    return r;
+  }),
+  S(Cursor.S_RESIZE_CURSOR, new Dimension(0, 4), (r, d) -> {
+    r.height += d.y;
+    return r;
+  }),
+  NW(Cursor.NW_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+    r.y += d.y;
+    r.height -= d.y;
+    r.x += d.x;
+    r.width -= d.x;
+    return r;
+  }),
+  NE(Cursor.NE_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+    r.y += d.y;
+    r.height -= d.y;
+    r.width += d.x;
+    return r;
+  }),
+  SW(Cursor.SW_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+    r.height += d.y;
+    r.x += d.x;
+    r.width -= d.x;
+    return r;
+  }),
+  SE(Cursor.SE_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+    r.height += d.y;
+    r.width += d.x;
+    return r;
+  });
+
+  private final int cursor;
+  private final Dimension size;
+  private final BiFunction<Rectangle, Point, Rectangle> getBounds;
+
+  Side(int cursor, Dimension size, BiFunction<Rectangle, Point, Rectangle> getBounds) {
     this.cursor = cursor;
-    this.width = width;
-    this.height = height;
+    this.size = size;
+    this.getBounds = getBounds;
+  }
+
+  public int getCursor() {
+    return cursor;
+  }
+
+  public Dimension getSize() {
+    return size;
+  }
+
+  public Rectangle getBounds(Rectangle rect, Point delta) {
+    return getBounds.apply(rect, delta);
+  }
+
+  public static Optional<Side> getByType(int cursor) {
+    return EnumSet.allOf(Side.class).stream().filter(d -> d.cursor == cursor).findFirst();
   }
 }
 
@@ -188,11 +243,11 @@ class SideLabel extends JLabel {
   protected SideLabel(Side side) {
     super();
     this.side = side;
-    setCursor(Cursor.getPredefinedCursor(side.cursor));
+    setCursor(Cursor.getPredefinedCursor(side.getCursor()));
   }
 
   @Override public Dimension getPreferredSize() {
-    return new Dimension(side.width, side.height);
+    return side.getSize();
   }
 
   @Override public Dimension getMinimumSize() {
@@ -219,52 +274,52 @@ class ResizeWindowListener extends MouseInputAdapter {
     Component p = SwingUtilities.getRoot(c);
     if (!rect.isEmpty() && c instanceof SideLabel && p instanceof Window) {
       Side side = ((SideLabel) c).side;
-      p.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
+      p.setBounds(side.getBounds(rect, e.getPoint()));
     }
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity")
-  private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
-    switch (side) {
-      case NW:
-        r.y += dy;
-        r.height -= dy;
-        r.x += dx;
-        r.width -= dx;
-        break;
-      case N:
-        r.y += dy;
-        r.height -= dy;
-        break;
-      case NE:
-        r.y += dy;
-        r.height -= dy;
-        r.width += dx;
-        break;
-      case W:
-        r.x += dx;
-        r.width -= dx;
-        break;
-      case E:
-        r.width += dx;
-        break;
-      case SW:
-        r.height += dy;
-        r.x += dx;
-        r.width -= dx;
-        break;
-      case S:
-        r.height += dy;
-        break;
-      case SE:
-        r.height += dy;
-        r.width += dx;
-        break;
-      default:
-        throw new AssertionError("Unknown SideLabel");
-    }
-    return r;
-  }
+  // @SuppressWarnings("PMD.CyclomaticComplexity")
+  // private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
+  //   switch (side) {
+  //     case NW:
+  //       r.y += dy;
+  //       r.height -= dy;
+  //       r.x += dx;
+  //       r.width -= dx;
+  //       break;
+  //     case N:
+  //       r.y += dy;
+  //       r.height -= dy;
+  //       break;
+  //     case NE:
+  //       r.y += dy;
+  //       r.height -= dy;
+  //       r.width += dx;
+  //       break;
+  //     case W:
+  //       r.x += dx;
+  //       r.width -= dx;
+  //       break;
+  //     case E:
+  //       r.width += dx;
+  //       break;
+  //     case SW:
+  //       r.height += dy;
+  //       r.x += dx;
+  //       r.width -= dx;
+  //       break;
+  //     case S:
+  //       r.height += dy;
+  //       break;
+  //     case SE:
+  //       r.height += dy;
+  //       r.width += dx;
+  //       break;
+  //     default:
+  //       throw new AssertionError("Unknown SideLabel");
+  //   }
+  //   return r;
+  // }
 }
 
 class DragWindowListener extends MouseInputAdapter {
