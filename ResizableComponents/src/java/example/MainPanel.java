@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.function.Function;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -112,7 +113,7 @@ class JResizer extends JPanel { // implements Serializable {
     resizeListener = new ResizeMouseListener();
     addMouseListener(resizeListener);
     addMouseMotionListener(resizeListener);
-    setBorder(new DefaultResizableBorder(6));
+    setBorder(new DefaultResizableBorder());
   }
   // private void writeObject(ObjectOutputStream out) throws IOException {}
   // private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {}
@@ -139,45 +140,41 @@ class JResizer extends JPanel { // implements Serializable {
 // Resizable Components - Santhosh Kumar's Weblog
 // http://www.jroller.com/santhosh/entry/resizable_components
 interface ResizableBorder extends Border {
-  int getResizeCursor(MouseEvent e);
+  Cursor getResizeCursor(MouseEvent e);
 }
 
 class DefaultResizableBorder implements ResizableBorder, SwingConstants {
-  private final int dist;
+  private static final int SIZE = 6;
 
-  private static int[] locations = {
-    NORTH,
-    SOUTH,
-    WEST,
-    EAST,
-    NORTH_WEST,
-    NORTH_EAST,
-    SOUTH_WEST,
-    SOUTH_EAST,
-    0, // move
-    -1, // no location
-  };
+  private enum Locations {
+    NORTH(Cursor.N_RESIZE_CURSOR, r -> new Point(r.x + r.width / 2 - SIZE / 2, r.y)),
+    SOUTH(Cursor.S_RESIZE_CURSOR, r -> new Point(r.x + r.width / 2 - SIZE / 2, r.y + r.height - SIZE)),
+    WEST(Cursor.W_RESIZE_CURSOR, r -> new Point(r.x, r.y + r.height / 2 - SIZE / 2)),
+    EAST(Cursor.E_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y + r.height / 2 - SIZE / 2)),
+    NORTH_WEST(Cursor.NW_RESIZE_CURSOR, r -> new Point(r.x, r.y)),
+    NORTH_EAST(Cursor.NE_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y)),
+    SOUTH_WEST(Cursor.SW_RESIZE_CURSOR, r -> new Point(r.x, r.y + r.height - SIZE)),
+    SOUTH_EAST(Cursor.SE_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y + r.height - SIZE));
 
-  private static int[] cursors = {
-    Cursor.N_RESIZE_CURSOR,
-    Cursor.S_RESIZE_CURSOR,
-    Cursor.W_RESIZE_CURSOR,
-    Cursor.E_RESIZE_CURSOR,
-    Cursor.NW_RESIZE_CURSOR,
-    Cursor.NE_RESIZE_CURSOR,
-    Cursor.SW_RESIZE_CURSOR,
-    Cursor.SE_RESIZE_CURSOR,
-    Cursor.MOVE_CURSOR,
-    Cursor.DEFAULT_CURSOR,
-  };
+    private final Cursor cursor;
+    private final Function<Rectangle, Point> location;
 
-  protected DefaultResizableBorder(int dist) {
-    super();
-    this.dist = dist;
+    Locations(int cursor, Function<Rectangle, Point> getPoint) {
+      this.cursor = Cursor.getPredefinedCursor(cursor);
+      this.location = getPoint;
+    }
+
+    public Point getPoint(Rectangle r) {
+      return location.apply(r);
+    }
+
+    public Cursor getCursor() {
+      return cursor;
+    }
   }
 
   @Override public Insets getBorderInsets(Component component) {
-    return new Insets(dist, dist, dist, dist);
+    return new Insets(SIZE, SIZE, SIZE, SIZE);
   }
 
   @Override public boolean isBorderOpaque() {
@@ -186,10 +183,11 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
 
   @Override public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
     g.setColor(Color.black);
-    g.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
-    Rectangle rect = new Rectangle(dist, dist);
-    for (int i = 0; i < locations.length - 2; i++) {
-      rect.setLocation(getPoint(x, y, w, h, locations[i]));
+    g.drawRect(x + SIZE / 2, y + SIZE / 2, w - SIZE, h - SIZE);
+    Rectangle rect = new Rectangle(SIZE, SIZE);
+    Rectangle r = new Rectangle(x, y, w, h);
+    for (Locations loc: Locations.values()) {
+      rect.setLocation(loc.getPoint(r));
       g.setColor(Color.WHITE);
       g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
       g.setColor(Color.BLACK);
@@ -197,21 +195,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
   }
 
-  private Point getPoint(int x, int y, int w, int h, int location) {
-    switch (location) {
-      case NORTH: return new Point(x + w / 2 - dist / 2, y);
-      case SOUTH: return new Point(x + w / 2 - dist / 2, y + h - dist);
-      case WEST: return new Point(x, y + h / 2 - dist / 2);
-      case EAST: return new Point(x + w - dist, y + h / 2 - dist / 2);
-      case NORTH_WEST: return new Point(x, y);
-      case NORTH_EAST: return new Point(x + w - dist, y);
-      case SOUTH_WEST: return new Point(x, y + h - dist);
-      case SOUTH_EAST: return new Point(x + w - dist, y + h - dist);
-      default: return new Point(-100, -100); // throw new AssertionError("Unknown location");
-    }
-  }
-
-  @Override public int getResizeCursor(MouseEvent e) {
+  @Override public Cursor getResizeCursor(MouseEvent e) {
     Component c = e.getComponent();
     int w = c.getWidth();
     int h = c.getHeight();
@@ -219,20 +203,21 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
 
     Rectangle bounds = new Rectangle(w, h);
     if (!bounds.contains(pt)) {
-      return Cursor.DEFAULT_CURSOR;
+      return Cursor.getDefaultCursor();
     }
 
-    Rectangle actualBounds = new Rectangle(dist, dist, w - 2 * dist, h - 2 * dist);
+    Rectangle actualBounds = new Rectangle(SIZE, SIZE, w - 2 * SIZE, h - 2 * SIZE);
     if (actualBounds.contains(pt)) {
-      return Cursor.DEFAULT_CURSOR;
+      return Cursor.getDefaultCursor();
     }
-    Rectangle r = new Rectangle(dist, dist);
-    for (int i = 0; i < locations.length - 2; i++) {
-      r.setLocation(getPoint(0, 0, w, h, locations[i]));
-      if (r.contains(pt)) {
-        return cursors[i];
+    Rectangle rect = new Rectangle(SIZE, SIZE);
+    Rectangle r = new Rectangle(0, 0, w, h);
+    for (Locations loc: Locations.values()) {
+      rect.setLocation(loc.getPoint(r));
+      if (rect.contains(pt)) {
+        return loc.getCursor();
       }
     }
-    return Cursor.MOVE_CURSOR;
+    return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
   }
 }
