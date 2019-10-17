@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
   private final SpinnerNumberModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
   private final JPanel fontPanel = new GlyphPaintPanel();
-  protected transient Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
+  protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
 
   private MainPanel() {
     super(new BorderLayout());
