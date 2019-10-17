@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoManager;
@@ -20,42 +21,40 @@ public class MainPanel extends JPanel {
   // protected static final int BIT_LENGTH = 63;
   protected static final int BIT_LENGTH = 72;
   protected BitSet status = BitSet.valueOf(new long[] {Long.valueOf("111000111", 2)});
-  protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  protected static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
   protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel(new GridLayout(0, 8));
-  private final UndoManager um = new UndoManager();
-  private final Action undoAction = new UndoAction(um);
-  private final Action redoAction = new RedoAction(um);
-  private final Action selectAllAction = new AbstractAction("select all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      BitSet newValue = new BitSet(BIT_LENGTH);
-      newValue.set(0, BIT_LENGTH, true);
-      undoSupport.postEdit(new StatusEdit(status, newValue));
-      updateCheckBoxes(newValue);
-    }
-  };
-  private final Action clearAllAction = new AbstractAction("clear all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      BitSet newValue = new BitSet(BIT_LENGTH);
-      undoSupport.postEdit(new StatusEdit(status, newValue));
-      updateCheckBoxes(newValue);
-    }
-  };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    UndoManager um = new UndoManager();
     undoSupport.addUndoableEditListener(um);
+
+    Action undoAction = new UndoAction(um);
+    Action redoAction = new RedoAction(um);
+    Action selectAllAction = new AbstractAction("select all") {
+      @Override public void actionPerformed(ActionEvent e) {
+        BitSet newValue = new BitSet(BIT_LENGTH);
+        newValue.set(0, BIT_LENGTH, true);
+        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateCheckBoxes(newValue);
+      }
+    };
+    Action clearAllAction = new AbstractAction("clear all") {
+      @Override public void actionPerformed(ActionEvent e) {
+        BitSet newValue = new BitSet(BIT_LENGTH);
+        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateCheckBoxes(newValue);
+      }
+    };
+
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(new JButton(undoAction));
-    box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(redoAction));
-    box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(selectAllAction));
-    box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(clearAllAction));
-    box.add(Box.createHorizontalStrut(2));
+    Stream.of(undoAction, redoAction, selectAllAction, clearAllAction).map(JButton::new).forEach(b -> {
+      box.add(b);
+      box.add(Box.createHorizontalStrut(2));
+    });
 
     IntStream.range(0, BIT_LENGTH).forEach(i -> {
       JCheckBox c = new JCheckBox(Integer.toString(i), status.get(i));
@@ -114,7 +113,7 @@ public class MainPanel extends JPanel {
     }
     String b = buf.toString();
     int count = bitSet.cardinality();
-    return "<html>0b" + ZEROPAD.substring(b.length()) + b + "<br/> count: " + count;
+    return "<html>0b" + ZERO_PAD.substring(b.length()) + b + "<br/> count: " + count;
   }
 
   public static void main(String[] args) {
