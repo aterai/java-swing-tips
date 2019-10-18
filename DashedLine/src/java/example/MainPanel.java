@@ -5,50 +5,19 @@
 package example;
 
 import java.awt.*;
-import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-  private final JTextField field = new JTextField("1f, 1f, 5f, 1f");
-  protected transient BasicStroke dashedStroke;
-
-  protected final float[] getDashArray() {
-    // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
-    String[] slist = Stream.of(field.getText().split(","))
-      .map(String::trim)
-      .filter(s -> !s.isEmpty())
-      .toArray(String[]::new);
-    if (slist.length == 0) {
-      return new float[] {1f};
-    }
-    float[] list = new float[slist.length];
-    int i = 0;
-    try {
-      for (String s: slist) {
-        String ss = s.trim();
-        if (!ss.isEmpty()) {
-          list[i++] = Float.parseFloat(ss);
-        }
-      }
-    } catch (NumberFormatException ex) {
-      EventQueue.invokeLater(() -> {
-        Toolkit.getDefaultToolkit().beep();
-        String msg = "Invalid input.\n" + ex.getMessage();
-        JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
-      });
-      return new float[] {1f};
-    }
-    return i == 0 ? new float[] {1f} : list;
-  }
+  protected transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
 
   public MainPanel() {
     super(new BorderLayout());
+    JTextField field = new JTextField("1f, 1f, 5f, 1f");
+
     JLabel label = new JLabel() {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        dashedStroke = Optional.ofNullable(dashedStroke)
-          .orElseGet(() -> new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f));
         Insets i = getInsets();
         int w = getWidth();
         int h = getHeight() / 2;
@@ -62,18 +31,56 @@ public class MainPanel extends JPanel {
 
     JButton button = new JButton("Change");
     button.addActionListener(e -> {
-      dashedStroke = null;
+      dashedStroke = makeStroke(getDashArray(tokenize(field.getText().trim())));
       label.repaint();
     });
+    EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
+    p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
     p.add(field);
     p.add(button, BorderLayout.EAST);
-    p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
     add(p, BorderLayout.NORTH);
     add(label);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private float[] getDashArray(String... strArray) {
+    if (strArray.length == 0) {
+      return new float[] {1f};
+    }
+    float[] dist = new float[strArray.length];
+    int i = 0;
+    try {
+      for (String s: strArray) {
+        String ss = s.trim();
+        if (!ss.isEmpty()) {
+          dist[i++] = Float.parseFloat(ss);
+        }
+      }
+    } catch (NumberFormatException ex) {
+      EventQueue.invokeLater(() -> {
+        Toolkit.getDefaultToolkit().beep();
+        String msg = "Invalid input.\n" + ex.getMessage();
+        JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
+      });
+      return new float[] {1f};
+    }
+    return i == 0 ? new float[] {1f} : dist;
+  }
+
+  private static BasicStroke makeStroke(float... dist) {
+    return new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, dist, 0f);
+  }
+
+  private static String[] tokenize(String text) {
+    // String[] strArray = text.split(","); // ErrorProne: StringSplitter
+    return Stream.of(text.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .toArray(String[]::new);
   }
 
   public static void main(String[] args) {
