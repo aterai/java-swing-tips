@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.EnumSet;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -28,6 +27,7 @@ public final class MainPanel extends JPanel {
   private final JPanel contentPanel = new JPanel(new BorderLayout());
   private final JPanel resizePanel = new JPanel(new BorderLayout()) {
     private final Color borderColor = new Color(0x64_64_64);
+
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
       int w = getWidth();
@@ -167,73 +167,86 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-  N(Cursor.N_RESIZE_CURSOR, 0, 4, (r, d) -> {
-    r.y += d.y;
-    r.height -= d.y;
-    return r;
-  }),
-  W(Cursor.W_RESIZE_CURSOR, 4, 0, (r, d) -> {
-    r.x += d.x;
-    r.width -= d.x;
-    return r;
-  }),
-  E(Cursor.E_RESIZE_CURSOR, 4, 0, (r, d) -> {
-    r.width += d.x;
-    return r;
-  }),
-  S(Cursor.S_RESIZE_CURSOR, 0, 4, (r, d) -> {
-    r.height += d.y;
-    return r;
-  }),
-  NW(Cursor.NW_RESIZE_CURSOR, 4, 4, (r, d) -> {
-    r.y += d.y;
-    r.height -= d.y;
-    r.x += d.x;
-    r.width -= d.x;
-    return r;
-  }),
-  NE(Cursor.NE_RESIZE_CURSOR, 4, 4, (r, d) -> {
-    r.y += d.y;
-    r.height -= d.y;
-    r.width += d.x;
-    return r;
-  }),
-  SW(Cursor.SW_RESIZE_CURSOR, 4, 4, (r, d) -> {
-    r.height += d.y;
-    r.x += d.x;
-    r.width -= d.x;
-    return r;
-  }),
-  SE(Cursor.SE_RESIZE_CURSOR, 4, 4, (r, d) -> {
-    r.height += d.y;
-    r.width += d.x;
-    return r;
-  });
+  N(Cursor.N_RESIZE_CURSOR, 0, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.y += d.y;
+      r.height -= d.y;
+      return r;
+    }
+  },
+  W(Cursor.W_RESIZE_CURSOR, 4, 0) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.x += d.x;
+      r.width -= d.x;
+      return r;
+    }
+  },
+  E(Cursor.E_RESIZE_CURSOR, 4, 0) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.width += d.x;
+      return r;
+    }
+  },
+  S(Cursor.S_RESIZE_CURSOR, 0, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.height += d.y;
+      return r;
+    }
+  },
+  NW(Cursor.NW_RESIZE_CURSOR, 4, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.y += d.y;
+      r.height -= d.y;
+      r.x += d.x;
+      r.width -= d.x;
+      return r;
+    }
+  },
+  NE(Cursor.NE_RESIZE_CURSOR, 4, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.y += d.y;
+      r.height -= d.y;
+      r.width += d.x;
+      return r;
+    }
+  },
+  SW(Cursor.SW_RESIZE_CURSOR, 4, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.height += d.y;
+      r.x += d.x;
+      r.width -= d.x;
+      return r;
+    }
+  },
+  SE(Cursor.SE_RESIZE_CURSOR, 4, 4) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      r.height += d.y;
+      r.width += d.x;
+      return r;
+    }
+  };
 
   private final int cursor;
   private final int width;
   private final int height;
-  @SuppressWarnings("ImmutableEnumChecker")
-  private final BiFunction<Rectangle, Point, Rectangle> getBounds;
+  // @SuppressWarnings("ImmutableEnumChecker")
+  // private final BiFunction<Rectangle, Point, Rectangle> getBounds;
 
-  Side(int cursor, int width, int height, BiFunction<Rectangle, Point, Rectangle> getBounds) {
+  Side(int cursor, int width, int height) {
     this.cursor = cursor;
     this.width = width;
     this.height = height;
-    this.getBounds = getBounds;
   }
 
-  public int getCursor() {
-    return cursor;
+  public Cursor getCursor() {
+    return Cursor.getPredefinedCursor(cursor);
   }
 
   public Dimension getSize() {
     return new Dimension(width, height);
   }
 
-  public Rectangle getBounds(Rectangle rect, Point delta) {
-    return getBounds.apply(rect, delta);
-  }
+  abstract Rectangle getBounds(Rectangle rect, Point delta);
 
   public static Optional<Side> getByType(int cursor) {
     return EnumSet.allOf(Side.class).stream().filter(d -> d.cursor == cursor).findFirst();
@@ -246,7 +259,7 @@ class SideLabel extends JLabel {
   protected SideLabel(Side side) {
     super();
     this.side = side;
-    setCursor(Cursor.getPredefinedCursor(side.getCursor()));
+    setCursor(side.getCursor());
   }
 
   @Override public Dimension getPreferredSize() {
@@ -280,49 +293,6 @@ class ResizeWindowListener extends MouseInputAdapter {
       p.setBounds(side.getBounds(rect, e.getPoint()));
     }
   }
-
-  // @SuppressWarnings("PMD.CyclomaticComplexity")
-  // private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
-  //   switch (side) {
-  //     case NW:
-  //       r.y += dy;
-  //       r.height -= dy;
-  //       r.x += dx;
-  //       r.width -= dx;
-  //       break;
-  //     case N:
-  //       r.y += dy;
-  //       r.height -= dy;
-  //       break;
-  //     case NE:
-  //       r.y += dy;
-  //       r.height -= dy;
-  //       r.width += dx;
-  //       break;
-  //     case W:
-  //       r.x += dx;
-  //       r.width -= dx;
-  //       break;
-  //     case E:
-  //       r.width += dx;
-  //       break;
-  //     case SW:
-  //       r.height += dy;
-  //       r.x += dx;
-  //       r.width -= dx;
-  //       break;
-  //     case S:
-  //       r.height += dy;
-  //       break;
-  //     case SE:
-  //       r.height += dy;
-  //       r.width += dx;
-  //       break;
-  //     default:
-  //       throw new AssertionError("Unknown SideLabel");
-  //   }
-  //   return r;
-  // }
 }
 
 class DragWindowListener extends MouseInputAdapter {
