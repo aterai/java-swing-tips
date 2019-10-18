@@ -26,8 +26,7 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    Component c = e.getComponent();
-    c.setCursor(Cursor.getDefaultCursor());
+    e.getComponent().setCursor(Cursor.getDefaultCursor());
   }
 
   @Override public void mousePressed(MouseEvent e) {
@@ -56,77 +55,83 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     int deltaX = startPos.x - p.x;
     int deltaY = startPos.y - p.y;
     Container parent = SwingUtilities.getUnwrappedParent(c);
-    Rectangle parentBounds = parent.getBounds();
     Directions.getByCursorType(cursor.getType()).ifPresent(dir -> {
-      // Point delta = dir.getBoundedDelta(startingBounds, parentBounds, new Point(deltaX, deltaY));
-      Point delta = getLimitedDelta(parentBounds, deltaX, deltaY);
+      Point delta = getLimitedDelta(parent.getBounds(), deltaX, deltaY);
       c.setBounds(dir.getBounds(startingBounds, delta));
     });
     parent.revalidate();
   }
 
   private int getDeltaX(int dx) {
-    int deltaX = dx;
-    if (startingBounds.width + deltaX < MIN.width) {
-      deltaX = -(startingBounds.width - MIN.width);
-    } else if (startingBounds.width + deltaX > MAX.width) {
-      deltaX = MAX.width - startingBounds.width;
-    }
-    if (startingBounds.x - deltaX < 0) {
-      deltaX = startingBounds.x;
-    }
-    return deltaX;
+    int left = Math.min(MAX.width - startingBounds.width, startingBounds.x);
+    return Math.max(Math.min(dx, left), MIN.width - startingBounds.width);
+    // int deltaX = dx;
+    // if (deltaX < MIN.width - startingBounds.width) {
+    //   deltaX = MIN.width - startingBounds.width;
+    // } else if (deltaX > MAX.width - startingBounds.width) {
+    //   deltaX = MAX.width - startingBounds.width;
+    // }
+    // if (startingBounds.x < deltaX) {
+    //   deltaX = startingBounds.x;
+    // }
+    // return deltaX;
   }
 
-  private int getDeltaX(int dx, Rectangle parentBounds) {
-    int deltaX = dx;
-    if (startingBounds.width - deltaX < MIN.width) {
-      deltaX = startingBounds.width - MIN.width;
-    } else if (startingBounds.width - deltaX > MAX.width) {
-      deltaX = -(MAX.width - startingBounds.width);
-    }
-    if (startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
-      deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
-    }
-    return deltaX;
+  private int getDeltaX(int dx, Rectangle pr) {
+    int right = Math.max(startingBounds.width - MAX.width, startingBounds.x + startingBounds.width - pr.width);
+    return Math.min(Math.max(dx, right), startingBounds.width - MIN.width);
+    // int deltaX = dx;
+    // if (startingBounds.width - MIN.width < deltaX) {
+    //   deltaX = startingBounds.width - MIN.width;
+    // } else if (startingBounds.width - MAX.width > deltaX) {
+    //   deltaX = startingBounds.width - MAX.width;
+    // }
+    // if (startingBounds.x + startingBounds.width - pr.width > deltaX) {
+    //   deltaX = startingBounds.x + startingBounds.width - pr.width;
+    // }
+    // return deltaX;
   }
 
   private int getDeltaY(int dy) {
-    int deltaY = dy;
-    if (startingBounds.height + deltaY < MIN.height) {
-      deltaY = -(startingBounds.height - MIN.height);
-    } else if (startingBounds.height + deltaY > MAX.height) {
-      deltaY = MAX.height - startingBounds.height;
-    }
-    if (startingBounds.y - deltaY < 0) {
-      deltaY = startingBounds.y;
-    }
-    return deltaY;
+    int top = Math.min(MAX.height - startingBounds.height, startingBounds.y);
+    return Math.max(Math.min(dy, top), MIN.height - startingBounds.height);
+    // int deltaY = dy;
+    // if (deltaY < MIN.height - startingBounds.height) {
+    //   deltaY = MIN.height - startingBounds.height;
+    // } else if (deltaY > MAX.height - startingBounds.height) {
+    //   deltaY = MAX.height - startingBounds.height;
+    // }
+    // if (deltaY < startingBounds.y) {
+    //   deltaY = startingBounds.y;
+    // }
+    // return deltaY;
   }
 
-  private int getDeltaY(int dy, Rectangle parentBounds) {
-    int deltaY = dy;
-    if (startingBounds.height - deltaY < MIN.height) {
-      deltaY = startingBounds.height - MIN.height;
-    } else if (startingBounds.height - deltaY > MAX.height) {
-      deltaY = -(MAX.height - startingBounds.height);
-    }
-    if (startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
-      deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
-    }
-    return deltaY;
+  private int getDeltaY(int dy, Rectangle pr) {
+    int bottom = Math.max(startingBounds.height - MAX.height, startingBounds.y + startingBounds.height - pr.height);
+    return Math.min(Math.max(dy, bottom), startingBounds.height - MIN.height);
+    // int deltaY = dy;
+    // if (startingBounds.height - MIN.height < deltaY) {
+    //   deltaY = startingBounds.height - MIN.height;
+    // } else if (startingBounds.height - MAX.height > deltaY) {
+    //   deltaY = startingBounds.height - MAX.height;
+    // }
+    // if (startingBounds.y + startingBounds.height - deltaY > pr.height) {
+    //   deltaY = startingBounds.y + startingBounds.height - pr.height;
+    // }
+    // return deltaY;
   }
 
-  private Point getLimitedDelta(Rectangle parentBounds, int deltaX, int deltaY) {
+  private Point getLimitedDelta(Rectangle pr, int deltaX, int deltaY) {
     switch (cursor.getType()) {
+      case Cursor.N_RESIZE_CURSOR: return new Point(0, getDeltaY(deltaY));
+      case Cursor.S_RESIZE_CURSOR: return new Point(0, getDeltaY(deltaY, pr));
+      case Cursor.W_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), 0);
+      case Cursor.E_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, pr), 0);
       case Cursor.NW_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), getDeltaY(deltaY));
-      case Cursor.N_RESIZE_CURSOR: return new Point(deltaX, getDeltaY(deltaY));
-      case Cursor.NE_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, parentBounds), getDeltaY(deltaY));
-      case Cursor.E_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, parentBounds), deltaY);
-      case Cursor.SE_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, parentBounds), getDeltaY(deltaY, parentBounds));
-      case Cursor.S_RESIZE_CURSOR: return new Point(deltaX, getDeltaY(deltaY, parentBounds));
-      case Cursor.SW_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), getDeltaY(deltaY, parentBounds));
-      case Cursor.W_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), deltaY);
+      case Cursor.SW_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), getDeltaY(deltaY, pr));
+      case Cursor.NE_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY));
+      case Cursor.SE_RESIZE_CURSOR: return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY, pr));
       default: return new Point(deltaX, deltaY);
     }
   }
@@ -144,6 +149,7 @@ enum Directions {
   MOVE(Cursor.MOVE_CURSOR, (r, d) -> new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height));
 
   private final int cursor;
+  @SuppressWarnings("ImmutableEnumChecker")
   private final BiFunction<Rectangle, Point, Rectangle> getBounds;
 
   Directions(int cursor, BiFunction<Rectangle, Point, Rectangle> getBounds) {

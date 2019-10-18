@@ -167,56 +167,59 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-  N(Cursor.N_RESIZE_CURSOR, new Dimension(0, 4), (r, d) -> {
+  N(Cursor.N_RESIZE_CURSOR, 0, 4, (r, d) -> {
     r.y += d.y;
     r.height -= d.y;
     return r;
   }),
-  W(Cursor.W_RESIZE_CURSOR, new Dimension(4, 0), (r, d) -> {
+  W(Cursor.W_RESIZE_CURSOR, 4, 0, (r, d) -> {
     r.x += d.x;
     r.width -= d.x;
     return r;
   }),
-  E(Cursor.E_RESIZE_CURSOR, new Dimension(4, 0), (r, d) -> {
+  E(Cursor.E_RESIZE_CURSOR, 4, 0, (r, d) -> {
     r.width += d.x;
     return r;
   }),
-  S(Cursor.S_RESIZE_CURSOR, new Dimension(0, 4), (r, d) -> {
+  S(Cursor.S_RESIZE_CURSOR, 0, 4, (r, d) -> {
     r.height += d.y;
     return r;
   }),
-  NW(Cursor.NW_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+  NW(Cursor.NW_RESIZE_CURSOR, 4, 4, (r, d) -> {
     r.y += d.y;
     r.height -= d.y;
     r.x += d.x;
     r.width -= d.x;
     return r;
   }),
-  NE(Cursor.NE_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+  NE(Cursor.NE_RESIZE_CURSOR, 4, 4, (r, d) -> {
     r.y += d.y;
     r.height -= d.y;
     r.width += d.x;
     return r;
   }),
-  SW(Cursor.SW_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+  SW(Cursor.SW_RESIZE_CURSOR, 4, 4, (r, d) -> {
     r.height += d.y;
     r.x += d.x;
     r.width -= d.x;
     return r;
   }),
-  SE(Cursor.SE_RESIZE_CURSOR, new Dimension(4, 4), (r, d) -> {
+  SE(Cursor.SE_RESIZE_CURSOR, 4, 4, (r, d) -> {
     r.height += d.y;
     r.width += d.x;
     return r;
   });
 
   private final int cursor;
-  private final Dimension size;
+  private final int width;
+  private final int height;
+  @SuppressWarnings("ImmutableEnumChecker")
   private final BiFunction<Rectangle, Point, Rectangle> getBounds;
 
-  Side(int cursor, Dimension size, BiFunction<Rectangle, Point, Rectangle> getBounds) {
+  Side(int cursor, int width, int height, BiFunction<Rectangle, Point, Rectangle> getBounds) {
     this.cursor = cursor;
-    this.size = size;
+    this.width = width;
+    this.height = height;
     this.getBounds = getBounds;
   }
 
@@ -225,7 +228,7 @@ enum Side {
   }
 
   public Dimension getSize() {
-    return size;
+    return new Dimension(width, height);
   }
 
   public Rectangle getBounds(Rectangle rect, Point delta) {

@@ -156,11 +156,12 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     SOUTH_WEST(Cursor.SW_RESIZE_CURSOR, r -> new Point(r.x, r.y + r.height - SIZE)),
     SOUTH_EAST(Cursor.SE_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y + r.height - SIZE));
 
-    private final Cursor cursor;
+    private final int cursor;
+    @SuppressWarnings("ImmutableEnumChecker")
     private final Function<Rectangle, Point> location;
 
     Locations(int cursor, Function<Rectangle, Point> getPoint) {
-      this.cursor = Cursor.getPredefinedCursor(cursor);
+      this.cursor = cursor;
       this.location = getPoint;
     }
 
@@ -169,7 +170,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
 
     public Cursor getCursor() {
-      return cursor;
+      return Cursor.getPredefinedCursor(cursor);
     }
   }
 
