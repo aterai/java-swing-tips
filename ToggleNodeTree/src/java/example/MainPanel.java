@@ -7,11 +7,11 @@ package example;
 import java.awt.*;
 import java.util.Enumeration;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     tree.setRootVisible(false);
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {
       private boolean isAdjusting;
-      @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
+      @Override public void treeWillExpand(TreeExpansionEvent e) { // throws ExpandVetoException {
         // collapseAll(tree); // StackOverflowError when collapsing nodes below 2nd level
         if (isAdjusting) {
           return;
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         isAdjusting = false;
       }
 
-      @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
+      @Override public void treeWillCollapse(TreeExpansionEvent e) { // throws ExpandVetoException {
         // throw new ExpandVetoException(e, "Tree collapse cancelled");
       }
     });
@@ -43,9 +43,8 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setViewportBorder(null);
         super.updateUI();
-        EventQueue.invokeLater(() -> {
-          setViewportBorder(BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5));
-        });
+        Border b = BorderFactory.createLineBorder(getViewport().getView().getBackground(), 5);
+        EventQueue.invokeLater(() -> setViewportBorder(b));
       }
     };
     add(scroll);
@@ -59,13 +58,13 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("33333"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-    set2.add(new DefaultMutableTreeNode("asdf"));
+    set2.add(new DefaultMutableTreeNode("4444444444444"));
+    set2.add(new DefaultMutableTreeNode("55555555"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-    set3.add(new DefaultMutableTreeNode("qwerqwer"));
-    set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+    set3.add(new DefaultMutableTreeNode("666666666666666"));
+    set3.add(new DefaultMutableTreeNode("777777777777"));
+    set3.add(new DefaultMutableTreeNode("888888888888888888"));
 
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
     set4.add(new DefaultMutableTreeNode("444"));
