@@ -15,9 +15,9 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -151,12 +151,12 @@ class RowSelectionTree extends JTree {
     setUI(new BasicTreeUI() {
       @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
         if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
-          return getPathBounds(path, tree.getInsets(), new Rectangle());
+          return getTreePathBounds(path, tree.getInsets(), new Rectangle());
         }
         return null;
       }
 
-      private Rectangle getPathBounds(TreePath path, Insets insets, Rectangle bounds) {
+      private Rectangle getTreePathBounds(TreePath path, Insets insets, Rectangle bounds) {
         Rectangle rect = treeState.getBounds(path, bounds);
         if (Objects.nonNull(rect)) {
           rect.width = tree.getWidth();
@@ -166,7 +166,13 @@ class RowSelectionTree extends JTree {
       }
     });
     UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
-    setCellRenderer(new Handler());
+    TreeCellRenderer r = getCellRenderer();
+    setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+      JLabel l = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      l.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
+      l.setOpaque(true);
+      return l;
+    });
     setOpaque(false);
     setRootVisible(false);
     // https://ateraimemo.com/Swing/TreeNodeCollapseVeto.html
@@ -180,15 +186,6 @@ class RowSelectionTree extends JTree {
       }
     };
     addTreeWillExpandListener(listener);
-  }
-
-  private static class Handler extends DefaultTreeCellRenderer {
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-      JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      l.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
-      l.setOpaque(true);
-      return l;
-    }
   }
 }
 
