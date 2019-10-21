@@ -11,7 +11,31 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<String> combo = new JComboBox<String>(makeModel()) {
+    JPanel p = new JPanel(new GridBagLayout());
+    p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
+    GridBagConstraints c = new GridBagConstraints();
+
+    c.gridx = 0;
+    c.insets = new Insets(5, 5, 5, 0);
+    c.anchor = GridBagConstraints.LINE_END;
+    p.add(new JLabel("Wheel:"), c);
+    p.add(new JLabel("Normal:"), c);
+
+    c.gridx = 1;
+    c.weightx = 1d;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    p.add(makeComboBox(), c);
+    p.add(new JComboBox<>(makeModel()), c);
+
+    JTextArea textArea = new JTextArea();
+    textArea.setText("dummy");
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(textArea));
+    setPreferredSize(new Dimension(320, 240));
+  }
+  
+  private static JComboBox<String> makeComboBox() {
+    return new JComboBox<String>(makeModel()) {
       private transient MouseWheelListener handler;
       @Override public void updateUI() {
         removeMouseWheelListener(handler);
@@ -29,28 +53,6 @@ public final class MainPanel extends JPanel {
         addMouseWheelListener(handler);
       }
     };
-
-    JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
-    GridBagConstraints c = new GridBagConstraints();
-
-    c.gridx = 0;
-    c.insets = new Insets(5, 5, 5, 0);
-    c.anchor = GridBagConstraints.LINE_END;
-    p.add(new JLabel("Wheel:"), c);
-    p.add(new JLabel("Normal:"), c);
-
-    c.gridx = 1;
-    c.weightx = 1d;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    p.add(combo, c);
-    p.add(new JComboBox<>(makeModel()), c);
-
-    JTextArea textArea = new JTextArea();
-    textArea.setText("dummy");
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(textArea));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static ComboBoxModel<String> makeModel() {
