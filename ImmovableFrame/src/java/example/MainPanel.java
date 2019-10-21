@@ -18,7 +18,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 // https://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
 // Lock JInternalPane
 // https://community.oracle.com/thread/1392111
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final int OFFSET = 30;
   private static AtomicInteger openFrameCount = new AtomicInteger();
   private final JDesktopPane desktop = new JDesktopPane();
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final JMenuBar createMenuBar() {
+  protected JMenuBar createMenuBar() {
     JMenu menu = new JMenu("Window");
     menu.setMnemonic(KeyEvent.VK_W);
 
