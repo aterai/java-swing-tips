@@ -355,7 +355,7 @@ class ListItemTransferHandler extends TransferHandler {
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
     TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
+    if (!(tdl instanceof JList.DropLocation)) {
       return false;
     }
     JList.DropLocation dl = (JList.DropLocation) tdl;
