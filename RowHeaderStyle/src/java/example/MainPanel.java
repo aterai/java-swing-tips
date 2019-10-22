@@ -10,36 +10,42 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"ccc", 92, true}, {"ddd", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-
-    @Override public boolean isCellEditable(int row, int column) {
-      return column != 0;
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"ccc", 92, true}, {"ddd", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
 
+      @Override public boolean isCellEditable(int row, int column) {
+        return column != 0;
+      }
+    };
+    JTable table = new JTable(model) {
+      private transient RowHeaderRenderer handler;
+      @Override public void updateUI() {
+        getColumnModel().getColumn(0).setCellRenderer(null);
+        removeMouseListener(handler);
+        removeMouseMotionListener(handler);
+        super.updateUI();
+        handler = new RowHeaderRenderer();
+        getColumnModel().getColumn(0).setCellRenderer(handler);
+        addMouseListener(handler);
+        addMouseMotionListener(handler);
+      }
+    };
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(24);
     // table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     // table.getTableHeader().setReorderingAllowed(false);
-
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setCellRenderer(new RowHeaderRenderer(table));
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -65,15 +71,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RowHeaderRenderer extends JLabel implements TableCellRenderer {
-  protected int rollOverRowIndex = -1;
-
-  protected RowHeaderRenderer(JTable table) {
-    super();
-    RollOverListener rol = new RollOverListener();
-    table.addMouseListener(rol);
-    table.addMouseMotionListener(rol);
-  }
+class RowHeaderRenderer extends MouseAdapter implements TableCellRenderer {
+  private final JLabel renderer = new JLabel();
+  private int rollOverRowIndex = -1;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer tcr = table.getTableHeader().getDefaultRenderer();
@@ -81,67 +81,62 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
     JLabel l = (JLabel) tcr.getTableCellRendererComponent(table, value, isSelected, f || hasFocus, -1, -1);
     if (tcr.getClass().getName().contains("XPDefaultRenderer")) {
       l.setOpaque(!f);
-      this.setIcon(new ComponentIcon(l));
-      return this;
+      renderer.setIcon(new ComponentIcon(l));
+      return renderer;
     } else {
       return l;
     }
   }
 
-  private class RollOverListener extends MouseAdapter {
-    // @Override public void mouseMoved(MouseEvent e) {
-    //   JTable table = (JTable) e.getSource();
-    //   Point pt = e.getPoint();
-    //   int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-    //   rollOverRowIndex = column == 0 ? table.rowAtPoint(pt) : -1;
-    //   table.repaint();
-    // }
-    // @Override public void mouseExited(MouseEvent e) {
-    //   JTable table = (JTable) e.getSource();
-    //   rollOverRowIndex = -1;
-    //   table.repaint();
-    // }
+  // @Override public void mouseMoved(MouseEvent e) {
+  //   JTable table = (JTable) e.getSource();
+  //   Point pt = e.getPoint();
+  //   int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+  //   rollOverRowIndex = column == 0 ? table.rowAtPoint(pt) : -1;
+  //   table.repaint();
+  // }
 
-    @Override public void mouseMoved(MouseEvent e) {
-      JTable table = (JTable) e.getComponent();
-      Point pt = e.getPoint();
-      int col = table.columnAtPoint(pt);
-      int column = table.convertColumnIndexToModel(col);
-      if (column != 0) {
-        return;
-      }
-      int prevRow = rollOverRowIndex;
-      rollOverRowIndex = table.rowAtPoint(pt);
-      if (rollOverRowIndex == prevRow) {
-        return;
-      }
-      Rectangle repaintRect;
-      if (rollOverRowIndex >= 0) {
-        Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
-        if (prevRow >= 0) {
-          repaintRect = r.union(table.getCellRect(prevRow, col, false));
-        } else {
-          repaintRect = r;
-        }
-      } else {
-        repaintRect = table.getCellRect(prevRow, col, false);
-      }
-      table.repaint(repaintRect);
-    }
+  // @Override public void mouseExited(MouseEvent e) {
+  //   JTable table = (JTable) e.getSource();
+  //   rollOverRowIndex = -1;
+  //   table.repaint();
+  // }
 
-    @Override public void mouseExited(MouseEvent e) {
-      JTable table = (JTable) e.getComponent();
-      Point pt = e.getPoint();
-      int col = table.columnAtPoint(pt);
-      int column = table.convertColumnIndexToModel(col);
-      if (column != 0) {
-        return;
-      }
-      if (rollOverRowIndex >= 0) {
-        table.repaint(table.getCellRect(rollOverRowIndex, col, false));
-      }
-      rollOverRowIndex = -1;
+  @Override public void mouseMoved(MouseEvent e) {
+    JTable table = (JTable) e.getComponent();
+    Point pt = e.getPoint();
+    int col = table.columnAtPoint(pt);
+    int column = table.convertColumnIndexToModel(col);
+    if (column != 0) {
+      return;
     }
+    int prevRow = rollOverRowIndex;
+    rollOverRowIndex = table.rowAtPoint(pt);
+    if (rollOverRowIndex == prevRow) {
+      return;
+    }
+    Rectangle repaintRect;
+    if (rollOverRowIndex >= 0) {
+      Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
+      repaintRect = prevRow >= 0 ? r.union(table.getCellRect(prevRow, col, false)) : r;
+    } else {
+      repaintRect = table.getCellRect(prevRow, col, false);
+    }
+    table.repaint(repaintRect);
+  }
+
+  @Override public void mouseExited(MouseEvent e) {
+    JTable table = (JTable) e.getComponent();
+    Point pt = e.getPoint();
+    int col = table.columnAtPoint(pt);
+    int column = table.convertColumnIndexToModel(col);
+    if (column != 0) {
+      return;
+    }
+    if (rollOverRowIndex >= 0) {
+      table.repaint(table.getCellRect(rollOverRowIndex, col, false));
+    }
+    rollOverRowIndex = -1;
   }
 }
 
