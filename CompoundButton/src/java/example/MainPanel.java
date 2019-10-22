@@ -70,17 +70,17 @@ class CompoundButtonPanel extends JComponent {
 }
 
 enum ButtonLocation {
-  CENTER(0f),
-  NORTH(45f),
-  EAST(135f),
-  SOUTH(225f),
-  WEST(-45f);
-  private final float degree;
-  ButtonLocation(float degree) {
+  CENTER(0d),
+  NORTH(45d),
+  EAST(135d),
+  SOUTH(225d),
+  WEST(-45d);
+  private final double degree;
+  ButtonLocation(double degree) {
     this.degree = degree;
   }
 
-  public float getStartDegree() {
+  public double getStartAngle() {
     return degree;
   }
 }
@@ -144,8 +144,9 @@ class CompoundButton extends JButton {
         shape = inner;
       } else {
         // TEST: parent.isOptimizedDrawingEnabled: false
-        // shape = new Arc2D.Double(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
-        Shape outer = new Arc2D.Double(1, 1d, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
+        double dw = getWidth() - 2d;
+        double dh = getHeight() - 2d;
+        Shape outer = new Arc2D.Double(1d, 1d, dw, dh, bl.getStartAngle(), 90d, Arc2D.PIE);
         Area area = new Area(outer);
         area.subtract(new Area(inner));
         shape = area;
@@ -154,7 +155,7 @@ class CompoundButton extends JButton {
   }
 
   protected void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
+    g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(getBackground());
   }
@@ -167,7 +168,7 @@ class CompoundButton extends JButton {
   @Override protected void paintBorder(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(getForeground());
+    g2.setPaint(Color.GRAY);
     g2.draw(shape);
     g2.dispose();
   }
