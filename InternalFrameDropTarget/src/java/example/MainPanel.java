@@ -304,9 +304,6 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    if (!canImport(info)) {
-      return false;
-    }
     TransferHandler.DropLocation tdl = info.getDropLocation();
     if (!(tdl instanceof JTable.DropLocation)) {
       return false;

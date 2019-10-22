@@ -77,15 +77,13 @@ public final class MainPanel extends JPanel {
     });
 
     JButton filterButton = new JButton("filter");
-    filterButton.addActionListener(e -> {
-      sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
-        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-          Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
-          System.out.println(model.contains(o));
-          return model.isEmpty() || model.contains(o);
-        }
-      });
-    });
+    filterButton.addActionListener(e -> sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+        Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
+        System.out.println(model.contains(o));
+        return model.isEmpty() || model.contains(o);
+      }
+    }));
 
     Box box = Box.createHorizontalBox();
     box.add(clearButton);
@@ -140,7 +138,7 @@ class CellIconTransferHandler extends TransferHandler {
             return Objects.equals(ICON_FLAVOR, flavor);
           }
 
-          @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+          @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
             if (isDataFlavorSupported(flavor)) {
               return table.getValueAt(row, col);
             } else {
@@ -167,9 +165,6 @@ class CellIconTransferHandler extends TransferHandler {
 
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    if (!canImport(info)) {
-      return false;
-    }
     JList<?> l = (JList<?>) info.getComponent();
     try {
       Object o = info.getTransferable().getTransferData(ICON_FLAVOR);
