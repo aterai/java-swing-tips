@@ -114,7 +114,7 @@ class ListItemTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
-      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
           return transferredObjects;
         } else {
@@ -135,7 +135,7 @@ class ListItemTransferHandler extends TransferHandler {
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
     TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
+    if (!(tdl instanceof JList.DropLocation)) {
       return false;
     }
     JList.DropLocation dl = (JList.DropLocation) tdl;
