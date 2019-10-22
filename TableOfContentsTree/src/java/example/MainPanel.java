@@ -56,9 +56,9 @@ public final class MainPanel extends JPanel {
     root.add(s1);
 
     DefaultMutableTreeNode s2 = new DefaultMutableTreeNode(new TableOfContents("3. Chapter", 10));
-    s2.add(new DefaultMutableTreeNode(new TableOfContents("ddddddd", 12)));
+    s2.add(new DefaultMutableTreeNode(new TableOfContents("ddd", 12)));
     s2.add(new DefaultMutableTreeNode(new TableOfContents("eee", 24)));
-    s2.add(new DefaultMutableTreeNode(new TableOfContents("f", 38)));
+    s2.add(new DefaultMutableTreeNode(new TableOfContents("fff", 38)));
     root.add(s2);
 
     return new DefaultTreeModel(root);
@@ -141,30 +141,30 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     return Optional.ofNullable(value)
-      .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
-      .map(DefaultMutableTreeNode::getUserObject)
-      .filter(TableOfContents.class::isInstance).map(TableOfContents.class::cast)
-      .map(toc -> {
-        renderer.removeAll();
-        renderer.add(l, BorderLayout.WEST);
-        if (isSynth) {
-          renderer.setForeground(l.getForeground());
-        }
+        .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
+        .map(DefaultMutableTreeNode::getUserObject)
+        .filter(TableOfContents.class::isInstance).map(TableOfContents.class::cast)
+        .<Component>map(toc -> {
+          renderer.removeAll();
+          renderer.add(l, BorderLayout.WEST);
+          if (isSynth) {
+            renderer.setForeground(l.getForeground());
+          }
 
-        int gap = l.getIconTextGap();
-        Dimension d = l.getPreferredSize();
-        pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
-        pn = toc.page;
-        rxs = d.width + gap;
-        rxe = tree.getWidth() - tree.getInsets().right - gap;
+          int gap = l.getIconTextGap();
+          Dimension d = l.getPreferredSize();
+          pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
+          pn = toc.page;
+          rxs = d.width + gap;
+          rxe = tree.getWidth() - tree.getInsets().right - gap;
 
-        renderer.setOpaque(false);
-        return (Component) renderer;
-      })
-      .orElseGet(() -> {
-        pn = -1;
-        return (Component) l;
-      });
+          renderer.setOpaque(false);
+          return renderer;
+        })
+        .orElseGet(() -> {
+          pn = -1;
+          return l;
+        });
   }
   // // @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
   // @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
