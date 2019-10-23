@@ -120,9 +120,6 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
-    // if (!canImport(support)) {
-    //   return false;
-    // }
     DefaultMutableTreeNode[] nodes;
     try {
       Transferable t = support.getTransferable();

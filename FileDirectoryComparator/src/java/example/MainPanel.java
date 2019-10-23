@@ -148,10 +148,15 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class FileTransferHandler extends TransferHandler {
+  @Override public int getSourceActions(JComponent component) {
+    return TransferHandler.COPY;
+  }
+
+  @Override public boolean canImport(TransferHandler.TransferSupport support) {
+    return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+  }
+
   @Override public boolean importData(TransferHandler.TransferSupport support) {
-    // if (!canImport(support)) {
-    //   return false;
-    // }
     List<?> list;
     try {
       list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
@@ -161,48 +166,7 @@ class FileTransferHandler extends TransferHandler {
     DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
     list.stream().filter(File.class::isInstance).map(File.class::cast)
         .map(f -> Collections.nCopies(3, f).toArray()).forEach(model::addRow);
-    // for (Object o: list) {
-    //   if (o instanceof File) {
-    //     File file = (File) o;
-    //     model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-    //   }
-    // }
     return true;
-  }
-
-  @Override public boolean canImport(TransferHandler.TransferSupport support) {
-    return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
-  }
-
-  // @Override public boolean importData(JComponent component, Transferable transferable) {
-  //   try {
-  //     if (canImport(component, transferable.getTransferDataFlavors())) {
-  //       DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
-  //       for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
-  //         if (o instanceof File) {
-  //           File file = (File) o;
-  //           model.addRow(new Object[] {file, file, file});
-  //         }
-  //       }
-  //       return true;
-  //     }
-  //   } catch (Exception ex) {
-  //     ex.printStackTrace();
-  //   }
-  //   return false;
-  // }
-
-  // @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
-  //   for (DataFlavor f: flavors) {
-  //     if (DataFlavor.javaFileListFlavor.equals(f)) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-
-  @Override public int getSourceActions(JComponent component) {
-    return TransferHandler.COPY;
   }
 }
 

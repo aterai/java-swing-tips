@@ -160,9 +160,6 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 
 // class FileTransferHandler extends TransferHandler {
 //   @Override public boolean importData(TransferHandler.TransferSupport support) {
-//     if (!canImport(support)) {
-//       return false;
-//     }
 //     try {
 //       for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
 //         if (o instanceof File) {
