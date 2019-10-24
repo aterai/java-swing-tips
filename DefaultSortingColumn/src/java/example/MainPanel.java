@@ -5,31 +5,29 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
-
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     int index = 0;
     // table.getRowSorter().toggleSortOrder(index); // SortOrder.ASCENDING
-    table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, SortOrder.DESCENDING)));
+    table.getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(index, SortOrder.DESCENDING)));
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
