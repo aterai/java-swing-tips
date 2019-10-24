@@ -13,16 +13,16 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String TXT = "aaaaaaaaaaaaaaaaaaaa";
+  private static final String TXT = "***********************";
   private static final int LINE_WIDTH = 1;
   private static final int BI_GAP = 2;
 
   private MainPanel() {
     super(new GridLayout(0, 1));
     setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 0));
-    add(makeBreadcrumbList(0, Color.PINK, Arrays.asList("overlap:", "0px", TXT)));
-    add(makeBreadcrumbList(5, Color.CYAN, Arrays.asList("overlap:", "5px", TXT)));
-    add(makeBreadcrumbList(9, Color.ORANGE, Arrays.asList("overlap:", "9px", TXT)));
+    add(makeBreadcrumbList(0, Color.PINK, Arrays.asList("overlap1:", "0px", TXT)));
+    add(makeBreadcrumbList(5, Color.CYAN, Arrays.asList("overlap2:", "5px", TXT)));
+    add(makeBreadcrumbList(9, Color.ORANGE, Arrays.asList("overlap3:", "9px", TXT)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -131,8 +131,8 @@ class ArrowToggleButtonBarCellIcon implements Icon {
   protected Shape makeShape(Container parent, Component c, int x, int y) {
     int w = c.getWidth() - 1;
     int h = c.getHeight() - 1;
-    int h2 = (int) (h * .5 + .5);
-    int w2 = TH;
+    double h2 = Math.round(h * .5);
+    double w2 = TH;
     Path2D p = new Path2D.Double();
     p.moveTo(0, 0);
     p.lineTo(w - w2, 0);
