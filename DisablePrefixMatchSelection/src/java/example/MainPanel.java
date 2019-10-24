@@ -11,17 +11,15 @@ import javax.swing.text.Position;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
-    // JCheckBox check = new JCheckBox("<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select");
-
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("aaaaaaaaaaaa");
-    model.addElement("abbbbbbbbbbbbbbbbbb");
-    model.addElement("accccccccccc");
-    model.addElement("bbbbbb");
-    model.addElement("cccbbb");
-    model.addElement("dddddddddddd");
-    model.addElement("eeeeeeeeeeeeeeeeeee");
-    model.addElement("fffffffffffffffffffffff");
+    model.addElement("aaa aaa aaa aaa");
+    model.addElement("abb bbb bbb bbb bbb bb bb");
+    model.addElement("abc ccc ccc ccc");
+    model.addElement("bbb bbb");
+    model.addElement("ccc bbb");
+    model.addElement("ddd ddd ddd ddd");
+    model.addElement("eee eee eee eee eee");
+    model.addElement("fff fff fff fff fff fff");
 
     JList<String> list = new JList<String>(model) {
       @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
@@ -29,7 +27,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    add(makeTitledPanel("Default", new JScrollPane(new JList<String>(model))));
+    add(makeTitledPanel("Default", new JScrollPane(new JList<>(model))));
     add(makeTitledPanel("Disable prefixMatchSelection", new JScrollPane(list)));
     // add(check, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
