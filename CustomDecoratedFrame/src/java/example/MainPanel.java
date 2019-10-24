@@ -166,6 +166,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
+@SuppressWarnings("PMD.AccessorMethodGeneration") // maybe false positive
 enum Side {
   N(Cursor.N_RESIZE_CURSOR, 0, 4) {
     @Override public Rectangle getBounds(Rectangle r, Point d) {
