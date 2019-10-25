@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     // title, resizable, closable, maximizable, iconifiable
     JInternalFrame jif = new JInternalFrame("AlwaysOnTop", true, false, true, true);
     jif.setSize(180, 180);
-    Integer layer = Integer.valueOf(JLayeredPane.MODAL_LAYER + 1);
+    Integer layer = JLayeredPane.MODAL_LAYER + 1;
     int position = 0;
     desktop.add(jif, layer, position);
     jif.setVisible(true);
@@ -51,10 +51,8 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_Q);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("quit");
-    menuItem.addActionListener(e -> {
-      // SwingUtilities.getWindowAncestor(desktop).dispose();
-      Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose);
-    });
+    menuItem.addActionListener(e ->
+        Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose));
     menu.add(menuItem);
     return menuBar;
   }
@@ -80,14 +78,13 @@ public final class MainPanel extends JPanel {
 }
 
 class MyInternalFrame extends JInternalFrame {
-  private static final int XOFFSET = 30;
-  private static final int YOFFSET = 30;
+  private static final int OFFSET = 30;
   private static AtomicInteger openFrameCount = new AtomicInteger();
 
   protected MyInternalFrame() {
     // title, resizable, closable, maximizable, iconifiable
     super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
     setSize(180, 100);
-    setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
+    setLocation(OFFSET * openFrameCount.intValue(), OFFSET * openFrameCount.intValue());
   }
 }
