@@ -20,18 +20,17 @@ public final class MainPanel extends JPanel {
 
   private static ListModel<String> makeModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("aaaaaaa");
-    model.addElement("bbbbbbbbbbbbb");
-    model.addElement("cccccccccc");
-    model.addElement("ddddddddd");
-    model.addElement("eeeeeeeeee");
+    model.addElement("000000000");
+    model.addElement("111111111");
+    model.addElement("2222222222");
+    model.addElement("33333");
+    model.addElement("44444444444");
     return model;
   }
 
-  private static JList<String> makeList(ListModel<String> model) {
-    return new JList<String>(model) {
+  private static <E> JList<E> makeList(ListModel<E> model) {
+    return new JList<E>(model) {
       private transient MouseInputListener listener;
-
       @Override public void updateUI() {
         removeMouseListener(listener);
         removeMouseMotionListener(listener);
