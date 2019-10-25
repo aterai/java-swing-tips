@@ -16,22 +16,22 @@ import javax.swing.border.Border;
  * @author Taka
  */
 public final class MainPanel extends JPanel {
-  private static final int BACKLAYER = 1;
-  // private static final int FORELAYER = 2;
+  private static final int BACK_LAYER = 1;
+  // private static final int FORE_LAYER = 2;
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
   private static final int[] COLORS = {
       0xDD_DD_DD, 0xAA_AA_FF, 0xFF_AA_AA, 0xAA_FF_AA, 0xFF_FF_AA, 0xFF_AA_FF, 0xAA_FF_FF
   };
   private final JLayeredPane layerPane;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     layerPane = new BackImageLayeredPane(new ImageIcon(getClass().getResource("tokeidai.jpg")).getImage());
     for (int i = 0; i < 7; i++) {
       JPanel p = createPanel(i);
       p.setLocation(i * 70 + 20, i * 50 + 15);
-      layerPane.add(p, BACKLAYER);
+      layerPane.add(p, BACK_LAYER);
     }
     add(layerPane);
     setPreferredSize(new Dimension(320, 240));
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
   private static Color getColor(int i, float f) {
     int r = (int) ((i >> 16 & 0xFF) * f);
     int g = (int) ((i >> 8 & 0xFF) * f);
-    int b = (int) ((i >> 0 & 0xFF) * f);
+    int b = (int) ((i & 0xFF) * f);
     return new Color(r, g, b);
   }
 
@@ -142,11 +142,11 @@ class BackImageLayeredPane extends JLayeredPane {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     if (Objects.nonNull(bgImage)) {
-      int imageh = bgImage.getHeight(this);
-      int imagew = bgImage.getWidth(this);
+      int iw = bgImage.getWidth(this);
+      int ih = bgImage.getHeight(this);
       Dimension d = getSize();
-      for (int h = 0; h < d.getHeight(); h += imageh) {
-        for (int w = 0; w < d.getWidth(); w += imagew) {
+      for (int h = 0; h < d.getHeight(); h += ih) {
+        for (int w = 0; w < d.getWidth(); w += iw) {
           g.drawImage(bgImage, w, h, this);
         }
       }
