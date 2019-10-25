@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
-    box.add(makeComboBox());
+    box.add(makeComboBox(makeModel()));
     box.setBorder(BorderFactory.createTitledBorder("ComboBoxSeparator"));
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea("dummy")));
@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("aaaabbbccddddddd");
+    model.addElement("0000");
+    model.addElement("0000111");
+    model.addElement("000011122");
+    model.addElement("00001112233333");
     model.addElement(new JSeparator());
     model.addElement("bbb1");
     model.addElement("bbb12");
@@ -42,20 +42,24 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JComboBox<Object> makeComboBox() {
-    JComboBox<Object> combo = new JComboBox<>(makeModel());
-    combo.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (value instanceof JSeparator) {
-          return (Component) value;
-        } else {
-          return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        }
+  private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
+    JComboBox<E> combo = new JComboBox<E>(model) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super E> renderer = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          if (value instanceof JSeparator) {
+            return (Component) value;
+          } else {
+            return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          }
+        });
       }
-    });
-
+    };
     ActionMap am = combo.getActionMap();
-    am.put("selectPrevious3", new AbstractAction() {
+    String selectPrevKey = "selectPrevious3";
+    am.put(selectPrevKey, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JComboBox<?> cb = (JComboBox<?>) e.getSource();
         int index = cb.getSelectedIndex();
@@ -70,7 +74,8 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    am.put("selectNext3", new AbstractAction() {
+    String selectNextKey = "selectNext3";
+    am.put(selectNextKey, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JComboBox<?> cb = (JComboBox<?>) e.getSource();
         int index = cb.getSelectedIndex();
@@ -87,10 +92,10 @@ public final class MainPanel extends JPanel {
     });
 
     InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "selectPrevious3");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), "selectPrevious3");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "selectNext3");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
 
     return combo;
   }
