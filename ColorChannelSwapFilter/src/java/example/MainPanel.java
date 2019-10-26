@@ -20,7 +20,7 @@ import javax.swing.plaf.LayerUI;
 public class MainPanel extends JPanel {
   private transient SwingWorker<String, Void> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     BoundedRangeModel model = new DefaultBoundedRangeModel();
 
@@ -147,15 +147,11 @@ class RedGreenChannelSwapFilter extends RGBImageFilter {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       setProgress(100 * current / lengthOfTask);
       current++;
     }
@@ -172,11 +168,10 @@ class ProgressListener implements PropertyChangeListener {
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
-    String strPropertyName = e.getPropertyName();
-    if ("progress".equals(strPropertyName)) {
+    Object nv = e.getNewValue();
+    if ("progress".equals(e.getPropertyName()) && nv instanceof Integer) {
       progressBar.setIndeterminate(false);
-      int progress = (Integer) e.getNewValue();
-      progressBar.setValue(progress);
+      progressBar.setValue((Integer) nv);
     }
   }
 }
