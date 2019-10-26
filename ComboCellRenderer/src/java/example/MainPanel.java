@@ -17,10 +17,11 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String[] comboModel = {"Name 0", "Name 1", "Name 2"};
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {12, "Name 0", true}, {5, "Name 2", false},
-      {92, "Name 1", true}, {0, "Name 0", false}
+      {12, comboModel[0], true}, {5, comboModel[2], false},
+      {92, comboModel[1], true}, {0, comboModel[0], false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     col.setResizable(false);
 
     UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-    JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(new String[] {"Name 0", "Name 1", "Name 2"}));
+    JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(comboModel));
 
     col = table.getColumnModel().getColumn(1);
     col.setCellRenderer(new ComboCellRenderer());
