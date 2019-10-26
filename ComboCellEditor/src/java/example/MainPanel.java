@@ -12,38 +12,38 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"Integer", "String", "Boolean"};
-  private final Object[][] data = {
-    {12, "Name 0", true}, {5, "Name 2", false},
-    {92, "Name 1", true}, {0, "Name 0", false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
 
+    String[] comboModel = {"Name 0", "Name 1", "Name 2"};
+    String[] columnNames = {"Integer", "String", "Boolean"};
+    Object[][] data = {
+      {12, comboModel[0], true}, {5, comboModel[2], false},
+      {92, comboModel[1], true}, {3, comboModel[0], false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(60);
     col.setMaxWidth(60);
     col.setResizable(false);
 
     col = table.getColumnModel().getColumn(1);
-    col.setCellEditor(new DefaultCellEditor(makeComboBox()));
-    // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(makeComboBox()));
+    col.setCellEditor(new DefaultCellEditor(makeComboBox(new DefaultComboBoxModel<>(comboModel))));
+    // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox() {
-    return new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
+  private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
+    return new JComboBox<E>(model) {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(BorderFactory.createEmptyBorder());
