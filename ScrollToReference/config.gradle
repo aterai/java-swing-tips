@@ -1,0 +1,6 @@
+vendor  = 'Java Swing Tips - https://ateraimemo.com/'
+version = '1.0.0'
+year    = '2003-2017'
+
+main.class = 'example.MainPanel'
+runtime.classpath = '.'
