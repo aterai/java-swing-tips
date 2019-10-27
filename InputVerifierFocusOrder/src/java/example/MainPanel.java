@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
   protected static final int MAX_LEN = 6;
   protected final JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
   protected final JButton button = new JButton("Next");
-  protected final List<JTextField> list = Arrays.asList(makeTextField(), makeTextField());
+  protected final transient List<JTextField> list = Arrays.asList(makeTextField(), makeTextField());
 
   public MainPanel() {
     super(new BorderLayout());
@@ -56,15 +56,6 @@ public class MainPanel extends JPanel {
     return list.stream().allMatch(t -> t.getInputVerifier().verify(t));
   }
 
-  protected final void updateButton() {
-    if (isAllValid()) {
-      button.setEnabled(true);
-      // EventQueue.invokeLater(button::requestFocusInWindow);
-    } else {
-      button.setEnabled(false);
-    }
-  }
-
   protected final JTextField makeTextField() {
     JTextField textField = new JTextField(24);
     textField.setInputVerifier(new InputVerifier() {
@@ -79,7 +70,7 @@ public class MainPanel extends JPanel {
 
       @Override public boolean shouldYieldFocus(JComponent input) {
         System.out.println("shouldYieldFocus");
-        updateButton();
+        button.setEnabled(isAllValid());
         return super.shouldYieldFocus(input);
       }
     });
@@ -89,7 +80,7 @@ public class MainPanel extends JPanel {
           return;
         }
         System.out.println("focusLost");
-        updateButton();
+        button.setEnabled(isAllValid());
       }
     });
     // // TEST:
