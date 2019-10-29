@@ -18,7 +18,7 @@ import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private static final String[] INIT_TXT = {
     "Trail: Creating a GUI with JFC/Swing",
@@ -37,15 +37,14 @@ public class MainPanel extends JPanel {
   };
 
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
-  private final JCheckBox check = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
   private final JTextField field = new JTextField("Swing");
   private final JTextArea textArea = new JTextArea(String.join("\n", INIT_TXT));
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
-
     textArea.setEditable(false);
 
+    JCheckBox check = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
     check.setFocusable(false);
     check.addActionListener(e -> {
       JCheckBox cb = (JCheckBox) e.getSource();
@@ -94,7 +93,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void fireDocumentChangeEvent() {
+  protected void fireDocumentChangeEvent() {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     Highlighter highlighter = textArea.getHighlighter();
