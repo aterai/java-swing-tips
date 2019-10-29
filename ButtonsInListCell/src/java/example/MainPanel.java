@@ -83,12 +83,12 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       return;
     }
     if (index >= 0) {
-      JButton button = getButton(list, pt, index);
       ListCellRenderer<? super E> lcr = list.getCellRenderer();
       if (!(lcr instanceof ButtonsRenderer)) {
         return;
       }
-      ButtonsRenderer renderer = (ButtonsRenderer) lcr;
+      ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) lcr;
+      JButton button = getButton(list, pt, index);
       renderer.button = button;
       if (Objects.nonNull(button)) {
         button.getModel().setRollover(true);
