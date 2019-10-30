@@ -10,26 +10,23 @@ import javax.swing.*;
 import javax.swing.plaf.UIResource;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public JMenuBar createMenuBar() {
+  private static JMenuBar createMenuBar() {
     JMenu menu = new JMenu("RadioButtonMenuItem-Test");
 
-    JRadioButtonMenuItem rbmi = new JRadioButtonMenuItem("default", true);
-    menu.add(rbmi);
+    menu.add(new JRadioButtonMenuItem("default", true));
 
     UIManager.put("RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon1());
-    rbmi = new JRadioButtonMenuItem("ANTIALIASING", true);
-    menu.add(rbmi);
+    menu.add(new JRadioButtonMenuItem("ANTIALIASING", true));
 
     UIManager.put("RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon2());
-    rbmi = new JRadioButtonMenuItem("fillOval", true);
-    menu.add(rbmi);
+    menu.add(new JRadioButtonMenuItem("fillOval", true));
 
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
