@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
@@ -138,28 +137,59 @@ public final class ResizeMouseListener extends MouseInputAdapter {
 }
 
 enum Directions {
-  NORTH(Cursor.N_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y - d.y, r.width, r.height + d.y)),
-  SOUTH(Cursor.S_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y, r.width, r.height - d.y)),
-  WEST(Cursor.W_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height)),
-  EAST(Cursor.E_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y, r.width - d.x, r.height)),
-  NORTH_WEST(Cursor.NW_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x - d.x, r.y - d.y, r.width + d.x, r.height + d.y)),
-  NORTH_EAST(Cursor.NE_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y - d.y, r.width - d.x, r.height + d.y)),
-  SOUTH_WEST(Cursor.SW_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y, r.width, r.height)),
-  SOUTH_EAST(Cursor.SE_RESIZE_CURSOR, (r, d) -> new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y)),
-  MOVE(Cursor.MOVE_CURSOR, (r, d) -> new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height));
+  NORTH(Cursor.N_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y - d.y, r.width, r.height + d.y);
+    }
+  },
+  SOUTH(Cursor.S_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width, r.height - d.y);
+    }
+  },
+  WEST(Cursor.W_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height);
+    }
+  },
+  EAST(Cursor.E_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width - d.x, r.height);
+    }
+  },
+  NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y - d.y, r.width + d.x, r.height + d.y);
+    }
+  },
+  NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y - d.y, r.width - d.x, r.height + d.y);
+    }
+  },
+  SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width, r.height);
+    }
+  },
+  SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y);
+    }
+  },
+  MOVE(Cursor.MOVE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height);
+    }
+  };
 
   private final int cursor;
-  @SuppressWarnings("ImmutableEnumChecker")
-  private final BiFunction<Rectangle, Point, Rectangle> getBounds;
 
-  Directions(int cursor, BiFunction<Rectangle, Point, Rectangle> getBounds) {
+  Directions(int cursor) {
     this.cursor = cursor;
-    this.getBounds = getBounds;
   }
 
-  public Rectangle getBounds(Rectangle rect, Point delta) {
-    return getBounds.apply(rect, delta);
-  }
+  abstract Rectangle getBounds(Rectangle rect, Point delta);
 
   public static Optional<Directions> getByCursorType(int cursor) {
     return EnumSet.allOf(Directions.class).stream().filter(d -> d.cursor == cursor).findFirst();
