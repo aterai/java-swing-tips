@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -16,7 +15,6 @@ public class MainPanel extends JPanel {
   protected static final int MAX_LEN = 6;
   protected final JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
   protected final JButton button = new JButton("Next");
-  protected final transient List<JTextField> list = Arrays.asList(makeTextField(), makeTextField());
 
   public MainPanel() {
     super(new BorderLayout());
@@ -28,7 +26,7 @@ public class MainPanel extends JPanel {
       }
 
       @Override public Component getComponentBefore(Container focusCycleRoot, Component cmp) {
-        System.out.println("getComponentAfter");
+        System.out.println("getComponentBefore");
         button.setEnabled(isAllValid());
         return super.getComponentBefore(focusCycleRoot, cmp);
       }
@@ -41,10 +39,11 @@ public class MainPanel extends JPanel {
     Box box = Box.createVerticalBox();
     box.add(check);
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    list.forEach(c -> {
+    Arrays.asList(makeTextField(), makeTextField()).forEach(c -> {
       box.add(Box.createVerticalStrut(10));
       box.add(c);
     });
+
     JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     p.add(button);
     add(box, BorderLayout.NORTH);
@@ -53,7 +52,10 @@ public class MainPanel extends JPanel {
   }
 
   protected final boolean isAllValid() {
-    return list.stream().allMatch(t -> t.getInputVerifier().verify(t));
+    return Arrays.stream(getComponents())
+        .filter(JTextField.class::isInstance)
+        .map(JTextField.class::cast)
+        .allMatch(t -> t.getInputVerifier().verify(t));
   }
 
   protected final JTextField makeTextField() {
