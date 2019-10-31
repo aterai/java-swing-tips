@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.util.function.Function;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -147,27 +146,55 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
   private static final int SIZE = 6;
 
   private enum Locations {
-    NORTH(Cursor.N_RESIZE_CURSOR, r -> new Point(r.x + r.width / 2 - SIZE / 2, r.y)),
-    SOUTH(Cursor.S_RESIZE_CURSOR, r -> new Point(r.x + r.width / 2 - SIZE / 2, r.y + r.height - SIZE)),
-    WEST(Cursor.W_RESIZE_CURSOR, r -> new Point(r.x, r.y + r.height / 2 - SIZE / 2)),
-    EAST(Cursor.E_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y + r.height / 2 - SIZE / 2)),
-    NORTH_WEST(Cursor.NW_RESIZE_CURSOR, r -> new Point(r.x, r.y)),
-    NORTH_EAST(Cursor.NE_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y)),
-    SOUTH_WEST(Cursor.SW_RESIZE_CURSOR, r -> new Point(r.x, r.y + r.height - SIZE)),
-    SOUTH_EAST(Cursor.SE_RESIZE_CURSOR, r -> new Point(r.x + r.width - SIZE, r.y + r.height - SIZE));
+    NORTH(Cursor.N_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x + r.width / 2 - SIZE / 2, r.y);
+      }
+    },
+    SOUTH(Cursor.S_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x + r.width / 2 - SIZE / 2, r.y + r.height - SIZE);
+      }
+    },
+    WEST(Cursor.W_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x, r.y + r.height / 2 - SIZE / 2);
+      }
+    },
+    EAST(Cursor.E_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x + r.width - SIZE, r.y + r.height / 2 - SIZE / 2);
+      }
+    },
+    NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x, r.y);
+      }
+    },
+    NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x + r.width - SIZE, r.y);
+      }
+    },
+    SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x, r.y + r.height - SIZE);
+      }
+    },
+    SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
+      @Override public Point getPoint(Rectangle r) {
+        return new Point(r.x + r.width - SIZE, r.y + r.height - SIZE);
+      }
+    };
 
     private final int cursor;
-    @SuppressWarnings("ImmutableEnumChecker")
-    private final Function<Rectangle, Point> location;
+    // @SuppressWarnings("ImmutableEnumChecker")
 
-    Locations(int cursor, Function<Rectangle, Point> getPoint) {
+    Locations(int cursor) {
       this.cursor = cursor;
-      this.location = getPoint;
     }
 
-    public Point getPoint(Rectangle r) {
-      return location.apply(r);
-    }
+    abstract Point getPoint(Rectangle r);
 
     public Cursor getCursor() {
       return Cursor.getPredefinedCursor(cursor);
