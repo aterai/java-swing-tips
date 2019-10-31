@@ -63,12 +63,8 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException ex) {
-      return "Interrupted";
-    }
+  @Override public String doInBackground() throws InterruptedException {
+    Thread.sleep(5000);
     return "Done";
   }
 }

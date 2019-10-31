@@ -97,18 +97,18 @@ class OneDirectionIndeterminateProgressBarUI extends BasicProgressBarUI {
   // @see com/sun/java/swing/plaf/windows/WindowsProgressBarUI.java
   @Override protected Rectangle getBox(Rectangle r) {
     Rectangle rect = super.getBox(r);
-    int framecount = getFrameCount() / 2;
-    int currentFrame = getAnimationIndex() % framecount;
+    int frameCount = getFrameCount() / 2;
+    int currentFrame = getAnimationIndex() % frameCount;
 
-    if (progressBar.getOrientation() == JProgressBar.VERTICAL) {
+    if (progressBar.getOrientation() == SwingConstants.VERTICAL) {
       int len = progressBar.getHeight();
       len += rect.height * 2; // add 2x for the trails
-      double delta = len / (double) framecount;
+      double delta = len / (double) frameCount;
       rect.y = (int) (delta * currentFrame);
     } else {
       int len = progressBar.getWidth();
       len += rect.width * 2; // add 2x for the trails
-      double delta = len / (double) framecount;
+      double delta = len / (double) frameCount;
       rect.x = (int) (delta * currentFrame);
     }
     return rect;
@@ -116,20 +116,12 @@ class OneDirectionIndeterminateProgressBarUI extends BasicProgressBarUI {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
-    try { // dummy task
-      Thread.sleep(5000);
-    } catch (InterruptedException ex) {
-      return "Interrupted";
-    }
+  @Override public String doInBackground() throws InterruptedException {
+    Thread.sleep(5000); // dummy task
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50); // dummy task
       setProgress(100 * current / lengthOfTask);
       current++;
     }
