@@ -11,7 +11,7 @@ import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-public final class ResizeMouseListener extends MouseInputAdapter {
+public class ResizeMouseListener extends MouseInputAdapter {
   private static final Dimension MIN = new Dimension(50, 50);
   private static final Dimension MAX = new Dimension(500, 500);
   private final Point startPos = new Point();
@@ -54,8 +54,9 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     int deltaX = startPos.x - p.x;
     int deltaY = startPos.y - p.y;
     Container parent = SwingUtilities.getUnwrappedParent(c);
-    Directions.getByCursorType(cursor.getType()).ifPresent(dir -> {
-      Point delta = getLimitedDelta(parent.getBounds(), deltaX, deltaY);
+    int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
+    Directions.getByCursorType(cursorType).ifPresent(dir -> {
+      Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
       c.setBounds(dir.getBounds(startingBounds, delta));
     });
     parent.revalidate();
@@ -121,8 +122,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     // return deltaY;
   }
 
-  private Point getLimitedDelta(Rectangle pr, int deltaX, int deltaY) {
-    switch (cursor.getType()) {
+  private Point getLimitedDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {
+    switch (cursorType) {
       case Cursor.N_RESIZE_CURSOR: return new Point(0, getDeltaY(deltaY));
       case Cursor.S_RESIZE_CURSOR: return new Point(0, getDeltaY(deltaY, pr));
       case Cursor.W_RESIZE_CURSOR: return new Point(getDeltaX(deltaX), 0);
@@ -138,47 +139,47 @@ public final class ResizeMouseListener extends MouseInputAdapter {
 
 enum Directions {
   NORTH(Cursor.N_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y - d.y, r.width, r.height + d.y);
     }
   },
   SOUTH(Cursor.S_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y, r.width, r.height - d.y);
     }
   },
   WEST(Cursor.W_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height);
     }
   },
   EAST(Cursor.E_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y, r.width - d.x, r.height);
     }
   },
   NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x - d.x, r.y - d.y, r.width + d.x, r.height + d.y);
     }
   },
   NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y - d.y, r.width - d.x, r.height + d.y);
     }
   },
   SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y, r.width, r.height);
     }
   },
   SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y);
     }
   },
   MOVE(Cursor.MOVE_CURSOR) {
-    @Override public Rectangle getBounds(Rectangle r, Point d) {
+    @Override Rectangle getBounds(Rectangle r, Point d) {
       return new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height);
     }
   };
