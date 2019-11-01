@@ -11,17 +11,15 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final JTextArea area = new JTextArea();
-  protected final JButton runButton = new JButton("run");
-  // protected transient SwingWorker<String, String> worker;
-  protected final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
-    monitor = new ProgressMonitor(this, "message", "note", 0, 100);
+    ProgressMonitor monitor = new ProgressMonitor(this, "message", "note", 0, 100);
+
+    JTextArea area = new JTextArea();
     area.setEditable(false);
 
+    JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {
       // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
       runButton.setEnabled(false);
@@ -29,9 +27,9 @@ public class MainPanel extends JPanel {
       SwingWorker<String, String> worker = new BackgroundTask() {
         @Override protected void process(List<String> chunks) {
           // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-          if (isCancelled()) {
-            return;
-          }
+          // if (isCancelled()) {
+          //   return;
+          // }
           if (!isDisplayable()) {
             cancel(true);
             return;
@@ -92,16 +90,12 @@ public class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
     int lengthOfTask = 120; // list.size();
     while (current < lengthOfTask && !isCancelled()) {
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       current++;
       setProgress(100 * current / lengthOfTask);
       publish(current + "/" + lengthOfTask);
