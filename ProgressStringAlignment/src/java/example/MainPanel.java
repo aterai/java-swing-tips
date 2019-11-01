@@ -18,20 +18,20 @@ public final class MainPanel extends JPanel implements HierarchyListener {
   private final BoundedRangeModel model = new DefaultBoundedRangeModel();
   private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
   private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-  private final JCheckBox check = new JCheckBox("setStringPainted");
-  private final JButton button = new JButton("Test");
   private transient SwingWorker<String, Void> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     progressBar2.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
 
+    JCheckBox check = new JCheckBox("setStringPainted");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
       Stream.of(progressBar1, progressBar2).forEach(bar -> bar.setStringPainted(b));
     });
 
+    JButton button = new JButton("Test");
     button.addActionListener(e -> {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
@@ -94,9 +94,9 @@ class StringAlignmentProgressBar extends JProgressBar {
   private final JLabel label;
   // private transient ChangeListener changeListener;
 
-  protected StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
+  protected StringAlignmentProgressBar(BoundedRangeModel model, int horizontalAlignment) {
     super(model);
-    label = new JLabel(getString(), halign);
+    label = new JLabel(getString(), horizontalAlignment);
   }
 
   @Override public void updateUI() {
@@ -104,10 +104,7 @@ class StringAlignmentProgressBar extends JProgressBar {
     // removeChangeListener(changeListener);
     super.updateUI();
     setLayout(new BorderLayout());
-    // changeListener = e -> {
-    //   // BoundedRangeModel m = (BoundedRangeModel) e.getSource(); // label.setText(m.getValue() + "%");
-    //   label.setText(getString());
-    // };
+    // changeListener = e -> label.setText(getString());
     // addChangeListener(changeListener);
     EventQueue.invokeLater(() -> {
       add(label);
@@ -116,23 +113,16 @@ class StringAlignmentProgressBar extends JProgressBar {
   }
 
   @Override protected ChangeListener createChangeListener() {
-    return e -> {
-      // BoundedRangeModel m = (BoundedRangeModel) e.getSource(); // label.setText(m.getValue() + "%");
-      label.setText(getString());
-    };
+    return e -> label.setText(getString());
   }
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       setProgress(100 * current / lengthOfTask);
       current++;
     }
