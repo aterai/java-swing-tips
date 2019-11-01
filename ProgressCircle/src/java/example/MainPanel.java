@@ -14,24 +14,24 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public final class MainPanel extends JPanel {
-  private final JProgressBar progress1 = new JProgressBar() {
-    @Override public void updateUI() {
-      super.updateUI();
-      setUI(new ProgressCircleUI());
-      setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
-    }
-  };
-  private final JProgressBar progress2 = new JProgressBar() {
-    @Override public void updateUI() {
-      super.updateUI();
-      setUI(new ProgressCircleUI());
-      setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    JProgressBar progress1 = new JProgressBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new ProgressCircleUI());
+        setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+      }
+    };
     progress1.setForeground(new Color(0xAA_FF_AA_AA, true));
+
+    JProgressBar progress2 = new JProgressBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new ProgressCircleUI());
+        setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+      }
+    };
     progress2.setStringPainted(true);
     progress2.setFont(progress2.getFont().deriveFont(24f));
 
@@ -152,15 +152,11 @@ class ProgressCircleUI extends BasicProgressBarUI {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50); // dummy task
       setProgress(100 * current / lengthOfTask);
       current++;
     }
