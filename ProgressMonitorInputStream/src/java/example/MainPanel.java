@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(5, 5));
     textArea.setEditable(false);
 
-    runButton.addActionListener(e -> executeWorker(e));
+    runButton.addActionListener(this::executeWorker);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -69,18 +70,18 @@ public final class MainPanel extends JPanel {
     append("urlConnection.getContentEncoding(): " + urlConnection.getContentEncoding());
     append("urlConnection.getContentType(): " + urlConnection.getContentType());
 
-    Charset cs = getCharset(urlConnection, "UTF-8");
+    Charset cs = getCharset(urlConnection);
     int length = urlConnection.getContentLength();
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     try (InputStream is = urlConnection.getInputStream();
-         ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is)) {
-      monitor = pmis.getProgressMonitor();
+         ProgressMonitorInputStream pms = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is)) {
+      monitor = pms.getProgressMonitor();
       monitor.setNote(" "); // Need for JLabel#getPreferredSize
       monitor.setMillisToDecideToPopup(0);
       monitor.setMillisToPopup(0);
       monitor.setMinimum(0);
       monitor.setMaximum(length);
-      MonitorTask task = new MonitorTask(pmis, cs, length) {
+      MonitorTask task = new MonitorTask(pms, cs, length) {
         @Override public void done() {
           super.done();
           loop.exit();
@@ -94,27 +95,27 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static Charset getCharset(URLConnection urlConnection, String defaultEncoding) {
-    Charset cs = Charset.forName(defaultEncoding);
+  private static Charset getCharset(URLConnection urlConnection) {
+    Charset cs = StandardCharsets.UTF_8;
     String encoding = urlConnection.getContentEncoding();
     if (Objects.nonNull(encoding)) {
       cs = Charset.forName(encoding);
     } else {
       String contentType = urlConnection.getContentType();
       Stream.of(contentType.split(";"))
-        .map(String::trim)
-        .filter(s -> !s.isEmpty() && s.toLowerCase(Locale.ENGLISH).startsWith("charset="))
-        .map(s -> s.substring("charset=".length()))
-        .findFirst()
-        .ifPresent(Charset::forName);
+          .map(String::trim)
+          .filter(s -> !s.isEmpty() && s.toLowerCase(Locale.ENGLISH).startsWith("charset="))
+          .map(s -> s.substring("charset=".length()))
+          .findFirst()
+          .ifPresent(Charset::forName);
     }
     System.out.println(cs);
     return cs;
   }
 
   private class MonitorTask extends BackgroundTask {
-    protected MonitorTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
-      super(pmis, cs, length);
+    protected MonitorTask(ProgressMonitorInputStream pms, Charset cs, int length) {
+      super(pms, cs, length);
     }
 
     @Override protected void process(List<Chunk> chunks) {
@@ -132,8 +133,8 @@ public final class MainPanel extends JPanel {
       updateComponentDone();
       String text;
       try {
-        if (Objects.nonNull(pmis)) {
-          pmis.close();
+        if (Objects.nonNull(pms)) {
+          pms.close();
         }
         text = isCancelled() ? "Cancelled" : get();
       } catch (InterruptedException ex) {
@@ -194,21 +195,21 @@ class Chunk {
 }
 
 class BackgroundTask extends SwingWorker<String, Chunk> {
-  protected final ProgressMonitorInputStream pmis;
+  protected final ProgressMonitorInputStream pms;
   private final Charset cs;
   private final int length;
 
-  protected BackgroundTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
+  protected BackgroundTask(ProgressMonitorInputStream pms, Charset cs, int length) {
     super();
-    this.pmis = pmis;
+    this.pms = pms;
     this.cs = cs;
     this.length = length;
   }
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     String ret = "Done";
-    // try (BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs))) {
+    // try (BufferedReader reader = new BufferedReader(new InputStreamReader(pms, cs))) {
     //   int i = 0;
     //   int size = 0;
     //   String line;
@@ -221,12 +222,12 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     //     String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
     //     publish(new Chunk(line, note));
     //   }
-    // } catch (InterruptedException | IOException ex) {
+    // } catch (IOException ex) {
     //   append("Exception");
     //   ret = "Exception";
     //   cancel(true);
     // }
-    try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pmis, cs)))) {
+    try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pms, cs)))) {
       int i = 0;
       int size = 0;
       while (scanner.hasNextLine()) {
@@ -239,9 +240,6 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
         String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
         publish(new Chunk(line, note));
       }
-    } catch (InterruptedException ex) {
-      ret = "Interrupted";
-      cancel(true);
     }
     return ret;
   }
