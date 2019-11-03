@@ -189,7 +189,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     this.itemsPerPage = itemsPerPage;
   }
 
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default/places.sqlite");
     // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
     // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
@@ -197,12 +197,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     int c = max / itemsPerPage;
     int i = 0;
     while (i < c && !isCancelled()) {
-      try {
-        Thread.sleep(500); // dummy
-      } catch (InterruptedException ex) {
-        // ex.printStackTrace();
-        return "Interrupted";
-      }
+      Thread.sleep(500); // dummy
       current = makeRowListAndPublish(current, itemsPerPage);
       // current = load(stat, current, itemsPerPage);
       i++;
