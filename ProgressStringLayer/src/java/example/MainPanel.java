@@ -17,7 +17,7 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel implements HierarchyListener {
   private transient SwingWorker<String, Void> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     BoundedRangeModel m = new DefaultBoundedRangeModel();
@@ -121,15 +121,11 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50);
       setProgress(100 * current / lengthOfTask);
       current++;
     }
