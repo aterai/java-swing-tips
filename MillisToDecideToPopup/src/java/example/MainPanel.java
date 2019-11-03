@@ -68,9 +68,9 @@ public final class MainPanel extends JPanel {
   private void executeWorker(ProgressMonitor monitor, int lengthOfTask, JButton button, JTextArea area) {
     SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
       @Override protected void process(List<String> chunks) {
-        if (isCancelled()) {
-          return;
-        }
+        // if (isCancelled()) {
+        //   return;
+        // }
         if (!isDisplayable()) {
           System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
@@ -138,15 +138,11 @@ class BackgroundTask extends SwingWorker<String, String> {
     this.lengthOfTask = lengthOfTask;
   }
 
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     while (current < lengthOfTask && !isCancelled()) {
       if (current % 10 == 0) {
-        try {
-          Thread.sleep(5);
-        } catch (InterruptedException ex) {
-          return "Interrupted";
-        }
+        Thread.sleep(5);
       }
       int v = 100 * current / lengthOfTask;
       setProgress(v);
