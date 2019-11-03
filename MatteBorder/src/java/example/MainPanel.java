@@ -9,12 +9,11 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private final JLabel label = new JLabel("MANIFEST.MF");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     Border outside = BorderFactory.createMatteBorder(0, 10, 1, 0, new Color(0x32_C8_32));
     Border inside = BorderFactory.createEmptyBorder(0, 5, 0, 0);
+    JLabel label = new JLabel("MANIFEST.MF");
     label.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
     Font font = label.getFont();
