@@ -225,7 +225,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   protected boolean isPaused;
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
     int lengthOfTask = 12; // filelist.size();
@@ -234,11 +234,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     while (current < lengthOfTask && !isCancelled()) {
       publish(new Progress(ProgressType.TOTAL, 100 * current / lengthOfTask));
       publish(new Progress(ProgressType.LOG, "*"));
-      try {
-        convertFileToSomething();
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      convertFileToSomething();
       current++;
     }
     publish(new Progress(ProgressType.LOG, "\n"));
