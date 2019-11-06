@@ -26,8 +26,7 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setBorder(BorderFactory.createTitledBorder("File -> String"));
 
-    JLabel label = new JLabel();
-    label.setHorizontalAlignment(SwingConstants.CENTER);
+    JLabel label = new JLabel("", SwingConstants.CENTER);
     label.setBorder(BorderFactory.createTitledBorder("JTextArea -> ImageIcon"));
 
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
@@ -38,8 +37,8 @@ public final class MainPanel extends JPanel {
     encode.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       chooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG (*.png)", "png"));
-      int retvalue = chooser.showOpenDialog(encode);
-      if (retvalue == JFileChooser.APPROVE_OPTION) {
+      int retValue = chooser.showOpenDialog(encode);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
         Path path = chooser.getSelectedFile().toPath();
         try {
           textArea.setText(Base64.getEncoder().encodeToString(Files.readAllBytes(path)));
