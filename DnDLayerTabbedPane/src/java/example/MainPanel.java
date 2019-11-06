@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
   private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
@@ -148,7 +149,7 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
-  private final DropMode dropMode = DropMode.INSERT;
+  // private final DropMode dropMode = DropMode.INSERT;
   protected int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
 
@@ -232,7 +233,7 @@ class DnDTabbedPane extends JTabbedPane {
 
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
   public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
-    assert dropMode == DropMode.INSERT : "Unexpected drop mode";
+    // assert dropMode == DropMode.INSERT : "Unexpected drop mode";
     for (int i = 0; i < getTabCount(); i++) {
       if (getBoundsAt(i).contains(p)) {
         return new DnDTabbedPane.DropLocation(p, i);
@@ -404,6 +405,7 @@ class DnDTabbedPane extends JTabbedPane {
       }
       Point tabPt = e.getPoint(); // e.getDragOrigin();
       int idx = src.indexAtLocation(tabPt.x, tabPt.y);
+
       // disabled tab, null component problem.
       // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
       boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
@@ -415,7 +417,14 @@ class DnDTabbedPane extends JTabbedPane {
       if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
         DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
         TransferHandler th = src.getTransferHandler();
-        dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
+        // When a tab runs rotation occurs, a tab that is not the target is dragged.
+        // pointed out by Arjen
+        int idx = src.indexAtLocation(tabPt.x, tabPt.y);
+        int selIdx = src.getSelectedIndex();
+        boolean isRotateTabRuns = !(src.getUI() instanceof MetalTabbedPaneUI)
+            && src.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
+            && idx != selIdx;
+        dragTabIndex = isRotateTabRuns ? selIdx : idx;
         th.exportAsDrag(src, e, TransferHandler.MOVE);
         startPt = null;
       }

@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -41,8 +42,8 @@ public final class MainPanel extends JPanel {
     tab.addTab("JTree 00", new JScrollPane(new JTree()));
     tab.addTab("JLabel 01", new JLabel("Test"));
     tab.addTab("JTable 02", new JScrollPane(new JTable(20, 3)));
-    tab.addTab("JTextArea 03", new JScrollPane(new JTextArea("asfasdfasfasdfas\nafasfasdfaf\n")));
-    tab.addTab("JLabel 04", new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+    tab.addTab("JTextArea 03", new JScrollPane(new JTextArea("111111111\n2222222222\n")));
+    tab.addTab("JLabel 04", new JLabel("<html>33333333333<br>13412341234123446745"));
     tab.addTab("null 05", null);
     tab.addTab("JTabbedPane 06", sub);
     tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
@@ -53,27 +54,26 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeCheckBoxPanel(DnDTabbedPane tab) {
-    JCheckBox gcheck = new JCheckBox("Tab Ghost", true);
-    gcheck.addActionListener(e -> tab.hasGhost = gcheck.isSelected());
+    JCheckBox check1 = new JCheckBox("Tab Ghost", true);
+    check1.addActionListener(e -> tab.hasGhost = check1.isSelected());
 
-    JCheckBox tcheck = new JCheckBox("Top", true);
-    tcheck.addActionListener(e -> tab.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+    JCheckBox check2 = new JCheckBox("Top", true);
+    check2.addActionListener(e -> tab.setTabPlacement(check2.isSelected() ? SwingConstants.TOP : SwingConstants.RIGHT));
 
-    JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    scheck.addActionListener(e -> {
-      tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
-    });
+    JCheckBox check3 = new JCheckBox("SCROLL_TAB_LAYOUT", true);
+    check3.addActionListener(e ->
+        tab.setTabLayoutPolicy(check3.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
 
-    JCheckBox debugp = new JCheckBox("Debug Paint", true);
-    debugp.addActionListener(e -> tab.isPaintScrollArea = debugp.isSelected());
+    JCheckBox check4 = new JCheckBox("Debug Paint", true);
+    check4.addActionListener(e -> tab.isPaintScrollArea = check4.isSelected());
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    p1.add(gcheck);
-    p1.add(tcheck);
+    p1.add(check1);
+    p1.add(check2);
 
     JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    p2.add(scheck);
-    p2.add(debugp);
+    p2.add(check3);
+    p2.add(check4);
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(p1, BorderLayout.NORTH);
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DnDTabbedPane extends JTabbedPane {
-  private static final int LINEWIDTH = 3;
+  private static final int LINE_SIZE = 3;
   private static final int RWH = 20;
   private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
 
@@ -122,7 +122,7 @@ class DnDTabbedPane extends JTabbedPane {
     JButton scrollBackwardButton = null;
     for (Component c: getComponents()) {
       if (c instanceof JButton) {
-        if (Objects.isNull(scrollForwardButton) && Objects.isNull(scrollBackwardButton)) {
+        if (Objects.isNull(scrollForwardButton)) {
           scrollForwardButton = (JButton) c;
         } else if (Objects.isNull(scrollBackwardButton)) {
           scrollBackwardButton = (JButton) c;
@@ -210,18 +210,18 @@ class DnDTabbedPane extends JTabbedPane {
     final Icon icon = getIconAt(prev);
     final String tip = getToolTipTextAt(prev);
     final boolean isEnabled = isEnabledAt(prev);
-    int tgtindex = prev > next ? next : next - 1;
+    int tgtIndex = prev > next ? next : next - 1;
     remove(prev);
-    insertTab(title, icon, cmp, tip, tgtindex);
-    setEnabledAt(tgtindex, isEnabled);
+    insertTab(title, icon, cmp, tip, tgtIndex);
+    setEnabledAt(tgtIndex, isEnabled);
     // When you drag'n'drop a disabled tab, it finishes enabled and selected.
     // pointed out by dlorde
     if (isEnabled) {
-      setSelectedIndex(tgtindex);
+      setSelectedIndex(tgtIndex);
     }
-    // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
+    // I have a component in all tabs (JLabel with an X to close the tab) and when i move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
-    setTabComponentAt(tgtindex, tab);
+    setTabComponentAt(tgtIndex, tab);
   }
 
   protected void initTargetLine(int next) {
@@ -234,9 +234,9 @@ class DnDTabbedPane extends JTabbedPane {
       final Rectangle r = SwingUtilities.convertRectangle(this, boundsRect, glassPane);
       int a = Math.min(next, 1); // a = (next == 0) ? 0 : 1;
       if (isTopBottomTabPlacement(getTabPlacement())) {
-        glassPane.setTargetRect(r.x + r.width * a - LINEWIDTH / 2, r.y, LINEWIDTH, r.height);
+        glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
       } else {
-        glassPane.setTargetRect(r.x, r.y + r.height * a - LINEWIDTH / 2, r.width, LINEWIDTH);
+        glassPane.setTargetRect(r.x, r.y + r.height * a - LINE_SIZE / 2, r.width, LINE_SIZE);
       }
     });
   }
@@ -329,7 +329,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 }
 
@@ -399,7 +399,14 @@ class TabDragGestureListener implements DragGestureListener {
         .filter(tabbedPane -> tabbedPane.getTabCount() > 1)
         .ifPresent(tabbedPane -> {
           Point tabPt = e.getDragOrigin();
-          tabbedPane.dragTabIndex = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
+          int idx = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
+          int selIdx = tabbedPane.getSelectedIndex();
+          // When a tab runs rotation occurs, a tab that is not the target is dragged.
+          // pointed out by Arjen
+          boolean isTabRunsRotated = !(tabbedPane.getUI() instanceof MetalTabbedPaneUI)
+              && tabbedPane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
+              && idx != selIdx;
+          tabbedPane.dragTabIndex = isTabRunsRotated ? selIdx : idx;
           if (tabbedPane.dragTabIndex >= 0 && tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
             tabbedPane.initGlassPane(tabPt);
             try {
@@ -487,7 +494,7 @@ class GhostGlassPane extends JComponent {
   private final Rectangle lineRect = new Rectangle();
   private final Color lineColor = new Color(0, 100, 255);
   private final Point location = new Point();
-  private transient Optional<BufferedImage> draggingGhostOp;
+  private transient BufferedImage draggingGhost;
 
   protected GhostGlassPane(DnDTabbedPane tabbedPane) {
     super();
@@ -503,7 +510,7 @@ class GhostGlassPane extends JComponent {
   }
 
   public void setImage(BufferedImage draggingGhost) {
-    this.draggingGhostOp = Optional.ofNullable(draggingGhost);
+    this.draggingGhost = draggingGhost;
   }
 
   public void setPoint(Point pt) {
@@ -526,11 +533,11 @@ class GhostGlassPane extends JComponent {
       g2.fill(tabbedPane.rectBackward);
       g2.fill(tabbedPane.rectForward);
     }
-    draggingGhostOp.ifPresent(img -> {
-      double xx = location.getX() - img.getWidth(this) / 2d;
-      double yy = location.getY() - img.getHeight(this) / 2d;
-      g2.drawImage(img, (int) xx, (int) yy, this);
-    });
+    if (draggingGhost != null) {
+      double xx = location.getX() - draggingGhost.getWidth(this) / 2d;
+      double yy = location.getY() - draggingGhost.getHeight(this) / 2d;
+      g2.drawImage(draggingGhost, (int) xx, (int) yy, this);
+    }
     g2.setPaint(lineColor);
     g2.fill(lineRect);
     g2.dispose();
