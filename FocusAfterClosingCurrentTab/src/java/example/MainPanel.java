@@ -190,7 +190,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 
   private static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 }
 

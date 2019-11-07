@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsTabbedPaneUI) {
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
 }
 
 enum TabPlacements {
-  TOP(JTabbedPane.TOP),
-  BOTTOM(JTabbedPane.BOTTOM),
-  LEFT(JTabbedPane.LEFT),
-  RIGHT(JTabbedPane.RIGHT);
+  TOP(SwingConstants.TOP),
+  BOTTOM(SwingConstants.BOTTOM),
+  LEFT(SwingConstants.LEFT),
+  RIGHT(SwingConstants.RIGHT);
   public final int tabPlacement;
   TabPlacements(int tabPlacement) {
     this.tabPlacement = tabPlacement;
@@ -98,7 +98,7 @@ class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
     if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
-      if (tabPlacement == JTabbedPane.TOP) {
+      if (tabPlacement == SwingConstants.TOP) {
         rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
       }
     }
@@ -118,7 +118,7 @@ class BasicTabHeightTabbedPaneUI extends BasicTabbedPaneUI {
     if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
-      if (tabPlacement == JTabbedPane.TOP) {
+      if (tabPlacement == SwingConstants.TOP) {
         rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
       }
     }

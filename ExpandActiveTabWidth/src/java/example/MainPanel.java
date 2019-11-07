@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     icons.forEach(s -> {
       Icon icon = new ImageIcon(getClass().getResource(s));
       ShrinkLabel label = new ShrinkLabel(s, icon);
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
 
   public static void updateTabWidth(JTabbedPane tabs) {
     int tp = tabs.getTabPlacement();
-    if (tp == JTabbedPane.LEFT || tp == JTabbedPane.RIGHT) {
+    if (tp == SwingConstants.LEFT || tp == SwingConstants.RIGHT) {
       return;
     }
     int sidx = tabs.getSelectedIndex();

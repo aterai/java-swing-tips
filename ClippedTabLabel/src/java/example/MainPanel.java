@@ -29,8 +29,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("LEFT");
     check.addActionListener(e -> {
-      int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP;
-      list.forEach(t -> t.setTabPlacement(tabPlacement));
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      list.forEach(t -> t.setTabPlacement(b ? SwingConstants.LEFT : SwingConstants.TOP));
     });
 
     add(check, BorderLayout.NORTH);

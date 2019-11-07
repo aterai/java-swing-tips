@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
     if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
       tabbedPane.setUI(new LeftAlignmentWindowsTabbedPaneUI());
     } else {
@@ -37,17 +37,17 @@ public final class MainPanel extends JPanel {
     }
 
     List<? extends JTabbedPane> list = Arrays.asList(
-        makeTestTabbedPane(new JTabbedPane(JTabbedPane.LEFT)),
+        makeTestTabbedPane(new JTabbedPane(SwingConstants.LEFT)),
         makeTestTabbedPane(tabbedPane),
-        makeTestTabbedPane(new ClippedTitleTabbedPane(JTabbedPane.LEFT)));
+        makeTestTabbedPane(new ClippedTitleTabbedPane(SwingConstants.LEFT)));
 
     JPanel p = new JPanel(new GridLayout(list.size(), 1));
     list.forEach(p::add);
 
     JCheckBox check = new JCheckBox("TOP");
     check.addActionListener(e -> {
-      int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? JTabbedPane.TOP : JTabbedPane.LEFT;
-      list.forEach(t -> t.setTabPlacement(tabPlacement));
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      list.forEach(t -> t.setTabPlacement(b ? SwingConstants.LEFT : SwingConstants.TOP));
     });
 
     add(check, BorderLayout.NORTH);

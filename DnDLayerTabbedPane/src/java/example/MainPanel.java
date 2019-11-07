@@ -35,7 +35,7 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
 
-  public MainPanel(TransferHandler handler, LayerUI<DnDTabbedPane> layerUI) {
+  private MainPanel(TransferHandler handler, LayerUI<DnDTabbedPane> layerUI) {
     super(new BorderLayout());
     DnDTabbedPane sub = new DnDTabbedPane();
     sub.addTab("Title aa", new JLabel("aaa"));
@@ -692,7 +692,6 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     int index = loc.getIndex();
     int a = Math.min(index, 1); // index == 0 ? 0 : 1;
     Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
-    // if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
     if (DnDTabbedPane.isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
       LINE_RECT.setBounds(r.x - LINE_SIZE / 2 + r.width * a, r.y, LINE_SIZE, r.height);
     } else {

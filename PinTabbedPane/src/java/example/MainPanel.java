@@ -12,7 +12,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+  private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
   private final List<String> icons = Arrays.asList(
       "wi0009-16.png",

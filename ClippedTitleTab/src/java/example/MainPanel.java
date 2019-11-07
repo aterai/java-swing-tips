@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
-    // tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
+    // tabbedPane.setTabPlacement(SwingConstants.RIGHT);
     // tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabbedPane.addTab("1111111111111111111111111111", new JLabel("1"));
     tabbedPane.addTab("2", new JLabel("2"));
