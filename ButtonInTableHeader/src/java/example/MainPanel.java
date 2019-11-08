@@ -19,48 +19,47 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"Boolean", "Integer", "String"};
-  private final Object[][] data = {
-    {true, 1, "BBB"}, {false, 12, "AAA"},
-    {true, 2, "DDD"}, {false, 5, "CCC"},
-    {true, 3, "EEE"}, {false, 6, "GGG"},
-    {true, 4, "FFF"}, {false, 7, "HHH"}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    @Override public void updateUI() {
-      // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
-      // https://bugs.openjdk.java.net/browse/JDK-6788475
-      // XXX: set dummy ColorUIResource
-      setSelectionForeground(new ColorUIResource(Color.RED));
-      setSelectionBackground(new ColorUIResource(Color.RED));
-      super.updateUI();
-      TableModel m = getModel();
-      for (int i = 0; i < m.getColumnCount(); i++) {
-        TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-        if (r instanceof Component) {
-          SwingUtilities.updateComponentTreeUI((Component) r);
-        }
-      }
-    }
-
-    @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-      Component c = super.prepareEditor(editor, row, column);
-      if (c instanceof JCheckBox) {
-        JCheckBox b = (JCheckBox) c;
-        b.setBackground(getSelectionBackground());
-        b.setBorderPainted(true);
-      }
-      return c;
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"Boolean", "Integer", "String"};
+    Object[][] data = {
+      {true, 1, "BBB"}, {false, 12, "AAA"},
+      {true, 2, "DDD"}, {false, 5, "CCC"},
+      {true, 3, "EEE"}, {false, 6, "GGG"},
+      {true, 4, "FFF"}, {false, 7, "HHH"}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      @Override public void updateUI() {
+        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6788475
+        // XXX: set dummy ColorUIResource
+        setSelectionForeground(new ColorUIResource(Color.RED));
+        setSelectionBackground(new ColorUIResource(Color.RED));
+        super.updateUI();
+        TableModel m = getModel();
+        for (int i = 0; i < m.getColumnCount(); i++) {
+          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+          if (r instanceof Component) {
+            SwingUtilities.updateComponentTreeUI((Component) r);
+          }
+        }
+      }
+
+      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+        Component c = super.prepareEditor(editor, row, column);
+        if (c instanceof JCheckBox) {
+          JCheckBox b = (JCheckBox) c;
+          b.setBackground(getSelectionBackground());
+          b.setBorderPainted(true);
+        }
+        return c;
+      }
+    };
 
     JPopupMenu pop = new JPopupMenu();
     pop.add("000");
@@ -99,7 +98,7 @@ public final class MainPanel extends JPanel {
 
 class HeaderRenderer extends JButton implements TableCellRenderer {
   protected static final int BUTTON_WIDTH = 16;
-  protected static final Color BUTTONBGC = new Color(0x64_C8_C8_C8, true);
+  protected static final Color BUTTON_BGC = new Color(0x64_C8_C8_C8, true);
   protected final JPopupMenu pop;
   protected int rolloverIndex = -1;
   protected final transient MouseInputListener handler = new MouseInputAdapter() {
@@ -138,8 +137,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
       JTable table = header.getTable();
       TableColumnModel columnModel = table.getColumnModel();
       int vci = columnModel.getColumnIndexAtX(e.getX());
-      int mci = table.convertColumnIndexToModel(vci);
-      rolloverIndex = mci;
+      rolloverIndex = table.convertColumnIndexToModel(vci);
     }
   };
 
@@ -184,7 +182,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
       // Insets i = b.getBorderInsets(l);
       // setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
       setBounds(w - BUTTON_WIDTH, 0, BUTTON_WIDTH, h - 2);
-      setBackground(BUTTONBGC);
+      setBackground(BUTTON_BGC);
       setOpaque(true);
       setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
     }
