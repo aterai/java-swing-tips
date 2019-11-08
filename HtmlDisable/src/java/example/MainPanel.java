@@ -8,14 +8,11 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JLabel label1 = new JLabel();
-  private final JLabel label2 = new JLabel();
-  private final JButton button1 = new JButton();
-  private final JButton button2 = new JButton();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JLabel label1 = new JLabel();
     label1.putClientProperty("html.disable", Boolean.TRUE);
+    JButton button1 = new JButton();
     button1.putClientProperty("html.disable", Boolean.TRUE);
 
     label1.setText("<html><font color=red>Html l1</font></html>");
@@ -23,7 +20,9 @@ public final class MainPanel extends JPanel {
     label1.setToolTipText("<html>&lt;html&gt;&lt;font color=red&gt;Html&lt;/font&gt;&lt;/html&gt;</html>");
     button1.setToolTipText("<html><font color=red>Html</font></html>");
 
+    JLabel label2 = new JLabel();
     label2.setText("<html><font color=red>Html l2</font></html>");
+    JButton button2 = new JButton();
     button2.setText("<html><font color=red>Html b2</font></html>");
 
     Box box = Box.createVerticalBox();
