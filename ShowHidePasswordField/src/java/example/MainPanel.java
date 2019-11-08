@@ -8,10 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
-import javax.swing.text.AbstractDocument;
 
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+  private static final String ECHO_CHAR = "PasswordField.echoChar";
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     AbstractButton b1 = new JCheckBox("show passwords");
     b1.addActionListener(e -> {
       AbstractButton c = (AbstractButton) e.getSource();
-      pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
+      pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
     });
     Container p1 = new JPanel(new BorderLayout());
     p1.add(pf1);
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     AbstractButton b2 = new JToggleButton();
     b2.addActionListener(e -> {
       AbstractButton c = (AbstractButton) e.getSource();
-      pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
+      pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
     });
     initEyeButton(b2);
     Container p2 = makeOverlayLayoutPanel();
@@ -42,11 +42,10 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
 
     JPasswordField pf3 = makePasswordField();
-    AbstractDocument doc = (AbstractDocument) pf3.getDocument();
     JTextField tf3 = new JTextField(24);
     tf3.setFont(FONT);
     tf3.enableInputMethods(false);
-    tf3.setDocument(doc);
+    tf3.setDocument(pf3.getDocument());
 
     CardLayout cardLayout = new CardLayout();
     Container p3 = new JPanel(cardLayout) {
@@ -79,7 +78,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        pf4.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
+        pf4.setEchoChar((Character) UIManager.get(ECHO_CHAR));
       }
     });
     initEyeButton(b4);
@@ -118,7 +117,7 @@ public final class MainPanel extends JPanel {
 
   private static JPasswordField makePasswordField() {
     JPasswordField pf = new JPasswordField(24);
-    pf.setText("abcdefghijklmn");
+    pf.setText("1234567890");
     pf.setAlignmentX(Component.RIGHT_ALIGNMENT);
     return pf;
   }
