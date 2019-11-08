@@ -20,11 +20,11 @@ public final class MainPanel extends JPanel {
 
   private static DefaultListModel<String> makeModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("aaaaaaa");
-    model.addElement("bbbbbbbbbbbbb");
-    model.addElement("cccccccccc");
-    model.addElement("ddddddddd");
-    model.addElement("eeeeeeeeee");
+    model.addElement("111111111");
+    model.addElement("22222222222222");
+    model.addElement("333333333");
+    model.addElement("44444444");
+    model.addElement("5555555555");
     return model;
   }
 
@@ -129,7 +129,7 @@ class SingleClickSelectList<E> extends JList<E> {
   }
 
   @Override public void setSelectionInterval(int anchor, int lead) {
-    if (anchor == lead && lead >= 0 && anchor >= 0) {
+    if (anchor == lead && lead >= 0) {
       if (isDragging) {
         addSelectionInterval(anchor, anchor);
       } else if (!isCellInsideDragging) {
