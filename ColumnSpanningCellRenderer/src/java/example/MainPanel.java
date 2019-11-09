@@ -15,23 +15,23 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final String SEE = "See Also: Constan Field Values";
-  private final String[] columnNames = {"AAA", "BBB"};
-  private final Object[][] data = {
-    {makeOptionPaneDescription("error"), SEE},
-    {makeOptionPaneDescription("information"), SEE},
-    {makeOptionPaneDescription("question"), SEE},
-    {makeOptionPaneDescription("warning"), SEE},
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-  };
-  private final JTable table = new JTable(model);
+  private static final String SEE = "See Also: Constant Field Values";
 
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"AAA", "BBB"};
+    Object[][] data = {
+      {makeOptionPaneDescription("error"), SEE},
+      {makeOptionPaneDescription("information"), SEE},
+      {makeOptionPaneDescription("question"), SEE},
+      {makeOptionPaneDescription("warning"), SEE},
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     table.getTableHeader().setReorderingAllowed(false);
     table.setRowSelectionAllowed(true);
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
-  private static final int TARGET_COLIDX = 0;
+  private static final int TARGET_IDX = 0;
   private final JTextArea textArea = new JTextArea(2, 999_999);
   private final JLabel label = new JLabel();
   private final JLabel iconLabel = new JLabel();
@@ -122,8 +122,8 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
       add(iconLabel, BorderLayout.WEST);
     } else {
       String title = Objects.toString(value, "");
-      int mrow = table.convertRowIndexToModel(row);
-      Object o = table.getModel().getValueAt(mrow, 0);
+      int mri = table.convertRowIndexToModel(row);
+      Object o = table.getModel().getValueAt(mri, 0);
       if (o instanceof OptionPaneDescription) {
         OptionPaneDescription t = (OptionPaneDescription) o;
         d = new OptionPaneDescription(title, t.icon, t.text);
@@ -138,14 +138,14 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
 
     Rectangle cr = table.getCellRect(row, column, false);
     // // Flickering on first visible row ?
-    // if (column == TARGET_COLIDX) {
+    // if (column == TARGET_IDX) {
     //   cr.x = 0;
     //   cr.width -= iconLabel.getPreferredSize().width;
     // } else {
     //   cr.x -= iconLabel.getPreferredSize().width;
     // }
     // textArea.scrollRectToVisible(cr);
-    if (column != TARGET_COLIDX) {
+    if (column != TARGET_IDX) {
       cr.x -= iconLabel.getPreferredSize().width;
     }
     scroll.getViewport().setViewPosition(cr.getLocation());
