@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 class TitledSeparator extends JLabel {
   protected final String title;
   protected final Color target;
-  protected final int iconHeight;
+  protected final int separatorHeight;
   protected final int titlePosition;
 
   protected TitledSeparator(String title, int height, int titlePosition) {
@@ -69,7 +69,7 @@ class TitledSeparator extends JLabel {
     super();
     this.title = title;
     this.target = target;
-    this.iconHeight = height;
+    this.separatorHeight = height;
     this.titlePosition = titlePosition;
     updateBorder();
   }
@@ -77,7 +77,7 @@ class TitledSeparator extends JLabel {
   private void updateBorder() {
     Icon icon = new TitledSeparatorIcon();
     setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createMatteBorder(iconHeight, 0, 0, 0, icon), title,
+        BorderFactory.createMatteBorder(separatorHeight, 0, 0, 0, icon), title,
         TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
   }
 
@@ -122,7 +122,7 @@ class TitledSeparator extends JLabel {
     }
 
     @Override public int getIconHeight() {
-      return iconHeight;
+      return separatorHeight;
     }
   }
 }
