@@ -25,7 +25,7 @@ import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger(MainPanel.class.getName());
+  private static final Logger LOGGER = Logger.getLogger("java-swing-tips");
 
   private MainPanel() {
     super(new GridLayout(2, 1));
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyListener {
-  private static final Logger LOGGER = Logger.getLogger(CopyOnSelectListener.class.getName());
+  private static final Logger LOGGER = Logger.getLogger("java-swing-tips");
   private boolean dragActive;
   private boolean shiftActive;
   private int dot;
