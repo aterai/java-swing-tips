@@ -35,16 +35,16 @@ public final class MainPanel extends JPanel {
     add(Box.createHorizontalStrut(32));
 
     add(new JCheckBox("JCheckBox"));
-    add(new JCheckBox("JCheckBox") {
+    add(new JCheckBox("JCheckBox+BorderPainted") {
       @Override public void updateUI() {
         super.updateUI();
         setBorderPainted(true);
       }
     });
-    add(new JCheckBox(PAD + "JCheckBox"));
+    add(new JCheckBox(PAD + "JCheckBox+td.padding"));
 
     add(new JRadioButton("JRadioButton"));
-    add(new JRadioButton(PAD + "JRadioButton"));
+    add(new JRadioButton(PAD + "JRadioButton+td.padding"));
 
     setPreferredSize(new Dimension(320, 240));
   }
