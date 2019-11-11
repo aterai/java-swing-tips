@@ -25,7 +25,7 @@ import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger(CopyOnSelectListener.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(MainPanel.class.getName());
 
   private MainPanel() {
     super(new GridLayout(2, 1));
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     LOGGER.setUseParentHandlers(false);
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
 
-    JTextArea textArea = new JTextArea("abcdefg hijklmn opqrstu") {
+    JTextArea textArea = new JTextArea("012345 67890 123456789") {
       private transient CopyOnSelectListener handler;
       @Override public void updateUI() {
         removeCaretListener(handler);
@@ -153,6 +153,10 @@ class TextAreaOutputStream extends OutputStream {
 
   @Override public void write(int b) {
     buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
   }
 }
 
