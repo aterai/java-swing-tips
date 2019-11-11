@@ -97,13 +97,13 @@ class StarPanel2 extends JPanel {
 }
 
 class StarPanel3 extends JPanel {
-  private static final int FONTSIZE = 80;
-  private final Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
+  private static final int FONT_SIZE = 80;
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.translate(0, FONTSIZE);
+    g2.translate(0, FONT_SIZE);
     FontRenderContext frc = g2.getFontRenderContext();
+    Font font = new Font(Font.SERIF, Font.PLAIN, FONT_SIZE);
     Shape shape = new TextLayout("★", font, frc).getOutline(null);
     g2.setPaint(Color.YELLOW);
     g2.fill(shape);
@@ -181,7 +181,7 @@ class StarIcon1 implements Icon {
     double agl = 0d;
     double add = 2 * Math.PI / 5d;
     Path2D p = new Path2D.Double();
-    p.moveTo(R * 1, R * 0);
+    p.moveTo(R, 0);
     for (int i = 0; i < 5; i++) {
       p.lineTo(R * Math.cos(agl), R * Math.sin(agl));
       agl += add + add;
@@ -221,7 +221,7 @@ class StarIcon2 implements Icon {
     double agl = 0d;
     double add = 2 * Math.PI / (VC * 2);
     Path2D p = new Path2D.Double();
-    p.moveTo(R2 * 1, R2 * 0);
+    p.moveTo(R2, 0);
     for (int i = 0; i < VC * 2 - 1; i++) {
       agl += add;
       if (i % 2 == 0) {
