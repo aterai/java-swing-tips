@@ -17,24 +17,22 @@ public final class MainPanel {
     JWindow splashScreen = createSplashScreen(frame, img);
     splashScreen.setVisible(true);
 
-    new Thread() {
-      @Override public void run() {
-        try {
-          // dummy long task
-          Thread.sleep(6000);
-          EventQueue.invokeAndWait(() -> {
-            showFrame(frame);
-            // hideSplash();
-            splashScreen.setVisible(false);
-            splashScreen.dispose();
-          });
-        } catch (InterruptedException | InvocationTargetException ex) {
-          ex.printStackTrace();
+    new Thread(() -> {
+      try {
+        // dummy long task
+        Thread.sleep(6000);
+        EventQueue.invokeAndWait(() -> {
+          showFrame(frame);
+          // hideSplash();
           splashScreen.setVisible(false);
           splashScreen.dispose();
-        }
+        });
+      } catch (InterruptedException | InvocationTargetException ex) {
+        ex.printStackTrace();
+        splashScreen.setVisible(false);
+        splashScreen.dispose();
       }
-    }.start();
+    }).start();
   }
 
   private static Component makeUI() {
@@ -92,26 +90,26 @@ public final class MainPanel {
 
   // public static JMenuBar createMenuBar() {
   //   JMenuBar menuBar = new JMenuBar();
-  //   JMenu menu = new JMenu("FFFFFF");
+  //   JMenu menu = new JMenu("FFF");
   //   menu.setMnemonic(KeyEvent.VK_F);
   //   menuBar.add(menu);
   //
-  //   JMenuItem menuItem = new JMenuItem("NNNNNNNNN");
+  //   JMenuItem menuItem = new JMenuItem("NNN");
   //   menuItem.setMnemonic(KeyEvent.VK_N);
   //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
   //   menu.add(menuItem);
   //
-  //   menuItem = new JMenuItem("MMMMMMMM");
+  //   menuItem = new JMenuItem("MMM");
   //   menuItem.setMnemonic(KeyEvent.VK_M);
   //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
   //   menu.add(menuItem);
   //
-  //   menuItem = new JMenuItem("UUUUUU");
+  //   menuItem = new JMenuItem("UUU");
   //   menuItem.setMnemonic(KeyEvent.VK_U);
   //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
   //   menu.add(menuItem);
   //
-  //   menuItem = new JMenuItem("IIIIIIIIII");
+  //   menuItem = new JMenuItem("III");
   //   menuItem.setMnemonic(KeyEvent.VK_I);
   //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_DOWN_MASK));
   //   menu.add(menuItem);

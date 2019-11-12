@@ -341,17 +341,15 @@ class TextAreaHandler extends StreamHandler {
 //   BufferedReader reader = new BufferedReader(new InputStreamReader(pis, "UTF-8"));
 //   System.setOut(new PrintStream(pos, true, "UTF-8"));
 //
-//   new Thread(new Runnable() {
-//     @Override public void run() {
-//       String line = null;
-//       try {
-//         while ((line = reader.readLine()) != null) {
-//           displayPane.append(line + "\n");
-//           displayPane.setCaretPosition(displayPane.getDocument().getLength());
-//         }
-//       } catch (IOException ex) {
-//         // JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
+//   new Thread(() -> {
+//     String line = null;
+//     try {
+//       while ((line = reader.readLine()) != null) {
+//         displayPane.append(line + "\n");
+//         displayPane.setCaretPosition(displayPane.getDocument().getLength());
 //       }
+//     } catch (IOException ex) {
+//       // JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
 //     }
 //   }).start();
 // } catch (IOException ex) {}

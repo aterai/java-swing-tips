@@ -104,11 +104,7 @@ public final class MainPanel extends JPanel {
 //   protected PseudoFileSemaphoreCounter(String appName, int launchLimit) {
 //     this.semaphore = new PseudoFileSemaphore(appName, launchLimit);
 //     this.launchLimit = launchLimit;
-//     Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-//       @Override public void run() {
-//         semaphore.release();
-//       }
-//     }));
+//     Runtime.getRuntime().addShutdownHook(new Thread(() -> semaphore.release()));
 //   }
 //   @Override public int getInstanceCount() {
 //     int result = this.semaphore.tryAcquire();

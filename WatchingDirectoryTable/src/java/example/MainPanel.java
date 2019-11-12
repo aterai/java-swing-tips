@@ -46,18 +46,16 @@ public final class MainPanel extends JPanel {
 
     Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-    Thread worker = new Thread() {
-      @Override public void run() {
-        try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
-          dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
-          append("register: " + dir);
-          processEvents(dir, watcher);
-          loop.exit();
-        } catch (IOException ex) {
-          throw new UncheckedIOException(ex);
-        }
+    Thread worker = new Thread(() -> {
+      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
+        dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
+        append("register: " + dir);
+        processEvents(dir, watcher);
+        loop.exit();
+      } catch (IOException ex) {
+        throw new UncheckedIOException(ex);
       }
-    };
+    });
     worker.start();
     if (!loop.enter()) {
       append("Error");
@@ -239,8 +237,8 @@ class TablePopupMenu extends JPopupMenu {
       DefaultTableModel model = (DefaultTableModel) table.getModel();
       int[] selection = table.getSelectedRows();
       for (int i = selection.length - 1; i >= 0; i--) {
-        int midx = table.convertRowIndexToModel(selection[i]);
-        Path path = Paths.get(Objects.toString(model.getValueAt(midx, 2)));
+        int idx = table.convertRowIndexToModel(selection[i]);
+        Path path = Paths.get(Objects.toString(model.getValueAt(idx, 2)));
         try {
           Files.delete(path);
         } catch (IOException ex) {
