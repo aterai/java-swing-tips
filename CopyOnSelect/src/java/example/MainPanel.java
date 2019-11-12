@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -25,7 +26,8 @@ import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger("java-swing-tips");
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   private MainPanel() {
     super(new GridLayout(2, 1));
@@ -80,7 +82,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyListener {
-  private static final Logger LOGGER = Logger.getLogger("java-swing-tips");
+  private static final Logger LOGGER = Logger.getLogger(MainPanel.LOGGER_NAME);
   private boolean dragActive;
   private boolean shiftActive;
   private int dot;
@@ -122,10 +124,10 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
       Caret caret = tc.getCaret();
       int d = caret.getDot();
       int m = caret.getMark();
-      // LOGGER.info(String.format("%s / %s", m, d));
+      // LOGGER.info(() -> String.format("%s / %s", m, d));
       if (d != m && (dot != d || mark != m)) {
         Optional.ofNullable(tc.getSelectedText()).ifPresent(str -> {
-          LOGGER.info(str);
+          LOGGER.info(() -> str);
           // StringSelection data = new StringSelection(str);
           // Toolkit.getDefaultToolkit().getSystemClipboard().setContents(data, data);
           tc.copy();

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +29,8 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger("zip-test");
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -172,7 +174,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class ZipUtil {
-  private static final Logger LOGGER = Logger.getLogger("zip-test");
+  private static final Logger LOGGER = Logger.getLogger(MainPanel.LOGGER_NAME);
 
   private ZipUtil() {
     /* HideUtilityClassConstructor */

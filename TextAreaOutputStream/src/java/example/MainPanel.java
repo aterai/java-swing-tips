@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.logging.Level;
@@ -19,7 +20,8 @@ import java.util.logging.StreamHandler;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger(TextAreaLogger.class.getName());
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -84,11 +86,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextAreaLogger {
-}
-
 class EnterAction extends AbstractAction {
-  private static final Logger LOGGER = Logger.getLogger(TextAreaLogger.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(MainPanel.LOGGER_NAME);
   private final JTextField textField;
 
   protected EnterAction(JTextField textField) {
@@ -186,6 +185,10 @@ class TextAreaOutputStream extends OutputStream {
 
   @Override public void write(int b) {
     buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
   }
 }
 

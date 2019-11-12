@@ -20,13 +20,14 @@ import java.util.logging.StreamHandler;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-  private final JTextArea log = new JTextArea();
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   private MainPanel() {
     super(new BorderLayout());
     LOGGER.setUseParentHandlers(false);
-    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
+    JTextArea textArea = new JTextArea();
+    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     JTextField field = new JTextField(20);
     field.getActionMap().put("beep", new AbstractAction() {
@@ -97,7 +98,7 @@ public final class MainPanel extends JPanel {
     p.add(button);
 
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
+    add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
