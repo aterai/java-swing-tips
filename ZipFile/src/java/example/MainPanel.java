@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
+import java.util.Optional;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -28,20 +28,20 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Logger LOGGER = Logger.getLogger(ZipUtil.class.getName());
-  private final JTextArea log = new JTextArea();
+  private static final Logger LOGGER = Logger.getLogger("zip-test");
 
   private MainPanel() {
     super(new BorderLayout());
     LOGGER.setUseParentHandlers(false);
-    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
-    log.setEditable(false);
+    JTextArea textArea = new JTextArea();
+    textArea.setEditable(false);
+    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     JPanel p = new JPanel(new GridLayout(2, 1, 10, 10));
     p.add(makeZipPanel());
     p.add(makeUnzipPanel());
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
+    add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -61,12 +61,14 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       String str = field.getText();
       Path path = Paths.get(str);
-      if (str.isEmpty() || Files.notExists(path)) {
+      // if (str.isEmpty() || Files.notExists(path)) { // noticeably poor performance in JDK 8
+      if (str.isEmpty() || !path.toFile().exists()) {
         return;
       }
-      String name = Objects.toString(path.getFileName()) + ".zip";
+      String name = path.getFileName() + ".zip";
       Path tgt = path.resolveSibling(name);
-      if (Files.exists(tgt)) {
+      // if (Files.exists(tgt)) { // noticeably poor performance in JDK 8
+      if (tgt.toFile().exists()) {
         String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", tgt.toString());
         int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Zip", JOptionPane.YES_NO_OPTION);
         if (rv != JOptionPane.YES_OPTION) {
@@ -76,9 +78,9 @@ public final class MainPanel extends JPanel {
       try {
         ZipUtil.zip(path, tgt);
       } catch (IOException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
+        LOGGER.info(() -> String.format("Cant zip! : %s", path));
         Toolkit.getDefaultToolkit().beep();
-        // LOGGER.info("Cant zip! : " + path.toString());
       }
     });
 
@@ -104,35 +106,27 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("unzip");
     button1.addActionListener(e -> {
       String str = field.getText();
-      Path path = Paths.get(str);
-      if (str.isEmpty() || Files.notExists(path)) {
-        return;
-      }
-      String name = Objects.toString(path.getFileName());
-      int lastDotPos = name.lastIndexOf('.');
-      if (lastDotPos > 0) {
-        name = name.substring(0, lastDotPos);
-      }
-      Path destDir = path.resolveSibling(name);
-      try {
-        if (Files.exists(destDir)) {
-          String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", destDir.toString());
-          int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Unzip", JOptionPane.YES_NO_OPTION);
-          if (rv != JOptionPane.YES_OPTION) {
-            return;
+      makeDestDirPath(str).ifPresent(destDir -> {
+        Path path = Paths.get(str);
+        try {
+          //if (Files.exists(destDir)) { // noticeably poor performance in JDK 8
+          if (destDir.toFile().exists()) {
+            String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", destDir.toString());
+            int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Unzip", JOptionPane.YES_NO_OPTION);
+            if (rv != JOptionPane.YES_OPTION) {
+              return;
+            }
+          } else {
+            LOGGER.info(() -> String.format("mkdir0: %s", destDir));
+            Files.createDirectories(destDir);
           }
-        } else {
-          if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.info("mkdir0: " + destDir.toString());
-          }
-          Files.createDirectories(destDir);
+          ZipUtil.unzip(path, destDir);
+        } catch (IOException ex) {
+          // ex.printStackTrace();
+          LOGGER.info(() -> String.format("Cant unzip! : %s", path));
+          Toolkit.getDefaultToolkit().beep();
         }
-        ZipUtil.unzip(path, destDir);
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
-        // LOGGER.info("Cant unzip! : " + path.toString());
-      }
+      });
     });
 
     JPanel p = new JPanel(new BorderLayout(5, 2));
@@ -141,6 +135,20 @@ public final class MainPanel extends JPanel {
     p.add(button, BorderLayout.EAST);
     p.add(button1, BorderLayout.SOUTH);
     return p;
+  }
+
+  private static Optional<Path> makeDestDirPath(String text) {
+    Path path = Paths.get(text);
+    // if (str.isEmpty() || Files.notExists(path)) { // noticeably poor performance in JDK 8
+    if (text.isEmpty() || !path.toFile().exists()) {
+      return Optional.empty();
+    }
+    String name = Objects.toString(path.getFileName());
+    int lastDotPos = name.lastIndexOf('.');
+    if (lastDotPos > 0) {
+      name = name.substring(0, lastDotPos);
+    }
+    return Optional.of(path.resolveSibling(name));
   }
 
   public static void main(String[] args) {
@@ -164,7 +172,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class ZipUtil {
-  private static final Logger LOGGER = Logger.getLogger(ZipUtil.class.getName());
+  private static final Logger LOGGER = Logger.getLogger("zip-test");
 
   private ZipUtil() {
     /* HideUtilityClassConstructor */
@@ -172,12 +180,13 @@ final class ZipUtil {
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   public static void zip(Path srcDir, Path zip) throws IOException {
-    try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {
+    // try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) { // noticeably poor performance in JDK 8
+    try (Stream<Path> s = Files.walk(srcDir).filter(f -> f.toFile().isFile())) {
       List<Path> files = s.collect(Collectors.toList());
       try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zip))) {
         for (Path path: files) {
           String relativePath = srcDir.relativize(path).toString().replace('\\', '/');
-          log("zip: " + relativePath);
+          LOGGER.info(() -> String.format("zip: %s", relativePath));
           zos.putNextEntry(new ZipEntry(relativePath));
           Files.copy(path, zos);
           zos.closeEntry();
@@ -194,24 +203,19 @@ final class ZipUtil {
         String name = zipEntry.getName();
         Path path = destDir.resolve(name);
         if (name.endsWith("/")) { // if (Files.isDirectory(path)) {
-          log("mkdir1: " + path.toString());
+          LOGGER.info(() -> String.format("mkdir1: %s", path));
           Files.createDirectories(path);
         } else {
           Path parent = path.getParent();
-          if (Objects.nonNull(parent) && Files.notExists(parent)) {
-            log("mkdir2: " + parent.toString());
+          // if (Objects.nonNull(parent) && Files.notExists(parent)) { // noticeably poor performance in JDK 8
+          if (Objects.nonNull(parent) && !parent.toFile().exists()) {
+            LOGGER.info(() -> String.format("mkdir2: %s", parent));
             Files.createDirectories(parent);
           }
-          log("copy: " + path.toString());
+          LOGGER.info(() -> String.format("copy: %s", path));
           Files.copy(zipFile.getInputStream(zipEntry), path, StandardCopyOption.REPLACE_EXISTING);
         }
       }
-    }
-  }
-
-  private static void log(String txt) {
-    if (LOGGER.isLoggable(Level.INFO)) {
-      LOGGER.info(txt);
     }
   }
 }
@@ -232,6 +236,10 @@ class TextAreaOutputStream extends OutputStream {
 
   @Override public void write(int b) {
     buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
   }
 }
 
