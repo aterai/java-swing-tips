@@ -122,7 +122,7 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener, KeyLis
       Caret caret = tc.getCaret();
       int d = caret.getDot();
       int m = caret.getMark();
-      // LOGGER.info(m + " / " + d);
+      // LOGGER.info(String.format("%s / %s", m, d));
       if (d != m && (dot != d || mark != m)) {
         Optional.ofNullable(tc.getSelectedText()).ifPresent(str -> {
           LOGGER.info(str);

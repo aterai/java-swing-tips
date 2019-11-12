@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     //   ex.printStackTrace();
     // }
 
-    LOGGER.info("test, TEST");
+    LOGGER.info(() -> "test, TEST");
 
     JButton button = new JButton("Clear");
     button.addActionListener(e -> textArea.setText(""));
@@ -97,7 +97,7 @@ class EnterAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    LOGGER.info(String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()), textField.getText()));
+    LOGGER.info(() -> String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()), textField.getText()));
   }
 }
 

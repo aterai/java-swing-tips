@@ -54,12 +54,12 @@ public final class MainPanel extends JPanel {
       // Always use ActionEvent.*_MASK instead of InputEvent.*_MASK in ActionListener
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
       if (isShiftDown) {
-        LOGGER.info("JButton: Shift is Down");
+        LOGGER.info(() -> "JButton: Shift is Down");
       } else {
-        LOGGER.info("JButton: Shift is Up");
+        LOGGER.info(() -> "JButton: Shift is Up");
       }
       if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
-        LOGGER.info("JButton: Mouse event mask");
+        LOGGER.info(() -> "JButton: Mouse event mask");
       }
     });
 
@@ -76,12 +76,12 @@ public final class MainPanel extends JPanel {
     item.addActionListener(e -> {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
       if (isShiftDown) {
-        LOGGER.info("JMenuItem: Shift is Down");
+        LOGGER.info(() -> "JMenuItem: Shift is Down");
       } else {
-        LOGGER.info("JMenuItem: Shift is Up");
+        LOGGER.info(() -> "JMenuItem: Shift is Up");
       }
       if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
-        LOGGER.info("JMenuItem: Mouse event mask");
+        LOGGER.info(() -> "JMenuItem: Mouse event mask");
       }
     });
 
