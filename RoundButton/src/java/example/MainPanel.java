@@ -13,17 +13,17 @@ import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JButton button = new JButton("RoundedCornerButtonUI") {
-    @Override public void updateUI() {
-      // IGNORE LnF change: super.updateUI();
-      setUI(new RoundedCornerButtonUI());
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super();
     add(new JButton("Default JButton"));
     // button.setUI(new RoundedCornerButtonUI());
+    // IGNORE LnF change: super.updateUI();
+    JButton button = new JButton("RoundedCornerButtonUI") {
+      @Override public void updateUI() {
+        // IGNORE LnF change: super.updateUI();
+        setUI(new RoundedCornerButtonUI());
+      }
+    };
     add(button);
     add(new RoundedCornerButton("Rounded Corner Button"));
     add(new RoundButton(new ImageIcon(getClass().getResource("16x16.png"))) {
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
     double agl = 0d;
     double add = 2 * Math.PI / (vc * 2);
     Path2D p = new Path2D.Double();
-    p.moveTo(or * 1, or * 0);
+    p.moveTo(or, 0);
     for (int i = 0; i < vc * 2 - 1; i++) {
       agl += add;
       int r = i % 2 == 0 ? ir : or;
@@ -78,9 +78,9 @@ class RoundedCornerButton extends JButton {
   private static final double ARC_WIDTH = 16d;
   private static final double ARC_HEIGHT = 16d;
   protected static final int FOCUS_STROKE = 2;
-  protected final Color fc = new Color(100, 150, 255, 200);
-  protected final Color ac = new Color(230, 230, 230);
-  protected final Color rc = Color.ORANGE;
+  protected static final Color FC = new Color(100, 150, 255, 200);
+  protected static final Color AC = new Color(230, 230, 230);
+  protected static final Color RC = Color.ORANGE;
   protected Shape shape;
   protected Shape border;
   protected Shape base;
@@ -122,17 +122,17 @@ class RoundedCornerButton extends JButton {
   protected void initShape() {
     if (!getBounds().equals(base)) {
       base = getBounds();
-      shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
       border = new RoundRectangle2D.Double(
-        FOCUS_STROKE, FOCUS_STROKE,
-        getWidth() - 1 - FOCUS_STROKE * 2,
-        getHeight() - 1 - FOCUS_STROKE * 2,
-        ARC_WIDTH, ARC_HEIGHT);
+          FOCUS_STROKE, FOCUS_STROKE,
+          getWidth() - 1d - FOCUS_STROKE * 2d,
+          getHeight() - 1d - FOCUS_STROKE * 2d,
+          ARC_WIDTH, ARC_HEIGHT);
     }
   }
 
   private void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
+    g2.setPaint(new GradientPaint(0f, 0f, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(getBackground());
     g2.fill(border);
@@ -143,12 +143,12 @@ class RoundedCornerButton extends JButton {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     if (getModel().isArmed()) {
-      g2.setPaint(ac);
+      g2.setPaint(AC);
       g2.fill(shape);
     } else if (isRolloverEnabled() && getModel().isRollover()) {
-      paintFocusAndRollover(g2, rc);
+      paintFocusAndRollover(g2, RC);
     } else if (hasFocus()) {
-      paintFocusAndRollover(g2, fc);
+      paintFocusAndRollover(g2, FC);
     } else {
       g2.setPaint(getBackground());
       g2.fill(shape);
@@ -208,19 +208,19 @@ class RoundButton extends RoundedCornerButton {
   @Override protected void initShape() {
     if (!getBounds().equals(base)) {
       base = getBounds();
-      shape = new Ellipse2D.Double(0, 0, getWidth() - 1, getHeight() - 1);
+      shape = new Ellipse2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d);
       border = new Ellipse2D.Double(
           FOCUS_STROKE, FOCUS_STROKE,
-          getWidth() - 1 - FOCUS_STROKE * 2,
-          getHeight() - 1 - FOCUS_STROKE * 2);
+          getWidth() - 1d - FOCUS_STROKE * 2d,
+          getHeight() - 1d - FOCUS_STROKE * 2d);
     }
   }
 }
 
 class ShapeButton extends JButton {
-  protected final Color fc = new Color(100, 150, 255, 200);
-  protected final Color ac = new Color(230, 230, 230);
-  protected final Color rc = Color.ORANGE;
+  protected static final Color FC = new Color(100, 150, 255, 200);
+  protected static final Color AC = new Color(230, 230, 230);
+  protected static final Color RC = Color.ORANGE;
   protected final Shape shape;
 
   protected ShapeButton(Shape s) {
@@ -239,7 +239,7 @@ class ShapeButton extends JButton {
   }
 
   private void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
+    g2.setPaint(new GradientPaint(0f, 0f, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
   }
 
@@ -247,12 +247,12 @@ class ShapeButton extends JButton {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     if (getModel().isArmed()) {
-      g2.setPaint(ac);
+      g2.setPaint(AC);
       g2.fill(shape);
     } else if (isRolloverEnabled() && getModel().isRollover()) {
-      paintFocusAndRollover(g2, rc);
+      paintFocusAndRollover(g2, RC);
     } else if (hasFocus()) {
-      paintFocusAndRollover(g2, fc);
+      paintFocusAndRollover(g2, FC);
     } else {
       g2.setPaint(getBackground());
       g2.fill(shape);

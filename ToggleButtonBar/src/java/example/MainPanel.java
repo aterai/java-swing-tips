@@ -14,7 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-
     Icon roundIcon = new ToggleButtonBarCellIcon();
     Icon rectIcon = new CellIcon();
 
@@ -103,7 +102,7 @@ class CellIcon implements Icon {
     g2.setPaint(c.getBackground());
     g2.fillRect(0, 0, w, h);
 
-    g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
+    g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, h, bgc, true));
     g2.fillRect(0, 0, w, h);
 
     g2.setPaint(TL);
@@ -134,14 +133,14 @@ class ToggleButtonBarCellIcon implements Icon {
     if (Objects.isNull(parent)) {
       return;
     }
-    int r = 8;
-    int w = c.getWidth();
-    int h = c.getHeight() - 1;
+    float r = 8f;
+    float w = c.getWidth();
+    float h = c.getHeight() - 1f;
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-    Path2D p = new Path2D.Double();
+    Path2D p = new Path2D.Float();
     if (c == parent.getComponent(0)) {
       // :first-child
       p.moveTo(x, y + r);

@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
       new AbstractExpansionPanel("System Tasks") {
         @Override public JPanel makePanel() {
           JPanel p = new JPanel(new GridLayout(0, 1));
-          Stream.of("aaaa", "aaaaaaa")
+          Stream.of("1111", "222222")
               .map(JCheckBox::new)
               .forEach(b -> {
                 b.setOpaque(false);
@@ -126,7 +126,7 @@ abstract class AbstractExpansionPanel extends JPanel {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         // Insets ins = getInsets();
-        g2.setPaint(new GradientPaint(50, 0, Color.WHITE, getWidth(), getHeight(), bgc));
+        g2.setPaint(new GradientPaint(50f, 0f, Color.WHITE, getWidth(), getHeight(), bgc));
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
         super.paintComponent(g);

@@ -8,26 +8,23 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JLabel label = new JLabel() {
-    @Override protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      Graphics2D g2 = (Graphics2D) g.create();
-      int w = getWidth();
-      int h = getHeight();
-      g2.setPaint(new GradientPaint(0, 0, Color.ORANGE, w, h, Color.WHITE, true));
-      g2.fillRect(0, 0, w, h);
-      g2.dispose();
-    }
-
-    @Override public Dimension getPreferredSize() {
-      return new Dimension(640, 640);
-    }
-  };
-  private final JScrollPane scroll = new JScrollPane(label);
-
   private MainPanel() {
     super(new BorderLayout());
+    JLabel label = new JLabel() {
+      @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        int w = getWidth();
+        int h = getHeight();
+        g2.setPaint(new GradientPaint(0f, 0f, Color.ORANGE, w, h, Color.WHITE, true));
+        g2.fillRect(0, 0, w, h);
+        g2.dispose();
+      }
 
+      @Override public Dimension getPreferredSize() {
+        return new Dimension(640, 640);
+      }
+    };
     label.setBorder(BorderFactory.createTitledBorder("Horizontal scroll: CTRL + Wheel"));
     label.addMouseWheelListener(e -> {
       Component c = e.getComponent();
@@ -39,6 +36,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JScrollPane scroll = new JScrollPane(label);
     scroll.getVerticalScrollBar().setUnitIncrement(10);
 
     JScrollBar hsb = scroll.getHorizontalScrollBar();

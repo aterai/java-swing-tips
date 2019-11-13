@@ -47,15 +47,15 @@ public final class MainPanel extends JPanel {
     p.add(b);
     add(p);
 
-    add(makeButton("☏ text"));
+    add(makeButton("? text"));
 
     b = new TranslucentButton("TranslucentButton", icon);
     add(b);
 
-    add(makeButton("a"));
-    add(makeButton("bbbbbbbb"));
-    add(makeButton("cccccccccccccccccccc"));
-    add(makeButton("dddddddddddddddddddddddddddddddd"));
+    add(makeButton("1"));
+    add(makeButton("22222222"));
+    add(makeButton("333333333333333333"));
+    add(makeButton("44444444444444444444444444444"));
 
     BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
     setBorder(new CentredBackgroundBorder(bi));
@@ -171,7 +171,7 @@ class TranslucentButton extends JButton {
   private static final Color BR = new Color(0f, 0f, 0f, .4f);
   private static final Color ST = new Color(1f, 1f, 1f, .2f);
   private static final Color SB = new Color(1f, 1f, 1f, .1f);
-  private static final int R = 8;
+  private static final float R = 8f;
 
   protected TranslucentButton(String text) {
     super(text);
@@ -191,13 +191,13 @@ class TranslucentButton extends JButton {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    int x = 0;
-    int y = 0;
-    int w = getWidth();
-    int h = getHeight();
+    float x = 0f;
+    float y = 0f;
+    float w = getWidth();
+    float h = getHeight();
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Shape area = new RoundRectangle2D.Double(x, y, w - 1, h - 1, R, R);
+    Shape area = new RoundRectangle2D.Float(x, y, w - 1f, h - 1f, R, R);
     Color ssc = TL;
     Color bgc = BR;
     ButtonModel m = getModel();
@@ -222,7 +222,7 @@ class TranslucentButtonIcon implements Icon {
   private static final Color BR = new Color(0f, 0f, 0f, .4f);
   private static final Color ST = new Color(1f, 1f, 1f, .2f);
   private static final Color SB = new Color(1f, 1f, 1f, .1f);
-  private static final int R = 8;
+  private static final float R = 8f;
   private int width;
   private int height;
 
@@ -244,7 +244,9 @@ class TranslucentButtonIcon implements Icon {
       height = h - i.top - i.bottom;
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
+      float fx = (float) (x - i.left);
+      float fy = (float) (y - i.top);
+      Shape area = new RoundRectangle2D.Float(fx, fy, w - 1f, h - 1f, R, R);
       Color ssc = TL;
       Color bgc = BR;
       ButtonModel m = b.getModel();
@@ -255,7 +257,7 @@ class TranslucentButtonIcon implements Icon {
         ssc = ST;
         bgc = SB;
       }
-      g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
+      g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, h, bgc, true));
       g2.fill(area);
       g2.setPaint(BR);
       g2.draw(area);

@@ -14,7 +14,7 @@ import javax.swing.text.View;
 
 public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
-  private static final int CLOSEICON_WIDTH = 12;
+  private static final int CLOSE_ICON_WIDTH = 12;
   private final Dimension size = new Dimension();
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
@@ -62,7 +62,7 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
 
     AbstractButton b = (AbstractButton) c;
     Icon icon = b.getIcon();
-    viewRect.width = size.width - i.right - viewRect.x - CLOSEICON_WIDTH;
+    viewRect.width = size.width - i.right - viewRect.x - CLOSE_ICON_WIDTH;
     String text = SwingUtilities.layoutCompoundLabel(
         c, c.getFontMetrics(f), b.getText(), icon, // altIcon != null ? altIcon : getDefaultIcon(),
         b.getVerticalAlignment(), b.getHorizontalAlignment(),
@@ -97,11 +97,17 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     Rectangle r2 = new Rectangle(r.x, r.y + r.height / 2, r.width, r.height / 2);
     Rectangle r3 = new Rectangle(r.x, r.y + r.height / 2 - 2, r.width, r.height / 4);
 
-    g2.setPaint(new GradientPaint(0, r1.y, new Color(0x84_A2_B4), 0, r1.y + r1.height, new Color(0x67_85_98), true));
+    g2.setPaint(new GradientPaint(
+        0f, r1.y, new Color(0x84_A2_B4),
+        0f, (float) (r1.y + r1.height), new Color(0x67_85_98), true));
     g2.fill(r1);
-    g2.setPaint(new GradientPaint(0, r2.y, new Color(0x32_49_57), 0, r2.y + r2.height, new Color(0x3C_56_65), true));
+    g2.setPaint(new GradientPaint(
+        0f, r2.y, new Color(0x32_49_57),
+        0f, (float) (r2.y + r2.height), new Color(0x3C_56_65), true));
     g2.fill(r2);
-    g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30), 0, r3.y + r3.height, new Color(0, 0, 0, 5), true));
+    g2.setPaint(new GradientPaint(
+        0f, r3.y, new Color(0, 0, 0, 30),
+        0f, (float) (r3.y + r3.height), new Color(0, 0, 0, 5), true));
     g2.fill(r3);
 
     g2.setPaint(new Color(39, 56, 67)); // g2.setPaint(Color.GREEN);

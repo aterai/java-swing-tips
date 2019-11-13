@@ -97,7 +97,7 @@ class TriSliderUI extends MetalSliderUI {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(trackBounds.x, trackBounds.y + cy);
 
-      // g2.setPaint(new GradientPaint(0, 0, getShadowColor(), cw, 0, getHighlightColor(), true));
+      // g2.setPaint(new GradientPaint(0f, 0f, getShadowColor(), cw, 0f, getHighlightColor(), true));
       g2.setPaint(Color.GRAY);
       g2.fillRect(0, -cy, cw, cy * 2);
 
@@ -123,7 +123,7 @@ class TriSliderUI extends MetalSliderUI {
         fillRight = middleOfThumb;
       }
 
-      g2.setPaint(new GradientPaint(0, 0, new Color(0, 100, 100), cw, 0, new Color(0, 255, 100), true));
+      g2.setPaint(new GradientPaint(0f, 0f, new Color(0, 100, 100), cw, 0f, new Color(0, 255, 100), true));
       g2.fillRect(0, -cy, fillRight - fillLeft, cy * 2);
 
       g2.setPaint(slider.getBackground());

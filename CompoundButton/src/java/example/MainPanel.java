@@ -14,7 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-
     Dimension d = new Dimension(64, 64);
     add(new CompoundButton(d, ButtonLocation.NORTH));
     add(new CompoundButton(d, ButtonLocation.SOUTH));
@@ -22,7 +21,6 @@ public final class MainPanel extends JPanel {
     add(new CompoundButton(d, ButtonLocation.WEST));
     add(new CompoundButton(d, ButtonLocation.CENTER));
     add(new CompoundButtonPanel(d));
-
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -70,12 +68,9 @@ class CompoundButtonPanel extends JComponent {
 }
 
 enum ButtonLocation {
-  CENTER(0d),
-  NORTH(45d),
-  EAST(135d),
-  SOUTH(225d),
-  WEST(-45d);
+  CENTER(0d), NORTH(45d), EAST(135d), SOUTH(225d), WEST(-45d);
   private final double degree;
+
   ButtonLocation(double degree) {
     this.degree = degree;
   }
@@ -155,7 +150,7 @@ class CompoundButton extends JButton {
   }
 
   protected void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
+    g2.setPaint(new GradientPaint(0f, 0f, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(getBackground());
   }

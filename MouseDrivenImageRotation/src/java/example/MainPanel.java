@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     // super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new GradientPaint(50, 0, Color.GRAY, getWidth(), getHeight(), Color.DARK_GRAY, true));
+    g2.setPaint(new GradientPaint(50f, 0f, Color.GRAY, getWidth(), getHeight(), Color.DARK_GRAY, true));
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
     di.paint(g, this);
@@ -65,8 +65,8 @@ class DraggableImageMouseListener extends MouseAdapter {
   private static final int OR = IR * 3;
   private final Shape border;
   private final Shape polaroid;
-  private final RectangularShape inner = new Ellipse2D.Double(0, 0, IR, IR);
-  private final RectangularShape outer = new Ellipse2D.Double(0, 0, OR, OR);
+  private final RectangularShape inner = new Ellipse2D.Double(0d, 0d, IR, IR);
+  private final RectangularShape outer = new Ellipse2D.Double(0d, 0d, OR, OR);
   private final Point2D startPt = new Point2D.Double(); // drag start point
   private final Point2D centerPt = new Point2D.Double(100d, 100d); // center of Image
   private final Dimension imageSz;
@@ -82,8 +82,8 @@ class DraggableImageMouseListener extends MouseAdapter {
     int width = ii.getIconWidth();
     int height = ii.getIconHeight();
     imageSz = new Dimension(width, height);
-    border = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
-    polaroid = new Rectangle2D.Double(-2, -2, width + 4, height + 20);
+    border = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
+    polaroid = new Rectangle2D.Double(-2d, -2d, width + 4d, height + 20d);
     setCirclesLocation(centerPt);
   }
 

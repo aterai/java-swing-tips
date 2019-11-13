@@ -14,10 +14,10 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public final class RoundedCornerButtonUI extends BasicButtonUI {
   private static final double ARC_WIDTH = 16d;
   private static final double ARC_HEIGHT = 16d;
-  private static final int FOCUS_STROKE = 2;
-  private final Color fc = new Color(100, 150, 255);
-  private final Color ac = new Color(220, 225, 230);
-  private final Color rc = Color.ORANGE;
+  private static final double FOCUS_STROKE = 2d;
+  private static final Color FC = new Color(100, 150, 255);
+  private static final Color AC = new Color(220, 225, 230);
+  private static final Color RC = Color.ORANGE;
   private Shape shape;
   private Shape border;
   private Shape base;
@@ -75,12 +75,12 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
       AbstractButton b = (AbstractButton) c;
       ButtonModel model = b.getModel();
       if (model.isArmed()) {
-        g2.setPaint(ac);
+        g2.setPaint(AC);
         g2.fill(shape);
       } else if (b.isRolloverEnabled() && model.isRollover()) {
-        paintFocusAndRollover(g2, c, rc);
+        paintFocusAndRollover(g2, c, RC);
       } else if (b.hasFocus()) {
-        paintFocusAndRollover(g2, c, fc);
+        paintFocusAndRollover(g2, c, FC);
       } else {
         g2.setPaint(c.getBackground());
         g2.fill(shape);
@@ -101,17 +101,17 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
   protected void initShape(Component c) {
     if (!c.getBounds().equals(base)) {
       base = c.getBounds();
-      shape = new RoundRectangle2D.Double(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, c.getWidth() - 1d, c.getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
       border = new RoundRectangle2D.Double(
           FOCUS_STROKE, FOCUS_STROKE,
-          c.getWidth() - 1 - FOCUS_STROKE * 2,
-          c.getHeight() - 1 - FOCUS_STROKE * 2,
+          c.getWidth() - 1d - FOCUS_STROKE * 2d,
+          c.getHeight() - 1d - FOCUS_STROKE * 2d,
           ARC_WIDTH, ARC_HEIGHT);
     }
   }
 
   protected void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
-    g2.setPaint(new GradientPaint(0, 0, color, c.getWidth() - 1, c.getHeight() - 1, color.brighter(), true));
+    g2.setPaint(new GradientPaint(0f, 0f, color, c.getWidth() - 1f, c.getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(c.getBackground());
     g2.fill(border);

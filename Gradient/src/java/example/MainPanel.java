@@ -133,14 +133,14 @@ class GradientSeparatorUI extends BasicSeparatorUI {
       Dimension s = c.getSize();
       JSeparator js = (JSeparator) c;
       if (js.getOrientation() == SwingConstants.VERTICAL) {
-        g2.setPaint(new GradientPaint(0, 0, ssc, 0, s.height, bgc, true));
+        g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, s.height, bgc, true));
         g2.fillRect(0, 0, 1, s.height);
-        g2.setPaint(new GradientPaint(0, 0, shc, 0, s.height, bgc, true));
+        g2.setPaint(new GradientPaint(0f, 0f, shc, 0f, s.height, bgc, true));
         g2.fillRect(1, 0, 1, s.height);
       } else {
-        g2.setPaint(new GradientPaint(0, 0, ssc, s.width, 0, bgc, true));
+        g2.setPaint(new GradientPaint(0f, 0f, ssc, s.width, 0f, bgc, true));
         g2.fillRect(0, 0, s.width, 1);
-        g2.setPaint(new GradientPaint(0, 0, shc, s.width, 0, bgc, true));
+        g2.setPaint(new GradientPaint(0f, 0f, shc, s.width, 0f, bgc, true));
         g2.fillRect(0, 1, s.width, 1);
       }
       g2.dispose();
