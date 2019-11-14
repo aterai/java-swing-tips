@@ -4,13 +4,29 @@ allprojects {
   apply {
     plugin 'java'
     plugin 'application'
+    plugin 'pmd'
+    plugin 'checkstyle'
+  }
+
+  repositories {
+    mavenCentral()
+    jcenter()
   }
 
   def defaultEncoding = 'UTF-8'
   [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
 
-  repositories {
-    jcenter()
+  pmd {
+    consoleOutput = true
+    ignoreFailures = true
+    incrementalAnalysis = true
+    ruleSetFiles = files("${rootProject.projectDir}/ruleset.xml")
+    ruleSets = []
+  }
+
+  checkstyle {
+    ignoreFailures = true
+    configFile = file("${rootProject.projectDir}/checks.xml")
   }
 }
 
@@ -33,7 +49,7 @@ subprojects {
 
   // In this section you declare the dependencies for your production and test code
   dependencies {
-    compile fileTree(dir: "${project.projectDir}/lib", include: '*.jar')
+    implementation fileTree(dir: "${project.projectDir}/lib", include: '*.jar')
   }
 
   version = config.version
@@ -44,22 +60,5 @@ subprojects {
                  'Main-Class': config.main.class,
                  'Class-Path': config.runtime.classpath
     }
-  }
-
-  apply {
-    plugin 'pmd'
-    plugin 'checkstyle'
-  }
-
-  pmd {
-    ignoreFailures = true
-    consoleOutput = true
-    ruleSetFiles = files("${rootProject.projectDir}/ruleset.xml")
-    ruleSets = []
-  }
-
-  checkstyle {
-    ignoreFailures true
-    configFile file("$rootDir/checks.xml")
   }
 }
