@@ -138,9 +138,9 @@ class ToggleButtonBarCellIcon implements Icon {
     if (Objects.isNull(parent)) {
       return;
     }
-    int r = 8;
-    int w = c.getWidth();
-    int h = c.getHeight() - 1;
+    double r = 8d;
+    double w = c.getWidth();
+    double h = c.getHeight() - 1d;
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -236,7 +236,7 @@ class EditMenuLayerUI<V extends Component> extends LayerUI<V> {
       Component c = e.getComponent();
       if (!Objects.equals(c, lastButton)) {
         Rectangle r = c.getBounds();
-        s = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, r.y + r.height - 1);
+        s = new Line2D.Double(r.getMaxX(), r.getMinY(), r.getMaxX(), r.getMaxY() - 1d);
       }
     }
     if (!Objects.equals(s, shape)) {
