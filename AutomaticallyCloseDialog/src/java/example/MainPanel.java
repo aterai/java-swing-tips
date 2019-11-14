@@ -75,11 +75,11 @@ public final class MainPanel extends JPanel {
 }
 
 class AutomaticallyCloseListener implements HierarchyListener {
-  // private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+  // private static final Logger LOGGER = Logger.getLogger(MainPanel.LOGGER_NAME);
   private static final int SECONDS = 5;
   private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
   private final Timer timer = new Timer(1000, null);
-  private transient ActionListener listener;
+  private ActionListener listener;
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
     if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
