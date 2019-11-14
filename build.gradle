@@ -49,20 +49,17 @@ subprojects {
   apply {
     plugin 'pmd'
     plugin 'checkstyle'
-    plugin 'findbugs'
   }
+
   pmd {
     ignoreFailures = true
     consoleOutput = true
     ruleSetFiles = files("${rootProject.projectDir}/ruleset.xml")
     ruleSets = []
   }
+
   checkstyle {
     ignoreFailures true
     configFile file("$rootDir/checks.xml")
-  }
-  findbugs {
-    ignoreFailures = true
-    excludeFilter = file("${rootProject.projectDir}/excludefilter.xml")
   }
 }
