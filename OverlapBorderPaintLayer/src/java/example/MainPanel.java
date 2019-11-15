@@ -54,9 +54,8 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    Icon icon = new SizeIcon();
     for (String title: list) {
-      AbstractButton b = makeButton(title, icon, color);
+      AbstractButton b = makeButton(title, new SizeIcon(), color);
       p.add(b);
       bg.add(b);
     }
@@ -67,9 +66,8 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    Icon icon = new ArrowToggleButtonBarCellIcon();
     for (String title: list) {
-      AbstractButton b = makeButton(title, icon, color);
+      AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon(), color);
       p.add(b);
       bg.add(b);
     }
@@ -80,9 +78,8 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    Icon icon = new ArrowToggleButtonBarCellIcon2();
     for (String title: list) {
-      AbstractButton b = makeButton(title, icon, color);
+      AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon2(), color);
       p.add(b);
       bg.add(b);
     }
