@@ -54,11 +54,11 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    for (String title: list) {
+    list.forEach(title -> {
       AbstractButton b = makeButton(title, new SizeIcon(), color);
       p.add(b);
       bg.add(b);
-    }
+    });
     return p;
   }
 
@@ -66,11 +66,11 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    for (String title: list) {
+    list.forEach(title -> {
       AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon(), color);
       p.add(b);
       bg.add(b);
-    }
+    });
     return p;
   }
 
@@ -78,11 +78,11 @@ public final class MainPanel extends JPanel {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    for (String title: list) {
+    list.forEach(title -> {
       AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon2(), color);
       p.add(b);
       bg.add(b);
-    }
+    });
     return p;
   }
 
@@ -144,16 +144,16 @@ class ArrowToggleButtonBarCellIcon implements Icon {
   }
 
   protected Shape makeShape(Container parent, Component c, int x, int y) {
-    int w = c.getWidth() - 1;
-    int h = c.getHeight() - 1;
-    int h2 = (int) (h * .5 + .5);
-    int w2 = TH;
+    double w = c.getWidth() - 1d;
+    double h = c.getHeight() - 1d;
+    double h2 = h * .5;
+    double w2 = TH;
     Path2D p = new Path2D.Double();
-    p.moveTo(0, 0);
-    p.lineTo(w - w2, 0);
+    p.moveTo(0d, 0d);
+    p.lineTo(w - w2, 0d);
     p.lineTo(w, h2);
     p.lineTo(w - w2, h);
-    p.lineTo(0, h);
+    p.lineTo(0d, h);
     if (c != parent.getComponent(0)) {
       p.lineTo(w2, h2);
     }
@@ -198,13 +198,13 @@ class ArrowToggleButtonBarCellIcon implements Icon {
 
 class SizeIcon extends ArrowToggleButtonBarCellIcon {
   @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
-    int w = c.getWidth() - 1;
-    int h = c.getHeight() - 1;
+    double w = c.getWidth() - 1d;
+    double h = c.getHeight() - 1d;
     Path2D p = new Path2D.Double();
-    p.moveTo(0, 0);
-    p.lineTo(w, 0);
+    p.moveTo(0d, 0d);
+    p.lineTo(w, 0d);
     p.lineTo(w, h);
-    p.lineTo(0, h);
+    p.lineTo(0d, h);
     p.closePath();
     return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
   }
@@ -212,20 +212,20 @@ class SizeIcon extends ArrowToggleButtonBarCellIcon {
 
 class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
   @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
-    int r = 4;
-    int w = c.getWidth() - 1;
-    int h = c.getHeight() - 1;
-    int h2 = (int) (h * .5 + .5);
+    double r = 4d;
+    double w = c.getWidth() - 1d;
+    double h = c.getHeight() - 1d;
+    double h2 = h * .5;
     Path2D p = new Path2D.Double();
-    p.moveTo(w - h2, 0);
-    p.quadTo(w, 0, w, h2);
-    p.quadTo(w, 0 + h, w - h2, h);
+    p.moveTo(w - h2, 0d);
+    p.quadTo(w, 0d, w, h2);
+    p.quadTo(w, 0d + h, w - h2, h);
     if (c == parent.getComponent(0)) {
       // :first-child
       p.lineTo(r, h);
-      p.quadTo(0, h, 0, h - r);
-      p.lineTo(0, r);
-      p.quadTo(0, 0, r, 0);
+      p.quadTo(0d, h, 0d, h - r);
+      p.lineTo(0d, r);
+      p.quadTo(0d, 0d, r, 0d);
     } else {
       p.lineTo(0, h);
       p.quadTo(h2, h, h2, h2);
