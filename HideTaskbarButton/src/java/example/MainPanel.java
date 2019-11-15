@@ -12,7 +12,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("Hide the taskbar button when JFrame is minimized");
+  private final JCheckBox check = new JCheckBox("Hide the TaskBar button when JFrame is minimized");
 
   private MainPanel() {
     super();
@@ -125,16 +125,16 @@ class StarIcon implements Icon {
     int or = Math.max(r1, r2);
     int ir = Math.min(r1, r2);
     double agl = 0d;
-    double add = 2 * Math.PI / (vc * 2);
+    double add = 2d * Math.PI / (vc * 2d);
     Path2D p = new Path2D.Double();
-    p.moveTo(or * 1, or * 0);
+    p.moveTo(or, 0d);
     for (int i = 0; i < vc * 2 - 1; i++) {
       agl += add;
       int r = i % 2 == 0 ? ir : or;
       p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
     }
     p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, or, 0);
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, or, 0d);
     return new Path2D.Double(p, at);
   }
 
