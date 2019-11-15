@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -68,16 +69,16 @@ class ZoomAndPanHandler extends MouseAdapter {
   private static final int EXTENT = 1;
   private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
   private final AffineTransform coordAndZoomTransform = new AffineTransform();
-  private final Point dragStartPoint = new Point();
+  private final Point2D dragStartPoint = new Point();
 
   @Override public void mousePressed(MouseEvent e) {
     dragStartPoint.setLocation(e.getPoint());
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    Point dragEndPoint = e.getPoint();
-    Point dragStart = transformPoint(dragStartPoint);
-    Point dragEnd = transformPoint(dragEndPoint);
+    Point2D dragEndPoint = e.getPoint();
+    Point2D dragStart = transformPoint(dragStartPoint);
+    Point2D dragEnd = transformPoint(dragEndPoint);
     coordAndZoomTransform.translate(dragEnd.getX() - dragStart.getX(), dragEnd.getY() - dragStart.getY());
     dragStartPoint.setLocation(dragEndPoint);
     e.getComponent().repaint();
@@ -92,19 +93,18 @@ class ZoomAndPanHandler extends MouseAdapter {
     }
     Component c = e.getComponent();
     Rectangle r = c.getBounds();
-    // Point p = e.getPoint();
-    Point p = new Point(r.x + r.width / 2, r.y + r.height / 2);
-    Point p1 = transformPoint(p);
+    Point2D p = new Point2D.Double(r.getCenterX(), r.getCenterY());
+    Point2D p1 = transformPoint(p);
     double scale = dir > 0 ? 1 / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
     coordAndZoomTransform.scale(scale, scale);
-    Point p2 = transformPoint(p);
+    Point2D p2 = transformPoint(p);
     coordAndZoomTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
     c.repaint();
   }
 
   // https://community.oracle.com/thread/1263955
   // How to implement Zoom & Pan in Java using Graphics2D
-  private Point transformPoint(Point p1) {
+  private Point2D transformPoint(Point2D p1) {
     AffineTransform inverse = coordAndZoomTransform;
     boolean hasInverse = coordAndZoomTransform.getDeterminant() != 0d;
     if (hasInverse) {
@@ -115,7 +115,7 @@ class ZoomAndPanHandler extends MouseAdapter {
         assert false;
       }
     }
-    Point p2 = new Point();
+    Point2D p2 = new Point();
     inverse.transform(p1, p2);
     return p2;
   }
