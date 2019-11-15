@@ -11,6 +11,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    EventQueue.invokeLater(() -> {
+      JMenuBar menuBar = new JMenuBar();
+      menuBar.add(new JMenu("Menu 1")).add(makeSubMenu("SubMenu 1"));
+      UIManager.put("Menu.arrowIcon", new ArrowIcon());
+      menuBar.add(new JMenu("Menu 2")).add(makeSubMenu("SubMenu 2"));
+      getRootPane().setJMenuBar(menuBar);
+    });
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -42,16 +49,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-
-    JMenuBar menuBar = new JMenuBar();
-    menuBar.add(new JMenu("Menu 1")).add(makeSubMenu("SubMenu 1"));
-    UIManager.put("Menu.arrowIcon", new ArrowIcon());
-    menuBar.add(new JMenu("Menu 2")).add(makeSubMenu("SubMenu 2"));
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(menuBar);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -73,11 +73,11 @@ class ArrowIcon implements Icon {
       g2.setPaint(Color.GRAY);
     }
 
-    int w = getIconWidth() / 2;
+    double w = getIconWidth() / 2d;
     Path2D p = new Path2D.Double();
-    p.moveTo(0, 0);
+    p.moveTo(0d, 0d);
     p.lineTo(w, w);
-    p.lineTo(0, getIconHeight());
+    p.lineTo(0d, getIconHeight());
     p.closePath();
 
     g2.translate(x, y);
