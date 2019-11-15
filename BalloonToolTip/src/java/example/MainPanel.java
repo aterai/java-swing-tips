@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,14 +19,14 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(1, 2));
 
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("1234567890abcdefghijklmnopqrstuvwxyz");
+    model.addElement("ABC DEF GHI JKL MNO PQR STU VWX YZ");
+    model.addElement("111");
+    model.addElement("111222");
+    model.addElement("111222333");
+    model.addElement("1234567890 abc def ghi jkl mno pqr stu vwx yz");
     model.addElement("bbb1");
     model.addElement("bbb12");
-    model.addElement("1234567890-+*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    model.addElement("1234567890-+*/=ABC DEF GHI JKL MNO PQR STU VWX YZ");
     model.addElement("bbb123");
 
     JList<String> list1 = new JList<String>(model) {
@@ -118,8 +119,8 @@ class BalloonToolTip extends JToolTip {
         //   w.setBackground(new Color(0x0, true));
         // }
         Optional.ofNullable(SwingUtilities.getRoot(c))
-           .filter(JWindow.class::isInstance).map(JWindow.class::cast)
-           .ifPresent(w -> w.setBackground(new Color(0x0, true)));
+            .filter(JWindow.class::isInstance).map(JWindow.class::cast)
+            .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
     addHierarchyListener(listener);
@@ -147,14 +148,14 @@ class BalloonToolTip extends JToolTip {
 
   private Shape makeBalloonShape() {
     Insets i = getInsets();
-    int w = getWidth() - 1;
-    int h = getHeight() - 1;
-    int v = i.top / 2;
-    Polygon triangle = new Polygon();
-    triangle.addPoint(i.left + v + v, 0);
-    triangle.addPoint(i.left + v, v);
-    triangle.addPoint(i.left + v + v + v, v);
-    Area area = new Area(new RoundRectangle2D.Float(0, v, w, h - i.bottom - v, i.top, i.top));
+    float w = getWidth() - 1f;
+    float h = getHeight() - 1f;
+    float v = i.top * .5f;
+    Path2D triangle = new Path2D.Float();
+    triangle.moveTo(i.left + v + v, 0f);
+    triangle.lineTo(i.left + v, v);
+    triangle.lineTo(i.left + v + v + v, v);
+    Area area = new Area(new RoundRectangle2D.Float(0f, v, w, h - i.bottom - v, i.top, i.top));
     area.add(new Area(triangle));
     return area;
   }
