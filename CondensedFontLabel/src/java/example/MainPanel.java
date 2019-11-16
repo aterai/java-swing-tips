@@ -21,7 +21,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "1234567890 ABCDEFG HIJKLMN OPQRSTU VWXYZ";
+  private static final String TEXT = "1234567890 ABC DEF GHI JKL MNO PQR STU VWX YZ";
 
   private MainPanel() {
     super(new GridLayout(0, 1));
@@ -110,8 +110,8 @@ class WrappingLabel extends JLabel {
 }
 
 class WrappedLabel extends JLabel {
-  private GlyphVector gvtext;
-  private int width = -1;
+  private transient GlyphVector gvText;
+  private int prevWidth = -1;
   // TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
 
   protected WrappedLabel(String str) {
@@ -121,21 +121,21 @@ class WrappedLabel extends JLabel {
   @Override public void doLayout() {
     Insets i = getInsets();
     int w = getWidth() - i.left - i.right;
-    if (w != width) {
+    if (w != prevWidth) {
       Font font = getFont();
       FontMetrics fm = getFontMetrics(font);
       FontRenderContext frc = fm.getFontRenderContext();
-      gvtext = getWrappedGlyphVector(getText(), w, font, frc);
-      width = w;
+      gvText = getWrappedGlyphVector(getText(), w, font, frc);
+      prevWidth = w;
     }
     super.doLayout();
   }
 
   @Override protected void paintComponent(Graphics g) {
-    if (Objects.nonNull(gvtext)) {
+    if (Objects.nonNull(gvText)) {
       Insets i = getInsets();
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.drawGlyphVector(gvtext, i.left, getFont().getSize() + i.top);
+      g2.drawGlyphVector(gvText, i.left, getFont().getSize2D() + i.top);
       g2.dispose();
     } else {
       super.paintComponent(g);
@@ -145,23 +145,22 @@ class WrappedLabel extends JLabel {
   private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
     Point2D gmPos = new Point2D.Float();
     GlyphVector gv = font.createGlyphVector(frc, str);
-    float lineheight = (float) gv.getLogicalBounds().getHeight();
-    float xpos = 0f;
-    float advance = 0f;
+    float lineHeight = (float) gv.getLogicalBounds().getHeight();
+    float pos = 0f;
     int lineCount = 0;
     GlyphMetrics gm;
 
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
       // TEST: gv.setGlyphTransform(i, at);
       gm = gv.getGlyphMetrics(i);
-      advance = gm.getAdvance();
-      if (xpos < width && width <= xpos + advance) {
+      float advance = gm.getAdvance();
+      if (pos < width && width <= pos + advance) {
         lineCount++;
-        xpos = 0f;
+        pos = 0f;
       }
-      gmPos.setLocation(xpos, lineheight * lineCount);
+      gmPos.setLocation(pos, lineHeight * lineCount);
       gv.setGlyphPosition(i, gmPos);
-      xpos += advance;
+      pos += advance;
     }
     return gv;
   }
