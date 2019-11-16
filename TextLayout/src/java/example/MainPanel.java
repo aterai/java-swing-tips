@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TextLayoutPanel extends JComponent {
-  private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
+  private static final String TEXT = "abcdefghijklmnopqrstuvwxyz";
   private static final Font FONT = new Font(Font.SERIF, Font.ITALIC, 64);
   private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, FONT, new FontRenderContext(null, true, true));
 
@@ -66,8 +66,8 @@ class TextLayoutPanel extends JComponent {
     g2.draw(new Line2D.Double(0, leading, w, leading));
 
     g2.setPaint(Color.CYAN);
-    float xheight = baseline - (float) TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
-    g2.draw(new Line2D.Double(0, xheight, w, xheight));
+    float xh = baseline - (float) TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
+    g2.draw(new Line2D.Double(0, xh, w, xh));
 
     g2.setPaint(Color.BLACK);
     TEXT_LAYOUT.draw(g2, 0f, baseline);
@@ -76,11 +76,11 @@ class TextLayoutPanel extends JComponent {
 }
 
 class GlyphVectorPanel extends JComponent {
-  private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
+  private static final String TEXT = "abcdefghijklmnopqrstuvwxyz";
   private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
-  private final Font font = new Font(Font.SERIF, Font.ITALIC, 64);
-  private final GlyphVector gv = font.createGlyphVector(FRC, TEXT);
-  private final LineMetrics lm = font.getLineMetrics(TEXT, FRC);
+  private static final Font FONT = new Font(Font.SERIF, Font.ITALIC, 64);
+  private final transient GlyphVector gv = FONT.createGlyphVector(FRC, TEXT);
+  private final transient LineMetrics lm = FONT.getLineMetrics(TEXT, FRC);
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
@@ -88,23 +88,23 @@ class GlyphVectorPanel extends JComponent {
     float baseline = getHeight() / 2f;
 
     g2.setPaint(Color.RED);
-    g2.draw(new Line2D.Double(0, baseline, w, baseline));
+    g2.draw(new Line2D.Float(0f, baseline, w, baseline));
 
     g2.setPaint(Color.GREEN);
     float ascent = baseline - lm.getAscent();
-    g2.draw(new Line2D.Double(0, ascent, w, ascent));
+    g2.draw(new Line2D.Float(0f, ascent, w, ascent));
 
     g2.setPaint(Color.BLUE);
     float descent = baseline + lm.getDescent();
-    g2.draw(new Line2D.Double(0, descent, w, descent));
+    g2.draw(new Line2D.Float(0f, descent, w, descent));
 
     g2.setPaint(Color.ORANGE);
     float leading = baseline + lm.getDescent() + lm.getLeading();
-    g2.draw(new Line2D.Double(0, leading, w, leading));
+    g2.draw(new Line2D.Float(0f, leading, w, leading));
 
     g2.setPaint(Color.CYAN);
-    float xheight = baseline - (float) gv.getGlyphMetrics(23).getBounds2D().getHeight();
-    g2.draw(new Line2D.Double(0, xheight, w, xheight));
+    float xh = baseline - (float) gv.getGlyphMetrics(23).getBounds2D().getHeight();
+    g2.draw(new Line2D.Float(0f, xh, w, xh));
 
     g2.setPaint(Color.BLACK);
     g2.drawGlyphVector(gv, 0f, baseline);
