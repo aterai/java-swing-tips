@@ -258,7 +258,7 @@ final class GradientPalletUtils {
     BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = image.createGraphics();
     Point2D start = new Point2D.Float();
-    Point2D end = new Point2D.Float(99, 0);
+    Point2D end = new Point2D.Float(99f, 0f);
     float[] dist = {.0f, .5f, 1f};
     Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
     g2.setPaint(new LinearGradientPaint(start, end, dist, colors));

@@ -117,7 +117,7 @@ class JustifiedLabel extends JLabel {
       Point2D gmPos = new Point2D.Float();
       for (int i = 0; i < num; i++) {
         GlyphMetrics gm = gv.getGlyphMetrics(i);
-        gmPos.setLocation(xpos, 0);
+        gmPos.setLocation(xpos, 0f);
         gv.setGlyphPosition(i, gmPos);
         xpos += gm.getAdvance() + xx;
       }
