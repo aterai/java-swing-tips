@@ -9,6 +9,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -308,15 +309,15 @@ class BalloonToolTip extends JToolTip {
   }
 
   private Shape makeBalloonShape() {
-    int w = getWidth() - 1;
-    int h = getHeight() - TRI_HEIGHT - 1;
-    int r = 10;
-    int cx = getWidth() / 2;
-    Polygon triangle = new Polygon();
-    triangle.addPoint(cx - TRI_HEIGHT, h);
-    triangle.addPoint(cx, h + TRI_HEIGHT);
-    triangle.addPoint(cx + TRI_HEIGHT, h);
-    Area area = new Area(new RoundRectangle2D.Float(0, 0, w, h, r, r));
+    float w = getWidth() - 1f;
+    float h = getHeight() - TRI_HEIGHT - 1f;
+    float r = 10f;
+    float cx = getWidth() * .5f;
+    Path2D triangle = new Path2D.Float();
+    triangle.moveTo(cx - TRI_HEIGHT, h);
+    triangle.lineTo(cx, h + TRI_HEIGHT);
+    triangle.lineTo(cx + TRI_HEIGHT, h);
+    Area area = new Area(new RoundRectangle2D.Float(0f, 0f, w, h, r, r));
     area.add(new Area(triangle));
     return area;
   }
