@@ -179,15 +179,15 @@ class StarIcon1 implements Icon {
 
   protected StarIcon1() {
     double agl = 0d;
-    double add = 2 * Math.PI / 5d;
+    double add = 2d * Math.PI / 5d;
     Path2D p = new Path2D.Double();
-    p.moveTo(R, 0);
+    p.moveTo(R, 0d);
     for (int i = 0; i < 5; i++) {
       p.lineTo(R * Math.cos(agl), R * Math.sin(agl));
       agl += add + add;
     }
     p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R, 0);
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, R, 0d);
     star = new Path2D.Double(p, at);
   }
 
@@ -219,19 +219,16 @@ class StarIcon2 implements Icon {
 
   protected StarIcon2() {
     double agl = 0d;
-    double add = 2 * Math.PI / (VC * 2);
+    double add = Math.PI / VC;
     Path2D p = new Path2D.Double();
-    p.moveTo(R2, 0);
+    p.moveTo(R2, 0d);
     for (int i = 0; i < VC * 2 - 1; i++) {
       agl += add;
-      if (i % 2 == 0) {
-        p.lineTo(R1 * Math.cos(agl), R1 * Math.sin(agl));
-      } else {
-        p.lineTo(R2 * Math.cos(agl), R2 * Math.sin(agl));
-      }
+      int r = i % 2 == 0 ? R1 : R2;
+      p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
     }
     p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R2, 0);
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, R2, 0d);
     star = new Path2D.Double(p, at);
   }
 
@@ -269,6 +266,7 @@ class StarIcon2 implements Icon {
 //     }
 //     return res;
 //   }
+//
 //   protected static int[] getYCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
 //     int[] res = new int[vertexCount * 2];
 //     double addAngle = 2 * Math.PI / vertexCount;

@@ -111,10 +111,10 @@ public final class MainPanel extends JPanel {
   //     if (Objects.isNull(outfile)) {
   //       return;
   //     }
-  //     File tmpfile = outfile;
+  //     File tmpFile = outfile;
   //     Transferable tran = new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {
-  //         return Arrays.asList(tmpfile);
+  //         return Arrays.asList(tmpFile);
   //       }
   //       @Override public DataFlavor[] getTransferDataFlavors() {
   //         return new DataFlavor[] {DataFlavor.javaFileListFlavor};
@@ -219,19 +219,19 @@ final class SvgUtils {
   }
 
   public static Path2D makeStar(int r1, int r2, int vc) {
-    int or = Math.max(r1, r2);
-    int ir = Math.min(r1, r2);
+    double or = Math.max(r1, r2);
+    double ir = Math.min(r1, r2);
     double agl = 0d;
-    double add = 2 * Math.PI / (vc * 2);
+    double add = Math.PI / vc;
     Path2D p = new Path2D.Double();
-    p.moveTo(or * 1, or * 0);
+    p.moveTo(or, 0d);
     for (int i = 0; i < vc * 2 - 1; i++) {
       agl += add;
-      int r = i % 2 == 0 ? ir : or;
+      double r = i % 2 == 0 ? ir : or;
       p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
     }
     p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, or, 0);
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, or, 0d);
     return new Path2D.Double(p, at);
   }
 }

@@ -126,19 +126,16 @@ class StarburstIcon implements Icon {
 
   protected StarburstIcon() {
     double agl = 0d;
-    double add = 2 * Math.PI / (VC * 2);
+    double add = Math.PI / VC;
     Path2D p = new Path2D.Double();
-    p.moveTo(R2 * 1, R2 * 0);
+    p.moveTo(R2, 0d);
     for (int i = 0; i < VC * 2 - 1; i++) {
       agl += add;
-      if (i % 2 == 0) {
-        p.lineTo(R1 * Math.cos(agl), R1 * Math.sin(agl));
-      } else {
-        p.lineTo(R2 * Math.cos(agl), R2 * Math.sin(agl));
-      }
+      int r = i % 2 == 0 ? R1 : R2;
+      p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
     }
     p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R2, 0);
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, R2, 0d);
     star = new Path2D.Double(p, at);
   }
 
