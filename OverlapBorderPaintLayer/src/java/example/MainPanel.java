@@ -22,16 +22,16 @@ public final class MainPanel extends JPanel {
 
     JPanel p1 = new JPanel(new GridLayout(0, 1));
     p1.setBorder(BorderFactory.createTitledBorder("Icon border"));
-    p1.add(makeBreadcrumbList0(list, Color.PINK, 1));
-    p1.add(makeBreadcrumbList1(list, Color.PINK, 11));
-    p1.add(makeBreadcrumbList2(list, Color.PINK, 11));
+    p1.add(makeBreadcrumb(list, Color.PINK, 1));
+    p1.add(makeChevronBreadcrumb(list, Color.PINK, 11));
+    p1.add(makeRibbonBreadcrumb(list, Color.PINK, 11));
 
     BreadcrumbLayerUI<Component> layerUI = new BreadcrumbLayerUI<>();
     JPanel p2 = new JPanel(new GridLayout(0, 1));
     p2.setBorder(BorderFactory.createTitledBorder("JLayer border"));
-    p2.add(new JLayer<>(makeBreadcrumbList0(list, Color.ORANGE, 1), layerUI));
-    p2.add(new JLayer<>(makeBreadcrumbList1(list, Color.ORANGE, 11), layerUI));
-    p2.add(new JLayer<>(makeBreadcrumbList2(list, Color.ORANGE, 11), layerUI));
+    p2.add(new JLayer<>(makeBreadcrumb(list, Color.ORANGE, 1), layerUI));
+    p2.add(new JLayer<>(makeChevronBreadcrumb(list, Color.ORANGE, 11), layerUI));
+    p2.add(new JLayer<>(makeRibbonBreadcrumb(list, Color.ORANGE, 11), layerUI));
 
     JPanel p = new JPanel(new GridLayout(0, 1));
     p.add(p1);
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeBreadcrumbList0(List<String> list, Color color, int overlap) {
+  private static JPanel makeBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
@@ -62,24 +62,24 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeBreadcrumbList1(List<String> list, Color color, int overlap) {
+  private static JPanel makeChevronBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
     list.forEach(title -> {
-      AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon(), color);
+      AbstractButton b = makeButton(title, new ArrowToggleButtonIcon(), color);
       p.add(b);
       bg.add(b);
     });
     return p;
   }
 
-  private static JPanel makeBreadcrumbList2(List<String> list, Color color, int overlap) {
+  private static JPanel makeRibbonBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
     list.forEach(title -> {
-      AbstractButton b = makeButton(title, new ArrowToggleButtonBarCellIcon2(), color);
+      AbstractButton b = makeButton(title, new RibbonToggleButtonIcon(), color);
       p.add(b);
       bg.add(b);
     });
@@ -90,8 +90,8 @@ public final class MainPanel extends JPanel {
     AbstractButton b = new JRadioButton(title) {
       @Override public boolean contains(int x, int y) {
         Icon i = getIcon();
-        if (i instanceof ArrowToggleButtonBarCellIcon) {
-          ArrowToggleButtonBarCellIcon icon = (ArrowToggleButtonBarCellIcon) i;
+        if (i instanceof ArrowToggleButtonIcon) {
+          ArrowToggleButtonIcon icon = (ArrowToggleButtonIcon) i;
           if (Objects.nonNull(icon.getShape())) {
             return icon.getShape().contains(x, y);
           }
@@ -133,7 +133,7 @@ public final class MainPanel extends JPanel {
 }
 
 // https://ateraimemo.com/Swing/ToggleButtonBar.html
-class ArrowToggleButtonBarCellIcon implements Icon {
+class ArrowToggleButtonIcon implements Icon {
   public static final int TH = 10; // The height of a triangle
   private static final int HEIGHT = TH * 2 + 1;
   private static final int WIDTH = 100;
@@ -196,7 +196,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
   }
 }
 
-class SizeIcon extends ArrowToggleButtonBarCellIcon {
+class SizeIcon extends ArrowToggleButtonIcon {
   @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
     double w = c.getWidth() - 1d;
     double h = c.getHeight() - 1d;
@@ -210,7 +210,7 @@ class SizeIcon extends ArrowToggleButtonBarCellIcon {
   }
 }
 
-class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
+class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
   @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
     double r = 4d;
     double w = c.getWidth() - 1d;
@@ -286,8 +286,8 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
       Component c = e.getComponent();
       if (c instanceof AbstractButton) {
         AbstractButton b = (AbstractButton) c;
-        if (b.getIcon() instanceof ArrowToggleButtonBarCellIcon) {
-          ArrowToggleButtonBarCellIcon icon = (ArrowToggleButtonBarCellIcon) b.getIcon();
+        if (b.getIcon() instanceof ArrowToggleButtonIcon) {
+          ArrowToggleButtonIcon icon = (ArrowToggleButtonIcon) b.getIcon();
           Rectangle r = c.getBounds();
           AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
           s = at.createTransformedShape(icon.getShape());
