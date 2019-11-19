@@ -47,27 +47,27 @@ class TextLayoutPanel extends JComponent {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    int w = getWidth();
+    float w = getWidth();
     float baseline = getHeight() / 2f;
 
     g2.setPaint(Color.RED);
-    g2.draw(new Line2D.Double(0, baseline, w, baseline));
+    g2.draw(new Line2D.Float(0f, baseline, w, baseline));
 
     g2.setPaint(Color.GREEN);
     float ascent = baseline - TEXT_LAYOUT.getAscent();
-    g2.draw(new Line2D.Double(0, ascent, w, ascent));
+    g2.draw(new Line2D.Float(0f, ascent, w, ascent));
 
     g2.setPaint(Color.BLUE);
     float descent = baseline + TEXT_LAYOUT.getDescent();
-    g2.draw(new Line2D.Double(0, descent, w, descent));
+    g2.draw(new Line2D.Float(0f, descent, w, descent));
 
     g2.setPaint(Color.ORANGE);
     float leading = baseline + TEXT_LAYOUT.getDescent() + TEXT_LAYOUT.getLeading();
-    g2.draw(new Line2D.Double(0, leading, w, leading));
+    g2.draw(new Line2D.Float(0f, leading, w, leading));
 
     g2.setPaint(Color.CYAN);
     float xh = baseline - (float) TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
-    g2.draw(new Line2D.Double(0, xh, w, xh));
+    g2.draw(new Line2D.Float(0f, xh, w, xh));
 
     g2.setPaint(Color.BLACK);
     TEXT_LAYOUT.draw(g2, 0f, baseline);
@@ -84,7 +84,7 @@ class GlyphVectorPanel extends JComponent {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    int w = getWidth();
+    float w = getWidth();
     float baseline = getHeight() / 2f;
 
     g2.setPaint(Color.RED);
