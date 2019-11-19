@@ -133,6 +133,7 @@ public final class MainPanel extends JPanel {
 }
 
 // https://ateraimemo.com/Swing/ToggleButtonBar.html
+// https://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
 class ArrowToggleButtonBarCellIcon implements Icon {
   public static final int TH = 10; // The height of a triangle
   private static final int HEIGHT = TH * 2 + 1;
@@ -146,14 +147,14 @@ class ArrowToggleButtonBarCellIcon implements Icon {
   protected Shape makeShape(Container parent, Component c, int x, int y) {
     int w = c.getWidth() - 1;
     int h = c.getHeight() - 1;
-    int h2 = (int) (h * .5 + .5);
-    int w2 = TH;
+    double h2 = Math.round(h * .5);
+    double w2 = TH;
     Path2D p = new Path2D.Double();
-    p.moveTo(0, 0);
-    p.lineTo(w - w2, 0);
+    p.moveTo(0d, 0d);
+    p.lineTo(w - w2, 0d);
     p.lineTo(w, h2);
     p.lineTo(w - w2, h);
-    p.lineTo(0, h);
+    p.lineTo(0d, h);
     if (c != parent.getComponent(0)) {
       p.lineTo(w2, h2);
     }
