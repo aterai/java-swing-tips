@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -134,14 +133,13 @@ class CustomBevelBorder extends BevelBorder {
   }
 
   private Shape makeBottomRightShape(int w, int h, Insets i) {
-    Path2D p = new Path2D.Double();
-    p.moveTo(w, 0);
-    p.lineTo(w - i.right, i.top);
-    p.lineTo(w - i.right, h - i.bottom);
-    p.lineTo(i.left, h - i.bottom);
-    p.lineTo(0, h);
-    p.lineTo(w, h);
-    p.closePath();
+    Polygon p = new Polygon();
+    p.addPoint(w, 0);
+    p.addPoint(w - i.right, i.top);
+    p.addPoint(w - i.right, h - i.bottom);
+    p.addPoint(i.left, h - i.bottom);
+    p.addPoint(0, h);
+    p.addPoint(w, h);
     return p;
   }
 
