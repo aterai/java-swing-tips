@@ -25,6 +25,7 @@ public final class MainPanel extends JPanel {
   public static final Color FOREGROUND = Color.WHITE;
   public static final Color SELECTION_FOREGROUND = Color.ORANGE;
   public static final Color PANEL_BACKGROUND = Color.GRAY;
+  public static final String KEY = "ComboBox.border";
 
   private MainPanel() {
     super(new BorderLayout());
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
 
     JComboBox<String> combo0 = new JComboBox<String>(makeModel()) {
       @Override public void updateUI() {
-        UIManager.put("ComboBox.border", BorderFactory.createLineBorder(FOREGROUND));
+        UIManager.put(KEY, BorderFactory.createLineBorder(FOREGROUND));
         super.updateUI();
         setUI(new BasicComboBoxUI());
         Object o = getAccessibleContext().getAccessibleChild(0);
@@ -58,7 +59,7 @@ public final class MainPanel extends JPanel {
       private transient PopupMenuListener listener;
       @Override public void updateUI() {
         removePopupMenuListener(listener);
-        UIManager.put("ComboBox.border", new RoundedCornerBorder());
+        UIManager.put(KEY, new RoundedCornerBorder());
         super.updateUI();
         setUI(new BasicComboBoxUI());
         listener = new HeavyWeightContainerListener();
@@ -79,7 +80,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         removeMouseListener(handler);
         removePopupMenuListener(listener);
-        UIManager.put("ComboBox.border", new TopRoundedCornerBorder());
+        UIManager.put(KEY, new TopRoundedCornerBorder());
         super.updateUI();
         setUI(new BasicComboBoxUI() {
           @Override protected JButton createArrowButton() {
@@ -282,13 +283,13 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
     if (c instanceof JPopupMenu) {
       g2.clearRect(x, y, width, height);
     }
-    int r = ARC;
-    int w = width - 1;
-    int h = height - 1;
+    double r = ARC;
+    double w = width - 1d;
+    double h = height - 1d;
 
     Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
     Rectangle b = round.getBounds();
-    b.setBounds(b.x, b.y + r, b.width, b.height - r);
+    b.setBounds(b.x, b.y + ARC, b.width, b.height - ARC);
     round.add(new Area(b));
 
     Container parent = c.getParent();
@@ -322,9 +323,9 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     //   }
     // }
 
-    int r = ARC;
-    int w = width - 1;
-    int h = height - 1;
+    double r = ARC;
+    double w = width - 1d;
+    double h = height - 1d;
 
     Path2D p = new Path2D.Double();
     p.moveTo(x, y);
