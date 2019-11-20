@@ -146,9 +146,9 @@ public final class MainPanel extends JPanel {
     am.put("selectPreviousRow", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
-        int dowvl = DayOfWeek.values().length; // 7
-        if (index < dowvl) {
-          LocalDate d = monthList.getModel().getElementAt(index).minusDays(dowvl);
+        int weekLength = DayOfWeek.values().length; // 7
+        if (index < weekLength) {
+          LocalDate d = monthList.getModel().getElementAt(index).minusDays(weekLength);
           updateMonthView(getCurrentLocalDate().minusMonths(1));
           monthList.setSelectedValue(d, false);
         } else {
@@ -160,9 +160,9 @@ public final class MainPanel extends JPanel {
     am.put("selectNextRow", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
-        int dowvl = DayOfWeek.values().length; // 7
-        if (index > monthList.getModel().getSize() - dowvl) {
-          LocalDate d = monthList.getModel().getElementAt(index).plusDays(dowvl);
+        int weekLength = DayOfWeek.values().length; // 7
+        if (index > monthList.getModel().getSize() - weekLength) {
+          LocalDate d = monthList.getModel().getElementAt(index).plusDays(weekLength);
           updateMonthView(getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         } else {
@@ -227,13 +227,13 @@ public final class MainPanel extends JPanel {
 class CalendarViewListModel extends AbstractListModel<LocalDate> {
   public static final int ROW_COUNT = 6;
   private final LocalDate startDate;
-  private final WeekFields weekFields = WeekFields.of(Locale.getDefault());
 
   protected CalendarViewListModel(LocalDate date) {
     super();
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
-    int dowv = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(dowv);
+    WeekFields weekFields = WeekFields.of(Locale.getDefault());
+    int fdmDow = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(fdmDow);
   }
 
   @Override public int getSize() {
