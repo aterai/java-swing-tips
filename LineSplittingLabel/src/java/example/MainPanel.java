@@ -15,8 +15,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    add(new LineSplittingLabel("ABC"));
-    add(new TricoloreLabel("DEF"));
+    Font font = new Font(Font.SERIF, Font.PLAIN, 64);
+    JComponent label1 = new LineSplittingLabel("ABC");
+    label1.setFont(font);
+    JComponent label2 = new TricoloreLabel("DEF");
+    label2.setFont(font);
+    add(label1);
+    add(label2);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -41,7 +46,6 @@ public final class MainPanel extends JPanel {
 }
 
 class TricoloreLabel extends JComponent {
-  private final Font font = new Font(Font.SERIF, Font.PLAIN, 64);
   private final String text;
 
   protected TricoloreLabel(String str) {
@@ -60,16 +64,16 @@ class TricoloreLabel extends JComponent {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     FontRenderContext frc = g2.getFontRenderContext();
-    GlyphVector gv = font.createGlyphVector(frc, text);
+    GlyphVector gv = getFont().createGlyphVector(frc, text);
     Rectangle2D b = gv.getVisualBounds();
     double cx = w / 2d - b.getCenterX();
     double cy = h / 2d - b.getCenterY();
     AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
 
-    double d = b.getHeight() / 3d;
+    double dh = b.getHeight() / 3d;
     Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-    Rectangle2D clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
-    Rectangle2D clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);
+    Rectangle2D clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), dh);
+    Rectangle2D clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2d * dh, b.getWidth(), dh);
 
     Shape s = toCenterAtf.createTransformedShape(gv.getOutline());
 
@@ -89,7 +93,6 @@ class TricoloreLabel extends JComponent {
 }
 
 class LineSplittingLabel extends JComponent {
-  private final Font font = new Font(Font.SERIF, Font.PLAIN, 64);
   private final String text;
 
   protected LineSplittingLabel(String str) {
@@ -108,7 +111,7 @@ class LineSplittingLabel extends JComponent {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     FontRenderContext frc = g2.getFontRenderContext();
-    Shape shape = new TextLayout(text, font, frc).getOutline(null);
+    Shape shape = new TextLayout(text, getFont(), frc).getOutline(null);
     Rectangle2D b = shape.getBounds2D();
     double cx = w / 2d - b.getCenterX();
     double cy = h / 2d - b.getCenterY();
