@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public static final Dimension CELLSZ = new Dimension(10, 10);
+  public static final Dimension CELL_SIZE = new Dimension(10, 10);
   public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
   public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
     @Override public void updateUI() {
@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       setLayoutOrientation(JList.VERTICAL_WRAP);
       setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
-      setFixedCellWidth(CELLSZ.width);
-      setFixedCellHeight(CELLSZ.height);
+      setFixedCellWidth(CELL_SIZE.width);
+      setFixedCellHeight(CELL_SIZE.height);
       setCellRenderer(new ContributionListRenderer());
       getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
       setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Font font = weekList.getFont().deriveFont(CELLSZ.height - 1f);
+    Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
 
     Box box = Box.createHorizontalBox();
     box.add(makeLabel("Less", font));
@@ -108,13 +108,13 @@ public final class MainPanel extends JPanel {
     rowHeader.setFont(font);
     rowHeader.setLayoutOrientation(JList.VERTICAL_WRAP);
     rowHeader.setVisibleRowCount(DayOfWeek.values().length);
-    rowHeader.setFixedCellHeight(CELLSZ.height);
+    rowHeader.setFixedCellHeight(CELL_SIZE.height);
 
     JPanel colHeader = new JPanel(new GridBagLayout());
     colHeader.setBackground(Color.WHITE);
     GridBagConstraints c = new GridBagConstraints();
     for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW; c.gridx++) {
-      colHeader.add(Box.createHorizontalStrut(CELLSZ.width), c); // grid guides
+      colHeader.add(Box.createHorizontalStrut(CELL_SIZE.width), c); // grid guides
     }
     c.anchor = GridBagConstraints.LINE_START;
     c.gridy = 1;
@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
       // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
       // System.out.println(weekNumberOfMonth);
       // ignore WeekFields#getMinimalDaysInFirstWeek()
-      boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1).getMonth();
+      boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isSimplyFirstWeekOfMonth) {
         colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
       }
@@ -202,7 +202,7 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
   protected CalendarViewListModel(LocalDate date) {
     super();
     int dow = date.get(WeekFields.of(Locale.getDefault()).dayOfWeek());
-    this.startDate = date.minusWeeks(WEEK_VIEW - 1).minusDays(dow - 1);
+    this.startDate = date.minusWeeks(WEEK_VIEW - 1L).minusDays(dow - 1L);
     this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
     this.contributionActivity = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
@@ -235,10 +235,10 @@ class ContributionIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return MainPanel.CELLSZ.width - 2;
+    return MainPanel.CELL_SIZE.width - 2;
   }
 
   @Override public int getIconHeight() {
-    return MainPanel.CELLSZ.height - 2;
+    return MainPanel.CELL_SIZE.height - 2;
   }
 }
