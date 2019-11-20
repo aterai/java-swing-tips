@@ -110,7 +110,7 @@ final class NimbusTabbedPanePainterUtils {
       // Paint tab shadow
       if (selected) {
         g2.setPaint(new Color(0, 0, 0, 20));
-        RoundRectangle2D rrect = new RoundRectangle2D.Double(0, 0, w, h, r, r);
+        RoundRectangle2D rrect = new RoundRectangle2D.Double(0d, 0d, w, h, r, r);
         for (int i = 0; i < x; i++) {
           rrect.setFrame(x - i, y - i, w + i + i, h);
           g2.fill(rrect);
@@ -119,17 +119,17 @@ final class NimbusTabbedPanePainterUtils {
 
       // Fill tab background
       g2.setColor(color);
-      g2.fill(new RoundRectangle2D.Double(x, y, w - 1, h + a, r, r));
+      g2.fill(new RoundRectangle2D.Double(x, y, w - 1d, h + a, r, r));
 
       if (selected) {
         // Draw a border
         g2.setStroke(new BasicStroke(STROKE_SIZE));
         g2.setPaint(TABAREA_BORDER);
-        g2.draw(new RoundRectangle2D.Double(x, y, w - 1, h + a, r, r));
+        g2.draw(new RoundRectangle2D.Double(x, y, w - 1d, h + a, r, r));
 
         // Overpaint the overexposed area with the background color
         g2.setColor(TAB_TABAREA_MASK);
-        g2.fill(new Rectangle2D.Double(0, height + STROKE_SIZE, width, OVERPAINT));
+        g2.fill(new Rectangle2D.Double(0d, height + STROKE_SIZE, width, OVERPAINT));
       }
       g2.dispose();
     }
@@ -140,7 +140,7 @@ final class NimbusTabbedPanePainterUtils {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      Shape r = new RoundRectangle2D.Double(0, h - OVERPAINT, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
+      Shape r = new RoundRectangle2D.Double(0d, h - OVERPAINT, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
       g2.setPaint(TABAREA_BACKGROUND);
       g2.fill(r);
       g2.setColor(TABAREA_BORDER);
@@ -156,7 +156,7 @@ final class NimbusTabbedPanePainterUtils {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(0, -OVERPAINT);
 
-      Shape r = new RoundRectangle2D.Double(0, 0, w - STROKE_SIZE, h - STROKE_SIZE + OVERPAINT, ARC, ARC);
+      Shape r = new RoundRectangle2D.Double(0d, 0d, w - STROKE_SIZE, h - STROKE_SIZE + OVERPAINT, ARC, ARC);
       g2.setPaint(CONTENT_BACKGROUND);
       g2.fill(r);
       g2.setColor(CONTENT_BORDER);
