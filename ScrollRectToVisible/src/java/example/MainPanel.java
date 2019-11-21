@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
   private final JList<LocalDateTime> list = new JList<>(listModel);
   private final JTree tree = new JTree();
   private final Timer timer;
-  private transient HierarchyListener hierarchyListener;
+  private transient HierarchyListener handler;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     table.setAutoCreateRowSorter(true);
     table.setFillsViewportHeight(true);
@@ -78,16 +78,16 @@ public final class MainPanel extends JPanel {
   }
 
   @Override public void updateUI() {
-    removeHierarchyListener(hierarchyListener);
+    removeHierarchyListener(handler);
     super.updateUI();
-    hierarchyListener = e -> {
+    handler = e -> {
       boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (isDisplayableChanged && Objects.nonNull(timer) && !e.getComponent().isDisplayable()) {
         System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
         timer.stop();
       }
     };
-    addHierarchyListener(hierarchyListener);
+    addHierarchyListener(handler);
   }
 
   public static void main(String[] args) {
