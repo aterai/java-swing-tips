@@ -52,20 +52,20 @@ public class MainPanel extends JPanel {
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(HIGHLIGHT_COLOR);
   private final JTextPane textPane = new JTextPane();
   private final JTextField field = new JTextField("Swing");
-  private final JButton prevButton = new JButton("⋀");
-  private final JButton nextButton = new JButton("⋁");
   private final JCheckBox checkCase = new JCheckBox("Match case");
   private final JCheckBox checkWord = new JCheckBox("Match whole word only");
   private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
   private final transient HighlightHandler handler = new HighlightHandler();
   protected int current;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     textPane.setEditable(false);
     textPane.setText(INIT_TXT);
+    JButton prevButton = new JButton("⋀");
     prevButton.setActionCommand("prev");
+
+    JButton nextButton = new JButton("⋁");
     nextButton.setActionCommand("next");
 
     StyledDocument doc = textPane.getStyledDocument();
