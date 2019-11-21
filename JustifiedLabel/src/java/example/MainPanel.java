@@ -112,14 +112,14 @@ class JustifiedLabel extends JLabel {
     float vw = (float) r.getWidth();
     if (jw > vw) {
       int num = gv.getNumGlyphs();
-      float xx = (jw - vw) / (float) (num - 1);
-      float xpos = num == 1 ? (jw - vw) * .5f : 0f;
+      float xx = (jw - vw) / (num - 1f);
+      float pos = num == 1 ? (jw - vw) * .5f : 0f;
       Point2D gmPos = new Point2D.Float();
       for (int i = 0; i < num; i++) {
         GlyphMetrics gm = gv.getGlyphMetrics(i);
-        gmPos.setLocation(xpos, 0f);
+        gmPos.setLocation(pos, 0f);
         gv.setGlyphPosition(i, gmPos);
-        xpos += gm.getAdvance() + xx;
+        pos += gm.getAdvance() + xx;
       }
     }
     return gv;
