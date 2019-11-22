@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    Ellipse2D circle = new Ellipse2D.Double(0, 0, 100, 100);
-    Ellipse2D ellipse = new Ellipse2D.Double(0, 0, 128, 100);
+    Ellipse2D circle = new Ellipse2D.Double(0d, 0d, 100d, 100d);
+    Ellipse2D ellipse = new Ellipse2D.Double(0d, 0d, 128d, 100d);
 
     JPanel p = new JPanel();
     p.add(makeLabel("Ellipse2D", circle));
