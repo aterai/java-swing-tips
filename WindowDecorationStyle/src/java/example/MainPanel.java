@@ -16,7 +16,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JButton button = new JButton("close");
@@ -51,6 +51,7 @@ public final class MainPanel extends JPanel {
     setBackground(new Color(1f, 1f, 1f, .01f));
     // <<<
   }
+
   // private ButtonGroup lafGroup;
   // private String lookAndFeel;
   // protected JMenu createLookAndFeelMenu() {
@@ -62,6 +63,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return menu;
   // }
+  //
   // protected JMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
   //   JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
   //   lafItem.setActionCommand(lafClassName);
@@ -77,6 +79,7 @@ public final class MainPanel extends JPanel {
   //   lafGroup.add(lafItem);
   //   return lafItem;
   // }
+  //
   // public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
   //   String oldLookAndFeel = this.lookAndFeel;
   //   if (!oldLookAndFeel.equals(lookAndFeel)) {
@@ -86,6 +89,7 @@ public final class MainPanel extends JPanel {
   //     firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
   //   }
   // }
+  //
   // private void updateLookAndFeel() {
   //   for (Window window: Window.getWindows()) {
   //     if (window instanceof RootPaneContainer) {
