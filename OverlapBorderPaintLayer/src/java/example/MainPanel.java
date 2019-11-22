@@ -227,9 +227,9 @@ class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
       p.lineTo(0d, r);
       p.quadTo(0d, 0d, r, 0d);
     } else {
-      p.lineTo(0, h);
+      p.lineTo(0d, h);
       p.quadTo(h2, h, h2, h2);
-      p.quadTo(h2, 0, 0, 0);
+      p.quadTo(h2, 0d, 0d, 0d);
     }
     p.closePath();
     return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
