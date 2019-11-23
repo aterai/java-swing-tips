@@ -24,7 +24,7 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 public final class MainPanel extends JPanel {
   public static final Color BACKGROUND = Color.BLACK; // RED;
   public static final Color FOREGROUND = Color.WHITE; // YELLOW;
-  public static final Color SELECTIONFOREGROUND = Color.CYAN;
+  public static final Color SELECTION_FOREGROUND = Color.CYAN;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
 
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
-    UIManager.put("ComboBox.selectionForeground", SELECTIONFOREGROUND);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
     UIManager.put("ComboBox.selectionBackground", BACKGROUND);
 
     UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
@@ -293,9 +293,9 @@ class KamabokoBorder extends RoundedCornerBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int r = 12;
-    int w = width - 1;
-    int h = height - 1;
+    double r = 12d;
+    double w = width - 1d;
+    double h = height - 1d;
 
     Path2D p = new Path2D.Double();
     p.moveTo(x, y + h);
