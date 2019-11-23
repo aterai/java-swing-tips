@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
   private final ImageIcon i2 = new ImageIcon(u2);
   private File file;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     label.setVerticalTextPosition(SwingConstants.BOTTOM);
     label.setVerticalAlignment(SwingConstants.CENTER);
@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
     // DragSource.getDefaultDragSource()
     //     .createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
     //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
-    //     File tmpfile = getFile();
-    //     if (Objects.isNull(tmpfile)) {
+    //     File tmpFile = getFile();
+    //     if (Objects.isNull(tmpFile)) {
     //       return;
     //     }
     //     DragSourceAdapter dsa = new DragSourceAdapter() {
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     //         }
     //       }
     //     };
-    //     dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
+    //     dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpFile), dsa);
     //   }
     // });
 
@@ -58,9 +58,9 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected Transferable createTransferable(JComponent c) {
-        File tmpfile = getFile();
-        if (Objects.nonNull(tmpfile)) {
-          return new TempFileTransferable(tmpfile);
+        File tmpFile = getFile();
+        if (Objects.nonNull(tmpFile)) {
+          return new TempFileTransferable(tmpFile);
         } else {
           return null;
         }
@@ -123,13 +123,13 @@ public final class MainPanel extends JPanel {
   protected void setFile(File file) {
     this.file = file;
     label.setIcon(i2);
-    label.setText("tmpfile#exists(): true(draggable)");
+    label.setText("tmpFile#exists(): true(draggable)");
   }
 
   protected void clearFile() {
     file = null;
     label.setIcon(i1);
-    label.setText("tmpfile#exists(): false");
+    label.setText("tmpFile#exists(): false");
   }
 
   public static void main(String[] args) {
