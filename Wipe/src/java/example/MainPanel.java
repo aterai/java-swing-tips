@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private Wipe mode = Wipe.IN;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     Timer animator = new Timer(5, null);
     ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
     animator.start();
   }
 
-  protected void setWipeMode(Wipe wmode) {
-    this.mode = wmode;
+  protected void setWipeMode(Wipe wipeMode) {
+    this.mode = wipeMode;
   }
 
   protected Wipe getWipeMode() {
