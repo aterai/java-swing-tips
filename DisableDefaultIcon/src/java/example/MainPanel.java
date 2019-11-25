@@ -14,7 +14,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final URL url = getClass().getResource("16x16transparent.png");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JRadioButton r1 = new JRadioButton("img=null");
