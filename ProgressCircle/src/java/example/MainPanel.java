@@ -104,16 +104,16 @@ class ProgressCircleUI extends BasicProgressBarUI {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-    double degree = 360 * progressBar.getPercentComplete();
+    double degree = 360d * progressBar.getPercentComplete();
     double sz = Math.min(barRectWidth, barRectHeight);
     double cx = b.left + barRectWidth * .5;
     double cy = b.top + barRectHeight * .5;
     double or = sz * .5;
     // double ir = or - 20;
     double ir = or * .5; // .8;
-    Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2, ir * 2);
+    Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d);
     Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
-    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, 90 - degree, degree, Arc2D.PIE);
+    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, 90d - degree, degree, Arc2D.PIE);
 
     Area foreground = new Area(sector);
     Area background = new Area(outer);
