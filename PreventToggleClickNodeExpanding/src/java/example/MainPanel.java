@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -82,7 +83,7 @@ public final class MainPanel extends JPanel {
   }
 
   protected static File getFileFromTreePath(TreePath path) {
-    Object o = path.getLastPathComponent();
+    Object o = Objects.nonNull(path) ? path.getLastPathComponent() : null;
     if (o instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
       Object uo = node.getUserObject();
