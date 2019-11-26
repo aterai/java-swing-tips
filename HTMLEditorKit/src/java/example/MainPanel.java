@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
   private final JTextPane textPane = new JTextPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     textPane.setComponentPopupMenu(new HtmlColorPopupMenu());
     // textPane.setEditorKit(new HTMLEditorKit());
