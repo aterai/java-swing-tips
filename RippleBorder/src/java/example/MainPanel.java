@@ -11,14 +11,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
-    box.add(makeLabel("asdfasdfas"));
-    box.add(makeLabel("zxcvzxcvzxcvzxcvzxcvzxcvzxcv"));
+    box.add(makeLabel("00000000000"));
+    box.add(makeLabel("111111111111111111111111111"));
     box.add(makeLabel("1235436873434325"));
-    box.add(makeLabel("asdfasdfas"));
-    box.add(makeLabel("qwerqwerqwerqwerqwerqwerqwewretwertwetrerqwerqw"));
+    box.add(makeLabel("22222222"));
+    box.add(makeLabel("3333333333333333333333333333333333333333333"));
     box.add(makeLabel("1235436873434325"));
     box.add(Box.createVerticalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -56,8 +56,8 @@ class RippleBorder extends EmptyBorder {
   protected final Timer animator;
   private float count = 1f;
 
-  protected RippleBorder(Component c, int width) {
-    super(width, width, width, width);
+  protected RippleBorder(Component c, int size) {
+    super(size, size, size, size);
     animator = new Timer(80, e -> {
       c.repaint();
       count += .9f;
