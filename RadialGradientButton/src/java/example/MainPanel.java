@@ -106,11 +106,14 @@ class RadialGradientButton extends JButton {
       }
 
       @Override public void mouseMoved(MouseEvent e) {
-        pt.setLocation(e.getPoint());
-        repaint();
+        update(e);
       }
 
       @Override public void mouseDragged(MouseEvent e) {
+        update(e);
+      }
+
+      private void update(MouseEvent e) {
         pt.setLocation(e.getPoint());
         repaint();
       }
@@ -137,7 +140,7 @@ class RadialGradientButton extends JButton {
   protected void update() {
     if (!getBounds().equals(base)) {
       base = getBounds();
-      shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
     }
   }
 
@@ -173,7 +176,7 @@ class RadialGradientButton extends JButton {
       g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
       g2.setComposite(AlphaComposite.SrcAtop);
       g2.setClip(shape);
-      g2.fill(new Ellipse2D.Double(pt.x - radius, pt.y - radius, r2, r2));
+      g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
     }
     g2.dispose();
 
@@ -220,11 +223,14 @@ class RadialGradientPaintButton extends JButton {
       }
 
       @Override public void mouseMoved(MouseEvent e) {
-        pt.setLocation(e.getPoint());
-        repaint();
+        update(e);
       }
 
       @Override public void mouseDragged(MouseEvent e) {
+        update(e);
+      }
+
+      private void update(MouseEvent e) {
         pt.setLocation(e.getPoint());
         repaint();
       }
@@ -256,7 +262,7 @@ class RadialGradientPaintButton extends JButton {
       if (w > 0 && h > 0) {
         buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       }
-      shape = new RoundRectangle2D.Double(0, 0, w - 1, h - 1, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC_WIDTH, ARC_HEIGHT);
     }
     if (buf == null) {
       return;
@@ -276,7 +282,7 @@ class RadialGradientPaintButton extends JButton {
       g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
       g2.setComposite(AlphaComposite.SrcAtop);
       // g2.setClip(shape);
-      g2.fill(new Ellipse2D.Double(pt.x - radius, pt.y - radius, r2, r2));
+      g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
     }
     g2.dispose();
   }
