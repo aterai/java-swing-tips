@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
       f.pack();
       Container c = b.getTopLevelAncestor();
       if (c instanceof Window) {
-        Point pt = ((Window) c).getLocation();
+        Point pt = c.getLocation();
         f.setLocation(pt.x, pt.y + f.getSize().height);
       }
       // f.setLocationByPlatform(true);

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
       if (w instanceof Window) {
         // Setting a specific location for a floating JToolBar
         // https://stackoverflow.com/questions/41701664/setting-a-specific-location-for-a-floating-jtoolbar
-        Point pt = ((Window) w).getLocation();
+        Point pt = w.getLocation();
         BasicToolBarUI ui = (BasicToolBarUI) toolbar.getUI();
         ui.setFloatingLocation(pt.x + 120, pt.y + 160);
         ui.setFloating(true, null);
