@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     //   ((BasicToolBarUI) toolbar.getUI()).setFloating(true, null);
     //   Container c = toolbar.getTopLevelAncestor();
     //   if (c instanceof Window) {
-    //     ((Window) c).setLocation(pt.x + 120, pt.y + 160);
+    //     c.setLocation(pt.x + 120, pt.y + 160);
     //   }
     // });
 

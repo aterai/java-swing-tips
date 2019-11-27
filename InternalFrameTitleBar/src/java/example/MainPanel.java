@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 
     // frame.addWindowListener(new WindowAdapter() {
     //   @Override public void windowLostFocus(FocusEvent e) {
-    //     System.out.println("bbbbbbbbb");
+    //     System.out.println("222222222");
     //     try {
     //       internal.setSelected(false);
     //     } catch (PropertyVetoException ex) {
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
     //     }
     //   }
     //   @Override public void windowGainedFocus(FocusEvent e) {
-    //     System.out.println("aaaaaaaa");
+    //     System.out.println("111111111");
     //     try {
     //       internal.setSelected(true);
     //     } catch (PropertyVetoException ex) {
@@ -131,9 +131,8 @@ class DragWindowListener extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Component c = SwingUtilities.getRoot(e.getComponent());
     if (c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
-      Window window = (Window) c;
-      Point pt = window.getLocation();
-      window.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
+      Point pt = c.getLocation();
+      c.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
     }
   }
 }

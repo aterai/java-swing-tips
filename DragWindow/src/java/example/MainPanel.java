@@ -152,9 +152,8 @@ class DragWindowListener extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Component c = SwingUtilities.getRoot(e.getComponent());
     if (c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
-      Window window = (Window) c;
-      Point pt = window.getLocation();
-      window.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
+      Point pt = c.getLocation();
+      c.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
     }
   }
 }
