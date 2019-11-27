@@ -74,9 +74,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
   public static final int STEP = 3;
   private final JWindow dialog = new JWindow((Frame) null);
   private final Timer animator = new Timer(DELAY, null);
-  private transient ActionListener listener;
-  private int dx;
-  private int dy;
+  private ActionListener listener;
 
   public void startSlideIn(SlideInAnimation slideInAnimation) {
     if (animator.isRunning()) {
@@ -99,8 +97,8 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     Dimension d = dialog.getContentPane().getPreferredSize();
     GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
     Rectangle desktopBounds = env.getMaximumWindowBounds();
-    dx = desktopBounds.width - d.width;
-    dy = desktopBounds.height;
+    int dx = desktopBounds.width - d.width;
+    int dy = desktopBounds.height;
     dialog.setLocation(new Point(dx, dy));
     dialog.setVisible(true);
 
@@ -153,9 +151,8 @@ class DragWindowListener extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Component c = SwingUtilities.getRoot(e.getComponent());
     if (c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
-      Window window = (Window) c;
-      Point pt = window.getLocation();
-      window.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
+      Point pt = c.getLocation();
+      c.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
     }
   }
 }
@@ -184,9 +181,9 @@ final class AnimationUtil {
     double ret;
     boolean isFirstHalf = t < .5;
     if (isFirstHalf) {
-      ret = .5 * intpow(t * 2d, N);
+      ret = .5 * intPow(t * 2d, N);
     } else {
-      ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
+      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
     }
     return ret;
   }
@@ -195,7 +192,7 @@ final class AnimationUtil {
   // http://d.hatena.ne.jp/rexpit/20110328/1301305266
   // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
   // http://www.osix.net/modules/article/?id=696
-  public static double intpow(double da, int ib) {
+  public static double intPow(double da, int ib) {
     int b = ib;
     if (b < 0) {
       throw new IllegalArgumentException("B must be a positive integer or zero");
