@@ -12,48 +12,48 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    private int prevHeight = -1;
-    private int prevCount = -1;
-
-    private void updateRowsHeight(JViewport vport) {
-      int height = vport.getExtentSize().height;
-      int rowCount = getModel().getRowCount();
-      int defaultRowHeight = height / rowCount;
-      if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
-        // int remainder = height - rowCount * defaultRowHeight;
-        int remainder = height % rowCount;
-        for (int i = 0; i < rowCount; i++) {
-          int a = remainder > 0 ? i == rowCount - 1 ? remainder : 1 : 0;
-          setRowHeight(i, defaultRowHeight + a);
-          remainder--;
-        }
-      }
-      prevHeight = height;
-      prevCount = rowCount;
-    }
-
-    @Override public void doLayout() {
-      super.doLayout();
-      Class<JViewport> clz = JViewport.class;
-      Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-        .filter(clz::isInstance).map(clz::cast)
-        .ifPresent(this::updateRowsHeight);
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      private int prevHeight = -1;
+      private int prevCount = -1;
+
+      private void updateRowsHeight(JViewport vport) {
+        int height = vport.getExtentSize().height;
+        int rowCount = getModel().getRowCount();
+        int defaultRowHeight = height / rowCount;
+        if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
+          // int remainder = height - rowCount * defaultRowHeight;
+          int remainder = height % rowCount;
+          for (int i = 0; i < rowCount; i++) {
+            int a = remainder > 0 ? i == rowCount - 1 ? remainder : 1 : 0;
+            setRowHeight(i, defaultRowHeight + a);
+            remainder--;
+          }
+        }
+        prevHeight = height;
+        prevCount = rowCount;
+      }
+
+      @Override public void doLayout() {
+        super.doLayout();
+        Class<JViewport> clz = JViewport.class;
+        Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+          .filter(clz::isInstance).map(clz::cast)
+          .ifPresent(this::updateRowsHeight);
+      }
+    };
 
     JScrollPane scroll = new JScrollPane(table);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
