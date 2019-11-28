@@ -37,9 +37,9 @@ public final class MainPanel extends JPanel {
           // int remainder = height - rowCount * defaultRowHeight;
           int remainder = height % rowCount;
           for (int i = 0; i < rowCount; i++) {
-            int a = remainder > 0 ? i == rowCount - 1 ? remainder : 1 : 0;
+            boolean isLastRow = i == rowCount - 1;
+            int a = Math.max(0, isLastRow ? remainder-- : 1);
             setRowHeight(i, defaultRowHeight + a);
-            remainder--;
           }
         }
         prevHeight = height;
