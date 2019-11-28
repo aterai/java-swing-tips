@@ -73,9 +73,8 @@ public final class MainPanel extends JPanel {
     return table;
   }
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     JDesktopPane p = new JDesktopPane();
 
     JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
