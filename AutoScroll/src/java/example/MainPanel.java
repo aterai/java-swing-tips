@@ -66,7 +66,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
   private final Point startPt = new Point();
   private final Point move = new Point();
   private final Timer scroller = new Timer(DELAY, null);
-  private transient ActionListener listener;
+  private ActionListener listener;
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
     if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
@@ -128,7 +128,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
   private final Point startPt = new Point();
   private final Point move = new Point();
   private final Timer scroller = new Timer(DELAY, null);
-  private transient ActionListener listener;
+  private ActionListener listener;
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
     if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
