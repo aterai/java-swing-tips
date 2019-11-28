@@ -37,6 +37,7 @@ public final class MainPanel extends JPanel {
       try {
         Element elem = root.getElement(i - 1);
         Rectangle rect = textArea.modelToView(elem.getStartOffset());
+        // Java 9: Rectangle rect = textArea.modelToView2D(elem.getStartOffset()).getBounds();
         Rectangle vr = scroll.getViewport().getViewRect();
         rect.setSize(10, vr.height);
         textArea.scrollRectToVisible(rect);
@@ -140,6 +141,7 @@ class LineNumberView extends JComponent {
   private int getLineAtPoint(int y) {
     Element root = textArea.getDocument().getDefaultRootElement();
     int pos = textArea.viewToModel(new Point(0, y));
+    // Java 9: int pos = textArea.viewToModel2D(new Point(0, y));
     return root.getElementIndex(pos);
   }
 
