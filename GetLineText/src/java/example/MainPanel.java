@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     StringBuilder sb = new StringBuilder();
-    String dummy = "aaaaaaaaaaaaa\n";
+    String dummy = "1111111111111111\n";
     String comment = "#comment\n";
     IntStream.range(0, 200).forEach(i -> {
       sb.append(dummy);
@@ -178,6 +178,7 @@ class LineNumberView extends JComponent {
   private int getLineAtPoint(int y) {
     Element root = textArea.getDocument().getDefaultRootElement();
     int pos = textArea.viewToModel(new Point(0, y));
+    // Java 9: int pos = textArea.viewToModel2D(new Point(0, y));
     return root.getElementIndex(pos);
   }
 

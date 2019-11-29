@@ -107,6 +107,7 @@ class SelectWordCaret extends DefaultCaret {
   @SuppressWarnings("PMD.UseVarargs")
   private int getCaretPositionByLocation(JTextComponent c, Point pt, Position.Bias[] biasRet) {
     int pos = c.getUI().viewToModel(c, pt, biasRet);
+    // Java 9: int pos = c.getUI().viewToModel2D(c, pt, biasRet);
     if (biasRet[0] == null) {
       biasRet[0] = Position.Bias.Forward;
     }

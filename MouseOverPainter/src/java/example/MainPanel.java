@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     HighlightCursorTextArea textArea = new HighlightCursorTextArea();
     textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    textArea.setText("MouseOver Painter Test\n\naaaaaaaaaaafasdfas");
+    textArea.setText("MouseOver Painter Test\n\n**********************");
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.getViewport().setBackground(Color.WHITE);
     add(scroll);
@@ -112,6 +112,7 @@ class HighlightCursorTextArea extends JTextArea {
     private int getLineAtPoint(Point pt) {
       Element root = getDocument().getDefaultRootElement();
       return root.getElementIndex(viewToModel(pt));
+      // Java 9: return root.getElementIndex(viewToModel2D(pt));
     }
   }
 }

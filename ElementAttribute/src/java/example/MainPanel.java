@@ -153,6 +153,7 @@ class CustomTooltipEditorPane extends JEditorPane {
     JEditorPane editor = (JEditorPane) e.getComponent();
     if (!editor.isEditable()) {
       int pos = editor.getUI().viewToModel(editor, e.getPoint(), bias);
+      // Java 9: int pos = editor.getUI().viewToModel2D(editor, e.getPoint(), bias);
       if (bias[0] == Position.Bias.Backward && pos > 0) {
         pos--;
       }
@@ -164,9 +165,9 @@ class CustomTooltipEditorPane extends JEditorPane {
     return title;
   }
 
-  private Optional<String> getSpanTitleAttribute(HTMLDocument hdoc, int pos) {
-    // HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
-    Element elem = hdoc.getCharacterElement(pos);
+  private Optional<String> getSpanTitleAttribute(HTMLDocument doc, int pos) {
+    // HTMLDocument doc = (HTMLDocument) editor.getDocument();
+    Element elem = doc.getCharacterElement(pos);
     // if (!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
     //   elem = null;
     // }

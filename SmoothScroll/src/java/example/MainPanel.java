@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
-    textArea.setText(String.join("\n", Collections.nCopies(2000, "aaaaaaaaaaaaa")));
+    textArea.setText(String.join("\n", Collections.nCopies(2000, "1111111111111")));
 
     scroll.setRowHeaderView(new LineNumberView(textArea));
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
@@ -50,6 +50,7 @@ public final class MainPanel extends JPanel {
     try {
       Element elem = root.getElement(ln - 1);
       Rectangle dest = textArea.modelToView(elem.getStartOffset());
+      // Java 9: Rectangle dest = textArea.modelToView2D(elem.getStartOffset()).getBounds();
       Rectangle current = scroll.getViewport().getViewRect();
       new Timer(20, e -> {
         Timer animator = (Timer) e.getSource();
@@ -154,6 +155,7 @@ class LineNumberView extends JComponent {
   private int getLineAtPoint(int y) {
     Element root = textArea.getDocument().getDefaultRootElement();
     int pos = textArea.viewToModel(new Point(0, y));
+    // Java 9: int pos = textArea.viewToModel2D(new Point(0, y));
     return root.getElementIndex(pos);
   }
 

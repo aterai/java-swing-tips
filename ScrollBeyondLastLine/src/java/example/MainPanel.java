@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         return d;
       }
     };
-    textArea.setText("aaaaaaaaa\nbbbbbbbbbbbbbb\n\n\n\n\n\n\n\n\n\nccccccccccccc");
+    textArea.setText("aaa aaa aaa\nbbb bbb bbb bbb bbb\n\n\n\n\n\n\n\n\n\nccc ccc ccc ccc");
     textArea.setCaretPosition(0);
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
@@ -122,6 +122,7 @@ class LineNumberView extends JComponent {
   private int getLineAtPoint(int y) {
     Element root = textArea.getDocument().getDefaultRootElement();
     int pos = textArea.viewToModel(new Point(0, y));
+    // Java 9: int pos = textArea.viewToModel2D(new Point(0, y));
     return root.getElementIndex(pos);
   }
 
