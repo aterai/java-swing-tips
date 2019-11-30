@@ -115,8 +115,8 @@ class WholeLineHighlightPainter extends DefaultHighlightPainter {
 }
 
 class FocusCaret extends DefaultCaret {
-  private final HighlightPainter nonFocusPainter;
-  private final HighlightPainter selectionPainter;
+  private final transient HighlightPainter nonFocusPainter;
+  private final transient HighlightPainter selectionPainter;
 
   protected FocusCaret(HighlightPainter selectionPainter, HighlightPainter nonFocusPainter) {
     super();
