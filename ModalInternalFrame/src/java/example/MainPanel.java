@@ -46,11 +46,11 @@ public final class MainPanel extends JPanel {
     JMenuItem menuItem = new JMenuItem(new AbstractAction("New Frame") {
       private int openFrameCount;
       @Override public void actionPerformed(ActionEvent e) {
-        JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
-        iframe.setSize(130, 100);
-        iframe.setLocation(30 * openFrameCount, 30 * openFrameCount);
-        getDesktop().add(iframe);
-        iframe.setVisible(true);
+        JInternalFrame frame = new JInternalFrame("title", true, true, true, true);
+        frame.setSize(130, 100);
+        frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
+        getDesktop().add(frame);
+        frame.setVisible(true);
         openFrameCount++;
       }
     });
@@ -190,7 +190,7 @@ public final class MainPanel extends JPanel {
     BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
     Container titleBar = ui.getNorthPane();
     Stream.of(titleBar.getComponents())
-        .filter(c -> JLabel.class.isInstance(c) || "InternalFrameTitlePane.menuButton".equals(c.getName()))
+        .filter(c -> c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName()))
         .forEach(MainPanel::removeComponentMouseListener);
     // for (Component c: titleBar.getComponents()) {
     //   if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
@@ -201,7 +201,7 @@ public final class MainPanel extends JPanel {
 
   protected static void removeComponentMouseListener(Component c) {
     for (MouseListener ml: c.getMouseListeners()) {
-      ((JComponent) c).removeMouseListener(ml);
+      c.removeMouseListener(ml);
     }
   }
 
