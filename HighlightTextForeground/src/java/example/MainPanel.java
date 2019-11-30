@@ -104,6 +104,7 @@ public class MainPanel extends JPanel {
 
   private static void scrollToCenter(JTextComponent tc, int pos) throws BadLocationException {
     Rectangle rect = tc.modelToView(pos);
+    // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
     Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
     if (Objects.nonNull(rect) && c instanceof JViewport) {
       rect.x = (int) (rect.x - c.getWidth() * .5);
