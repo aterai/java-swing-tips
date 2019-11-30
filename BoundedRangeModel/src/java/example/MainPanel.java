@@ -19,10 +19,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   protected static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
   protected static final String PATTERN = "Swing";
-  protected final List<Integer> emphasisIndices = new ArrayList<>();
+  protected final transient List<Integer> emphasisIndices = new ArrayList<>();
   protected final DefaultTableModel model = new DefaultTableModel(0, 2);
   protected final JTable table = new JTable(model) {
     @Override public void updateUI() {
