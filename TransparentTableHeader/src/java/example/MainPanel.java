@@ -162,7 +162,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TransparentHeader extends JLabel implements TableCellRenderer {
-  private final Border border = BorderFactory.createCompoundBorder(
+  private final transient Border border = BorderFactory.createCompoundBorder(
       BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
       BorderFactory.createEmptyBorder(2, 2, 1, 2));
   private final Color alphaZero = new Color(0x0, true);
