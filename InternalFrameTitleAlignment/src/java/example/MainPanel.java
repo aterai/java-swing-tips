@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame frame = new JInternalFrame("title: " + titleAlignment, true, true, true, true);
 
     BasicInternalFrameUI ui = (BasicInternalFrameUI) frame.getUI();
-    JComponent titleBar = (JComponent) ui.getNorthPane();
+    JComponent titleBar = ui.getNorthPane();
     UIDefaults d = new UIDefaults();
     d.put("InternalFrame:InternalFrameTitlePane.titleAlignment", titleAlignment);
     titleBar.putClientProperty("Nimbus.Overrides", d);
