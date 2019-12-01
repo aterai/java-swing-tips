@@ -22,20 +22,19 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "String"};
-  private final Object[][] data = {
-    {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
-    {"AAA", "bbbbbb"}, {"CCC", "ddddddd"}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "String"};
+    Object[][] data = {
+      {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
+      {"AAA", "bbb bbb"}, {"CCC", "ddd ddd"}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
     JTextComponent textField = (JTextComponent) ce.getComponent();
@@ -102,9 +101,12 @@ class TextComponentPopupMenu extends JPopupMenu {
     tc.getDocument().addUndoableEditListener(manager);
     tc.getActionMap().put("undo", undoAction);
     tc.getActionMap().put("redo", redoAction);
-    InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
+    InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
+    // Java 10:
+    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "undo");
+    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "redo");
 
     addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuCanceled(PopupMenuEvent e) {
