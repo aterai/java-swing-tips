@@ -198,7 +198,7 @@ class ToggleButtonBarCellIcon implements Icon {
 
 class EditMenuLayerUI<V extends Component> extends LayerUI<V> {
   private final AbstractButton lastButton;
-  private Shape shape;
+  private transient Shape shape;
 
   protected EditMenuLayerUI(AbstractButton button) {
     super();
