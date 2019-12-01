@@ -20,17 +20,15 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
-  private final List<String> model1 = Arrays.asList("Disabled", "Enabled", "Debug mode");
-  private final List<String> model2 = Arrays.asList("Disabled", "Enabled");
-
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultMutableTreeNode root = new DefaultMutableTreeNode(new PluginNode("Plugins"));
+    List<String> model1 = Arrays.asList("Disabled", "Enabled", "Debug mode");
     root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 1", model1)));
     root.add(new DefaultMutableTreeNode(new PluginNode("Plugin 2", model1)));
     DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(new PluginNode("Plugin 3"));
     root.add(leaf);
+    List<String> model2 = Arrays.asList("Disabled", "Enabled");
     leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3A", model2)));
     leaf.add(new DefaultMutableTreeNode(new PluginNode("Plugin 3B", model2)));
 
@@ -241,7 +239,7 @@ class PluginCellEditor extends DefaultCellEditor {
       if (o instanceof JComboBox) {
         panel.comboBox.showPopup();
       } else if (Objects.nonNull(o)) {
-        Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, (Component) o);
+        Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
         if (c instanceof JComboBox) {
           panel.comboBox.showPopup();
         }
