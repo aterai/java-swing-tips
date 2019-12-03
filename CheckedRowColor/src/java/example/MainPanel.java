@@ -84,13 +84,14 @@ public final class MainPanel extends JPanel {
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
-        Boolean isChecked = (Boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
+        boolean isChecked = (boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
         c.setForeground(getForeground());
         c.setBackground(isChecked ? Color.ORANGE : getBackground());
         return c;
       }
     };
   }
+
   // // TEST:
   // public static JTable makeTable2(TableModel model) {
   //   JTable table = new JTable(model);
@@ -101,6 +102,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return table;
   // }
+  //
   // private static class RowColorTableRenderer extends DefaultTableCellRenderer {
   //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
   //     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
