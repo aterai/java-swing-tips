@@ -20,11 +20,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
-  protected static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
-  protected static final String PATTERN = "Swing";
-  protected final transient List<Integer> emphasisIndices = new ArrayList<>();
-  protected final DefaultTableModel model = new DefaultTableModel(0, 2);
-  protected final JTable table = new JTable(model) {
+  private static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
+  private static final String PATTERN = "Swing";
+  private final transient List<Integer> emphasisIndices = new ArrayList<>();
+  private final DefaultTableModel model = new DefaultTableModel(0, 2);
+  private final JTable table = new JTable(model) {
     @Override public void updateUI() {
       setDefaultRenderer(Object.class, null);
       super.updateUI();
@@ -41,9 +41,9 @@ public final class MainPanel extends JPanel {
       setFillsViewportHeight(true);
     }
   };
-  protected final JScrollPane scroll = new JScrollPane(table);
-  protected final JLabel label = new JLabel();
-  protected final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
+  private final JScrollPane scroll = new JScrollPane(table);
+  private final JLabel label = new JLabel();
+  public final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
       processHighlightBarMouseEvent(e);
     }
 
-    protected final void processHighlightBarMouseEvent(MouseEvent e) {
+    private void processHighlightBarMouseEvent(MouseEvent e) {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scrollbar.getModel();
@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected final void updateHighlighter() {
+  private void updateHighlighter() {
     for (int i = 0; i < table.getRowCount(); i++) {
       if (Objects.equals(PATTERN, table.getValueAt(i, 0))) {
         emphasisIndices.add(i);
