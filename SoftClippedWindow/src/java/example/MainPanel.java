@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
 
-    BufferedImage img = null;
+    BufferedImage img;
     try {
       img = ImageIO.read(getClass().getResource("test.jpg"));
     } catch (IOException ex) {
