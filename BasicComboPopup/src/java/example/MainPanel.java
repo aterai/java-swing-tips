@@ -64,7 +64,8 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         try {
           Rectangle rect = jtp.modelToView(jtp.getCaretPosition());
-          popup.show(jtp, rect.x, rect.y + rect.height);
+          // Java 9: Rectangle rect = jtp.modelToView2D(jtp.getCaretPosition()).getBounds();
+          popup.show(jtp, rect.x, (int) rect.getMaxY());
           EventQueue.invokeLater(() -> {
             Container c = popup.getTopLevelAncestor();
             if (c instanceof Window) {
