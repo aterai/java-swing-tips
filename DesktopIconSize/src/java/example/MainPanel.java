@@ -5,18 +5,20 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected static final Dimension ICONSZ = new Dimension(150, 40);
-  protected final JDesktopPane desktop = new JDesktopPane();
-  protected final String str = String.format("JDesktopIcon: %dx%d", ICONSZ.width, ICONSZ.height);
-  protected final JCheckBox check = new JCheckBox(str);
+public final class MainPanel extends JPanel {
+  private static final Dimension ICON_SIZE = new Dimension(150, 40);
+  private final String info = String.format("JDesktopIcon: %dx%d", ICON_SIZE.width, ICON_SIZE.height);
+  public final JCheckBox check = new JCheckBox(info);
+  private int num;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    check.setOpaque(false);
+
+    JDesktopPane desktop = new JDesktopPane();
     desktop.setDesktopManager(new DefaultDesktopManager() {
       @Override protected Rectangle getBoundsForIconOf(JInternalFrame f) {
         Rectangle r = super.getBoundsForIconOf(f);
@@ -26,28 +28,28 @@ public class MainPanel extends JPanel {
       }
     });
 
+    JButton button = new JButton("add");
+    button.addActionListener(e -> {
+      JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
+      desktop.add(f);
+      desktop.getDesktopManager().activateFrame(f);
+      num++;
+    });
+
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    mb.add(new JButton(new AbstractAction("add") {
-      private int num;
-      @Override public void actionPerformed(ActionEvent e) {
-        JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
-        desktop.add(f);
-        desktop.getDesktopManager().activateFrame(f);
-        num++;
-      }
-    }));
+    mb.add(button);
     mb.add(Box.createHorizontalGlue());
     mb.add(check);
 
-    addIconifiedFrame(createFrame("Frame", 30, 10));
-    addIconifiedFrame(createFrame("Frame", 50, 30));
+    addIconifiedFrame(desktop, createFrame("Frame", 30, 10));
+    addIconifiedFrame(desktop, createFrame("Frame", 50, 30));
     add(desktop);
     add(mb, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final JInternalFrame createFrame(String t, int x, int y) {
+  private JInternalFrame createFrame(String t, int x, int y) {
     JInternalFrame f = new JInternalFrame(t, true, true, true, true);
     f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
       @Override public Dimension getPreferredSize() {
@@ -59,7 +61,7 @@ public class MainPanel extends JPanel {
         if (getUI().getClass().getName().contains("MotifDesktopIconUI")) {
           return new Dimension(64, 64 + 32);
         } else {
-          return ICONSZ;
+          return ICON_SIZE;
         }
       }
     });
@@ -69,7 +71,7 @@ public class MainPanel extends JPanel {
     return f;
   }
 
-  private void addIconifiedFrame(JInternalFrame f) {
+  private static void addIconifiedFrame(JDesktopPane desktop, JInternalFrame f) {
     desktop.add(f);
     try {
       f.setIcon(true);
@@ -85,7 +87,7 @@ public class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      UIManager.put("DesktopIcon.width", ICONSZ.width);
+      UIManager.put("DesktopIcon.width", ICON_SIZE.width);
       // TEST:
       // Font font = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));
