@@ -154,7 +154,7 @@ class JustifiedLabel extends JLabel {
 //       g2.setPaint(getBackground());
 //       g2.fillRect(0, 0, getWidth(), getHeight());
 //       g2.setPaint(getForeground());
-//       g2.drawGlyphVector(gvText, ins.left, ins.top + getFont().getSize());
+//       g2.drawGlyphVector(gvText, ins.left, ins.top + getFont().getSize2D());
 //     } else {
 //       super.paintComponent(g);
 //     }
