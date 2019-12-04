@@ -26,19 +26,16 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 1));
 
     JTable table = makeTable();
-
     ActionMap am = table.getActionMap();
-    Action sncc = am.get("selectNextColumnCell");
-
-    Action action = new AbstractAction() {
+    Action action = am.get("selectNextColumnCell");
+    am.put("selectNextColumnCell2", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         if (!table.isEditing() || !isEditorFocusCycle(table.getEditorComponent())) {
           // System.out.println("Exit editor");
-          sncc.actionPerformed(e);
+          action.actionPerformed(e);
         }
       }
-    };
-    am.put("selectNextColumnCell2", action);
+    });
 
     InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "selectNextColumnCell2");
@@ -106,9 +103,9 @@ enum Permissions { EXECUTE, WRITE, READ }
 
 class CheckBoxesPanel extends JPanel {
   protected final String[] titles = {"r", "w", "x"};
-  protected final List<JCheckBox> buttons = new ArrayList<>(titles.length);
-  protected Border focusBorder; // = UIManager.getBorder("Table.focusCellHighlightBorder");
-  protected Border noFocusBorder;
+  protected final transient List<JCheckBox> buttons = new ArrayList<>(titles.length);
+  protected transient Border focusBorder; // = UIManager.getBorder("Table.focusCellHighlightBorder");
+  protected transient Border noFocusBorder;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -179,17 +176,15 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
   protected CheckBoxesEditor() {
     super();
     ActionMap am = renderer.getActionMap();
-    Stream.of(renderer.titles).forEach(t -> {
-      am.put(t, new AbstractAction(t) {
-        @Override public void actionPerformed(ActionEvent e) {
-          renderer.buttons.stream()
-              .filter(b -> b.getText().trim().equals(t))
-              .findFirst()
-              .ifPresent(JCheckBox::doClick);
-          // fireEditingStopped();
-        }
-      });
-    });
+    Stream.of(renderer.titles).forEach(t -> am.put(t, new AbstractAction(t) {
+      @Override public void actionPerformed(ActionEvent e) {
+        renderer.buttons.stream()
+          .filter(b -> b.getText().trim().equals(t))
+          .findFirst()
+          .ifPresent(JCheckBox::doClick);
+        // fireEditingStopped();
+      }
+    }));
 
     // TEST:
     // renderer.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
@@ -197,11 +192,13 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
     //     // return !Objects.equals(c, textarea) && super.accept(c);
     //     return super.accept(c);
     //   }
+    //
     //   @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
     //     // int i = order.indexOf(aComponent);
     //     System.out.println("getComponentAfter getComponentAfter getComponentAfter");
     //     return super.getComponentAfter(focusCycleRoot, aComponent);
     //   }
+    //
     //   @Override public Component getDefaultComponent(Container container) {
     //     // return button;
     //     return renderer.buttons.get(0); // getRootPane().getDefaultButton();
