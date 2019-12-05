@@ -120,7 +120,7 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
       Component c = super.prepareRenderer(renderer, row, column);
       c.setForeground(Color.BLACK);
-      if (mouseHandler != null && mouseHandler.isHighlightableRow(row)) {
+      if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
         c.setBackground(new Color(0xFF_C8_C8));
       } else if (isRowSelected(row)) {
         c.setBackground(Color.CYAN);
@@ -140,7 +140,7 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
       getTableHeader().setReorderingAllowed(false);
     }
   };
-  private final List<E> list;
+  private final transient List<E> list;
 
   protected DropdownTableComboBox(List<E> list, DefaultTableModel model) {
     super();
@@ -199,9 +199,9 @@ class ComboTablePopup extends BasicComboPopup {
   @Override public void show() {
     if (isEnabled()) {
       Insets ins = scroll.getInsets();
-      int tableh = table.getPreferredSize().height;
-      int headerh = table.getTableHeader().getPreferredSize().height;
-      scroll.setPreferredSize(new Dimension(240, tableh + headerh + ins.top + ins.bottom));
+      int tableHeight = table.getPreferredSize().height;
+      int headerHeight = table.getTableHeader().getPreferredSize().height;
+      scroll.setPreferredSize(new Dimension(240, tableHeight + headerHeight + ins.top + ins.bottom));
       super.removeAll();
       super.add(scroll);
       setRowSelection(comboBox.getSelectedIndex());
@@ -218,17 +218,17 @@ class ComboTablePopup extends BasicComboPopup {
 }
 
 class HighlightListener extends MouseAdapter {
-  private int vrow = -1;
+  private int viewRowIdx = -1;
 
-  public boolean isHighlightableRow(int row) {
-    return this.vrow == row;
+  public boolean isHighlightTableRow(int row) {
+    return this.viewRowIdx == row;
   }
 
   private void setHighlightTableCell(MouseEvent e) {
     Point pt = e.getPoint();
     Component c = e.getComponent();
     if (c instanceof JTable) {
-      vrow = ((JTable) c).rowAtPoint(pt);
+      viewRowIdx = ((JTable) c).rowAtPoint(pt);
       c.repaint();
     }
   }
@@ -242,7 +242,7 @@ class HighlightListener extends MouseAdapter {
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    vrow = -1;
+    viewRowIdx = -1;
     e.getComponent().repaint();
   }
 }
