@@ -20,19 +20,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"AAA", 12, true}, {"aaa", 1, false},
-    {"BBB", 13, true}, {"bbb", 2, false},
-    {"CCC", 15, true}, {"ccc", 3, false},
-    {"DDD", 17, true}, {"ddd", 4, false},
-    {"EEE", 18, true}, {"eee", 5, false},
-    {"FFF", 19, true}, {"fff", 6, false},
-    {"GGG", 92, true}, {"ggg", 0, false}
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"AAA", 12, true}, {"aaa", 1, false},
+      {"BBB", 13, true}, {"bbb", 2, false},
+      {"CCC", 15, true}, {"ccc", 3, false},
+      {"DDD", 17, true}, {"ddd", 4, false},
+      {"EEE", 18, true}, {"eee", 5, false},
+      {"FFF", 19, true}, {"fff", 6, false},
+      {"GGG", 92, true}, {"ggg", 0, false}
+    };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {

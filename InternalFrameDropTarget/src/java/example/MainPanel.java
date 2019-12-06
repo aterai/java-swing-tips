@@ -20,20 +20,40 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  private final TransferHandler handler = new TableRowTransferHandler();
-  // private final TransferHandler handler2 = new TableColumnTransferHandler();
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"AAA", 12, true}, {"aaa", 1, false},
-    {"BBB", 13, true}, {"bbb", 2, false},
-    {"CCC", 15, true}, {"ccc", 3, false},
-    {"DDD", 17, true}, {"ddd", 4, false},
-    {"EEE", 18, true}, {"eee", 5, false},
-    {"FFF", 19, true}, {"fff", 6, false},
-    {"GGG", 92, true}, {"ggg", 0, false}
-  };
+  private MainPanel() {
+    super(new BorderLayout());
+    JDesktopPane p = new JDesktopPane();
 
-  private JTable makeDnDTable() {
+    JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
+    f1.add(new JScrollPane(makeDnDTable()));
+    f1.setOpaque(false);
+    p.add(f1, 1, 1);
+    f1.setBounds(0, 0, 240, 160);
+    f1.setVisible(true);
+    JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
+    f2.add(new JScrollPane(makeDnDTable()));
+    p.add(f2, 1, 0);
+    f2.setBounds(50, 50, 240, 160);
+    f2.setVisible(true);
+    f2.setOpaque(false);
+
+    add(p);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeDnDTable() {
+    TransferHandler handler = new TableRowTransferHandler();
+    // TransferHandler handler2 = new TableColumnTransferHandler();
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"AAA", 12, true}, {"aaa", 1, false},
+      {"BBB", 13, true}, {"bbb", 2, false},
+      {"CCC", 15, true}, {"ccc", 3, false},
+      {"DDD", 17, true}, {"ddd", 4, false},
+      {"EEE", 18, true}, {"eee", 5, false},
+      {"FFF", 19, true}, {"fff", 6, false},
+      {"GGG", 92, true}, {"ggg", 0, false}
+    };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         // ArrayIndexOutOfBoundsException: 0 >= 0
@@ -61,37 +81,16 @@ public final class MainPanel extends JPanel {
     // table.getTableHeader().addMouseMotionListener(h);
 
     // Disable row Cut, Copy, Paste
-    ActionMap map = table.getActionMap();
+    ActionMap am = table.getActionMap();
     Action dummy = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* Dummy action */
       }
     };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
     return table;
-  }
-
-  private MainPanel() {
-    super(new BorderLayout());
-    JDesktopPane p = new JDesktopPane();
-
-    JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
-    f1.add(new JScrollPane(makeDnDTable()));
-    f1.setOpaque(false);
-    p.add(f1, 1, 1);
-    f1.setBounds(0, 0, 240, 160);
-    f1.setVisible(true);
-    JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
-    f2.add(new JScrollPane(makeDnDTable()));
-    p.add(f2, 1, 0);
-    f2.setBounds(50, 50, 240, 160);
-    f2.setVisible(true);
-    f2.setOpaque(false);
-
-    add(p);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   // private int index = -1;
@@ -104,6 +103,7 @@ public final class MainPanel extends JPanel {
   //     startPt = e.getPoint(); // e.getDragOrigin();
   //     // System.out.println(startPt);
   //   }
+  //
   //   @Override public void mouseDragged(MouseEvent e) {
   //     Point tabPt = e.getPoint(); // e.getDragOrigin();
   //     if (startPt != null && startPt.distance(tabPt) > gestureMotionThreshold) {
@@ -119,6 +119,7 @@ public final class MainPanel extends JPanel {
   //     }
   //   }
   // }
+  //
   // class TableColumnTransferHandler extends TransferHandler {
   //   private final DataFlavor localObjectFlavor = new ActivationDataFlavor(
   //     JTableHeader.class, DataFlavor.javaJVMLocalObjectMimeType,
@@ -131,14 +132,17 @@ public final class MainPanel extends JPanel {
   //     // TableColumn column = header.getDraggedColumn();
   //     return new DataHandler(header, localObjectFlavor.getMimeType());
   //   }
+  //
   //   @Override public boolean canImport(TransferHandler.TransferSupport info) {
   //     // System.out.println("canImport");
   //     return info.isDataFlavorSupported(localObjectFlavor);
   //   }
+  //
   //   @Override public int getSourceActions(JComponent c) {
   //     System.out.println("getSourceActions");
   //     return TransferHandler.MOVE;
   //   }
+  //
   //   @Override public boolean importData(TransferHandler.TransferSupport info) {
   //     System.out.println("importData");
   //     JTableHeader target = (JTableHeader) info.getComponent();
@@ -181,8 +185,8 @@ public final class MainPanel extends JPanel {
 
 // class TableDropTargetAdapter extends DropTargetAdapter {
 //   @Override public void drop(...
-//   @Override public void dragEnter(DropTargetDragEvent dtde) {
-//     Component c = dtde.getDropTargetContext().getComponent();
+//   @Override public void dragEnter(DropTargetDragEvent e) {
+//     Component c = e.getDropTargetContext().getComponent();
 //     Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
 //     if (cn instanceof JInternalFrame) {
 //       JInternalFrame f = (JInternalFrame) cn;

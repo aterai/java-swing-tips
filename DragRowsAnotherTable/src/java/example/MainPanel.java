@@ -19,19 +19,28 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  private final TransferHandler handler = new TableRowTransferHandler();
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"AAA", 12, true}, {"aaa", 1, false},
-    {"BBB", 13, true}, {"bbb", 2, false},
-    {"CCC", 15, true}, {"ccc", 3, false},
-    {"DDD", 17, true}, {"ddd", 4, false},
-    {"EEE", 18, true}, {"eee", 5, false},
-    {"FFF", 19, true}, {"fff", 6, false},
-    {"GGG", 92, true}, {"ggg", 0, false}
-  };
+  private MainPanel() {
+    super(new BorderLayout());
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(new JScrollPane(makeDnDTable()));
+    p.add(new JScrollPane(makeDnDTable()));
+    p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JTable"));
+    add(p);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-  private JTable makeDnDTable() {
+  private static JTable makeDnDTable() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"AAA", 12, true}, {"aaa", 1, false},
+      {"BBB", 13, true}, {"bbb", 2, false},
+      {"CCC", 15, true}, {"ccc", 3, false},
+      {"DDD", 17, true}, {"ddd", 4, false},
+      {"EEE", 18, true}, {"eee", 5, false},
+      {"FFF", 19, true}, {"fff", 6, false},
+      {"GGG", 92, true}, {"ggg", 0, false}
+    };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         // ArrayIndexOutOfBoundsException: 0 >= 0
@@ -47,34 +56,23 @@ public final class MainPanel extends JPanel {
       }
     });
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-    table.setTransferHandler(handler);
+    table.setTransferHandler(new TableRowTransferHandler());
     table.setDropMode(DropMode.INSERT_ROWS);
     table.setDragEnabled(true);
     table.setFillsViewportHeight(true);
     // table.setAutoCreateRowSorter(true); // XXX
 
     // Disable row Cut, Copy, Paste
-    ActionMap map = table.getActionMap();
+    ActionMap am = table.getActionMap();
     Action dummy = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* Dummy action */
       }
     };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
     return table;
-  }
-
-  private MainPanel() {
-    super(new BorderLayout());
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(new JScrollPane(makeDnDTable()));
-    p.add(new JScrollPane(makeDnDTable()));
-    p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JTable"));
-    add(p);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
