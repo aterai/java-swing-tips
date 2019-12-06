@@ -84,7 +84,7 @@ class RadialGradientButton extends JButton {
     repaint();
   });
   private final Point pt = new Point();
-  private Shape shape;
+  private transient Shape shape;
   private Rectangle base;
 
   protected RadialGradientButton(String title) {
@@ -200,7 +200,7 @@ class RadialGradientPaintButton extends JButton {
     repaint();
   });
   private final Point pt = new Point();
-  private Shape shape;
+  private transient Shape shape;
   private Rectangle base;
   private transient BufferedImage buf;
 
