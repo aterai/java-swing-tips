@@ -42,13 +42,15 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
 
   private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
     if (status == Status.INDETERMINATE) {
-      List<Boolean> l = ((List<?>) m.getDataVector()).stream()
+      List<?> data =  m.getDataVector();
+      List<Boolean> l = data.stream()
           .map(v -> (Boolean) ((List<?>) v).get(targetColumnIndex))
           .distinct()
           .collect(Collectors.toList());
-      boolean isOnlyOneSelected = l.size() == 1;
-      if (isOnlyOneSelected) {
-        column.setHeaderValue(l.get(0) ? Status.SELECTED : Status.DESELECTED);
+      boolean notDuplicates = l.size() == 1;
+      if (notDuplicates) {
+        boolean isSelected = l.get(0);
+        column.setHeaderValue(isSelected ? Status.SELECTED : Status.DESELECTED);
         return true;
       } else {
         return false;

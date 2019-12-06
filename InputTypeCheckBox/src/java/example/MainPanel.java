@@ -80,7 +80,6 @@ public final class MainPanel extends JPanel {
         return c;
       }
     };
-
     table.setFillsViewportHeight(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
