@@ -29,10 +29,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
-  private final AtomicInteger imageId = new AtomicInteger(0);
-  private final FileModel model = new FileModel();
-  private final JTable table = new JTable(model);
-  private transient MediaTracker tracker;
+  public final AtomicInteger imageId = new AtomicInteger(0);
+  public final FileModel model = new FileModel();
+  public transient MediaTracker tracker;
 
   private class ImageDropTargetListener extends DropTargetAdapter {
     @Override public void dragOver(DropTargetDragEvent dtde) {
@@ -64,6 +63,7 @@ public final class MainPanel extends JPanel {
 
   public MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
 
     JScrollPane scroll = new JScrollPane(table);
@@ -93,19 +93,26 @@ public final class MainPanel extends JPanel {
   protected void addImage(Path path) {
     int id = imageId.getAndIncrement();
     Image img = Toolkit.getDefaultToolkit().createImage(path.toAbsolutePath().toString());
-    tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker((Container) this));
+    tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker(this));
     tracker.addImage(img, id);
-    try {
-      tracker.waitForID(id);
-    } catch (InterruptedException ex) {
-      ex.printStackTrace();
-      UIManager.getLookAndFeel().provideErrorFeedback(this);
-    } finally {
-      if (!tracker.isErrorID(id)) {
-        model.addRowData(new RowData(id, path, img.getWidth(this), img.getHeight(this)));
+    new SwingWorker<Void, Void>() {
+      @Override protected Void doInBackground() throws InterruptedException {
+        tracker.waitForID(id);
+        return null;
       }
-      tracker.removeImage(img);
-    }
+
+      @Override public void done() {
+        if (!isDisplayable()) {
+          cancel(true);
+          return;
+        }
+        if (!tracker.isErrorID(id)) {
+          Container c = MainPanel.this;
+          model.addRowData(new RowData(id, path, img.getWidth(c), img.getHeight(c)));
+        }
+        tracker.removeImage(img);
+      }
+    }.execute();
   }
 
   public static void main(String[] args) {
@@ -176,14 +183,14 @@ class FileModel extends DefaultTableModel {
 class RowData {
   private final int id;
   private String name;
-  private String absolutepath;
+  private String absolutePath;
   private int width;
   private int height;
 
   protected RowData(int id, Path path, int width, int height) {
     this.id = id;
     this.name = Objects.toString(path.getFileName());
-    this.absolutepath = Objects.toString(path.toAbsolutePath());
+    this.absolutePath = Objects.toString(path.toAbsolutePath());
     this.width = width;
     this.height = height;
   }
@@ -193,7 +200,7 @@ class RowData {
   }
 
   public void setAbsolutePath(String str) {
-    absolutepath = str;
+    absolutePath = str;
   }
 
   public void setWidth(int width) {
@@ -213,7 +220,7 @@ class RowData {
   }
 
   public String getAbsolutePath() {
-    return absolutepath;
+    return absolutePath;
   }
 
   public int getWidth() {
