@@ -14,10 +14,8 @@ import java.awt.event.WindowEvent;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected static final String KEY = "full-screen";
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
     setFocusable(true);
     addMouseListener(new MouseAdapter() {
@@ -28,8 +26,9 @@ public class MainPanel extends JPanel {
         }
       }
     });
-    getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), KEY);
-    getActionMap().put(KEY, new AbstractAction() {
+    String key = "full-screen";
+    getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), key);
+    getActionMap().put(key, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         toggleFullScreenWindow();
       }
@@ -44,7 +43,7 @@ public class MainPanel extends JPanel {
         //   // triggered windowClosed
         // } else if (mode == 1) {
         //   // // When DISPOSE_ON_CLOSE met WebStart > www.pushing-pixels.org/?p=232
-        //   // // Webstart thread is a non-daemon thread so the JVM cannot exit.
+        //   // // Web Start thread is a non-daemon thread so the JVM cannot exit.
         //   // // JVM shutdown
         //   // System.exit(0);
         // } else {
@@ -64,7 +63,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void toggleFullScreenWindow() {
+  protected void toggleFullScreenWindow() {
     // Component c = SwingUtilities.getRoot(getRootPane());
     Container c = getTopLevelAncestor();
     if (c instanceof JDialog) {
