@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
   private final transient TexturePaint checkerTexture = makeCheckerTexture();
   private transient TexturePaint texture;
 
-  public MainPanel() {
+  private MainPanel() {
     super();
     setBackground(new Color(.5f, .8f, .5f, .5f));
     add(new JLabel("JLabel: "));
