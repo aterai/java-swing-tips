@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
   private int row;
   private int col;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     panel.add(desktopPane, desktopPane.getClass().getName());
     panel.add(tabbedPane, tabbedPane.getClass().getName());
@@ -73,9 +73,9 @@ public final class MainPanel extends JPanel {
     f.setLocation(20 * row + 20 * col, 20 * row);
     f.setVisible(true);
     EventQueue.invokeLater(() -> {
-      Rectangle drect = desktopPane.getBounds();
-      drect.setLocation(0, 0);
-      if (!drect.contains(f.getBounds())) {
+      Rectangle rect = desktopPane.getBounds();
+      rect.setLocation(0, 0);
+      if (!rect.contains(f.getBounds())) {
         row = 0;
         col += 1;
       }
