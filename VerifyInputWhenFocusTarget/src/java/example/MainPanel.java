@@ -14,11 +14,8 @@ public final class MainPanel extends JPanel {
   private final JTextField field0 = new JTextField("9999999999999999");
   private final JTextField field1 = new JTextField("1111111111111111");
   private final JTextField field2 = new JTextField("9876543210987654");
-  private final JButton button0 = new JButton("Default");
-  private final JButton button1 = new JButton("setFocusable(false)");
-  private final JButton button2 = new JButton("setVerifyInputWhenFocusTarget(false)");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     EventQueue.invokeLater(field0::requestFocusInWindow);
     ActionListener al = e -> {
@@ -26,12 +23,16 @@ public final class MainPanel extends JPanel {
       System.out.println(c);
       Stream.of(field0, field1, field2).forEach(tf -> tf.setText(""));
     };
+    JButton button0 = new JButton("Default");
     button0.addActionListener(al);
-    button1.addActionListener(al);
-    button2.addActionListener(al);
-
     // button0.setVerifyInputWhenFocusTarget(true);
+
+    JButton button1 = new JButton("setFocusable(false)");
+    button1.addActionListener(al);
     button1.setFocusable(false);
+
+    JButton button2 = new JButton("setVerifyInputWhenFocusTarget(false)");
+    button2.addActionListener(al);
     button2.setVerifyInputWhenFocusTarget(false);
 
     InputVerifier verifier = new IntegerInputVerifier();
