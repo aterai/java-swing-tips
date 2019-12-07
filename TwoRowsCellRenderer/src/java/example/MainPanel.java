@@ -12,25 +12,24 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"A", "B"};
-  private final Object[][] data = {
-    {"123456789012345678901234567890123456789012345678901234567890", "12345"},
-    {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-
-    @Override public Class<?> getColumnClass(int column) {
-      return String.class;
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+      {"123456789012345678901234567890123456789012345678901234567890", "12345"},
+      {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
 
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
+
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(table.getRowHeight() * 2);
     table.setDefaultRenderer(String.class, new TwoRowsCellRenderer());
