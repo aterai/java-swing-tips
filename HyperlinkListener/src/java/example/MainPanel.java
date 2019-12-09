@@ -166,7 +166,7 @@ class LinkViewButtonUI extends BasicButtonUI {
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
   private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
-  private final Dimension size = new Dimension();
+  // private final Dimension size = new Dimension();
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
@@ -185,10 +185,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     AbstractButton b = (AbstractButton) c;
     Font f = c.getFont();
     g.setFont(f);
-
-    Insets i = c.getInsets();
-    b.getSize(size);
-    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    // Insets i = c.getInsets();
+    // b.getSize(size);
+    // viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    SwingUtilities.calculateInnerArea(c, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
@@ -201,7 +201,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 
     if (c.isOpaque()) {
       g.setColor(b.getBackground());
-      g.fillRect(0, 0, size.width, size.height);
+      g.fillRect(0, 0, c.getWidth(), c.getHeight());
     }
 
     ButtonModel model = b.getModel();
