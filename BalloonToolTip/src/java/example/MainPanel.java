@@ -88,15 +88,16 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    Insets i = l.getInsets();
+    // Insets i = l.getInsets();
     // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
     // Rectangle rect = c.getBounds();
     Class<JViewport> clz = JViewport.class;
     Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
         .filter(clz::isInstance).map(clz::cast)
-        .map(JViewport::getBounds)
+        // .map(JViewport::getBounds)
+        .map(v -> SwingUtilities.calculateInnerArea(v, null))
         .orElseGet(Rectangle::new);
-    rect.width -= i.left + i.right;
+    // rect.width -= i.left + i.right;
     FontMetrics fm = l.getFontMetrics(l.getFont());
     String str = Objects.toString(value, "");
     l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
