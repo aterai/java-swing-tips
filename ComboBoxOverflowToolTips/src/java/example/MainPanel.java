@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     ComboBoxModel<String> model = makeComboBoxModel();
 
-    add(makeTitledPanel("ToolTip JComboBox", makeComboBox(model)), BorderLayout.NORTH);
+    add(makeTitledPanel("Overflow ToolTip JComboBox", makeComboBox(model)), BorderLayout.NORTH);
     add(makeTitledPanel("Default JComboBox", new JComboBox<>(model)), BorderLayout.SOUTH);
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
