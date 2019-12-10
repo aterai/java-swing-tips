@@ -21,7 +21,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "1234567890 ABC DEF GHI JKL MNO PQR STU VWX YZ";
+  private static final String TEXT = "The quick brown fox jumps over the lazy dog.";
 
   private MainPanel() {
     super(new GridLayout(0, 1));
@@ -78,7 +78,9 @@ public final class MainPanel extends JPanel {
 }
 
 class WrappingLabel extends JLabel {
+  private static final Rectangle RECT = new Rectangle();
   // TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
+
   protected WrappingLabel(String text) {
     super(text);
   }
@@ -88,10 +90,11 @@ class WrappingLabel extends JLabel {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(getForeground());
     g2.setFont(getFont());
-    Insets i = getInsets();
-    float x = i.left;
-    float y = i.top;
-    int w = getWidth() - i.left - i.right;
+
+    SwingUtilities.calculateInnerArea(this, RECT);
+    float x = RECT.x;
+    float y = RECT.y;
+    int w = RECT.width;
 
     AttributedString as = new AttributedString(getText());
     as.addAttribute(TextAttribute.FONT, getFont()); // TEST: .deriveFont(at));
@@ -110,6 +113,7 @@ class WrappingLabel extends JLabel {
 }
 
 class WrappedLabel extends JLabel {
+  private static final Rectangle RECT = new Rectangle();
   private transient GlyphVector gvText;
   private int prevWidth = -1;
   // TEST: private AffineTransform at = AffineTransform.getScaleInstance(.9, 1d);
@@ -119,8 +123,9 @@ class WrappedLabel extends JLabel {
   }
 
   @Override public void doLayout() {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
+    // Insets i = getInsets();
+    // int w = getWidth() - i.left - i.right;
+    int w = SwingUtilities.calculateInnerArea(this, RECT).width;
     if (w != prevWidth) {
       Font font = getFont();
       FontMetrics fm = getFontMetrics(font);
