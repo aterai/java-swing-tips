@@ -115,7 +115,6 @@ final class HtmlViewUtil {
 }
 
 class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
-  private final Dimension size = new Dimension();
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
@@ -127,13 +126,10 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
       return;
     }
     AbstractButton b = (AbstractButton) c;
-
-    Font f = c.getFont();
+    Font f = b.getFont();
     g.setFont(f);
 
-    Insets i = c.getInsets();
-    b.getSize(size);
-    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    SwingUtilities.calculateInnerArea(c, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
@@ -147,7 +143,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
     // // fill background
     // if (c.isOpaque()) {
     //   g.setColor(b.getBackground());
-    //   g.fillRect(0, 0, size.width, size.height);
+    //   g.fillRect(0, 0, c.getWidth(), c.getHeight());
     // }
 
     // Paint the radio button
@@ -163,7 +159,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
         paintText(g, b, textRect, text);
       }
       if (b.hasFocus() && b.isFocusPainted()) {
-        paintFocus(g, textRect, size);
+        paintFocus(g, textRect, b.getSize());
       }
     }
   }
@@ -176,7 +172,6 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
 }
 
 class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
-  private Dimension size;
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
@@ -188,13 +183,10 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
       return;
     }
     AbstractButton b = (AbstractButton) c;
-
-    Font f = c.getFont();
+    Font f = b.getFont();
     g.setFont(f);
 
-    Insets i = c.getInsets();
-    size = b.getSize(size);
-    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    SwingUtilities.calculateInnerArea(c, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
@@ -208,7 +200,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
     // // fill background
     // if (c.isOpaque()) {
     //   g.setColor(b.getBackground());
-    //   g.fillRect(0, 0, size.width, size.height);
+    //   g.fillRect(0, 0, c.getWidth(), c.getHeight());
     // }
 
     // Paint the radio button
@@ -224,7 +216,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
         paintText(g, b, textRect, text);
       }
       if (b.hasFocus() && b.isFocusPainted()) {
-        paintFocus(g, textRect, size);
+        paintFocus(g, textRect, b.getSize());
       }
     }
   }
