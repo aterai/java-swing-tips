@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
     }
   };
   private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  private final JTable table = new JTable(model);
 
   public MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(model);
     table.setFillsViewportHeight(true);
     table.setIntercellSpacing(new Dimension());
     table.setShowGrid(false);
@@ -174,7 +174,6 @@ public final class MainPanel extends JPanel {
 class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   // private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
   // private boolean defaults_initialized = false;
-  private static Dimension size = new Dimension();
   private static Rectangle viewRect = new Rectangle();
   private static Rectangle iconRect = new Rectangle();
   private static Rectangle textRect = new Rectangle();
@@ -182,6 +181,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   // public static ComponentUI createUI(JComponent b) {
   //   return radioButtonUI;
   // }
+
   // @Override protected void installDefaults(AbstractButton b) {
   //   super.installDefaults(b);
   //   if (!defaults_initialized) {
@@ -189,6 +189,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   //     defaults_initialized = true;
   //   }
   // }
+
   // @Override protected void uninstallDefaults(AbstractButton b) {
   //   super.uninstallDefaults(b);
   //   defaults_initialized = false;
@@ -202,39 +203,32 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   // Unsynchronized method paint overrides synchronized method in BasicRadioButtonUI
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void paint(Graphics g, JComponent c) {
-    // AbstractButton b = (AbstractButton) c;
-    Font f = c.getFont();
+    if (!(c instanceof AbstractButton)) {
+      return;
+    }
+    AbstractButton b = (AbstractButton) c;
+    Font f = b.getFont();
     g.setFont(f);
-    FontMetrics fm = c.getFontMetrics(f);
-
-    Insets i = c.getInsets();
-    c.getSize(size);
-    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
-    iconRect.setBounds(0, 0, 0, 0);
-    textRect.setBounds(0, 0, 0, 0);
 
     if (c.isOpaque()) {
       g.setColor(c.getBackground());
-      g.fillRect(0, 0, size.width, size.height);
+      g.fillRect(0, 0, c.getWidth(), c.getHeight());
     }
 
-    String text;
-    AbstractButton b;
-    if (c instanceof AbstractButton) {
-      b = (AbstractButton) c;
-      text = SwingUtilities.layoutCompoundLabel(
-        b, fm, b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
+    SwingUtilities.calculateInnerArea(c, viewRect);
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
+
+    String text = SwingUtilities.layoutCompoundLabel(
+        c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
         b.getVerticalAlignment(), b.getHorizontalAlignment(),
         b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
         viewRect, iconRect, textRect,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
-    } else {
-      return;
-    }
 
     // // Changing Component State During Painting (an infinite repaint loop)
     // // pointed out by Peter
-    // // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
+    // // note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
     // // b.setForeground(Color.BLUE);
     // if (!model.isEnabled()) {
     //   // b.setForeground(Color.GRAY);
