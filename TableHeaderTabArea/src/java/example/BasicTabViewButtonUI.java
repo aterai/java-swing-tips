@@ -14,7 +14,6 @@ import javax.swing.text.View;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
-  private static Dimension size = new Dimension();
   private static Rectangle viewRect = new Rectangle();
   private static Rectangle iconRect = new Rectangle();
   private static Rectangle textRect = new Rectangle();
@@ -65,9 +64,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     Font f = c.getFont();
     g.setFont(f);
 
-    Insets i = c.getInsets();
-    b.getSize(size);
-    viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+    SwingUtilities.calculateInnerArea(b, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
@@ -79,7 +76,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     g.setColor(b.getBackground());
-    g.fillRect(0, 0, size.width, size.height);
+    g.fillRect(0, 0, c.getWidth(), c.getHeight());
 
     ButtonModel model = b.getModel();
     if (model.isSelected() || model.isArmed()) {
