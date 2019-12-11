@@ -139,39 +139,38 @@ class NineSliceScalingButton extends JButton {
 
   // @Override public Dimension getPreferredSize() {
   //   Dimension dim = super.getPreferredSize();
-  //   return new Dimension(dim.width + leftw + rightw, dim.height + toph + bottomh);
+  //   return new Dimension(dim.width + lw + rw, dim.height + th + bh);
   // }
 
   // @Override public Dimension getMinimumSize() {
   //   return getPreferredSize();
   // }
 
-  @SuppressWarnings("checkstyle:linelength")
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     int iw = image.getWidth(this);
     int ih = image.getHeight(this);
-    int bw = getWidth();
-    int bh = getHeight();
+    int ww = getWidth();
+    int hh = getHeight();
 
-    int leftw = 37;
-    int rightw = 36;
-    int toph = 36;
-    int bottomh = 36;
+    int lw = 37;
+    int rw = 36;
+    int th = 36;
+    int bh = 36;
 
-    g2.drawImage(image.getSubimage(leftw, toph, iw - leftw - rightw, ih - toph - bottomh), leftw, toph, bw - leftw - rightw, bh - toph - bottomh, this);
+    g2.drawImage(image.getSubimage(lw, th, iw - lw - rw, ih - th - bh), lw, th, ww - lw - rw, hh - th - bh, this);
 
-    g2.drawImage(image.getSubimage(leftw, 0, iw - leftw - rightw, toph), leftw, 0, bw - leftw - rightw, toph, this);
-    g2.drawImage(image.getSubimage(leftw, ih - bottomh, iw - leftw - rightw, bottomh), leftw, bh - bottomh, bw - leftw - rightw, bottomh, this);
-    g2.drawImage(image.getSubimage(0, toph, leftw, ih - toph - bottomh), 0, toph, leftw, bh - toph - bottomh, this);
-    g2.drawImage(image.getSubimage(iw - rightw, toph, rightw, ih - toph - bottomh), bw - rightw, toph, rightw, bh - toph - bottomh, this);
+    g2.drawImage(image.getSubimage(lw, 0, iw - lw - rw, th), lw, 0, ww - lw - rw, th, this);
+    g2.drawImage(image.getSubimage(lw, ih - bh, iw - lw - rw, bh), lw, hh - bh, ww - lw - rw, bh, this);
+    g2.drawImage(image.getSubimage(0, th, lw, ih - th - bh), 0, th, lw, hh - th - bh, this);
+    g2.drawImage(image.getSubimage(iw - rw, th, rw, ih - th - bh), ww - rw, th, rw, hh - th - bh, this);
 
-    g2.drawImage(image.getSubimage(0, 0, leftw, toph), 0, 0, this);
-    g2.drawImage(image.getSubimage(iw - rightw, 0, rightw, toph), bw - rightw, 0, this);
-    g2.drawImage(image.getSubimage(0, ih - bottomh, leftw, bottomh), 0, bh - bottomh, this);
-    g2.drawImage(image.getSubimage(iw - rightw, ih - bottomh, rightw, bottomh), bw - rightw, bh - bottomh, this);
+    g2.drawImage(image.getSubimage(0, 0, lw, th), 0, 0, this);
+    g2.drawImage(image.getSubimage(iw - rw, 0, rw, th), ww - rw, 0, this);
+    g2.drawImage(image.getSubimage(0, ih - bh, lw, bh), 0, hh - bh, this);
+    g2.drawImage(image.getSubimage(iw - rw, ih - bh, rw, bh), ww - rw, hh - bh, this);
 
     g2.dispose();
     super.paintComponent(g);
@@ -179,20 +178,21 @@ class NineSliceScalingButton extends JButton {
 }
 
 class NineSliceScalingIcon implements Icon {
+  private static final Rectangle RECT = new Rectangle();
   private final BufferedImage image;
-  private final int leftw;
-  private final int rightw;
-  private final int toph;
-  private final int bottomh;
+  private final int lw;
+  private final int rw;
+  private final int th;
+  private final int bh;
   private int width;
   private int height;
 
-  protected NineSliceScalingIcon(BufferedImage image, int leftw, int rightw, int toph, int bottomh) {
+  protected NineSliceScalingIcon(BufferedImage image, int lw, int rw, int th, int bh) {
     this.image = image;
-    this.leftw = leftw;
-    this.rightw = rightw;
-    this.toph = toph;
-    this.bottomh = bottomh;
+    this.lw = lw;
+    this.rw = rw;
+    this.th = th;
+    this.bh = bh;
   }
 
   @Override public int getIconWidth() {
@@ -203,30 +203,34 @@ class NineSliceScalingIcon implements Icon {
     return Math.max(image.getHeight(null), height);
   }
 
-  @SuppressWarnings("checkstyle:linelength")
-  @Override public void paintIcon(Component cmp, Graphics g, int x, int y) {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-    Insets i = cmp instanceof Container ? ((Container) cmp).getInsets() : new Insets(0, 0, 0, 0);
     // g2.translate(x, y); // 1.8.0: work fine?
-    int iw = image.getWidth(cmp);
-    int ih = image.getHeight(cmp);
-    width = cmp.getWidth() - i.left - i.right;
-    height = cmp.getHeight() - i.top - i.bottom;
 
-    g2.drawImage(image.getSubimage(leftw, toph, iw - leftw - rightw, ih - toph - bottomh), leftw, toph, width - leftw - rightw, height - toph - bottomh, cmp);
+    if (!(c instanceof JComponent)) {
+      return;
+    }
 
-    if (leftw > 0 && rightw > 0 && toph > 0 && bottomh > 0) {
-      g2.drawImage(image.getSubimage(leftw, 0, iw - leftw - rightw, toph), leftw, 0, width - leftw - rightw, toph, cmp);
-      g2.drawImage(image.getSubimage(leftw, ih - bottomh, iw - leftw - rightw, bottomh), leftw, height - bottomh, width - leftw - rightw, bottomh, cmp);
-      g2.drawImage(image.getSubimage(0, toph, leftw, ih - toph - bottomh), 0, toph, leftw, height - toph - bottomh, cmp);
-      g2.drawImage(image.getSubimage(iw - rightw, toph, rightw, ih - toph - bottomh), width - rightw, toph, rightw, height - toph - bottomh, cmp);
+    SwingUtilities.calculateInnerArea((JComponent) c, RECT);
+    width = RECT.width;
+    height = RECT.height;
 
-      g2.drawImage(image.getSubimage(0, 0, leftw, toph), 0, 0, cmp);
-      g2.drawImage(image.getSubimage(iw - rightw, 0, rightw, toph), width - rightw, 0, cmp);
-      g2.drawImage(image.getSubimage(0, ih - bottomh, leftw, bottomh), 0, height - bottomh, cmp);
-      g2.drawImage(image.getSubimage(iw - rightw, ih - bottomh, rightw, bottomh), width - rightw, height - bottomh, cmp);
+    int iw = image.getWidth(c);
+    int ih = image.getHeight(c);
+
+    g2.drawImage(image.getSubimage(lw, th, iw - lw - rw, ih - th - bh), lw, th, width - lw - rw, height - th - bh, c);
+
+    if (lw > 0 && rw > 0 && th > 0 && bh > 0) {
+      g2.drawImage(image.getSubimage(lw, 0, iw - lw - rw, th), lw, 0, width - lw - rw, th, c);
+      g2.drawImage(image.getSubimage(lw, ih - bh, iw - lw - rw, bh), lw, height - bh, width - lw - rw, bh, c);
+      g2.drawImage(image.getSubimage(0, th, lw, ih - th - bh), 0, th, lw, height - th - bh, c);
+      g2.drawImage(image.getSubimage(iw - rw, th, rw, ih - th - bh), width - rw, th, rw, height - th - bh, c);
+
+      g2.drawImage(image.getSubimage(0, 0, lw, th), 0, 0, c);
+      g2.drawImage(image.getSubimage(iw - rw, 0, rw, th), width - rw, 0, c);
+      g2.drawImage(image.getSubimage(0, ih - bh, lw, bh), 0, height - bh, c);
+      g2.drawImage(image.getSubimage(iw - rw, ih - bh, rw, bh), width - rw, height - bh, c);
     }
 
     g2.dispose();
