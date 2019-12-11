@@ -52,8 +52,8 @@ class TableHeaderTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel contentsPanel = new JPanel(cardLayout);
   private final JTableHeader header;
-  private final TableColumnModel model;
-  protected Object selectedColumn;
+  private final transient TableColumnModel model;
+  protected transient Object selectedColumn;
   protected int rolloverColumn = -1;
 
   protected TableHeaderTabbedPane() {
@@ -68,7 +68,7 @@ class TableHeaderTabbedPane extends JPanel {
     JTable table = new JTable(new DefaultTableModel(null, new String[] {}));
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     header = table.getTableHeader();
-    model = (TableColumnModel) header.getColumnModel();
+    model = header.getColumnModel();
 
     MouseAdapter handler = new TableHeaderMouseInputHandler();
     header.addMouseListener(handler);
@@ -115,7 +115,7 @@ class TableHeaderTabbedPane extends JPanel {
       if (idx < 0) {
         return;
       }
-      TableColumnModel m = (TableColumnModel) h.getColumnModel();
+      TableColumnModel m = h.getColumnModel();
       Object title = m.getColumn(idx).getHeaderValue();
       cardLayout.show(contentsPanel, Objects.toString(title));
       selectedColumn = title;
