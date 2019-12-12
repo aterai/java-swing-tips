@@ -123,8 +123,8 @@ class GradientPalletSliderUI extends MetalSliderUI {
 
     int trackLeft = 0;
     int trackTop = 0;
-    int trackRight = 0;
-    int trackBottom = 0;
+    int trackRight;
+    int trackBottom;
     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       trackBottom = trackRect.height - 1 - getThumbOverhang();
       trackTop = trackBottom - getTrackWidth() + 1;
@@ -171,11 +171,11 @@ class GradientPalletSliderUI extends MetalSliderUI {
   }
 
   protected void paintTrackFill(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
-    int middleOfThumb = 0;
-    int fillTop = 0;
-    int fillLeft = 0;
-    int fillBottom = 0;
-    int fillRight = 0;
+    int middleOfThumb;
+    int fillTop;
+    int fillLeft;
+    int fillBottom;
+    int fillRight;
 
     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       middleOfThumb = thumbRect.x + thumbRect.width / 2;
@@ -273,6 +273,7 @@ final class GradientPalletUtils {
     } catch (InterruptedException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
+      Thread.currentThread().interrupt();
     }
     return pallet;
   }
