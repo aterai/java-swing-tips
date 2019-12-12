@@ -23,9 +23,10 @@ public final class MainPanel extends JPanel {
     CardLayoutTabbedPane tab3 = new CardLayoutTabbedPane();
     tab3.setBorder(BorderFactory.createTitledBorder("CardLayout+JRadioButton(opera like)"));
     tab3.addTab("9999", new JScrollPane(new JTree()));
-    tab3.addTab("aaaaaaaaaaaaaaaaaaaaaaa", new JLabel("hhhhh"));
-    tab3.addTab("bbbb", new JLabel("iiii"));
-    tab3.addTab("cccc", new JButton("jjjjjj"));
+    tab3.addTab("000000000", new JLabel("JLabel 1"));
+    tab3.addTab("1111", new JLabel("JLabel 2"));
+    tab3.addTab("222", new JButton("JButton"));
+
     add(tab3);
     setPreferredSize(new Dimension(320, 240));
   }

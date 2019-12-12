@@ -16,26 +16,26 @@ public final class MainPanel extends JPanel {
     JTabbedPane tab1 = new JTabbedPane();
     tab1.setBorder(BorderFactory.createTitledBorder("JTabbedPane"));
     tab1.addTab("1111", new JScrollPane(new JTree()));
-    tab1.addTab("2222", new JLabel("bbbbbbbbb"));
-    tab1.addTab("3333", new JLabel("cccccccccc"));
-    tab1.addTab("4444", new JButton("dddddddddddddddd"));
+    tab1.addTab("2222", new JLabel("JLabel 1"));
+    tab1.addTab("3333", new JLabel("JLabel 2"));
+    tab1.addTab("4444", new JButton("JButton 1"));
 
     CardLayoutTabbedPane tab2 = new CardLayoutTabbedPane();
     tab2.setBorder(BorderFactory.createTitledBorder("CardLayout+JRadioButton(windows like)"));
     tab2.addTab("default", tab1);
     tab2.addTab("5555", new JScrollPane(new JTree()));
-    tab2.addTab("6666", new JLabel("eeeee"));
-    tab2.addTab("7777", new JLabel("fffffff"));
-    tab2.addTab("8888", new JButton("gggggg"));
+    tab2.addTab("6666", new JLabel("JLabel 3"));
+    tab2.addTab("7777", new JLabel("JLabel 4"));
+    tab2.addTab("8888", new JButton("JButton 2"));
 
     UIManager.put("example.TabButton", "TabViewButtonUI");
     UIManager.put("TabViewButtonUI", "example.OperaTabViewButtonUI");
     CardLayoutTabbedPane tab3 = new CardLayoutTabbedPane();
     tab3.setBorder(BorderFactory.createTitledBorder("CardLayout+JRadioButton(opera like)"));
     tab3.addTab("9999", new JScrollPane(new JTree()));
-    tab3.addTab("aaaaaaaaaaaaaaaaaaaaaaa", new JLabel("hhhhh"));
-    tab3.addTab("bbbb", new JLabel("iiii"));
-    tab3.addTab("cccc", new JButton("jjjjjj"));
+    tab3.addTab("000000000", new JLabel("JLabel 5"));
+    tab3.addTab("1111", new JLabel("JLabel 6"));
+    tab3.addTab("222", new JButton("JButton 3"));
 
     // add(tab1);
     add(tab2);
@@ -98,24 +98,26 @@ class CardLayoutTabbedPane extends JPanel {
         return new Dimension(12, 12);
       }
     };
-    close.addActionListener(e -> {
-      // @See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
-      System.out.println("dummy action: close button");
-      // tabPanel.remove(tab);
-      // contentsPanel.remove(comp);
-      // if (tabPanel.getComponentCount() > 1) {
-      //   tabPanel.revalidate();
-      //   TabButton b = (TabButton) tabPanel.getComponent(0);
-      //   b.setSelected(true);
-      //   cardLayout.first(contentsPanel);
-      // }
-      // tabPanel.revalidate();
-    });
+    close.addActionListener(e -> System.out.println("dummy action: close button"));
+
+    // @See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
+    // close.addActionListener(e -> {
+    //   tabPanel.remove(tab);
+    //   contentsPanel.remove(comp);
+    //   boolean isMoreThanOne = tabPanel.getComponentCount() > 1;
+    //   if (isMoreThanOne) {
+    //     tabPanel.revalidate();
+    //     TabButton b = (TabButton) tabPanel.getComponent(0);
+    //     b.setSelected(true);
+    //     cardLayout.first(contentsPanel);
+    //   }
+    //   tabPanel.revalidate();
+    // });
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusPainted(false);
     close.setContentAreaFilled(false);
-    close.setPressedIcon(new CloseTabIcon(Color.BLACK));
-    close.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
+    close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
+    close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.setOpaque(false);
@@ -174,10 +176,13 @@ class TabButton extends JRadioButton {
 
   protected TabButton(Action a) {
     super(a);
+    // super.setAction(a);
+    // updateUI();
   }
 
   protected TabButton(String text, Icon icon) {
     super(text, icon);
+    // updateUI();
   }
 
   @Override protected void fireStateChanged() {
