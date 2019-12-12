@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
     editor1.setText("Default\n" + TEST);
 
     JTextPane editor2 = new JTextPane() {
+      private final Rectangle rect = new Rectangle();
       private float fontSize;
       @Override public void doLayout() {
-        Insets i = getInsets();
-        float f = .08f * (getWidth() - i.left - i.right);
+        float f = .08f * SwingUtilities.calculateInnerArea(this, rect).width;
         boolean fontSizeShouldChange = Math.abs(fontSize - f) > 1.0e-1;
         if (fontSizeShouldChange) {
           setFont(font.deriveFont(f));
