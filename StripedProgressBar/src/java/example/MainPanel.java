@@ -143,15 +143,14 @@ class StripedProgressBarUI extends BasicProgressBarUI {
       GeneralPath p = new GeneralPath();
       if (dir) {
         p.moveTo(boxRect.x, boxRect.y);
-        p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w * .5f, boxRect.y);
+        p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
+        p.lineTo(boxRect.x + (float) w, boxRect.getMaxY());
       } else {
-        p.moveTo(boxRect.x, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
-        p.lineTo(boxRect.x + w, boxRect.y);
-        p.lineTo(boxRect.x + w * .5f, boxRect.y);
+        p.moveTo(boxRect.x, boxRect.getMaxY());
+        p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
+        p.lineTo(boxRect.x + (float) w, boxRect.y);
       }
+      p.lineTo(boxRect.x + w * .5f, boxRect.y);
       p.closePath();
 
       Graphics2D g2 = (Graphics2D) g.create();
@@ -172,20 +171,12 @@ class StripedProgressBarUI extends BasicProgressBarUI {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() {
-    try { // dummy task
-      Thread.sleep(5000);
-    } catch (InterruptedException ex) {
-      return "Interrupted";
-    }
+  @Override public String doInBackground() throws InterruptedException {
+    Thread.sleep(5000); // dummy task 1
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(50); // dummy task 2
       setProgress(100 * current / lengthOfTask);
       current++;
     }
