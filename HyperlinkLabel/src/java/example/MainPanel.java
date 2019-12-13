@@ -183,7 +183,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
       return;
     }
     AbstractButton b = (AbstractButton) c;
-    Font f = c.getFont();
+    Font f = b.getFont();
     g.setFont(f);
     // Insets i = c.getInsets();
     // b.getSize(size);
