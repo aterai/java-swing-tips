@@ -81,15 +81,11 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<Void, Void> {
-  @Override public Void doInBackground() {
+  @Override public Void doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      try { // dummy task
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        return null;
-      }
+      Thread.sleep(50); // dummy task
       setProgress(100 * current / lengthOfTask);
       current++;
     }
@@ -142,6 +138,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
     } catch (InterruptedException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
+      Thread.currentThread().interrupt();
     }
     return pallet;
   }
