@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         worker.cancel(true);
       }
       worker = null;
-      pauseButton.setText("pause");
+      pauseButton.setText(PAUSE);
       pauseButton.setEnabled(false);
     });
 
@@ -103,11 +103,14 @@ public final class MainPanel extends JPanel {
       updateComponentDone();
       String message;
       try {
-        message = String.format("%n%s%n", isCancelled() ? "Cancelled" : get());
-      } catch (InterruptedException | ExecutionException ex) {
-        message = String.format("%n%s%n", "Interrupted");
+        message = isCancelled() ? "Cancelled" : get();
+      } catch (InterruptedException ex) {
+        message = "Interrupted";
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        message = "ExecutionException";
       }
-      appendLine(message);
+      appendLine(String.format("%n%s%n", message));
     }
   }
 
@@ -158,11 +161,11 @@ public final class MainPanel extends JPanel {
   }
 
   // @see https://ateraimemo.com/Swing/ButtonWidth.html
-  private static Component createRightAlignButtonBox4(List<? extends Component> list, int buttonWidth, int gap) {
+  public static Component createRightAlignButtonBox4(List<? extends Component> list, int buttonWidth, int gap) {
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout) {
       @Override public Dimension getPreferredSize() {
-        int maxHeight = list.stream().map(c -> c.getPreferredSize().height).max(Integer::compare).get();
+        int maxHeight = list.stream().map(c -> c.getPreferredSize().height).max(Integer::compare).orElse(0);
         return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
       }
     };
@@ -228,7 +231,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
-    int lengthOfTask = 12; // filelist.size();
+    int lengthOfTask = 12; // fileList.size();
     publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
     publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
     while (current < lengthOfTask && !isCancelled()) {
@@ -248,11 +251,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();
     while (current <= lengthOfTask && !isCancelled()) {
       if (isPaused) {
-        try {
-          Thread.sleep(500);
-        } catch (InterruptedException ex) {
-          return;
-        }
+        Thread.sleep(500);
         publish(new Progress(ProgressType.PAUSE, blinking));
         blinking ^= true;
         continue;
@@ -307,7 +306,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //         @Override public String doInBackground() {
 //           // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
 //           int current = 0;
-//           int lengthOfTask = 12; // filelist.size();
+//           int lengthOfTask = 12; // fileList.size();
 //           publish("Length Of Task: " + lengthOfTask);
 //           publish("\n------------------------------\n");
 //           setProgress(0);
