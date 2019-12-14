@@ -68,6 +68,7 @@ public class MainPanel extends JPanel {
         }
       } catch (InterruptedException | ExecutionException ex) {
         System.out.println("Interrupted");
+        Thread.currentThread().interrupt();
       }
       combo.setEnabled(true);
       button.setEnabled(true);
@@ -90,7 +91,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  private static Component makeTitledPanel(String title, Component cmp, Component btn) {
+  public static Component makeTitledPanel(String title, Component cmp, Component btn) {
     GridBagConstraints c = new GridBagConstraints();
     JPanel p = new JPanel(new GridBagLayout());
 
@@ -133,19 +134,15 @@ public class MainPanel extends JPanel {
 class BackgroundTask extends SwingWorker<String[], Integer> {
   private static final int MAX = 30;
 
-  @Override public String[] doInBackground() {
+  @Override public String[] doInBackground() throws InterruptedException {
     int current = 0;
     List<String> list = new ArrayList<>();
     while (current <= MAX && !isCancelled()) {
-      try {
-        Thread.sleep(50);
-        int iv = 100 * current / MAX;
-        publish(iv);
-        // setProgress(iv);
-        list.add("Test: " + current);
-      } catch (InterruptedException ex) {
-        break;
-      }
+      Thread.sleep(50);
+      int iv = 100 * current / MAX;
+      publish(iv);
+      // setProgress(iv);
+      list.add("Test: " + current);
       current++;
     }
     return list.toArray(new String[0]);
