@@ -70,12 +70,11 @@ public final class MainPanel extends JPanel {
         addItem(dirCombo, file.getAbsolutePath(), 4);
         repaint();
       } else if (fcSelected == JFileChooser.CANCEL_OPTION) {
-        return;
+        System.out.println("Cancel");
       } else {
         Object[] obj = {"Error."};
         Toolkit.getDefaultToolkit().beep();
         JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
-        return;
       }
     });
 
@@ -135,6 +134,7 @@ public final class MainPanel extends JPanel {
           text = get();
         } catch (InterruptedException | ExecutionException ex) {
           text = "Interrupted";
+          Thread.currentThread().interrupt();
         }
       }
       appendLine("----------------");
@@ -161,7 +161,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected static void addItem(JComboBox<String> dirCombo, String str, int max) {
+  public static void addItem(JComboBox<String> dirCombo, String str, int max) {
     if (Objects.isNull(str) || str.isEmpty()) {
       return;
     }
@@ -220,7 +220,7 @@ public final class MainPanel extends JPanel {
 }
 
 // class RecursiveFileSearchTask extends SwingWorker<String, Message> {
-//   private int scount;
+//   private int counter;
 //   private final File dir;
 //   protected RecursiveFileSearchTask(File dir) {
 //     super();
@@ -234,7 +234,7 @@ public final class MainPanel extends JPanel {
 //     List<File> list = new ArrayList<>();
 //     // ArrayList<Path> list = new ArrayList<>();
 //     try {
-//       scount = 0;
+//       counter = 0;
 //       recursiveSearch(dir, list);
 //     } catch (InterruptedException ex) {
 //       // recursiveSearch(dir.toPath(), list);
@@ -268,26 +268,26 @@ public final class MainPanel extends JPanel {
 //   }
 //   private void recursiveSearch(File dir, List<File> list) throws InterruptedException {
 //     // System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
-//     for (String fname: dir.list()) {
+//     for (String name: dir.list()) {
 //       if (Thread.interrupted()) {
 //         throw new InterruptedException();
 //       }
-//       File sdir = new File(dir, fname);
-//       if (sdir.isDirectory()) {
-//         recursiveSearch(sdir, list);
+//       File dir = new File(dir, name);
+//       if (dir.isDirectory()) {
+//         recursiveSearch(dir, list);
 //       } else {
-//         scount++;
-//         if (scount % 100 == 0) {
-//           publish(new Message("Results:" + scount + "\n", false));
+//         counter++;
+//         if (counter % 100 == 0) {
+//           publish(new Message("Results:" + counter + "\n", false));
 //         }
-//         list.add(sdir);
+//         list.add(dir);
 //       }
 //     }
 //   }
 // }
 
 class RecursiveFileSearchTask extends SwingWorker<String, Message> {
-  protected int scount;
+  protected int counter;
   private final File dir;
 
   protected RecursiveFileSearchTask(File dir) {
@@ -296,7 +296,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
   }
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     if (Objects.isNull(dir) || !dir.exists()) {
       publish(new Message("The directory does not exist.", true));
       return "Error";
@@ -304,7 +304,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
 
     List<Path> list = new ArrayList<>();
     try {
-      scount = 0;
+      counter = 0;
       recursiveSearch(dir.toPath(), list);
     } catch (IOException ex) {
       publish(new Message("The search was canceled", true));
@@ -316,17 +316,13 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     publish(new Message("Length Of Task: " + lengthOfTask, false));
     publish(new Message("----------------", true));
 
-    try {
-      int current = 0;
-      while (current < lengthOfTask && !isCancelled()) {
-        Thread.sleep(10); // dummy
-        setProgress(100 * current / lengthOfTask);
-        Path path = list.get(current);
-        current++;
-        publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
-      }
-    } catch (InterruptedException ex) {
-      return "Interrupted";
+    int current = 0;
+    while (current < lengthOfTask && !isCancelled()) {
+      Thread.sleep(10); // dummy
+      setProgress(100 * current / lengthOfTask);
+      Path path = list.get(current);
+      current++;
+      publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
     }
     return "Done";
   }
@@ -340,9 +336,9 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
           throw new IOException();
         }
         if (attrs.isRegularFile()) {
-          scount++;
-          if (scount % 100 == 0) {
-            publish(new Message("Results:" + scount + "\n", false));
+          counter++;
+          if (counter % 100 == 0) {
+            publish(new Message("Results:" + counter + "\n", false));
           }
           list.add(file);
         }
