@@ -6,29 +6,61 @@ package example;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class MainPanel extends JPanel {
-  protected final WorkerModel<ProgressValue> model = new WorkerModel<>();
-  protected final JTable table = new JTable(model);
-  protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  protected final Set<Integer> deleteRowSet = new TreeSet<>();
+public final class MainPanel extends JPanel {
+  private final String[] columnNames = {"No.", "Name", "Progress", ""};
+  private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
+  private final JTable table = new JTable(model) {
+    @Override public void updateUI() {
+      super.updateUI();
+      removeColumn(getColumnModel().getColumn(3));
+      JProgressBar progress = new JProgressBar();
+      TableCellRenderer renderer = new DefaultTableCellRenderer();
+      TableColumn tc = getColumnModel().getColumn(2);
+      tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
+        Component c;
+        progress.setValue(0);
+        if (value instanceof ProgressValue) {
+          ProgressValue pv = (ProgressValue) value;
+          Integer current = pv.getProgress();
+          Integer lengthOfTask = pv.getLengthOfTask();
+          if (current < 0) {
+            c = renderer.getTableCellRendererComponent(tbl, "Canceled", isSelected, hasFocus, row, column);
+          } else if (current < lengthOfTask) {
+            // progress.setMaximum(lengthOfTask);
+            // progress.setEnabled(true);
+            progress.setValue(current * 100 / lengthOfTask);
+            progress.setStringPainted(true);
+            progress.setString(String.format("%d/%d", current, lengthOfTask));
+            c = progress;
+          } else {
+            c = renderer.getTableCellRendererComponent(tbl, "Done", isSelected, hasFocus, row, column);
+          }
+        } else {
+          c = renderer.getTableCellRendererComponent(tbl, "Waiting...", isSelected, hasFocus, row, column);
+        }
+        return c;
+      });
+    }
+  };
+  private final Set<Integer> deletedRowSet = new TreeSet<>();
+  private int number;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    table.setRowSorter(sorter);
+    table.setRowSorter(new TableRowSorter<>(model));
 
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.getViewport().setBackground(Color.WHITE);
@@ -42,8 +74,6 @@ public class MainPanel extends JPanel {
     column.setMaxWidth(60);
     column.setMinWidth(60);
     column.setResizable(false);
-    column = table.getColumnModel().getColumn(2);
-    column.setCellRenderer(new ProgressRenderer());
 
     JButton button = new JButton("add");
     button.addActionListener(e -> addActionPerformed());
@@ -52,7 +82,13 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void addActionPerformed() {
+  public void addProgressValue(String name, ProgressValue value, SwingWorker<?, ?> worker) {
+    Object[] obj = {number, name, value, worker};
+    model.addRow(obj);
+    number++;
+  }
+
+  public void addActionPerformed() {
     int key = model.getRowCount();
     int lengthOfTask = new Random().nextInt(100) + 100;
     SwingWorker<Integer, ProgressValue> worker = new BackgroundTask(lengthOfTask) {
@@ -86,50 +122,15 @@ public class MainPanel extends JPanel {
             text = i >= 0 ? "Done" : "Disposed";
           } catch (InterruptedException | ExecutionException ex) {
             text = ex.getMessage();
+            Thread.currentThread().interrupt();
           }
         }
         System.out.format("%s:%s(%dms)%n", key, text, i);
       }
     };
-    model.addProgressValue("example(max: " + lengthOfTask + ")", new ProgressValue(lengthOfTask, 0), worker);
+    addProgressValue("example(max: " + lengthOfTask + ")", new ProgressValue(lengthOfTask, 0), worker);
     // executor.execute(worker);
     worker.execute();
-  }
-
-  protected final void cancelActionPerformed() {
-    int[] selection = table.getSelectedRows();
-    for (int i: selection) {
-      int midx = table.convertRowIndexToModel(i);
-      SwingWorker<Integer, ProgressValue> worker = model.getSwingWorker(midx);
-      if (Objects.nonNull(worker) && !worker.isDone()) {
-        worker.cancel(true);
-      }
-      worker = null;
-    }
-    table.repaint();
-  }
-
-  protected final void deleteActionPerformed() {
-    int[] selection = table.getSelectedRows();
-    if (selection.length == 0) {
-      return;
-    }
-    for (int i: selection) {
-      int midx = table.convertRowIndexToModel(i);
-      deleteRowSet.add(midx);
-      SwingWorker<Integer, ProgressValue> worker = model.getSwingWorker(midx);
-      if (Objects.nonNull(worker) && !worker.isDone()) {
-        worker.cancel(true);
-      }
-      worker = null;
-    }
-    sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
-      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        return !deleteRowSet.contains(entry.getIdentifier());
-      }
-    });
-    table.clearSelection();
-    table.repaint();
   }
 
   private class TablePopupMenu extends JPopupMenu {
@@ -153,6 +154,47 @@ public class MainPanel extends JPanel {
         deleteMenuItem.setEnabled(flag);
         super.show(c, x, y);
       }
+    }
+
+    private SwingWorker<?, ?> getSwingWorker(int identifier) {
+      return (SwingWorker<?, ?>) model.getValueAt(identifier, 3);
+    }
+
+    private void deleteActionPerformed() {
+      int[] selection = table.getSelectedRows();
+      if (selection.length == 0) {
+        return;
+      }
+      for (int i: selection) {
+        int mi = table.convertRowIndexToModel(i);
+        deletedRowSet.add(mi);
+        SwingWorker<?, ?> worker = getSwingWorker(mi);
+        if (Objects.nonNull(worker) && !worker.isDone()) {
+          worker.cancel(true);
+        }
+        // worker = null;
+      }
+      RowSorter<? extends TableModel> sorter = table.getRowSorter();
+      ((TableRowSorter<? extends TableModel>) sorter).setRowFilter(new RowFilter<TableModel, Integer>() {
+        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+          return !deletedRowSet.contains(entry.getIdentifier());
+        }
+      });
+      table.clearSelection();
+      table.repaint();
+    }
+
+    private void cancelActionPerformed() {
+      int[] selection = table.getSelectedRows();
+      for (int i: selection) {
+        int mi = table.convertRowIndexToModel(i);
+        SwingWorker<?, ?> worker = getSwingWorker(mi);
+        if (Objects.nonNull(worker) && !worker.isDone()) {
+          worker.cancel(true);
+        }
+        // worker = null;
+      }
+      table.repaint();
     }
   }
 
@@ -179,7 +221,7 @@ public class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<Integer, ProgressValue> {
   private final int lengthOfTask;
-  private final int sleepDummy = new Random().nextInt(100) + 1;
+  private final int sleepDummy = new Random().nextInt(50) + 1;
 
   protected BackgroundTask(int lengthOfTask) {
     super();
@@ -187,70 +229,14 @@ class BackgroundTask extends SwingWorker<Integer, ProgressValue> {
   }
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override protected Integer doInBackground() {
+  @Override protected Integer doInBackground() throws InterruptedException {
     int current = 0;
     while (current <= lengthOfTask && !isCancelled()) {
       publish(new ProgressValue(lengthOfTask, current));
-      try {
-        Thread.sleep(sleepDummy);
-      } catch (InterruptedException ex) {
-        break;
-      }
+      Thread.sleep(sleepDummy);
       current++;
     }
     return sleepDummy * lengthOfTask;
-  }
-}
-
-class WorkerModel<E extends ProgressValue> extends DefaultTableModel {
-  private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, false),
-    new ColumnContext("Progress", ProgressValue.class, false)
-  };
-  private final Map<Integer, SwingWorker<Integer, E>> swmap = new ConcurrentHashMap<>();
-  private int number;
-
-  public void addProgressValue(String name, E t, SwingWorker<Integer, E> worker) {
-    Object[] obj = {number, name, t.getProgress()};
-    super.addRow(obj);
-    if (Objects.nonNull(worker)) {
-      swmap.put(number, worker);
-    }
-    number++;
-  }
-
-  public SwingWorker<Integer, E> getSwingWorker(int identifier) {
-    Integer key = (Integer) getValueAt(identifier, 0);
-    return swmap.get(key);
-  }
-
-  @Override public boolean isCellEditable(int row, int col) {
-    return COLUMN_ARRAY[col].isEditable;
-  }
-
-  @Override public Class<?> getColumnClass(int column) {
-    return COLUMN_ARRAY[column].columnClass;
-  }
-
-  @Override public int getColumnCount() {
-    return COLUMN_ARRAY.length;
-  }
-
-  @Override public String getColumnName(int column) {
-    return COLUMN_ARRAY[column].columnName;
-  }
-
-  private static class ColumnContext {
-    public final String columnName;
-    public final Class<?> columnClass;
-    public final boolean isEditable;
-
-    protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
-      this.columnName = columnName;
-      this.columnClass = columnClass;
-      this.isEditable = isEditable;
-    }
   }
 }
 
@@ -269,49 +255,5 @@ class ProgressValue {
 
   public Integer getLengthOfTask() {
     return lengthOfTask;
-  }
-}
-
-class ProgressRenderer extends DefaultTableCellRenderer {
-  private final JProgressBar progress = new JProgressBar();
-  private final JPanel renderer = new JPanel(new BorderLayout());
-
-  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c;
-    renderer.removeAll();
-    progress.setValue(0);
-    if (value instanceof ProgressValue) {
-      ProgressValue pv = (ProgressValue) value;
-      Integer current = pv.getProgress();
-      Integer lengthOfTask = pv.getLengthOfTask();
-      if (current < 0) {
-        c = super.getTableCellRendererComponent(table, "Canceled", isSelected, hasFocus, row, column);
-      } else if (current < lengthOfTask) {
-        // progress.setMaximum(lengthOfTask);
-        // progress.setEnabled(true);
-        progress.setValue(current * 100 / lengthOfTask);
-        progress.setStringPainted(true);
-        progress.setString(String.format("%d/%d", current, lengthOfTask));
-        renderer.add(progress);
-        c = renderer;
-      } else {
-        c = super.getTableCellRendererComponent(table, "Done", isSelected, hasFocus, row, column);
-      }
-    } else {
-      // progress.setEnabled(false);
-      // progress.setValue(0);
-      // renderer.add(progress);
-      // c = renderer;
-      c = super.getTableCellRendererComponent(table, "Waiting...", isSelected, hasFocus, row, column);
-    }
-    return c;
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setOpaque(true);
-    if (Objects.nonNull(renderer)) {
-      SwingUtilities.updateComponentTreeUI(renderer);
-    }
   }
 }
