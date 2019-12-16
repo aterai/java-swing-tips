@@ -23,27 +23,32 @@ public final class MainPanel extends JPanel {
     UIManager.put("CheckBoxMenuItem.doNotCloseOnMouseClick", true);
 
     JTable table = new JTable(new DefaultTableModel(12, 8));
-    JPopupMenu pop = new TableHeaderPopupMenu(table);
-    JTableHeader header = table.getTableHeader();
-    header.setComponentPopupMenu(pop);
-    pop.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        cleanupHeader();
-      }
+    table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu(table));
 
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        /* not needed */
-      }
+    //     JPopupMenu pop = new TableHeaderPopupMenu(table);
+    //     JTableHeader header = table.getTableHeader();
+    //     header.setComponentPopupMenu(pop);
+    //     pop.addPopupMenuListener(new PopupMenuListener() {
+    //       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    //         cleanupHeader();
+    //       }
+    //
+    //       @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    //         /* not needed */
+    //       }
+    //
+    //       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    //         cleanupHeader(); // Java 9 doNotCloseOnMouseClick ArrayIndexOutOfBoundsException
+    //       }
+    //
+    //       private void cleanupHeader() {
+    //         header.setDraggedColumn(null);
+    //         // header.repaint();
+    //         // table.repaint();
+    //         repaint();
+    //       }
+    //     });
 
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        cleanupHeader(); // Java 9 doNotCloseOnMouseClick ArrayIndexOutOfBoundsException
-      }
-
-      private void cleanupHeader() {
-        header.setDraggedColumn(null);
-        header.repaint();
-      }
-    });
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -92,6 +97,10 @@ class TableHeaderPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
+      JTable table = header.getTable();
+      header.setDraggedColumn(null);
+      header.repaint();
+      table.repaint();
       updateMenuItems(header.getColumnModel());
       super.show(c, x, y);
     }

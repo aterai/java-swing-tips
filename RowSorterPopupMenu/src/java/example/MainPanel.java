@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -44,26 +42,30 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(80);
     col.setResizable(false);
 
-    JPopupMenu pop = new TableHeaderPopupMenu();
-    JTableHeader header = table.getTableHeader();
-    header.setComponentPopupMenu(pop);
-    pop.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        // System.out.println("popupMenuWillBecomeInvisible");
-        header.setDraggedColumn(null);
-        // header.setResizingColumn(null);
-        // header.setDraggedDistance(0);
-        header.repaint();
-      }
+    table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu());
 
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        /* not needed */
-      }
+    // JPopupMenu pop = new TableHeaderPopupMenu();
+    // JTableHeader header = table.getTableHeader();
+    // header.setComponentPopupMenu(pop);
+    // pop.addPopupMenuListener(new PopupMenuListener() {
+    //   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    //     // System.out.println("popupMenuWillBecomeInvisible");
+    //     header.setDraggedColumn(null);
+    //     // header.setResizingColumn(null);
+    //     // header.setDraggedDistance(0);
+    //     header.repaint();
+    //     table.repaint();
+    //   }
+    //
+    //   @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    //     /* not needed */
+    //   }
+    //
+    //   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    //     /* not needed */
+    //   }
+    // });
 
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        /* not needed */
-      }
-    });
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -100,10 +102,16 @@ class TableHeaderPopupMenu extends JPopupMenu {
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTableHeader) {
-      JTableHeader h = (JTableHeader) c;
-      int i = h.getTable().convertColumnIndexToModel(h.columnAtPoint(new Point(x, y)));
-      actions.forEach(a -> a.setIndex(i));
-      super.show(c, x, y);
+      JTableHeader header = (JTableHeader) c;
+      JTable table = header.getTable();
+      header.setDraggedColumn(null);
+      header.repaint();
+      table.repaint();
+      int i = table.convertColumnIndexToModel(header.columnAtPoint(new Point(x, y)));
+      if (i >= 0) {
+        actions.forEach(a -> a.setIndex(i));
+        super.show(c, x, y);
+      }
     }
   }
 
