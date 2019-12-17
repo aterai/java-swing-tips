@@ -183,7 +183,9 @@ class TableHeaderPopupMenu extends JPopupMenu {
       header.repaint();
       header.getTable().repaint();
       index = header.columnAtPoint(new Point(x, y));
-      super.show(c, x, y);
+      if (index >= 0) {
+        super.show(c, x, y);
+      }
     }
   }
 }
