@@ -11,57 +11,60 @@ import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-public class MainPanel extends JPanel {
-  private final JDesktopPane desktop = new JDesktopPane();
-  private final JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
+public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
-  private final transient InternalFrameListener handler = new InternalFrameListener() {
-    @Override public void internalFrameClosing(InternalFrameEvent e) {
-      displayMessage("Internal frame closing", e);
-    }
 
-    @Override public void internalFrameClosed(InternalFrameEvent e) {
-      displayMessage("Internal frame closed", e);
-    }
-
-    @Override public void internalFrameOpened(InternalFrameEvent e) {
-      displayMessage("Internal frame opened", e);
-    }
-
-    @Override public void internalFrameIconified(InternalFrameEvent e) {
-      displayMessage("Internal frame iconified", e);
-    }
-
-    @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-      displayMessage("Internal frame deiconified", e);
-    }
-
-    @Override public void internalFrameActivated(InternalFrameEvent e) {
-      displayMessage("Internal frame activated", e);
-    }
-
-    @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-      displayMessage("Internal frame deactivated", e);
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
-    iframe.addPropertyChangeListener(e -> {
+    JInternalFrame frame = new JInternalFrame("title", true, true, true, true);
+    frame.addPropertyChangeListener(e -> {
       String prop = e.getPropertyName();
       if (Objects.equals(JInternalFrame.IS_MAXIMUM_PROPERTY, prop)) {
-        if (Objects.equals(e.getNewValue(), Boolean.TRUE)) {
-          displayMessage("* Internal frame maximized", e);
-        } else {
-          displayMessage("* Internal frame minimized", e);
-        }
+        String str = Objects.equals(e.getNewValue(), Boolean.TRUE) ? "maximized" : "minimized";
+        textArea.append(String.format("* Internal frame %s: %s%n", str, e.getSource()));
+        textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     });
-    iframe.addInternalFrameListener(handler);
-    iframe.setBounds(10, 10, 160, 100);
-    desktop.add(iframe);
-    iframe.setVisible(true);
+    frame.addInternalFrameListener(new InternalFrameListener() {
+      @Override public void internalFrameClosing(InternalFrameEvent e) {
+        displayMessage("Internal frame closing", e);
+      }
+
+      @Override public void internalFrameClosed(InternalFrameEvent e) {
+        displayMessage("Internal frame closed", e);
+      }
+
+      @Override public void internalFrameOpened(InternalFrameEvent e) {
+        displayMessage("Internal frame opened", e);
+      }
+
+      @Override public void internalFrameIconified(InternalFrameEvent e) {
+        displayMessage("Internal frame iconified", e);
+      }
+
+      @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+        displayMessage("Internal frame deiconified", e);
+      }
+
+      @Override public void internalFrameActivated(InternalFrameEvent e) {
+        displayMessage("Internal frame activated", e);
+      }
+
+      @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+        displayMessage("Internal frame deactivated", e);
+      }
+
+      private void displayMessage(String prefix, EventObject e) {
+        String s = prefix + ": " + e.getSource();
+        textArea.append(s + "\n");
+        textArea.setCaretPosition(textArea.getDocument().getLength());
+      }
+    });
+    frame.setBounds(10, 10, 160, 100);
+
+    JDesktopPane desktop = new JDesktopPane();
+    desktop.add(frame);
+    frame.setVisible(true);
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     sp.setTopComponent(desktop);
@@ -69,12 +72,6 @@ public class MainPanel extends JPanel {
     sp.setResizeWeight(.8);
     add(sp);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  protected final void displayMessage(String prefix, EventObject e) {
-    String s = prefix + ": " + e.getSource();
-    textArea.append(s + "\n");
-    textArea.setCaretPosition(textArea.getDocument().getLength());
   }
 
   // private JMenuBar createMenuBar() {
@@ -102,7 +99,7 @@ public class MainPanel extends JPanel {
   //   String title = String.format("Document #%s", openFrameCount.getAndIncrement());
   //   JInternalFrame f = new JInternalFrame(title, true, true, true, true);
   //   f.setSize(160, 100);
-  //   f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
+  //   f.setLocation(OFFSET * openFrameCount.intValue(), OFFSET * openFrameCount.intValue());
   //   return f;
   // }
 
