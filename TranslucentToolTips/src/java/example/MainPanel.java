@@ -30,67 +30,77 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   public static final Dimension CELL_SIZE = new Dimension(10, 10);
   public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-  public final JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
-    private transient JToolTip tip;
-
-    @Override public void updateUI() {
-      setCellRenderer(null);
-      super.updateUI();
-      setLayoutOrientation(JList.VERTICAL_WRAP);
-      setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
-      setFixedCellWidth(CELL_SIZE.width);
-      setFixedCellHeight(CELL_SIZE.height);
-      setCellRenderer(new ContributionListRenderer());
-      getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-      setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    }
-
-    @Override public String getToolTipText(MouseEvent e) {
-      Point p = e.getPoint();
-      int idx = locationToIndex(p);
-      Rectangle rect = getCellBounds(idx, idx);
-      if (idx < 0 || !rect.contains(p.x, p.y)) {
-        return null;
-      }
-      Contribution value = getModel().getElementAt(idx);
-      String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
-      return "<html>" + actTxt + " contribution <span style='color:#C8C8C8'> on " + value.date.toString();
-    }
-
-    @Override public Point getToolTipLocation(MouseEvent e) {
-      Point p = e.getPoint();
-      int i = locationToIndex(p);
-      Rectangle rect = getCellBounds(i, i);
-
-      String toolTipText = getToolTipText(e);
-      if (Objects.nonNull(toolTipText)) {
-        JToolTip tips = createToolTip();
-        tips.setTipText(toolTipText);
-        Dimension d = tips.getPreferredSize();
-        int gap = 2;
-        return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
-      }
-      return null;
-    }
-
-    @Override public JToolTip createToolTip() {
-      if (tip == null) {
-        tip = new BalloonToolTip();
-        tip.setComponent(this);
-      }
-      return tip;
-    }
-  };
   public final Color color = new Color(0x32_C8_32);
-  public final List<Icon> activityIcons = Arrays.asList(
-      new ContributionIcon(new Color(0xC8_C8_C8)),
-      new ContributionIcon(color.brighter()),
-      new ContributionIcon(color),
-      new ContributionIcon(color.darker()),
-      new ContributionIcon(color.darker().darker()));
 
   private MainPanel() {
     super(new BorderLayout());
+    List<Icon> activityIcons = Arrays.asList(
+        new ContributionIcon(new Color(0xC8_C8_C8)),
+        new ContributionIcon(color.brighter()),
+        new ContributionIcon(color),
+        new ContributionIcon(color.darker()),
+        new ContributionIcon(color.darker().darker()));
+
+    JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
+      private transient JToolTip tip;
+
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        setLayoutOrientation(JList.VERTICAL_WRAP);
+        setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
+        setFixedCellWidth(CELL_SIZE.width);
+        setFixedCellHeight(CELL_SIZE.height);
+        ListCellRenderer<? super Contribution> renderer = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (value.date.isAfter(currentLocalDate)) {
+            l.setIcon(new ContributionIcon(Color.WHITE));
+          } else {
+            l.setIcon(activityIcons.get(value.activity));
+          }
+          return l;
+        });
+        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+      }
+
+      @Override public String getToolTipText(MouseEvent e) {
+        Point p = e.getPoint();
+        int idx = locationToIndex(p);
+        Rectangle rect = getCellBounds(idx, idx);
+        if (idx < 0 || !rect.contains(p.x, p.y)) {
+          return null;
+        }
+        Contribution value = getModel().getElementAt(idx);
+        String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
+        return actTxt + " contribution on " + value.date.toString();
+      }
+
+      @Override public Point getToolTipLocation(MouseEvent e) {
+        Point p = e.getPoint();
+        int i = locationToIndex(p);
+        Rectangle rect = getCellBounds(i, i);
+
+        String toolTipText = getToolTipText(e);
+        if (Objects.nonNull(toolTipText)) {
+          JToolTip tips = createToolTip();
+          tips.setTipText(toolTipText);
+          Dimension d = tips.getPreferredSize();
+          int gap = 2;
+          return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
+        }
+        return null;
+      }
+
+      @Override public JToolTip createToolTip() {
+        if (tip == null) {
+          tip = new BalloonToolTip();
+          tip.setComponent(this);
+        }
+        return tip;
+      }
+    };
     Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
 
     Box box = Box.createHorizontalBox();
@@ -169,19 +179,20 @@ public final class MainPanel extends JPanel {
     return scroll;
   }
 
-  private class ContributionListRenderer implements ListCellRenderer<Contribution> {
-    private final ListCellRenderer<? super Contribution> renderer = new DefaultListCellRenderer();
-
-    @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
-      JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      if (value.date.isAfter(currentLocalDate)) {
-        l.setIcon(new ContributionIcon(Color.WHITE));
-      } else {
-        l.setIcon(activityIcons.get(value.activity));
-      }
-      return l;
-    }
-  }
+  // private class ContributionListRenderer implements ListCellRenderer<Contribution> {
+  //   private final ListCellRenderer<? super Contribution> renderer = new DefaultListCellRenderer();
+  //
+  //   @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
+  //     // Contribution v = Optional.ofNullable(value).orElseGet(list::getPrototypeCellValue);
+  //     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+  //     if (value.date.isAfter(currentLocalDate)) {
+  //       l.setIcon(new ContributionIcon(Color.WHITE));
+  //     } else {
+  //       l.setIcon(activityIcons.get(value.activity));
+  //     }
+  //     return l;
+  //   }
+  // }
 
   private static JLabel makeLabel(String title, Font font) {
     JLabel label = new JLabel(title);
@@ -272,7 +283,7 @@ class ContributionIcon implements Icon {
 
 class BalloonToolTip extends JToolTip {
   private static final int TRI_HEIGHT = 4;
-  private HierarchyListener listener;
+  private transient HierarchyListener listener;
 
   @Override public void updateUI() {
     removeHierarchyListener(listener);
