@@ -58,12 +58,11 @@ public final class MainPanel extends JPanel {
 
   private static void initComboBox(JComboBox<SiteItem> combo) {
     combo.setEditable(true);
-    combo.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setIcon(((SiteItem) value).favicon);
-        return c;
-      }
+    ListCellRenderer<? super SiteItem> renderer = combo.getRenderer();
+    combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      c.setIcon(value.favicon);
+      return c;
     });
   }
 
@@ -162,9 +161,9 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     }
     String str = Objects.toString(o, "");
     return IntStream.range(0, model.getSize())
-      .mapToObj(model::getElementAt)
-      .filter(ui -> ui.url.equals(str))
-      .findFirst();
+        .mapToObj(model::getElementAt)
+        .filter(ui -> ui.url.equals(str))
+        .findFirst();
     // DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
     // SiteItem item = null;
     // for (int i = 0; i < model.getSize(); i++) {
@@ -284,8 +283,8 @@ class SiteComboBoxLayout implements LayoutManager {
     Component editor = cb.getEditor().getEditorComponent();
     if (Objects.nonNull(editor)) {
       editor.setBounds(insets.left + faviconWidth, insets.top,
-               width - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
-               height - insets.top - insets.bottom);
+          width - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
+          height - insets.top - insets.bottom);
     }
   }
 }
