@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
 
     URL url = getClass().getResource("Mozart_toruko_k.mid");
     SwingWorker<Void, Long> worker = new SwingWorker<Void, Long>() {
-      private long tickpos;
-      @Override public Void doInBackground() {
+      private long tickPos;
+      @Override public Void doInBackground() throws InterruptedException {
         try (Sequencer sequencer = MidiSystem.getSequencer()) {
           sequencer.open();
           sequencer.setSequence(MidiSystem.getSequence(url));
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
           EventQueue.invokeLater(() -> {
             start.addActionListener(e -> {
-              sequencer.setTickPosition(tickpos);
+              sequencer.setTickPosition(tickPos);
               sequencer.start();
               initButtons(false);
             });
@@ -53,20 +53,16 @@ public final class MainPanel extends JPanel {
 
             reset.addActionListener(e -> {
               sequencer.stop();
-              tickpos = 0;
+              tickPos = 0;
               initButtons(true);
             });
           });
 
-          try {
-            while (sequencer.isOpen()) {
-              if (sequencer.isRunning()) {
-                publish(sequencer.getTickPosition());
-              }
-              Thread.sleep(1000);
+          while (sequencer.isOpen()) {
+            if (sequencer.isRunning()) {
+              publish(sequencer.getTickPosition());
             }
-          } catch (InterruptedException ex) {
-            System.out.println(ex.getMessage());
+            Thread.sleep(1000);
           }
         } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
           ex.printStackTrace();
@@ -79,15 +75,15 @@ public final class MainPanel extends JPanel {
 
       @Override protected void process(List<Long> chunks) {
         for (Long tp: chunks) {
-          tickpos = tp;
-          if (tickpos == 0) {
+          tickPos = tp;
+          if (tickPos == 0) {
             initButtons(true);
           }
         }
       }
 
       // @Override public void done() {
-      //   tickpos = 0;
+      //   tickPos = 0;
       //   initButtons(true);
       // }
 
