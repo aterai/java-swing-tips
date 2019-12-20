@@ -45,6 +45,17 @@ public final class MainPanel extends JPanel {
     super();
     installActions();
 
+    JButton prev = new JButton("<");
+    prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));
+
+    JButton next = new JButton(">");
+    next.addActionListener(e -> updateMonthView(getCurrentLocalDate().plusMonths(1)));
+
+    JPanel yearMonthPanel = new JPanel(new BorderLayout());
+    yearMonthPanel.add(yearMonthLabel);
+    yearMonthPanel.add(prev, BorderLayout.WEST);
+    yearMonthPanel.add(next, BorderLayout.EAST);
+
     DefaultListModel<DayOfWeek> weekModel = new DefaultListModel<>();
     DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
     for (int i = 0; i < DayOfWeek.values().length; i++) {
@@ -72,17 +83,6 @@ public final class MainPanel extends JPanel {
       }
     };
     updateMonthView(realLocalDate);
-
-    JButton prev = new JButton("<");
-    prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));
-
-    JButton next = new JButton(">");
-    next.addActionListener(e -> updateMonthView(getCurrentLocalDate().plusMonths(1)));
-
-    JPanel yearMonthPanel = new JPanel(new BorderLayout());
-    yearMonthPanel.add(yearMonthLabel);
-    yearMonthPanel.add(prev, BorderLayout.WEST);
-    yearMonthPanel.add(next, BorderLayout.EAST);
 
     JScrollPane scroll = new JScrollPane(monthList);
     scroll.setColumnHeaderView(header);
