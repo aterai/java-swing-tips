@@ -45,31 +45,32 @@ public final class MainPanel extends JPanel {
     super();
     installActions();
 
-    Locale l = Locale.getDefault();
     DefaultListModel<DayOfWeek> weekModel = new DefaultListModel<>();
-    DayOfWeek firstDayOfWeek = WeekFields.of(l).getFirstDayOfWeek();
+    DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
     for (int i = 0; i < DayOfWeek.values().length; i++) {
       weekModel.add(i, firstDayOfWeek.plus(i));
     }
-    JList<DayOfWeek> header = new JList<>(weekModel);
-    header.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-    header.setVisibleRowCount(0);
-    header.setFixedCellWidth(size.width);
-    header.setFixedCellHeight(size.height);
-    header.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, false, false);
-        setHorizontalAlignment(SwingConstants.CENTER);
-        if (value instanceof DayOfWeek) {
-          DayOfWeek dow = (DayOfWeek) value;
-          // String s = dow.getDisplayName(TextStyle.SHORT_STANDALONE, l);
-          // setText(s.substring(0, Math.min(2, s.length())));
-          setText(dow.getDisplayName(TextStyle.SHORT_STANDALONE, l));
-          setBackground(new Color(0xDC_DC_DC));
-        }
-        return this;
+    JList<DayOfWeek> header = new JList<DayOfWeek>(weekModel) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super DayOfWeek> renderer = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, false, false);
+          c.setHorizontalAlignment(SwingConstants.CENTER);
+          // String s = value.getDisplayName(TextStyle.SHORT_STANDALONE, l);
+          // c.setText(s.substring(0, Math.min(2, s.length())));
+          c.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
+          c.setBackground(new Color(0xDC_DC_DC));
+          return c;
+        });
+        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        setVisibleRowCount(0);
+        setFixedCellWidth(size.width);
+        setFixedCellHeight(size.height);
       }
-    });
+    };
     updateMonthView(realLocalDate);
 
     JButton prev = new JButton("<");
