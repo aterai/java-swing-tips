@@ -10,17 +10,25 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<MyItem> combobox1 = makeComboBox();
-    JComboBox<MyItem> combobox2 = makeComboBox();
-    combobox2.setEditable(true);
+    DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();
+    model.addElement(new MyItem("1111"));
+    model.addElement(new MyItem("1111222"));
+    model.addElement(new MyItem("111122233"));
+    model.addElement(new MyItem("444444", true));
+    model.addElement(new MyItem("555"));
+    model.addElement(new MyItem("6666666"));
+
+    JComboBox<MyItem> combo1 = makeComboBox(model);
+    JComboBox<MyItem> combo2 = makeComboBox(model);
+    combo2.setEditable(true);
 
     Box box1 = Box.createVerticalBox();
     box1.setBorder(BorderFactory.createTitledBorder("setEditable(false)"));
-    box1.add(combobox1);
+    box1.add(combo1);
 
     Box box2 = Box.createVerticalBox();
     box2.setBorder(BorderFactory.createTitledBorder("setEditable(true)"));
-    box2.add(combobox2);
+    box2.add(combo2);
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(box1, BorderLayout.NORTH);
@@ -28,29 +36,25 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<MyItem> makeComboBox() {
-    DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();
-    model.addElement(new MyItem("aaaa"));
-    model.addElement(new MyItem("aaaabbb"));
-    model.addElement(new MyItem("aaaabbbcc"));
-    model.addElement(new MyItem("eeeeeeeee", true));
-    model.addElement(new MyItem("bbb1"));
-    model.addElement(new MyItem("bbb12"));
-
-    JComboBox<MyItem> combo = new JComboBox<>(model);
-    combo.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        MyItem item = (MyItem) value;
-        JLabel label = (JLabel) super.getListCellRendererComponent(list, item, index, isSelected, cellHasFocus);
-        if (index != -1 && item.hasSeparator()) {
-          label.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
-        } else {
-          label.setBorder(BorderFactory.createEmptyBorder());
-        }
-        return label;
+  private static JComboBox<MyItem> makeComboBox(ComboBoxModel<MyItem> model) {
+    return new JComboBox<MyItem>(model) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super MyItem> renderer = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JComponent) {
+            if (index != -1 && value.hasSeparator()) {
+              ((JComponent) c).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+            } else {
+              ((JComponent) c).setBorder(BorderFactory.createEmptyBorder());
+            }
+          }
+          return c;
+        });
       }
-    });
-    return combo;
+    };
   }
 
   public static void main(String[] args) {
