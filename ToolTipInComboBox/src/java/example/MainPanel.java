@@ -12,7 +12,8 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<String> combo = makeComboBox();
+    String[] model = {"aaa", "bb", "c"};
+    JComboBox<String> combo = makeComboBox(model);
     combo.setEditable(true);
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -21,23 +22,26 @@ public final class MainPanel extends JPanel {
     p.add(new JLayer<>(combo, new ToolTipLayerUI<>()));
     p.add(Box.createVerticalStrut(10));
     p.add(new JLabel("setEditable(false)"));
-    p.add(new JLayer<>(makeComboBox(), new ToolTipLayerUI<>()));
+    p.add(new JLayer<>(makeComboBox(model), new ToolTipLayerUI<>()));
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox() {
-    JComboBox<String> combo = new JComboBox<>(new String[] {"aaa", "bbbbb", "c"});
-    combo.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (c instanceof JComponent) {
-          ((JComponent) c).setToolTipText(String.format("Item%d: %s", index, value));
-        }
-        return c;
+  private static <E> JComboBox<E> makeComboBox(E[] model) {
+    return new JComboBox<E>(model) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super E> renderer = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JComponent) {
+            ((JComponent) c).setToolTipText(String.format("Item%d: %s", index, value));
+          }
+          return c;
+        });
       }
-    });
-    return combo;
+    };
   }
 
   public static void main(String[] args) {
