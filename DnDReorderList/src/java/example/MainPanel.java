@@ -37,14 +37,21 @@ public final class MainPanel extends JPanel {
     JList<Color> list = new JList<Color>(listModel) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
+        setCellRenderer(null);
         super.updateUI();
+        ListCellRenderer<? super Color> renderer = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          c.setForeground(value);
+          return c;
+        });
+        // setVisibleRowCount(-1);
+        getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        setDropMode(DropMode.INSERT);
+        setDragEnabled(true);
+        setTransferHandler(new ListItemTransferHandler());
       }
     };
-    // list.setVisibleRowCount(-1);
-    list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-    list.setTransferHandler(new ListItemTransferHandler());
-    list.setDropMode(DropMode.INSERT);
-    list.setDragEnabled(true);
 
     // Disable row Cut, Copy, Paste
     ActionMap map = list.getActionMap();
@@ -56,14 +63,6 @@ public final class MainPanel extends JPanel {
     map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
     map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
     map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
-
-    list.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setForeground((Color) value);
-        return c;
-      }
-    });
 
     return list;
   }

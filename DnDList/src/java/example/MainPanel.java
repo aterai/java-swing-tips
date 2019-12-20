@@ -36,25 +36,11 @@ public final class MainPanel extends JPanel {
     model.addElement("22222222");
     model.addElement("333333333333");
     model.addElement("<<<<<<---->>>>>>");
-    model.addElement("AAAAAAAAAAAAAA");
+    model.addElement("============");
     model.addElement("****");
 
     JList<String> list = new DnDList<>();
     list.setModel(model);
-    list.setCellRenderer(new DefaultListCellRenderer() {
-      private final Color ec = new Color(0xF0_F0_F0);
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (isSelected) {
-          setForeground(list.getSelectionForeground());
-          setBackground(list.getSelectionBackground());
-        } else {
-          setForeground(list.getForeground());
-          setBackground(index % 2 == 0 ? ec : list.getBackground());
-        }
-        return this;
-      }
-    });
     return list;
   }
 
@@ -82,6 +68,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
   private static final Color LINE_COLOR = new Color(0x64_64_FF);
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+  private static final Color EVEN_BACKGROUND = new Color(0xF0_F0_F0);
   private final Rectangle targetLine = new Rectangle();
   protected int draggedIndex = -1;
   protected int targetIndex = -1;
@@ -91,6 +78,23 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+  }
+
+  @Override public void updateUI() {
+    setCellRenderer(null);
+    super.updateUI();
+    ListCellRenderer<? super E> renderer = getCellRenderer();
+    setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (isSelected) {
+        c.setForeground(list.getSelectionForeground());
+        c.setBackground(list.getSelectionBackground());
+      } else {
+        c.setForeground(list.getForeground());
+        c.setBackground(index % 2 == 0 ? EVEN_BACKGROUND : list.getBackground());
+      }
+      return c;
+    });
   }
 
   @Override protected void paintComponent(Graphics g) {
