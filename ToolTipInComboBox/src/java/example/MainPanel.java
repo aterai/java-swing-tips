@@ -12,7 +12,7 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] model = {"aaa", "bb", "c"};
+    ComboBoxModel<String> model = new DefaultComboBoxModel<>(new String[] {"aaa", "bb", "c"});
     JComboBox<String> combo = makeComboBox(model);
     combo.setEditable(true);
 
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static <E> JComboBox<E> makeComboBox(E[] model) {
+  private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
     return new JComboBox<E>(model) {
       @Override public void updateUI() {
         setRenderer(null);
