@@ -93,8 +93,11 @@ class ProgressJTabbedPane extends JTabbedPane {
         String txt;
         try {
           txt = get();
-        } catch (InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException ex) {
           txt = "Interrupted";
+          Thread.currentThread().interrupt();
+        } catch (ExecutionException ex) {
+          txt = "Exception";
         }
         System.out.println(txt);
       }
@@ -106,15 +109,11 @@ class ProgressJTabbedPane extends JTabbedPane {
 }
 
 class BackgroundTask extends SwingWorker<String, Integer> {
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 120;
     while (current < lengthOfTask) {
-      try {
-        Thread.sleep(20);
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      Thread.sleep(20);
       current++;
       int v = 100 * current / lengthOfTask;
       setProgress(v);
