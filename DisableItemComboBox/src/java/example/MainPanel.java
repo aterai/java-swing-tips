@@ -121,20 +121,33 @@ class DisableItemComboBox<E> extends JComboBox<E> {
   // }
 
   @Override public void updateUI() {
+    setRenderer(null);
     super.updateUI();
-    setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c;
-        if (disableIndexSet.contains(index)) {
-          c = super.getListCellRendererComponent(list, value, index, false, false);
-          c.setEnabled(false);
-        } else {
-          c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-          c.setEnabled(true);
-        }
-        return c;
+    ListCellRenderer<? super E> renderer = getRenderer();
+    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c;
+      if (disableIndexSet.contains(index)) {
+        c = renderer.getListCellRendererComponent(list, value, index, false, false);
+        c.setEnabled(false);
+      } else {
+        c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        c.setEnabled(true);
       }
+      return c;
     });
+    // setRenderer(new DefaultListCellRenderer() {
+    //   @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    //     Component c;
+    //     if (disableIndexSet.contains(index)) {
+    //       c = super.getListCellRendererComponent(list, value, index, false, false);
+    //       c.setEnabled(false);
+    //     } else {
+    //       c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    //       c.setEnabled(true);
+    //     }
+    //     return c;
+    //   }
+    // });
     EventQueue.invokeLater(() -> {
       ActionMap am = getActionMap();
       am.put("selectPrevious3", up);
