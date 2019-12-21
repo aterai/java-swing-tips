@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
       DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
       root.add(node);
       Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
-        .filter(File::isDirectory)
-        .map(file -> new CheckBoxNode(file, Status.DESELECTED))
-        .map(DefaultMutableTreeNode::new)
-        .forEach(node::add);
+          .filter(File::isDirectory)
+          .map(file -> new CheckBoxNode(file, Status.DESELECTED))
+          .map(DefaultMutableTreeNode::new)
+          .forEach(node::add);
     });
     treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
@@ -85,6 +85,7 @@ public final class MainPanel extends JPanel {
     //       }
     //     }
     //   }
+    //
     //   @Override public void actionPerformed(ActionEvent e) {
     //     System.out.println("------------------");
     //     searchTreeForCheckedNode(tree.getPathForRow(0));
@@ -221,7 +222,7 @@ class FileTreeCellRenderer implements TreeCellRenderer {
         } else {
           checkBox.setIcon(null);
         }
-        File file = (File) node.getFile();
+        File file = node.getFile();
         l.setIcon(fileSystemView.getSystemIcon(file));
         l.setText(fileSystemView.getSystemDisplayName(file));
         l.setToolTipText(file.getPath());
@@ -238,7 +239,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private final JPanel panel = new JPanel(new BorderLayout());
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
   private final TriStateCheckBox checkBox = new TriStateCheckBox();
-  private final FileSystemView fileSystemView;
+  private final transient FileSystemView fileSystemView;
   private File file;
 
   protected CheckBoxNodeEditor(FileSystemView fileSystemView) {
@@ -310,10 +311,12 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
+  //
   // @Override public boolean stopCellEditing() {
   //   fireEditingStopped();
   //   return true;
   // }
+  //
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   // }
@@ -373,8 +376,8 @@ class BackgroundTask extends SwingWorker<String, File> {
 
   @Override public String doInBackground() {
     Stream.of(fileSystemView.getFiles(parent, true))
-      .filter(File::isDirectory)
-      .forEach(this::publish);
+        .filter(File::isDirectory)
+        .forEach(this::publish);
     return "done";
   }
 }
