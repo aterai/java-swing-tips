@@ -88,8 +88,11 @@ public final class MainPanel extends JPanel {
       initStatusPanel(false);
       try {
         appendLine(isCancelled() ? "\nCancelled\n" : get() + "\n");
-      } catch (InterruptedException | ExecutionException ex) {
+      } catch (InterruptedException ex) {
         appendLine("\nInterrupted\n");
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        appendLine("\nException\n");
       }
     }
   }
@@ -154,20 +157,16 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   private final Random rnd = new Random();
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() {
+  @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
-    int lengthOfTask = 12; // filelist.size();
+    int lengthOfTask = 12; // fileList.size();
     publish(new Progress(ComponentType.LOG, "Length Of Task: " + lengthOfTask));
     publish(new Progress(ComponentType.LOG, "\n------------------------------\n"));
     while (current < lengthOfTask && !isCancelled()) {
       publish(new Progress(ComponentType.LOG, "*"));
       publish(new Progress(ComponentType.TOTAL, 100 * current / lengthOfTask));
-      try {
-        convertFileToSomething();
-      } catch (InterruptedException ex) {
-        return "Interrupted";
-      }
+      convertFileToSomething();
       current++;
     }
     publish(new Progress(ComponentType.LOG, "\n"));
@@ -229,7 +228,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //         @Override public String doInBackground() {
 //           // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
 //           int current = 0;
-//           int lengthOfTask = 12; // filelist.size();
+//           int lengthOfTask = 12; // fileList.size();
 //           publish("Length Of Task: " + lengthOfTask);
 //           publish("\n------------------------------\n");
 //           setProgress(0);
