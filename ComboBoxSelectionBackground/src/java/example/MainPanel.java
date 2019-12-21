@@ -33,30 +33,30 @@ public final class MainPanel extends JPanel {
 
     JComboBox<String> combo2 = new JComboBox<String>(model) {
       @Override public void updateUI() {
+        setRenderer(null);
         super.updateUI();
-        setRenderer(new DefaultListCellRenderer() {
-          @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (isSelected) {
-              l.setForeground(Color.WHITE);
-              l.setBackground(Color.ORANGE);
-            } else {
-              l.setForeground(Color.BLACK);
-              l.setBackground(Color.WHITE);
-            }
-            return l;
+        ListCellRenderer<? super String> renderer = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (isSelected) {
+            l.setForeground(Color.WHITE);
+            l.setBackground(Color.ORANGE);
+          } else {
+            l.setForeground(Color.BLACK);
+            l.setBackground(Color.WHITE);
           }
+          return l;
         });
       }
     };
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("UIManager.put(ComboBox.selection*, ...)", combo0));
+    box.add(makeTitledPanel("UIManager.put(ComboBox.selection*ground, ...)", combo0));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("ComboPopup.getList().setSelection*(...)", combo1));
+    box.add(makeTitledPanel("ComboPopup.getList().setSelection*ground(...)", combo1));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("DefaultListCellRenderer", combo2));
+    box.add(makeTitledPanel("ListCellRenderer", combo2));
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
