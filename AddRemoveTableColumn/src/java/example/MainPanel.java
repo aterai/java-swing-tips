@@ -95,10 +95,9 @@ class TableHeaderPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
-      JTable table = header.getTable();
       header.setDraggedColumn(null);
       header.repaint();
-      table.repaint();
+      header.getTable().repaint();
       updateMenuItems(header.getColumnModel());
       super.show(c, x, y);
     }

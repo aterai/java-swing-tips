@@ -29,10 +29,9 @@ public final class MainPanel extends JPanel {
       @Override public void show(Component c, int x, int y) {
         if (c instanceof JTableHeader) {
           JTableHeader header = (JTableHeader) c;
-          JTable table = header.getTable();
           header.setDraggedColumn(null);
           header.repaint();
-          table.repaint();
+          header.getTable().repaint();
           super.show(c, x, y);
         }
       }
