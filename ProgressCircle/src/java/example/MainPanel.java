@@ -93,11 +93,14 @@ class ProgressCircleUI extends BasicProgressBarUI {
   }
 
   @Override public void paint(Graphics g, JComponent c) {
-    // public void paintDeterminate(Graphics g, JComponent c) {
-    Insets b = progressBar.getInsets(); // area for border
-    int barRectWidth = progressBar.getWidth() - b.right - b.left;
-    int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
-    if (barRectWidth <= 0 || barRectHeight <= 0) {
+    // Insets b = progressBar.getInsets(); // area for border
+    // int barRectWidth = progressBar.getWidth() - b.right - b.left;
+    // int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
+    // if (barRectWidth <= 0 || barRectHeight <= 0) {
+    //   return;
+    // }
+    Rectangle rect = SwingUtilities.calculateInnerArea(progressBar, null);
+    if (rect.isEmpty()) {
       return;
     }
 
@@ -105,11 +108,10 @@ class ProgressCircleUI extends BasicProgressBarUI {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     double degree = 360d * progressBar.getPercentComplete();
-    double sz = Math.min(barRectWidth, barRectHeight);
-    double cx = b.left + barRectWidth * .5;
-    double cy = b.top + barRectHeight * .5;
+    double sz = Math.min(rect.width, rect.height);
+    double cx = rect.getCenterX();
+    double cy = rect.getCenterY();
     double or = sz * .5;
-    // double ir = or - 20;
     double ir = or * .5; // .8;
     Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d);
     Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
@@ -137,7 +139,8 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
     // Deal with possible text painting
     if (progressBar.isStringPainted()) {
-      paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
+      Insets ins = progressBar.getInsets();
+      paintString(g, rect.x, rect.y, rect.width, rect.height, 0, ins);
     }
   }
 
