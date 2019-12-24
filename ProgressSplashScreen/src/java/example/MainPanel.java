@@ -10,12 +10,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    try {
-      Thread.sleep(3000); // dummy task
-    } catch (InterruptedException ex) {
-      ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
-    }
+
+    // dummy task
+    new SwingWorker<Void, Void>() {
+      @Override public Void doInBackground() throws InterruptedException {
+        Thread.sleep(3000);
+        return null;
+      }
+    }.execute();
+
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -68,16 +71,11 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<Void, Void> {
-  @Override public Void doInBackground() {
+  @Override public Void doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 120;
     while (current < lengthOfTask && !isCancelled()) {
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException ex) {
-        ex.printStackTrace();
-        return null;
-      }
+      Thread.sleep(50);
       setProgress(100 * current++ / lengthOfTask);
     }
     return null;
