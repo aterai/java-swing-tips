@@ -10,51 +10,14 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    String[] model = {"aaaaaaa", "bbb", "c"};
+    String[] model = {"11111", "222", "3"};
 
     JComboBox<String> combo1 = new JComboBox<>(model);
     combo1.setFocusable(false);
 
-    JComboBox<String> combo2 = new JComboBox<String>(model) {
-      @Override public void updateUI() {
-        setRenderer(null);
-        super.updateUI();
-        if (isWindowsLnF()) {
-          setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-              JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-              if (index < 0) {
-                l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-              }
-              return l;
-            }
-          });
-        }
-      }
+    JComboBox<String> combo2 = new FocusComboBox<>(model);
 
-      private boolean isWindowsLnF() {
-        return getUI().getClass().getName().contains("WindowsComboBoxUI");
-      }
-    };
-
-    JComboBox<String> combo3 = new JComboBox<String>(model) {
-      @Override public void updateUI() {
-        setRenderer(null);
-        super.updateUI();
-        if (isWindowsLnF()) {
-          setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-              JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-              if (index < 0) {
-                l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-              }
-              return l;
-            }
-          });
-        }
-      }
-
+    JComboBox<String> combo3 = new FocusComboBox<String>(model) {
       @Override protected void paintBorder(Graphics g) {
         super.paintBorder(g);
         if (isFocusOwner() && !isPopupVisible() && isWindowsLnF()) {
@@ -63,10 +26,6 @@ public final class MainPanel extends JPanel {
           g2.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
           g2.dispose();
         }
-      }
-
-      private boolean isWindowsLnF() {
-        return getUI().getClass().getName().contains("WindowsComboBoxUI");
       }
     };
 
@@ -108,5 +67,35 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FocusComboBox<E> extends JComboBox<E> {
+  protected FocusComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @SafeVarargs
+  protected FocusComboBox(E... model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    setRenderer(null);
+    super.updateUI();
+    if (isWindowsLnF()) {
+      ListCellRenderer<? super E> renderer = getRenderer();
+      setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+        Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if (index < 0 && c instanceof JLabel) {
+          ((JLabel) c).setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        }
+        return c;
+      });
+    }
+  }
+
+  protected boolean isWindowsLnF() {
+    return getUI().getClass().getName().contains("WindowsComboBoxUI");
   }
 }
