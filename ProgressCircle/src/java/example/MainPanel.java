@@ -20,20 +20,20 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         setUI(new ProgressCircleUI());
-        setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
       }
     };
+    progress1.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
     progress1.setForeground(new Color(0xAA_FF_AA_AA, true));
 
     JProgressBar progress2 = new JProgressBar() {
       @Override public void updateUI() {
         super.updateUI();
         setUI(new ProgressCircleUI());
-        setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
       }
     };
     progress2.setStringPainted(true);
     progress2.setFont(progress2.getFont().deriveFont(24f));
+    progress2.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
     JSlider slider = new JSlider();
     slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
@@ -45,9 +45,7 @@ public final class MainPanel extends JPanel {
       b.setEnabled(false);
       SwingWorker<String, Void> worker = new BackgroundTask() {
         @Override public void done() {
-          if (b.isDisplayable()) {
-            b.setEnabled(true);
-          }
+          b.setEnabled(true);
         }
       };
       worker.addPropertyChangeListener(new ProgressListener(progress2));
@@ -107,6 +105,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+    double start = 90d;
     double degree = 360d * progressBar.getPercentComplete();
     double sz = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
@@ -115,7 +114,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     double ir = or * .5; // .8;
     Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d);
     Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
-    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, 90d - degree, degree, Arc2D.PIE);
+    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, start, degree, Arc2D.PIE);
 
     Area foreground = new Area(sector);
     Area background = new Area(outer);
@@ -124,11 +123,11 @@ class ProgressCircleUI extends BasicProgressBarUI {
     foreground.subtract(hole);
     background.subtract(hole);
 
-    // draw the track
+    // Draw the track
     g2.setPaint(new Color(0xDD_DD_DD));
     g2.fill(background);
 
-    // draw the circular sector
+    // Draw the circular sector
     // AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
     // at.translate(-(barRectWidth + b.left * 2), 0);
     // AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
