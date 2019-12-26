@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -19,36 +19,46 @@ public final class MainPanel extends JPanel {
     int ih = 24;
 
     Icon icon0 = new ColorIcon(Color.GREEN, new Dimension(iw, ih));
-    JTree tree0 = new JTree();
-    tree0.setRowHeight(0);
-    tree0.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    tree0.setCellRenderer(new DefaultTreeCellRenderer() {
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if (Objects.equals(value, tree.getModel().getRoot())) {
-          l.setIcon(icon0);
-        }
-        return l;
+    JTree tree0 = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        setRowHeight(0);
+        TreeCellRenderer renderer = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
+            ((JLabel) c).setIcon(icon0);
+          }
+          return c;
+        });
       }
-    });
+    };
+    tree0.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
     Icon icon1 = new ColorIcon(Color.GREEN, new Dimension(ow, ih));
     Icon icon2 = new ColorIcon(new Color(0x55_00_00_AA, true), new Dimension(iw, ih));
-    JTree tree = new JTree();
-    tree.setRowHeight(0);
-    tree.setBorder(BorderFactory.createEmptyBorder(1, 1 + (iw - ow) / 2, 1, 1));
+    JTree tree = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        setRowHeight(0);
+        TreeCellRenderer renderer = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
+            JLabel label = (JLabel) c;
+            label.setIcon(icon1);
+            label.setIconTextGap(2 + (iw - icon1.getIconWidth()) / 2);
+          }
+          return c;
+        });
+      }
+    };
     // TEST:
     // tree.setBorder(BorderFactory.createMatteBorder(1, 1 + (iw - ow) / 2, 1, 1, Color.RED));
-    tree.setCellRenderer(new DefaultTreeCellRenderer() {
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if (Objects.equals(value, tree.getModel().getRoot())) {
-          l.setIcon(icon1);
-          l.setIconTextGap(2 + (iw - icon1.getIconWidth()) / 2);
-        }
-        return l;
-      }
-    });
+    tree.setBorder(BorderFactory.createEmptyBorder(1, 1 + (iw - ow) / 2, 1, 1));
+
     LayerUI<JTree> layerUI = new LayerUI<JTree>() {
       @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
