@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -26,8 +26,21 @@ public final class MainPanel extends JPanel {
     };
     ToolTipManager.sharedInstance().registerComponent(tree1);
 
-    JTree tree2 = new JTree();
-    tree2.setCellRenderer(new DefaultTreeCellRenderer() {
+    JTree tree2 = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        // init();
+        TreeCellRenderer r = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (c instanceof JComponent) {
+            ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value.toString() : null);
+          }
+          return c;
+        });
+      }
+
       // private void init() {
       //   setLeafIcon(DefaultLookup.getIcon(this, ui, "Tree.leafIcon"));
       //   setClosedIcon(DefaultLookup.getIcon(this, ui, "Tree.closedIcon"));
@@ -45,19 +58,7 @@ public final class MainPanel extends JPanel {
       //     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
       //   }
       // }
-      // @Override public void updateUI() {
-      //   super.updateUI();
-      //   init();
-      // }
-
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if (c instanceof JComponent) {
-          ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value.toString() : null);
-        }
-        return c;
-      }
-    });
+    };
     // tree2.setToolTipText("dummy");
     ToolTipManager.sharedInstance().registerComponent(tree2);
 
