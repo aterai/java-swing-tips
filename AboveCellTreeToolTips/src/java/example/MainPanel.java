@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
@@ -21,8 +20,25 @@ public final class MainPanel extends JPanel {
 
     JTree tree0 = new JTree(new DefaultTreeModel(makeTreeRoot())) {
       @Override public void updateUI() {
+        setCellRenderer(null);
         super.updateUI();
-        setCellRenderer(new TooltipTreeCellRenderer());
+        TreeCellRenderer renderer = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (c instanceof JComponent) {
+            ((JComponent) c).setToolTipText(value == null ? null : value.toString());
+          }
+          // JLabel l = (JLabel) c;
+          // Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
+          // if (s instanceof JScrollPane) {
+          //   Insets i = l.getInsets();
+          //   Rectangle rect = ((JScrollPane) s).getViewportBorderBounds();
+          //   FontMetrics fm = l.getFontMetrics(l.getFont());
+          //   String str = Objects.toString(value, "");
+          //   l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+          // }
+          return c;
+        });
       }
     };
     ToolTipManager.sharedInstance().registerComponent(tree0);
@@ -46,9 +62,9 @@ public final class MainPanel extends JPanel {
   private static DefaultMutableTreeNode makeTreeRoot() {
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 00000004");
     set4.add(new DefaultMutableTreeNode("222222111111111111111122222"));
-    set4.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set4.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
-    set4.add(new DefaultMutableTreeNode("zzzzzzz"));
+    set4.add(new DefaultMutableTreeNode("00000000000"));
+    set4.add(new DefaultMutableTreeNode("1111111111"));
+    set4.add(new DefaultMutableTreeNode("22222222"));
 
     DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 00000001");
     set1.add(new DefaultMutableTreeNode("33333333333333333333333333333333333"));
@@ -59,22 +75,22 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("222222222"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 00000002");
-    set2.add(new DefaultMutableTreeNode("eeeeeeeeeeeee"));
-    set2.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
+    set2.add(new DefaultMutableTreeNode("333333333"));
+    set2.add(new DefaultMutableTreeNode("4444444444444"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 00000003");
-    set3.add(new DefaultMutableTreeNode("zzzzzzz"));
-    set3.add(new DefaultMutableTreeNode("aaaaaaaaaaaa"));
-    set3.add(new DefaultMutableTreeNode("ccccccccc"));
+    set3.add(new DefaultMutableTreeNode("5555555555"));
+    set3.add(new DefaultMutableTreeNode("66666666666"));
+    set3.add(new DefaultMutableTreeNode("7777777777"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-    root.add(new DefaultMutableTreeNode("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
+    root.add(new DefaultMutableTreeNode("88888888888888888"));
     root.add(set3);
-    root.add(new DefaultMutableTreeNode("eeeeeeeeeeeeeeeeeeeeeeeeeeeee"));
+    root.add(new DefaultMutableTreeNode("9999999999999999999999999"));
     root.add(set1);
     root.add(set2);
     root.add(new DefaultMutableTreeNode("22222222222222222222222222222222222"));
-    root.add(new DefaultMutableTreeNode("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb"));
+    root.add(new DefaultMutableTreeNode("1111111111111111111111111"));
     return root;
   }
 
@@ -121,9 +137,17 @@ class TooltipTree extends JTree {
   }
 
   @Override public void updateUI() {
+    setCellRenderer(null);
     super.updateUI();
     // setRowHeight(24);
-    setCellRenderer(new TooltipTreeCellRenderer());
+    TreeCellRenderer renderer = getCellRenderer();
+    setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+      Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      if (c instanceof JComponent) {
+        ((JComponent) c).setToolTipText(value == null ? null : value.toString());
+      }
+      return c;
+    });
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
@@ -173,23 +197,23 @@ class TooltipTree extends JTree {
   }
 }
 
-class TooltipTreeCellRenderer implements TreeCellRenderer {
-  private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
-
-  @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    l.setToolTipText(value == null ? null : value.toString());
-    // Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
-    // if (c instanceof JScrollPane) {
-    //   Insets i = l.getInsets();
-    //   Rectangle rect = ((JScrollPane) c).getViewportBorderBounds();
-    //   FontMetrics fm = l.getFontMetrics(l.getFont());
-    //   String str = Objects.toString(value, "");
-    //   l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-    // }
-    return l;
-  }
-}
+// class TooltipTreeCellRenderer implements TreeCellRenderer {
+//   private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
+//
+//   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     l.setToolTipText(value == null ? null : value.toString());
+//     // Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
+//     // if (c instanceof JScrollPane) {
+//     //   Insets i = l.getInsets();
+//     //   Rectangle rect = ((JScrollPane) c).getViewportBorderBounds();
+//     //   FontMetrics fm = l.getFontMetrics(l.getFont());
+//     //   String str = Objects.toString(value, "");
+//     //   l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+//     // }
+//     return l;
+//   }
+// }
 
 class RendererIcon implements Icon {
   private final Component renderer;
