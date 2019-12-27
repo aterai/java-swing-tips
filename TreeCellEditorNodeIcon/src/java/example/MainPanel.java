@@ -12,35 +12,56 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-
     Icon icon = new ColorIcon(Color.RED);
 
-    JTree tree1 = new JTree();
-    tree1.setEditable(true);
-    tree1.setCellRenderer(new DefaultTreeCellRenderer() {
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean isLeaf, int row, boolean focused) {
-        JLabel c = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
-        c.setIcon(icon);
-        return c;
+    JTree tree1 = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setIcon(icon);
+          }
+          return c;
+        });
       }
-    });
+    };
+    tree1.setEditable(true);
 
-    JTree tree2 = new JTree();
+    JTree tree2 = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
+        r.setOpenIcon(icon);
+        r.setClosedIcon(icon);
+        r.setLeafIcon(icon);
+        setCellRenderer(r);
+      }
+    };
     tree2.setEditable(true);
-    DefaultTreeCellRenderer renderer2 = new DefaultTreeCellRenderer();
-    renderer2.setOpenIcon(icon);
-    renderer2.setClosedIcon(icon);
-    renderer2.setLeafIcon(icon);
-    tree2.setCellRenderer(renderer2);
 
-    JTree tree3 = new JTree();
+    JTree tree3 = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        setCellEditor(null);
+        super.updateUI();
+        DefaultTreeCellRenderer r2 = new DefaultTreeCellRenderer();
+        r2.setOpenIcon(icon);
+        r2.setClosedIcon(icon);
+        r2.setLeafIcon(icon);
+
+        DefaultTreeCellRenderer r3 = new DefaultTreeCellRenderer();
+        r3.setOpenIcon(new ColorIcon(Color.GREEN));
+        r3.setClosedIcon(new ColorIcon(Color.BLUE));
+        r3.setLeafIcon(new ColorIcon(Color.ORANGE));
+        setCellRenderer(r2);
+        setCellEditor(new DefaultTreeCellEditor(this, r3));
+      }
+    };
     tree3.setEditable(true);
-    DefaultTreeCellRenderer renderer3 = new DefaultTreeCellRenderer();
-    renderer3.setOpenIcon(new ColorIcon(Color.GREEN));
-    renderer3.setClosedIcon(new ColorIcon(Color.BLUE));
-    renderer3.setLeafIcon(new ColorIcon(Color.ORANGE));
-    tree3.setCellRenderer(renderer2);
-    tree3.setCellEditor(new DefaultTreeCellEditor(tree3, renderer3));
 
     add(new JScrollPane(tree1));
     add(new JScrollPane(tree2));
