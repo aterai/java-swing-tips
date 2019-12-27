@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -35,27 +35,27 @@ public final class MainPanel extends JPanel {
     // def.put("Tree[Enabled].expandedIconPainter", null);
     // def.put("Tree[Enabled+Selected].collapsedIconPainter", null);
     // def.put("Tree[Enabled+Selected].expandedIconPainter", null);
-    JTree tree = new JTree();
+    JTree tree = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        Color selectionBackground = new Color(0x39_69_8A);
+        TreeCellRenderer renderer = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, isLeaf, row, focused) -> {
+          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
+          if (selected) {
+            c.setBackground(selectionBackground);
+          }
+          if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(selected);
+          }
+          return c;
+        });
+      }
+    };
     tree.putClientProperty("Nimbus.Overrides", def);
     tree.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     tree.setBackground(Color.WHITE);
-
-    tree.setCellRenderer(new DefaultTreeCellRenderer() {
-      private final Color selectionBackground = new Color(0x39_69_8A);
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean isLeaf, int row, boolean focused) {
-        Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
-        if (c instanceof JComponent) {
-          JComponent jc = (JComponent) c;
-          if (selected) {
-            jc.setBackground(selectionBackground);
-            jc.setOpaque(true);
-          } else {
-            jc.setOpaque(false);
-          }
-        }
-        return c;
-      }
-    });
 
     JSplitPane split = new JSplitPane();
     split.setResizeWeight(.5);
