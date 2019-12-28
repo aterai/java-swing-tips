@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel {
 
   private static ComboBoxModel<String> makeModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
+    model.addElement("1111");
+    model.addElement("1111222");
+    model.addElement("111122233");
     model.addElement("1234123512351234");
     model.addElement("bbb1");
     model.addElement("bbb12");
@@ -83,17 +83,18 @@ public final class MainPanel extends JPanel {
 }
 
 class AlternateRowColorComboBox<E> extends JComboBox<E> {
-  private static final Color EVEN_BGCOLOR = new Color(0xE1_FF_E1);
-  private static final Color ODD_BGCOLOR = Color.WHITE;
+  private static final Color EVEN_BGC = new Color(0xE1_FF_E1);
+  private static final Color ODD_BGC = Color.WHITE;
   private transient ItemListener itemColorListener;
 
-  protected AlternateRowColorComboBox() {
-    super();
-  }
+  // protected AlternateRowColorComboBox() {
+  //   super();
+  // }
 
   protected AlternateRowColorComboBox(ComboBoxModel<E> model) {
     super(model);
   }
+
   // protected AlternateRowColorComboBox(E[] items) {
   //   super(items);
   // }
@@ -110,15 +111,16 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
   @Override public void updateUI() {
     removeItemListener(itemColorListener);
     super.updateUI();
-    setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setOpaque(true);
-        if (!isSelected) {
-          c.setBackground(getAlternateRowColor(index));
-        }
-        return c;
+    ListCellRenderer<? super E> r = getRenderer();
+    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (index >= 0 && c instanceof JComponent) {
+        ((JComponent) c).setOpaque(true);
       }
+      if (!isSelected) {
+        c.setBackground(getAlternateRowColor(index));
+      }
+      return c;
     });
     itemColorListener = e -> {
       if (e.getStateChange() != ItemEvent.SELECTED) {
@@ -145,6 +147,6 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
   }
 
   protected static Color getAlternateRowColor(int index) {
-    return index % 2 == 0 ? EVEN_BGCOLOR : ODD_BGCOLOR;
+    return index % 2 == 0 ? EVEN_BGC : ODD_BGC;
   }
 }
