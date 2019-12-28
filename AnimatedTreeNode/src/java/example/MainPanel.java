@@ -9,9 +9,10 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
+
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -23,24 +24,28 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new NodeObject("setImageObserver", icon));
     root.add(s0);
     root.add(s1);
-    JTree tree = new JTree(new DefaultTreeModel(root));
-    tree.setCellRenderer(new DefaultTreeCellRenderer() {
-      @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        Object v = Optional.ofNullable(value)
-            .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
-            .map(DefaultMutableTreeNode::getUserObject).orElse(null);
-        if (v instanceof NodeObject) {
-          NodeObject uo = (NodeObject) v;
-          l.setText(Objects.toString(uo.title, ""));
-          l.setIcon(uo.icon);
-        } else {
-          l.setText(Objects.toString(value, ""));
-          l.setIcon(null);
-        }
-        return l;
+    JTree tree = new JTree(new DefaultTreeModel(root)) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        TreeCellRenderer r = getCellRenderer();
+        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+          JLabel l = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Object v = Optional.ofNullable(value)
+              .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
+              .map(DefaultMutableTreeNode::getUserObject).orElse(null);
+          if (v instanceof NodeObject) {
+            NodeObject uo = (NodeObject) v;
+            l.setText(Objects.toString(uo.title, ""));
+            l.setIcon(uo.icon);
+          } else {
+            l.setText(Objects.toString(value, ""));
+            l.setIcon(null);
+          }
+          return l;
+        });
       }
-    });
+    };
     TreePath path = new TreePath(s1.getPath());
     // Wastefulness: icon.setImageObserver((ImageObserver) tree);
     icon.setImageObserver((img, infoflags, x, y, w, h) -> {
@@ -82,9 +87,9 @@ class NodeObject {
   public final Icon icon;
   public final String title;
 
-  protected NodeObject(String title) {
-    this(title, null);
-  }
+  // protected NodeObject(String title) {
+  //   this(title, null);
+  // }
 
   protected NodeObject(String title, Icon icon) {
     this.title = title;
