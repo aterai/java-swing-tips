@@ -36,19 +36,23 @@ public final class MainPanel extends JPanel {
     listModel.addElement(Color.ORANGE);
     listModel.addElement(Color.PINK);
     listModel.addElement(Color.MAGENTA);
-    JList<Color> list = new JList<>(listModel);
-    list.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setForeground((Color) value);
-        return c;
+
+    JList<Color> list = new JList<Color>(listModel) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super Color> r = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          c.setForeground(value);
+          return c;
+        });
       }
-    });
+    };
     list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     list.setDropMode(DropMode.INSERT);
     list.setDragEnabled(true);
     list.setTransferHandler(handler);
-
     list.setComponentPopupMenu(new ListPopupMenu(list));
 
     return list;
