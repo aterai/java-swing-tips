@@ -151,7 +151,7 @@ class SolidGaugeUI extends BasicProgressBarUI {
     g2.setPaint(getColorFromPallet(pallet, progressBar.getPercentComplete()));
     g2.fill(foreground);
 
-    // Draw ...
+    // Draw minimum, maximum
     Font font = progressBar.getFont();
     float fsz = font.getSize2D();
     float min = (float) (cx - or - fsz);
@@ -166,7 +166,7 @@ class SolidGaugeUI extends BasicProgressBarUI {
       String str = String.format("%d", progressBar.getValue());
       float vx = (float) cx - g2.getFontMetrics().stringWidth(str) * .5f;
       g2.drawString(str, vx, h);
-      float ksz = fsz * .66f;
+      float ksz = fsz * 2f / 3f;
       g2.setFont(font.deriveFont(ksz));
       String kmh = "㎞/h";
       float tx = (float) cx - g2.getFontMetrics().stringWidth(kmh) * .5f;
