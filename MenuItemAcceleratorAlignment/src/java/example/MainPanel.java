@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
-
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;

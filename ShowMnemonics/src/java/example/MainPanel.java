@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;

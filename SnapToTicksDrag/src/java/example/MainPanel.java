@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

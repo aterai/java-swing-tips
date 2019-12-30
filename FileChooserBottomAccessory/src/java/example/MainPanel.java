@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
-
 import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;

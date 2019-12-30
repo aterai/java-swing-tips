@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;

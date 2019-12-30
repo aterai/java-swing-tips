@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSpinnerUI;

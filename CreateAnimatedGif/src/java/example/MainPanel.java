@@ -24,7 +24,6 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
-
 import org.w3c.dom.Node;
 
 public final class MainPanel extends JPanel {

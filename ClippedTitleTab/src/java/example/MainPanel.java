@@ -5,7 +5,6 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
