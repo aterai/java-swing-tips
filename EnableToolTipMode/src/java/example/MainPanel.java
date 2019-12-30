@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       panel.add(r);
     });
 
-    add(panel,BorderLayout.NORTH);
+    add(panel, BorderLayout.NORTH);
     add(makeUI());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
