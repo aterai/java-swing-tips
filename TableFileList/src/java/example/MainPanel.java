@@ -28,13 +28,13 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Name", "Comment"};
     Object[][] data = {
-      {"test1.jpg", "adfasd"},
+      {"test1.jpg", "11111"},
       {"test1234.jpg", "  "},
-      {"test15354.gif", "fasdf"},
+      {"test15354.gif", "22222"},
       {"t.png", "comment"},
-      {"tfasdfasd.jpg", "123"},
-      {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
-      {"fffffffffffasdfasdf", ""},
+      {"33333.jpg", "123"},
+      {"4444444444444444.mpg", "test"},
+      {"5555555555555", ""},
       {"test1.jpg", ""}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
@@ -101,8 +101,8 @@ class FileNameRenderer implements TableCellRenderer {
   private final JLabel iconLabel;
   private final Border focusBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
   private final Border noFocusBorder;
-  private final ImageIcon nicon;
-  private final ImageIcon sicon;
+  private final ImageIcon icon;
+  private final ImageIcon selectedIcon;
 
   protected FileNameRenderer(JTable table) {
     Border b = UIManager.getBorder("Table.noFocusBorder");
@@ -121,12 +121,12 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
+    icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
 
-    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-    sicon = new ImageIcon(p.createImage(ip));
+    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    selectedIcon = new ImageIcon(p.createImage(ip));
 
-    iconLabel = new JLabel(nicon);
+    iconLabel = new JLabel(icon);
     iconLabel.setBorder(BorderFactory.createEmptyBorder());
 
     p.add(iconLabel, BorderLayout.WEST);
@@ -145,20 +145,20 @@ class FileNameRenderer implements TableCellRenderer {
 
     FontMetrics fm = table.getFontMetrics(table.getFont());
     Insets i = textLabel.getInsets();
-    int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
-    int cwidth = table.getColumnModel().getColumn(column).getWidth();
-    dim.width = Math.min(swidth, cwidth);
+    int width = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+    int colWidth = table.getColumnModel().getColumn(column).getWidth();
+    dim.width = Math.min(width, colWidth);
 
     if (isSelected) {
       textLabel.setOpaque(true);
       textLabel.setForeground(table.getSelectionForeground());
       textLabel.setBackground(table.getSelectionBackground());
-      iconLabel.setIcon(sicon);
+      iconLabel.setIcon(selectedIcon);
     } else {
       textLabel.setOpaque(false);
       textLabel.setForeground(table.getForeground());
       textLabel.setBackground(table.getBackground());
-      iconLabel.setIcon(nicon);
+      iconLabel.setIcon(icon);
     }
     return renderer;
   }
@@ -166,9 +166,8 @@ class FileNameRenderer implements TableCellRenderer {
 
 class FileListTable extends JTable {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
-  private final Color rcolor = SystemColor.activeCaption;
-  private final Color pcolor = makeColor(rcolor);
-  private final Path2D rubberBand = new Path2D.Double();
+  private static final Color BAND_COLOR = makeColor(SystemColor.activeCaption);
+  private static final Path2D RUBBER_BAND = new Path2D.Double();
   private transient RubberBandingListener rbl;
 
   protected FileListTable(TableModel model) {
@@ -183,6 +182,7 @@ class FileListTable extends JTable {
     setSelectionBackground(new ColorUIResource(Color.RED));
     removeMouseMotionListener(rbl);
     removeMouseListener(rbl);
+    setDefaultRenderer(Object.class, null);
     super.updateUI();
     rbl = new RubberBandingListener();
     addMouseMotionListener(rbl);
@@ -195,11 +195,9 @@ class FileListTable extends JTable {
     setAutoCreateRowSorter(true);
     setFillsViewportHeight(true);
 
-    setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      }
-    });
+    TableCellRenderer r = new DefaultTableCellRenderer();
+    setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) ->
+        r.getTableCellRendererComponent(table, value, false, false, row, column));
 
     TableColumn col = getColumnModel().getColumn(0);
     col.setCellRenderer(new FileNameRenderer(this));
@@ -228,7 +226,7 @@ class FileListTable extends JTable {
   }
 
   protected Path2D getRubberBand() {
-    return rubberBand;
+    return RUBBER_BAND;
   }
 
   private class RubberBandingListener extends MouseAdapter {
@@ -246,8 +244,8 @@ class FileListTable extends JTable {
       clearSelection();
       int col = convertColumnIndexToView(0);
       int[] indices = IntStream.range(0, getModel().getRowCount())
-        .filter(i -> rb.intersects(getCellRect2(FileListTable.this, i, col)))
-        .toArray();
+          .filter(i -> rb.intersects(getCellRect2(FileListTable.this, i, col)))
+          .toArray();
       for (int i: indices) {
         addRowSelectionInterval(i, i);
         changeSelection(i, col, true, true);
@@ -290,13 +288,14 @@ class FileListTable extends JTable {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(rcolor);
-    g2.draw(rubberBand);
+    g2.setPaint(SystemColor.activeCaption);
+    g2.draw(RUBBER_BAND);
     g2.setComposite(ALPHA);
-    g2.setPaint(pcolor);
-    g2.fill(rubberBand);
+    g2.setPaint(BAND_COLOR);
+    g2.fill(RUBBER_BAND);
     g2.dispose();
   }
+
   // private int[] getIntersectedIndices(Path2D path) {
   //   TableModel model = getModel();
   //   List<Integer> list = new ArrayList<>(model.getRowCount());
@@ -312,11 +311,11 @@ class FileListTable extends JTable {
   //   return il;
   // }
 
-  private static Color makeColor(Color c) {
+  public static Color makeColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
     return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-           : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+        : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 }
