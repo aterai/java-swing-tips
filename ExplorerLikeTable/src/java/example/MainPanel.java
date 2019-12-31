@@ -28,13 +28,13 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Name", "Comment"};
     Object[][] data = {
-      {"test1.jpg", "adfasd"},
+      {"test1.jpg", "11111"},
       {"test1234.jpg", "  "},
-      {"test15354.gif", "fasdf"},
+      {"test15354.gif", "22222"},
       {"t.png", "comment"},
-      {"tfasdfasd.jpg", "123"},
-      {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
-      {"fffffffffffasdfasdf", ""},
+      {"33333.jpg", "123"},
+      {"4444444444444444.mpg", "test"},
+      {"5555555555555", ""},
       {"test1.jpg", ""}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
@@ -48,13 +48,11 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new FileListTable(model);
 
-    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-    KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     KeyStroke stab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    KeyStroke senter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
-    im.put(tab, im.get(enter));
-    im.put(stab, im.get(senter));
+    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(tab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)));
+    im.put(stab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK)));
 
     Color orgColor = table.getSelectionBackground();
     Color tflColor = this.getBackground();
@@ -115,8 +113,8 @@ class FileNameRenderer implements TableCellRenderer {
   private final JLabel iconLabel;
   private final Border focusBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
   private final Border noFocusBorder;
-  private final ImageIcon nicon;
-  private final ImageIcon sicon;
+  private final ImageIcon icon;
+  private final ImageIcon selectedIcon;
 
   protected FileNameRenderer(JTable table) {
     Border b = UIManager.getBorder("Table.noFocusBorder");
@@ -135,12 +133,12 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
+    icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
 
-    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-    sicon = new ImageIcon(p.createImage(ip));
+    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    selectedIcon = new ImageIcon(p.createImage(ip));
 
-    iconLabel = new JLabel(nicon);
+    iconLabel = new JLabel(icon);
     iconLabel.setBorder(BorderFactory.createEmptyBorder());
 
     p.add(iconLabel, BorderLayout.WEST);
@@ -159,20 +157,20 @@ class FileNameRenderer implements TableCellRenderer {
 
     FontMetrics fm = table.getFontMetrics(table.getFont());
     Insets i = textLabel.getInsets();
-    int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
-    int cwidth = table.getColumnModel().getColumn(column).getWidth();
-    dim.width = Math.min(swidth, cwidth);
+    int width = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+    int colWidth = table.getColumnModel().getColumn(column).getWidth();
+    dim.width = Math.min(width, colWidth);
 
     if (isSelected) {
       textLabel.setOpaque(true);
       textLabel.setForeground(table.getSelectionForeground());
       textLabel.setBackground(table.getSelectionBackground());
-      iconLabel.setIcon(sicon);
+      iconLabel.setIcon(selectedIcon);
     } else {
       textLabel.setOpaque(false);
       textLabel.setForeground(table.getForeground());
       textLabel.setBackground(table.getBackground());
-      iconLabel.setIcon(nicon);
+      iconLabel.setIcon(icon);
     }
     return renderer;
   }
@@ -189,6 +187,7 @@ class FileListTable extends JTable {
     // XXX: set dummy ColorUIResource
     setSelectionForeground(new ColorUIResource(Color.RED));
     setSelectionBackground(new ColorUIResource(Color.RED));
+    setDefaultRenderer(Object.class, null);
     super.updateUI();
 
     putClientProperty("Table.isFileList", Boolean.TRUE);
@@ -198,11 +197,9 @@ class FileListTable extends JTable {
     setAutoCreateRowSorter(true);
     setFillsViewportHeight(true);
 
-    setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      }
-    });
+    TableCellRenderer r = new DefaultTableCellRenderer();
+    setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) ->
+        r.getTableCellRendererComponent(table, value, false, false, row, column));
 
     TableColumn col = getColumnModel().getColumn(0);
     col.setCellRenderer(new FileNameRenderer(this));
