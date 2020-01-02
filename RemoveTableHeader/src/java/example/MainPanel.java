@@ -11,40 +11,37 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xFA_FA_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isCellSelected(row, column)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-  private final JScrollPane scrollPane = new JScrollPane(table);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isCellSelected(row, column)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+    };
     table.setAutoCreateRowSorter(true);
-
     // table.setTableHeader(null);
     // table.setTableHeader(new JTableHeader(table.getColumnModel()));
 
+    JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane);
     JCheckBox check = new JCheckBox("JTableHeader visible: ", true);
     check.addActionListener(e -> {
