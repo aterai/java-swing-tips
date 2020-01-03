@@ -191,7 +191,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   }
 
   private static int getTargetIndex(Rectangle r, Point pt, int i) {
-    int ht2 = (int) (.5 + r.height * .5);
+    int ht2 = Math.round(r.height / 2f);
     TOP_HALF_RECT.setBounds(r.x, r.y, r.width, ht2);
     BOTTOM_HALF_RECT.setBounds(r.x, r.y + ht2, r.width, ht2);
     if (TOP_HALF_RECT.contains(pt)) {
