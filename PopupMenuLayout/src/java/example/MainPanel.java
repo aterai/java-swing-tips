@@ -44,11 +44,11 @@ public final class MainPanel extends JPanel {
     popup.add(new JSeparator(), c);
 
     c.insets = new Insets(0, 0, 0, 0);
-    popup.add(new JMenuItem("aaaaaaaaaa"), c);
+    popup.add(new JMenuItem("0000000"), c);
     popup.add(new JPopupMenu.Separator(), c);
-    popup.add(new JMenuItem("bbbb"), c);
-    popup.add(new JMenuItem("ccccccccccccccccccccc"), c);
-    popup.add(new JMenuItem("dddddddddd"), c);
+    popup.add(new JMenuItem("1111"), c);
+    popup.add(new JMenuItem("2222222222222222"), c);
+    popup.add(new JMenuItem("333333333"), c);
 
     return popup;
   }
@@ -65,9 +65,9 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
         Dimension cd = getSize();
         Dimension pd = getPreferredSize();
-        int offx = (int) (.5 + .5 * (cd.width - pd.width));
-        int offy = (int) (.5 + .5 * (cd.height - pd.height));
-        icon.paintIcon(this, g, offx, offy);
+        int ix = Math.round((cd.width - pd.width) / 2f);
+        int iy = Math.round((cd.height - pd.height) / 2f);
+        icon.paintIcon(this, g, ix, iy);
       }
     };
     b.setOpaque(true);
