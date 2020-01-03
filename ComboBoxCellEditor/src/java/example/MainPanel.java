@@ -17,7 +17,6 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -204,41 +203,49 @@ class PluginCellEditor extends DefaultCellEditor {
     }).orElse(o);
   }
 
+  // @Override public boolean isCellEditable(EventObject e) {
+  //   Object source = e.getSource();
+  //   if (!(source instanceof JTree) || !(e instanceof MouseEvent)) {
+  //     return false;
+  //   }
+  //   JTree tree = (JTree) source;
+  //   Point p = ((MouseEvent) e).getPoint();
+  //   TreePath path = tree.getPathForLocation(p.x, p.y);
+  //   if (Objects.isNull(path)) {
+  //     return false;
+  //   }
+  //   Object n = path.getLastPathComponent();
+  //   if (!(n instanceof DefaultMutableTreeNode)) {
+  //     return false;
+  //   }
+  //   Rectangle r = tree.getPathBounds(path);
+  //   if (Objects.isNull(r)) {
+  //     return false;
+  //   }
+  //   Dimension d = panel.getPreferredSize();
+  //   r.width = d.width;
+  //   if (r.contains(p)) {
+  //     showComboPopup(tree, p);
+  //     return true;
+  //   }
+  //   return delegate.isCellEditable(e);
+  // }
+
   @Override public boolean isCellEditable(EventObject e) {
-    Object source = e.getSource();
-    if (!(source instanceof JTree) || !(e instanceof MouseEvent)) {
-      return false;
-    }
-    JTree tree = (JTree) source;
-    Point p = ((MouseEvent) e).getPoint();
-    TreePath path = tree.getPathForLocation(p.x, p.y);
-    if (Objects.isNull(path)) {
-      return false;
-    }
-    Object n = path.getLastPathComponent();
-    if (!(n instanceof DefaultMutableTreeNode)) {
-      return false;
-    }
-    Rectangle r = tree.getPathBounds(path);
-    if (Objects.isNull(r)) {
-      return false;
-    }
-    Dimension d = panel.getPreferredSize();
-    r.width = d.width;
-    if (r.contains(p)) {
-      showComboPopup(tree, p);
-      return true;
+    if (e instanceof MouseEvent) {
+      MouseEvent me = (MouseEvent) e;
+      showComboPopup(me.getComponent(), me.getPoint());
     }
     return delegate.isCellEditable(e);
   }
 
-  private void showComboPopup(JTree tree, Point p) {
+  private void showComboPopup(Component cmp, Point p) {
     EventQueue.invokeLater(() -> {
-      Point pt = SwingUtilities.convertPoint(tree, p, panel);
+      Point pt = SwingUtilities.convertPoint(cmp, p, panel);
       Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
       if (o instanceof JComboBox) {
         panel.comboBox.showPopup();
-      } else if (Objects.nonNull(o)) {
+      } else if (Objects.nonNull(o)) { // maybe ArrowButton in JComboBox
         Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
         if (c instanceof JComboBox) {
           panel.comboBox.showPopup();
