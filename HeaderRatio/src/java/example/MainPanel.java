@@ -40,13 +40,13 @@ public final class MainPanel extends JPanel {
     scrollPane.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
         if (check.isSelected()) {
-          setTableHeaderColumnRaito(table, field.getText().trim());
+          setTableHeaderColumnRatio(table, field.getText().trim());
         }
       }
     });
 
     JButton button = new JButton("revalidate");
-    button.addActionListener(e -> setTableHeaderColumnRaito(table, field.getText().trim()));
+    button.addActionListener(e -> setTableHeaderColumnRatio(table, field.getText().trim()));
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -63,26 +63,26 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void setTableHeaderColumnRaito(JTable table, String text) {
+  protected static void setTableHeaderColumnRatio(JTable table, String text) {
     TableColumnModel m = table.getColumnModel();
-    List<Integer> list = getWidthRaitoArray(text, m.getColumnCount());
+    List<Integer> list = getWidthRatioArray(text, m.getColumnCount());
     // System.out.println("a: " + m.getTotalColumnWidth());
     // System.out.println("b: " + table.getSize().width);
     int total = table.getSize().width; // m.getTotalColumnWidth();
-    double raito = total / (double) list.stream().mapToInt(Integer::intValue).sum();
+    float ratio = total / (float) list.stream().mapToInt(Integer::intValue).sum();
     for (int i = 0; i < m.getColumnCount() - 1; i++) {
       TableColumn col = m.getColumn(i);
-      int colwidth = (int) (.5 + list.get(i) * raito);
-      // col.setMaxWidth(colwidth);
-      col.setPreferredWidth(colwidth);
-      total -= colwidth;
+      int colWidth = Math.round(list.get(i) * ratio);
+      // col.setMaxWidth(colWidth);
+      col.setPreferredWidth(colWidth);
+      total -= colWidth;
     }
     // m.getColumn(m.getColumnCount() - 1).setMaxWidth(total);
     m.getColumn(m.getColumnCount() - 1).setPreferredWidth(total);
     table.revalidate();
   }
 
-  protected static List<Integer> getWidthRaitoArray(String text, int length) {
+  protected static List<Integer> getWidthRatioArray(String text, int length) {
     try {
       return Stream.concat(
           Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf),
