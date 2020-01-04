@@ -71,7 +71,7 @@ class SplitPaneWrapper extends JPanel {
   @Override public void doLayout() {
     if (flag) {
       int size = getOrientedSize(splitPane);
-      double proportionalLoc = splitPane.getDividerLocation() / (double) size;
+      float proportionalLoc = splitPane.getDividerLocation() / (float) size;
       super.doLayout();
       int state = Optional.ofNullable(getTopLevelAncestor())
           .filter(Frame.class::isInstance).map(Frame.class::cast)
@@ -79,7 +79,7 @@ class SplitPaneWrapper extends JPanel {
       if (splitPane.isShowing() && state != prevState) {
         EventQueue.invokeLater(() -> {
           int s = getOrientedSize(splitPane);
-          int iv = (int) Math.round(s * proportionalLoc);
+          int iv = Math.round(s * proportionalLoc);
           System.out.format("DividerLocation: %d%n", iv);
           splitPane.setDividerLocation(iv);
         });
