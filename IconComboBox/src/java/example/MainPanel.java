@@ -146,7 +146,7 @@ final class ComboBoxUtil {
         Graphics2D g2 = (Graphics2D) g.create();
         int ih = icon.getIconHeight();
         int ch = getIconHeight();
-        int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); // ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
+        int yy = Math.max(Math.round((ch - ih) / 2f), 0);
         g2.drawImage(icon.getImage(), 0, yy, c);
         g2.dispose();
       }
@@ -171,7 +171,8 @@ final class ComboBoxUtil {
       Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
 
       JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
-      c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
+      Border b = c.getBorder();
+      c.setBorder(BorderFactory.createCompoundBorder(b, margin));
 
       JLabel label = new JLabel(icon);
       label.setCursor(Cursor.getDefaultCursor());
@@ -181,8 +182,8 @@ final class ComboBoxUtil {
       int ih = icon.getIconHeight();
       int ch = comboBox.getPreferredSize().height;
       // int ch = c.getPreferredSize().height; // Nimbus???
-      int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); // ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
-      label.setBounds(c.getInsets().left, yy, icon.getIconWidth(), icon.getIconHeight());
+      int yy = Math.max(Math.round((ch - ih) / 2f), 0);
+      label.setBounds(b.getBorderInsets(c).left, yy, icon.getIconWidth(), icon.getIconHeight());
     });
   }
 
