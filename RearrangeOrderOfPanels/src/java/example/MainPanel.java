@@ -118,7 +118,7 @@ class RearrangingHandler extends MouseAdapter {
   }
 
   private int getTargetIndex(Rectangle r, Point pt, int i) {
-    int ht2 = (int) (.5 + r.height * .5);
+    int ht2 = Math.round(r.height / 2f);
     R1.setBounds(r.x, r.y, r.width, ht2);
     R2.setBounds(r.x, r.y + ht2, r.width, ht2);
     if (R1.contains(pt)) {
