@@ -119,11 +119,11 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
         int trackLength = trackRect.width;
         int trackLeft = trackRect.x - halfThumbWidth;
         int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-        int xpos = e.getX();
-        int snappedPos = xpos;
-        if (xpos <= trackLeft) {
+        int pos = e.getX();
+        int snappedPos;
+        if (pos <= trackLeft) {
           snappedPos = trackLeft;
-        } else if (xpos >= trackRight) {
+        } else if (pos >= trackRight) {
           snappedPos = trackRight;
         } else {
           // int tickSpacing = slider.getMajorTickSpacing();
@@ -136,8 +136,9 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
           boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
           int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
           float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
-          xpos -= trackLeft;
-          snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+          pos -= trackLeft;
+          // snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+          snappedPos = Math.round(Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick) + trackLeft;
           offset = 0;
           // System.out.println(snappedPos);
         }
@@ -168,11 +169,11 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
         int trackLength = trackRect.width;
         int trackLeft = trackRect.x - halfThumbWidth;
         int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-        int xpos = e.getX();
-        int snappedPos = xpos;
-        if (xpos <= trackLeft) {
+        int pos = e.getX();
+        int snappedPos;
+        if (pos <= trackLeft) {
           snappedPos = trackLeft;
-        } else if (xpos >= trackRight) {
+        } else if (pos >= trackRight) {
           snappedPos = trackRight;
         } else {
           // int tickSpacing = slider.getMajorTickSpacing();
@@ -185,8 +186,8 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
           boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
           int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
           float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
-          xpos -= trackLeft;
-          snappedPos = (int) (Math.round(xpos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+          pos -= trackLeft;
+          snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
           offset = 0;
           // System.out.println(snappedPos);
         }
