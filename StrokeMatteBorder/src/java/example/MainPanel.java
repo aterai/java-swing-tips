@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeLabelTable(int row, int column) {
+  public static Component makeLabelTable(int row, int column) {
     JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
@@ -70,27 +70,27 @@ public final class MainPanel extends JPanel {
 
 class StrokeMatteBorder extends EmptyBorder {
   private final transient BasicStroke stroke;
-  private final Paint paint;
+  private final Color color;
 
-  protected StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Paint paint) {
+  protected StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Color color) {
     super(top, left, bottom, right);
     this.stroke = stroke;
-    this.paint = paint;
+    this.color = color;
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     float size = stroke.getLineWidth();
     if (size > 0) {
-      Paint color = Optional.ofNullable(this.paint)
+      Color fgc = Optional.ofNullable(this.color)
           .orElse(Optional.ofNullable(c).map(Component::getForeground).orElse(null));
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setStroke(this.stroke);
-      g2.setPaint(color);
+      g2.setPaint(fgc);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(x, y);
 
-      int s = (int) (.5f + size);
-      int sd2 = (int) (.5f + size / 2d);
+      int s = Math.round(size);
+      int sd2 = Math.round(size / 2f);
       Insets insets = getBorderInsets(c);
       if (insets.top > 0) {
         g2.drawLine(0, sd2, width - s, sd2);
