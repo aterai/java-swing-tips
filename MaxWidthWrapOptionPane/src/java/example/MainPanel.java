@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
       super.setText(t);
       try {
         // System.out.println("fw: " + getColumnWidth());
-        // int cc = (int) (.5 + 300 / (float) getColumnWidth());
+        // int cc = Math.round(300f / getColumnWidth());
         // setColumns(cc);
         // System.out.format("Columns: %d%n", cc);
 
@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
         System.out.println(super.getPreferredSize());
 
         Rectangle r = modelToView(t.length());
-        int rc = (int) (.5 + (r.y + r.height) / (float) getRowHeight());
+        // Java 9: Rectangle rect = modelToView2D(t.length()).getBounds();
+        int rc = Math.round((float) r.getMaxY() / getRowHeight());
         setRows(rc);
         System.out.format("Rows: %d%n", rc);
         System.out.println(super.getPreferredSize());
