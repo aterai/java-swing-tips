@@ -100,7 +100,7 @@ final class HtmlViewUtil {
           Position.Bias b = Position.Bias.Forward;
           s = v.modelToView(e.getStartOffset(), b, e.getEndOffset(), b, s);
           // System.out.println("v.h: " + s.getBounds());
-          y = (int) (.5 + Math.abs(s.getBounds().height - iconRect.height) * .5);
+          y = Math.round(Math.abs(s.getBounds().height - iconRect.height) / 2f);
         } catch (BadLocationException ex) {
           // should never happen
           RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
