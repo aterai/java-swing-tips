@@ -31,7 +31,7 @@ import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
   private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
-  private static final double SCALE = .15;
+  private static final float SCALE = .15f;
   private final ScriptEngine engine = createEngine();
   private final JEditorPane editor = new JEditorPane();
   private final JScrollPane scroll = new JScrollPane(editor);
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
-      int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
+      int iv = Math.round(pt.y * (m.getMaximum() - m.getMinimum()) / (float) c.getHeight() - m.getExtent() / 2f);
       m.setValue(iv);
     }
   }
@@ -184,8 +184,8 @@ public final class MainPanel extends JPanel {
 
   private static Icon makeMiniMap(Component c) {
     Dimension d = c.getSize();
-    int newW = (int) (d.width * SCALE);
-    int newH = (int) (d.height * SCALE);
+    int newW = Math.round(d.width * SCALE);
+    int newH = Math.round(d.height * SCALE);
     BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
     g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
