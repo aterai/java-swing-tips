@@ -96,9 +96,9 @@ public final class MainPanel extends JPanel {
 
   private void saveImage(JComponent c) {
     EventQueue.invokeLater(() -> {
-      double s = .02;
-      int w = (int) (c.getWidth() * s);
-      int h = (int) (c.getHeight() * s);
+      float s = .02f;
+      int w = Math.round(c.getWidth() * s);
+      int h = Math.round(c.getHeight() * s);
       BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
       Graphics2D g2 = image.createGraphics();
       g2.scale(s, s);
