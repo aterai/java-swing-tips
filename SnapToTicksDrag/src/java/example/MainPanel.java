@@ -187,7 +187,8 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
           int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
           float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
           pos -= trackLeft;
-          snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+          // snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
+          snappedPos = Math.round(Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick) + trackLeft;
           offset = 0;
           // System.out.println(snappedPos);
         }
