@@ -107,7 +107,8 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     int thumbY = incrButtonY - incrGap - thumbH;
     if (value < (sb.getMaximum() - sb.getVisibleAmount())) {
       float thumbRange = trackH - thumbH;
-      thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
+      // thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
+      thumbY = Math.round(thumbRange * ((value - min) / (range - extent)));
       // thumbY += decrButtonY + decrButtonH + decrGap;
     }
 
