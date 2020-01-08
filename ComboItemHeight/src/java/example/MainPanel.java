@@ -28,47 +28,56 @@ public final class MainPanel extends JPanel {
 
     JComboBox<String> combo2 = new JComboBox<>(items);
     combo2.setRenderer(new DefaultListCellRenderer() {
-      private int cheight;
+      private int cellHeight;
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         // Dimension d = super.getPreferredSize();
-        // cheight = index < 0 ? d.height : 32;
-        cheight = Optional.ofNullable(super.getPreferredSize())
-          .filter(d -> index < 0).map(d -> d.height).orElse(32);
+        // cellHeight = index < 0 ? d.height : 32;
+        cellHeight = Optional.ofNullable(super.getPreferredSize())
+            .filter(d -> index < 0).map(d -> d.height).orElse(32);
         return this;
       }
 
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.height = cheight;
+        d.height = cellHeight;
         return d;
       }
     });
     p.add(makeTitledPanel("getListCellRendererComponent", combo2));
     p.add(Box.createVerticalStrut(5));
 
-    JComboBox<String> combo3 = new JComboBox<>(items);
-    combo3.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        String title = Objects.toString(value, "");
-        if (index >= 0) {
-          title = String.format("<html><table><td height='32'>%s", value);
-        }
-        return super.getListCellRendererComponent(list, title, index, isSelected, cellHasFocus);
+    JComboBox<String> combo3 = new JComboBox<String>(items) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super String> r = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          String title = Objects.toString(value, "");
+          if (index >= 0) {
+            title = String.format("<html><table><td height='32'>%s", value);
+          }
+          return r.getListCellRendererComponent(list, title, index, isSelected, cellHasFocus);
+        });
       }
-    });
+    };
     p.add(makeTitledPanel("html", combo3));
     p.add(Box.createVerticalStrut(5));
 
-    JComboBox<String> combo4 = new JComboBox<>(items);
-    combo4.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        setIcon(index >= 0 ? new H32Icon() : null);
-        // setIconTextGap(0);
-        return this;
+    JComboBox<String> combo4 = new JComboBox<String>(items) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super String> r = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setIcon(index >= 0 ? new H32Icon() : null);
+          }
+          return c;
+        });
       }
-    });
+    };
     p.add(makeTitledPanel("icon", combo4));
     p.add(Box.createVerticalStrut(5));
 
