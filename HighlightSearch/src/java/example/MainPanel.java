@@ -95,9 +95,9 @@ public class MainPanel extends JPanel {
     // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
     Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
     if (Objects.nonNull(rect) && c instanceof JViewport) {
-      rect.x = (int) (rect.x - c.getWidth() * .5);
+      rect.x = Math.round(rect.x - c.getWidth() / 2f);
       rect.width = c.getWidth();
-      rect.height = (int) (c.getHeight() * .5);
+      rect.height = Math.round(c.getHeight() / 2f);
       tc.scrollRectToVisible(rect);
     }
   }
