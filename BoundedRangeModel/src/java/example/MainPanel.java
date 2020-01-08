@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scrollbar.getModel();
-      int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
+      int iv = Math.round(pt.y * (m.getMaximum() - m.getMinimum()) / (float) c.getHeight() - m.getExtent() / 2f);
       m.setValue(iv);
     }
   }
