@@ -18,9 +18,7 @@ public final class MainPanel extends JPanel {
   public MainPanel() {
     super(new GridBagLayout());
     JButton button = new JButton("Open JFileChooser");
-    button.addActionListener(e -> {
-      fileChooser.showOpenDialog(getRootPane());
-    });
+    button.addActionListener(e -> fileChooser.showOpenDialog(getRootPane()));
     add(button);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -80,11 +78,11 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
       // Image img = tmpIcon.getImage().getScaledInstance(PREVIEW_WIDTH, -1, Image.SCALE_DEFAULT);
       // The Perils of Image.getScaledInstance() | Java.net
       // <del>http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html</del>
-      // The Perils of Image.getScaledInstance() Blog | Oracle Community
+      // The Perils of Image.getScaledInstance() Blog | Oracle Community
       // https://community.oracle.com/docs/DOC-983611
       float scale = PREVIEW_WIDTH / (float) tmpIcon.getIconWidth();
-      int newW = (int) (tmpIcon.getIconWidth() * scale);
-      int newH = (int) (tmpIcon.getIconHeight() * scale);
+      int newW = Math.round(tmpIcon.getIconWidth() * scale);
+      int newH = Math.round(tmpIcon.getIconHeight() * scale);
       BufferedImage img = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = img.createGraphics();
       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
