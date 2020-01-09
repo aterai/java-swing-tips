@@ -21,11 +21,11 @@ public final class MainPanel extends JPanel {
 
     CheckableItem[] m = {
       new CheckableItem("aaa", false),
-      new CheckableItem("bbbbb", true),
+      new CheckableItem("bb", true),
       new CheckableItem("111", false),
       new CheckableItem("33333", true),
       new CheckableItem("2222", true),
-      new CheckableItem("ccccccc", false)
+      new CheckableItem("c", false)
     };
 
     JPanel p = new JPanel(new GridLayout(0, 1));
@@ -65,6 +65,7 @@ public final class MainPanel extends JPanel {
 //   protected CheckableComboBoxModel(E[] items) {
 //     super(items);
 //   }
+//
 //   public void fireContentsChanged(int index) {
 //     super.fireContentsChanged(this, index, index);
 //   }
@@ -92,50 +93,50 @@ class CheckableItem {
   }
 }
 
-class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<E> {
-  private final JLabel label = new JLabel(" ");
-  private final JCheckBox check = new JCheckBox(" ");
-
-  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    if (index < 0) {
-      String txt = getCheckedItemString(list.getModel());
-      label.setText(txt.isEmpty() ? " " : txt);
-      return label;
-    } else {
-      check.setText(Objects.toString(value, ""));
-      check.setSelected(value.isSelected());
-      if (isSelected) {
-        check.setBackground(list.getSelectionBackground());
-        check.setForeground(list.getSelectionForeground());
-      } else {
-        check.setBackground(list.getBackground());
-        check.setForeground(list.getForeground());
-      }
-      return check;
-    }
-  }
-
-  private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
-    return IntStream.range(0, model.getSize())
-      .mapToObj(model::getElementAt)
-      .filter(CheckableItem::isSelected)
-      .map(Objects::toString)
-      .sorted()
-      .collect(Collectors.joining(", "));
-    // List<String> sl = new ArrayList<>();
-    // for (int i = 0; i < model.getSize(); i++) {
-    //   CheckableItem v = model.getElementAt(i);
-    //   if (v.isSelected()) {
-    //     sl.add(v.toString());
-    //   }
-    // }
-    // if (sl.isEmpty()) {
-    //   return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
-    // } else {
-    //   return sl.stream().sorted().collect(Collectors.joining(", "));
-    // }
-  }
-}
+// class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<E> {
+//   private final JLabel label = new JLabel(" ");
+//   private final JCheckBox check = new JCheckBox(" ");
+//
+//   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+//     if (index < 0) {
+//       String txt = getCheckedItemString(list.getModel());
+//       label.setText(txt.isEmpty() ? " " : txt);
+//       return label;
+//     } else {
+//       check.setText(Objects.toString(value, ""));
+//       check.setSelected(value.isSelected());
+//       if (isSelected) {
+//         check.setBackground(list.getSelectionBackground());
+//         check.setForeground(list.getSelectionForeground());
+//       } else {
+//         check.setBackground(list.getBackground());
+//         check.setForeground(list.getForeground());
+//       }
+//       return check;
+//     }
+//   }
+//
+//   private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
+//     return IntStream.range(0, model.getSize())
+//         .mapToObj(model::getElementAt)
+//         .filter(CheckableItem::isSelected)
+//         .map(Objects::toString)
+//         .sorted()
+//         .collect(Collectors.joining(", "));
+//     // List<String> sl = new ArrayList<>();
+//     // for (int i = 0; i < model.getSize(); i++) {
+//     //   CheckableItem v = model.getElementAt(i);
+//     //   if (v.isSelected()) {
+//     //     sl.add(v.toString());
+//     //   }
+//     // }
+//     // if (sl.isEmpty()) {
+//     //   return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
+//     // } else {
+//     //   return sl.stream().sorted().collect(Collectors.joining(", "));
+//     // }
+//   }
+// }
 
 class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   private boolean keepOpen;
@@ -148,6 +149,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);
   }
+
   // protected CheckedComboBox(E[] m) {
   //   super(m);
   // }
@@ -166,7 +168,26 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         keepOpen = true;
       }
     };
-    setRenderer(new CheckBoxCellRenderer<>());
+    JLabel label = new JLabel(" ");
+    JCheckBox check = new JCheckBox(" ");
+    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      if (index < 0) {
+        String txt = getCheckedItemString(list.getModel());
+        label.setText(txt.isEmpty() ? " " : txt);
+        return label;
+      } else {
+        check.setText(Objects.toString(value, ""));
+        check.setSelected(value.isSelected());
+        if (isSelected) {
+          check.setBackground(list.getSelectionBackground());
+          check.setForeground(list.getSelectionForeground());
+        } else {
+          check.setBackground(list.getBackground());
+          check.setForeground(list.getForeground());
+        }
+        return check;
+      }
+    });
     addActionListener(listener);
     getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
     getActionMap().put("checkbox-select", new AbstractAction() {
@@ -177,6 +198,15 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         }
       }
     });
+  }
+
+  private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
+    return IntStream.range(0, model.getSize())
+        .mapToObj(model::getElementAt)
+        .filter(CheckableItem::isSelected)
+        .map(Objects::toString)
+        .sorted()
+        .collect(Collectors.joining(", "));
   }
 
   protected void updateItem(int index) {
