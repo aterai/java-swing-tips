@@ -22,23 +22,20 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private static final Paint TEXTURE = makeCheckerTexture();
 
-  public MainPanel() {
+  private MainPanel() {
     super();
     // Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
     URL url = getClass().getResource("RECYCLE BIN - EMPTY_16x16-32.png");
 
-    AbstractButton b = makeButton(makeTitleWithIcon(url, "align=top", "top"));
-    add(b);
-    b = makeButton(makeTitleWithIcon(url, "align=middle", "middle"));
-    add(b);
-    b = makeButton(makeTitleWithIcon(url, "align=bottom", "bottom"));
-    add(b);
+    add(makeButton(makeTitleWithIcon(url, "align=top", "top")));
+    add(makeButton(makeTitleWithIcon(url, "align=middle", "middle")));
+    add(makeButton(makeTitleWithIcon(url, "align=bottom", "bottom")));
 
     Icon icon = new ImageIcon(url);
     JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
     label.setForeground(Color.WHITE);
     label.setAlignmentX(Component.CENTER_ALIGNMENT);
-    b = makeButton("");
+    AbstractButton b = makeButton("");
     b.setAlignmentX(Component.CENTER_ALIGNMENT);
     JPanel p = new JPanel();
     p.setLayout(new OverlayLayout(p));
@@ -47,10 +44,9 @@ public final class MainPanel extends JPanel {
     p.add(b);
     add(p);
 
-    add(makeButton("? text"));
+    add(makeButton("☎ text"));
 
-    b = new TranslucentButton("TranslucentButton", icon);
-    add(b);
+    add(new TranslucentButton("TranslucentButton", icon));
 
     add(makeButton("1"));
     add(makeButton("22222222"));
