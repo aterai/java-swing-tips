@@ -7,11 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -59,12 +59,12 @@ public final class MainPanel extends JPanel {
     EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
     map.put(Permissions.READ, 1 << 2);
     map.put(Permissions.WRITE, 1 << 1);
-    map.put(Permissions.EXECUTE, 1 << 0);
+    map.put(Permissions.EXECUTE, 1);
 
     JLabel label = new JLabel();
     JButton button = new JButton("ls -l (chmod)");
     button.addActionListener(e -> {
-      StringBuilder nbuf = new StringBuilder(3);
+      StringBuilder numBuf = new StringBuilder(3);
       StringBuilder buf = new StringBuilder(9);
       for (int i = 0; i < model.getRowCount(); i++) {
         Set<?> v = (Set<?>) model.getValueAt(i, 1);
@@ -87,9 +87,9 @@ public final class MainPanel extends JPanel {
         } else {
           buf.append('-');
         }
-        nbuf.append(flg);
+        numBuf.append(flg);
       }
-      label.setText(String.format(" %s -%s", nbuf, buf));
+      label.setText(String.format(" %s -%s", numBuf, buf));
     });
 
     JPanel p = new JPanel(new BorderLayout());
@@ -125,7 +125,14 @@ enum Permissions { EXECUTE, WRITE, READ }
 class CheckBoxesPanel extends JPanel {
   private static final Color BGC = new Color(0x0, true);
   protected final String[] titles = {"r", "w", "x"};
-  protected final List<JCheckBox> buttons = new ArrayList<>(titles.length);
+  private final List<JCheckBox> buttons = Stream.of(titles).map(title -> {
+    JCheckBox b = new JCheckBox(title);
+    b.setOpaque(false);
+    b.setFocusable(false);
+    b.setRolloverEnabled(false);
+    b.setBackground(BGC);
+    return b;
+  }).collect(Collectors.toList());
 
   @Override public void updateUI() {
     super.updateUI();
@@ -137,22 +144,10 @@ class CheckBoxesPanel extends JPanel {
 
   private void initButtons() {
     removeAll();
-    buttons.clear();
-    for (String t: titles) {
-      JCheckBox b = makeCheckBox(t);
-      buttons.add(b);
+    for (JCheckBox b: buttons) {
       add(b);
       add(Box.createHorizontalStrut(5));
     }
-  }
-
-  private static JCheckBox makeCheckBox(String title) {
-    JCheckBox b = new JCheckBox(title);
-    b.setOpaque(false);
-    b.setFocusable(false);
-    b.setRolloverEnabled(false);
-    b.setBackground(BGC);
-    return b;
   }
 
   protected void updateButtons(Object v) {
@@ -161,6 +156,27 @@ class CheckBoxesPanel extends JPanel {
     buttons.get(0).setSelected(f.contains(Permissions.READ));
     buttons.get(1).setSelected(f.contains(Permissions.WRITE));
     buttons.get(2).setSelected(f.contains(Permissions.EXECUTE));
+  }
+
+  protected void doClickCheckBox(String title) {
+    buttons.stream()
+        .filter(b -> b.getText().equals(title))
+        .findFirst()
+        .ifPresent(JCheckBox::doClick);
+  }
+
+  protected Set<Permissions> getPermissionsValue() {
+    Set<Permissions> f = EnumSet.noneOf(Permissions.class);
+    if (buttons.get(0).isSelected()) {
+      f.add(Permissions.READ);
+    }
+    if (buttons.get(1).isSelected()) {
+      f.add(Permissions.WRITE);
+    }
+    if (buttons.get(2).isSelected()) {
+      f.add(Permissions.EXECUTE);
+    }
+    return f;
   }
 }
 
@@ -180,17 +196,12 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
   protected CheckBoxesEditor() {
     super();
     ActionMap am = renderer.getActionMap();
-    Stream.of(renderer.titles).forEach(t -> {
-      am.put(t, new AbstractAction(t) {
-        @Override public void actionPerformed(ActionEvent e) {
-          renderer.buttons.stream()
-            .filter(b -> b.getText().equals(t))
-            .findFirst()
-            .ifPresent(JCheckBox::doClick);
-          fireEditingStopped();
-        }
-      });
-    });
+    Stream.of(renderer.titles).forEach(t -> am.put(t, new AbstractAction(t) {
+      @Override public void actionPerformed(ActionEvent e) {
+        renderer.doClickCheckBox(t);
+        fireEditingStopped();
+      }
+    }));
     InputMap im = renderer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), renderer.titles[0]);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), renderer.titles[1]);
@@ -203,16 +214,6 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Object getCellEditorValue() {
-    Set<Permissions> f = EnumSet.noneOf(Permissions.class);
-    if (renderer.buttons.get(0).isSelected()) {
-      f.add(Permissions.READ);
-    }
-    if (renderer.buttons.get(1).isSelected()) {
-      f.add(Permissions.WRITE);
-    }
-    if (renderer.buttons.get(2).isSelected()) {
-      f.add(Permissions.EXECUTE);
-    }
-    return f;
+    return renderer.getPermissionsValue();
   }
 }
