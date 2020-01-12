@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
 
     TreeModel model = makeModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-    // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+    // Java 9: Collections.list(root.preorderEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !node.isRoot())
@@ -108,6 +108,7 @@ public final class MainPanel extends JPanel {
       Element element = doc.getElement(id);
       try {
         int pos = element.getStartOffset();
+        // Java 9: Rectangle r = editor.modelToView2D(pos).getBounds();
         Rectangle r = editor.modelToView(pos);
         if (r != null) {
           Rectangle vis = editor.getVisibleRect();
