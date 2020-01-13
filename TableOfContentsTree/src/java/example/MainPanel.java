@@ -30,10 +30,12 @@ public final class MainPanel extends JPanel {
       }
     };
     tree.setRootVisible(false);
+    // TEST: tree.setRowHeight(40);
 
     JTree tree2 = new TableOfContentsTree(makeModel());
     tree2.setRootVisible(false);
     // tree2.setLargeModel(false);
+    // TEST: tree2.setRowHeight(40);
 
     JSplitPane sp = new JSplitPane();
     sp.setResizeWeight(.5);
@@ -153,6 +155,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 
           int gap = l.getIconTextGap();
           Dimension d = l.getPreferredSize();
+          d.height = tree.isFixedRowHeight() ? tree.getRowHeight() : d.height;
           pnPt.setLocation(tree.getWidth() - gap, l.getBaseline(d.width, d.height));
           pn = toc.page;
           rxs = d.width + gap;
@@ -166,7 +169,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
           return l;
         });
   }
-  // // @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
+
   // @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
   //   JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
   //   if (value instanceof DefaultMutableTreeNode) {
@@ -212,12 +215,14 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //         g.drawString(pn, pt.x - getX(), pt.y);
 //       }
 //     }
+//
 //     @Override public Dimension getPreferredSize() {
 //       Dimension d = super.getPreferredSize();
 //       d.width = Short.MAX_VALUE;
 //       return d;
 //     }
 //   };
+//
 //   @Override public void updateUI() {
 //     super.updateUI();
 //     isSynth = getUI().getClass().getName().contains("Synth");
@@ -226,6 +231,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //       setBackgroundSelectionColor(new Color(0x0, true));
 //     }
 //   }
+//
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //     if (value instanceof DefaultMutableTreeNode) {
@@ -244,7 +250,6 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //
 //         pn = String.format("%s%3d", READER, toc.page);
 //         pt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
-//         // pt.x = Math.max(pnx, titlex + metrics.stringWidth(pair.title) + gap);
 //         pt.y = (l.getIcon().getIconHeight() + metrics.getAscent()) / 2;
 //         p.setOpaque(false);
 //
@@ -271,41 +276,42 @@ class TableOfContentsTree extends JTree {
     isSynth = getUI().getClass().getName().contains("Synth");
   }
 
-  protected Rectangle getVisibleRowsRect() {
-    Insets i = getInsets();
-    Rectangle visRect = getVisibleRect();
-    if (visRect.x == 0 && visRect.y == 0 && visRect.width == 0 && visRect.height == 0 && getVisibleRowCount() > 0) {
-      // The tree doesn't have a valid bounds yet. Calculate
-      // based on visible row count.
-      visRect.width = 1;
-      visRect.height = getRowHeight() * getVisibleRowCount();
-    } else {
-      visRect.x -= i.left;
-      visRect.y -= i.top;
-    }
-    // we should consider a non-visible area above
-    Class<JScrollPane> clz = JScrollPane.class;
-    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-        .filter(clz::isInstance).map(clz::cast)
-        .map(JScrollPane::getHorizontalScrollBar)
-        .filter(JScrollBar::isVisible)
-        .ifPresent(bar -> {
-          int height = bar.getHeight();
-          visRect.y -= height;
-          visRect.height += height;
-        });
-    // Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-    // if (container instanceof JScrollPane) {
-    //   JScrollPane pane = (JScrollPane) container;
-    //   JScrollBar bar = pane.getHorizontalScrollBar();
-    //   if (bar != null && bar.isVisible()) {
-    //     int height = bar.getHeight();
-    //     visRect.y -= height;
-    //     visRect.height += height;
-    //   }
-    // }
-    return visRect;
-  }
+  //  protected Rectangle getVisibleRowsRect() {
+  //    Insets i = getInsets();
+  //    Rectangle visRect = getVisibleRect();
+  //    //if (visRect.width == 0 && visRect.height == 0 && getVisibleRowCount() > 0) {
+  //    if (visRect.isEmpty() && getVisibleRowCount() > 0) {
+  //      // The tree doesn't have a valid bounds yet. Calculate
+  //      // based on visible row count.
+  //      visRect.width = 1;
+  //      visRect.height = getRowHeight() * getVisibleRowCount();
+  //    } else {
+  //      visRect.x -= i.left;
+  //      visRect.y -= i.top;
+  //    }
+  //    // we should consider a non-visible area above
+  //    Class<JScrollPane> clz = JScrollPane.class;
+  //    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+  //        .filter(clz::isInstance).map(clz::cast)
+  //        .map(JScrollPane::getHorizontalScrollBar)
+  //        .filter(JScrollBar::isVisible)
+  //        .ifPresent(bar -> {
+  //          int height = bar.getHeight();
+  //          visRect.y -= height;
+  //          visRect.height += height;
+  //        });
+  //    // Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+  //    // if (container instanceof JScrollPane) {
+  //    //   JScrollPane pane = (JScrollPane) container;
+  //    //   JScrollBar bar = pane.getHorizontalScrollBar();
+  //    //   if (bar != null && bar.isVisible()) {
+  //    //     int height = bar.getHeight();
+  //    //     visRect.y -= height;
+  //    //     visRect.height += height;
+  //    //   }
+  //    // }
+  //    return visRect;
+  //  }
 
   @Override protected void paintComponent(Graphics g) {
     g.setColor(getBackground());
@@ -313,9 +319,9 @@ class TableOfContentsTree extends JTree {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
     FontMetrics fm = g.getFontMetrics();
-    int pnmaxWidth = fm.stringWidth("000");
+    int pageNumMaxWidth = fm.stringWidth("000");
     Insets ins = getInsets();
-    Rectangle rect = getVisibleRowsRect();
+    Rectangle rect = getVisibleRect(); // getVisibleRowsRect();
     for (int i = 0; i < getRowCount(); i++) {
       Rectangle r = getRowBounds(i);
       if (rect.intersects(r)) {
@@ -340,7 +346,7 @@ class TableOfContentsTree extends JTree {
           g2.drawString(pn, x, y);
 
           int gap = 5;
-          int x2 = getWidth() - 1 - pnmaxWidth - ins.right;
+          int x2 = getWidth() - 1 - pageNumMaxWidth - ins.right;
           Stroke s = g2.getStroke();
           g2.setStroke(READER);
           g2.drawLine(r.x + r.width + gap, y, x2 - gap, y);
