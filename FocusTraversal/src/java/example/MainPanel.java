@@ -14,12 +14,12 @@ import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private final JPanel panel = new JPanel(new BorderLayout(2, 2));
-  private final JTextArea textarea = new JTextArea();
+  private final JTextArea textArea = new JTextArea();
   private final JButton nb = new JButton("NORTH");
   private final JButton sb = new JButton("SOUTH");
   private final JButton wb = new JButton("WEST");
   private final JButton eb = new JButton("EAST");
-  private final JScrollPane scroll = new JScrollPane(textarea);
+  private final JScrollPane scroll = new JScrollPane(textArea);
   private final Box box = Box.createHorizontalBox();
   private final JCheckBox check = new JCheckBox("setEditable", true);
 
@@ -56,12 +56,12 @@ public final class MainPanel extends JPanel {
           box.add(rb);
           box.add(Box.createHorizontalStrut(3));
         });
-    ((JRadioButton) bg.getElements().nextElement()).setSelected(true);
+    bg.getElements().nextElement().setSelected(true);
     box.add(Box.createHorizontalGlue());
 
     check.setHorizontalAlignment(SwingConstants.RIGHT);
     check.addActionListener(e -> {
-      textarea.setEditable(check.isSelected());
+      textArea.setEditable(check.isSelected());
       debugPrint();
     });
     add(panel);
@@ -87,13 +87,13 @@ public final class MainPanel extends JPanel {
 
   protected void debugPrint() {
     Container w = getTopLevelAncestor();
-    textarea.setText(String.join("\n",
-        debugString("frame", w),
+    textArea.setText(String.join("\n",
+        debugString("JFrame", w),
         debugString("this", this),
-        debugString("panel", panel),
-        debugString("box", box),
-        debugString("scroll", scroll),
-        debugString("textarea", textarea),
+        debugString("JPanel", panel),
+        debugString("Box", box),
+        debugString("JScrollPane", scroll),
+        debugString("JTextArea", textArea),
         debugString("eb", eb)));
   }
 
