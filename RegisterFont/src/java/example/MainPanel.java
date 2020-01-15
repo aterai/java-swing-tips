@@ -59,11 +59,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static String makeTestHtml() {
-    return String.join("\n", new String[] {
+    return String.join("\n",
         "<html><body>",
         "<div>3: StyleSheet, body{font-size:24pt; font-family:Burnstown Dam;}</div>",
         "</body></html>"
-    });
+    );
   }
 
   public static void main(String[] args) {

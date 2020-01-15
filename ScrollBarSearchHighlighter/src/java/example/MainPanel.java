@@ -7,7 +7,6 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +23,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   private static final String PATTERN = "Swing";
-  private static final String INIT_TXT = String.join("\n", Arrays.asList(
+  private static final String INIT_TXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "Lesson: Learning Swing by Example",
       "This lesson explains the concepts you need to",
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.",
-      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"));
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -163,7 +162,7 @@ class HighlightIcon implements Icon {
     // Dimension sbSize = scrollbar.getSize();
     // Insets sbInsets = scrollbar.getInsets();
     // double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
-    int itop = scrollbar.getInsets().top;
+    int top = scrollbar.getInsets().top;
     BoundedRangeModel range = scrollbar.getModel();
     double sy = range.getExtent() / (double) (range.getMaximum() - range.getMinimum());
     AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
@@ -178,7 +177,7 @@ class HighlightIcon implements Icon {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
-        g2.fillRect(0, itop + s.y, getIconWidth(), h);
+        g2.fillRect(0, top + s.y, getIconWidth(), h);
       }
     } catch (BadLocationException ex) {
       // should never happen
@@ -196,7 +195,7 @@ class HighlightIcon implements Icon {
       thumbRect.y = range.getValue(); // vport.getViewPosition().y;
       g2.setColor(THUMB_COLOR);
       Rectangle s = at.createTransformedShape(thumbRect).getBounds();
-      g2.fillRect(0, itop + s.y, getIconWidth(), s.height);
+      g2.fillRect(0, top + s.y, getIconWidth(), s.height);
     }
     g2.dispose();
   }
