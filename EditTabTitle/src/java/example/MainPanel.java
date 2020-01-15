@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -17,18 +16,19 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    String help = String.join("\n", Arrays.asList(
+    String help = String.join("\n",
         " Start editing: Double-Click, Enter-Key",
         " Commit rename: field-focusLost, Enter-Key",
-        "Cancel editing: Esc-Key, title.isEmpty"));
+        "Cancel editing: Esc-Key, title.isEmpty"
+    );
     JTextArea area = new JTextArea(help);
     area.setEditable(false);
 
     JTabbedPane tabbedPane = new EditableTabbedPane();
     tabbedPane.addTab("Shortcuts", new JScrollPane(area));
-    tabbedPane.addTab("badfasdf", new JLabel("bbbbbbbbbbbafasdf"));
-    tabbedPane.addTab("cccc", new JScrollPane(new JTree()));
-    tabbedPane.addTab("ddddddd", new JButton("dadfasdfasd"));
+    tabbedPane.addTab("JLabel", new JLabel("11111111"));
+    tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JButton", new JButton("222222"));
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }

@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -37,11 +36,11 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    textPane.setText(String.join("\n", Arrays.asList(
-        String.join("\t", Arrays.asList("LEFT1", "CENTER1", "RIGHT1", "3.14")),
-        String.join("\t", Arrays.asList("LEFT22", "CENTER22", "RIGHT22", "12.3")),
-        String.join("\t", Arrays.asList("LEFT333", "CENTER333", "RIGHT333", "123.45")),
-        String.join("\t", Arrays.asList("LEFT4444", "CENTER4444", "RIGHT4444", "0.9876")))));
+    textPane.setText(String.join("\n",
+        String.join("\t", "LEFT1", "CENTER1", "RIGHT1", "3.14"),
+        String.join("\t", "LEFT22", "CENTER22", "RIGHT22", "12.3"),
+        String.join("\t", "LEFT333", "CENTER333", "RIGHT333", "123.45"),
+        String.join("\t", "LEFT4444", "CENTER4444", "RIGHT4444", "0.9876")));
 
     // MutableAttributeSet attr = new SimpleAttributeSet();
     Style attr = textPane.getStyle(StyleContext.DEFAULT_STYLE);

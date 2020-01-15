@@ -12,7 +12,6 @@ import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,7 +27,7 @@ public final class MainPanel extends JPanel {
     area.setBackground(new Color(0x0, true)); // Nimbus
     area.setLineWrap(true);
     area.setOpaque(false);
-    area.setText(String.join("\n", Arrays.asList(
+    area.setText(String.join("\n",
         "private static void createAndShowGui() {",
         "  final JFrame frame = new JFrame();",
         "  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);",
@@ -36,7 +35,8 @@ public final class MainPanel extends JPanel {
         "  frame.pack();",
         "  frame.setLocationRelativeTo(null);",
         "  frame.setVisible(true);",
-        "}")));
+        "}"
+    ));
 
     URL url = getClass().getResource("tokeidai.jpg");
     BufferedImage bi = getFilteredImage(url);

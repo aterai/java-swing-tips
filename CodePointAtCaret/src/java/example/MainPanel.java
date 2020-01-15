@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     label.setEditable(false);
     label.setFont(label.getFont().deriveFont(32f));
 
-    JTextArea textArea = new JTextArea(String.join("\n", Arrays.asList(u1F60x, u1F61x, u1F62x, u1F63x, u1F64x)));
+    JTextArea textArea = new JTextArea(String.join("\n", u1F60x, u1F61x, u1F62x, u1F63x, u1F64x));
     textArea.addCaretListener(e -> {
       try {
         int dot = e.getDot();

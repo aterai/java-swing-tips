@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     area.setSelectedTextColor(Color.WHITE);
     area.setBackground(new Color(0x0, true)); // Nimbus
     area.setSelectionColor(SELECTION_COLOR);
-    area.setText("<html><pre>" + String.join("<br />", Arrays.asList(
+    area.setText("<html><pre>" + String.join("<br />",
         "private static void createAndShowGui() {",
         "  <span class='highlight'>JFrame</span> frame = new JFrame();",
         "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         "  frame.pack();",
         "  frame.setLocationRelativeTo(null);",
         "  frame.setVisible(true);",
-        "}")));
+        "}"));
 
     // TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html
     // DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html
-  private void setHighlight(JTextComponent jtc, String pattern) {
+  public void setHighlight(JTextComponent jtc, String pattern) {
     Highlighter highlighter = jtc.getHighlighter();
     highlighter.removeAllHighlights();
     Document doc = jtc.getDocument();

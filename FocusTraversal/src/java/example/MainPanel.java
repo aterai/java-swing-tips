@@ -87,22 +87,22 @@ public final class MainPanel extends JPanel {
 
   protected void debugPrint() {
     Container w = getTopLevelAncestor();
-    textarea.setText(String.join("\n", Arrays.asList(
+    textarea.setText(String.join("\n",
         debugString("frame", w),
         debugString("this", this),
         debugString("panel", panel),
         debugString("box", box),
         debugString("scroll", scroll),
         debugString("textarea", textarea),
-        debugString("eb", eb))));
+        debugString("eb", eb)));
   }
 
   private static String debugString(String label, Container c) {
-    return String.join("\n", Arrays.asList(
+    return String.join("\n",
         "---- " + label + " ----",
         "  isFocusCycleRoot: " + c.isFocusCycleRoot(),
         "  isFocusTraversalPolicySet: " + c.isFocusTraversalPolicySet(),
-        "  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider()));
+        "  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider());
   }
 
   public static void main(String[] args) {

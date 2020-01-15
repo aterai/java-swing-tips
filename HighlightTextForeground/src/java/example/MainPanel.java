@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -29,7 +28,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class MainPanel extends JPanel {
-  private static final String INIT_TXT = String.join("\n", Arrays.asList(
+  private static final String INIT_TXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
       "Lesson: Learning Swing by Example",
@@ -43,8 +42,8 @@ public class MainPanel extends JPanel {
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.",
-      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"));
-
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  );
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private static final Color CURRENT_COLOR = new Color(0xAA_00_64_00, true);
   private static final Color HIGHLIGHT_COLOR = new Color(0x64_DD_DD_00, true);

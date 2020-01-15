@@ -11,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,10 +20,11 @@ import javax.swing.event.DocumentListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String help = String.join("\n", Arrays.asList(
+    String help = String.join("\n",
         " Start editing: Double-Click, Enter-Key",
         " Commit rename: field-focusLost, Enter-Key",
-        "Cancel editing: Esc-Key, title.isEmpty"));
+        "Cancel editing: Esc-Key, title.isEmpty"
+    );
 
     JTabbedPane tabs = new JTabbedPane() {
       private transient TabTitleEditListener listener;
@@ -38,9 +38,9 @@ public final class MainPanel extends JPanel {
       }
     };
     tabs.addTab("Shortcuts", new JTextArea(help));
-    tabs.addTab("badfasdfa", new JLabel("bbbbbbbbbbbafasdf"));
-    tabs.addTab("cccc", new JScrollPane(new JTree()));
-    tabs.addTab("dddddddd", new JLabel("dadfasdfasd"));
+    tabs.addTab("JLabel", new JLabel("JLabel"));
+    tabs.addTab("JTree", new JScrollPane(new JTree()));
+    tabs.addTab("JSplitPane", new JSplitPane());
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
