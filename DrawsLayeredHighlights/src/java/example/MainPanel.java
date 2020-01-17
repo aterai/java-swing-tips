@@ -20,25 +20,25 @@ import javax.swing.text.Highlighter.HighlightPainter;
 
 public final class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
-  private static final String[] INIT_TXT = {
-    "Trail: Creating a GUI with JFC/Swing",
-    "Lesson: Learning Swing by Example",
-    "This lesson explains the concepts you need to",
-    " use Swing components in building a user interface.",
-    " First we examine the simplest Swing application you can write.",
-    " Then we present several progressively complicated examples of creating",
-    " user interfaces using components in the javax.swing package.",
-    " We cover several Swing components, such as buttons, labels, and text areas.",
-    " The handling of events is also discussed,",
-    " as are layout management and accessibility.",
-    " This lesson ends with a set of questions and exercises",
-    " so you can test yourself on what you've learned.",
-    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
-  };
+  private static final String TEXT = String.join("\n",
+      "Trail: Creating a GUI with JFC/Swing",
+      "Lesson: Learning Swing by Example",
+      "This lesson explains the concepts you need to",
+      " use Swing components in building a user interface.",
+      " First we examine the simplest Swing application you can write.",
+      " Then we present several progressively complicated examples of creating",
+      " user interfaces using components in the javax.swing package.",
+      " We cover several Swing components, such as buttons, labels, and text areas.",
+      " The handling of events is also discussed,",
+      " as are layout management and accessibility.",
+      " This lesson ends with a set of questions and exercises",
+      " so you can test yourself on what you've learned.",
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  );
 
   private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JTextField field = new JTextField("Swing");
-  private final JTextArea textArea = new JTextArea(String.join("\n", INIT_TXT));
+  private final JTextArea textArea = new JTextArea(TEXT);
 
   private MainPanel() {
     super(new BorderLayout(5, 5));

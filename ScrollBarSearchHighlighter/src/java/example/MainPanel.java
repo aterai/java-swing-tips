@@ -23,7 +23,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   private static final String PATTERN = "Swing";
-  private static final String INIT_TXT = String.join("\n",
+  private static final String TEXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "Lesson: Learning Swing by Example",
       "This lesson explains the concepts you need to",
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 
     JTextArea textArea = new JTextArea();
     textArea.setEditable(false);
-    textArea.setText(INIT_TXT + INIT_TXT + INIT_TXT);
+    textArea.setText(TEXT + TEXT + TEXT);
 
     JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
     // JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {

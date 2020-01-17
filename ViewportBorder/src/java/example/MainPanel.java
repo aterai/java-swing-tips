@@ -9,7 +9,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String INIT_TXT = String.join("\n", Arrays.asList(
+  private static final String TEXT = String.join("\n", Arrays.asList(
       "Trail: Creating a GUI with JFC/Swing",
       "Lesson: Learning Swing by Example",
       "This lesson explains the concepts you need to",
@@ -27,11 +27,11 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + INIT_TXT);
+    JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + TEXT);
     textArea1.setMargin(new Insets(5, 5, 5, 5));
     JScrollPane scroll1 = new JScrollPane(textArea1);
 
-    JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + INIT_TXT);
+    JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + TEXT);
     textArea2.setMargin(new Insets(0, 0, 0, 1));
     JScrollPane scroll2 = new JScrollPane(textArea2) {
       @Override public void updateUI() {
