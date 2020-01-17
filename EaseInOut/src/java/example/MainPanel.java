@@ -15,7 +15,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000";
+    String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SERIAL NO: 00000000";
     ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
     add(new ImageCaptionLabel(txt, icon));
     setPreferredSize(new Dimension(320, 240));
