@@ -18,21 +18,21 @@ import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private static final String PATTERN = "Swing";
-  private static final String[] INIT_TXT = {
-    "Trail: Creating a GUI with JFC/Swing",
-    "Lesson: Learning Swing by Example",
-    "This lesson explains the concepts you need to",
-    " use Swing components in building a user interface.",
-    " First we examine the simplest Swing application you can write.",
-    " Then we present several progressively complicated examples of creating",
-    " user interfaces using components in the javax.swing package.",
-    " We cover several Swing components, such as buttons, labels, and text areas.",
-    " The handling of events is also discussed,",
-    " as are layout management and accessibility.",
-    " This lesson ends with a set of questions and exercises",
-    " so you can test yourself on what you've learned.",
-    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
-  };
+  private static final String TEXT = String.join("\n",
+      "Trail: Creating a GUI with JFC/Swing",
+      "Lesson: Learning Swing by Example",
+      "This lesson explains the concepts you need to",
+      " use Swing components in building a user interface.",
+      " First we examine the simplest Swing application you can write.",
+      " Then we present several progressively complicated examples of creating",
+      " user interfaces using components in the javax.swing package.",
+      " We cover several Swing components, such as buttons, labels, and text areas.",
+      " The handling of events is also discussed,",
+      " as are layout management and accessibility.",
+      " This lesson ends with a set of questions and exercises",
+      " so you can test yourself on what you've learned.",
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  );
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
 
   private MainPanel() {
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
     JTextArea jta = new JTextArea();
     jta.setLineWrap(true);
-    jta.setText(String.join("\n", INIT_TXT));
+    jta.setText(TEXT);
 
     JButton highlight = new JButton("highlight: " + PATTERN);
     highlight.addActionListener(e -> {
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void setHighlight(JTextComponent jtc, String pattern) {
+  public static void setHighlight(JTextComponent jtc, String pattern) {
     jtc.getHighlighter().removeAllHighlights();
     try {
       Highlighter highlighter = jtc.getHighlighter();
@@ -77,9 +77,9 @@ public final class MainPanel extends JPanel {
       }
       // int pos = text.indexOf(pattern);
       // while (pos >= 0) {
-      //   int nextp = pos + pattern.length();
-      //   jtc.getHighlighter().addHighlight(pos, nextp, HIGHLIGHT);
-      //   pos = text.indexOf(pattern, nextp);
+      //   int np = pos + pattern.length();
+      //   jtc.getHighlighter().addHighlight(pos, np, HIGHLIGHT);
+      //   pos = text.indexOf(pattern, np);
       // }
     } catch (BadLocationException | PatternSyntaxException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(jtc);

@@ -28,7 +28,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class MainPanel extends JPanel {
-  private static final String INIT_TXT = String.join("\n",
+  private static final String TEXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
       "Lesson: Learning Swing by Example",
@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     textPane.setEditable(false);
-    textPane.setText(INIT_TXT);
+    textPane.setText(TEXT);
     JButton prevButton = new JButton("⋀");
     prevButton.setActionCommand("prev");
 
