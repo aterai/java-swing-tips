@@ -18,19 +18,19 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
-  private static final String[] HELP = {
-    " Start editing: Double-Click",
-    " Commit rename: field-focusLost, Enter-Key",
-    "Cancel editing: Esc-Key, title.isEmpty"
-  };
+  private static final String HELP = String.join("\n",
+      " Start editing: Double-Click",
+      " Commit rename: field-focusLost, Enter-Key",
+      "Cancel editing: Esc-Key, title.isEmpty"
+  );
 
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
 
     JScrollPane l1 = new JScrollPane(new JTree());
-    l1.setBorder(new EditableTitledBorder("JTree aaaaaaaaaaaaa", l1));
+    l1.setBorder(new EditableTitledBorder("JTree 111111111111111", l1));
 
-    JScrollPane l2 = new JScrollPane(new JTextArea(String.join("\n", HELP)));
+    JScrollPane l2 = new JScrollPane(new JTextArea(HELP));
     l2.setBorder(new EditableTitledBorder(null, "JTextArea", TitledBorder.RIGHT, TitledBorder.BOTTOM, l2));
 
     add(l1);
@@ -70,7 +70,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     @Override public void actionPerformed(ActionEvent e) {
       if (comp instanceof JComponent) {
         Optional.ofNullable(((JComponent) comp).getRootPane())
-          .ifPresent(r -> r.setGlassPane(glassPane));
+            .ifPresent(r -> r.setGlassPane(glassPane));
       }
       glassPane.removeAll();
       glassPane.add(editor);
