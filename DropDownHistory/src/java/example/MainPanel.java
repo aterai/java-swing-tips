@@ -18,28 +18,28 @@ import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final String[] INIT_TXT = {
-    "Trail: Creating a GUI with JFC/Swing",
-    "Lesson: Learning Swing by Example",
-    "This lesson explains the concepts you need to",
-    " use Swing components in building a user interface.",
-    " First we examine the simplest Swing application you can write.",
-    " Then we present several progressively complicated examples of creating",
-    " user interfaces using components in the javax.swing package.",
-    " We cover several Swing components, such as buttons, labels, and text areas.",
-    " The handling of events is also discussed,",
-    " as are layout management and accessibility.",
-    " This lesson ends with a set of questions and exercises",
-    " so you can test yourself on what you've learned.",
-    "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
-  };
+  private static final String TEXT = String.join("\n",
+      "Trail: Creating a GUI with JFC/Swing",
+      "Lesson: Learning Swing by Example",
+      "This lesson explains the concepts you need to",
+      " use Swing components in building a user interface.",
+      " First we examine the simplest Swing application you can write.",
+      " Then we present several progressively complicated examples of creating",
+      " user interfaces using components in the javax.swing package.",
+      " We cover several Swing components, such as buttons, labels, and text areas.",
+      " The handling of events is also discussed,",
+      " as are layout management and accessibility.",
+      " This lesson ends with a set of questions and exercises",
+      " so you can test yourself on what you've learned.",
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
+  );
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   private final JTextArea textArea = new JTextArea();
   private final JComboBox<String> combo = new JComboBox<>();
 
   private MainPanel() {
     super(new BorderLayout());
-    textArea.setText(String.join("\n", INIT_TXT));
+    textArea.setText(TEXT);
     textArea.setLineWrap(true);
     textArea.setEditable(false);
 
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static boolean addItem(JComboBox<String> combo, String str, int max) {
+  public static boolean addItem(JComboBox<String> combo, String str, int max) {
     if (Objects.isNull(str) || str.isEmpty()) {
       return false;
     }
