@@ -14,9 +14,6 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {
   private static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
-  private final JCheckBox check = new JCheckBox("add EmptyThumbHandler");
-  private final JButton caretButton = new JButton("setCaretPosition: 0");
-  private final JButton offsetButton = new JButton("setScrollOffset: 0");
   private final JTextField textField1 = new JTextField(TEXT);
   private final JTextField textField2 = new JTextField(TEXT);
   private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
@@ -39,6 +36,7 @@ public final class MainPanel extends JPanel {
     scroller1.setModel(textField1.getHorizontalVisibility());
     scroller2.setModel(textField2.getHorizontalVisibility());
 
+    JCheckBox check = new JCheckBox("add EmptyThumbHandler");
     check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
         textField1.addComponentListener(handler);
@@ -49,6 +47,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JButton caretButton = new JButton("setCaretPosition: 0");
     caretButton.addActionListener(e -> {
       textField1.requestFocusInWindow();
       textField1.setCaretPosition(0);
@@ -58,6 +57,7 @@ public final class MainPanel extends JPanel {
       scroller2.revalidate();
     });
 
+    JButton offsetButton = new JButton("setScrollOffset: 0");
     offsetButton.addActionListener(e -> {
       textField1.setScrollOffset(0);
       scroller1.revalidate();
