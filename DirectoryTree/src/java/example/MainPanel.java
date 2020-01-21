@@ -121,7 +121,7 @@ class FolderSelectionListener implements TreeSelectionListener {
     // frame.getGlassPane().setVisible(true);
 
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-    SwingWorker<String, File> worker = new BackgroundTask(fileSystemView, parent) {
+    new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
         if (isCancelled()) {
           return;
@@ -135,8 +135,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         // model.reload(parent); // = model.nodeStructureChanged(parent);
         // tree.expandPath(path);
       }
-    };
-    worker.execute();
+    }.execute();
   }
 }
 
