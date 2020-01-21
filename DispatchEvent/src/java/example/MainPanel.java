@@ -8,14 +8,14 @@ import java.awt.*;
 import java.awt.event.AWTEventListener;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final int DELAY = 10 * 1000; // 10s
   private final JLabel label = new JLabel("Not connected");
   private final JComboBox<String> combo = makeComboBox();
   private final JTextField textField = new JTextField(20);
   private final JButton button = new JButton("Connect");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     // EventQueue eventQueue = new EventQueue() {
     //   @Override protected void dispatchEvent(AWTEvent e) {
@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void setTestConnected(boolean flag) {
+  protected void setTestConnected(boolean flag) {
     String str = flag ? "<font color='blue'>Connected" : "<font color='red'>Not connected";
     label.setText("<html>Status: " + str);
     combo.setEnabled(flag);
@@ -77,8 +77,8 @@ public class MainPanel extends JPanel {
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("dummy model");
-    model.addElement("qerqwerew");
-    model.addElement("zcxvzxcv");
+    model.addElement("123456");
+    model.addElement("0987654321");
     model.addElement("41234123");
     return new JComboBox<>(model);
   }
