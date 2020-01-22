@@ -101,7 +101,6 @@ class ComboCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Object getCellEditorValue() {
-    @SuppressWarnings("unchecked")
     DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) combo.getModel();
     if (combo.isEditable()) {
       String str = Objects.toString(combo.getEditor().getItem(), "");
