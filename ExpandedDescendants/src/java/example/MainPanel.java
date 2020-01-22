@@ -176,21 +176,18 @@ public final class MainPanel extends JPanel {
 //       return;
 //     }
 //
-//     SwingWorker<String, File> worker = new SwingWorker<String, File>() {
+//     SwingWorker<String, File> worker = new SwingWorker<String, File>() throws InterruptedException {
 //       @Override public String doInBackground() {
 //         File[] children = fileSystemView.getFiles(parent, true);
 //         for (File child: children) {
 //           if (child.isDirectory()) {
 //             publish(child);
-// //             try {
-// //               Thread.sleep(500);
-// //             } catch (InterruptedException ex) {
-// //               return "Interrupted";
-// //             }
+// //          Thread.sleep(500);
 //           }
 //         }
 //         return "done";
 //       }
+//
 //       @Override protected void process(List<File> chunks) {
 //         for (File file: chunks) {
 //           node.add(new DefaultMutableTreeNode(file));
@@ -198,6 +195,7 @@ public final class MainPanel extends JPanel {
 //         model.reload(parent); // = model.nodeStructureChanged(parent);
 //         // tree.expandPath(path);
 //       }
+//
 // //        @Override public void done() {
 // //          // frame.getGlassPane().setVisible(false);
 // //          // tree.setCursor(Cursor.getDefaultCursor());
@@ -214,6 +212,7 @@ public final class MainPanel extends JPanel {
 //     this.renderer = renderer;
 //     this.fileSystemView = fileSystemView;
 //   }
+//
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //     if (selected) {
