@@ -53,19 +53,6 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final Action makeShowHideAction() {
-    return new AbstractAction("Show/Hide Search Box") {
-      @Override public void actionPerformed(ActionEvent ev) {
-        if (Objects.nonNull(animator) && animator.isRunning()) {
-          return;
-        }
-        isHidden = controls.getHeight() == 0;
-        animator = new Timer(5, e -> controls.revalidate());
-        animator.start();
-      }
-    };
-  }
-
   private JPanel makePanel() {
     button.setFocusable(false);
     controls.setBorder(BorderFactory.createTitledBorder("Search down"));
@@ -88,9 +75,9 @@ public class MainPanel extends JPanel {
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap imap = p.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
-    p.getActionMap().put("open-searchbox", act);
+    InputMap im = p.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-search-box");
+    p.getActionMap().put("open-search-box", act);
     p.add(controls, BorderLayout.NORTH);
     p.add(new JScrollPane(tree));
     p.add(showHideButton, BorderLayout.SOUTH);

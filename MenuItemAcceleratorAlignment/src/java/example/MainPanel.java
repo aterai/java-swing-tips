@@ -278,7 +278,9 @@ final class MenuItemHelper {
     Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
       JMenuItem menuItem = lh.getMenuItem();
       ButtonModel model = menuItem.getModel();
-      if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+      if (model.isArmed()) {
+        g.setColor(foreground);
+      } else if (menuItem instanceof JMenu && model.isSelected()) {
         g.setColor(foreground);
       }
       if (lh.useCheckAndArrow()) {

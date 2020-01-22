@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
     UndoManager undoManager1 = new UndoManager();
     JTextField textField1 = new JTextField();
     textField1.setDocument(new CustomUndoPlainDocument());
-    textField1.setText("aaaaaaaaaaaaaaaaaaaaa");
+    textField1.setText("111111111111111111");
     textField1.getDocument().addUndoableEditListener(undoManager1);
 
     DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
     JTextField textField2 = new JTextField();
-    textField2.setText("bbbbbbbbbbbbbbb");
+    textField2.setText("2222222222222222");
     Document d = textField2.getDocument();
     if (d instanceof AbstractDocument) {
       AbstractDocument doc = (AbstractDocument) d;
@@ -174,6 +174,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //   //   super();
 //   //   this.undoManager = undoManager;
 //   // }
+//
 //   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //     if (length == 0) { // insert
 //       super.replace(offset, length, text, attrs);
@@ -184,19 +185,21 @@ class DocumentFilterUndoManager extends UndoManager {
 //       replaceIgnoringUndo(offset, length, text, attrs);
 //     }
 //   }
+//
 //   private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//     UndoableEditListener[] uels = getUndoableEditListeners();
-//     for (UndoableEditListener l: uels) {
+//     UndoableEditListener[] uel = getUndoableEditListeners();
+//     for (UndoableEditListener l: uel) {
 //       removeUndoableEditListener(l);
 //     }
 //     super.replace(offset, length, text, attrs);
-//     for (UndoableEditListener l: uels) {
+//     for (UndoableEditListener l: uel) {
 //       addUndoableEditListener(l);
 //     }
 //     // removeUndoableEditListener(undoManager);
 //     // super.replace(offset, length, text, attrs);
 //     // addUndoableEditListener(undoManager);
 //   }
+//
 //   class ReplaceUndoableEdit extends AbstractUndoableEdit {
 //     private final String oldValue;
 //     private final String newValue;
@@ -213,6 +216,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //       this.newValue = newValue;
 //       this.offset = offset;
 //     }
+//
 //     @Override public void undo() { // throws CannotUndoException {
 //       try {
 //         replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
@@ -220,6 +224,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //         throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //       }
 //     }
+//
 //     @Override public void redo() { // throws CannotRedoException {
 //       try {
 //         replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
@@ -227,9 +232,11 @@ class DocumentFilterUndoManager extends UndoManager {
 //         throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //       }
 //     }
+//
 //     @Override public boolean canUndo() {
 //       return true;
 //     }
+//
 //     @Override public boolean canRedo() {
 //       return true;
 //     }

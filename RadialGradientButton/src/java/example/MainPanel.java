@@ -73,7 +73,7 @@ class RadialGradientButton extends JButton {
   private static final double ARC_WIDTH = 32d;
   private static final double ARC_HEIGHT = 32d;
   private int radius;
-  private final float[] dist = {0f, 1f};
+  private final float[] fractions = {0f, 1f};
   private final Color[] colors = {new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true)};
   private final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
@@ -173,7 +173,7 @@ class RadialGradientButton extends JButton {
 
     if (radius > 0) {
       int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
+      g2.setPaint(new RadialGradientPaint(pt, r2, fractions, colors));
       g2.setComposite(AlphaComposite.SrcAtop);
       g2.setClip(shape);
       g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
@@ -189,7 +189,7 @@ class RadialGradientPaintButton extends JButton {
   private static final double ARC_WIDTH = 32d;
   private static final double ARC_HEIGHT = 32d;
   private int radius;
-  private final float[] dist = {0f, 1f};
+  private final float[] fractions = {0f, 1f};
   private final Color[] colors = {new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true)};
   private final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
@@ -279,7 +279,7 @@ class RadialGradientPaintButton extends JButton {
 
     if (radius > 0) {
       int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
+      g2.setPaint(new RadialGradientPaint(pt, r2, fractions, colors));
       g2.setComposite(AlphaComposite.SrcAtop);
       // g2.setClip(shape);
       g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));

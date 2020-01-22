@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     image = Optional.ofNullable(MainPanel.class.getResource("test.jpg"))

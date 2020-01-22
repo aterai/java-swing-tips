@@ -10,12 +10,11 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private final JTextArea log = new JTextArea();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
-
     // TEST: System.out.println(UIManager.getBoolean("ComboBox.noActionOnKeyNavigation"));
     // TEST: UIManager.put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
 
@@ -58,7 +57,7 @@ public class MainPanel extends JPanel {
     return combo;
   }
 
-  protected final void append(String text) {
+  protected void append(String text) {
     log.append(text + "\n");
     log.setCaretPosition(log.getDocument().getLength());
   }

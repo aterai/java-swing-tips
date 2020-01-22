@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final String TEXT = "drag select table cells 1 22 333 4444 55555 666666 7777777 88888888";
   private final String[] columnNames = {"html"};
   private final Object[][] data = {
@@ -33,13 +33,11 @@ public class MainPanel extends JPanel {
     }
   };
   private final JTable table = new JTable(model);
-  private final JRadioButton centerRadio = new JRadioButton("CENTER", true);
   private final JRadioButton topRadio = new JRadioButton("TOP");
   private final JRadioButton bottomRadio = new JRadioButton("BOTTOM");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(16);
 
@@ -59,6 +57,7 @@ public class MainPanel extends JPanel {
     };
     ButtonGroup bg = new ButtonGroup();
     JPanel p = new JPanel();
+    JRadioButton centerRadio = new JRadioButton("CENTER", true);
     Stream.of(centerRadio, topRadio, bottomRadio).forEach(b -> {
       b.addActionListener(al);
       bg.add(b);

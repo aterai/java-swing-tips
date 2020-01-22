@@ -120,6 +120,7 @@ class HandScrollListener extends MouseAdapter {
 //   private final Cursor defCursor = Cursor.getDefaultCursor();
 //   private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 //   private final Point pp = new Point();
+//
 //   @Override public void mouseDragged(MouseEvent e) {
 //     Component c = e.getComponent();
 //     Container p = SwingUtilities.getUnwrappedParent(c);
@@ -132,6 +133,7 @@ class HandScrollListener extends MouseAdapter {
 //       pp.setLocation(cp);
 //     }
 //   }
+//
 //   @Override public void mousePressed(MouseEvent e) {
 //     Component c = e.getComponent();
 //     c.setCursor(hndCursor);
@@ -142,6 +144,7 @@ class HandScrollListener extends MouseAdapter {
 //       pp.setLocation(cp);
 //     }
 //   }
+//
 //   @Override public void mouseReleased(MouseEvent e) {
 //     e.getComponent().setCursor(defCursor);
 //   }

@@ -131,7 +131,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     // DropTarget dropTarget =
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+        this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -178,7 +178,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new TableDragSourceListener());
+      e.startDrag(DragSource.DefaultMoveDrop, this, new TableDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }

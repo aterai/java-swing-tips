@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     c.addActionListener(e -> tree.setEnabled(((JCheckBox) e.getSource()).isSelected()));
     add(makePanel(new JScrollPane(tree), c));
 
-    JTextArea textArea = new JTextArea("aaaaaaaaaa");
+    JTextArea textArea = new JTextArea("*********");
     // textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
     JButton b = new JButton("Clear");
     b.setFocusable(false);
@@ -132,24 +132,31 @@ public final class MainPanel extends JPanel {
 //     comp.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, comp));
 //     src.repaint();
 //   }
+//
 //   @Override public void mouseClicked(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseEntered(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseExited(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mousePressed(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseReleased(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseMoved(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseDragged(MouseEvent e) {
 //     dispatchEvent(e);
 //   }

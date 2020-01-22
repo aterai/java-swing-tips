@@ -56,11 +56,11 @@ public final class MainPanel extends JPanel {
   //   set1.add(new DefaultMutableTreeNode("111111111"));
   //   set1.add(new DefaultMutableTreeNode("22222222222"));
   //   set1.add(new DefaultMutableTreeNode("33333"));
-  //   set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-  //   set2.add(new DefaultMutableTreeNode("asdf"));
-  //   set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-  //   set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
-  //   set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
+  //   set2.add(new DefaultMutableTreeNode("asd fas dfa s"));
+  //   set2.add(new DefaultMutableTreeNode("as df"));
+  //   set3.add(new DefaultMutableTreeNode("asd fas dfa sdf"));
+  //   set3.add(new DefaultMutableTreeNode("zxc vzx cv zx"));
+  //   set3.add(new DefaultMutableTreeNode("qwe qwe qwe qwe qwe"));
   //   root.add(set1);
   //   root.add(set2);
   //   set2.add(set3);
@@ -73,9 +73,9 @@ public final class MainPanel extends JPanel {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     // Java 9: return Collections.list(node.children())
     Collections.list((Enumeration<?>) node.children()).stream()
-      .filter(TreeNode.class::isInstance)
-      .map(TreeNode.class::cast)
-      .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+        .filter(TreeNode.class::isInstance)
+        .map(TreeNode.class::cast)
+        .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
     // if (!node.isLeaf()) {
     //   // Java 9: Enumeration<TreeNode> e = node.children();
     //   Enumeration<?> e = node.children();

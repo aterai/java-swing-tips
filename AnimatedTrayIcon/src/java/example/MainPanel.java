@@ -11,11 +11,11 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
   private final JDialog dialog = new JDialog();
   private final Timer animator = new Timer(100, null);
-  private final transient Image[] imglist = new Image[4];
+  private final transient Image[] images = new Image[4];
   private final transient TrayIcon icon;
   private int idx;
 
-  public MainPanel() {
+  private MainPanel() {
     super();
     setPreferredSize(new Dimension(320, 240));
 
@@ -24,21 +24,21 @@ public class MainPanel extends JPanel {
     }
 
     Class<?> clz = MainPanel.class;
-    imglist[0] = new ImageIcon(clz.getResource("16x16.png")).getImage();
-    imglist[1] = new ImageIcon(clz.getResource("16x16l.png")).getImage();
-    imglist[2] = imglist[0];
-    imglist[3] = new ImageIcon(clz.getResource("16x16r.png")).getImage();
+    images[0] = new ImageIcon(clz.getResource("16x16.png")).getImage();
+    images[1] = new ImageIcon(clz.getResource("16x16l.png")).getImage();
+    images[2] = images[0];
+    images[3] = new ImageIcon(clz.getResource("16x16r.png")).getImage();
 
     dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     dialog.setSize(new Dimension(120, 100));
     dialog.setLocationRelativeTo(null);
     dialog.setTitle("TEST: JDialog");
 
-    // TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
-    icon = new TrayIcon(imglist[0], "TRAY", makeTrayPopupMenu());
+    // TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("animated.gif")).getImage(), "TRAY", popup);
+    icon = new TrayIcon(images[0], "TRAY", makeTrayPopupMenu());
     animator.addActionListener(e -> {
-      icon.setImage(imglist[idx]);
-      idx = (idx + 1) % imglist.length;
+      icon.setImage(images[idx]);
+      idx = (idx + 1) % images.length;
     });
     try {
       SystemTray.getSystemTray().add(icon);
@@ -65,7 +65,7 @@ public class MainPanel extends JPanel {
     MenuItem item4 = new MenuItem("Animation:Stop");
     item4.addActionListener(e -> {
       animator.stop();
-      icon.setImage(imglist[0]);
+      icon.setImage(images[0]);
     });
 
     MenuItem item5 = new MenuItem("Exit");
