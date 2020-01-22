@@ -13,47 +13,51 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
-public final class MainPanel extends JPanel {
-  private BigInteger status = new BigInteger("111000111", 2);
-  private static final int BIT_LENGTH = 50;
-  private static final String ONE_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
-  private static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
-  private final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
+public class MainPanel extends JPanel {
+  protected BigInteger status = new BigInteger("111000111", 2);
+  protected static final int BIT_LENGTH = 50;
+  protected static final String ONEPAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
+  protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel();
+  private final UndoManager um = new UndoManager();
+  private final Action undoAction = new UndoAction(um);
+  private final Action redoAction = new RedoAction(um);
+  private final Action selectAllAction = new AbstractAction("select all") {
+    @Override public void actionPerformed(ActionEvent e) {
+      BigInteger newValue = new BigInteger(ONEPAD, 2);
+      undoSupport.postEdit(new StatusEdit(status, newValue));
+      updateCheckBoxes(newValue);
+      // TEST:
+      // undoSupport.beginUpdate();
+      // try {
+      //   ...
+      // } finally {
+      //   undoSupport.endUpdate();
+      // }
+    }
+  };
+  private final Action clearAllAction = new AbstractAction("clear all") {
+    @Override public void actionPerformed(ActionEvent e) {
+      BigInteger newValue = BigInteger.ZERO;
+      undoSupport.postEdit(new StatusEdit(status, newValue));
+      updateCheckBoxes(newValue);
+    }
+  };
 
   public MainPanel() {
     super(new BorderLayout());
-    UndoManager um = new UndoManager();
     undoSupport.addUndoableEditListener(um);
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(new JButton(new UndoAction(um)));
+    box.add(new JButton(undoAction));
     box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(new RedoAction(um)));
+    box.add(new JButton(redoAction));
     box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(new AbstractAction("select all") {
-      @Override public void actionPerformed(ActionEvent e) {
-        BigInteger newValue = new BigInteger(ONE_PAD, 2);
-        undoSupport.postEdit(new StatusEdit(status, newValue));
-        updateCheckBoxes(newValue);
-        // TEST:
-        // undoSupport.beginUpdate();
-        // try {
-        //   ...
-        // } finally {
-        //   undoSupport.endUpdate();
-        // }
-      }
-    }));
+    box.add(new JButton(selectAllAction));
     box.add(Box.createHorizontalStrut(2));
-    box.add(new JButton(new AbstractAction("clear all") {
-      @Override public void actionPerformed(ActionEvent e) {
-        BigInteger newValue = BigInteger.ZERO;
-        undoSupport.postEdit(new StatusEdit(status, newValue));
-        updateCheckBoxes(newValue);
-      }
-    }));
+    box.add(new JButton(clearAllAction));
     box.add(Box.createHorizontalStrut(2));
 
     for (int i = 0; i < BIT_LENGTH; i++) {
@@ -79,7 +83,7 @@ public final class MainPanel extends JPanel {
     return c;
   }
 
-  protected void updateCheckBoxes(BigInteger value) {
+  protected final void updateCheckBoxes(BigInteger value) {
     status = value;
     for (int i = 0; i < BIT_LENGTH; i++) {
       BigInteger l = BigInteger.ONE.shiftLeft(i);
@@ -129,7 +133,7 @@ public final class MainPanel extends JPanel {
   private static String print(BigInteger l) {
     String b = l.toString(2);
     int count = l.bitCount();
-    return "<html>0b" + ZERO_PAD.substring(b.length()) + b + "<br/> count: " + count;
+    return "<html>0b" + ZEROPAD.substring(b.length()) + b + "<br/> count: " + count;
   }
 
   public static void main(String[] args) {

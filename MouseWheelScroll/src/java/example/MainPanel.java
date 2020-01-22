@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.stream.Stream;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
+public class MainPanel extends JPanel {
   protected boolean isShiftPressed;
   protected final JLabel label = new JLabel();
   protected final JScrollPane scroll = new JScrollPane(label);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     }
   };
 
-  private MainPanel() {
+  public MainPanel() {
     super(new BorderLayout());
 
     label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
@@ -144,11 +144,11 @@ class DragScrollListener extends MouseAdapter {
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport viewport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
-      Point vp = viewport.getViewPosition();
+      JViewport vport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+      Point vp = vport.getViewPosition();
       vp.translate(pp.x - cp.x, pp.y - cp.y);
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
       pp.setLocation(cp);
     }
   }
@@ -158,8 +158,8 @@ class DragScrollListener extends MouseAdapter {
     c.setCursor(hndCursor);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport viewport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      JViewport vport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
       pp.setLocation(cp);
     }
   }

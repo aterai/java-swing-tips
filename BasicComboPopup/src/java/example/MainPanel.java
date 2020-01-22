@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     JTextPane jtp = new JTextPane();
     jtp.setText("Shift+Tab");
 
-    JComboBox<Object> combo = new JComboBox<>(new Object[] {
+    JComboBox<String> combo = new JComboBox<>(new String[] {
         "public", "protected", "private",
         "final", "transient", "super", "this", "return", "class"
     });
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         int i = combo.getSelectedIndex();
         Optional.ofNullable(combo.getItemAt(i)).ifPresent(str -> {
           popup.hide();
-          TextEditorUtils.append(jtp, Objects.toString(str));
+          TextEditorUtils.append(jtp, str);
         });
       }
     });
@@ -111,7 +111,7 @@ class EditorComboPopup extends BasicComboPopup {
   protected final JTextComponent textArea;
   private transient MouseListener listener;
 
-  protected EditorComboPopup(JTextComponent textArea, JComboBox<Object> cb) {
+  protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
     super(cb);
     this.textArea = textArea;
   }

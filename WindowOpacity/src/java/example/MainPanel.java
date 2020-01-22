@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
     // }
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        // JComboBox comboBox = (JComboBox) e.getSource();
-        // Object o = comboBox.getSelectedItem();
+        // JComboBox cbox = (JComboBox) e.getSource();
+        // Object o = cbox.getSelectedItem();
         Object o = e.getItem();
         if ("ImageTexturePaint".equals(o)) {
           texture = imageTexture;
