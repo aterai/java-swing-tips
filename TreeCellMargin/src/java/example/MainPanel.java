@@ -200,11 +200,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     if (selected) {
       bgColor = getBackgroundSelectionColor();
       fgColor = getTextSelectionColor();
-      if (isSynth) {
-        text.setOpaque(false);
-      } else {
-        text.setOpaque(true);
-      }
+      text.setOpaque(!isSynth);
     } else {
       bgColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
       fgColor = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
