@@ -67,7 +67,6 @@ public final class MainPanel extends JPanel {
 class CardLayoutTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
-  private final JPanel wrapPanel = new JPanel(new BorderLayout());
   private final JPanel contentsPanel = new JPanel(cardLayout);
   private final ButtonGroup bg = new ButtonGroup();
 
@@ -77,13 +76,16 @@ class CardLayoutTabbedPane extends JPanel {
     int right = 3;
     tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
     contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
-    wrapPanel.add(tabPanel);
-    wrapPanel.add(new JLabel("test:"), BorderLayout.WEST);
-    add(wrapPanel, BorderLayout.NORTH);
+
+    JPanel tabArea = new JPanel(new BorderLayout());
+    tabArea.add(tabPanel);
+    tabArea.add(new JLabel("test:"), BorderLayout.WEST);
+
+    add(tabArea, BorderLayout.NORTH);
     add(contentsPanel);
   }
 
-  protected Component createTabComponent(String title, Component comp) {
+  protected Component createTabComponent(String title) {
     TabButton tab = new TabButton(title);
     tab.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -129,7 +131,7 @@ class CardLayoutTabbedPane extends JPanel {
   }
 
   public void addTab(String title, Component comp) {
-    tabPanel.add(createTabComponent(title, comp));
+    tabPanel.add(createTabComponent(title));
     contentsPanel.add(comp, title);
     cardLayout.show(contentsPanel, title);
   }
