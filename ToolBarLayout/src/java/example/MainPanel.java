@@ -10,18 +10,14 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String PATH = "/toolbarButtonGraphics/general/";
-  private final JToolBar toolbar1 = new JToolBar("ToolBarButton");
-  private final JToolBar toolbar2 = new JToolBar("JButton");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     // toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
     // toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
 
-    URL url1 = getClass().getResource(PATH + "Copy24.gif");
-    URL url2 = getClass().getResource(PATH + "Cut24.gif");
-    URL url3 = getClass().getResource(PATH + "Help24.gif");
+    URL url1 = getClass().getResource("/toolbarButtonGraphics/general/Copy24.gif");
+    URL url2 = getClass().getResource("/toolbarButtonGraphics/general/Cut24.gif");
+    URL url3 = getClass().getResource("/toolbarButtonGraphics/general/Help24.gif");
 
     // When jlfgr-1_0.jar does not exist in the classpath
     if (Objects.isNull(url1)) {
@@ -30,11 +26,13 @@ public final class MainPanel extends JPanel {
       url3 = getClass().getResource("Help24.gif");
     }
 
+    JToolBar toolbar1 = new JToolBar("ToolBarButton");
     toolbar1.add(new JButton(new ImageIcon(url1)));
     toolbar1.add(new JButton(new ImageIcon(url2)));
     toolbar1.add(Box.createGlue());
     toolbar1.add(new JButton(new ImageIcon(url3)));
 
+    JToolBar toolbar2 = new JToolBar("JButton");
     toolbar2.add(createToolBarButton(url1));
     toolbar2.add(createToolBarButton(url2));
     toolbar2.add(Box.createGlue());
@@ -81,6 +79,7 @@ public final class MainPanel extends JPanel {
 //       @Override public void mouseEntered(MouseEvent e) {
 //         setContentAreaFilled(true);
 //       }
+//
 //       @Override public void mouseExited(MouseEvent e) {
 //         setContentAreaFilled(false);
 //       }
