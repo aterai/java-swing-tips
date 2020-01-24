@@ -277,8 +277,11 @@ final class MenuItemHelper {
                                     sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
     Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
       JMenuItem menuItem = lh.getMenuItem();
+      if (!(menuItem instanceof JMenu)) {
+        return;
+      }
       ButtonModel model = menuItem.getModel();
-      if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+      if (model.isArmed() || model.isSelected()) {
         g.setColor(foreground);
       }
       if (lh.useCheckAndArrow()) {
