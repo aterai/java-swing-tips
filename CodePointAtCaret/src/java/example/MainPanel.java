@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
