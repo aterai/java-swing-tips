@@ -29,9 +29,12 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
-  private static final String TABTEST = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-  private static final String ZSTEST = "adfasdfasdfasdf\nffas2　　1 3 dfas\n\n　00000　12345　\n";
-  private static final String ZS_TAB_ZSTEST = "　　日本語　\n";
+  private static final String TAB_TXT = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
+  private static final String IDEOGRAPHIC_SPACE_TXT = String.join("\n",
+      "123456789012",
+      "bbb2　　1 3 ccc3\n",
+      "　00000　12345　",
+      "　　日本語　");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -39,7 +42,7 @@ public final class MainPanel extends JPanel {
 
     editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
     editor.setEditorKit(new CustomEditorKit());
-    editor.setText(ZSTEST + ZS_TAB_ZSTEST + TABTEST);
+    editor.setText(IDEOGRAPHIC_SPACE_TXT + TAB_TXT);
 
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
@@ -66,7 +69,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CustomEditorKit extends StyledEditorKit {
-  private final MutableAttributeSet attrs = new SimpleAttributeSet();
+  private static final MutableAttributeSet ATTRS = new SimpleAttributeSet();
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public void install(JEditorPane c) {
@@ -74,10 +77,10 @@ class CustomEditorKit extends StyledEditorKit {
     int tabLength = fm.charWidth('m') * 4;
     TabStop[] tabs = new TabStop[100];
     for (int j = 0; j < tabs.length; j++) {
-      tabs[j] = new TabStop((j + 1) * tabLength);
+      tabs[j] = new TabStop((j + 1f) * tabLength);
     }
     TabSet tabSet = new TabSet(tabs);
-    StyleConstants.setTabSet(attrs, tabSet);
+    StyleConstants.setTabSet(ATTRS, tabSet);
     super.install(c);
   }
 
@@ -88,7 +91,7 @@ class CustomEditorKit extends StyledEditorKit {
   @Override public Document createDefaultDocument() {
     Document d = super.createDefaultDocument();
     if (d instanceof StyledDocument) {
-      ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), attrs, false);
+      ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), ATTRS, false);
     }
     return d;
   }
@@ -113,7 +116,7 @@ class CustomViewFactory implements ViewFactory {
     // return new WhitespaceLabelView(elem);
     return Optional.ofNullable(elem.getName()).map(kind -> {
       switch (kind) {
-        case AbstractDocument.ContentElementName: return new WhitespaceLabelView(elem);
+        // case AbstractDocument.ContentElementName: return new WhitespaceLabelView(elem);
         case AbstractDocument.ParagraphElementName: return new ParagraphWithEopmView(elem);
         case AbstractDocument.SectionElementName: return new BoxView(elem, View.Y_AXIS);
         case StyleConstants.ComponentElementName: return new ComponentView(elem);
@@ -189,9 +192,9 @@ class WhitespaceLabelView extends LabelView {
       } else if ("\t".equals(s)) {
         int tabWidth = (int) getTabExpander().nextTabStop((float) sx, i) - sx;
         g2.setPaint(MARK_COLOR);
-        g2.drawLine(sx + 2, sy - 0, sx + 2 + 2, sy - 0);
+        g2.drawLine(sx + 2, sy, sx + 2 + 2, sy);
         g2.drawLine(sx + 2, sy - 1, sx + 2 + 1, sy - 1);
-        g2.drawLine(sx + 2, sy - 2, sx + 2 + 0, sy - 2);
+        g2.drawLine(sx + 2, sy - 2, sx + 2, sy - 2);
         g2.setStroke(DASHED);
         g2.drawLine(sx + 2, sy, sx + tabWidth - 2, sy);
         sumOfTabs += tabWidth;
