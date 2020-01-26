@@ -49,8 +49,8 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel();
     panel.add(button);
     IntStream.range(0, 15)
-      .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
-      .forEach(panel::add);
+        .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
+        .forEach(panel::add);
     tab.addTab("Main", new JScrollPane(panel));
     tab.addTab("JTree", new JScrollPane(new JTree()));
     tab.addTab("JLabel", new JLabel("Test"));

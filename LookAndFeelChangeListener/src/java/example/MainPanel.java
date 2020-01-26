@@ -60,9 +60,9 @@ public final class MainPanel extends JPanel {
       //   mi.addActionListener(al);
       // }
       stream(getRootPane().getJMenuBar())
-        .filter(JRadioButtonMenuItem.class::isInstance)
-        .map(JRadioButtonMenuItem.class::cast)
-        .forEach(mi -> mi.addActionListener(al));
+          .filter(JRadioButtonMenuItem.class::isInstance)
+          .map(JRadioButtonMenuItem.class::cast)
+          .forEach(mi -> mi.addActionListener(al));
     });
 
     JPanel np = new JPanel(new GridLayout(2, 1));

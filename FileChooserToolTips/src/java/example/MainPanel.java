@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       stream(chooser)
-        .filter(JList.class::isInstance)
-        .map(JList.class::cast)
-        .forEach(MainPanel::setCellRenderer);
+          .filter(JList.class::isInstance)
+          .map(JList.class::cast)
+          .forEach(MainPanel::setCellRenderer);
       int retValue = chooser.showOpenDialog(log.getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -46,12 +46,12 @@ public final class MainPanel extends JPanel {
       String key = "viewTypeDetails";
       JFileChooser chooser = new JFileChooser();
       Optional.ofNullable(chooser.getActionMap().get(key))
-        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key)));
+          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key)));
       stream(chooser)
-        .filter(JTable.class::isInstance)
-        .map(JTable.class::cast)
-        .findFirst()
-        .ifPresent(MainPanel::setCellRenderer);
+          .filter(JTable.class::isInstance)
+          .map(JTable.class::cast)
+          .findFirst()
+          .ifPresent(MainPanel::setCellRenderer);
       int retValue = chooser.showOpenDialog(log.getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -131,7 +131,7 @@ class TooltipTableCellRenderer implements TableCellRenderer {
     Rectangle rect = table.getCellRect(row, column, false);
     rect.width -= i.left + i.right;
     Optional.ofNullable(l.getIcon())
-      .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
+        .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
     FontMetrics fm = l.getFontMetrics(l.getFont());
     String str = Objects.toString(value, "");
     l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);

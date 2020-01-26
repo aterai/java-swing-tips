@@ -96,8 +96,8 @@ class AutomaticallyCloseListener implements HierarchyListener {
             // LOGGER.info(() -> "Timer: timer.stop()");
             timer.stop();
             Optional.ofNullable(l.getTopLevelAncestor())
-              .filter(Window.class::isInstance).map(Window.class::cast)
-              .ifPresent(Window::dispose);
+                .filter(Window.class::isInstance).map(Window.class::cast)
+                .ifPresent(Window::dispose);
             // Container c = l.getTopLevelAncestor();
             // if (c instanceof Window) {
             //   // LOGGER.info(() -> "window.dispose()");

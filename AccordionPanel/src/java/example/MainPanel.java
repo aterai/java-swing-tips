@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
         @Override public JPanel makePanel() {
           JPanel p = new JPanel(new GridLayout(0, 1));
           Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
-            .map(JLabel::new)
-            .forEach(p::add);
+              .map(JLabel::new)
+              .forEach(p::add);
           return p;
         }
       },

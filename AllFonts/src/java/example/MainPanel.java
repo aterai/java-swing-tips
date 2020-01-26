@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     table.setAutoCreateRowSorter(true);
     Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
-      .map(f -> new String[] {f.getFamily(), f.getName(), f.getPSName()})
-      .forEach(model::addRow);
+        .map(f -> new String[] {f.getFamily(), f.getName(), f.getPSName()})
+        .forEach(model::addRow);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }

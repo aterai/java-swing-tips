@@ -126,10 +126,10 @@ class ListIconRenderer implements TableCellRenderer {
     }
     if (value instanceof List<?>) {
       ((List<?>) value).stream()
-        .filter(Icon.class::isInstance)
-        .map(Icon.class::cast)
-        .map(ListIconRenderer::makeLabel)
-        .forEach(renderer::add);
+          .filter(Icon.class::isInstance)
+          .map(Icon.class::cast)
+          .map(ListIconRenderer::makeLabel)
+          .forEach(renderer::add);
     }
     return renderer;
   }

@@ -189,7 +189,7 @@ final class TreeUtil {
       if (!node.isLeaf()) {
         // Java 9: Collections.list(node.children())
         Collections.list((Enumeration<?>) node.children())
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
       }
     }
   }

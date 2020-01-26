@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
     toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
     Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
-      "Delete24.gif", "Undo24.gif", "Redo24.gif",
-      "Help24.gif", "Open24.gif", "Save24.gif")
-      .map(this::createToolBarButton)
-      .forEach(toolbar::add);
+        "Delete24.gif", "Undo24.gif", "Redo24.gif",
+        "Help24.gif", "Open24.gif", "Save24.gif")
+        .map(this::createToolBarButton)
+        .forEach(toolbar::add);
 
     add(toolbar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));

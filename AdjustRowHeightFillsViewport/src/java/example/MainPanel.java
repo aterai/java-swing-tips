@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
         super.doLayout();
         Class<JViewport> clz = JViewport.class;
         Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-          .filter(clz::isInstance).map(clz::cast)
-          .ifPresent(this::updateRowsHeight);
+            .filter(clz::isInstance).map(clz::cast)
+            .ifPresent(this::updateRowsHeight);
       }
     };
 

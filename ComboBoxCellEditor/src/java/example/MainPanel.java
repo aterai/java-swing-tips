@@ -42,14 +42,14 @@ public final class MainPanel extends JPanel {
     tree.getModel().addTreeModelListener(new TreeModelListener() {
       @Override public void treeNodesChanged(TreeModelEvent e) {
         Optional.ofNullable(e.getChildren())
-          .filter(children -> children.length == 1)
-          .map(children -> children[0])
-          .filter(DefaultMutableTreeNode.class::isInstance)
-          .map(DefaultMutableTreeNode.class::cast)
-          .map(DefaultMutableTreeNode::getUserObject)
-          .filter(PluginNode.class::isInstance)
-          .map(PluginNode.class::cast)
-          .ifPresent(uo -> textArea.append(String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex()))));
+            .filter(children -> children.length == 1)
+            .map(children -> children[0])
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .map(DefaultMutableTreeNode::getUserObject)
+            .filter(PluginNode.class::isInstance)
+            .map(PluginNode.class::cast)
+            .ifPresent(uo -> textArea.append(String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex()))));
 
         // Object[] children = e.getChildren();
         // boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children)

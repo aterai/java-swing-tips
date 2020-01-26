@@ -160,8 +160,8 @@ class EditableTabbedPane extends JTabbedPane {
           JTextField tabEditor = getEditor();
           String cmd = "rename-tab";
           Optional.ofNullable(tabEditor.getActionMap().get(cmd))
-            .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
-            .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, cmd)));
+              .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
+              .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, cmd)));
         }
       });
     }

@@ -89,8 +89,8 @@ class DragScrollListener extends MouseAdapter {
     Component c = e.getComponent();
     c.setCursor(hndCursor);
     Optional.ofNullable(SwingUtilities.getUnwrappedParent(c))
-      .filter(JViewport.class::isInstance).map(JViewport.class::cast)
-      .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
+        .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+        .ifPresent(v -> pp.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v)));
   }
 
   @Override public void mouseReleased(MouseEvent e) {

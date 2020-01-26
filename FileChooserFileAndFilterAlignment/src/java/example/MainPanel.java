@@ -96,9 +96,9 @@ class RightAlignmentWindowsFileChooserUI extends WindowsFileChooserUI {
   @Override public void installComponents(JFileChooser fc) {
     super.installComponents(fc);
     SwingUtils.stream(getBottomPanel())
-      .filter(JLabel.class::isInstance)
-      .map(JLabel.class::cast)
-      .forEach(l -> l.setAlignmentX(1f));
+        .filter(JLabel.class::isInstance)
+        .map(JLabel.class::cast)
+        .forEach(l -> l.setAlignmentX(1f));
   }
 }
 

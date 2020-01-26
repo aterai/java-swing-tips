@@ -137,9 +137,9 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
     @Override public void mouseExited(MouseEvent e) {
       Class<JTable> clz = JTable.class;
       Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, e.getComponent()))
-        .filter(clz::isInstance).map(clz::cast)
-        .filter(JTable::isEditing)
-        .ifPresent(JTable::removeEditor);
+          .filter(clz::isInstance).map(clz::cast)
+          .filter(JTable::isEditing)
+          .ifPresent(JTable::removeEditor);
       // Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, e.getComponent()))
       //   .filter(clz::isInstance).map(clz::cast)
       //   .filter(table -> table.isEditing() && !table.getCellEditor().stopCellEditing())

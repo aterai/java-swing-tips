@@ -47,9 +47,9 @@ public final class MainPanel extends JPanel {
 
       // TEST4:
       stream(chooser)
-        .filter(JTable.class::isInstance).map(JTable.class::cast)
-        .findFirst()
-        .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+          .filter(JTable.class::isInstance).map(JTable.class::cast)
+          .findFirst()
+          .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
       int retValue = chooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {

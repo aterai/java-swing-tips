@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
     button0.addActionListener(e -> {
       setViewTypeDetails(fileChooser0);
       stream(fileChooser0)
-        .filter(JTable.class::isInstance).map(JTable.class::cast)
-        .findFirst()
-        .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
+          .filter(JTable.class::isInstance).map(JTable.class::cast)
+          .findFirst()
+          .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
       int retValue = fileChooser0.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         append(log, fileChooser0.getSelectedFile().getAbsolutePath());
@@ -54,9 +54,9 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setViewTypeDetails(JFileChooser fileChooser) {
-    Optional.ofNullable(fileChooser.getActionMap().get("viewTypeDetails"))
-      .ifPresent(a -> a.actionPerformed(new ActionEvent(fileChooser, ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
+  private static void setViewTypeDetails(JFileChooser fc) {
+    Optional.ofNullable(fc.getActionMap().get("viewTypeDetails"))
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
   }
 
   private static void append(JTextArea log, String str) {

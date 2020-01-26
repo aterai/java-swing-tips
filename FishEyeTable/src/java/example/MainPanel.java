@@ -32,8 +32,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     IntStream.range(0, 20)
-      .mapToObj(i -> new Object[] {"Name: " + i, i, i % 2 == 0})
-      .forEach(model::addRow);
+        .mapToObj(i -> new Object[] {"Name: " + i, i, i % 2 == 0})
+        .forEach(model::addRow);
     JTable table = new FishEyeTable(model);
     table.setRowSelectionInterval(0, 0);
     JScrollPane scroll = new JScrollPane(table);

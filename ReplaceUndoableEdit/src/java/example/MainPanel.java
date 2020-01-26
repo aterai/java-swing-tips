@@ -54,15 +54,15 @@ public final class MainPanel extends JPanel {
     Action undoAction = new AbstractAction("undo") {
       @Override public void actionPerformed(ActionEvent e) {
         Stream.of(undoManager0, undoManager1, undoManager2)
-          .filter(UndoManager::canUndo)
-          .forEach(UndoManager::undo);
+            .filter(UndoManager::canUndo)
+            .forEach(UndoManager::undo);
       }
     };
     Action redoAction = new AbstractAction("redo") {
       @Override public void actionPerformed(ActionEvent e) {
         Stream.of(undoManager0, undoManager1, undoManager2)
-          .filter(UndoManager::canRedo)
-          .forEach(UndoManager::redo);
+            .filter(UndoManager::canRedo)
+            .forEach(UndoManager::redo);
       }
     };
 

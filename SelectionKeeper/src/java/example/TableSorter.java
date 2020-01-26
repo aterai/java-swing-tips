@@ -189,8 +189,8 @@ public class TableSorter extends AbstractTableModel {
     Optional.ofNullable(this.tableHeader).ifPresent(header -> {
       header.removeMouseListener(mouseListener);
       Optional.ofNullable(header.getDefaultRenderer())
-        .filter(SortableHeaderRenderer.class::isInstance).map(SortableHeaderRenderer.class::cast)
-        .ifPresent(renderer -> header.setDefaultRenderer(renderer.cellRenderer));
+          .filter(SortableHeaderRenderer.class::isInstance).map(SortableHeaderRenderer.class::cast)
+          .ifPresent(renderer -> header.setDefaultRenderer(renderer.cellRenderer));
       // TableCellRenderer defaultRenderer = header.getDefaultRenderer();
       // if (defaultRenderer instanceof SortableHeaderRenderer) {
       //   header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
@@ -245,8 +245,8 @@ public class TableSorter extends AbstractTableModel {
 
   public void setSortingStatus(int column, int status) {
     Optional.of(getDirective(column))
-      .filter(directive -> !EMPTY_DIRECTIVE.equals(directive))
-      .ifPresent(sortingColumns::remove);
+        .filter(directive -> !EMPTY_DIRECTIVE.equals(directive))
+        .ifPresent(sortingColumns::remove);
     // if (!EMPTY_DIRECTIVE.equals(directive)) {
     //   sortingColumns.remove(directive);
     // }
