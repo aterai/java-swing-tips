@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
 }
 
 class FileIconTableCellRenderer extends DefaultTableCellRenderer {
-  private final FileSystemView fileSystemView;
+  private final transient FileSystemView fileSystemView;
 
   protected FileIconTableCellRenderer(FileSystemView fileSystemView) {
     super();
@@ -218,9 +218,9 @@ class FileGroupComparator extends DefaultFileComparator {
 
   @Override public int compare(File a, File b) {
     int flag = 1;
-    List<? extends TableRowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+    List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
     if (!keys.isEmpty()) {
-      TableRowSorter.SortKey sortKey = keys.get(0);
+      RowSorter.SortKey sortKey = keys.get(0);
       if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
         flag = -1;
       }
@@ -228,7 +228,7 @@ class FileGroupComparator extends DefaultFileComparator {
     if (a.isDirectory() && !b.isDirectory()) {
       return -1 * flag;
     } else if (!a.isDirectory() && b.isDirectory()) {
-      return 1 * flag;
+      return flag;
     } else {
       return super.compare(a, b);
     }
