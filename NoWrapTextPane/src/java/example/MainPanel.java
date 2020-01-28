@@ -42,25 +42,22 @@ public final class MainPanel extends JPanel {
     //     if (Objects.isNull(p)) {
     //       return true;
     //     }
-    //     int ewidth = getUI().getPreferredSize(this).width;
-    //     return ewidth <= p.getSize().width;
+    //     return getUI().getPreferredSize(this).width <= p.getSize().width;
     //   }
     // };
     // textPane.setEditorKit(new NoWrapEditorKit1());
 
     editorPane.setEditorKit(new NoWrapEditorKit2());
 
-    ActionListener longTextListener = e -> {
-      threadPool.execute(() -> {
-        if (Objects.nonNull(text)) {
-          if (editorPaneButton.equals(e.getSource())) {
-            editorPane.setText(text);
-          } else {
-            textArea.setText(text);
-          }
+    ActionListener longTextListener = e -> threadPool.execute(() -> {
+      if (Objects.nonNull(text)) {
+        if (editorPaneButton.equals(e.getSource())) {
+          editorPane.setText(text);
+        } else {
+          textArea.setText(text);
         }
-      });
-    };
+      }
+    });
     editorPaneButton.addActionListener(longTextListener);
     textAreaButton.addActionListener(longTextListener);
 
@@ -91,7 +88,7 @@ public final class MainPanel extends JPanel {
     return sp;
   }
 
-  private static void initLongLineStringInBackground(ExecutorService threadPool, int length) {
+  public static void initLongLineStringInBackground(ExecutorService threadPool, int length) {
     threadPool.execute(() -> {
       StringBuilder sb = new StringBuilder(length);
       for (int i = 0; i < length - 2; i++) {
@@ -180,21 +177,20 @@ class NoWrapParagraphView extends ParagraphView {
 
 class NoWrapViewFactory implements ViewFactory {
   @Override public View create(Element elem) {
-    String kind = elem.getName();
-    if (Objects.nonNull(kind)) {
-      if (kind.equals(AbstractDocument.ContentElementName)) {
-        return new LabelView(elem);
-      } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+    switch (elem.getName()) {
+      // case AbstractDocument.ContentElementName:
+      //   return new LabelView(elem);
+      case AbstractDocument.ParagraphElementName:
         return new NoWrapParagraphView(elem);
-      } else if (kind.equals(AbstractDocument.SectionElementName)) {
+      case AbstractDocument.SectionElementName:
         return new BoxView(elem, View.Y_AXIS);
-      } else if (kind.equals(StyleConstants.ComponentElementName)) {
+      case StyleConstants.ComponentElementName:
         return new ComponentView(elem);
-      } else if (kind.equals(StyleConstants.IconElementName)) {
+      case StyleConstants.IconElementName:
         return new IconView(elem);
-      }
+      default:
+        return new LabelView(elem);
     }
-    return new LabelView(elem);
   }
 }
 
