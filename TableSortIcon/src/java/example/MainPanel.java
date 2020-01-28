@@ -11,27 +11,37 @@ import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-  private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-
   private static final Icon EMPTY_ICON = new EmptyIcon();
-  private final Icon customAscendingSortIcon = new ImageIcon(getClass().getResource("ascending.png"));
-  private final Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
 
-  private Box makeRadioPane() {
+  private MainPanel() {
+    super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
+    table.setAutoCreateRowSorter(true);
+
+    JButton clearButton = new JButton("clear SortKeys");
+    clearButton.addActionListener(e -> table.getRowSorter().setSortKeys(null));
+
+    add(makeRadioPane(table), BorderLayout.NORTH);
+    add(clearButton, BorderLayout.SOUTH);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Box makeRadioPane(JTable table) {
+    Icon customAscendingSortIcon = new ImageIcon(getClass().getResource("ascending.png"));
+    Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
     JRadioButton r0 = new JRadioButton("Default", true);
     JRadioButton r1 = new JRadioButton("Empty");
     JRadioButton r2 = new JRadioButton("Custom");
@@ -65,19 +75,6 @@ public final class MainPanel extends JPanel {
     });
     box1.add(Box.createHorizontalGlue());
     return box1;
-  }
-
-  private MainPanel() {
-    super(new BorderLayout());
-    table.setRowSorter(sorter);
-
-    JButton clearButton = new JButton("clear SortKeys");
-    clearButton.addActionListener(e -> sorter.setSortKeys(null));
-
-    add(makeRadioPane(), BorderLayout.NORTH);
-    add(clearButton, BorderLayout.SOUTH);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
