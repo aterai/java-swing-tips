@@ -135,11 +135,11 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
   private static final char LB = '\n';
   // HashMap<String, AttributeSet> keywords = new HashMap<>();
   private static final String OPERANDS = ".,";
-  private final Style def = getStyle(StyleContext.DEFAULT_STYLE);
 
   protected SimpleSyntaxDocument() {
     super();
     // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = getStyle(StyleContext.DEFAULT_STYLE);
     StyleConstants.setForeground(addStyle("red", def), Color.RED);
     StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
     StyleConstants.setForeground(addStyle("blue", def), Color.BLUE);
@@ -186,7 +186,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     int lineLength = endOffset - startOffset;
     int contentLength = content.length();
     endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
-    setCharacterAttributes(startOffset, lineLength, def, true);
+    setCharacterAttributes(startOffset, lineLength, getStyle(StyleContext.DEFAULT_STYLE), true);
     checkForTokens(content, startOffset, endOffset);
   }
 
@@ -245,21 +245,20 @@ class NoWrapParagraphView extends ParagraphView {
 
 class NoWrapViewFactory implements ViewFactory {
   @Override public View create(Element elem) {
-    String kind = elem.getName();
-    if (Objects.nonNull(kind)) {
-      if (kind.equals(AbstractDocument.ContentElementName)) {
-        return new LabelView(elem);
-      } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+    switch (elem.getName()) {
+      // case AbstractDocument.ContentElementName:
+      //   return new LabelView(elem);
+      case AbstractDocument.ParagraphElementName:
         return new NoWrapParagraphView(elem);
-      } else if (kind.equals(AbstractDocument.SectionElementName)) {
+      case AbstractDocument.SectionElementName:
         return new BoxView(elem, View.Y_AXIS);
-      } else if (kind.equals(StyleConstants.ComponentElementName)) {
+      case StyleConstants.ComponentElementName:
         return new ComponentView(elem);
-      } else if (kind.equals(StyleConstants.IconElementName)) {
+      case StyleConstants.IconElementName:
         return new IconView(elem);
-      }
+      default:
+        return new LabelView(elem);
     }
-    return new LabelView(elem);
   }
 }
 

@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(new MyEditorKit());
-    editor.setText("1234123541341234123423\nadfasdfasdfasdf\nffas213441324dfasdfas\n\nretqewrqwr");
+    editor.setText("1234123541341234123423\n12374612340\n213441324\n\n645206345437820");
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -59,21 +59,20 @@ class MyEditorKit extends StyledEditorKit {
 
 class MyViewFactory implements ViewFactory {
   @Override public View create(Element elem) {
-    String kind = elem.getName();
-    if (Objects.nonNull(kind)) {
-      if (kind.equals(AbstractDocument.ContentElementName)) {
-        return new LabelView(elem);
-      } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+    switch (elem.getName()) {
+      // case AbstractDocument.ContentElementName:
+      //   return new LabelView(elem);
+      case AbstractDocument.ParagraphElementName:
         return new ParagraphWithEopmView(elem);
-      } else if (kind.equals(AbstractDocument.SectionElementName)) {
+      case AbstractDocument.SectionElementName:
         return new BoxView(elem, View.Y_AXIS);
-      } else if (kind.equals(StyleConstants.ComponentElementName)) {
+      case StyleConstants.ComponentElementName:
         return new ComponentView(elem);
-      } else if (kind.equals(StyleConstants.IconElementName)) {
+      case StyleConstants.IconElementName:
         return new IconView(elem);
-      }
+      default:
+        return new LabelView(elem);
     }
-    return new LabelView(elem);
   }
 }
 
@@ -124,6 +123,7 @@ class ParagraphWithEopmView extends ParagraphView {
 //     paragraphMark.addPoint(4, 11);
 //     paragraphMark.addPoint(1, 14);
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.setPaint(MARK_COLOR);
@@ -131,9 +131,11 @@ class ParagraphWithEopmView extends ParagraphView {
 //     g2.draw(paragraphMark);
 //     g2.dispose();
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return 3;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return 7;
 //   }

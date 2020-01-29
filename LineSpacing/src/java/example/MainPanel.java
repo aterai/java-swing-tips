@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
@@ -24,10 +23,7 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
-  private final JTextPane editor1 = new JTextPane();
-  private final JTextPane editor2 = new JTextPane();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     MutableAttributeSet attr = new SimpleAttributeSet();
     StyleConstants.setForeground(attr, Color.RED);
@@ -39,6 +35,7 @@ public final class MainPanel extends JPanel {
     // StyleConstants.setSpaceBelow(a, 5f);
     // StyleConstants.setLeftIndent(a, 5f);
     // StyleConstants.setRightIndent(a, 5f);
+    JTextPane editor1 = new JTextPane();
     editor1.setParagraphAttributes(a, false);
     setDummyText(editor1, attr);
 
@@ -47,8 +44,9 @@ public final class MainPanel extends JPanel {
     // HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     // htmlEditorKit.setStyleSheet(styleSheet);
     // editor1.setEditorKit(htmlEditorKit);
-    // editor1.setText("<html><body>12341234<br />asdf_fASdfasf_fasdf_affffFSDdfasdf<br />nasdfasFasdf<font size='32'>12341234<br />asdfasdf</font></body></html>");
+    // editor1.setText("<html><body>12341234<br />***<br />111<font size='32'>12341234<br />999</font></body></html>");
 
+    JTextPane editor2 = new JTextPane();
     editor2.setEditorKit(new BottomInsetEditorKit());
     setDummyText(editor2, attr);
 
@@ -61,7 +59,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void setDummyText(JTextPane textPane, MutableAttributeSet attr) {
-    textPane.setText("12341234\nasdf fASdfasf fasdf affffFS Ddfasdf\nasdf asFasdf ");
+    textPane.setText("12341234\n1234 567890 5555 66666 77777\n88 999999 ");
     try {
       StyledDocument doc = textPane.getStyledDocument();
       doc.insertString(doc.getLength(), "134500698\n", attr);
@@ -106,24 +104,23 @@ class BottomInsetEditorKit extends StyledEditorKit {
 
 class BottomInsetViewFactory implements ViewFactory {
   @Override public View create(Element elem) {
-    String kind = elem.getName();
-    if (Objects.nonNull(kind)) {
-      if (kind.equals(AbstractDocument.ContentElementName)) {
-        return new LabelView(elem);
-      } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+    switch (elem.getName()) {
+      // case AbstractDocument.ContentElementName:
+      //   return new LabelView(elem);
+      case AbstractDocument.ParagraphElementName:
         return new ParagraphView(elem) {
           @Override protected short getBottomInset() {
             return 5;
           }
         };
-      } else if (kind.equals(AbstractDocument.SectionElementName)) {
+      case AbstractDocument.SectionElementName:
         return new BoxView(elem, View.Y_AXIS);
-      } else if (kind.equals(StyleConstants.ComponentElementName)) {
+      case StyleConstants.ComponentElementName:
         return new ComponentView(elem);
-      } else if (kind.equals(StyleConstants.IconElementName)) {
+      case StyleConstants.IconElementName:
         return new IconView(elem);
-      }
+      default:
+        return new LabelView(elem);
     }
-    return new LabelView(elem);
   }
 }

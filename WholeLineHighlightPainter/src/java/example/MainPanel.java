@@ -169,21 +169,20 @@ class ParagraphMarkEditorKit extends StyledEditorKit implements ViewFactory {
   }
 
   @Override public View create(Element elem) {
-    String kind = elem.getName();
-    if (Objects.nonNull(kind)) {
-      if (kind.equals(AbstractDocument.ContentElementName)) {
-        return new LabelView(elem);
-      } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+    switch (elem.getName()) {
+      // case AbstractDocument.ContentElementName:
+      //   return new LabelView(elem);
+      case AbstractDocument.ParagraphElementName:
         return new ParagraphWithEndMarkView(elem);
-      } else if (kind.equals(AbstractDocument.SectionElementName)) {
+      case AbstractDocument.SectionElementName:
         return new BoxView(elem, View.Y_AXIS);
-      } else if (kind.equals(StyleConstants.ComponentElementName)) {
+      case StyleConstants.ComponentElementName:
         return new ComponentView(elem);
-      } else if (kind.equals(StyleConstants.IconElementName)) {
+      case StyleConstants.IconElementName:
         return new IconView(elem);
-      }
+      default:
+        return new LabelView(elem);
     }
-    return new LabelView(elem);
   }
 }
 
