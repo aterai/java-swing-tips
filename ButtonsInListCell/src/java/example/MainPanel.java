@@ -25,15 +25,15 @@ public final class MainPanel extends JPanel {
     model.addElement("444");
 
     add(new JScrollPane(new JList<String>(model) {
-      private transient MouseInputListener cbml;
+      private transient MouseInputListener handler;
       @Override public void updateUI() {
-        removeMouseListener(cbml);
-        removeMouseMotionListener(cbml);
+        removeMouseListener(handler);
+        removeMouseMotionListener(handler);
         super.updateUI();
         setFixedCellHeight(-1);
-        cbml = new CellButtonsMouseListener<>(this);
-        addMouseListener(cbml);
-        addMouseMotionListener(cbml);
+        handler = new CellButtonsMouseListener<>(this);
+        addMouseListener(handler);
+        addMouseMotionListener(handler);
         setCellRenderer(new ButtonsRenderer<>(model));
       }
     }));
@@ -78,38 +78,42 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       if (prevIndex >= 0) {
         rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
       }
-      // index = -1;
       prevButton = null;
       return;
     }
-    if (index >= 0) {
-      ListCellRenderer<? super E> lcr = list.getCellRenderer();
-      if (!(lcr instanceof ButtonsRenderer)) {
-        return;
-      }
+    ListCellRenderer<? super E> lcr = list.getCellRenderer();
+    if (index >= 0 && lcr instanceof ButtonsRenderer) {
       ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) lcr;
       JButton button = getButton(list, pt, index);
       renderer.button = button;
       if (Objects.nonNull(button)) {
-        button.getModel().setRollover(true);
-        renderer.rolloverIndex = index;
-        if (!button.equals(prevButton)) {
-          rectRepaint(list, list.getCellBounds(prevIndex, index));
-        }
+        repaintCell(renderer, button, index);
       } else {
-        renderer.rolloverIndex = -1;
-        Rectangle r;
-        if (prevIndex == index) {
-          r = Objects.nonNull(prevButton) ? list.getCellBounds(prevIndex, prevIndex) : null;
-        } else {
-          r = list.getCellBounds(index, index);
-        }
-        rectRepaint(list, r);
-        prevIndex = -1;
+        repaintPrevButton(renderer, index);
       }
       prevButton = button;
     }
     prevIndex = index;
+  }
+
+  private void repaintCell(ButtonsRenderer<?> renderer, JButton button, int index) {
+    button.getModel().setRollover(true);
+    renderer.rolloverIndex = index;
+    if (button != prevButton) {
+      rectRepaint(list, list.getCellBounds(prevIndex, index));
+    }
+  }
+
+  private void repaintPrevButton(ButtonsRenderer<?> renderer, int index) {
+    renderer.rolloverIndex = -1;
+    Rectangle r;
+    if (prevIndex == index) {
+      r = Objects.nonNull(prevButton) ? list.getCellBounds(prevIndex, prevIndex) : null;
+    } else {
+      r = list.getCellBounds(index, index);
+    }
+    rectRepaint(list, r);
+    prevIndex = -1;
   }
 
   @Override public void mousePressed(MouseEvent e) {
