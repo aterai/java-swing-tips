@@ -5,12 +5,12 @@
 package example;
 
 import java.awt.*;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // frame.setJMenuBar(createMenuBar());
     // addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
     //     System.out.println("componentResized");
@@ -19,16 +19,14 @@ public final class MainPanel extends JPanel {
     // });
     // frame.addWindowStateListener(new WindowStateListener() {
     //   @Override public void windowStateChanged(WindowEvent e) {
-    //     EventQueue.invokeLater(new Runnable() {
-    //       @Override public void run() {
-    //         System.out.println("windowStateChanged");
-    //         JFrame f = (JFrame) e.getWindow();
-    //         ((JComponent) f.getContentPane()).revalidate();
-    //       }
+    //     EventQueue.invokeLater(() -> {
+    //       System.out.println("windowStateChanged");
+    //       JFrame f = (JFrame) e.getWindow();
+    //       f.getContentPane().revalidate();
     //     });
     //   }
     // });
-    add(createMenuBar(), BorderLayout.NORTH);
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -83,9 +81,8 @@ public final class MainPanel extends JPanel {
       //   }
       // }
     });
-    for (String key: new String[] {"File", "Edit", "Aaaaaaaaaaaaaaaaaaaaa", "Bbbbbbbbbbbbb", "Help"}) {
-      menuBar.add(createMenu(key));
-    }
+    Stream.of("File", "Edit", "View", "Navigate", "Code", "Analyze", "Refactor", "Build", "Run", "Help")
+        .map(MainPanel::createMenu).forEach(menuBar::add);
     return menuBar;
   }
 
