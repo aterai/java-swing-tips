@@ -27,32 +27,35 @@ public final class MainPanel extends JPanel {
     };
     check.addActionListener(e -> UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
 
-    // EventQueue.invokeLater(new Runnable() {
-    //   @Override public void run() {
-    //     ActionListener al = new ActionListener() {
-    //       @Override public void actionPerformed(ActionEvent e) {
-    //         EventQueue.invokeLater(new Runnable() {
-    //           @Override public void run() {
-    //             Object o = e.getSource();
-    //             if (o instanceof JRadioButtonMenuItem) {
-    //               JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
-    //               if (rbmi.isSelected()) {
-    //                 Boolean b = UIManager.getBoolean(key);
-    //                 System.out.println(rbmi.getText() + ": " + b);
-    //                 check.setSelected(b);
-    //               }
-    //             }
-    //           }
-    //         });
+    // EventQueue.invokeLater(() -> {
+    //   ActionListener al = e -> EventQueue.invokeLater(() -> {
+    //     Object o = e.getSource();
+    //     if (o instanceof JRadioButtonMenuItem) {
+    //       JRadioButtonMenuItem mi = (JRadioButtonMenuItem) o;
+    //       if (mi.isSelected()) {
+    //         boolean b1 = UIManager.getBoolean(key);
+    //         System.out.println(mi.getText() + ": " + b1);
+    //         check.setSelected(b1);
     //       }
-    //     };
-    //     List<JRadioButtonMenuItem> list = new ArrayList<>();
-    //     MenuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
-    //     for (JRadioButtonMenuItem mi: list) {
-    //       mi.addActionListener(al);
     //     }
+    //   });
+    //   List<JRadioButtonMenuItem> list = new ArrayList<>();
+    //   MenuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+    //   for (JRadioButtonMenuItem mi: list) {
+    //     mi.addActionListener(al);
     //   }
     // });
+
+    // JMenuBar menuBar = MenuBarUtil.createMenuBar();
+    // Stream.of(menuBar)
+    //   .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
+    //     @Override public Stream<MenuElement> apply(MenuElement me) {
+    //       return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(this::apply));
+    //     }
+    //   })
+    //   .filter(mi -> mi instanceof JRadioButtonMenuItem)
+    //   .forEach(mi -> System.out.println("----\n" + mi.getClass()));
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
 
     JPopupMenu popup = new JPopupMenu();
     MenuBarUtil.initMenu(popup);
@@ -71,21 +74,9 @@ public final class MainPanel extends JPanel {
     // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
     //   ex.printStackTrace();
     // }
-    JMenuBar menuBar = MenuBarUtil.createMenuBar();
-
-    // Stream.of(menuBar)
-    //   .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
-    //     @Override public Stream<MenuElement> apply(MenuElement me) {
-    //       return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(this::apply));
-    //     }
-    //   })
-    //   .filter(mi -> mi instanceof JRadioButtonMenuItem)
-    //   .forEach(mi -> System.out.println("----\n" + mi.getClass()));
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(menuBar);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -127,24 +118,22 @@ final class MenuBarUtil {
 
   public static JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar();
-    JMenu m = new JMenu("File");
-    initMenu(m);
-    mb.add(m);
-    m = createMenu("Edit");
-    mb.add(m);
-    m = LookAndFeelUtil.createLookAndFeelMenu();
-    mb.add(m);
-    mb.add(Box.createGlue());
-    m = new JMenu("Help");
-    m.add("About");
-    mb.add(m);
-    return mb;
-  }
+    JMenu file = new JMenu("File");
+    initMenu(file);
+    mb.add(file);
 
-  private static JMenu createMenu(String key) {
-    JMenu menu = new JMenu(key);
-    Stream.of("Cut", "Copy", "Paste", "Delete").map(menu::add).forEach(mi -> mi.setEnabled(false));
-    return menu;
+    JMenu edit = new JMenu("Edit");
+    Stream.of("Cut", "Copy", "Paste", "Delete").map(edit::add).forEach(mi -> mi.setEnabled(false));
+    mb.add(edit);
+
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+
+    mb.add(Box.createGlue());
+
+    JMenu help = new JMenu("Help");
+    help.add("About");
+    mb.add(help);
+    return mb;
   }
 
   public static void initMenu(Container p) {
