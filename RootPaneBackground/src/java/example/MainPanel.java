@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -140,11 +141,7 @@ final class ImageUtil {
       }
     };
     mb.setOpaque(false);
-    for (String key: new String[] {"File", "Edit", "Help"}) {
-      JMenu m = createMenu(key);
-      // if (m != null)
-      mb.add(m);
-    }
+    Stream.of("File", "Edit", "Help").map(ImageUtil::createMenu).forEach(mb::add);
     return mb;
   }
 
@@ -291,7 +288,7 @@ class TransparentMenu extends JMenu {
 
   // [JDK-4688783] JPopupMenu hardcoded i JMenu - Java Bug System
   // https://bugs.openjdk.java.net/browse/JDK-4688783
-  private void ensurePopupMenuCreated() {
+  private void ensurePopupMenuCreated2() {
     if (Objects.isNull(popupMenu)) {
       this.popupMenu = new TranslucentPopupMenu();
       popupMenu.setInvoker(this);
@@ -300,18 +297,18 @@ class TransparentMenu extends JMenu {
   }
 
   @Override public JPopupMenu getPopupMenu() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     return popupMenu;
   }
 
   @Override public JMenuItem add(JMenuItem menuItem) {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     menuItem.setOpaque(false);
     return popupMenu.add(menuItem);
   }
 
   @Override public Component add(Component c) {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     if (c instanceof JComponent) {
       ((JComponent) c).setOpaque(false);
     }
@@ -320,7 +317,7 @@ class TransparentMenu extends JMenu {
   }
 
   @Override public void addSeparator() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     popupMenu.addSeparator();
   }
 
@@ -328,7 +325,7 @@ class TransparentMenu extends JMenu {
     if (pos < 0) {
       throw new IllegalArgumentException("index less than zero.");
     }
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     popupMenu.insert(new JMenuItem(s), pos);
   }
 
@@ -336,21 +333,21 @@ class TransparentMenu extends JMenu {
     if (pos < 0) {
       throw new IllegalArgumentException("index less than zero.");
     }
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     popupMenu.insert(mi, pos);
     return mi;
   }
 
   @Override public void insertSeparator(int index) {
     if (index < 0) {
-      throw new IllegalArgumentException("index less than zero.");
+      throw new IllegalArgumentException("Separator index less than zero.");
     }
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     popupMenu.insert(new JPopupMenu.Separator(), index);
   }
 
   @Override public boolean isPopupMenuVisible() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     return popupMenu.isVisible();
   }
 }
