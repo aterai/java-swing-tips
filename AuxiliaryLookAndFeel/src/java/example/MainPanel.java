@@ -51,6 +51,10 @@ public final class MainPanel extends JPanel {
     box.add(makeComboBox());
     box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
@@ -58,9 +62,9 @@ public final class MainPanel extends JPanel {
 
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
+    model.addElement("aaa aaa");
+    model.addElement("aaa ab bb");
+    model.addElement("aaa ab bb cc");
     model.addElement("1354123451234513512");
     model.addElement("bbb1");
     model.addElement("bbb12");
@@ -78,13 +82,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
