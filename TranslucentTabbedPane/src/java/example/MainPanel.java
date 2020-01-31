@@ -52,6 +52,10 @@ public final class MainPanel extends JPanel {
     tabs.addTab("Tab 2", tab2panel);
     tabs.addTab("Tab 3", new AlphaContainer(tab3panel));
 
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(tabs);
     setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     setPreferredSize(new Dimension(320, 240));
@@ -72,14 +76,9 @@ public final class MainPanel extends JPanel {
     // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
     //   ex.printStackTrace();
     // }
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
