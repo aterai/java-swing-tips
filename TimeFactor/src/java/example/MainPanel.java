@@ -31,8 +31,12 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("List.timeFactor", new JScrollPane(new JList<>(model)));
     tabbedPane.addTab("Table.timeFactor(JFileChooser)", new JFileChooser());
     tabbedPane.addTab("Tree.timeFactor", new JScrollPane(new JTree()));
-
     add(tabbedPane);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -56,13 +60,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

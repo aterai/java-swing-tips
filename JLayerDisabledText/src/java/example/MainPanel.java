@@ -51,6 +51,11 @@ public final class MainPanel extends JPanel {
 
     add(panel);
     add(check);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -77,13 +82,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -104,12 +105,12 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      JLayer<?> jlayer = (JLayer<?>) c;
+      JLayer<?> layer = (JLayer<?>) c;
       if (DEBUG_POPUP_BLOCK) {
-        jlayer.getGlassPane().addMouseListener(dmyMouseListener);
-        jlayer.getGlassPane().addKeyListener(dmyKeyListener);
+        layer.getGlassPane().addMouseListener(dmyMouseListener);
+        layer.getGlassPane().addKeyListener(dmyKeyListener);
       }
-      jlayer.setLayerEventMask(
+      layer.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
           | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
           | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
@@ -118,11 +119,11 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 
   @Override public void uninstallUI(JComponent c) {
     if (c instanceof JLayer) {
-      JLayer<?> jlayer = (JLayer<?>) c;
-      jlayer.setLayerEventMask(0);
+      JLayer<?> layer = (JLayer<?>) c;
+      layer.setLayerEventMask(0);
       if (DEBUG_POPUP_BLOCK) {
-        jlayer.getGlassPane().removeMouseListener(dmyMouseListener);
-        jlayer.getGlassPane().removeKeyListener(dmyKeyListener);
+        layer.getGlassPane().removeMouseListener(dmyMouseListener);
+        layer.getGlassPane().removeKeyListener(dmyKeyListener);
       }
     }
     super.uninstallUI(c);
@@ -147,9 +148,9 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
   }
 
   public void setLocked(boolean flag) {
-    boolean oldv = isBlocking;
+    boolean old = isBlocking;
     isBlocking = flag;
-    firePropertyChange(CMD_BLOCKING, oldv, isBlocking);
+    firePropertyChange(CMD_BLOCKING, old, isBlocking);
   }
 
   @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {

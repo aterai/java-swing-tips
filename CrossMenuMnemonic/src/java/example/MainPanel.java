@@ -27,6 +27,8 @@ public final class MainPanel extends JPanel {
       SwingUtilities.updateComponentTreeUI(getRootPane().getJMenuBar());
     });
     add(check);
+
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -38,7 +40,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(MenuBarUtil.createMenuBar());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

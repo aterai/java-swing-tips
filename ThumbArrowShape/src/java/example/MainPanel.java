@@ -24,11 +24,13 @@ public final class MainPanel extends JPanel {
 
     slider1.setMajorTickSpacing(20);
     slider1.setPaintTicks(true);
-    slider2.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+
+    String key = "Slider.paintThumbArrowShape";
+    slider2.putClientProperty(key, Boolean.TRUE);
 
     slider4.setMajorTickSpacing(20);
     slider4.setPaintTicks(true);
-    slider5.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider5.putClientProperty(key, Boolean.TRUE);
 
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
@@ -45,11 +47,16 @@ public final class MainPanel extends JPanel {
     box2.add(Box.createVerticalStrut(20));
     box2.add(makeTitledPanel("setPaintTicks", slider4));
     box2.add(Box.createVerticalStrut(20));
-    box2.add(makeTitledPanel("Slider.paintThumbArrowShape", slider5));
+    box2.add(makeTitledPanel(key, slider5));
     box2.add(Box.createVerticalGlue());
 
     add(box1, BorderLayout.WEST);
     add(box2);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -71,12 +78,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
