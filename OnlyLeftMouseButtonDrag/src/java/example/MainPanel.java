@@ -44,6 +44,10 @@ public final class MainPanel extends JPanel {
     box2.add(slider2);
     box2.add(Box.createVerticalGlue());
 
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(box1, BorderLayout.WEST);
     add(box2);
     add(check, BorderLayout.SOUTH);
@@ -61,12 +65,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
