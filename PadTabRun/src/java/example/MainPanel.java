@@ -55,13 +55,14 @@ public final class MainPanel extends JPanel {
       }
     };
 
+    add(makeTabbedPane("default", new JTabbedPane()));
+    add(makeTabbedPane("shouldPadTabRun: false", tabbedPane1));
+    add(makeTabbedPane("shouldPadTabRun: true", tabbedPane2));
+
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
     SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
-    add(makeTabbedPane("default", new JTabbedPane()));
-    add(makeTabbedPane("shouldPadTabRun: false", tabbedPane1));
-    add(makeTabbedPane("shouldPadTabRun: true", tabbedPane2));
     setPreferredSize(new Dimension(320, 240));
   }
 
