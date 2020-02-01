@@ -99,7 +99,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
   private void repaintCell(ButtonsRenderer<?> renderer, JButton button, int index) {
     button.getModel().setRollover(true);
     renderer.rolloverIndex = index;
-    if (button != prevButton) {
+    if (!Objects.equals(button, prevButton)) {
       rectRepaint(list, list.getCellBounds(prevIndex, index));
     }
   }
