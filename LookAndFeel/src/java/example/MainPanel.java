@@ -12,6 +12,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+
     add(new JScrollPane(makeTestBox()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -76,13 +80,9 @@ public final class MainPanel extends JPanel {
     // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
     //   ex.printStackTrace();
     // }
-    JMenuBar menuBar = new JMenuBar();
-    menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(menuBar);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

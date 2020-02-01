@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -30,9 +29,8 @@ public final class MainPanel extends JPanel {
   private final JCheckBox dfbaiCheck = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
   private final JCheckBox ddfiCheck = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
   private final JTextArea textArea = new JTextArea();
-  private final JTree tree = new JTree();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     append("MainPanel: init");
@@ -53,13 +51,10 @@ public final class MainPanel extends JPanel {
           updateCheckBox("JMenuItem: actionPerformed: invokeLater");
         }
       };
-      // List<JRadioButtonMenuItem> list = new ArrayList<>();
-      // JMenuBar menuBar = getRootPane().getJMenuBar();
-      // searchAllMenuElements(menuBar, list);
-      // for (JRadioButtonMenuItem mi: list) {
-      //   mi.addActionListener(al);
-      // }
-      stream(getRootPane().getJMenuBar())
+      JMenuBar menuBar = new JMenuBar();
+      menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+      getRootPane().setJMenuBar(menuBar);
+      stream(menuBar)
           .filter(JRadioButtonMenuItem.class::isInstance)
           .map(JRadioButtonMenuItem.class::cast)
           .forEach(mi -> mi.addActionListener(al));
@@ -70,6 +65,7 @@ public final class MainPanel extends JPanel {
     np.add(ddfiCheck);
 
     JPanel p = new JPanel(new GridLayout(2, 1));
+    JTree tree = new JTree();
     p.add(new JScrollPane(tree));
     p.add(new JScrollPane(textArea));
 
@@ -80,7 +76,7 @@ public final class MainPanel extends JPanel {
 
   @Override public void updateUI() {
     super.updateUI();
-    append("JPanel: updateUI");
+    System.out.println("JPanel: updateUI");
     updateCheckBox("JPanel: updateUI: invokeLater");
   }
 
@@ -98,14 +94,14 @@ public final class MainPanel extends JPanel {
 
   public static Stream<MenuElement> stream(MenuElement me) {
     return Stream.of(me.getSubElements())
-      .map(MainPanel::stream)
-      .reduce(Stream.of(me), Stream::concat);
+        .map(MainPanel::stream)
+        .reduce(Stream.of(me), Stream::concat);
   }
 
-  public static Stream<MenuElement> stream2(MenuElement me) {
-    return Stream.of(me.getSubElements())
-      .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
-  }
+  // public static Stream<MenuElement> stream2(MenuElement me) {
+  //   return Stream.of(me.getSubElements())
+  //       .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
+  // }
 
   private void updateCheckBox(String str) {
     EventQueue.invokeLater(() -> {
@@ -122,11 +118,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void append(String str) {
-    if (Objects.nonNull(textArea)) {
-      textArea.append(str + "\n");
-    } else {
-      System.out.println(str);
-    }
+    textArea.append(str + "\n");
   }
 
   public static void main(String[] args) {
@@ -140,12 +132,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setJMenuBar(mb);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
