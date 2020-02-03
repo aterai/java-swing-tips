@@ -13,11 +13,11 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\naaaaaaaaaaafasdfas");
-  private final JCheckBox check = new JCheckBox("LineWrap");
+  private final JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\n*******");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JCheckBox check = new JCheckBox("LineWrap");
     check.addActionListener(e -> {
       textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected());
       textArea.requestFocusInWindow();
