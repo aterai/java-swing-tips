@@ -21,21 +21,21 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final ZoneId zid = ZoneId.systemDefault();
-  private final String[] columnNames = {"LocalDateTime", "String", "Boolean"};
-  private final Object[][] data = {
-    {LocalDateTime.now(zid), "aaa", true}, {LocalDateTime.now(zid), "bbb", false},
-    {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    ZoneId zid = ZoneId.systemDefault();
+
+    String[] columnNames = {"LocalDateTime", "String", "Boolean"};
+    Object[][] data = {
+        {LocalDateTime.now(zid), "aaa", true}, {LocalDateTime.now(zid), "bbb", false},
+        {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     table.getColumnModel().getColumn(0).setCellRenderer(new LocalDateTimeTableCellRenderer());
     table.getColumnModel().getColumn(0).setCellEditor(new LocalDateTimeTableCellEditor());
@@ -167,7 +167,7 @@ class LocalDateTimeCellRenderer extends JLabel implements ListCellRenderer<Local
 
   @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
     if (Objects.nonNull(value)) {
-      setText(dateTimeFormatter.format((TemporalAccessor) value));
+      setText(dateTimeFormatter.format(value));
     }
     setOpaque(true);
     if (isSelected) {
