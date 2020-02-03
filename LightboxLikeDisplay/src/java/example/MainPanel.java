@@ -20,7 +20,7 @@ import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new GridLayout(1, 2));
     EventQueue.invokeLater(() -> {
       getRootPane().setGlassPane(new LightboxGlassPane());

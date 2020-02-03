@@ -12,17 +12,17 @@ public final class MainPanel extends JPanel {
   private final JTextField leftTextField = new JTextField();
   private final JTextField rightTextField = new JTextField();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     leftTextField.setEditable(false);
     rightTextField.setEditable(false);
 
     DefaultComboBoxModel<PairItem> model = new DefaultComboBoxModel<>();
-    model.addElement(new PairItem("asdfasdf", "846876"));
-    model.addElement(new PairItem("bxcvzx", "asdfasd"));
-    model.addElement(new PairItem("qwerqwe", "iop.ioqqadfa"));
-    model.addElement(new PairItem("14234125", "64345424684"));
-    model.addElement(new PairItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
+    model.addElement(new PairItem("aaa", "846876"));
+    model.addElement(new PairItem("bbb bbb", "123456"));
+    model.addElement(new PairItem("cc cc cc", "iop.23456789"));
+    model.addElement(new PairItem("dd dd dd", "64345424684"));
+    model.addElement(new PairItem("eee eee", "98765432210"));
     JComboBox<PairItem> combo = new JComboBox<>(model);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {

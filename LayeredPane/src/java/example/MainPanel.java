@@ -14,7 +14,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final JDesktopPane desktop = new JDesktopPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     // title, resizable, closable, maximizable, iconifiable
