@@ -30,25 +30,6 @@ public final class MainPanel extends JPanel {
     splitPane.setBottomComponent(s2);
     splitPane.setOneTouchExpandable(true);
 
-    Action minAction = new AbstractAction("Min:Action") {
-      @Override public void actionPerformed(ActionEvent e) {
-        splitPane.requestFocusInWindow();
-        Action selectMin = splitPane.getActionMap().get("selectMin");
-        EventQueue.invokeLater(() -> {
-          selectMin.actionPerformed(new ActionEvent(splitPane, e.getID(), "selectMin"));
-        });
-      }
-    };
-    Action maxAction = new AbstractAction("Max:Action") {
-      @Override public void actionPerformed(ActionEvent e) {
-        splitPane.requestFocusInWindow();
-        Action selectMax = splitPane.getActionMap().get("selectMax");
-        EventQueue.invokeLater(() -> {
-          selectMax.actionPerformed(new ActionEvent(splitPane, e.getID(), e.getActionCommand()));
-        });
-      }
-    };
-
     JPanel north = new JPanel(new GridLayout(0, 2, 5, 5));
     north.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -88,36 +69,55 @@ public final class MainPanel extends JPanel {
       }
     }));
 
+    Action minAction = new AbstractAction("selectMin") {
+      @Override public void actionPerformed(ActionEvent e) {
+        splitPane.requestFocusInWindow();
+        EventQueue.invokeLater(() -> {
+          String cmd = e.getActionCommand();
+          splitPane.getActionMap().get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
+        });
+      }
+    };
     north.add(new JButton(minAction));
+
+    Action maxAction = new AbstractAction("selectMax") {
+      @Override public void actionPerformed(ActionEvent e) {
+        splitPane.requestFocusInWindow();
+        EventQueue.invokeLater(() -> {
+          String cmd = e.getActionCommand();
+          splitPane.getActionMap().get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
+        });
+      }
+    };
     north.add(new JButton(maxAction));
 
-    JButton smin = new JButton("Min:keepHidden");
-    JButton smax = new JButton("Max:keepHidden");
+    JButton minButton = new JButton("Min:keepHidden");
+    JButton maxButton = new JButton("Max:keepHidden");
     Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-    initDividerButtonModel(divider, smin, smax);
-    north.add(smin);
-    north.add(smax);
+    initDividerButtonModel(divider, minButton, maxButton);
+    north.add(minButton);
+    north.add(maxButton);
 
     add(north, BorderLayout.NORTH);
     add(splitPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void initDividerButtonModel(Container divider, JButton smin, JButton smax) {
+  private static void initDividerButtonModel(Container divider, JButton minButton, JButton maxButton) {
     ButtonModel selectMinModel = null;
     ButtonModel selectMaxModel = null;
     for (Component c: divider.getComponents()) {
       if (c instanceof JButton) {
         ButtonModel m = ((JButton) c).getModel();
-        if (Objects.isNull(selectMinModel) && Objects.isNull(selectMaxModel)) {
+        if (Objects.isNull(selectMinModel)) {
           selectMinModel = m;
         } else if (Objects.isNull(selectMaxModel)) {
           selectMaxModel = m;
         }
       }
     }
-    smin.setModel(selectMinModel);
-    smax.setModel(selectMaxModel);
+    minButton.setModel(selectMinModel);
+    maxButton.setModel(selectMaxModel);
   }
 
   public static void main(String[] args) {
