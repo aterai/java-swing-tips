@@ -19,9 +19,8 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   public static final Paint TEXTURE = makeTexturePaint();
   private static int openFrameCount;
-  private final JDesktopPane desktop = new JDesktopPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JPanel p1 = new JPanel();
@@ -44,6 +43,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
+    JDesktopPane desktop = new JDesktopPane();
     desktop.add(createFrame(p1));
     desktop.add(createFrame(p2));
     desktop.add(createFrame(p3));
