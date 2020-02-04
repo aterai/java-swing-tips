@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
   private final JLabel relative = new JLabel("relative:");
   private final Timer timer;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
     box.add(absolute);

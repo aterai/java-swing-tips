@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private final JPanel panel = new JPanel();
   private final JCheckBox check = new JCheckBox("color");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     check.addActionListener(e -> {
