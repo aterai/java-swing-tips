@@ -8,12 +8,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JDesktopPane desktop = new JDesktopPane();
-  private final JCheckBox check = new JCheckBox("Palette", true);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     JInternalFrame palette = new JInternalFrame("Palette", true, false, true, true);
     palette.setBounds(0, 0, 120, 120);
     palette.setMinimumSize(new Dimension(50, 50));
@@ -21,12 +17,13 @@ public final class MainPanel extends JPanel {
     palette.add(new JScrollPane(new JTree()));
     palette.setVisible(true);
 
-    desktop.add(palette, JDesktopPane.PALETTE_LAYER);
-
+    JDesktopPane desktop = new JDesktopPane();
+    desktop.add(palette, JLayeredPane.PALETTE_LAYER);
     desktop.add(createFrame(0));
     desktop.add(createFrame(1));
     desktop.add(createFrame(2));
 
+    JCheckBox check = new JCheckBox("Palette", true);
     check.addActionListener(e -> {
       Object c = e.getSource();
       if (c instanceof AbstractButton) {
