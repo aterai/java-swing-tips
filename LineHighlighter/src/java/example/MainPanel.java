@@ -12,14 +12,13 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("LineWrap");
-  private final HighlightCursorTextArea textArea = new HighlightCursorTextArea();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JTextArea textArea = new HighlightCursorTextArea();
     textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    textArea.setText("Highlight Cursor Test\n\naaaaaaaaaaaasdfasdfasdfasdfsadffasdfas");
+    textArea.setText("Highlight Cursor Test\n\n**************************************");
 
+    JCheckBox check = new JCheckBox("LineWrap");
     check.addActionListener(e -> {
       textArea.setLineWrap(check.isSelected());
       textArea.requestFocusInWindow();
