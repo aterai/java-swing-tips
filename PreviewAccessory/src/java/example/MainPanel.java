@@ -15,7 +15,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private transient JFileChooser fileChooser;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new GridBagLayout());
     JButton button = new JButton("Open JFileChooser");
     button.addActionListener(e -> fileChooser.showOpenDialog(getRootPane()));

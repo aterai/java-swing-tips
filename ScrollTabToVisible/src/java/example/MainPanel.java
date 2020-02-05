@@ -11,7 +11,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final JCheckBox check = new JCheckBox("setSelectedIndex");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JTabbedPane jtp = new JTabbedPane();
