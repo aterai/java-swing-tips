@@ -8,24 +8,25 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-  private final JSpinner spinner0 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-  private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    AbstractSpinnerModel model = new SpinnerNumberModel(10, 0, 1000, 1);
+
+    JSpinner spinner1 = new JSpinner(model);
+    spinner1.setEnabled(false);
 
     // UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
-    JTextField field = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
+    JSpinner spinner2 = new JSpinner(model);
+    JTextField field = ((JSpinner.NumberEditor) spinner2.getEditor()).getTextField();
     field.setEditable(false);
     field.setBackground(UIManager.getColor("FormattedTextField.background"));
 
-    spinner1.setEnabled(false);
-
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Default", spinner0));
+    box.add(makeTitledPanel("Default", new JSpinner(model)));
+    box.add(Box.createVerticalStrut(10));
     box.add(makeTitledPanel("spinner.setEnabled(false)", spinner1));
-    box.add(makeTitledPanel("field.setEnabled(false)", spinner));
+    box.add(Box.createVerticalStrut(10));
+    box.add(makeTitledPanel("editor.setEditable(false)", spinner2));
 
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
