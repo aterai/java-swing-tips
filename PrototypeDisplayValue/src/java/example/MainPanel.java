@@ -10,24 +10,38 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String TITLE = "MMMMMMMMMMMMMMMMMMMM";
-  private final ComboBoxModel<String> model1 = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
-  private final JComboBox<String> combo1 = new JComboBox<>(model1);
-  private final JComboBox<String> combo2 = new JComboBox<>(model1);
-  private final JComboBox<String> combo3 = new JComboBox<>(model1);
 
-  private final ComboBoxModel<WebSite> model2 = new DefaultComboBoxModel<>(new WebSite[] {
-      new WebSite("a", new ColorIcon(Color.RED)),
-      new WebSite("b", new ColorIcon(Color.GREEN)),
-      new WebSite("c", new ColorIcon(Color.BLUE))});
-  private final JComboBox<WebSite> combo4 = new JComboBox<>(model2);
-  private final JComboBox<WebSite> combo5 = new JComboBox<>(model2);
-  private final JComboBox<WebSite> combo6 = new JComboBox<>();
-
-  public MainPanel() {
+  private MainPanel() {
     super();
+    ComboBoxModel<String> model1 = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
+    JComboBox<String> combo1 = new JComboBox<>(model1);
+    combo1.setEditable(false);
+    // ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
+
+    JComboBox<String> combo2 = new JComboBox<>(model1);
+    combo2.setPrototypeDisplayValue(TITLE);
+
+    JComboBox<String> combo3 = new JComboBox<>(model1);
+    combo3.setPrototypeDisplayValue(TITLE);
+    combo3.setEditable(true);
+
+    ComboBoxModel<WebSite> model2 = new DefaultComboBoxModel<>(new WebSite[] {
+        new WebSite("a", new ColorIcon(Color.RED)),
+        new WebSite("b", new ColorIcon(Color.GREEN)),
+        new WebSite("c", new ColorIcon(Color.BLUE))});
+    JComboBox<WebSite> combo4 = new JComboBox<>(model2);
+    combo4.setRenderer(new SiteListCellRenderer<>());
+
+    JComboBox<WebSite> combo5 = new JComboBox<>(model2);
+    combo5.setRenderer(new SiteListCellRenderer<>());
+    combo5.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+
+    JComboBox<WebSite> combo6 = new JComboBox<>();
+    combo6.setRenderer(new SiteListCellRenderer<>());
+    combo6.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+
     SpringLayout layout = new SpringLayout();
     setLayout(layout);
-
     layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, this);
     layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
     layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
@@ -41,19 +55,6 @@ public final class MainPanel extends JPanel {
     layout.putConstraint(SpringLayout.NORTH, combo4, 10, SpringLayout.SOUTH, combo3);
     layout.putConstraint(SpringLayout.NORTH, combo5, 10, SpringLayout.SOUTH, combo4);
     layout.putConstraint(SpringLayout.NORTH, combo6, 10, SpringLayout.SOUTH, combo5);
-
-    // combo1.setEditable(true);
-    // ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
-
-    combo2.setPrototypeDisplayValue(TITLE);
-    combo3.setPrototypeDisplayValue(TITLE);
-    combo3.setEditable(true);
-
-    combo4.setRenderer(new SiteListCellRenderer<>());
-    combo5.setRenderer(new SiteListCellRenderer<>());
-    combo5.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
-    combo6.setRenderer(new SiteListCellRenderer<>());
-    combo6.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
 
     add(combo1);
     add(combo2);

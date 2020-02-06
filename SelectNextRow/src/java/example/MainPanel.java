@@ -12,20 +12,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
 
     InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
@@ -38,9 +37,9 @@ public final class MainPanel extends JPanel {
     });
     im.put(tab, im.get(enter));
 
-    KeyStroke stab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    KeyStroke senter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
-    im.put(stab, im.get(senter));
+    KeyStroke shiftTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    KeyStroke shiftEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
+    im.put(shiftTab, im.get(shiftEnter));
 
     add(checkBox, BorderLayout.NORTH);
     add(new JScrollPane(table));
