@@ -29,21 +29,18 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
-  private static final String PATTERN = "[Ff]rame";
-  private static final Color SELECTION_COLOR = new Color(0xC8_64_64_FF, true);
-  private static final Color HIGHLIGHT_COLOR = new Color(0x64_FF_FF_32, true);
-  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(HIGHLIGHT_COLOR);
-  private final JEditorPane area = new JEditorPane();
+  private static final Color SELECTION = new Color(0xC8_64_64_FF, true);
+  private static final Color HIGHLIGHT = new Color(0x64_FF_FF_32, true);
+  private final JEditorPane editorPane = new JEditorPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox check = new JCheckBox("setSelectionColor(#C86464FF)", true);
     check.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
       // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor-java.awt.Color-
       // DOUBT?: Setting the color to null is the same as setting Color.white.
-      area.setSelectionColor(c.isSelected() ? SELECTION_COLOR : null);
+      editorPane.setSelectionColor(c.isSelected() ? SELECTION : null);
     });
 
     // https://ateraimemo.com/Swing/StyleSheet.html
@@ -52,15 +49,15 @@ public final class MainPanel extends JPanel {
     // INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
-    area.setEditorKit(htmlEditorKit);
-    area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-    area.setOpaque(false);
-    area.setForeground(new Color(0xC8_C8_C8));
-    area.setSelectedTextColor(Color.WHITE);
-    area.setBackground(new Color(0x0, true)); // Nimbus
-    area.setSelectionColor(SELECTION_COLOR);
-    area.setText("<html><pre>" + String.join("<br />",
+    editorPane.setEditorKit(htmlEditorKit);
+    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editorPane.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+    editorPane.setOpaque(false);
+    editorPane.setForeground(new Color(0xC8_C8_C8));
+    editorPane.setSelectedTextColor(Color.WHITE);
+    editorPane.setBackground(new Color(0x0, true)); // Nimbus
+    editorPane.setSelectionColor(SELECTION);
+    editorPane.setText("<html><pre>" + String.join("<br />",
         "private static void createAndShowGui() {",
         "  <span class='highlight'>JFrame</span> frame = new JFrame();",
         "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
@@ -74,19 +71,19 @@ public final class MainPanel extends JPanel {
     // DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
     // dh.setDrawsLayeredHighlights(false);
 
+    HighlightPainter highlightPainter = new DefaultHighlightPainter(HIGHLIGHT);
     JToggleButton button = new JToggleButton("highlight");
     button.addActionListener(e -> {
-      JToggleButton t = (JToggleButton) e.getSource();
-      if (t.isSelected()) {
-        setHighlight(area, PATTERN);
+      if (((JToggleButton) e.getSource()).isSelected()) {
+        setHighlight(editorPane, "[Ff]rame", highlightPainter);
       } else {
-        area.getHighlighter().removeAllHighlights();
+        editorPane.getHighlighter().removeAllHighlights();
       }
     });
 
     URL url = getClass().getResource("tokeidai.jpg");
     BufferedImage bi = getFilteredImage(url);
-    JScrollPane scroll = new JScrollPane(area);
+    JScrollPane scroll = new JScrollPane(editorPane);
     scroll.getViewport().setOpaque(false);
     scroll.setViewportBorder(new CentredBackgroundBorder(bi));
     scroll.getVerticalScrollBar().setUnitIncrement(25);
@@ -101,7 +98,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private BufferedImage getFilteredImage(URL url) {
+  private static BufferedImage getFilteredImage(URL url) {
     BufferedImage image = Optional.ofNullable(url)
         .map(u -> {
           try {
@@ -133,7 +130,7 @@ public final class MainPanel extends JPanel {
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html
-  public void setHighlight(JTextComponent jtc, String pattern) {
+  public static void setHighlight(JTextComponent jtc, String pattern, HighlightPainter painter) {
     Highlighter highlighter = jtc.getHighlighter();
     highlighter.removeAllHighlights();
     Document doc = jtc.getDocument();
@@ -144,7 +141,7 @@ public final class MainPanel extends JPanel {
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
         int end = matcher.end();
-        highlighter.addHighlight(start, end, highlightPainter);
+        highlighter.addHighlight(start, end, painter);
         pos = end;
       }
     } catch (BadLocationException | PatternSyntaxException ex) {
