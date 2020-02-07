@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
   private final JTextPane jtp = new JTextPane();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     jtp.setEditable(false);
     StyledDocument doc = jtp.getStyledDocument();
@@ -64,7 +64,10 @@ public final class MainPanel extends JPanel {
             } else {
               append(new Message(nf.getName() + "の生成に失敗しました。", MessageType.ERROR));
             }
-          } catch (InterruptedException | ExecutionException | IOException ex) {
+          } catch (InterruptedException ex) {
+            append(new Message(ex.getMessage(), MessageType.ERROR));
+            Thread.currentThread().interrupt();
+          } catch (ExecutionException | IOException ex) {
             append(new Message(ex.getMessage(), MessageType.ERROR));
           }
           append(new Message("----------------------------------", MessageType.REGULAR));
@@ -99,20 +102,20 @@ public final class MainPanel extends JPanel {
 
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 
-    // Box nbox = Box.createHorizontalBox();
-    JPanel nbox = new JPanel(new GridLayout(3, 2, 5, 5));
-    nbox.add(new JLabel("削除しないバックアップの数:", SwingConstants.RIGHT));
-    nbox.add(spinner1);
-    nbox.add(new JLabel("順に削除するバックアップの数:", SwingConstants.RIGHT));
-    nbox.add(spinner2);
-    nbox.add(new JLabel("合計バックアップ数:", SwingConstants.RIGHT));
-    nbox.add(label);
+    // Box northBox = Box.createHorizontalBox();
+    JPanel northBox = new JPanel(new GridLayout(3, 2, 5, 5));
+    northBox.add(new JLabel("削除しないバックアップの数:", SwingConstants.RIGHT));
+    northBox.add(spinner1);
+    northBox.add(new JLabel("順に削除するバックアップの数:", SwingConstants.RIGHT));
+    northBox.add(spinner2);
+    northBox.add(new JLabel("合計バックアップ数:", SwingConstants.RIGHT));
+    northBox.add(label);
 
     JScrollPane scroll = new JScrollPane(jtp);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
 
-    add(nbox, BorderLayout.NORTH);
+    add(northBox, BorderLayout.NORTH);
     add(scroll);
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
