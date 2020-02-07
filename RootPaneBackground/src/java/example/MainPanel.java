@@ -51,8 +51,7 @@ public final class MainPanel extends JPanel {
     //   g2.dispose();
     // }
     JDesktopPane desktop = new JDesktopPane() {
-      @Override
-      public void updateUI() {
+      @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
       }

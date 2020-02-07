@@ -22,8 +22,7 @@ public final class MainPanel extends JPanel {
       {"CCC", 92, true}, {"DDD", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override
-      public Class<?> getColumnClass(int column) {
+      @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };

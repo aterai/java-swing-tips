@@ -27,13 +27,11 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 0));
 
     TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override
-      public Class<?> getColumnClass(int column) {
+      @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
 
-      @Override
-      public boolean isCellEditable(int row, int column) {
+      @Override public boolean isCellEditable(int row, int column) {
         return false;
       }
     };

@@ -31,8 +31,7 @@ public final class MainPanel extends JPanel {
 
     // https://community.oracle.com/thread/1360123
     JSlider slider2 = new JSlider(0, 100, 50) {
-      @Override
-      public void updateUI() {
+      @Override public void updateUI() {
         super.updateUI();
         JSlider slider = this;
         AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
@@ -61,8 +60,7 @@ public final class MainPanel extends JPanel {
     // getModel().removeChangeListener(changeListener);
 
     JSlider slider3 = new JSlider(0, 100, 50) {
-      @Override
-      public void updateUI() {
+      @Override public void updateUI() {
         super.updateUI();
         setFocusable(false); // uninstallKeyboardActions
         for (MouseListener l : getMouseListeners()) {
