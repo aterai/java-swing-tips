@@ -15,7 +15,7 @@ import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
   private final BindingMapModel model = new BindingMapModel();
-  private final JComponent[] list = {
+  private final JComponent[] components = {
     new JComboBox<>(),
     new JDesktopPane(),
     new JFormattedTextField(),
@@ -46,19 +46,18 @@ public final class MainPanel extends JPanel {
     new JTextArea(),
     new JTextField()
   };
-  private final JComboBox<JComponent> componentChoices = new JComboBox<>(list);
+  private final JComboBox<JComponent> componentChoices = new JComboBox<>(components);
   private final List<Integer> focusTypes = Arrays.asList(
       JComponent.WHEN_FOCUSED,
       JComponent.WHEN_IN_FOCUSED_WINDOW,
       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);
 
-      @Override
-      public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {
           c.setForeground(getSelectionForeground());
@@ -177,11 +176,7 @@ class BindingMapModel extends DefaultTableModel {
   };
 
   public void addBinding(Binding t) {
-    Integer ft = t.getFocusType();
-    String s = (ft == JComponent.WHEN_FOCUSED) ? "WHEN_FOCUSED"
-        : (ft == JComponent.WHEN_IN_FOCUSED_WINDOW) ? "WHEN_IN_FOCUSED_WINDOW"
-        : "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
-    Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
+    Object[] obj = {t.getFocusTypeName(), t.getActionName(), t.getKeyDescription()};
     super.addRow(obj);
   }
 
@@ -235,5 +230,13 @@ class Binding {
 
   public String getKeyDescription() {
     return keyDescription;
+  }
+
+  public String getFocusTypeName() {
+    switch (getFocusType()) {
+      case JComponent.WHEN_FOCUSED: return "WHEN_FOCUSED";
+      case JComponent.WHEN_IN_FOCUSED_WINDOW: return "WHEN_IN_FOCUSED_WINDOW";
+      default: return "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
+    }
   }
 }
