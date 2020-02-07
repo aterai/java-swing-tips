@@ -18,45 +18,43 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    private transient HighlightListener highlighter;
-    @Override public void updateUI() {
-      addMouseListener(highlighter);
-      addMouseMotionListener(highlighter);
-      setDefaultRenderer(Object.class, null);
-      setDefaultRenderer(Number.class, null);
-      setDefaultRenderer(Boolean.class, null);
-      super.updateUI();
-      highlighter = new HighlightListener();
-      addMouseListener(highlighter);
-      addMouseMotionListener(highlighter);
-      setDefaultRenderer(Object.class, new RolloverDefaultTableCellRenderer(highlighter));
-      setDefaultRenderer(Number.class, new RolloverNumberRenderer(highlighter));
-      setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
-    }
-
-    @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-      Component c = super.prepareEditor(editor, row, column);
-      if (c instanceof JCheckBox) {
-        c.setBackground(getSelectionBackground());
-      }
-      return c;
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      private transient HighlightListener highlighter;
+      @Override public void updateUI() {
+        addMouseListener(highlighter);
+        addMouseMotionListener(highlighter);
+        setDefaultRenderer(Object.class, null);
+        setDefaultRenderer(Number.class, null);
+        setDefaultRenderer(Boolean.class, null);
+        super.updateUI();
+        highlighter = new HighlightListener();
+        addMouseListener(highlighter);
+        addMouseMotionListener(highlighter);
+        setDefaultRenderer(Object.class, new RolloverDefaultTableCellRenderer(highlighter));
+        setDefaultRenderer(Number.class, new RolloverNumberRenderer(highlighter));
+        setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
+      }
 
+      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+        Component c = super.prepareEditor(editor, row, column);
+        if (c instanceof JCheckBox) {
+          c.setBackground(getSelectionBackground());
+        }
+        return c;
+      }
+    };
     table.setAutoCreateRowSorter(true);
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -89,11 +87,11 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightListener extends MouseAdapter {
-  private int vrow = -1; // viewRowIndex
-  private int vcol = -1; // viewColumnIndex
+  private int viewRowIndex = -1;
+  private int viewColumnIndex = -1;
 
-  public boolean isHighlightableCell(int row, int column) {
-    return this.vrow == row && this.vcol == column;
+  public boolean isHighlightedCell(int row, int column) {
+    return this.viewRowIndex == row && this.viewColumnIndex == column;
   }
 
   private static Optional<JTable> getTable(MouseEvent e) {
@@ -107,22 +105,22 @@ class HighlightListener extends MouseAdapter {
   @Override public void mouseMoved(MouseEvent e) {
     getTable(e).ifPresent(table -> {
       Point pt = e.getPoint();
-      final int prevRow = vrow;
-      final int prevCol = vcol;
-      vrow = table.rowAtPoint(pt);
-      vcol = table.columnAtPoint(pt);
-      if (vrow < 0 || vcol < 0) {
-        vrow = -1;
-        vcol = -1;
+      final int prevRow = viewRowIndex;
+      final int prevCol = viewColumnIndex;
+      viewRowIndex = table.rowAtPoint(pt);
+      viewColumnIndex = table.columnAtPoint(pt);
+      if (viewRowIndex < 0 || viewColumnIndex < 0) {
+        viewRowIndex = -1;
+        viewColumnIndex = -1;
       }
       // >>>> HyperlinkCellRenderer.java
       // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-      if (vrow == prevRow && vcol == prevCol) {
+      if (viewRowIndex == prevRow && viewColumnIndex == prevCol) {
         return;
       }
       Rectangle repaintRect;
-      if (vrow >= 0 && vcol >= 0) {
-        Rectangle r = table.getCellRect(vrow, vcol, false);
+      if (viewRowIndex >= 0) {
+        Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
         if (prevRow >= 0 && prevCol >= 0) {
           repaintRect = r.union(table.getCellRect(prevRow, prevCol, false));
         } else {
@@ -139,11 +137,11 @@ class HighlightListener extends MouseAdapter {
 
   @Override public void mouseExited(MouseEvent e) {
     getTable(e).ifPresent(table -> {
-      if (vrow >= 0 && vcol >= 0) {
-        table.repaint(table.getCellRect(vrow, vcol, false));
+      if (viewRowIndex >= 0 && viewColumnIndex >= 0) {
+        table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       }
-      vrow = -1;
-      vcol = -1;
+      viewRowIndex = -1;
+      viewColumnIndex = -1;
     });
   }
 }
@@ -160,7 +158,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     String str = Objects.toString(value, "");
-    if (highlighter.isHighlightableCell(row, column)) {
+    if (highlighter.isHighlightedCell(row, column)) {
       setText("<html><u>" + str);
       setForeground(isSelected ? table.getSelectionForeground() : HIGHLIGHT);
       setBackground(isSelected ? table.getSelectionBackground().darker() : table.getBackground());
@@ -194,7 +192,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    getModel().setRollover(highlighter.isHighlightableCell(row, column));
+    getModel().setRollover(highlighter.isHighlightedCell(row, column));
 
     if (isSelected) {
       setForeground(table.getSelectionForeground());
