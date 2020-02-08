@@ -10,43 +10,52 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final List<SpinnerNumberModel> list1 = Arrays.asList(
-      new SpinnerNumberModel(Byte.valueOf((byte) Byte.MAX_VALUE),
-                             Byte.valueOf((byte) 0),
-                             Byte.valueOf((byte) Byte.MAX_VALUE),
-                             Byte.valueOf((byte) 1)),
-      new SpinnerNumberModel(Short.valueOf((short) Short.MAX_VALUE),
-                             Short.valueOf((short) 0),
-                             Short.valueOf((short) Short.MAX_VALUE),
-                             Short.valueOf((short) 1)),
-      new SpinnerNumberModel(Integer.MAX_VALUE,
-                             0,
-                             Integer.MAX_VALUE,
-                             1),
-      new SpinnerNumberModel(Long.valueOf(Long.MAX_VALUE),
-                             Long.valueOf(0),
-                             Long.valueOf(Long.MAX_VALUE),
-                             Long.valueOf(1)));
-  private final List<SpinnerNumberModel> list2 = Arrays.asList(
-      new SpinnerNumberModel(Long.valueOf(Byte.MAX_VALUE),
-                             Long.valueOf(0),
-                             Long.valueOf(Byte.MAX_VALUE),
-                             Long.valueOf(1)),
-      new SpinnerNumberModel(Long.valueOf(Short.MAX_VALUE),
-                             Long.valueOf(0),
-                             Long.valueOf(Short.MAX_VALUE),
-                             Long.valueOf(1)),
-      new SpinnerNumberModel(Long.valueOf(Integer.MAX_VALUE),
-                             Long.valueOf(0),
-                             Long.valueOf(Integer.MAX_VALUE),
-                             Long.valueOf(1)),
-      new SpinnerNumberModel(Long.valueOf(Long.MAX_VALUE),
-                             Long.valueOf(0),
-                             Long.valueOf(Long.MAX_VALUE),
-                             Long.valueOf(1)));
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    List<SpinnerNumberModel> list1 = Arrays.asList(
+        new SpinnerNumberModel(
+            Byte.valueOf(Byte.MAX_VALUE),
+            Byte.valueOf((byte) 0),
+            Byte.valueOf(Byte.MAX_VALUE),
+            Byte.valueOf((byte) 1)),
+        new SpinnerNumberModel(
+            Short.valueOf(Short.MAX_VALUE),
+            Short.valueOf((short) 0),
+            Short.valueOf(Short.MAX_VALUE),
+            Short.valueOf((short) 1)),
+        new SpinnerNumberModel(
+            Integer.MAX_VALUE,
+            0,
+            Integer.MAX_VALUE,
+            1),
+        new SpinnerNumberModel(
+            Long.valueOf(Long.MAX_VALUE),
+            Long.valueOf(0),
+            Long.valueOf(Long.MAX_VALUE),
+            Long.valueOf(1)));
+
+    List<SpinnerNumberModel> list2 = Arrays.asList(
+        new SpinnerNumberModel(
+            Long.valueOf(Byte.MAX_VALUE),
+            Long.valueOf(0),
+            Long.valueOf(Byte.MAX_VALUE),
+            Long.valueOf(1)),
+        new SpinnerNumberModel(
+            Long.valueOf(Short.MAX_VALUE),
+            Long.valueOf(0),
+            Long.valueOf(Short.MAX_VALUE),
+            Long.valueOf(1)),
+        new SpinnerNumberModel(
+            Long.valueOf(Integer.MAX_VALUE),
+            Long.valueOf(0),
+            Long.valueOf(Integer.MAX_VALUE),
+            Long.valueOf(1)),
+        new SpinnerNumberModel(
+            Long.valueOf(Long.MAX_VALUE),
+            Long.valueOf(0),
+            Long.valueOf(Long.MAX_VALUE),
+            Long.valueOf(1)));
+
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
     box.add(makeTitledPanel("Long.valueOf", makeJSpinnerListPanel(list2)));
