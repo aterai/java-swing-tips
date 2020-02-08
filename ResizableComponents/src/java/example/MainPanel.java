@@ -5,23 +5,15 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
-public class MainPanel extends JPanel {
-  protected final JLayeredPane layeredPane = new JLayeredPane() {
-    @Override public boolean isOptimizedDrawingEnabled() {
-      return false;
-    }
-  };
-  protected final JToolBar toolbar = new JToolBar("Resizable Components");
-  protected final Point pt = new Point();
-
-  public MainPanel() {
+public final class MainPanel extends JPanel {
+  private MainPanel() {
     super(new BorderLayout());
+    Point pt = new Point();
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
         pt.setLocation(x, y);
@@ -31,51 +23,60 @@ public class MainPanel extends JPanel {
     popup.add("table").addActionListener(e -> createTable());
     popup.add("tree").addActionListener(e -> createTree());
 
+    JLayeredPane layeredPane = new JLayeredPane() {
+      @Override public boolean isOptimizedDrawingEnabled() {
+        return false;
+      }
+    };
     layeredPane.setComponentPopupMenu(popup);
     // ??? for 1.5.0
     // layeredPane.addMouseListener(new MouseAdapter() {
     //   /* Dummy listener */
     // });
     add(layeredPane);
-    toolbar.add(new AbstractAction("add table") {
-      @Override public void actionPerformed(ActionEvent e) {
-        pt.setLocation(pt.x + 20, pt.y + 20);
-        createTable();
-      }
+
+    JButton addTable = new JButton("add table");
+    addTable.addActionListener(e -> {
+      pt.setLocation(pt.x + 20, pt.y + 20);
+      Component c = createTable();
+      Dimension d = c.getPreferredSize();
+      c.setBounds(pt.x, pt.y, d.width, d.height);
+      layeredPane.add(c);
+      layeredPane.moveToFront(c);
     });
+
+    JButton addTree = new JButton("add tree");
+    addTree.addActionListener(e -> {
+      pt.setLocation(pt.x + 20, pt.y + 20);
+      Component c = createTree();
+      Dimension d = c.getPreferredSize();
+      c.setBounds(pt.x, pt.y, d.width, d.height);
+      layeredPane.add(c);
+      layeredPane.moveToFront(c);
+    });
+
+    JToolBar toolbar = new JToolBar("Resizable Components");
+    toolbar.add(addTable);
     toolbar.addSeparator();
-    toolbar.add(new AbstractAction("add tree") {
-      @Override public void actionPerformed(ActionEvent e) {
-        pt.setLocation(pt.x + 20, pt.y + 20);
-        createTree();
-      }
-    });
+    toolbar.add(addTree);
     add(toolbar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void createTree() {
+  private static Component createTree() {
     JTree tree = new JTree();
     tree.setVisibleRowCount(8);
-    Component c = new JScrollPane(tree);
-    Dimension r = c.getPreferredSize();
-    JResizer resizer = new JResizer(new BorderLayout());
-    resizer.add(c);
-    resizer.setBounds(pt.x, pt.y, r.width, r.height);
-    layeredPane.add(resizer);
-    layeredPane.moveToFront(resizer);
+    Container c = new JResizer(new BorderLayout());
+    c.add(new JScrollPane(tree));
+    return c;
   }
 
-  protected final void createTable() {
+  private static Component createTable() {
     JTable table = new JTable(12, 3);
     table.setPreferredScrollableViewportSize(new Dimension(160, 160));
-    Component c = new JScrollPane(table);
-    Dimension r = c.getPreferredSize();
-    JResizer resizer = new JResizer(new BorderLayout());
-    resizer.add(c);
-    resizer.setBounds(pt.x, pt.y, r.width, r.height);
-    layeredPane.add(resizer);
-    layeredPane.moveToFront(resizer);
+    Container c = new JResizer(new BorderLayout());
+    c.add(new JScrollPane(table));
+    return c;
   }
 
   public static void main(String[] args) {
