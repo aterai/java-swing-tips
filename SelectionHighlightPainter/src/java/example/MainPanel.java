@@ -14,13 +14,9 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private final JTextField field0 = new JTextField("aaaaaaaaaa");
-  private final JTextField field1 = new JTextField("bbbbbbbbbbbb");
-  private final JTextField field2 = new JTextField("123465789735");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
+    JTextField field1 = new JTextField("0987654321");
     field1.setSelectedTextColor(Color.RED);
     field1.setSelectionColor(Color.GREEN);
 
@@ -40,12 +36,13 @@ public final class MainPanel extends JPanel {
         return selectionPainter;
       }
     };
+    JTextField field2 = new JTextField("123465789735");
     caret.setBlinkRate(field2.getCaret().getBlinkRate());
     field2.setSelectedTextColor(Color.RED);
     field2.setCaret(caret);
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Default", field0));
+    box.add(makeTitledPanel("Default", new JTextField("12345")));
     box.add(Box.createVerticalStrut(10));
     box.add(makeTitledPanel("JTextComponent#setSelectionColor(...)", field1));
     box.add(Box.createVerticalStrut(10));
