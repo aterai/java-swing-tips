@@ -13,26 +13,25 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  private final JTable table = new JTable(new DefaultTableModel(10, 10)) {
-    private transient HighlightListener highlighter;
-    @Override public void updateUI() {
-      removeMouseListener(highlighter);
-      removeMouseMotionListener(highlighter);
-      super.updateUI();
-      // setAutoCreateRowSorter(true);
-      setRowSelectionAllowed(false);
-
-      highlighter = new HighlightListener();
-      addMouseListener(highlighter);
-      addMouseMotionListener(highlighter);
-
-      setDefaultRenderer(Object.class, new HighlightRenderer(highlighter));
-      setDefaultRenderer(Number.class, new HighlightRenderer(highlighter));
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(new DefaultTableModel(10, 10)) {
+      private transient HighlightListener highlighter;
+      @Override public void updateUI() {
+        removeMouseListener(highlighter);
+        removeMouseMotionListener(highlighter);
+        super.updateUI();
+        // setAutoCreateRowSorter(true);
+        setRowSelectionAllowed(false);
+
+        highlighter = new HighlightListener();
+        addMouseListener(highlighter);
+        addMouseMotionListener(highlighter);
+
+        setDefaultRenderer(Object.class, new HighlightRenderer(highlighter));
+        setDefaultRenderer(Number.class, new HighlightRenderer(highlighter));
+      }
+    };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -60,12 +59,12 @@ public final class MainPanel extends JPanel {
 class HighlightListener extends MouseAdapter {
   private static final Color HIGHLIGHT1 = new Color(0xC8_C8_FF);
   private static final Color HIGHLIGHT2 = new Color(0xF0_F0_FF);
-  private int vrow = -1; // viewRowIndex
-  private int vcol = -1; // viewColumnIndex
+  private int viewRowIndex = -1;
+  private int viewColumnIndex = -1;
 
-  public Optional<? extends Color> getCellHighlightColor(int row, int column) {
-    if (this.vrow == row || this.vcol == column) {
-      if (this.vrow == row && this.vcol == column) {
+  public Optional<Color> getCellHighlightColor(int row, int column) {
+    if (this.viewRowIndex == row || this.viewColumnIndex == column) {
+      if (this.viewRowIndex == row && this.viewColumnIndex == column) {
         return Optional.of(HIGHLIGHT1);
       } else {
         return Optional.of(HIGHLIGHT2);
@@ -74,32 +73,32 @@ class HighlightListener extends MouseAdapter {
     return Optional.empty();
   }
 
-  private void setHighlighTableCell(MouseEvent e) {
+  private void setHighlightTableCell(MouseEvent e) {
     Point pt = e.getPoint();
     Component c = e.getComponent();
     if (c instanceof JTable) {
       JTable table = (JTable) c;
-      vrow = table.rowAtPoint(pt);
-      vcol = table.columnAtPoint(pt);
-      if (vrow < 0 || vcol < 0) {
-        vrow = -1;
-        vcol = -1;
+      viewRowIndex = table.rowAtPoint(pt);
+      viewColumnIndex = table.columnAtPoint(pt);
+      if (viewRowIndex < 0 || viewColumnIndex < 0) {
+        viewRowIndex = -1;
+        viewColumnIndex = -1;
       }
       table.repaint();
     }
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    setHighlighTableCell(e);
+    setHighlightTableCell(e);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    setHighlighTableCell(e);
+    setHighlightTableCell(e);
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    vrow = -1;
-    vcol = -1;
+    viewRowIndex = -1;
+    viewColumnIndex = -1;
     e.getComponent().repaint();
   }
 }
@@ -120,24 +119,3 @@ class HighlightRenderer extends DefaultTableCellRenderer {
     return this;
   }
 }
-
-// class CellHighlightTable extends JTable {
-//   private final HighlightListener highlighter;
-//   protected CellHighlightTable(TableModel model) {
-//     super(model);
-//     highlighter = new HighlightListener(this);
-//     addMouseListener(highlighter);
-//     addMouseMotionListener(highlighter);
-//   }
-//   @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-//     Component c = super.prepareRenderer(renderer, row, column);
-//     if (highlighter.isHighlightableCell(row, column)) {
-//       c.setBackground(Color.RED);
-//     } else if (isRowSelected(row)) {
-//       c.setBackground(getSelectionBackground());
-//     } else {
-//       c.setBackground(Color.WHITE);
-//     }
-//     return c;
-//   }
-// }
