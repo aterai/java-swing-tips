@@ -135,11 +135,11 @@ class UrlRenderer1 extends UrlRenderer {
 }
 
 class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-  private static Rectangle lrect = new Rectangle();
-  private static Rectangle irect = new Rectangle();
-  private static Rectangle trect = new Rectangle();
-  private int vrow = -1; // viewRowIndex
-  private int vcol = -1; // viewColumnIndex
+  private static final Rectangle CELL_RECT = new Rectangle();
+  private static final Rectangle ICON_RECT = new Rectangle();
+  private static final Rectangle TEXT_RECT = new Rectangle();
+  private int viewRowIndex = -1;
+  private int viewColumnIndex = -1;
   private boolean isRollover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -147,12 +147,12 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
     TableColumnModel cm = table.getColumnModel();
     Insets i = this.getInsets();
-    lrect.x = i.left;
-    lrect.y = i.top;
-    lrect.width = cm.getColumn(column).getWidth() - cm.getColumnMargin() - i.right - lrect.x;
-    lrect.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - lrect.y;
-    irect.setBounds(0, 0, 0, 0); // .x = irect.y = irect.width = irect.height = 0;
-    trect.setBounds(0, 0, 0, 0); // .x = trect.y = trect.width = trect.height = 0;
+    CELL_RECT.x = i.left;
+    CELL_RECT.y = i.top;
+    CELL_RECT.width = cm.getColumn(column).getWidth() - cm.getColumnMargin() - i.right - CELL_RECT.x;
+    CELL_RECT.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - CELL_RECT.y;
+    ICON_RECT.setBounds(0, 0, 0, 0);
+    TEXT_RECT.setBounds(0, 0, 0, 0);
 
     String str = SwingUtilities.layoutCompoundLabel(
         this,
@@ -163,9 +163,9 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         this.getHorizontalAlignment(),
         this.getVerticalTextPosition(),
         this.getHorizontalTextPosition(),
-        lrect,
-        irect, // icon
-        trect, // text
+        CELL_RECT,
+        ICON_RECT, // icon
+        TEXT_RECT, // text
         this.getIconTextGap());
 
     if (isRolloverCell(table, row, column)) {
@@ -179,7 +179,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   }
 
   protected boolean isRolloverCell(JTable table, int row, int column) {
-    return !table.isEditing() && this.vrow == row && this.vcol == column && this.isRollover;
+    return !table.isEditing() && this.viewRowIndex == row && this.viewColumnIndex == column && this.isRollover;
   }
   // @see SwingUtilities2.pointOutsidePrefSize(...)
   // private static boolean pointInsidePrefSize(JTable table, Point p) {
@@ -203,13 +203,13 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public void mouseMoved(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
-    final int prevRow = vrow;
-    final int prevCol = vcol;
+    final int prevRow = viewRowIndex;
+    final int prevCol = viewColumnIndex;
     final boolean prevRollover = isRollover;
-    vrow = table.rowAtPoint(pt);
-    vcol = table.columnAtPoint(pt);
-    isRollover = isUrlColumn(table, vcol); // && pointInsidePrefSize(table, pt);
-    if (vrow == prevRow && vcol == prevCol && isRollover == prevRollover) {
+    viewRowIndex = table.rowAtPoint(pt);
+    viewColumnIndex = table.columnAtPoint(pt);
+    isRollover = isUrlColumn(table, viewColumnIndex); // && pointInsidePrefSize(table, pt);
+    if (viewRowIndex == prevRow && viewColumnIndex == prevCol && isRollover == prevRollover) {
       return;
     }
     if (!isRollover && !prevRollover) {
@@ -219,7 +219,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
     Rectangle repaintRect;
     if (isRollover) {
-      Rectangle r = table.getCellRect(vrow, vcol, false);
+      Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
       repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
     } else { // if (prevRollover) {
       repaintRect = table.getCellRect(prevRow, prevCol, false);
@@ -231,10 +231,10 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
   @Override public void mouseExited(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
-    if (isUrlColumn(table, vcol)) {
-      table.repaint(table.getCellRect(vrow, vcol, false));
-      vrow = -1;
-      vcol = -1;
+    if (isUrlColumn(table, viewColumnIndex)) {
+      table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
+      viewRowIndex = -1;
+      viewColumnIndex = -1;
       isRollover = false;
     }
   }
@@ -242,10 +242,10 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public void mouseClicked(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
-    int ccol = table.columnAtPoint(pt);
-    if (isUrlColumn(table, ccol)) { // && pointInsidePrefSize(table, pt)) {
+    int col = table.columnAtPoint(pt);
+    if (isUrlColumn(table, col)) { // && pointInsidePrefSize(table, pt)) {
       int crow = table.rowAtPoint(pt);
-      URL url = (URL) table.getValueAt(crow, ccol);
+      URL url = (URL) table.getValueAt(crow, col);
       System.out.println(url);
       try {
         // Web Start

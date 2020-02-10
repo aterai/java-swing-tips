@@ -17,23 +17,19 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
-
-  private final String[] columnNames = {"A", "B", "C"};
-  private final Object[][] data = {
-    {"aaa", "eeee", "l"}, {"bbb", "ff", "ggg"},
-    {"CCC", "kkk", "jj"}, {"DDD", "ii", "hhh"}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"aaa", "ee ee", "l"}, {"bbb", "ff", "ggg"},
+        {"CCC", "kkk", "jj"}, {"DDD", "ii", "hhh"}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -54,6 +50,8 @@ public final class MainPanel extends JPanel {
     TableCellRenderer defaultRenderer = table.getDefaultRenderer(Object.class);
     UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
     DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
+
+    JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
     modelCheck.addActionListener(e -> {
       if (modelCheck.isSelected()) {
         table.setDefaultRenderer(Object.class, underlineRenderer);
@@ -95,13 +93,13 @@ public final class MainPanel extends JPanel {
 }
 
 class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-  private int vrow = -1; // viewRowIndex
-  private int vcol = -1; // viewColumnIndex
+  private int viewRowIndex = -1;
+  private int viewColumnIndex = -1;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     String str = Objects.toString(value, "");
-    if (!table.isEditing() && this.vrow == row && this.vcol == column) {
+    if (!table.isEditing() && this.viewRowIndex == row && this.viewColumnIndex == column) {
       setText("<html><u>" + str);
     } else {
       setText(str);
@@ -113,18 +111,18 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
   @Override public void mouseMoved(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
-    vrow = table.rowAtPoint(pt);
-    vcol = table.columnAtPoint(pt);
-    if (vrow < 0 || vcol < 0) {
-      vrow = -1;
-      vcol = -1;
+    viewRowIndex = table.rowAtPoint(pt);
+    viewColumnIndex = table.columnAtPoint(pt);
+    if (viewRowIndex < 0 || viewColumnIndex < 0) {
+      viewRowIndex = -1;
+      viewColumnIndex = -1;
     }
     table.repaint();
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    vrow = -1;
-    vcol = -1;
+    viewRowIndex = -1;
+    viewColumnIndex = -1;
     e.getComponent().repaint();
   }
 
