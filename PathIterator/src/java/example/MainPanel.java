@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private final JLabel label = new JLabel();
   private final JTextArea textArea = new JTextArea();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     initStar();
@@ -95,6 +95,7 @@ public final class MainPanel extends JPanel {
     // p.add(l, BorderLayout.NORTH);
     return p;
   }
+
   // class MyDragGestureListener implements DragGestureListener {
   //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
   //     File outfile;
@@ -116,17 +117,19 @@ public final class MainPanel extends JPanel {
   //       @Override public Object getTransferData(DataFlavor flavor) {
   //         return Arrays.asList(tmpFile);
   //       }
+  //
   //       @Override public DataFlavor[] getTransferDataFlavors() {
   //         return new DataFlavor[] {DataFlavor.javaFileListFlavor};
   //       }
+  //
   //       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
   //         return flavor.equals(DataFlavor.javaFileListFlavor);
   //       }
   //     };
   //     DragSourceAdapter dsa = new DragSourceAdapter() {
-  //       @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-  //         if (dsde.getDropSuccess()) {
-  //           System.out.println(dsde);
+  //       @Override public void dragDropEnd(DragSourceDropEvent e) {
+  //         if (e.getDropSuccess()) {
+  //           System.out.println(e);
   //         }
   //       }
   //     };

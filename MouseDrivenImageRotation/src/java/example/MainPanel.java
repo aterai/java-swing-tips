@@ -20,7 +20,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final transient DraggableImageMouseListener di;
 
-  public MainPanel() {
+  private MainPanel() {
     super();
     di = new DraggableImageMouseListener(new ImageIcon(getClass().getResource("test.png")));
     addMouseListener(di);

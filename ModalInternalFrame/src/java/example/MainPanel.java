@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
   private final JMenuBar menuBar = new JMenuBar();
   private final JMenuBar dummyBar = new JMenuBar();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JButton button = new JButton(new ModalInternalFrameAction3("Show"));
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
   // menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
   // menuItem.setMnemonic(KeyEvent.VK_2);
   protected final class ModalInternalFrameAction2 extends AbstractAction {
-    private final JComponent glass = new MyGlassPane();
+    private final JComponent glass = new FocusLockGlassPane();
 
     protected ModalInternalFrameAction2(String label) {
       super(label);
@@ -225,7 +225,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MyGlassPane extends JDesktopPane {
+class FocusLockGlassPane extends JDesktopPane {
   private static final Paint TEXTURE = TextureUtils.createCheckerTexture(6);
   // protected MyGlassPane() {
   //   super((LayoutManager) null);
