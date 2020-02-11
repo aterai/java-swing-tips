@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
   private final JScrollPane scroll = new JScrollPane(textArea);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     textArea.setText(String.join("\n", Collections.nCopies(2000, "1111111111111")));
 
