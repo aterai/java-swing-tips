@@ -12,25 +12,33 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
-  private final RowDataModel model = new RowDataModel();
-  private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xFA_FA_FA);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    RowDataModel model = new RowDataModel();
+    model.addRowData(new RowData("Name 1", "comment..."));
+    model.addRowData(new RowData("Name 2", "Test"));
+    model.addRowData(new RowData("Name d", "ee"));
+    model.addRowData(new RowData("Name c", "Test cc"));
+    model.addRowData(new RowData("Name b", "Test bb"));
+    model.addRowData(new RowData("Name a", "ff"));
+    model.addRowData(new RowData("Name 0", "Test aa"));
 
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
+
+      @Override
+      public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+    };
     JTableHeader header = table.getTableHeader();
     header.setDefaultRenderer(new SortButtonRenderer());
     header.addMouseListener(new HeaderMouseListener());
@@ -41,14 +49,6 @@ public final class MainPanel extends JPanel {
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(80);
     col.setMaxWidth(80);
-
-    model.addRowData(new RowData("Name 1", "comment..."));
-    model.addRowData(new RowData("Name 2", "Test"));
-    model.addRowData(new RowData("Name d", "ee"));
-    model.addRowData(new RowData("Name c", "Test cc"));
-    model.addRowData(new RowData("Name b", "Test bb"));
-    model.addRowData(new RowData("Name a", "ff"));
-    model.addRowData(new RowData("Name 0", "Test aa"));
 
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
