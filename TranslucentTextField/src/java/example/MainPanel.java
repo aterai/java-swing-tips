@@ -17,17 +17,17 @@ public final class MainPanel extends JPanel {
   private static final Color BG_COLOR = new Color(0x64_FF_CC_CC, true);
   private transient TexturePaint texture;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new GridBagLayout());
 
-    JTextField field0 = new JTextField("aaaaaaaaa");
+    JTextField field0 = new JTextField("000000000000");
     field0.setBackground(BG_COLOR);
 
-    JTextField field1 = new JTextField("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+    JTextField field1 = new JTextField("1111111111111111111111");
     field1.setOpaque(false);
     field1.setBackground(BG_COLOR);
 
-    JTextField field2 = new JTextField("cccccccccccccccccccccc") {
+    JTextField field2 = new JTextField("2222222222222222") {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getBackground());

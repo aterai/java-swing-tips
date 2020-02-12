@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
