@@ -15,9 +15,8 @@ public final class MainPanel extends JPanel {
   private final JLabel countLabel = new JLabel("PathCount: ");
   private final JLabel levelLabel = new JLabel("Level: ");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
     tree.setComponentPopupMenu(new TreePopupMenu());
     tree.getSelectionModel().addTreeSelectionListener(e ->
@@ -54,13 +53,13 @@ public final class MainPanel extends JPanel {
       super();
       add("path").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
-        updateLabel(tree.getSelectionPath());
+        Optional.ofNullable(tree.getSelectionPath()).ifPresent(MainPanel.this::updateLabel);
         JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
       });
       add("add").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
         TreePath path = tree.getSelectionPath();
-        if (path.getPathCount() <= NODE_MAXIMUM_LEVELS) {
+        if (path != null && path.getPathCount() <= NODE_MAXIMUM_LEVELS) {
           DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
           DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
           DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
