@@ -16,9 +16,7 @@ import javax.swing.plaf.synth.SynthStyle;
 import javax.swing.plaf.synth.SynthStyleFactory;
 
 public final class MainPanel extends JPanel {
-  private final JDesktopPane desktop = new JDesktopPane();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JPanel p1 = new JPanel();
     p1.setOpaque(false);
@@ -43,8 +41,16 @@ public final class MainPanel extends JPanel {
     //     g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
     //   }
     // });
-    createFrame(initContainer(p1), 0);
-    createFrame(initContainer(p2), 1);
+    JInternalFrame f1 = createFrame(initContainer(p1), 0);
+    JInternalFrame f2 = createFrame(initContainer(p2), 1);
+
+    JDesktopPane desktop = new JDesktopPane();
+    desktop.add(f1);
+    desktop.getDesktopManager().activateFrame(f1);
+
+    desktop.add(f2);
+    desktop.getDesktopManager().activateFrame(f2);
+
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -56,7 +62,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  protected JInternalFrame createFrame(Container panel, int idx) {
+  private static JInternalFrame createFrame(Container panel, int idx) {
     JInternalFrame frame = new MyInternalFrame();
     // frame.putClientProperty("Nimbus.Overrides", d);
     // // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
@@ -65,8 +71,6 @@ public final class MainPanel extends JPanel {
     frame.setOpaque(false);
     frame.setVisible(true);
     frame.setLocation(10 + 60 * idx, 10 + 40 * idx);
-    desktop.add(frame);
-    desktop.getDesktopManager().activateFrame(frame);
     return frame;
   }
 

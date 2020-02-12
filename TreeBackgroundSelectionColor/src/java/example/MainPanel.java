@@ -13,20 +13,16 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 public final class MainPanel extends JPanel {
-  private final JTree tree = new JTree() {
-    @Override public void updateUI() {
-      setCellRenderer(null);
-      setCellEditor(null);
-      super.updateUI();
-      // ???#1: JDK 1.6.0 bug??? Nimbus LnF
-      setCellRenderer(new SelectionColorTreeCellRenderer());
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    tree.setModel(makeModel());
-    tree.setCellRenderer(new SelectionColorTreeCellRenderer());
+    JTree tree = new JTree(makeModel()) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        setCellEditor(null);
+        super.updateUI();
+        setCellRenderer(new SelectionColorTreeCellRenderer());
+      }
+    };
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -38,13 +34,13 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode(Color.BLUE));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-    set2.add(new DefaultMutableTreeNode("asdf"));
+    set2.add(new DefaultMutableTreeNode("aaa 111111111"));
+    set2.add(new DefaultMutableTreeNode("aa 2222"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("Asdfasdfasdf"));
-    set3.add(new DefaultMutableTreeNode("qwerqwer"));
-    set3.add(new DefaultMutableTreeNode("zvxcvzxcvzxzxcvzxcv"));
+    set3.add(new DefaultMutableTreeNode("Abc 3333333333333"));
+    set3.add(new DefaultMutableTreeNode("44444444"));
+    set3.add(new DefaultMutableTreeNode("55555555555555555"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
     root.add(set1);

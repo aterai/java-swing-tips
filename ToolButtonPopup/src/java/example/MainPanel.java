@@ -13,25 +13,25 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 public final class MainPanel extends JPanel {
-  private final JToolBar toolbar = new JToolBar("toolbar");
-  private final JPopupMenu pop1 = new JPopupMenu();
-  private final JPopupMenu pop2 = new JPopupMenu();
-  private final URL url = getClass().getResource("ei0021-16.png");
-  private final Component rigid = Box.createRigidArea(new Dimension(5, 5));
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JPopupMenu pop1 = new JPopupMenu();
     pop1.add("000");
     pop1.add("11111");
     pop1.addSeparator();
     pop1.add("2222222");
+
+    JPopupMenu pop2 = new JPopupMenu();
     pop2.add("33333333333333");
     pop2.addSeparator();
     pop2.add("4444");
     pop2.add("5555555555");
 
+    JToolBar toolbar = new JToolBar("toolbar");
     toolbar.add(makeButton(pop1, "Text", null));
+    Component rigid = Box.createRigidArea(new Dimension(5, 5));
     toolbar.add(rigid);
+    URL url = getClass().getResource("ei0021-16.png");
     toolbar.add(makeButton(pop2, "", new ImageIcon(url)));
     toolbar.add(rigid);
     toolbar.add(makeButton(pop2, "Icon+Text", new ImageIcon(url)));
