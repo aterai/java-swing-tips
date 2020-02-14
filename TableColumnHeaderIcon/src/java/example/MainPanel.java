@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     URL[] icons = {getIconUrl("wi0062-16.png"), getIconUrl("wi0063-16.png"), getIconUrl("wi0064-16.png")};
     String[] columnNames = {"Column1", "Column2", "Column3"};

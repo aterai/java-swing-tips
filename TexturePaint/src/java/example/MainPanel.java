@@ -14,9 +14,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final transient TexturePaint texture;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     BufferedImage bi = Optional.ofNullable(getClass().getResource("16x16.png"))
         .map(url -> {
           try {
