@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
   // private transient SwingWorker<String, Chunk> worker;
   private transient ProgressMonitor monitor;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     textArea.setEditable(false);
 
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     // String path = "https://ateraimemo.com/";
     append(path);
 
-    URLConnection urlConnection = null;
+    URLConnection urlConnection;
     try {
       // URLConnection urlConnection = getUrlConnection(path);
       urlConnection = new URL(path).openConnection();
@@ -139,6 +139,7 @@ public final class MainPanel extends JPanel {
         text = isCancelled() ? "Cancelled" : get();
       } catch (InterruptedException ex) {
         text = "Interrupted";
+        Thread.currentThread().interrupt();
       } catch (IOException | ExecutionException ex) {
         ex.printStackTrace();
         text = "Error:" + ex.getMessage();
