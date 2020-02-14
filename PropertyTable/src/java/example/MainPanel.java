@@ -20,23 +20,22 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"Type", "Value"};
-  private final Object[][] data = {
-    {"String", "text"},
-    {"Date", new Date()},
-    {"Integer", 12},
-    {"Double", 3.45},
-    {"Boolean", Boolean.TRUE},
-    {"Color", Color.RED}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-
   public MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"Type", "Value"};
+    Object[][] data = {
+      {"String", "text"},
+      {"Date", new Date()},
+      {"Integer", 12},
+      {"Double", 3.45},
+      {"Boolean", Boolean.TRUE},
+      {"Color", Color.RED}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
     JTable table = new PropertyTable(model);
 
     add(new JScrollPane(table));
@@ -64,7 +63,7 @@ public final class MainPanel extends JPanel {
 }
 
 class PropertyTable extends JTable {
-  private static final int TARGET_COLIDX = 1;
+  private static final int TARGET_COLUMN = 1;
   private Class<?> editingClass;
 
   protected PropertyTable(TableModel model) {
@@ -94,7 +93,7 @@ class PropertyTable extends JTable {
   }
 
   @Override public TableCellRenderer getCellRenderer(int row, int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
       return getDefaultRenderer(getClassAt(row, column));
     } else {
       return super.getCellRenderer(row, column);
@@ -106,7 +105,7 @@ class PropertyTable extends JTable {
   // component is saved in the TableModel. The class was saved when the
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
       editingClass = getClassAt(row, column);
       return getDefaultEditor(editingClass);
     } else {
@@ -116,7 +115,7 @@ class PropertyTable extends JTable {
   }
 
   @Override public Class<?> getColumnClass(int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COLIDX) {
+    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
       return editingClass;
     } else {
       return super.getColumnClass(column);
@@ -133,7 +132,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
     spinner.setEditor(editor);
     setArrowButtonEnabled(false);
-    editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
+    editor.getTextField().setHorizontalAlignment(SwingConstants.LEFT);
 
     editor.getTextField().addFocusListener(new FocusListener() {
       @Override public void focusLost(FocusEvent e) {
@@ -160,7 +159,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   protected final void setArrowButtonEnabled(boolean flag) {
     for (Component c: spinner.getComponents()) {
       if (c instanceof JButton) {
-        ((JButton) c).setEnabled(flag);
+        c.setEnabled(flag);
       }
     }
   }
