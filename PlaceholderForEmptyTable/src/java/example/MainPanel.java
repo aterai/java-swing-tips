@@ -12,21 +12,10 @@ import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
-  private final JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
-  private final String[] columnNames = {"Integer", "String", "Boolean"};
-  private final TableModel model = new DefaultTableModel(null, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      switch (column) {
-        case 0: return Integer.class;
-        case 2: return Boolean.class;
-        default: return String.class;
-      }
-    }
-  };
-  private final JTable table = new JTable(model);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
     editor.setOpaque(false);
     editor.setEditable(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -36,11 +25,21 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    String[] columnNames = {"Integer", "String", "Boolean"};
+    TableModel model = new DefaultTableModel(null, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0: return Integer.class;
+          case 2: return Boolean.class;
+          default: return String.class;
+        }
+      }
+    };
     model.addTableModelListener(e -> {
       DefaultTableModel m = (DefaultTableModel) e.getSource();
       editor.setVisible(m.getRowCount() == 0);
     });
-
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
