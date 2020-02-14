@@ -13,15 +13,13 @@ import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 
 public final class MainPanel extends JPanel {
-  private final JTextPane textPane = new JTextPane();
-  private final JTextArea textArea = new JTextArea();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JTextPane textPane = new JTextPane();
     textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
     FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
-    int charWidth = fm.charWidth('m');
-    int tabWidth = charWidth * 4;
+    float charWidth = fm.charWidth('m');
+    float tabWidth = charWidth * 4f;
     TabStop[] tabs = new TabStop[10];
     for (int j = 0; j < tabs.length; j++) {
       tabs[j] = createTabStop((j + 1) * tabWidth);
@@ -33,10 +31,11 @@ public final class MainPanel extends JPanel {
     // int length = textPane.getDocument().getLength();
     // textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
     textPane.setParagraphAttributes(attributes, false);
-    textPane.setText("JTextPane\naaaa\n\taaaa\n\t\taaaa\n");
+    textPane.setText("JTextPane\n0123\n\t4567\n\t\t89ab\n");
 
+    JTextArea textArea = new JTextArea();
     textArea.setTabSize(4);
-    textArea.setText("JTextArea\naaaa\n\taaaa\n\t\taaaa\n");
+    textArea.setText("JTextArea\n0123\n\t4567\n\t\t89ab\n");
 
     add(new JScrollPane(textArea), BorderLayout.NORTH);
     add(new JScrollPane(textPane));
