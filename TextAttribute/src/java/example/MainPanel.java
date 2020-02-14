@@ -17,9 +17,8 @@ public final class MainPanel extends JPanel {
   private final JTextField textField1 = new JTextField(TEXT);
   private final JTextField textField2 = new JTextField(TEXT);
   private final JTextArea textArea = new JTextArea(TEXT + "\n" + TEXT);
-  private final JComboBox<UnderlineStyle> comboBox = new JComboBox<>(UnderlineStyle.values());
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
 
     Font font = textField2.getFont();
@@ -31,6 +30,7 @@ public final class MainPanel extends JPanel {
     // textField.setFont(font.deriveFont(attrs));
     // textField.setMargin(new Insets(4, 2, 4, 2));
 
+    JComboBox<UnderlineStyle> comboBox = new JComboBox<>(UnderlineStyle.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         Object style = ((UnderlineStyle) e.getItem()).getStyle();
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void initUnderline(JTextComponent tc, Object style) {
+  private static void initUnderline(JTextComponent tc, Object style) {
     Font font = tc.getFont();
     HashMap<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
     attrs.put(TextAttribute.UNDERLINE, style);

@@ -12,31 +12,31 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private final JTabbedPane tab = new JTabbedPane();
-  private final JCheckBox cbox = new JCheckBox("Details");
+  private final JTabbedPane tabs = new JTabbedPane();
   private final Component panel = new JLabel("Preferences");
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    cbox.setFocusPainted(false);
-    cbox.addMouseListener(new MouseAdapter() {
+    JCheckBox check = new JCheckBox("Details");
+    check.setFocusPainted(false);
+    check.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         ((AbstractButton) e.getComponent()).doClick();
       }
     });
-    cbox.addActionListener(e -> {
+    check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
-        tab.addTab("Preferences", panel);
-        tab.setSelectedComponent(panel);
+        tabs.addTab("Preferences", panel);
+        tabs.setSelectedComponent(panel);
       } else {
-        tab.remove(panel);
+        tabs.remove(panel);
       }
     });
-    TabbedPaneWithCompBorder b = new TabbedPaneWithCompBorder(cbox, tab);
-    tab.addMouseListener(b);
-    tab.setBorder(b);
-    tab.addTab("Quick Preferences", new JLabel("aaaaaaaaa"));
-    add(tab);
+    TabbedPaneWithCompBorder b = new TabbedPaneWithCompBorder(check, tabs);
+    tabs.addMouseListener(b);
+    tabs.setBorder(b);
+    tabs.addTab("Quick Preferences", new JLabel("JLabel"));
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -62,18 +62,18 @@ public final class MainPanel extends JPanel {
 }
 
 class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants {
-  private final JCheckBox cbox;
+  private final JCheckBox checkBox;
   private final JTabbedPane tab;
   private final Container rubberStamp = new JPanel();
   private final Rectangle rect = new Rectangle();
 
-  protected TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
-    this.cbox = cbox;
+  protected TabbedPaneWithCompBorder(JCheckBox checkBox, JTabbedPane tab) {
+    this.checkBox = checkBox;
     this.tab = tab;
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-    Dimension size = cbox.getPreferredSize();
+    Dimension size = checkBox.getPreferredSize();
     int xx = tab.getSize().width - size.width;
     Rectangle lastTab = tab.getBoundsAt(tab.getTabCount() - 1);
     int tabEnd = lastTab.x + lastTab.width;
@@ -81,7 +81,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
       xx = tabEnd;
     }
     rect.setBounds(xx, -2, size.width, size.height);
-    SwingUtilities.paintComponent(g, cbox, rubberStamp, rect);
+    SwingUtilities.paintComponent(g, checkBox, rubberStamp, rect);
   }
 
   @Override public Insets getBorderInsets(Component c) {
@@ -96,8 +96,8 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
     if (!rect.contains(e.getX(), e.getY())) {
       return;
     }
-    cbox.setBounds(rect);
-    cbox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, e, cbox));
+    checkBox.setBounds(rect);
+    checkBox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, e, checkBox));
   }
 
   @Override public void mouseClicked(MouseEvent e) {
