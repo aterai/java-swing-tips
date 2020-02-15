@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
   private final JButton openButton = new JButton("Choose...");
   private transient SwingWorker<String, Message> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

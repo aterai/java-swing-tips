@@ -17,7 +17,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final transient WindowPreferencesHandler handler = new WindowPreferencesHandler();
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
 
     JButton clearButton = new JButton("Preferences#clear() and JFrame#dispose()");
