@@ -12,29 +12,34 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final JPanel infoPanel = new JPanel();
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JLabel label = new JLabel();
+    JPanel infoPanel = new JPanel();
+    infoPanel.add(label);
+
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     // table.setRowSorter(new TableRowSorter<>(model));
-
     table.getSelectionModel().addListSelectionListener(e -> {
       if (e.getValueIsAdjusting()) {
         return;
       }
-      changeInfoPanel(table.getSelectedRowCount() == 1 ? getInfo() : " ");
+      label.setText(table.getSelectedRowCount() == 1 ? getInfo(table) : " ");
+      infoPanel.setVisible(false);
+      infoPanel.removeAll();
+      infoPanel.add(label);
+      infoPanel.setVisible(true);
     });
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -49,20 +54,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private String getInfo() {
+  private static String getInfo(JTable table) {
+    TableModel model = table.getModel();
     int index = table.convertRowIndexToModel(table.getSelectedRow());
     String str = Objects.toString(model.getValueAt(index, 0));
     Integer idx = (Integer) model.getValueAt(index, 1);
     Boolean flg = (Boolean) model.getValueAt(index, 2);
     return String.format("%s, %d, %s", str, idx, flg);
-  }
-
-  private void changeInfoPanel(String str) {
-    JLabel label = new JLabel(str);
-    infoPanel.setVisible(false);
-    infoPanel.removeAll();
-    infoPanel.add(label);
-    infoPanel.setVisible(true);
   }
 
   public static void main(String[] args) {
