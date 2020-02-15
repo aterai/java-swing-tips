@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
   private final LoadingLabel loadingLabel = new LoadingLabel();
   private transient SwingWorker<String, String> worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     area.setEditable(false);
     area.setLineWrap(true);
@@ -77,6 +77,7 @@ public final class MainPanel extends JPanel {
         msg = isCancelled() ? "Cancelled" : get();
       } catch (InterruptedException ex) {
         msg = "Interrupted";
+        Thread.currentThread().interrupt();
       } catch (ExecutionException ex) {
         ex.printStackTrace();
         msg = "Error: " + ex.getMessage();
