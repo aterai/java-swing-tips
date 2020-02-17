@@ -19,17 +19,17 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
 public final class MainPanel extends JPanel {
-  private final DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
-  private final JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
-  // private final JRadioButton sort0 = new JRadioButton("0: bubble sort");
-  private final JRadioButton sort1 = new JRadioButton("1: bubble sort");
-  private final JRadioButton sort2 = new JRadioButton("2: selection sort");
-  // private final JRadioButton sort3 = new JRadioButton("3: iterative merge sort"); // JDK 1.6.0
-  private final JRadioButton sort3 = new JRadioButton("3: TimSort"); // JDK 1.7.0
-  private final JRadioButton reset = new JRadioButton("reset");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
+    JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
+    // JRadioButton sort0 = new JRadioButton("0: bubble sort");
+    JRadioButton sort1 = new JRadioButton("1: bubble sort");
+    JRadioButton sort2 = new JRadioButton("2: selection sort");
+    // JRadioButton sort3 = new JRadioButton("3: iterative merge sort"); // JDK 1.6.0
+    JRadioButton sort3 = new JRadioButton("3: TimSort"); // JDK 1.7.0
+    JRadioButton reset = new JRadioButton("reset");
+
     JPanel box = new JPanel(new GridLayout(2, 2));
     ActionListener listener = e -> {
       JRadioButton check = (JRadioButton) e.getSource();
@@ -260,7 +260,7 @@ final class TreeUtil {
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
     set2.add(new DefaultMutableTreeNode("eee eee eee eee e"));
-    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set2.add(new DefaultMutableTreeNode("bbb ccc aaa bbb"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
     set3.add(new DefaultMutableTreeNode("zzz zz zz"));
