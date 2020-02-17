@@ -13,11 +13,10 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JLabel label = new JLabel();
-  private final JButton button = new JButton("get Clipboard DataFlavor");
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JLabel label = new JLabel();
+    JButton button = new JButton("get Clipboard DataFlavor");
     button.addActionListener(e -> {
       String str = "";
       ImageIcon image = null;
