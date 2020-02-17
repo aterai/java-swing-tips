@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
   private final JProgressBar bar2 = new JProgressBar();
   private transient BackgroundTask worker;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     area.setEditable(false);
 
