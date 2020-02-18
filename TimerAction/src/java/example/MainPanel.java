@@ -12,17 +12,15 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final Random rnd = new Random();
-  private final JTabbedPane tabs = new JTabbedPane();
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JPanel c1 = new JPanel(new GridLayout(10, 10));
     JPanel c2 = new JPanel(new GridLayout(10, 10));
+    Random random = new Random();
     Timer timer = new Timer(16, null);
     IntStream.range(0, 100).forEach(i -> {
-      c1.add(new Tile1(rnd));
-      c2.add(new Tile2(rnd, timer));
+      c1.add(new Tile1(random));
+      c2.add(new Tile2(random, timer));
     });
     c2.addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
@@ -33,9 +31,11 @@ public final class MainPanel extends JPanel {
         }
       }
     });
+
+    JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("Timer: 100", c1);
     tabs.addTab("Timer: 1, ActionListener: 100", c2);
-    tabs.addTab("Timer: 1, ActionListener: 1", new TilePanel(rnd));
+    tabs.addTab("Timer: 1, ActionListener: 1", new TilePanel(random));
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
