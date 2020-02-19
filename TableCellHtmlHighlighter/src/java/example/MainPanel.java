@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
   private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
   private final JTable table = new JTable(model);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
 
     table.setFillsViewportHeight(true);

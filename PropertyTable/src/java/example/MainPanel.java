@@ -20,7 +20,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"Type", "Value"};
     Object[][] data = {
