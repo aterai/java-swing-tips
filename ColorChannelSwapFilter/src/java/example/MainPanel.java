@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private transient SwingWorker<String, Void> worker;
 
   private MainPanel() {
