@@ -158,7 +158,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
 
     String uprefix = prefix.toUpperCase(Locale.ENGLISH);
 
-    // start search from the next/previous element froom the
+    // start search from the next/previous element from the
     // selected element
     int increment = bias == Position.Bias.Forward ? 1 : -1;
     int row = startingRow;
