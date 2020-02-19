@@ -13,25 +13,33 @@ import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final RowDataModel model = new RowDataModel();
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
+    table.setFillsViewportHeight(true);
+    table.setRowSelectionAllowed(true);
+    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    table.setComponentPopupMenu(new TablePopupMenu(table));
 
     JTableHeader header = table.getTableHeader();
     header.setDefaultRenderer(new SortButtonRenderer());
     header.addMouseListener(new HeaderMouseListener());
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     // header.setReorderingAllowed(false);
 
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(80);
     col.setMaxWidth(80);
 
+    add(new JScrollPane(table));
+    add(makeToolBar(table), BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    RowDataModel model = new RowDataModel();
     model.addRowData(new RowData("Name 1", "comment..."));
     model.addRowData(new RowData("Name 2", "Test"));
     model.addRowData(new RowData("Name d", "ee"));
@@ -39,16 +47,11 @@ public final class MainPanel extends JPanel {
     model.addRowData(new RowData("Name b", "Test bb"));
     model.addRowData(new RowData("Name a", "ff"));
     model.addRowData(new RowData("Name 0", "Test aa"));
-
-    table.setFillsViewportHeight(true);
-    table.setComponentPopupMenu(new TablePopupMenu(table));
-    add(new JScrollPane(table));
-    add(makeToolBar(), BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
-  private JToolBar makeToolBar() {
-    JToolBar tb = new JToolBar("Sort by my order");
+  private static JToolBar makeToolBar(JTable table) {
+    JToolBar tb = new JToolBar();
     tb.setFloatable(true);
     tb.add(makeToolButton(new UpAction("▲", table)));
     tb.add(makeToolButton(new DownAction("▼", table)));
