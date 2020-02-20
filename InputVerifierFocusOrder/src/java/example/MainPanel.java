@@ -11,13 +11,14 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-public class MainPanel extends JPanel {
-  protected static final int MAX_LEN = 6;
-  protected final JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
-  protected final JButton button = new JButton("Next");
+public final class MainPanel extends JPanel {
+  private static final int MAX_LEN = 6;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    JButton button = new JButton("Next");
+    button.setEnabled(false);
+
     setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
         System.out.println("getComponentAfter");
@@ -33,13 +34,13 @@ public class MainPanel extends JPanel {
     });
     setFocusCycleRoot(true);
 
-    button.setEnabled(false);
+    JCheckBox check = new JCheckBox("use FocusTraversalPolicy", true);
     check.addActionListener(e -> setFocusCycleRoot(((JCheckBox) e.getSource()).isSelected()));
 
     Box box = Box.createVerticalBox();
     box.add(check);
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    Arrays.asList(makeTextField(), makeTextField()).forEach(c -> {
+    Arrays.asList(makeTextField(button), makeTextField(button)).forEach(c -> {
       box.add(Box.createVerticalStrut(10));
       box.add(c);
     });
@@ -51,14 +52,14 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final boolean isAllValid() {
+  protected boolean isAllValid() {
     return Arrays.stream(getComponents())
         .filter(JTextField.class::isInstance)
         .map(JTextField.class::cast)
         .allMatch(t -> t.getInputVerifier().verify(t));
   }
 
-  protected final JTextField makeTextField() {
+  protected JTextField makeTextField(JButton button) {
     JTextField textField = new JTextField(24);
     textField.setInputVerifier(new InputVerifier() {
       @Override public boolean verify(JComponent c) {
@@ -75,6 +76,13 @@ public class MainPanel extends JPanel {
         button.setEnabled(isAllValid());
         return super.shouldYieldFocus(input);
       }
+
+      // Java 9:
+      // @Override public boolean shouldYieldFocus(JComponent source, JComponent target) {
+      //   System.out.println("shouldYieldFocus");
+      //   target.setEnabled(isAllValid());
+      //   return super.shouldYieldFocus(source, target);
+      // }
     });
     textField.addFocusListener(new FocusAdapter() {
       @Override public void focusLost(FocusEvent e) {
