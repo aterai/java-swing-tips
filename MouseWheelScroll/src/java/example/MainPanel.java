@@ -14,38 +14,40 @@ import java.awt.event.MouseEvent;
 import java.util.stream.Stream;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected boolean isShiftPressed;
-  protected final JLabel label = new JLabel();
-  protected final JScrollPane scroll = new JScrollPane(label);
-  protected final JScrollBar verticalBar = scroll.getVerticalScrollBar();
-  protected final JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
-  protected final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
-    @Override public boolean isVisible() {
-      return !isShiftPressed && super.isVisible();
-    }
+public final class MainPanel extends JPanel {
+  public boolean isShiftPressed;
 
-    @Override public Dimension getPreferredSize() {
-      Dimension d = super.getPreferredSize();
-      d.width = 0;
-      return d;
-    }
-  };
-  protected final JScrollBar zeroHorizontalBar = new JScrollBar(Adjustable.HORIZONTAL) {
-    @Override public Dimension getPreferredSize() {
-      Dimension d = super.getPreferredSize();
-      d.height = 0;
-      return d;
-    }
-  };
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
+    JLabel label = new JLabel();
     label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
+
     MouseAdapter ml = new DragScrollListener();
     label.addMouseMotionListener(ml);
     label.addMouseListener(ml);
+
+    JScrollPane scroll = new JScrollPane(label);
+    JScrollBar verticalBar = scroll.getVerticalScrollBar();
+    JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
+    JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
+      @Override public boolean isVisible() {
+        return !isShiftPressed && super.isVisible();
+      }
+
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.width = 0;
+        return d;
+      }
+    };
+    JScrollBar zeroHorizontalBar = new JScrollBar(Adjustable.HORIZONTAL) {
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.height = 0;
+        return d;
+      }
+    };
+
     Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar).forEach(sb -> sb.setUnitIncrement(25));
 
     InputMap im = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
