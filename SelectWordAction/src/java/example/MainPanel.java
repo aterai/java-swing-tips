@@ -22,11 +22,10 @@ import javax.swing.text.Utilities;
 
 public final class MainPanel extends JPanel {
   private static final String TEXT = "AA-BB_CC\nAA-bb_CC\naa1-bb2_cc3\naa_(bb)_cc;\n11-22_33";
-  private final JTextArea textArea = new JTextArea(TEXT);
 
   private MainPanel() {
     super(new BorderLayout());
-
+    JTextArea textArea = new JTextArea(TEXT);
     textArea.getActionMap().put(DefaultEditorKit.selectWordAction, new TextAction(DefaultEditorKit.selectWordAction) {
       @Override public void actionPerformed(ActionEvent e) {
         JTextComponent target = getTextComponent(e);
