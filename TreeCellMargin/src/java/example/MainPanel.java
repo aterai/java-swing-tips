@@ -108,7 +108,7 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
 
     int imageOffset = -1;
     if (Objects.nonNull(bgColor) && fillBackground) {
-      imageOffset = getLabelStart();
+      imageOffset = getLabelStartPosition();
       g.setColor(bgColor);
       g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
     }
@@ -124,15 +124,15 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
       if (drawsFocusBorderAroundIcon) {
         imageOffset = 0;
       } else if (imageOffset == -1) {
-        imageOffset = getLabelStart();
+        imageOffset = getLabelStartPosition();
       }
       g.setColor(bgColor);
-      g.fillRect(imageOffset - MARGIN, 0, MARGIN + 1, getHeight());
-      paintFocus(g, imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight(), bgColor);
+      g.fillRect(imageOffset - MARGIN, getY(), MARGIN + 1, getHeight());
+      paintFocusRect(g, imageOffset - MARGIN, getY(), getWidth() + MARGIN - imageOffset, getHeight(), bgColor);
     }
   }
 
-  private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
+  private void paintFocusRect(Graphics g, int x, int y, int w, int h, Color notColor) {
     Color bsColor = getBorderSelectionColor();
     boolean b = selected || !drawDashedFocusIndicator;
     if (Objects.nonNull(bsColor) && b) {
@@ -149,11 +149,11 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
     }
   }
 
-  private int getLabelStart() {
+  private int getLabelStartPosition() {
     return Optional.ofNullable(getIcon())
-      .filter(icon -> Objects.nonNull(getText()))
-      .map(icon -> icon.getIconWidth() + Math.max(0, getIconTextGap() - 1))
-      .orElse(0);
+        .filter(icon -> Objects.nonNull(getText()))
+        .map(icon -> icon.getIconWidth() + Math.max(0, getIconTextGap() - 1))
+        .orElse(0);
   }
 }
 
