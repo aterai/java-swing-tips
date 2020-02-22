@@ -13,9 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
   private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-  private final MyButton button = new MyButton("dummy");
-  private final MyLabel label = new MyLabel("test");
-  private final MyComboBox combo = new MyComboBox();
 
   // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/EventListenerList.html
   // OvershadowingSubclassFields: JComponent: private final EventListenerList listenerList = new EventListenerList();
@@ -71,8 +68,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
+    MyButton button = new MyButton("dummy");
     addFontChangeListener(button);
     // addFontChangeListener(combo);
+    MyLabel label = new MyLabel("test");
     addFontChangeListener(label);
 
     JMenu menu = new JMenu("Font");
@@ -80,10 +79,11 @@ public final class MainPanel extends JPanel {
     menu.add("32pt").addActionListener(e -> fireFontChangeEvent("font32", FONT32));
     menu.add("12pt").addActionListener(e -> fireFontChangeEvent("font12", FONT12));
 
-    JMenuBar menubar = new JMenuBar();
-    menubar.add(menu);
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(menu);
 
     label.setFont(FONT12);
+    MyComboBox combo = new MyComboBox();
     combo.setFont(FONT12);
     button.setFont(FONT12);
 
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     panel.add(label);
     panel.add(combo);
     panel.add(button);
-    add(menubar, BorderLayout.NORTH);
+    add(menuBar, BorderLayout.NORTH);
     add(panel);
     setPreferredSize(new Dimension(320, 240));
   }
