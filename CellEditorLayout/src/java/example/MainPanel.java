@@ -145,12 +145,12 @@ class CustomComponent extends JPanel {
   // }
   // public final CustomTextField field = new CustomTextField();
   public final JTextField field = new JTextField();
-  private final JButton button = new JButton();
 
   protected CustomComponent() {
     super(new BorderLayout());
     // this.setFocusable(false);
     this.add(field);
+    JButton button = new JButton();
     this.add(button, BorderLayout.EAST);
   }
 
