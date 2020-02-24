@@ -8,15 +8,16 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTextField field = new JTextField();
-  private final JButton nb = new JButton("NORTH");
-  private final JButton sb = new JButton("SOUTH");
-  private final JButton wb = new JButton("WEST");
-  private final JButton eb = new JButton("EAST");
-  private final JTextArea ta = new JTextArea("aaaaaaaaaa");
-
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea ta = new JTextArea("JTextArea");
+    ta.setEditable(false);
+
+    JTextField field = new JTextField();
+    JButton nb = new JButton("NORTH");
+    JButton sb = new JButton("SOUTH");
+    JButton wb = new JButton("WEST");
+    JButton eb = new JButton("EAST");
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -25,7 +26,6 @@ public final class MainPanel extends JPanel {
     p.add(wb, BorderLayout.WEST);
     p.add(eb, BorderLayout.EAST);
     p.add(field);
-    ta.setEditable(false);
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(ta));
     setPreferredSize(new Dimension(320, 240));
