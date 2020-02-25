@@ -39,18 +39,17 @@ public final class MainPanel extends JPanel {
     table.setComponentPopupMenu(new TablePopupMenu());
 
     JButton button = new JButton("remove all rows");
-    button.addActionListener(e -> {
-      // if (DEBUG) {
-      //   // ArrayIndexOutOfBoundsException: 0 >= 0
-      //   // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-      //   // https://bugs.openjdk.java.net/browse/JDK-6967479
-      //   table.setRowSorter(null);
-      //   table.getTableHeader().repaint();
-      // }
-      model.setRowCount(0);
-      // table.setAutoCreateColumnsFromModel(false);
-      // table.setModel(new DefaultTableModel());
-    });
+    button.addActionListener(e -> model.setRowCount(0));
+    // button.addActionListener(e -> {
+    //   // ArrayIndexOutOfBoundsException: 0 >= 0
+    //   // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+    //   // https://bugs.openjdk.java.net/browse/JDK-6967479
+    //   table.setRowSorter(null);
+    //   table.getTableHeader().repaint();
+    //   model.setRowCount(0);
+    //   table.setAutoCreateColumnsFromModel(false);
+    //   table.setModel(new DefaultTableModel());
+    // });
 
     add(button, BorderLayout.SOUTH);
     add(new JScrollPane(table));
