@@ -13,10 +13,10 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\n*******");
-
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\n*******");
+
     JCheckBox check = new JCheckBox("LineWrap");
     check.addActionListener(e -> {
       textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected());
@@ -110,6 +110,7 @@ class LineCursorTextArea extends JTextArea {
       g2.dispose();
     }
   }
+
   // public static int getLineAtCaret(JTextComponent component) {
   //   int caretPosition = component.getCaretPosition();
   //   Element root = component.getDocument().getDefaultRootElement();
