@@ -165,7 +165,7 @@ class TabTitleDropTargetListener implements DropTargetListener {
       if (o instanceof JTabbedPane) {
         JTabbedPane jtp = (JTabbedPane) o;
         JScrollPane sp = (JScrollPane) jtp.getComponentAt(targetTabIndex);
-        JViewport vp = (JViewport) sp.getViewport();
+        JViewport vp = sp.getViewport();
         JList<String> targetList = (JList<String>) SwingUtilities.getUnwrappedView(vp);
         JList<String> sourceList = (JList<String>) t.getTransferData(f[0]);
 
