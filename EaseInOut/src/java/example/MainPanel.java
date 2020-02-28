@@ -123,7 +123,7 @@ class ImageCaptionLabel extends JLabel {
 class LabelHandler extends MouseAdapter implements HierarchyListener {
   private final Timer animator = new Timer(5, e -> updateTextAreaLocation());
   private final Component textArea;
-  private int txah;
+  private int areaHeight;
   private int count;
   private int direction;
 
@@ -133,19 +133,19 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
   }
 
   private void updateTextAreaLocation() {
-    double height = (double) textArea.getPreferredSize().height;
+    double height = textArea.getPreferredSize().getHeight();
     double a = AnimationUtil.easeInOut(count / height);
     count += direction;
-    txah = (int) (.5 + a * height);
+    areaHeight = (int) (.5 + a * height);
     textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
     if (direction > 0) { // show
-      if (txah >= textArea.getPreferredSize().height) {
-        txah = textArea.getPreferredSize().height;
+      if (areaHeight >= textArea.getPreferredSize().height) {
+        areaHeight = textArea.getPreferredSize().height;
         animator.stop();
       }
     } else { // hide
-      if (txah <= 0) {
-        txah = 0;
+      if (areaHeight <= 0) {
+        areaHeight = 0;
         animator.stop();
       }
     }
@@ -155,11 +155,11 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
   }
 
   public int getTextAreaHeight() {
-    return txah;
+    return areaHeight;
   }
 
   @Override public void mouseEntered(MouseEvent e) {
-    if (animator.isRunning() || txah == textArea.getPreferredSize().height) {
+    if (animator.isRunning() || areaHeight == textArea.getPreferredSize().height) {
       return;
     }
     this.direction = 1;
@@ -171,7 +171,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
       return;
     }
     Component c = e.getComponent();
-    if (c.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
+    if (c.contains(e.getPoint()) && areaHeight == textArea.getPreferredSize().height) {
       return;
     }
     this.direction = -1;
@@ -216,9 +216,9 @@ final class AnimationUtil {
     double ret;
     boolean isFirstHalf = t < .5;
     if (isFirstHalf) {
-      ret = .5 * intpow(t * 2d, N);
+      ret = .5 * intPow(t * 2d, N);
     } else {
-      ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
+      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
     }
     return ret;
   }
@@ -227,10 +227,10 @@ final class AnimationUtil {
   // http://d.hatena.ne.jp/rexpit/20110328/1301305266
   // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
   // http://www.osix.net/modules/article/?id=696
-  public static double intpow(double da, int ib) {
+  public static double intPow(double da, int ib) {
     int b = ib;
     if (b < 0) {
-      // return d / intpow(a, -b);
+      // return d / intPow(a, -b);
       throw new IllegalArgumentException("B must be a positive integer or zero");
     }
     double a = da;
