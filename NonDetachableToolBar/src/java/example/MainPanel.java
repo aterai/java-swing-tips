@@ -10,12 +10,12 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox movable = new JCheckBox("Floatable(movable)", true);
-  private final JButton button = new JButton("button");
-
   private MainPanel() {
     super(new BorderLayout());
     JCheckBox detachable = new JCheckBox("Floating(detachable)", false);
+
+    JButton button = new JButton("button");
+    button.setFocusable(false);
 
     JToolBar toolbar = new JToolBar("toolbar") {
       @Override public void updateUI() {
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
     toolbar.add(new JComboBox<>(makeModel()));
     toolbar.add(Box.createGlue());
 
+    JCheckBox movable = new JCheckBox("Floatable(movable)", true);
     movable.addActionListener(e -> toolbar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
-    button.setFocusable(false);
 
     JPanel p = new JPanel();
     p.add(movable);
