@@ -11,7 +11,6 @@ import javax.swing.plaf.IconUIResource;
 public final class MainPanel extends JPanel {
   private final JCheckBox expandedIcon = new JCheckBox("Tree.expandedIcon", true);
   private final JCheckBox paintLines = new JCheckBox("Tree.paintLines", true);
-  private final JButton update = new JButton("update");
 
   private MainPanel() {
     super(new BorderLayout(2, 2));
@@ -35,6 +34,7 @@ public final class MainPanel extends JPanel {
     box2.add(Box.createHorizontalGlue());
     box2.add(paintLines);
     box2.add(expandedIcon);
+    JButton update = new JButton("update");
     box2.add(update);
 
     Icon emptyIcon = new EmptyIcon();
@@ -44,9 +44,9 @@ public final class MainPanel extends JPanel {
       Icon ei;
       Icon ci;
       if (expandedIcon.isSelected()) {
-        UIDefaults lnfdef = UIManager.getLookAndFeelDefaults();
-        ei = lnfdef.getIcon("Tree.expandedIcon");
-        ci = lnfdef.getIcon("Tree.collapsedIcon");
+        UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
+        ei = lnfDef.getIcon("Tree.expandedIcon");
+        ci = lnfDef.getIcon("Tree.collapsedIcon");
       } else {
         ei = emptyIcon;
         ci = emptyIcon;
