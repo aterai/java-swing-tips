@@ -131,7 +131,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum CheckIcon { ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER }
+enum CheckIcon {
+  ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER
+}
 
 // @see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {

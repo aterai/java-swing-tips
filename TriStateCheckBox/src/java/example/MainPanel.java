@@ -245,7 +245,9 @@ class ComponentIcon implements Icon {
   }
 }
 
-enum Status { SELECTED, DESELECTED, INDETERMINATE }
+enum Status {
+  SELECTED, DESELECTED, INDETERMINATE
+}
 
 // @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {

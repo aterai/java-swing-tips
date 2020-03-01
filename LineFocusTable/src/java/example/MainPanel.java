@@ -196,7 +196,9 @@ class LineFocusTable extends JTable {
   }
 }
 
-enum Type { START, END }
+enum Type {
+  START, END
+}
 
 class DotBorder extends EmptyBorder {
   private static final BasicStroke DASHED = new BasicStroke(

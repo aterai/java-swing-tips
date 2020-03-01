@@ -89,4 +89,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum Wipe { IN, OUT }
+enum Wipe {
+  IN, OUT
+}

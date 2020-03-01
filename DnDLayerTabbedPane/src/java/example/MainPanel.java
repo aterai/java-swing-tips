@@ -432,7 +432,9 @@ class DnDTabbedPane extends JTabbedPane {
   }
 }
 
-enum DragImageMode { HEAVYWEIGHT, LIGHTWEIGHT }
+enum DragImageMode {
+  HEAVYWEIGHT, LIGHTWEIGHT
+}
 
 class TabDropTargetAdapter extends DropTargetAdapter {
   private void clearDropLocationPaint(Component c) {

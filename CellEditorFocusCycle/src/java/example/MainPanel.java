@@ -99,7 +99,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum Permissions { EXECUTE, WRITE, READ }
+enum Permissions {
+  EXECUTE, WRITE, READ
+}
 
 class CheckBoxesPanel extends JPanel {
   protected final String[] titles = {"r", "w", "x"};

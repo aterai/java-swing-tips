@@ -92,7 +92,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum Answer { A, B, C }
+enum Answer {
+  A, B, C
+}
 
 class RadioButtonsPanel extends JPanel {
   private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};

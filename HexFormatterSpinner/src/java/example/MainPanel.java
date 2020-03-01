@@ -195,4 +195,6 @@ public class MainPanel extends JPanel {
   }
 }
 
-enum FontPaint { IPA_EX_MINCHO, IPA_MJ_MINCHO }
+enum FontPaint {
+  IPA_EX_MINCHO, IPA_MJ_MINCHO
+}

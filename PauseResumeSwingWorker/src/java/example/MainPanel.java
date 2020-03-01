@@ -211,7 +211,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum ProgressType { TOTAL, FILE, LOG, PAUSE }
+enum ProgressType {
+  TOTAL, FILE, LOG, PAUSE
+}
 
 class Progress {
   public final Object value;

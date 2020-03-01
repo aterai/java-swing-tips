@@ -4,4 +4,6 @@
 
 package example;
 
-public enum Status { SELECTED, DESELECTED, INDETERMINATE }
+public enum Status {
+  SELECTED, DESELECTED, INDETERMINATE
+}

@@ -163,7 +163,9 @@ class IndeterminateIcon implements Icon {
   }
 }
 
-enum Status { SELECTED, DESELECTED, INDETERMINATE }
+enum Status {
+  SELECTED, DESELECTED, INDETERMINATE
+}
 
 class CheckBoxNode {
   private final File file;

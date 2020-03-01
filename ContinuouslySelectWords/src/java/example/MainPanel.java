@@ -58,7 +58,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum SelectingMode { CHAR, WORD, ROW }
+enum SelectingMode {
+  CHAR, WORD, ROW
+}
 
 class SelectWordCaret extends DefaultCaret {
   private SelectingMode selectingMode = SelectingMode.CHAR;

@@ -263,4 +263,6 @@ class ComponentIcon implements Icon {
   }
 }
 
-enum Status { SELECTED, DESELECTED, INDETERMINATE }
+enum Status {
+  SELECTED, DESELECTED, INDETERMINATE
+}

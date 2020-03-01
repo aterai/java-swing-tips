@@ -141,7 +141,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum ComponentType { TOTAL, FILE, LOG }
+enum ComponentType {
+  TOTAL, FILE, LOG
+}
 
 class Progress {
   public final Object value;

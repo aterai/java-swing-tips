@@ -154,7 +154,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum MessageType { REGULAR, ERROR, BLUE }
+enum MessageType {
+  REGULAR, ERROR, BLUE
+}
 
 class Message {
   public final String text;
