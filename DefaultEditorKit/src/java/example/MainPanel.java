@@ -55,44 +55,41 @@ public final class MainPanel extends JPanel {
 }
 
 class TextFieldPopupMenu extends JPopupMenu {
-  private final Action cutAction = new DefaultEditorKit.CutAction();
-  private final Action copyAction = new DefaultEditorKit.CopyAction();
-  private final Action pasteAction = new DefaultEditorKit.PasteAction();
-  private final Action deleteAction = new AbstractAction("delete") {
-    @Override public void actionPerformed(ActionEvent e) {
-      Component c = getInvoker();
-      if (c instanceof JTextComponent) {
-        ((JTextComponent) c).replaceSelection(null);
-      }
-    }
-  };
-  private final Action cut2Action = new AbstractAction("cut2") {
-    @Override public void actionPerformed(ActionEvent e) {
-      Component c = getInvoker();
-      if (c instanceof JTextComponent) {
-        ((JTextComponent) c).cut();
-      }
-    }
-  };
-
   protected TextFieldPopupMenu() {
     super();
-    add(cutAction);
-    add(copyAction);
-    add(pasteAction);
-    add(deleteAction);
+    add(new DefaultEditorKit.CutAction());
+    add(new DefaultEditorKit.CopyAction());
+    add(new DefaultEditorKit.PasteAction());
+    add(new AbstractAction("delete") {
+      @Override public void actionPerformed(ActionEvent e) {
+        Component c = getInvoker();
+        if (c instanceof JTextComponent) {
+          ((JTextComponent) c).replaceSelection(null);
+        }
+      }
+    });
     addSeparator();
-    add(cut2Action);
+    add(new AbstractAction("cut2") {
+      @Override public void actionPerformed(ActionEvent e) {
+        Component c = getInvoker();
+        if (c instanceof JTextComponent) {
+          ((JTextComponent) c).cut();
+        }
+      }
+    });
   }
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTextComponent) {
       JTextComponent tc = (JTextComponent) c;
       boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
-      cutAction.setEnabled(hasSelectedText);
-      copyAction.setEnabled(hasSelectedText);
-      deleteAction.setEnabled(hasSelectedText);
-      cut2Action.setEnabled(hasSelectedText);
+      for (MenuElement menuElement: getSubElements()) {
+        Component m = menuElement.getComponent();
+        if (m instanceof JMenuItem && ((JMenuItem) m).getAction() instanceof DefaultEditorKit.PasteAction) {
+          continue;
+        }
+        m.setEnabled(hasSelectedText);
+      }
       super.show(c, x, y);
     }
   }
