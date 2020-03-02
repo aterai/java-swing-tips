@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     // field.setSelectionColor(Color.GREEN);
     // field.setForeground(table.getSelectionForeground());
     field.setBackground(table.getSelectionBackground());
-    field.setBorder(BorderFactory.createEmptyBorder(1, 1, 1,1));
+    field.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     field.setComponentPopupMenu(new TextComponentPopupMenu());
 
     // DefaultCellEditor cellEditor = new DefaultCellEditor(field) {
