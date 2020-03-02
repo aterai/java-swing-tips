@@ -86,7 +86,7 @@ class IconTooltipItem extends JMenuItem {
   private static final Rectangle ICON_RECT = new Rectangle();
   private static final Rectangle TEXT_RECT = new Rectangle();
 
-  public IconTooltipItem(String text, Icon icon) {
+  protected IconTooltipItem(String text, Icon icon) {
     super(text, icon);
   }
 
