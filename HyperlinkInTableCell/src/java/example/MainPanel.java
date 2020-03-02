@@ -116,7 +116,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   // private static final Rectangle ICON_RECT = new Rectangle();
   // private static final Rectangle TEXT_RECT = new Rectangle();
   private int viewRowIndex = -1;
-  private int viewColumnIndex = -1; 
+  private int viewColumnIndex = -1;
   private boolean isRollover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
