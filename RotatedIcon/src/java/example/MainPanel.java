@@ -167,7 +167,7 @@ class QuadrantRotateIcon implements Icon {
       default:
         throw new AssertionError("Unknown QuadrantRotateIcon");
     }
-    g2.rotate(Math.toRadians(90 * rotate.getNumQuadrants()));
+    g2.rotate(Math.toRadians(90d * rotate.getNumQuadrants()));
     icon.paintIcon(c, g2, 0, 0);
     g2.dispose();
   }
