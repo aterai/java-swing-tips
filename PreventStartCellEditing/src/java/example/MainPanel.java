@@ -14,11 +14,10 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JRadioButton r1 = new JRadioButton("prevent KeyStroke autoStartsEdit");
     JRadioButton r2 = new JRadioButton("prevent mouse from starting edit");
     JRadioButton r3 = new JRadioButton("start cell editing only F2");
-    JRadioButton r4 = new JRadioButton("isCellEditable retrun false");
+    JRadioButton r4 = new JRadioButton("isCellEditable return false");
 
     String[] columnNames = {"CellEditable:false", "Integer", "String"};
     Object[][] data = {
