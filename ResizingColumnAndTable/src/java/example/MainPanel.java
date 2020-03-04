@@ -11,22 +11,21 @@ import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
-  private final JTable table = new JTable(100, 3) {
-    // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
-    // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
-    @Override public void doLayout() {
-      Optional.ofNullable(getTableHeader()).ifPresent(header -> {
-        if (Objects.isNull(header.getResizingColumn()) && getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
-          TableColumnModel tcm = getColumnModel();
-          header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
-        }
-      });
-      super.doLayout();
-    }
-  };
-
   private MainPanel() {
     super(new GridLayout(0, 1));
+    JTable table = new JTable(100, 3) {
+      // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
+      // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
+      @Override public void doLayout() {
+        Optional.ofNullable(getTableHeader()).ifPresent(header -> {
+          if (Objects.isNull(header.getResizingColumn()) && getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
+            TableColumnModel tcm = getColumnModel();
+            header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
+          }
+        });
+        super.doLayout();
+      }
+    };
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
     add(makeTitledPanel("Normal JTable.AUTO_RESIZE_LAST_COLUMN", new JTable(100, 3)));
     add(makeTitledPanel("Resize only last column when JTable resized", table));
