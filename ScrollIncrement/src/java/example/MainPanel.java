@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     StringBuilder buf = new StringBuilder();
-    IntStream.range(0, 100).forEach(i -> buf.append(i + LF));
+    IntStream.range(0, 100).forEach(i -> buf.append(i).append(LF));
 
     JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
