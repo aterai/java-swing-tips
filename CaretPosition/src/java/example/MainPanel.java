@@ -12,22 +12,22 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 public final class MainPanel extends JPanel {
-  private static final String LINESEPARATOR = "\n";
+  private static final String LS = "\n";
   private static final int LIMIT = 1000;
+  private final Timer timer = new Timer(200, null);
   private final JTextPane jtp = new JTextPane();
   private final JButton startButton = new JButton("Start");
   private final JButton stopButton = new JButton("Stop");
-  private final JButton clearButton = new JButton("Clear");
-  private final Timer timer;
 
   private MainPanel() {
     super(new BorderLayout());
     jtp.setEditable(false);
-    stopButton.setEnabled(false);
-
-    timer = new Timer(200, e -> append(LocalDateTime.now(ZoneId.systemDefault()).toString()));
+    timer.addActionListener(e -> append(LocalDateTime.now(ZoneId.systemDefault()).toString()));
     startButton.addActionListener(e -> timerStart());
     stopButton.addActionListener(e -> timerStop());
+    stopButton.setEnabled(false);
+
+    JButton clearButton = new JButton("Clear");
     clearButton.addActionListener(e -> {
       jtp.setText("");
       if (!timer.isRunning()) {
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
       text = str;
     }
     try {
-      doc.insertString(doc.getLength(), text + LINESEPARATOR, null);
+      doc.insertString(doc.getLength(), text + LS, null);
       jtp.setCaretPosition(doc.getLength());
     } catch (BadLocationException ex) {
       // should never happen
