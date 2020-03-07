@@ -150,9 +150,7 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
       tree.revalidate();
       p.translate(-r.x, -r.y);
       Component o = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-      if (o instanceof JButton) {
-        return true;
-      }
+      return o instanceof JButton;
     }
     return false;
   }
