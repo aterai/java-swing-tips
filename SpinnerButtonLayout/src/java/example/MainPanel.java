@@ -75,6 +75,12 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerLayout extends BorderLayout {
+  // // Java 9:
+  // private final Map<Object, Object> layoutMap = Map.of(
+  //   "Editor", "Center",
+  //   "Next", "East",
+  //   "Previous", "West"
+  // );
   private final Map<Object, Object> layoutMap;
 
   protected SpinnerLayout() {
