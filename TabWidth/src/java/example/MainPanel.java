@@ -16,30 +16,35 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 0, 10));
 
-    JTabbedPane tabbedPane = new JTabbedPane();
+    JTabbedPane tabbedPane = new JTabbedPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsTabbedPaneUI) {
+          setUI(new WindowsTabbedPaneUI() {
+            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+              return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+            }
+          });
+        } else {
+          setUI(new BasicTabbedPaneUI() {
+            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+              return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+            }
+          });
+        }
+      }
+    };
     Stream.of(new JTabbedPane(), tabbedPane).forEach(tab -> {
-      tab.addTab("aaaaaa", new JLabel("aaaaaaaaaaa"));
-      tab.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
-      tab.addTab("c", new JLabel("cccccccccc"));
+      tab.addTab("111111", new JLabel("JLabel 1"));
+      tab.addTab("22222222222222", new JLabel("JLabel 2"));
+      tab.addTab("3", new JLabel("JLabel 3"));
       add(tab);
     });
 
-    if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-      tabbedPane.setUI(new WindowsTabbedPaneUI() {
-        @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-          return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
-        }
-      });
-    } else {
-      tabbedPane.setUI(new BasicTabbedPaneUI() {
-        @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-          return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
-        }
-      });
-    }
     setPreferredSize(new Dimension(320, 240));
   }
-  // // TEST
+
+  // // TEST:
   // public String makeTitle(String title) {
   //   return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
   // }
