@@ -5,25 +5,22 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTree tree1 = new JTree();
-  private final JTree tree2 = new JTree();
-  private final List<JTree> list = Arrays.asList(tree1, tree2);
-  private final JCheckBox check = new JCheckBox("setRootVisible", true);
-
   private MainPanel() {
     super(new BorderLayout());
-
+    JTree tree1 = new JTree();
     tree1.setShowsRootHandles(true);
+
+    JTree tree2 = new JTree();
     tree2.setShowsRootHandles(false);
 
+    JCheckBox check = new JCheckBox("setRootVisible", true);
     check.addActionListener(e -> {
       boolean flg = ((JCheckBox) e.getSource()).isSelected();
-      list.forEach(tree -> tree.setRootVisible(flg));
+      tree1.setRootVisible(flg);
+      tree2.setRootVisible(flg);
     });
 
     JPanel p = new JPanel(new GridLayout(1, 2));
