@@ -14,7 +14,6 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPopupMenu popup = new JPopupMenu();
     initMenu(popup);
 
@@ -68,7 +67,7 @@ class ExitAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Component root = null;
+    Component root;
     Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
     if (parent instanceof JPopupMenu) {
       JPopupMenu popup = (JPopupMenu) parent;
