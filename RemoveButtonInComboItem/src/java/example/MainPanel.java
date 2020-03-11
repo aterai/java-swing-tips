@@ -66,9 +66,7 @@ public final class MainPanel extends JPanel {
     c.insets = new Insets(5, 5, 5, 5);
     c.weightx = 1d;
     c.gridx = GridBagConstraints.REMAINDER;
-    list.forEach(cmp -> {
-      p.add(cmp, c);
-    });
+    list.forEach(cmp -> p.add(cmp, c));
     return p;
   }
 
