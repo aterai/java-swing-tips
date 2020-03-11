@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -208,13 +209,8 @@ class LabelTransferable implements Transferable {
   @Override public DataFlavor[] getTransferDataFlavors() {
     List<DataFlavor> list = new ArrayList<>();
     if (Objects.nonNull(ss)) {
-      for (DataFlavor f: ss.getTransferDataFlavors()) {
-        list.add(f);
-      }
+      Collections.addAll(list, ss.getTransferDataFlavors());
     }
-    // for (DataFlavor f: dh.getTransferDataFlavors()) {
-    //   list.add(f);
-    // }
     list.add(localObjectFlavor);
     // return list.toArray(dh.getTransferDataFlavors());
     return list.toArray(new DataFlavor[0]);
