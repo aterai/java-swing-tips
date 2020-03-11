@@ -106,7 +106,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    */
   @Override protected void configureEditor() {
     // super.configureEditor();
-    // Should be in the same state as the combobox
+    // Should be in the same state as the JComboBox
     editor.setEnabled(comboBox.isEnabled());
     editor.setFocusable(comboBox.isFocusable());
     editor.setFont(comboBox.getFont());
@@ -219,7 +219,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    * {@inheritDoc}
    */
   @Override protected ListCellRenderer<SearchEngine> createRenderer() {
-    return new SearchEngineListCellRenderer<SearchEngine>();
+    return new SearchEngineListCellRenderer<>();
   }
 
   /**
