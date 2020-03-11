@@ -34,15 +34,15 @@ public final class MainPanel extends JPanel {
     spinner.addChangeListener(e -> {
       JSpinner source = (JSpinner) e.getSource();
       Integer newValue = (Integer) source.getValue();
-      slider.setValue((int) newValue.intValue() / 10);
+      slider.setValue(newValue / 10);
     });
     spinner.addMouseWheelListener(e -> {
       JSpinner source = (JSpinner) e.getComponent();
       SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
       Integer oldValue = (Integer) source.getValue();
-      int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
-      int max = ((Integer) model.getMaximum()).intValue(); // 1000
-      int min = ((Integer) model.getMinimum()).intValue(); // 0
+      int intValue = oldValue - e.getWheelRotation() * model.getStepSize().intValue();
+      int max = (int) model.getMaximum(); // 1000
+      int min = (int) model.getMinimum(); // 0
       if (min <= intValue && intValue <= max) {
         source.setValue(intValue);
       }
