@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-
     JTextField textField = new JTextField("B");
     JButton button = new JButton("Button");
     button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
@@ -24,12 +23,11 @@ public final class MainPanel extends JPanel {
       // button.setMnemonic(str.charAt(0));
       button.setMnemonic(str.codePointAt(0));
     });
+
     JButton btnClearMnemonic = new JButton("clear Mnemonic");
-    btnClearMnemonic.addActionListener(e -> {
-      button.setMnemonic(0);
-      // button.setMnemonic('\u0000');
-      // button.setMnemonic('\0');
-    });
+    btnClearMnemonic.addActionListener(e -> button.setMnemonic(0));
+    // btnClearMnemonic.addActionListener(e -> button.setMnemonic('\u0000'));
+    // btnClearMnemonic.addActionListener(e -> button.setMnemonic('\0'));
 
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("setMnemonic"));
