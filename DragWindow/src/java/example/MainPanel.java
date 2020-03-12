@@ -31,6 +31,7 @@ public final class MainPanel {
         ex.printStackTrace();
         splashScreen.setVisible(false);
         splashScreen.dispose();
+        Thread.currentThread().interrupt();
       }
     }).start();
   }
