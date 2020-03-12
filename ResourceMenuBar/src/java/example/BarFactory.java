@@ -142,7 +142,7 @@ public final class BarFactory {
   // }
 
   public JButton getToolButton(String key) {
-    return (JButton) toolButtons.get(key);
+    return toolButtons.get(key);
   }
 
   public JMenuBar createMenuBar() {
