@@ -137,9 +137,9 @@ class CalendarViewTableModel extends DefaultTableModel {
   protected CalendarViewTableModel(LocalDate date) {
     super();
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1); // date.with(TemporalAdjusters.firstDayOfMonth());
-    // int dowv = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
-    int dowv = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(dowv);
+    // int v = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
+    int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(v);
   }
 
   @Override public Class<?> getColumnClass(int column) {
@@ -160,7 +160,7 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 
   @Override public Object getValueAt(int row, int column) {
-    return startDate.plusDays(row * getColumnCount() + column);
+    return startDate.plusDays((long) row * getColumnCount() + column);
   }
 
   @Override public boolean isCellEditable(int row, int column) {
