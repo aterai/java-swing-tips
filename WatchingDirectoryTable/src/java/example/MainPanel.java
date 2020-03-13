@@ -102,6 +102,7 @@ public final class MainPanel extends JPanel {
         key = watcher.take();
       } catch (InterruptedException ex) {
         EventQueue.invokeLater(() -> append("Interrupted"));
+        Thread.currentThread().interrupt();
         return;
       }
 
