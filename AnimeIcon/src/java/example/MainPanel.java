@@ -83,6 +83,7 @@ public class MainPanel extends JPanel {
           appendLine(isCancelled() ? "Cancelled" : get());
         } catch (InterruptedException ex) {
           appendLine("Interrupted");
+          Thread.currentThread().interrupt();
         } catch (ExecutionException ex) {
           appendLine("Error");
         }
