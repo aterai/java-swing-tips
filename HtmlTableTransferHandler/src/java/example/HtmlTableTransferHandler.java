@@ -48,7 +48,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
 
   protected void appendTag(StringBuilder htmlBuf, Object obj) {
     if (obj instanceof Date) {
-      String v = Objects.toString((Date) obj, "");
+      String v = Objects.toString(obj, "");
       htmlBuf.append("  <td><time>" + v + "</time></td>\n");
     } else if (obj instanceof Color) {
       int rgb = ((Color) obj).getRGB() & 0xFF_FF_FF;
