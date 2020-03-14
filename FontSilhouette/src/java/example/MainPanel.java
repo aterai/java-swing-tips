@@ -14,8 +14,8 @@ import java.io.Serializable;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final int SIZE = 50;
-  private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
+  private static final Dimension SIZE = new Dimension(50, 50);
+  private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE.width);
 
   private MainPanel() {
     super(new GridLayout(4, 6, 0, 0));
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     l.setOpaque(true);
     boolean isFirstHalf = i < 6;
     boolean isEven = i % 2 == 0;
-    if (isFirstHalf ? isEven : !isEven) {
+    if (isFirstHalf == isEven) {
       l.setForeground(Color.BLACK);
       l.setBackground(Color.WHITE);
     } else {
@@ -81,9 +81,9 @@ class SilhouetteIcon implements Icon, Serializable {
   private static final Color PIECE_PAINT = new Color(0x96_64_14);
   private final Font font;
   private final String str;
-  private final int size;
+  private final Dimension size;
 
-  protected SilhouetteIcon(Font font, String str, int size) {
+  protected SilhouetteIcon(Font font, String str, Dimension size) {
     this.font = font;
     this.str = str;
     this.size = size;
@@ -139,7 +139,7 @@ class SilhouetteIcon implements Icon, Serializable {
     Rectangle r = shape.getBounds();
     int sx = getIconWidth() - r.width;
     int sy = getIconHeight() - r.height;
-    AffineTransform at = AffineTransform.getTranslateInstance(-r.x + sx / 2, -r.y + sy / 2);
+    AffineTransform at = AffineTransform.getTranslateInstance(-r.x + sx / 2d, -r.y + sy / 2d);
     Shape shapeCentered = at.createTransformedShape(shape);
 
     Shape silhouette = getOuterShape(shapeCentered);
@@ -158,10 +158,10 @@ class SilhouetteIcon implements Icon, Serializable {
   }
 
   @Override public int getIconWidth() {
-    return size;
+    return size.width;
   }
 
   @Override public int getIconHeight() {
-    return size;
+    return size.height;
   }
 }
