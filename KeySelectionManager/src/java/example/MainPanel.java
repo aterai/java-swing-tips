@@ -28,14 +28,13 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
 
     JComboBox<String> combo2 = new JComboBox<>(makeModel());
-    combo2.setKeySelectionManager(new JComboBox.KeySelectionManager() {
-      // Java 10: @Override public int selectionForKey(char key, ComboBoxModel<?> model) {
-      // Java 9:
-      @SuppressWarnings("rawtypes")
-      @Override public int selectionForKey(char key, ComboBoxModel model) {
-        return -1;
-      }
-    });
+    combo2.setKeySelectionManager((key, model) -> -1);
+    // combo2.setKeySelectionManager(new JComboBox.KeySelectionManager() {
+    //   @Override public int selectionForKey(char key, ComboBoxModel model) {
+    //     return -1;
+    //   }
+    // });
+
     box.add(makeTitledPanel("disable KeySelectionManager#selectionForKey(...)", combo2));
 
     add(box, BorderLayout.NORTH);
