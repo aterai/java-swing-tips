@@ -50,9 +50,8 @@ public final class MainPanel extends JPanel {
 
     Toolkit.getDefaultToolkit().setDynamicLayout(false);
     JCheckBox check = new JCheckBox("Toolkit.getDefaultToolkit().setDynamicLayout: ");
-    check.addActionListener(e -> {
-      Toolkit.getDefaultToolkit().setDynamicLayout(((JCheckBox) e.getSource()).isSelected());
-    });
+    check.addActionListener(e ->
+        Toolkit.getDefaultToolkit().setDynamicLayout(((JCheckBox) e.getSource()).isSelected()));
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(checkbox);
