@@ -80,7 +80,7 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
       TextLayout tl = new TextLayout("Password", font, frc);
       g2.setPaint(hasFocus() ? Color.GRAY : Color.BLACK);
       int baseline = getBaseline(getWidth(), getHeight());
-      tl.draw(g2, i.left + 1, baseline);
+      tl.draw(g2, i.left + 1f, baseline);
       g2.dispose();
     }
   }
