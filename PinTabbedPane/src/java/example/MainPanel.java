@@ -12,19 +12,8 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-  // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-  private final List<String> icons = Arrays.asList(
-      "wi0009-16.png",
-      "wi0054-16.png",
-      "wi0062-16.png",
-      "wi0063-16.png",
-      "wi0124-16.png",
-      "wi0126-16.png");
-
   private MainPanel() {
     super(new BorderLayout());
-
     // if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
     //   tabbedPane.setUI(new WindowsTabbedPaneUI() {
     //     @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
@@ -55,6 +44,12 @@ public final class MainPanel extends JPanel {
     //     // }
     //   });
     // }
+
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
+    List<String> icons = Arrays.asList(
+        "wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
+        "wi0063-16.png", "wi0124-16.png", "wi0126-16.png");
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(getClass().getResource(s)), new JLabel(s), s));
     tabbedPane.setComponentPopupMenu(new PinTabPopupMenu());
     add(tabbedPane);
@@ -105,6 +100,7 @@ class PinTabPopupMenu extends JPopupMenu {
       // c.revalidate();
     }
   });
+
   // private final Action newTabAction = new AbstractAction("new tab") {
   //   @Override public void actionPerformed(ActionEvent e) {
   //     JTabbedPane t = (JTabbedPane) getInvoker();
@@ -114,59 +110,41 @@ class PinTabPopupMenu extends JPopupMenu {
   //     t.setTabComponentAt(count, new ButtonTabComponent(t));
   //   }
   // };
-  private final Action closeAllAction = new AbstractAction("close all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      // t.removeAll();
-      for (int i = t.getTabCount() - 1; i >= 0; i--) {
-        String s = t.getTitleAt(i);
-        if (!isEmpty(s)) {
-          t.removeTabAt(i);
-        }
-      }
-    }
-  };
 
   protected PinTabPopupMenu() {
     super();
     add(pinTabMenuItem);
     addSeparator();
-    add(closeAllAction);
+    add("close all").addActionListener(e -> {
+      JTabbedPane t = (JTabbedPane) getInvoker();
+      for (int i = t.getTabCount() - 1; i >= 0; i--) {
+        if (!isEmpty(t.getTitleAt(i))) {
+          t.removeTabAt(i);
+        }
+      }
+    });
   }
 
   protected static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
     int i;
     if (dir) {
       for (i = 0; i < idx; i++) {
-        String s = t.getTitleAt(i);
-        if (isEmpty(s)) {
-          continue;
-        } else {
+        if (!isSelectedPinTab(t, i)) {
           break;
         }
       }
     } else {
       for (i = t.getTabCount() - 1; i > idx; i--) {
-        String s = t.getTitleAt(i);
-        if (isEmpty(s)) {
+        if (isSelectedPinTab(t, i)) {
           break;
-        } else {
-          continue;
         }
       }
     }
     return i;
   }
 
-  private static boolean isPinTab(JTabbedPane t, int x, int y) {
-    int i = t.indexAtLocation(x, y);
-    if (i >= 0 && i == t.getSelectedIndex()) {
-      String s = t.getTitleAt(i);
-      if (isEmpty(s)) {
-        return true;
-      }
-    }
-    return false;
+  private static boolean isSelectedPinTab(JTabbedPane t, int idx) {
+    return idx >= 0 && idx == t.getSelectedIndex() && isEmpty(t.getTitleAt(idx));
   }
 
   protected static boolean isEmpty(String s) {
@@ -176,8 +154,9 @@ class PinTabPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTabbedPane) {
       JTabbedPane t = (JTabbedPane) c;
-      pinTabMenuItem.setEnabled(t.indexAtLocation(x, y) >= 0);
-      pinTabMenuItem.setSelected(isPinTab(t, x, y));
+      int idx = t.indexAtLocation(x, y);
+      pinTabMenuItem.setEnabled(idx >= 0);
+      pinTabMenuItem.setSelected(isSelectedPinTab(t, idx));
       super.show(c, x, y);
     }
   }
