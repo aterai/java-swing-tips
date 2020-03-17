@@ -84,6 +84,7 @@ public final class MainPanel extends JPanel {
     } catch (InterruptedException ex) {
       System.err.println("interrupted waiting for pixels!");
       ex.printStackTrace();
+      Thread.currentThread().interrupt();
       return Optional.empty();
     }
     if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
