@@ -13,7 +13,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea("ComponentPopupMenu Test\naaaaaaaaaaa\nbbbbbbbbbbbbbb\ncccccccccccccc");
+    JTextArea textArea = new JTextArea("ComponentPopupMenu Test\n111111111111\n22222222\n33333333");
     textArea.setComponentPopupMenu(new TextComponentPopupMenu());
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
@@ -81,19 +81,22 @@ public final class MainPanel extends JPanel {
 class TextComponentPopupMenu extends JPopupMenu {
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
-  private final Action pasteAction = new DefaultEditorKit.PasteAction();
   private final JMenuItem deleteItem;
 
   protected TextComponentPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);
-    add(pasteAction);
+    add(new DefaultEditorKit.PasteAction());
     addSeparator();
     deleteItem = add("delete");
     deleteItem.addActionListener(e -> ((JTextComponent) getInvoker()).replaceSelection(null));
     addSeparator();
-    add("select all").addActionListener(e -> ((JTextComponent) getInvoker()).selectAll());
+    add(DefaultEditorKit.selectAllAction).addActionListener(e -> ((JTextComponent) getInvoker()).selectAll());
+    // add(DefaultEditorKit.selectAllAction).addActionListener(e -> {
+    //   JTextComponent tc = (JTextComponent) getInvoker();
+    //   tc.getActionMap().get(DefaultEditorKit.selectAllAction).actionPerformed(e);
+    // });
   }
 
   @Override public void show(Component c, int x, int y) {
