@@ -75,9 +75,9 @@ public class CloseTabIcon implements Icon {
     // // try {
     // //   JComponent.putClientProperty("isClosable", new Boolean(false));
     // if (c instanceof JTabbedPane) {
-    //   JTabbedPane tabbedpane = (JTabbedPane) c;
-    //   int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
-    //   JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
+    //   JTabbedPane tabbedPane = (JTabbedPane) c;
+    //   int tabNumber = tabbedPane.getUI().tabForCoordinate(tabbedpane, x, y);
+    //   JComponent curPanel = (JComponent) tabbedPane.getComponentAt(tabNumber);
     //   Object prop = curPanel.getClientProperty("isClosable");
     //   if (Objects.nonNull(prop)) {
     //     doPaintCloseIcon = ((Boolean) prop).booleanValue();

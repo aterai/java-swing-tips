@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
-    tabbedPane.addTab("aaa", new JLabel("aaaaaaaa"));
-    tabbedPane.addTab("bbb", new JLabel("bbbbbbbbb"));
-    tabbedPane.addTab("c", new JLabel("ccc"));
-    tabbedPane.addTab("dddd", new JLabel("ddddddd"));
+    tabbedPane.addTab("aaa", new JLabel("JLabel A"));
+    tabbedPane.addTab("bb", new JLabel("JLabel B"));
+    tabbedPane.addTab("c", new JLabel("JLabel C"));
+    tabbedPane.addTab("dd dd", new JLabel("JLabel D"));
     return tabbedPane;
   }
 

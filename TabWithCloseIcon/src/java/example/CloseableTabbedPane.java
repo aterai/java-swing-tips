@@ -61,13 +61,13 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
   //  */
   // public CloseableTabbedPane() {
   //   super();
-  //   init(SwingUtilities.LEFT);
+  //   init(SwingConstants.LEFT);
   // }
   //
   // /**
   //  * Creates a new instance of <code>CloseableTabbedPane</code>.
   //  * @param horizontalTextPosition  the horizontal position of the text (e.g.
-  //  * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+  //  * SwingConstants.TRAILING or SwingConstants.LEFT)
   //  */
   // public CloseableTabbedPane(int horizontalTextPosition) {
   //   super();
@@ -157,7 +157,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
   // }
 
   /**
-   * Adds an <code>CloseableTabbedPaneListener</code> to the tabbedpane.
+   * Adds an <code>CloseableTabbedPaneListener</code> to the JTabbedPane.
    * @param l  the <code>CloseableTabbedPaneListener</code> to be added
    */
   public void addCloseableTabbedPaneListener(CloseableTabbedPaneListener l) {
@@ -165,7 +165,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
   }
 
   /**
-   * Removes an <code>CloseableTabbedPaneListener</code> from the tabbedpane.
+   * Removes an <code>CloseableTabbedPaneListener</code> from the JTabbedPane.
    * @param l  the listener to be removed
    */
   public void removeCloseableTabbedPaneListener(CloseableTabbedPaneListener l) {
@@ -178,7 +178,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
    * @return all of the <code>SearchListener</code>s added or an empty array if no listeners have been added
    */
   public CloseableTabbedPaneListener[] getCloseableTabbedPaneListener() {
-    return (CloseableTabbedPaneListener[]) eventListenerList.getListeners(CloseableTabbedPaneListener.class);
+    return eventListenerList.getListeners(CloseableTabbedPaneListener.class);
   }
 
   /**
@@ -393,7 +393,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizontalTextPosition = SwingUtilities.LEFT;
+  private int horizontalTextPosition = SwingConstants.LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -404,7 +404,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
-   * @param horizontalTextPosition  the horizontal position of the text (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
+   * @param horizontalTextPosition  the horizontal position of the text (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
    */
   protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
     super();
@@ -421,7 +421,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
    * @param tabRect  the tab boundaries
    * @param iconRect  the icon boundaries
    * @param textRect  the text boundaries
-   * @param isSelected true whether the tab is selected, false otherwise
+   * @param isSelected  true whether the tab is selected, false otherwise
    */
   @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
     textRect.setLocation(0, 0);
@@ -465,7 +465,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizontalTextPosition = SwingUtilities.LEFT;
+  private int horizontalTextPosition = SwingConstants.LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -477,7 +477,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
    * @param horizontalTextPosition  the horizontal position of the text
-   *     (e.g. SwingUtilities.TRAILING or SwingUtilities.LEFT)
+   *     (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
    */
   protected CloseableTabbedPaneUI(int horizontalTextPosition) {
     super();
@@ -497,7 +497,6 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
    * @param isSelected  true whether the tab is selected, false otherwise
    */
   @Override protected void layoutLabel(int tabPlacement, FontMetrics metrics, int tabIndex, String title, Icon icon, Rectangle tabRect, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-    // textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
     textRect.setLocation(0, 0);
     iconRect.setLocation(0, 0);
 
