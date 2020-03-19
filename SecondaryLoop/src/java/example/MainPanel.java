@@ -36,6 +36,7 @@ public final class MainPanel extends JPanel {
           Thread.sleep(5000);
         } catch (InterruptedException ex) {
           msg = "Interrupted";
+          Thread.currentThread().interrupt();
         }
         append(msg);
         setInputBlock(false);
