@@ -21,9 +21,8 @@ public final class MainPanel extends JPanel {
         UIManager.put(key, isSelected());
       }
     };
-    preserveTopLevelSelectionCheck.addActionListener(e -> {
-      UIManager.put(key, ((JCheckBox) e.getSource()).isSelected());
-    });
+    preserveTopLevelSelectionCheck.addActionListener(e ->
+        UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(makeMenuBar()));
     add(preserveTopLevelSelectionCheck);
