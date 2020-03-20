@@ -148,6 +148,7 @@ public class MainPanel extends JPanel {
           text = isCancelled() ? "Cancelled" : get();
         } catch (InterruptedException ex) {
           text = "Interrupted";
+          Thread.currentThread().interrupt();
         } catch (ExecutionException ex) {
           ex.printStackTrace();
           text = "Error: " + ex.getMessage();
