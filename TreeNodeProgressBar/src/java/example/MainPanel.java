@@ -156,7 +156,10 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
     try {
       TreeNode n = get();
       tree.expandPath(new TreePath(model.getPathToRoot(n)));
-    } catch (InterruptedException | ExecutionException ex) {
+    } catch (InterruptedException ex) {
+      Toolkit.getDefaultToolkit().beep();
+      Thread.currentThread().interrupt();
+    } catch(ExecutionException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
