@@ -49,8 +49,11 @@ public final class MainPanel extends JPanel {
             } else {
               area.append(get() + "\n");
             }
-          } catch (InterruptedException | ExecutionException ex) {
+          } catch (InterruptedException ex) {
             area.append("Interrupted\n");
+            Thread.currentThread().interrupt();
+          } catch (ExecutionException ex){
+            area.append("ExecutionException\n");
           }
           area.setCaretPosition(area.getDocument().getLength());
         }
