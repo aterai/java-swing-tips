@@ -19,11 +19,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextPane textPane = new JTextPane();
 
-    makeFont(getClass().getResource("mona.ttf")).ifPresent(font -> {
-      // System.out.println(font.toString());
-      textPane.setFont(font.deriveFont(10f));
-      // textPane.setDocument(doc);
-    });
+    makeFont(getClass().getResource("mona.ttf"))
+        .ifPresent(font -> textPane.setFont(font.deriveFont(10f)));
 
     URL url = getClass().getResource("bar.utf8.txt");
     try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
