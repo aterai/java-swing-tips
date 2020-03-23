@@ -119,11 +119,8 @@ public final class MainPanel extends JPanel {
     button0.addActionListener(e -> bg.clearSelection());
 
     JButton button1 = new JButton("MONDAY");
-    button1.addActionListener(e -> {
-      Collections.list(bg.getElements()).stream().findFirst().ifPresent(b -> {
-        b.setSelected(!b.isSelected());
-      });
-    });
+    button1.addActionListener(e -> Collections.list(bg.getElements()).stream()
+        .findFirst().ifPresent(b -> b.setSelected(!b.isSelected())));
 
     p.add(button0);
     p.add(button1);
