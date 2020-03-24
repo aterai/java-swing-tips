@@ -16,26 +16,26 @@ public final class MainPanel extends JPanel {
     JLabel label = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
 
     ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-    AccessController.doPrivileged(new PrivilegedAction<Void>() {
-      @Override public Void run() {
-        try {
-          Field field;
-          if (System.getProperty("java.version").startsWith("1.6.0")) {
-            // https://community.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
-            // Class<?> clazz = Class.forName("javax.swing.PopupFactory"); // errorprone: LiteralClassName
-            // field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-            field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
-          } else { // JDK 1.7.0, 1.8.0
-            Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
-            field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
-          }
-          field.setAccessible(true);
-          label.putClientProperty(field.get(null), Boolean.TRUE);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
-          throw new UnsupportedOperationException(ex);
-        }
-        return null;
+    AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+      try {
+        // Field field;
+        // if (System.getProperty("java.version").startsWith("1.6.0")) {
+        //   // https://community.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
+        //   // Class<?> clazz = Class.forName("javax.swing.PopupFactory"); // ErrorProne: LiteralClassName
+        //   // field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+        //   field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
+        // } else {
+        //   Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
+        //   field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+        // }
+        Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
+        Field field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+        field.setAccessible(true);
+        label.putClientProperty(field.get(null), Boolean.TRUE);
+      } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
+        throw new UnsupportedOperationException(ex);
       }
+      return null;
     });
 
     JComponent glass = new JPanel(new BorderLayout()) {
