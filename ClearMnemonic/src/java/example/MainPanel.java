@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    JTextField textField = new JTextField("B");
+    JTextField textField = new JTextField("B", 1);
     JButton button = new JButton("Button");
     button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
 
