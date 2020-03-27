@@ -10,18 +10,17 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-  private final List<String> icons = Arrays.asList(
-      "wi0009-16.png",
-      "wi0054-16.png",
-      "wi0062-16.png",
-      "wi0063-16.png",
-      "wi0124-16.png",
-      "wi0126-16.png");
-
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
+    List<String> icons = Arrays.asList(
+        "wi0009-16.png",
+        "wi0054-16.png",
+        "wi0062-16.png",
+        "wi0063-16.png",
+        "wi0124-16.png",
+        "wi0126-16.png");
     icons.forEach(s -> {
       Icon icon = new ImageIcon(getClass().getResource(s));
       ShrinkLabel label = new ShrinkLabel(s, icon);
@@ -39,11 +38,11 @@ public final class MainPanel extends JPanel {
     if (tp == SwingConstants.LEFT || tp == SwingConstants.RIGHT) {
       return;
     }
-    int sidx = tabs.getSelectedIndex();
+    int idx = tabs.getSelectedIndex();
     for (int i = 0; i < tabs.getTabCount(); i++) {
       Component c = tabs.getTabComponentAt(i);
       if (c instanceof ShrinkLabel) {
-        ((ShrinkLabel) c).setSelected(i == sidx);
+        ((ShrinkLabel) c).setSelected(i == idx);
       }
     }
   }
