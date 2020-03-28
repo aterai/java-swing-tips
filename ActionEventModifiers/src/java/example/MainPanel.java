@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
         boolean shiftActive = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
         if (e.getKeyCode() == KeyEvent.VK_N && shiftActive) {
           // or: if (e.getKeyCode() == KeyEvent.VK_N && e.isShiftDown()) {
-          Toolkit.getDefaultToolkit().beep();
+          UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
         }
       }
     });

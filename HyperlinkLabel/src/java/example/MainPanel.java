@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     });
 
@@ -106,7 +106,7 @@ class UrlLabel extends JLabel {
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     handler = new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     };
     addMouseListener(handler);
