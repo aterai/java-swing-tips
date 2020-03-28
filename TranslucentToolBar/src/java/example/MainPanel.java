@@ -208,9 +208,8 @@ class ParentDispatchMouseListener extends MouseAdapter {
 
   private void dispatchMouseEvent(MouseEvent e) {
     Component src = e.getComponent();
-    Optional.ofNullable(SwingUtilities.getUnwrappedParent(src)).ifPresent(tgt -> {
-      tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
-    });
+    Optional.ofNullable(SwingUtilities.getUnwrappedParent(src)).ifPresent(tgt ->
+        tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt)));
   }
 }
 
