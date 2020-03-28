@@ -225,7 +225,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
       } catch (ParseException ex) {
         // PENDING: hmuller
         ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(ftf);
       }
       ftf.setHorizontalAlignment(SwingConstants.LEFT);
       ftf.setEditable(true);
