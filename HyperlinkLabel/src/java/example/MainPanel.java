@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
 
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
           }
         } catch (IOException | URISyntaxException ex) {
           ex.printStackTrace();
-          Toolkit.getDefaultToolkit().beep();
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
         }
       }
     };
