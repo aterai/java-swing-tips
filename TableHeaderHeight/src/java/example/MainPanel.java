@@ -48,14 +48,12 @@ public final class MainPanel extends JPanel {
     p.add(makeTitledPanel("Override getPreferredSize()", scroll));
 
     JButton button = new JButton("addColumn");
-    button.addActionListener(e -> {
-      Stream.of(table1, table2).forEach(t -> {
-        t.getColumnModel().addColumn(new TableColumn());
-        JTableHeader h = t.getTableHeader();
-        Dimension d = h.getPreferredSize();
-        System.out.println(d);
-      });
-    });
+    button.addActionListener(e -> Stream.of(table1, table2).forEach(t -> {
+      t.getColumnModel().addColumn(new TableColumn());
+      JTableHeader h = t.getTableHeader();
+      Dimension d = h.getPreferredSize();
+      System.out.println(d);
+    }));
 
     add(p);
     add(button, BorderLayout.SOUTH);
