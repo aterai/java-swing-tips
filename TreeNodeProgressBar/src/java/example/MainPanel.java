@@ -159,7 +159,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
     } catch (InterruptedException ex) {
       Toolkit.getDefaultToolkit().beep();
       Thread.currentThread().interrupt();
-    } catch(ExecutionException ex) {
+    } catch (ExecutionException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
