@@ -181,6 +181,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   protected boolean isRolloverCell(JTable table, int row, int column) {
     return !table.isEditing() && this.viewRowIndex == row && this.viewColumnIndex == column && this.isRollover;
   }
+
   // @see SwingUtilities2.pointOutsidePrefSize(...)
   // private static boolean pointInsidePrefSize(JTable table, Point p) {
   //   int row = table.rowAtPoint(p);
@@ -256,7 +257,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         }
       } catch (URISyntaxException | IOException ex) {
         ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }
   }
