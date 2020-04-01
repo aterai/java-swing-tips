@@ -71,7 +71,7 @@ class VerticalTitledBorder extends TitledBorder {
       super.paintBorder(c, g, x, y, width, height);
     } else {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      JLabel lbl = getLabel(c);
+      JLabel lbl = getTitleLabel(c);
       Dimension size = lbl.getPreferredSize();
       Insets insets = makeComponentBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
@@ -86,10 +86,10 @@ class VerticalTitledBorder extends TitledBorder {
         labelW = size.width;
       }
 
-      int ileft = edge + insets.left / 2 - labelH / 2;
-      if (ileft < edge) {
-        borderX -= ileft;
-        borderW += ileft;
+      int left = edge + insets.left / 2 - labelH / 2;
+      if (left < edge) {
+        borderX -= left;
+        borderW += left;
       }
       border.paintBorder(c, g, borderX, borderY, borderW, borderH);
 
@@ -109,7 +109,7 @@ class VerticalTitledBorder extends TitledBorder {
     String title = getTitle();
     if (Objects.nonNull(title) && !title.isEmpty()) {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      JLabel lbl = getLabel(c);
+      JLabel lbl = getTitleLabel(c);
       Dimension size = lbl.getPreferredSize();
       if (ins.left < size.height) {
         ins.left = size.height - edge;
@@ -123,7 +123,7 @@ class VerticalTitledBorder extends TitledBorder {
   }
 
   // Copied from TitledBorder
-  private Color getColor(Component c) {
+  private Color getTitleColor(Component c) {
     Color color = getTitleColor();
     if (Objects.nonNull(color)) {
       return color;
@@ -135,13 +135,15 @@ class VerticalTitledBorder extends TitledBorder {
     return Objects.nonNull(c) ? c.getForeground() : null;
   }
 
-  private JLabel getLabel(Component c) {
+  private JLabel getTitleLabel(Component c) {
     this.label.setText(getTitle());
     this.label.setFont(getFont(c));
-    this.label.setForeground(getColor(c));
-    this.label.setComponentOrientation(c.getComponentOrientation());
-    this.label.setEnabled(c.isEnabled());
-    this.label.setBackground(c.getBackground()); // ???
+    this.label.setForeground(getTitleColor(c));
+    if (Objects.nonNull(c)) {
+      this.label.setComponentOrientation(c.getComponentOrientation());
+      this.label.setEnabled(c.isEnabled());
+      this.label.setBackground(c.getBackground()); // ???
+    }
     return this.label;
   }
 
