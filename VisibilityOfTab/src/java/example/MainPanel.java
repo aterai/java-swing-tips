@@ -85,13 +85,11 @@ public final class MainPanel extends JPanel {
     });
 
     JButton button = new JButton("Remove");
-    button.addActionListener(e -> {
-      list.forEach(tabs -> {
-        if (tabs.getTabCount() > 0) {
-          tabs.removeTabAt(tabs.getTabCount() - 1);
-        }
-      });
-    });
+    button.addActionListener(e -> list.forEach(tabs -> {
+      if (tabs.getTabCount() > 0) {
+        tabs.removeTabAt(tabs.getTabCount() - 1);
+      }
+    }));
 
     add(p);
     add(button, BorderLayout.SOUTH);
