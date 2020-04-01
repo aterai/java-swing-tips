@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.AttributeSet;
@@ -32,7 +34,12 @@ public final class MainPanel extends JPanel {
       } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
         setElementColor(e.getSourceElement(), "blue");
       } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        Toolkit.getDefaultToolkit().beep();
+        try {
+          Desktop.getDesktop().browse(e.getURL().toURI());
+        } catch (URISyntaxException | IOException ex) {
+          ex.printStackTrace();
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+        }
       }
       // ??? call BasicTextUI#modelChanged() ???
       editor.setForeground(Color.WHITE);
