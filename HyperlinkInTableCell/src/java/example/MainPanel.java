@@ -239,7 +239,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         }
       } catch (URISyntaxException | IOException ex) {
         ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }
   }
