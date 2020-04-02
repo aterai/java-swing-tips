@@ -76,6 +76,7 @@ final class BrowserLauncher {
     /* Singleton */
   }
 
+  @SuppressWarnings("PMD.CyclomaticComplexity")
   public static void openUrl(String url) {
     String osName = System.getProperty("os.name");
     try {
@@ -101,7 +102,9 @@ final class BrowserLauncher {
           throw new UnsupportedOperationException("Could not find web browser");
         }
       }
-    } catch (IOException | InterruptedException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    } catch (IOException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
       Toolkit.getDefaultToolkit().beep();
       String msg = ERR_MSG + ":\n" + ex.getLocalizedMessage();
       JOptionPane.showMessageDialog(null, msg, "titlebar", JOptionPane.ERROR_MESSAGE);
