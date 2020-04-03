@@ -140,4 +140,11 @@ class IntegerInputVerifier extends InputVerifier {
     }
     return verified;
   }
+
+  // Java 9:
+  // @Override public boolean shouldYieldFocus(JComponent source, JComponent target) {
+  //   System.out.println("shouldYieldFocus");
+  //   target.setEnabled(isAllValid());
+  //   return super.shouldYieldFocus(source, target);
+  // }
 }
