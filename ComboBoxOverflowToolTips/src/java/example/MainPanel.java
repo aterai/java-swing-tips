@@ -73,16 +73,16 @@ public final class MainPanel extends JPanel {
           return c;
         });
       }
-
-      private JButton getArrowButton(Container combo) {
-        for (Component c: combo.getComponents()) {
-          if (c instanceof JButton) {
-            return (JButton) c;
-          }
-        }
-        return null;
-      }
     };
+  }
+
+  private static JButton getArrowButton(Container combo) {
+    for (Component c: combo.getComponents()) {
+      if (c instanceof JButton) {
+        return (JButton) c;
+      }
+    }
+    return null;
   }
 
   public static void main(String[] args) {
