@@ -88,18 +88,18 @@ class SiteListItemRenderer extends JEditorPane implements ListCellRenderer<SiteI
     this.setEditable(false);
     this.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        Toolkit.getDefaultToolkit().beep();
         System.out.println("You click the link with the URL " + e.getURL());
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends SiteItem> list, SiteItem item, int index, boolean isSelected, boolean cellHasFocus) {
     StringBuilder buf = new StringBuilder(100);
-    buf.append("<html><h1>" + item.name + "</h1><table>");
+    buf.append("<html><h1>").append(item.name).append("</h1><table>");
     for (int c = 0; c < item.link.size(); c++) {
       String url = item.link.get(c);
-      buf.append("<tr><td><a href='" + url + "'>" + url + "</a></td></tr>");
+      buf.append("<tr><td><a href='").append(url).append("'>").append(url).append("</a></td></tr>");
     }
     buf.append("</table></html>");
     this.setText(buf.toString());
