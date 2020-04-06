@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -81,8 +82,8 @@ public final class MainPanel extends JPanel {
 
   private static void configureSpinnerButtons(Container comp, UIDefaults d) {
     for (Component c: comp.getComponents()) {
-      String name = c.getName();
-      if (name.endsWith("Button")) {
+      String name = Objects.toString(c.getName(), "");
+      if (c instanceof JButton && name.endsWith("Button")) {
         ((JButton) c).putClientProperty("Nimbus.Overrides", d);
       } else if (c instanceof Container) {
         configureSpinnerButtons((Container) c, d);
