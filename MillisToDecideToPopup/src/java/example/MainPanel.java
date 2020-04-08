@@ -97,6 +97,7 @@ public final class MainPanel extends JPanel {
             area.append(text + "\n");
           } catch (InterruptedException ex) {
             area.append("Interrupted\n");
+            Thread.currentThread().interrupt();
           } catch (ExecutionException ex) {
             ex.printStackTrace();
             area.append(String.format("Error: %s%n", ex.getMessage()));
