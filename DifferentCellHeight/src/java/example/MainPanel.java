@@ -63,8 +63,8 @@ class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
   // private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()), 2);
   // private static final Border NORMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
-  private Border noFocusBorder;
-  private Border focusBorder;
+  private transient Border noFocusBorder;
+  private transient Border focusBorder;
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     // setLineWrap(true);
