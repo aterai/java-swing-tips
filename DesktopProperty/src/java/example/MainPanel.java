@@ -14,14 +14,14 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private final String[] columnNames = {"Name", "Class", "Value"};
   private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
-  private final JTable table = new JTable(model) {
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-  };
 
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(model) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
     table.setAutoCreateRowSorter(true);
     // for (String s: (String[]) Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
     PropertyChangeListener l = this::initModel;
