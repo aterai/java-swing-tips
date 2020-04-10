@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JList<String> makeList(ListModel<String> model, boolean hasTextAreaRenderer) {
-    return new JList<String>(model) {
+  private static <E> JList<E> makeList(ListModel<E> model, boolean hasTextAreaRenderer) {
+    return new JList<E>(model) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
