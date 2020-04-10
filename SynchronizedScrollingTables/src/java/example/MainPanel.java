@@ -11,36 +11,34 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int FIXED_COLUMNRANGE = 2;
-  // <blockquote cite="FixedColumnExample.java">
-  // @auther Nobuo Tamemasa
+  public static final int FIXED_COLUMN_RANGE = 2;
   private static final String ES = "";
-  private final Object[][] data = {
-    {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
-    {3, 33,  ES,  ES, "C"}, {4,  1, ES,  ES, ES},
-    {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
-  };
-  private final String[] columnNames = {"1", "2", "a", "b", "c"};
-  // </blockquote>
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column < FIXED_COLUMNRANGE ? Integer.class : Object.class;
-    }
-  };
-  private final JTable table;
 
   private MainPanel() {
     super(new BorderLayout());
+    // <blockquote cite="FixedColumnExample.java">
+    // @author Nobuo Tamemasa
+    Object[][] data = {
+        {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
+        {3, 33,  ES,  ES, "C"}, {4,  1, ES,  ES, ES},
+        {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
+    };
+    String[] columnNames = {"1", "2", "a", "b", "c"};
+    // </blockquote>
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column < FIXED_COLUMN_RANGE ? Integer.class : Object.class;
+      }
+    };
 
     JTable leftTable = makeTable(model);
-    table = makeTable(model);
-
+    JTable table = makeTable(model);
     table.setAutoCreateRowSorter(true);
     leftTable.setRowSorter(table.getRowSorter());
     leftTable.setSelectionModel(table.getSelectionModel());
 
     for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-      if (i < FIXED_COLUMNRANGE) {
+      if (i < FIXED_COLUMN_RANGE) {
         table.removeColumn(table.getColumnModel().getColumn(i));
         leftTable.getColumnModel().getColumn(i).setResizable(false);
       } else {

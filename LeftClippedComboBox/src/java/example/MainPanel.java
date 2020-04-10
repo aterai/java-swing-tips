@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
       private String getLeftClippedText(String text, FontMetrics fm, int availableWidth) {
         // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
         // @title Left Dot Renderer
-        // @auther Rob Camick
+        // @author Rob Camick
         // FontMetrics fm = getFontMetrics(getFont());
         // if (fm.stringWidth(text) > availableWidth) {
         //   String dots = "...";

@@ -12,36 +12,36 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  public static final int FIXEDCOLUMN_RANGE = 2;
-  // <blockquote cite="FixedColumnExample.java">
-  // @auther Nobuo Tamemasa
+  public static final int FIXED_COLUMN_RANGE = 2;
   private static final String ES = "";
-  private final Object[][] data = {
-    {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
-    {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
-    {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
-    {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
-    {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
-    {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
-  };
-  private final String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
-  // </blockquote>
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column < FIXEDCOLUMN_RANGE ? Integer.class : Object.class;
-    }
-  };
-  private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  private final JButton addButton = new JButton("add");
 
   private MainPanel() {
     super(new BorderLayout());
+    // <blockquote cite="FixedColumnExample.java">
+    // @author Nobuo Tamemasa
+    Object[][] data = {
+        {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
+        {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
+        {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
+        {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
+        {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
+        {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
+    };
+    String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
+    // </blockquote>
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column < FIXED_COLUMN_RANGE ? Integer.class : Object.class;
+      }
+    };
+    RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+
     JTable fixedTable = new JTable(model);
     JTable table = new JTable(model);
     fixedTable.setSelectionModel(table.getSelectionModel());
 
     for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-      if (i < FIXEDCOLUMN_RANGE) {
+      if (i < FIXED_COLUMN_RANGE) {
         table.removeColumn(table.getColumnModel().getColumn(i));
         fixedTable.getColumnModel().getColumn(i).setResizable(false);
       } else {
@@ -72,13 +72,14 @@ public final class MainPanel extends JPanel {
     scroll.getRowHeader().setBackground(Color.WHITE);
 
     // <blockquote cite="https://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
-    // @auther Rob Camick
+    // @author Rob Camick
     scroll.getRowHeader().addChangeListener(e -> {
       JViewport viewport = (JViewport) e.getSource();
       scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
     });
     // </blockquote>
 
+    JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
       sorter.setSortKeys(null);
       IntStream.range(0, 100).mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i}).forEach(model::addRow);
