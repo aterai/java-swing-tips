@@ -23,15 +23,16 @@ public final class MainPanel extends JPanel {
       s.setPaintLabels(true);
     });
 
-    JCheckBox check = new JCheckBox("Slider.onlyLeftMouseButtonDrag") {
+    String key = "Slider.onlyLeftMouseButtonDrag";
+    JCheckBox check = new JCheckBox(key) {
       @Override public void updateUI() {
         super.updateUI();
-        setSelected(UIManager.getLookAndFeelDefaults().getBoolean("Slider.onlyLeftMouseButtonDrag"));
+        setSelected(UIManager.getLookAndFeelDefaults().getBoolean(key));
       }
     };
     check.addActionListener(e -> {
       boolean f = ((JCheckBox) e.getSource()).isSelected();
-      UIManager.put("Slider.onlyLeftMouseButtonDrag", f);
+      UIManager.put(key, f);
     });
 
     Box box1 = Box.createHorizontalBox();
