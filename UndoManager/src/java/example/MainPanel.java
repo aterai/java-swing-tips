@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -16,10 +17,10 @@ import javax.swing.undo.UndoManager;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTextField field1 = new JTextField("aaaaaaaaa");
+    JTextField field1 = new JTextField("111111111");
     initUndoRedo(field1);
 
-    JTextField field2 = new JTextField("bbbbbbbbb");
+    JTextField field2 = new JTextField("222222222");
     initUndoRedo(field2);
 
     add(makeTitledPanel("undo:Ctrl-z, redo:Ctrl-y", field1));
@@ -29,16 +30,20 @@ public final class MainPanel extends JPanel {
   }
 
   private static void initUndoRedo(JTextComponent tc) {
+    String undoAction = "undo";
+    String redoAction = "redo";
+
     UndoManager manager = new UndoManager();
     tc.getDocument().addUndoableEditListener(manager);
-    tc.getActionMap().put("undo", new UndoAction(manager));
-    tc.getActionMap().put("redo", new RedoAction(manager));
+    tc.getActionMap().put(undoAction, new UndoAction(manager));
+    tc.getActionMap().put(redoAction, new RedoAction(manager));
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), "undo");
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), "redo");
+    InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoAction);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoAction);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), redoAction);
   }
 
   private static class UndoAction extends AbstractAction {
@@ -53,8 +58,7 @@ public final class MainPanel extends JPanel {
       try {
         undoManager.undo();
       } catch (CannotUndoException ex) {
-        // ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     }
   }
@@ -71,7 +75,7 @@ public final class MainPanel extends JPanel {
       try {
         undoManager.redo();
       } catch (CannotRedoException ex) {
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     }
   }
