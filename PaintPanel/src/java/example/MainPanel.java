@@ -55,6 +55,7 @@ public final class MainPanel extends JPanel {
 //         p.setLocation(e.getPoint());
 //         repaint();
 //       }
+//
 //       @Override public void mousePressed(MouseEvent e) {
 //         startPoint.setLocation(e.getPoint());
 //       }
@@ -62,6 +63,7 @@ public final class MainPanel extends JPanel {
 //     addMouseMotionListener(handler);
 //     addMouseListener(handler);
 //   }
+//
 //   @Override protected void paintComponent(Graphics g) {
 //     // super.paintComponent(g);
 //     Graphics2D g2 = (Graphics2D) g.create();
@@ -95,6 +97,7 @@ public final class MainPanel extends JPanel {
 //         repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); // (3.0 / 2) = 1.5 < 2
 //         startPoint.setLocation(p);
 //       }
+//
 //       @Override public void mousePressed(MouseEvent e) {
 //         startPoint.setLocation(e.getPoint());
 //         // if (Objects.isNull(offImage)) { // resized
@@ -106,10 +109,12 @@ public final class MainPanel extends JPanel {
 //     addMouseListener(handler);
 //     offImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 //   }
+//
 //   @Override protected void paintComponent(Graphics g) {
 //     super.paintComponent(g);
 //     g.drawImage(offImage, 0, 0, this);
 //   }
+//
 //   private Rectangle getRepaintRectangle(Point srcPoint, Point destPoint) {
 //     polygon.reset();
 //     polygon.addPoint(srcPoint.x, srcPoint.y);
@@ -137,8 +142,9 @@ class PaintPanel extends JPanel {
     removeMouseListener(handler);
     super.updateUI();
     handler = new MouseInputAdapter() {
-      private transient Path2D path = new Path2D.Double();
+      private Path2D path = new Path2D.Double();
       @Override public void mousePressed(MouseEvent e) {
+        path = new Path2D.Double();
         path.moveTo(e.getX(), e.getY());
         getList().add(path);
         repaint();
