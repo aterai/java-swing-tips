@@ -142,7 +142,7 @@ class PaintPanel extends JPanel {
     removeMouseListener(handler);
     super.updateUI();
     handler = new MouseInputAdapter() {
-      private Path2D path = new Path2D.Double();
+      private Path2D path;
       @Override public void mousePressed(MouseEvent e) {
         path = new Path2D.Double();
         path.moveTo(e.getX(), e.getY());
