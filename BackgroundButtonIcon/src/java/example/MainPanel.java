@@ -60,11 +60,8 @@ public final class MainPanel extends JPanel {
     });
     b.setContentAreaFilled(false);
     int th = ArrowToggleButtonBarCellIcon.TH;
-    if (first) {
-      b.setBorder(BorderFactory.createEmptyBorder(0, LINE_WIDTH + BI_GAP, 0, th));
-    } else {
-      b.setBorder(BorderFactory.createEmptyBorder(0, th + LINE_WIDTH + BI_GAP, 0, th));
-    }
+    int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
+    b.setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
     b.setHorizontalAlignment(SwingConstants.LEFT);
     b.setFocusPainted(false);
     b.setOpaque(false);
