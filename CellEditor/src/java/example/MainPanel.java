@@ -14,7 +14,6 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox modelCheck = new JCheckBox("isCellEditable return false");
     RowDataModel model = new RowDataModel() {
       @Override public boolean isCellEditable(int row, int col) {
@@ -79,9 +78,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private int number;
 
@@ -120,21 +119,13 @@ class RowDataModel extends DefaultTableModel {
   }
 }
 
-class RowData {
-  private String name;
-  private String comment;
+final class RowData {
+  private final String name;
+  private final String comment;
 
   protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
-  }
-
-  public void setName(String str) {
-    name = str;
-  }
-
-  public void setComment(String str) {
-    comment = str;
   }
 
   public String getName() {
