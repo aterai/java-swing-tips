@@ -20,42 +20,44 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
     TransferHandler h = new ListItemTransferHandler();
     p.setBorder(BorderFactory.createTitledBorder("Drag & Drop(Copy, Cut, Paste) between JLists"));
-    p.add(new JScrollPane(makeList(h)));
-    p.add(new JScrollPane(makeList(h)));
+    p.add(new JScrollPane(makeList(makeModel(), h)));
+    p.add(new JScrollPane(makeList(makeModel(), h)));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JList<Color> makeList(TransferHandler handler) {
-    DefaultListModel<Color> listModel = new DefaultListModel<>();
-    listModel.addElement(Color.RED);
-    listModel.addElement(Color.BLUE);
-    listModel.addElement(Color.GREEN);
-    listModel.addElement(Color.CYAN);
-    listModel.addElement(Color.ORANGE);
-    listModel.addElement(Color.PINK);
-    listModel.addElement(Color.MAGENTA);
+  private static ListModel<Color> makeModel() {
+    DefaultListModel<Color> model = new DefaultListModel<>();
+    model.addElement(Color.RED);
+    model.addElement(Color.BLUE);
+    model.addElement(Color.GREEN);
+    model.addElement(Color.CYAN);
+    model.addElement(Color.ORANGE);
+    model.addElement(Color.PINK);
+    model.addElement(Color.MAGENTA);
+    return model;
+  }
 
-    JList<Color> list = new JList<Color>(listModel) {
+  private static JList<Color> makeList(ListModel<Color> model, TransferHandler handler) {
+    return new JList<Color>(model) {
       @Override public void updateUI() {
+        setSelectionBackground(null); // Nimbus
         setCellRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super Color> r = getCellRenderer();
+        ListCellRenderer<? super Color> renderer = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           c.setForeground(value);
           return c;
         });
+        getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        setDropMode(DropMode.INSERT);
+        setDragEnabled(true);
+        setTransferHandler(handler);
+        setComponentPopupMenu(new ListPopupMenu(this));
       }
     };
-    list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-    list.setDropMode(DropMode.INSERT);
-    list.setDragEnabled(true);
-    list.setTransferHandler(handler);
-    list.setComponentPopupMenu(new ListPopupMenu(list));
-
-    return list;
   }
 
   public static void main(String[] args) {
@@ -105,7 +107,7 @@ class ListPopupMenu extends JPopupMenu {
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java? Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
@@ -184,7 +186,6 @@ class ListItemTransferHandler extends TransferHandler {
     int index = getIndex(info);
     addIndex = index;
     try {
-      // Object[] values = (Object[]) info.getTransferable().getTransferData(FLAVOR);
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       for (Object o: values) {
         int i = index++;
