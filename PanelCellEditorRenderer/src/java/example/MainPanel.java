@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -230,7 +228,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 
 class ButtonsPanel extends JPanel {
-  public final List<JButton> buttons = Arrays.asList(new JButton("+"), new JButton("-"));
+  public final JButton[] buttons = {new JButton("+"), new JButton("-")};
   public final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
@@ -268,13 +266,13 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 
   protected ButtonsEditor() {
     super();
-    renderer.buttons.get(0).addActionListener(e -> {
+    renderer.buttons[0].addActionListener(e -> {
       renderer.counter++;
       renderer.label.setText(Integer.toString(renderer.counter));
       fireEditingStopped();
     });
 
-    renderer.buttons.get(1).addActionListener(e -> {
+    renderer.buttons[1].addActionListener(e -> {
       renderer.counter--;
       renderer.label.setText(Integer.toString(renderer.counter));
       fireEditingStopped();
@@ -298,17 +296,21 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Object getCellEditorValue() {
     return renderer.counter;
   }
+
   // // AbstractCellEditor
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
   // }
+  //
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
+  //
   // @Override public boolean stopCellEditing() {
   //   fireEditingStopped();
   //   return true;
   // }
+  //
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   // }
@@ -319,6 +321,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //     super.updateUI();
 //     setName("Table.cellRenderer");
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 //     label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
@@ -353,6 +356,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     });
 //   }
+//
 //   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //     this.setBackground(table.getSelectionBackground());
 //     label.setForeground(table.getSelectionForeground());
@@ -360,6 +364,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //     label.setText(Integer.toString(i));
 //     return this;
 //   }
+//
 //   @Override public Object getCellEditorValue() {
 //     return i;
 //   }
@@ -369,25 +374,32 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //   @Override public boolean isCellEditable(EventObject e) {
 //     return true;
 //   }
+//
 //   @Override public boolean shouldSelectCell(EventObject anEvent) {
 //     return true;
 //   }
+//
 //   @Override public boolean stopCellEditing() {
 //     fireEditingStopped();
 //     return true;
 //   }
+//
 //   @Override public void cancelCellEditing() {
 //     fireEditingCanceled();
 //   }
+//
 //   @Override public void addCellEditorListener(CellEditorListener l) {
 //     listenerList.add(CellEditorListener.class, l);
 //   }
+//
 //   @Override public void removeCellEditorListener(CellEditorListener l) {
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
+//
 //   public CellEditorListener[] getCellEditorListeners() {
 //     return listenerList.getListeners(CellEditorListener.class);
 //   }
+//
 //   protected void fireEditingStopped() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
@@ -403,6 +415,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //       }
 //     }
 //   }
+//
 //   protected void fireEditingCanceled() {
 //     // Guaranteed to return a non-null array
 //     Object[] listeners = listenerList.getListenerList();
