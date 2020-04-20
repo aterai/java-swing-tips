@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static Optional<? extends JInternalFrame> getSelectedFrame(JDesktopPane desktop) {
+  protected static Optional<JInternalFrame> getSelectedFrame(JDesktopPane desktop) {
     return Optional.ofNullable(desktop.getSelectedFrame());
   }
 
@@ -78,15 +78,13 @@ public final class MainPanel extends JPanel {
     toolbar.add(b);
 
     b = new JButton(new CloseIcon(Color.YELLOW));
-    b.addActionListener(e -> {
-      getSelectedFrame(desktop).ifPresent(f -> {
-        try {
-          f.setClosed(true);
-        } catch (PropertyVetoException ex) {
-          throw new IllegalStateException(ex);
-        }
-      });
-    });
+    b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(f -> {
+      try {
+        f.setClosed(true);
+      } catch (PropertyVetoException ex) {
+        throw new IllegalStateException(ex);
+      }
+    }));
     b.setToolTipText("f.setClosed(true);");
     toolbar.add(b);
 
@@ -100,9 +98,9 @@ public final class MainPanel extends JPanel {
     f.setLocation(20 * row + 20 * col, 20 * row);
     f.setVisible(true);
     EventQueue.invokeLater(() -> {
-      Rectangle drect = desktop.getBounds();
-      drect.setLocation(0, 0);
-      if (!drect.contains(f.getBounds())) {
+      Rectangle rect = desktop.getBounds();
+      rect.setLocation(0, 0);
+      if (!rect.contains(f.getBounds())) {
         row = 0;
         col += 1;
       }
@@ -166,6 +164,7 @@ class TestInternalFrameListener implements InternalFrameListener {
 //   protected ToolBarButton(Icon icon) {
 //     super(icon);
 //   }
+//
 //   @Override public void updateUI() {
 //     removeMouseListener(handler);
 //     super.updateUI();
@@ -175,6 +174,7 @@ class TestInternalFrameListener implements InternalFrameListener {
 //       @Override public void mouseEntered(MouseEvent e) {
 //         setContentAreaFilled(true);
 //       }
+//
 //       @Override public void mouseExited(MouseEvent e) {
 //         setContentAreaFilled(false);
 //       }
