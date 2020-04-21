@@ -15,22 +15,26 @@ import javax.swing.event.AncestorListener;
 
 public final class MainPanel extends JPanel {
   private static final String DUMMY = "Hello";
-  private final JTextField textField1 = new JTextField(DUMMY);
-  private final JTextField textField2 = new JTextField(DUMMY);
-  private final JTextField textField3 = new JTextField(DUMMY);
-  private final JTextField textField4 = new JTextField(DUMMY);
 
   private MainPanel() {
     super(new BorderLayout());
-    textField3.addHierarchyListener(new FocusHierarchyListener());
-    textField4.addAncestorListener(new FocusAncestorListener());
-
     JTextArea log = new JTextArea();
     JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
+
+    JTextField textField1 = new JTextField(DUMMY);
     p.add(makeTitledPanel("Default", makeButton(textField1, log)));
+
+    JTextField textField2 = new JTextField(DUMMY);
     p.add(makeTitledPanel("WindowListener", makeButton2(textField2, log)));
+
+    JTextField textField3 = new JTextField(DUMMY);
+    textField3.addHierarchyListener(new FocusHierarchyListener());
     p.add(makeTitledPanel("HierarchyListener", makeButton(textField3, log)));
+
+    JTextField textField4 = new JTextField(DUMMY);
+    textField4.addAncestorListener(new FocusAncestorListener());
     p.add(makeTitledPanel("AncestorListener", makeButton(textField4, log)));
+
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
