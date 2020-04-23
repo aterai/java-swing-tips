@@ -13,8 +13,6 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String PATH = "/toolbarButtonGraphics/general/";
-
   private MainPanel() {
     super(new BorderLayout());
 
@@ -28,6 +26,7 @@ public final class MainPanel extends JPanel {
     Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
         "Delete24.gif", "Undo24.gif", "Redo24.gif",
         "Help24.gif", "Open24.gif", "Save24.gif")
+        .map(name -> "/toolbarButtonGraphics/general/" + name)
         .map(this::createToolBarButton)
         .forEach(toolbar::add);
 
@@ -36,8 +35,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component createToolBarButton(String name) {
-    JComponent b = new JLabel(new ImageIcon(getClass().getResource(PATH + name)));
+  private Component createToolBarButton(String path) {
+    JComponent b = new JLabel(new ImageIcon(getClass().getResource(path)));
     b.setOpaque(false);
     return b;
   }
