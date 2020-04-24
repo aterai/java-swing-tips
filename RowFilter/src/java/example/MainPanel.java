@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -89,35 +88,33 @@ public final class MainPanel extends JPanel {
   }
 
   private class TablePopupMenu extends JPopupMenu {
-    private final Action addAction = new AbstractAction("add") {
-      @Override public void actionPerformed(ActionEvent e) {
+    private final JMenuItem addMenuItem;
+    private final JMenuItem deleteMenuItem;
+
+    protected TablePopupMenu() {
+      super();
+      addMenuItem = add("add");
+      addMenuItem.addActionListener(e -> {
         JTable tbl = (JTable) getInvoker();
         RowDataModel m = (RowDataModel) tbl.getModel();
         m.addRowData(new RowData("example", ""));
-      }
-    };
-    private final Action deleteAction = new AbstractAction("delete") {
-      @Override public void actionPerformed(ActionEvent e) {
+      });
+      addSeparator();
+      deleteMenuItem = add("delete");
+      deleteMenuItem.addActionListener(e -> {
         JTable tbl = (JTable) getInvoker();
         DefaultTableModel m = (DefaultTableModel) tbl.getModel();
         int[] selection = tbl.getSelectedRows();
         for (int i = selection.length - 1; i >= 0; i--) {
           m.removeRow(tbl.convertRowIndexToModel(selection[i]));
         }
-      }
-    };
-
-    protected TablePopupMenu() {
-      super();
-      add(addAction);
-      addSeparator();
-      add(deleteAction);
+      });
     }
 
     @Override public void show(Component c, int x, int y) {
       if (c instanceof JTable) {
-        addAction.setEnabled(canAddRow());
-        deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+        addMenuItem.setEnabled(canAddRow());
+        deleteMenuItem.setEnabled(((JTable) c).getSelectedRowCount() > 0);
         super.show(c, x, y);
       }
     }
@@ -145,9 +142,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private int number;
 
