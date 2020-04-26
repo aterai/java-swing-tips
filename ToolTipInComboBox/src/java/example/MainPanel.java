@@ -17,12 +17,13 @@ public final class MainPanel extends JPanel {
     combo.setEditable(true);
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
-    setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
     p.add(new JLabel("setEditable(true)"));
     p.add(new JLayer<>(combo, new ToolTipLayerUI<>()));
     p.add(Box.createVerticalStrut(10));
     p.add(new JLabel("setEditable(false)"));
     p.add(new JLayer<>(makeComboBox(model), new ToolTipLayerUI<>()));
+
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
