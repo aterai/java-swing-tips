@@ -46,10 +46,9 @@ class ColorWheel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
 
-    // SIZE = 32 * 6; // Drawing breaks on Corretto 1.8.0_212
     int s = SIZE;
     Graphics2D g2 = (Graphics2D) g.create();
 
@@ -80,10 +79,10 @@ class ColorWheel extends JPanel {
     float size = (float) SIZE;
     float radius = size / 2f;
 
-    for (int yidx = 0; yidx < SIZE; yidx++) {
-      float y = yidx - size / 2f;
-      for (int xidx = 0; xidx < SIZE; xidx++) {
-        float x = xidx - size / 2f;
+    for (int yi = 0; yi < SIZE; yi++) {
+      float y = yi - size / 2f;
+      for (int xi = 0; xi < SIZE; xi++) {
+        float x = xi - size / 2f;
         double theta = Math.atan2(y, x) - 3d * Math.PI / 2d;
         if (theta < 0) {
           theta += 2d * Math.PI;
@@ -92,9 +91,9 @@ class ColorWheel extends JPanel {
         float hue = (float) (theta / (2d * Math.PI));
         float sat = Math.min((float) (r / radius), 1f);
         float bri = 1f;
-        row[xidx] = Color.HSBtoRGB(hue, sat, bri);
+        row[xi] = Color.HSBtoRGB(hue, sat, bri);
       }
-      img.getRaster().setDataElements(0, yidx, SIZE, 1, row);
+      img.getRaster().setDataElements(0, yi, SIZE, 1, row);
     }
     return img;
   }
