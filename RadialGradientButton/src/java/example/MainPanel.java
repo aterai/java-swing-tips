@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         texture = TextureUtils.createCheckerTexture(16, new Color(0xEE_32_32_32, true));
       }
 
-      @Override public void paintComponent(Graphics g) {
+      @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -158,7 +158,7 @@ class RadialGradientButton extends JButton {
   //   g2.dispose();
   // }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     update();
 
     Graphics2D g2 = (Graphics2D) g.create();
@@ -287,7 +287,7 @@ class RadialGradientPaintButton extends JButton {
     g2.dispose();
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     update();
     g.drawImage(buf, 0, 0, this);
     super.paintComponent(g);

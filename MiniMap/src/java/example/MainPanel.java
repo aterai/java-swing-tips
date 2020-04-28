@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
       addMouseMotionListener(handler);
     }
 
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       Container c = SwingUtilities.getAncestorOfClass(JViewport.class, editor);
       if (!(c instanceof JViewport)) {
