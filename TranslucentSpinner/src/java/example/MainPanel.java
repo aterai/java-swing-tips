@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(TEXTURE);
     g2.fillRect(0, 0, getWidth(), getHeight());
