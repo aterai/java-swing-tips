@@ -51,11 +51,7 @@ public final class MainPanel extends JPanel {
     }
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      if (m.getValue() > MAXI) {
-        m.setValue(MAXI);
-      } else if (m.getValue() < MINI) {
-        m.setValue(MINI);
-      }
+      m.setValue(Math.max(MINI, Math.min(m.getValue(), MAXI)));
     });
     return slider;
   }
