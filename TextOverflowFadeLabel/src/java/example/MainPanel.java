@@ -66,7 +66,7 @@ class FadeOutLabel extends JLabel {
     super(text);
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     Insets i = getInsets();
     int w = getWidth() - i.left - i.right;
     int h = getHeight() - i.top - i.bottom;
@@ -100,7 +100,7 @@ class TextOverflowFadeLabel extends JLabel {
     super(text);
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     Insets i = getInsets();
     int w = getWidth() - i.left - i.right;
     int h = getHeight() - i.top - i.bottom;
@@ -139,7 +139,7 @@ class FadingOutLabel extends JLabel {
     super(text);
   }
 
-  @Override public void paintComponent(Graphics g) {
+  @Override protected void paintComponent(Graphics g) {
     // super.paintComponent(g);
     int w = getWidth();
     int h = getHeight();
