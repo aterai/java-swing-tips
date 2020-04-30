@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.Enumeration;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.Style;
 import javax.swing.text.html.HTMLEditorKit;
@@ -32,7 +31,7 @@ public final class MainPanel extends JPanel {
     // System.out.println(styles);
     Enumeration<?> rules = styles.getStyleNames();
     while (rules.hasMoreElements()) {
-      String name = Objects.toString(rules.nextElement());
+      String name = rules.nextElement().toString();
       if ("body".equals(name)) {
         Style rule = styles.getRule(name);
         Enumeration<?> attrs = rule.getAttributeNames();
