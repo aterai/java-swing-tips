@@ -11,41 +11,37 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-    ButtonGroup bg = new ButtonGroup();
-
+    ButtonGroup bg0 = new ButtonGroup();
     Box box0 = Box.createVerticalBox();
     box0.setBorder(BorderFactory.createTitledBorder("Default"));
-    IntStream.range(0, 4).forEach(i -> {
-      JRadioButton b = new JRadioButton("Default: " + i);
-      bg.add(b);
+    IntStream.range(0, 4).mapToObj(i -> "Default: " + i).map(JRadioButton::new).forEach(b -> {
+      bg0.add(b);
       box0.add(b);
-      b.setAlignmentX(Component.LEFT_ALIGNMENT);
       box0.add(Box.createVerticalStrut(5));
     });
 
+    ButtonGroup bg1 = new ButtonGroup();
     Box box1 = Box.createVerticalBox();
     box1.setBorder(BorderFactory.createTitledBorder("Text Color"));
-    IntStream.range(4, 8)
-        .mapToObj(i -> new ColorRadioButton("Text: " + i))
-        .forEach(b -> {
-          bg.add(b);
-          box1.add(b);
-          box1.add(Box.createVerticalStrut(5));
-        });
+    IntStream.range(4, 8).mapToObj(i -> "Text: " + i).map(ColorRadioButton::new).forEach(b -> {
+      bg1.add(b);
+      box1.add(b);
+      box1.add(Box.createVerticalStrut(5));
+    });
 
+    ButtonGroup bg2 = new ButtonGroup();
     Box box2 = Box.createVerticalBox();
     box2.setBorder(BorderFactory.createTitledBorder("Icon Color"));
-    IntStream.range(8, 12).forEach(i -> {
-      JRadioButton b = new ColorRadioButton("Icon: " + i) {
-        @Override public void updateUI() {
-          super.updateUI();
-          setIcon(new DefaultIcon());
-          setPressedIcon(new PressedIcon());
-          setSelectedIcon(new SelectedIcon());
-          setRolloverIcon(new RolloverIcon());
-        }
-      };
-      bg.add(b);
+    IntStream.range(8, 12).mapToObj(i -> "Icon: " + i).map(t -> new ColorRadioButton(t) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setIcon(new DefaultIcon());
+        setPressedIcon(new PressedIcon());
+        setSelectedIcon(new SelectedIcon());
+        setRolloverIcon(new RolloverIcon());
+      }
+    }).forEach(b -> {
+      bg2.add(b);
       box2.add(b);
       box2.add(Box.createVerticalStrut(5));
     });
