@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -29,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     c.gridx = 1;
     c.weightx = 1.0;
-    p.add(makeComboBox1(makeModel(), new ColorIcon(Color.DARK_GRAY)), c);
+    p.add(makeComboBox1(makeModel(), new ColorIcon(Color.DARK_GRAY), 3), c);
 
     c.gridx = 0;
     c.gridy = 1;
@@ -40,50 +41,58 @@ public final class MainPanel extends JPanel {
 
     c.gridx = 1;
     c.weightx = 1.0;
-    p.add(makeComboBox2(makeModel(), new ColorIcon(Color.DARK_GRAY)), c);
+    p.add(makeComboBox2(makeModel(), new ColorIcon(Color.DARK_GRAY), 3), c);
 
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<Icon> makeComboBox1(ComboBoxModel<Icon> model, Icon proto) {
+  public static JComboBox<Icon> makeComboBox1(ComboBoxModel<Icon> model, Icon proto, int rowCount) {
     return new JComboBox<Icon>(model) {
       @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
         int w = proto.getIconWidth();
         int h = proto.getIconHeight();
-        return new Dimension(w * 3 + i.left + i.right, h + i.top + i.bottom);
+        int totalCount = getItemCount();
+        int columnCount = totalCount / rowCount + (totalCount % rowCount == 0 ? 0 : 1);
+        return new Dimension(w * columnCount + i.left + i.right, h + i.top + i.bottom);
       }
 
       @Override public void updateUI() {
         super.updateUI();
-        setMaximumRowCount(3);
+        setMaximumRowCount(rowCount);
         setPrototypeDisplayValue(proto);
 
-        ComboPopup popup = (ComboPopup) getAccessibleContext().getAccessibleChild(0);
-        JList<?> list = popup.getList();
-        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        list.setVisibleRowCount(3);
-        list.setFixedCellWidth(proto.getIconWidth());
-        list.setFixedCellHeight(proto.getIconHeight());
+        Accessible o = getAccessibleContext().getAccessibleChild(0);
+        if (o instanceof ComboPopup) {
+          JList<?> list = ((ComboPopup) o).getList();
+          list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+          list.setVisibleRowCount(rowCount);
+          list.setFixedCellWidth(proto.getIconWidth());
+          list.setFixedCellHeight(proto.getIconHeight());
+        }
       }
     };
   }
 
-  private static JComboBox<Icon> makeComboBox2(ComboBoxModel<Icon> model, Icon proto) {
-    JComboBox<Icon> combo = new JComboBox<Icon>(model) {
+  public static JComboBox<Icon> makeComboBox2(ComboBoxModel<Icon> model, Icon proto, int rowCount) {
+    return new JComboBox<Icon>(model) {
+      private PopupMenuListener listener;
+
       @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
         int w = proto.getIconWidth();
         int h = proto.getIconHeight();
-        return new Dimension(20 + w + i.left + i.right, h + i.top + i.bottom);
+        int buttonWidth = 20; // ???
+        return new Dimension(buttonWidth + w + i.left + i.right, h + i.top + i.bottom);
       }
 
       @Override public void updateUI() {
         setRenderer(null);
+        removePopupMenuListener(listener);
         super.updateUI();
-        setMaximumRowCount(3);
+        setMaximumRowCount(rowCount);
         setPrototypeDisplayValue(proto);
         ListCellRenderer<? super Icon> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
@@ -96,45 +105,50 @@ public final class MainPanel extends JPanel {
           return c;
         });
 
-        ComboPopup popup = (ComboPopup) getAccessibleContext().getAccessibleChild(0);
-        JList<?> list = popup.getList();
-        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        list.setVisibleRowCount(3);
-        list.setFixedCellWidth(proto.getIconWidth());
-        list.setFixedCellHeight(proto.getIconHeight());
+        Accessible o = getAccessibleContext().getAccessibleChild(0);
+        if (o instanceof ComboPopup) {
+          JList<?> list = ((ComboPopup) o).getList();
+          list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+          list.setVisibleRowCount(rowCount);
+          list.setFixedCellWidth(proto.getIconWidth());
+          list.setFixedCellHeight(proto.getIconHeight());
+        }
+
+        listener = new PopupMenuListener() {
+          private boolean adjusting;
+
+          @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            JComboBox<?> combo = (JComboBox<?>) e.getSource();
+
+            Insets i = combo.getInsets();
+            int totalCount = getItemCount();
+            int columnCount = totalCount / rowCount + (totalCount % rowCount == 0 ? 0 : 1);
+            int popupWidth = proto.getIconWidth() * columnCount + i.left + i.right;
+
+            Dimension size = combo.getSize();
+            if (size.width >= popupWidth) {
+              return;
+            }
+            if (!adjusting) {
+              adjusting = true;
+              combo.setSize(popupWidth, size.height);
+              combo.showPopup();
+            }
+            combo.setSize(size);
+            adjusting = false;
+          }
+
+          @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            /* not needed */
+          }
+
+          @Override public void popupMenuCanceled(PopupMenuEvent e) {
+            /* not needed */
+          }
+        };
+        addPopupMenuListener(listener);
       }
     };
-    combo.addPopupMenuListener(new PopupMenuListener() {
-      private boolean adjusting;
-
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        JComboBox<?> combo = (JComboBox<?>) e.getSource();
-
-        Insets i = combo.getInsets();
-        int popupWidth = proto.getIconWidth() * 3 + i.left + i.right;
-
-        Dimension size = combo.getSize();
-        if (size.width >= popupWidth) {
-          return;
-        }
-        if (!adjusting) {
-          adjusting = true;
-          combo.setSize(popupWidth, size.height);
-          combo.showPopup();
-        }
-        combo.setSize(size);
-        adjusting = false;
-      }
-
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        /* not needed */
-      }
-
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        /* not needed */
-      }
-    });
-    return combo;
   }
 
   private static ComboBoxModel<Icon> makeModel() {
