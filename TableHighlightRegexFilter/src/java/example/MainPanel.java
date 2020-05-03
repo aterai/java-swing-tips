@@ -26,41 +26,40 @@ public final class MainPanel extends JPanel {
   private final JTextField field = new JTextField("ab+");
   private final HighlightTableCellRenderer renderer = new HighlightTableCellRenderer();
 
-  private final String[] columnNames = {"A", "B"};
-  private final Object[][] data = {
-    {"aaa", "bbaacc"}, {"bbb", "defg"},
-    {"ccccbbbbaaabbbbaaeabee", "xxx"}, {"dddaaabbbbb", "ccbbaa"},
-    {"cc cc bbbb aaa bbbb e", "xxx"}, {"ddd aaa b bbbb", "cc bbaa"}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return String.class;
-    }
-  };
-  private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  private final JTable table = new JTable(model);
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {"aaa", "bb aa cc"}, {"bbb", "def"},
+        {"ccc bbb aa ab bb aa eab ee", "xxx"}, {"ddd aa abb bb", "cc bb aa"},
+        {"cc cc bb bb aa abc e", "xxx"}, {"ddd aa ab bab bb", "cc bb aa"}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
+    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
+    JTable table = new JTable(model);
     table.setFillsViewportHeight(true);
     table.setRowSorter(sorter);
     table.setDefaultRenderer(String.class, renderer);
 
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
-        fireDocumentChangeEvent();
+        fireDocumentChangeEvent(sorter);
       }
 
       @Override public void removeUpdate(DocumentEvent e) {
-        fireDocumentChangeEvent();
+        fireDocumentChangeEvent(sorter);
       }
 
       @Override public void changedUpdate(DocumentEvent e) {
         /* not needed */
       }
     });
-    fireDocumentChangeEvent();
+    fireDocumentChangeEvent(sorter);
 
     JPanel sp = new JPanel(new BorderLayout(5, 5));
     sp.add(new JLabel("regex pattern:"), BorderLayout.WEST);
@@ -74,7 +73,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void fireDocumentChangeEvent() {
+  protected void fireDocumentChangeEvent(TableRowSorter<? extends TableModel> sorter) {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     if (pattern.isEmpty()) {
