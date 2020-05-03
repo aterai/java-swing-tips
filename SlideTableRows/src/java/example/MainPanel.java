@@ -10,56 +10,55 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class MainPanel extends JPanel {
-  protected static final int START_HEIGHT = 4;
-  protected static final int END_HEIGHT = 24;
-  protected static final int DELAY = 10;
-  protected final String[] columnNames = {"String", "Integer", "Boolean"};
-  protected final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  protected final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      // ArrayIndexOutOfBoundsException: 0 >= 0
-      // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-      // https://bugs.openjdk.java.net/browse/JDK-6967479
-      // return getValueAt(0, column).getClass();
-      switch (column) {
-        case 0: return String.class;
-        case 1: return Number.class;
-        case 2: return Boolean.class;
-        default: return super.getColumnClass(column);
-      }
-    }
-  };
-  protected final JTable table = new JTable(model);
-  protected final Action createAction = new AbstractAction("add") {
-    @Override public void actionPerformed(ActionEvent e) {
-      createActionPerformed();
-    }
-  };
-  protected final Action deleteAction = new AbstractAction("delete") {
-    @Override public void actionPerformed(ActionEvent e) {
-      deleteActionPerformed();
-    }
-  };
+public final class MainPanel extends JPanel {
+  private static final int START_HEIGHT = 4;
+  private static final int END_HEIGHT = 24;
+  private static final int DELAY = 10;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        // ArrayIndexOutOfBoundsException: 0 >= 0
+        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6967479
+        // return getValueAt(0, column).getClass();
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
+    JTable table = new JTable(model);
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(START_HEIGHT);
     for (int i = 0; i < model.getRowCount(); i++) {
       table.setRowHeight(i, END_HEIGHT);
     }
-
+    Action deleteAction = new AbstractAction("delete") {
+      @Override public void actionPerformed(ActionEvent e) {
+        deleteActionPerformed(table, model);
+      }
+    };
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
           deleteAction.setEnabled(((JTable) c).getSelectedRowCount() > 0);
           super.show(c, x, y);
         }
+      }
+    };
+    Action createAction = new AbstractAction("add") {
+      @Override public void actionPerformed(ActionEvent e) {
+        createActionPerformed(table, model);
       }
     };
     popup.add(createAction);
@@ -74,7 +73,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void createActionPerformed() {
+  protected void createActionPerformed(JTable table, DefaultTableModel model) {
     model.addRow(new Object[] {"New name", model.getRowCount(), false});
     int index = table.convertRowIndexToView(model.getRowCount() - 1);
     AtomicInteger height = new AtomicInteger(START_HEIGHT);
@@ -88,7 +87,7 @@ public class MainPanel extends JPanel {
     }).start();
   }
 
-  protected final void deleteActionPerformed() {
+  protected void deleteActionPerformed(JTable table, DefaultTableModel model) {
     int[] selection = table.getSelectedRows();
     if (selection.length == 0) {
       return;
