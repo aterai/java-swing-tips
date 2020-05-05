@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
           //   c.requestFocusInWindow();
           // });
           Class<JTextField> clz = JTextField.class;
-          stream(fileChooser).filter(clz::isInstance).map(clz::cast).findFirst().ifPresent(tf -> {
+          descendants(fileChooser).filter(clz::isInstance).map(clz::cast).findFirst().ifPresent(tf -> {
             tf.selectAll();
             tf.requestFocusInWindow();
           });
@@ -105,24 +105,11 @@ public final class MainPanel extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
-  // // import java.util.function.Function;
-  // private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
-  //   return Stream.of(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
-  //     @Override public Stream<Component> apply(Component c) {
-  //       if (c instanceof Container) {
-  //         Component[] sub = ((Container) c).getComponents();
-  //         return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
-  //       } else {
-  //         return Stream.of(c);
-  //       }
-  //     }
-  //   }).filter(c -> c instanceof JTextField).findFirst();
-  // }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-      .filter(Container.class::isInstance).map(Container.class::cast)
-      .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   public static void main(String[] args) {

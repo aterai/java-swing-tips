@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("LayoutOrientation: VERTICAL");
     button2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      stream(chooser)
+      descendants(chooser)
           .filter(JList.class::isInstance)
           .map(JList.class::cast)
           .findFirst()
@@ -51,12 +51,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  // https://github.com/aterai/java-swing-tips/blob/master/GetComponentsRecursively/src/java/example/MainPanel.java
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   private static void addHierarchyListener(JList<?> list) {

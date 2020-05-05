@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
         Dimension dim = getLayout().minimumLayoutSize(this);
         System.out.println("minimumLayoutSize: " + dim.width);
 
-        int buttonsW = SwingUtils.stream(this)
+        int buttonsW = SwingUtils.descendants(this)
             .filter(AbstractButton.class::isInstance)
             .mapToInt(c -> c.getPreferredSize().width)
             .sum();
@@ -115,9 +115,9 @@ final class SwingUtils {
     /* Singleton */
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-      .filter(Container.class::isInstance).map(Container.class::cast)
-      .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             @Override public void installComponents(JFileChooser fc) {
               super.installComponents(fc);
               JPanel bottomPanel = getBottomPanel();
-              SwingUtils.stream(bottomPanel)
+              SwingUtils.descendants(bottomPanel)
                   .filter(JLabel.class::isInstance).map(JLabel.class::cast)
                   .forEach(l -> {
                     l.setAlignmentX(1f);
@@ -114,7 +114,7 @@ class EncodingFileChooserUI extends MetalFileChooserUI {
 
     JLabel label = new JLabel("Encoding:") {
       @Override public Dimension getPreferredSize() {
-        return SwingUtils.stream(bottomPanel)
+        return SwingUtils.descendants(bottomPanel)
             .filter(JLabel.class::isInstance).map(JLabel.class::cast)
             .findFirst()
             .map(JLabel::getPreferredSize)
@@ -135,7 +135,7 @@ class EncodingFileChooserUI extends MetalFileChooserUI {
     bottomPanel.add(Box.createRigidArea(new Dimension(1, 5)), 3);
     bottomPanel.add(panel, 4);
 
-    SwingUtils.stream(bottomPanel)
+    SwingUtils.descendants(bottomPanel)
         .filter(JLabel.class::isInstance).map(JLabel.class::cast)
         .forEach(l -> {
           l.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -149,10 +149,9 @@ final class SwingUtils {
     /* Singleton */
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }

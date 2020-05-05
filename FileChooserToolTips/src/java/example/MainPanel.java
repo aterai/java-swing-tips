@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("JList tooltips");
     button2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      stream(chooser)
+      descendants(chooser)
           .filter(JList.class::isInstance)
           .map(JList.class::cast)
           .forEach(MainPanel::setCellRenderer);
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
       JFileChooser chooser = new JFileChooser();
       Optional.ofNullable(chooser.getActionMap().get(key))
           .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key)));
-      stream(chooser)
+      descendants(chooser)
           .filter(JTable.class::isInstance)
           .map(JTable.class::cast)
           .findFirst()
@@ -68,11 +68,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   private static void setCellRenderer(JList<?> list) {

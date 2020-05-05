@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
           .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "viewTypeDetails")));
 
       // https://ateraimemo.com/Swing/GetComponentsRecursively.html
-      stream(chooser)
+      descendants(chooser)
           .filter(JTable.class::isInstance).map(JTable.class::cast)
           .findFirst()
           .ifPresent(t -> t.putClientProperty("Table.isFileList", !flg));
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
         .filter(Container.class::isInstance).map(Container.class::cast)
-        .flatMap(c -> Stream.concat(Stream.of(c), stream(c)));
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   public static void main(String[] args) {

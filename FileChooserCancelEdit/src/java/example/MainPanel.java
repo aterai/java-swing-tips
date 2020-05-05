@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     JButton button0 = new JButton("default");
     button0.addActionListener(e -> {
       setViewTypeDetails(fileChooser0);
-      stream(fileChooser0)
+      descendants(fileChooser0)
           .filter(JTable.class::isInstance).map(JTable.class::cast)
           .findFirst()
           .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("removeEditor");
     button1.addActionListener(e -> {
       setViewTypeDetails(fileChooser1);
-      stream(fileChooser1)
+      descendants(fileChooser1)
         .filter(JTable.class::isInstance).map(JTable.class::cast)
         // debugging: .peek(table -> append(log, "isEditing: " + table.isEditing()))
         .findFirst()
@@ -64,11 +64,10 @@ public final class MainPanel extends JPanel {
     log.setCaretPosition(log.getDocument().getLength());
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   public static void main(String[] args) {

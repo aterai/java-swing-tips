@@ -37,16 +37,16 @@ public final class MainPanel extends JPanel {
       }
 
       // TEST1:
-      // searchAndResizeMode(chooser);
+      // SwingUtils.searchAndResizeMode(chooser);
 
       // TEST2:
-      // Component c = findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
+      // Component c = SwingUtils.findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
 
       // TEST3:
-      // getComponentByClass(chooser, JTable.class).ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+      // SwingUtils.getComponentByClass(chooser, JTable.class).ifPresent(t -> ...);
 
       // TEST4:
-      stream(chooser)
+      SwingUtils.descendants(chooser)
           .filter(JTable.class::isInstance).map(JTable.class::cast)
           .findFirst()
           .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
@@ -64,6 +64,31 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class SwingUtils {
+  private SwingUtils() {
+    /* Singleton */
   }
 
   // TEST1
@@ -113,29 +138,29 @@ public final class MainPanel extends JPanel {
   }
 
   // TEST4
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
+  // public static Stream<Component> descendants(Container parent) {
+  //   return Stream.of(parent.getComponents())
+  //       .filter(Container.class::isInstance).map(c -> descendants((Container) c))
+  //       .reduce(Stream.of(parent), Stream::concat);
+  // }
 
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
+  // // import java.util.function.Function;
+  // private static Optional<Component> findFileNameTextField(JFileChooser fileChooser) {
+  //   return Stream.of(fileChooser.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
+  //     @Override public Stream<Component> apply(Component c) {
+  //       if (c instanceof Container) {
+  //         Component[] sub = ((Container) c).getComponents();
+  //         return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
+  //       } else {
+  //         return Stream.of(c);
+  //       }
+  //     }
+  //   }).filter(c -> c instanceof JTextField).findFirst();
+  // }
 }

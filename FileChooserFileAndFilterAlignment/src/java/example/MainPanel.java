@@ -78,7 +78,7 @@ class RightAlignmentMetalFileChooserUI extends MetalFileChooserUI {
 
   @Override public void installComponents(JFileChooser fc) {
     super.installComponents(fc);
-    SwingUtils.stream(getBottomPanel())
+    SwingUtils.descendants(getBottomPanel())
         .filter(JLabel.class::isInstance)
         .map(JLabel.class::cast)
         .forEach(l -> {
@@ -95,7 +95,7 @@ class RightAlignmentWindowsFileChooserUI extends WindowsFileChooserUI {
 
   @Override public void installComponents(JFileChooser fc) {
     super.installComponents(fc);
-    SwingUtils.stream(getBottomPanel())
+    SwingUtils.descendants(getBottomPanel())
         .filter(JLabel.class::isInstance)
         .map(JLabel.class::cast)
         .forEach(l -> l.setAlignmentX(1f));
@@ -107,10 +107,9 @@ final class SwingUtils {
     /* Singleton */
   }
 
-  public static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }

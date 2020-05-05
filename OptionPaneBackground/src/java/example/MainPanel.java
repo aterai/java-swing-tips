@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     label.addHierarchyListener(e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        stream(SwingUtilities.getAncestorOfClass(JOptionPane.class, c))
+        descendants(SwingUtilities.getAncestorOfClass(JOptionPane.class, c))
             .filter(JPanel.class::isInstance)
             .map(JPanel.class::cast) // TEST: .peek(cc -> System.out.println(cc.getName()))
             .forEach(p -> p.setOpaque(false));
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
       }
     };
     pane.setComponentOrientation((parent == null ? JOptionPane.getRootFrame() : parent).getComponentOrientation());
-    stream(pane)
+    descendants(pane)
         .filter(JPanel.class::isInstance)
         .map(JPanel.class::cast)
         .forEach(p -> p.setOpaque(false));
@@ -70,11 +70,10 @@ public final class MainPanel extends JPanel {
     dialog.dispose();
   }
 
-  private static Stream<Component> stream(Container parent) {
+  public static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(c -> stream((Container) c))
-        .reduce(Stream.of(parent), Stream::concat);
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
   public static void main(String[] args) {
