@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private final JCheckBox dfbaiCheck = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
-  private final JCheckBox ddfiCheck = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
+  private final JCheckBox check1 = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
+  private final JCheckBox check2 = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
   private final JTextArea textArea = new JTextArea();
 
   private MainPanel() {
@@ -54,15 +54,15 @@ public final class MainPanel extends JPanel {
       JMenuBar menuBar = new JMenuBar();
       menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
       getRootPane().setJMenuBar(menuBar);
-      stream(menuBar)
+      descendants(menuBar)
           .filter(JRadioButtonMenuItem.class::isInstance)
           .map(JRadioButtonMenuItem.class::cast)
           .forEach(mi -> mi.addActionListener(al));
     });
 
     JPanel np = new JPanel(new GridLayout(2, 1));
-    np.add(dfbaiCheck);
-    np.add(ddfiCheck);
+    np.add(check1);
+    np.add(check2);
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     JTree tree = new JTree();
@@ -92,16 +92,15 @@ public final class MainPanel extends JPanel {
   //   }
   // }
 
-  public static Stream<MenuElement> stream(MenuElement me) {
-    return Stream.of(me.getSubElements())
-        .map(MainPanel::stream)
-        .reduce(Stream.of(me), Stream::concat);
-  }
-
-  // public static Stream<MenuElement> stream2(MenuElement me) {
+  // private static Stream<MenuElement> descendants(MenuElement me) {
   //   return Stream.of(me.getSubElements())
-  //       .flatMap(m -> Stream.concat(Stream.of(m), stream2(m)));
+  //       .map(MainPanel::descendants).reduce(Stream.of(me), Stream::concat);
   // }
+
+  private static Stream<MenuElement> descendants(MenuElement me) {
+    return Stream.of(me.getSubElements())
+        .flatMap(m -> Stream.concat(Stream.of(m), descendants(m)));
+  }
 
   private void updateCheckBox(String str) {
     EventQueue.invokeLater(() -> {
@@ -109,11 +108,11 @@ public final class MainPanel extends JPanel {
 
       String focusKey = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
       append(focusKey + ": " + UIManager.getBoolean(focusKey));
-      dfbaiCheck.setSelected(UIManager.getBoolean(focusKey));
+      check1.setSelected(UIManager.getBoolean(focusKey));
 
       String dashedKey = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
       append(dashedKey + ": " + UIManager.getBoolean(dashedKey));
-      ddfiCheck.setSelected(UIManager.getBoolean(dashedKey));
+      check2.setSelected(UIManager.getBoolean(dashedKey));
     });
   }
 

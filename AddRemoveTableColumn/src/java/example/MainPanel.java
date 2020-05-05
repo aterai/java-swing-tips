@@ -23,29 +23,29 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(new DefaultTableModel(12, 8));
     table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu(table));
 
-    //     JPopupMenu pop = new TableHeaderPopupMenu(table);
-    //     JTableHeader header = table.getTableHeader();
-    //     header.setComponentPopupMenu(pop);
-    //     pop.addPopupMenuListener(new PopupMenuListener() {
-    //       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-    //         cleanupHeader();
-    //       }
+    // JPopupMenu pop = new TableHeaderPopupMenu(table);
+    // JTableHeader header = table.getTableHeader();
+    // header.setComponentPopupMenu(pop);
+    // pop.addPopupMenuListener(new PopupMenuListener() {
+    //   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    //     cleanupHeader();
+    //   }
     //
-    //       @Override public void popupMenuCanceled(PopupMenuEvent e) {
-    //         /* not needed */
-    //       }
+    //   @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    //     /* not needed */
+    //   }
     //
-    //       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    //         cleanupHeader(); // Java 9 doNotCloseOnMouseClick ArrayIndexOutOfBoundsException
-    //       }
+    //   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    //     cleanupHeader(); // Java 9 doNotCloseOnMouseClick ArrayIndexOutOfBoundsException
+    //   }
     //
-    //       private void cleanupHeader() {
-    //         header.setDraggedColumn(null);
-    //         // header.repaint();
-    //         // table.repaint();
-    //         repaint();
-    //       }
-    //     });
+    //   private void cleanupHeader() {
+    //     header.setDraggedColumn(null);
+    //     // header.repaint();
+    //     // table.repaint();
+    //     repaint();
+    //   }
+    // });
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -106,15 +106,15 @@ class TableHeaderPopupMenu extends JPopupMenu {
   private void updateMenuItems(TableColumnModel columnModel) {
     boolean isOnlyOneMenu = columnModel.getColumnCount() == 1;
     if (isOnlyOneMenu) {
-      stream(this).map(MenuElement::getComponent).forEach(mi ->
+      descendants(this).map(MenuElement::getComponent).forEach(mi ->
           mi.setEnabled(!(mi instanceof AbstractButton) || !((AbstractButton) mi).isSelected()));
     } else {
-      stream(this).forEach(me -> me.getComponent().setEnabled(true));
+      descendants(this).forEach(me -> me.getComponent().setEnabled(true));
     }
   }
 
-  private static Stream<MenuElement> stream(MenuElement me) {
+  private static Stream<MenuElement> descendants(MenuElement me) {
     return Stream.of(me.getSubElements())
-      .flatMap(m -> Stream.concat(Stream.of(m), stream(m)));
+      .flatMap(m -> Stream.concat(Stream.of(m), descendants(m)));
   }
 }

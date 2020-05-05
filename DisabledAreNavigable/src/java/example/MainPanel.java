@@ -127,7 +127,6 @@ final class MenuBarUtil {
     mb.add(edit);
 
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-
     mb.add(Box.createGlue());
 
     JMenu help = new JMenu("Help");
@@ -159,9 +158,9 @@ final class MenuBarUtil {
   //   }
   // }
 
-  // public static Stream<MenuElement> stream(MenuElement me) {
+  // public static Stream<MenuElement> descendants(MenuElement me) {
   //   return Stream.of(me.getSubElements())
-  //     .flatMap(m -> Stream.concat(Stream.of(m), stream(m)));
+  //     .flatMap(m -> Stream.concat(Stream.of(m), descendants(m)));
   // }
 }
 
