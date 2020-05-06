@@ -19,9 +19,9 @@ public final class MainPanel extends JPanel {
   private float[] getDashArray() {
     // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
     String[] slist = Stream.of(field.getText().split(","))
-      .map(String::trim)
-      .filter(s -> !s.isEmpty())
-      .toArray(String[]::new);
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .toArray(String[]::new);
     if (slist.length == 0) {
       return DEFAULT_DASHARRAY;
     }
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     return i == 0 ? DEFAULT_DASHARRAY : list;
   }
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     button.addActionListener(e -> {
       int ecs = endcapCombo.getItemAt(endcapCombo.getSelectedIndex()).style;
