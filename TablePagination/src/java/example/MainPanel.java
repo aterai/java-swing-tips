@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
   };
   private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(model);
     table.setFillsViewportHeight(true);
@@ -174,9 +174,9 @@ public final class MainPanel extends JPanel {
 class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   // private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
   // private boolean defaults_initialized = false;
-  private static Rectangle viewRect = new Rectangle();
-  private static Rectangle iconRect = new Rectangle();
-  private static Rectangle textRect = new Rectangle();
+  private static final Rectangle VIEW_RECT = new Rectangle();
+  private static final Rectangle ICON_RECT = new Rectangle();
+  private static final Rectangle TEXT_RECT = new Rectangle();
 
   // public static ComponentUI createUI(JComponent b) {
   //   return radioButtonUI;
@@ -215,15 +215,14 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
       g.fillRect(0, 0, c.getWidth(), c.getHeight());
     }
 
-    SwingUtilities.calculateInnerArea(c, viewRect);
-    iconRect.setBounds(0, 0, 0, 0);
-    textRect.setBounds(0, 0, 0, 0);
+    SwingUtilities.calculateInnerArea(c, VIEW_RECT);
+    ICON_RECT.setBounds(0, 0, 0, 0);
+    TEXT_RECT.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
         c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
         b.getVerticalAlignment(), b.getHorizontalAlignment(),
-        b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
-        viewRect, iconRect, textRect,
+        b.getVerticalTextPosition(), b.getHorizontalTextPosition(), VIEW_RECT, ICON_RECT, TEXT_RECT,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     // // Changing Component State During Painting (an infinite repaint loop)
@@ -239,13 +238,14 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     ButtonModel model = b.getModel();
     g.setColor(c.getForeground());
     if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
-      g.drawLine(viewRect.x, viewRect.y + viewRect.height, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+      int vy = VIEW_RECT.y + VIEW_RECT.height;
+      g.drawLine(VIEW_RECT.x, vy, VIEW_RECT.x + VIEW_RECT.width, vy);
     }
     View v = (View) c.getClientProperty(BasicHTML.propertyKey);
     if (Objects.nonNull(v)) {
-      v.paint(g, textRect);
+      v.paint(g, TEXT_RECT);
     } else {
-      paintText(g, c, textRect, text);
+      paintText(g, c, TEXT_RECT, text);
     }
   }
 }
