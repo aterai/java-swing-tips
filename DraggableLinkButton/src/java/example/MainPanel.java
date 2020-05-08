@@ -17,51 +17,52 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private static final String MYSITE = "https://ateraimemo.com/";
+  private static final String SITE = "https://ateraimemo.com/";
 
   private MainPanel() {
     super(new BorderLayout());
 
-    JButton label = new JButton(MYSITE);
+    JButton label = new JButton(SITE);
     // label.addActionListener(e -> {
     //   System.out.println(e);
     //   if (Desktop.isDesktopSupported()) {
     //     try {
-    //       Desktop.getDesktop().browse(new URI(MYSITE));
+    //       Desktop.getDesktop().browse(new URI(SITE));
     //     } catch (IOException | URISyntaxException ex) {
     //       ex.printStackTrace();
     //       Toolkit.getDefaultToolkit().beep();
     //     }
     //   }
     // });
-    label.setUI(LinkViewButtonUI.createUI(label, MYSITE));
+    label.setUI(LinkViewButtonUI.createUI(label, SITE));
 
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
     p.setBorder(BorderFactory.createTitledBorder("Draggable Hyperlink"));
-    p.add(new JLabel("D&D->Brouser:"));
+    p.add(new JLabel("D&D->Browser:"));
     p.add(label);
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea("dummy")));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // // TransferHandler
-  // DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
-  // JLabel label = new JLabel(MYSITE);
+  // DataFlavor uriFlavor = new DataFlavor(String.class, "text/uri-list");
+  // JLabel label = new JLabel(SITE);
   // label.setTransferHandler(new TransferHandler("text") {
   //   @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-  //     return (flavors.length > 0 && flavors[0].equals(uriflavor));
+  //     return (flavors.length > 0 && flavors[0].equals(uriFlavor));
   //   }
   //   @Override protected Transferable createTransferable(JComponent c) {
   //     return new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {
-  //         return MYSITE;
+  //         return SITE;
   //       }
   //       @Override public DataFlavor[] getTransferDataFlavors() {
-  //         return new DataFlavor[] {uriflavor};
+  //         return new DataFlavor[] {uriFlavor};
   //       }
   //       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-  //         return flavor.equals(uriflavor);
+  //         return flavor.equals(uriFlavor);
   //       }
   //     };
   //   }
@@ -79,13 +80,13 @@ public final class MainPanel extends JPanel {
   //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
   //     Transferable t = new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {
-  //         return MYSITE;
+  //         return SITE;
   //       }
   //       @Override public DataFlavor[] getTransferDataFlavors() {
-  //         return new DataFlavor[] {uriflavor};
+  //         return new DataFlavor[] {uriFlavor};
   //       }
   //       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-  //         return flavor.equals(uriflavor);
+  //         return flavor.equals(uriFlavor);
   //       }
   //     };
   //     dge.startDrag(DragSource.DefaultCopyDrop, t, null);
