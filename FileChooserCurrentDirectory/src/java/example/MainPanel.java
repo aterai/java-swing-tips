@@ -19,11 +19,23 @@ public final class MainPanel extends JPanel {
   private final JFileChooser fc1 = new JFileChooser();
   private final JFileChooser fc2 = new JFileChooser() {
     @Override public void setCurrentDirectory(File dir) {
-      if (Objects.nonNull(dir) && !dir.exists()) {
-        this.setCurrentDirectory(dir.getParentFile());
+      File current = dir;
+      if (Objects.nonNull(current) && !isTraversable(current)) {
+        current = current.getParentFile();
+        while (Objects.nonNull(current) && !isTraversable(current)) {
+          current = current.getParentFile();
+        }
       }
-      super.setCurrentDirectory(dir);
+      super.setCurrentDirectory(current);
     }
+
+    // @Override public void setCurrentDirectory(File dir) {
+    //   if (Objects.nonNull(dir) && !dir.exists()) {
+    //     this.setCurrentDirectory(dir.getParentFile());
+    //   } else {
+    //     super.setCurrentDirectory(dir);
+    //   }
+    // }
   };
 
   @Override public void updateUI() {
