@@ -13,50 +13,60 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
-public class MainPanel extends JPanel {
-  protected BigInteger status = new BigInteger("111000111", 2);
-  protected static final int BIT_LENGTH = 50;
-  protected static final String ONEPAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
-  protected static final String ZEROPAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
-  protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
+public final class MainPanel extends JPanel {
+  public BigInteger status = new BigInteger("111000111", 2);
+  public static final int BIT_LENGTH = 50;
+  public static final String ONE_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
+  public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  private final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel();
-  private final UndoManager um = new UndoManager();
-  private final Action undoAction = new UndoAction(um);
-  private final Action redoAction = new RedoAction(um);
-  private final Action selectAllAction = new AbstractAction("select all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      BigInteger newValue = new BigInteger(ONEPAD, 2);
-      undoSupport.postEdit(new StatusEdit(status, newValue));
-      updateCheckBoxes(newValue);
-      // TEST:
-      // undoSupport.beginUpdate();
-      // try {
-      //   ...
-      // } finally {
-      //   undoSupport.endUpdate();
-      // }
-    }
-  };
-  private final Action clearAllAction = new AbstractAction("clear all") {
-    @Override public void actionPerformed(ActionEvent e) {
-      BigInteger newValue = BigInteger.ZERO;
-      undoSupport.postEdit(new StatusEdit(status, newValue));
-      updateCheckBoxes(newValue);
-    }
-  };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
+    UndoManager um = new UndoManager();
     undoSupport.addUndoableEditListener(um);
+
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
+    Action undoAction = new UndoAction(um);
     box.add(new JButton(undoAction));
     box.add(Box.createHorizontalStrut(2));
+    Action redoAction = new RedoAction(um);
     box.add(new JButton(redoAction));
     box.add(Box.createHorizontalStrut(2));
+    // TEST:
+    // undoSupport.beginUpdate();
+    // try {
+    //   ...
+    // } finally {
+    //   undoSupport.endUpdate();
+    // }
+    Action selectAllAction = new AbstractAction("select all") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        BigInteger newValue = new BigInteger(ONE_PAD, 2);
+        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateCheckBoxes(newValue);
+        // TEST:
+        // undoSupport.beginUpdate();
+        // try {
+        //   ...
+        // } finally {
+        //   undoSupport.endUpdate();
+        // }
+      }
+    };
     box.add(new JButton(selectAllAction));
     box.add(Box.createHorizontalStrut(2));
+    Action clearAllAction = new AbstractAction("clear all") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        BigInteger newValue = BigInteger.ZERO;
+        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateCheckBoxes(newValue);
+      }
+    };
     box.add(new JButton(clearAllAction));
     box.add(Box.createHorizontalStrut(2));
 
@@ -83,7 +93,7 @@ public class MainPanel extends JPanel {
     return c;
   }
 
-  protected final void updateCheckBoxes(BigInteger value) {
+  protected void updateCheckBoxes(BigInteger value) {
     status = value;
     for (int i = 0; i < BIT_LENGTH; i++) {
       BigInteger l = BigInteger.ONE.shiftLeft(i);
@@ -93,7 +103,7 @@ public class MainPanel extends JPanel {
     label.setText(print(status));
   }
 
-  private class StatusEdit extends AbstractUndoableEdit {
+  class StatusEdit extends AbstractUndoableEdit {
     private final BigInteger oldValue;
     private final BigInteger newValue;
 
@@ -113,6 +123,7 @@ public class MainPanel extends JPanel {
       updateCheckBoxes(newValue);
     }
   }
+
   // // TEST: bit count
   // private static final BigInteger M1 = new BigInteger("5555555555555555", 16); // binary: 0101...
   // private static final BigInteger M2 = new BigInteger("3333333333333333", 16); // binary: 00110011..
@@ -133,7 +144,7 @@ public class MainPanel extends JPanel {
   private static String print(BigInteger l) {
     String b = l.toString(2);
     int count = l.bitCount();
-    return "<html>0b" + ZEROPAD.substring(b.length()) + b + "<br/> count: " + count;
+    return "<html>0b" + ZERO_PAD.substring(b.length()) + b + "<br/> count: " + count;
   }
 
   public static void main(String[] args) {
