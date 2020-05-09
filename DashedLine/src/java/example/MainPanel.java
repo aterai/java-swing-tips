@@ -8,10 +8,10 @@ import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
+public final class MainPanel extends JPanel {
+  public transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JTextField field = new JTextField("1f, 1f, 5f, 1f");
 
