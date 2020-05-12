@@ -10,20 +10,15 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final JTree tree = new JTree();
-  protected final JTextField field = new JTextField("", 10);
-  protected final JButton button = new JButton("Find Next(dummy)");
-  protected final JButton showHideButton = new JButton();
-  protected Timer animator;
-  protected boolean isHidden = true;
-  protected final JPanel controls = new JPanel(new BorderLayout(5, 5) {
-    protected int controlsHeight;
-    protected int controlsPreferredHeight;
+public final class MainPanel extends JPanel {
+  public Timer animator;
+  public boolean isHidden = true;
+  private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
+    private int controlsHeight;
     @Override public Dimension preferredLayoutSize(Container target) {
       // synchronized (target.getTreeLock()) {
       Dimension ps = super.preferredLayoutSize(target);
-      controlsPreferredHeight = ps.height;
+      int controlsPreferredHeight = ps.height;
       if (Objects.nonNull(animator)) {
         if (isHidden) {
           if (controls.getHeight() < controlsPreferredHeight) {
@@ -47,18 +42,17 @@ public class MainPanel extends JPanel {
     }
   });
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-    add(makePanel());
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private JPanel makePanel() {
+    JButton button = new JButton("Find Next(dummy)");
     button.setFocusable(false);
+    JTextField field = new JTextField("", 10);
+
     controls.setBorder(BorderFactory.createTitledBorder("Search down"));
     controls.add(new JLabel("Find what:"), BorderLayout.WEST);
     controls.add(field);
     controls.add(button, BorderLayout.EAST);
+
     Action act = new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent ev) {
         if (Objects.nonNull(animator) && animator.isRunning()) {
@@ -69,6 +63,7 @@ public class MainPanel extends JPanel {
         animator.start();
       }
     };
+    JButton showHideButton = new JButton();
     showHideButton.setAction(act);
     showHideButton.setFocusable(false);
     JPanel p = new JPanel(new BorderLayout());
@@ -79,9 +74,13 @@ public class MainPanel extends JPanel {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
     p.getActionMap().put("open-searchbox", act);
     p.add(controls, BorderLayout.NORTH);
+
+    JTree tree = new JTree();
     p.add(new JScrollPane(tree));
     p.add(showHideButton, BorderLayout.SOUTH);
-    return p;
+
+    add(p);
+    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
