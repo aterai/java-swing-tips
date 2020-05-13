@@ -34,34 +34,34 @@ public final class MainPanel extends JPanel {
   public transient MediaTracker tracker;
 
   private class ImageDropTargetListener extends DropTargetAdapter {
-    @Override public void dragOver(DropTargetDragEvent dtde) {
-      if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-        dtde.acceptDrag(DnDConstants.ACTION_COPY);
+    @Override public void dragOver(DropTargetDragEvent e) {
+      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        e.acceptDrag(DnDConstants.ACTION_COPY);
         return;
       }
-      dtde.rejectDrag();
+      e.rejectDrag();
     }
 
-    @Override public void drop(DropTargetDropEvent dtde) {
+    @Override public void drop(DropTargetDropEvent e) {
       try {
-        if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          dtde.acceptDrop(DnDConstants.ACTION_COPY);
-          Transferable transferable = dtde.getTransferable();
+        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+          e.acceptDrop(DnDConstants.ACTION_COPY);
+          Transferable transferable = e.getTransferable();
           ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
               .stream().filter(File.class::isInstance).map(File.class::cast)
               .map(File::toPath)
               .forEach(MainPanel.this::addImage);
-          dtde.dropComplete(true);
+          e.dropComplete(true);
         } else {
-          dtde.rejectDrop();
+          e.rejectDrop();
         }
       } catch (UnsupportedFlavorException | IOException ex) {
-        dtde.rejectDrop();
+        e.rejectDrop();
       }
     }
   }
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
@@ -146,7 +146,7 @@ class FileModel extends DefaultTableModel {
 
   public void addRowData(RowData t) {
     Object[] obj = {
-      t.getId(), t.getName(), t.getAbsolutePath(), t.getWidth(), t.getHeight()
+        t.getId(), t.getName(), t.getAbsolutePath(), t.getWidth(), t.getHeight()
     };
     super.addRow(obj);
   }
@@ -182,10 +182,10 @@ class FileModel extends DefaultTableModel {
 
 class RowData {
   private final int id;
-  private String name;
-  private String absolutePath;
-  private int width;
-  private int height;
+  private final String name;
+  private final String absolutePath;
+  private final int width;
+  private final int height;
 
   protected RowData(int id, Path path, int width, int height) {
     this.id = id;
@@ -195,21 +195,21 @@ class RowData {
     this.height = height;
   }
 
-  public void setName(String str) {
-    name = str;
-  }
+  // public void setName(String str) {
+  //   name = str;
+  // }
 
-  public void setAbsolutePath(String str) {
-    absolutePath = str;
-  }
+  // public void setAbsolutePath(String str) {
+  //   absolutePath = str;
+  // }
 
-  public void setWidth(int width) {
-    this.width = width;
-  }
+  // public void setWidth(int width) {
+  //   this.width = width;
+  // }
 
-  public void setHeight(int height) {
-    this.height = height;
-  }
+  // public void setHeight(int height) {
+  //   this.height = height;
+  // }
 
   public int getId() {
     return id;
