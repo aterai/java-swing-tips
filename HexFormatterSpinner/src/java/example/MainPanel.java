@@ -20,11 +20,10 @@ import javax.swing.*;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
   private final SpinnerNumberModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
-  private final JPanel fontPanel = new GlyphPaintPanel();
-  protected Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
+  private final GlyphPaintPanel fontPanel = new GlyphPaintPanel();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -70,7 +69,7 @@ public class MainPanel extends JPanel {
   }
 
   protected void setFontPaintFlag(Set<FontPaint> fp) {
-    fontPaintFlag = fp;
+    fontPanel.fontPaintFlag = fp;
     fontPanel.repaint();
   }
 
@@ -92,6 +91,7 @@ public class MainPanel extends JPanel {
   }
 
   private class GlyphPaintPanel extends JPanel {
+    protected transient Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
 
