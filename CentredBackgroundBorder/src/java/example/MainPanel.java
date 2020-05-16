@@ -20,7 +20,6 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea area = new JTextArea();
     // area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
     area.setForeground(Color.WHITE);
@@ -38,8 +37,7 @@ public final class MainPanel extends JPanel {
         "}"
     ));
 
-    URL url = getClass().getResource("tokeidai.jpg");
-    BufferedImage bi = getFilteredImage(url);
+    BufferedImage bi = getFilteredImage(getClass().getResource("tokeidai.jpg"));
     JScrollPane scroll = new JScrollPane(area);
     scroll.getViewport().setOpaque(false);
     scroll.setViewportBorder(new CentredBackgroundBorder(bi));
@@ -49,14 +47,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image = Optional.ofNullable(url)
-        .map(u -> {
-          try {
-            return ImageIO.read(u);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    BufferedImage image = Optional.ofNullable(url).map(u -> {
+      try {
+        return ImageIO.read(u);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
     BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
