@@ -14,64 +14,67 @@ import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected Flip mode;
-  protected final transient BufferedImage image;
-  protected final ButtonGroup bg = new ButtonGroup();
-  protected final JPanel panel = new JPanel() {
-    @Override protected void paintComponent(Graphics g) {
-      g.setColor(getBackground());
-      g.fillRect(0, 0, getWidth(), getHeight());
-      int w = image.getWidth(this);
-      int h = image.getHeight(this);
-      if (mode == Flip.VERTICAL) {
-        AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
-        at.translate(0, -h);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.drawImage(image, at, this);
-        g2.dispose();
-      } else if (mode == Flip.HORIZONTAL) {
-        AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
-        at.translate(-w, 0);
-        AffineTransformOp atOp = new AffineTransformOp(at, null);
-        g.drawImage(atOp.filter(image, null), 0, 0, w, h, this);
-      } else { // if (mode == Flip.NONE) {
-        g.drawImage(image, 0, 0, w, h, this);
-      }
-    }
-  };
+public final class MainPanel extends JPanel {
+  private Flip mode;
 
   private MainPanel() {
     super(new BorderLayout());
-
-    image = Optional.ofNullable(MainPanel.class.getResource("test.jpg"))
-        .map(url -> {
-          try {
-            return ImageIO.read(url);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
-
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(new JLabel("Flip: "));
+    ButtonGroup bg = new ButtonGroup();
     Stream.of(Flip.values()).map(this::makeRadioButton).forEach(rb -> {
       box.add(rb);
       bg.add(rb);
       box.add(Box.createHorizontalStrut(5));
     });
-    add(panel);
+
+    BufferedImage img = Optional.ofNullable(getClass().getResource("test.jpg")).map(url -> {
+      try {
+        return ImageIO.read(url);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
+    JPanel p = new JPanel() {
+      @Override protected void paintComponent(Graphics g) {
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        int w = img.getWidth(this);
+        int h = img.getHeight(this);
+        if (getMode() == Flip.VERTICAL) {
+          AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
+          at.translate(0, -h);
+          Graphics2D g2 = (Graphics2D) g.create();
+          g2.drawImage(img, at, this);
+          g2.dispose();
+        } else if (getMode() == Flip.HORIZONTAL) {
+          AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
+          at.translate(-w, 0);
+          AffineTransformOp atOp = new AffineTransformOp(at, null);
+          g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
+        } else { // if (getMode() == Flip.NONE) {
+          g.drawImage(img, 0, 0, w, h, this);
+        }
+      }
+    };
+
+    add(p);
     add(box, BorderLayout.SOUTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  protected Flip getMode() {
+    return mode;
   }
 
   private JRadioButton makeRadioButton(Flip f) {
     JRadioButton rb = new JRadioButton(f.toString(), f == Flip.NONE);
     rb.addActionListener(e -> {
       mode = f;
-      panel.repaint();
+      rb.getRootPane().repaint();
     });
     return rb;
   }
