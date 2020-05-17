@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private final JTextArea area = new JTextArea();
   private final JProgressBar bar = new JProgressBar();
   private final JPanel statusPanel = new JPanel(new BorderLayout());
@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void executeWorker() {
+  protected void executeWorker() {
     runButton.setEnabled(false);
     cancelButton.setEnabled(true);
     loadingLabel.startAnimation();
@@ -94,7 +94,7 @@ public class MainPanel extends JPanel {
     worker.execute();
   }
 
-  protected final void appendLine(String str) {
+  protected void appendLine(String str) {
     area.append(str);
     area.setCaretPosition(area.getDocument().getLength());
   }
