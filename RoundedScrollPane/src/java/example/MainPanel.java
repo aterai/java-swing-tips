@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
         getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
       }
     };
-    scroll.setBackground(Color.WHITE);
+    scroll.setBackground(tree.getBackground());
     scroll.setBorder(new RoundedCornerBorder());
 
     setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
