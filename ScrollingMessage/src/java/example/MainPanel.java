@@ -81,7 +81,7 @@ class MarqueePanel extends JComponent implements ActionListener {
 
     g2.setPaint(Color.GREEN);
     float ascent = baseline - lm.getAscent();
-    g2.draw(new Line2D.Double(0f, ascent, w, ascent));
+    g2.draw(new Line2D.Float(0f, ascent, w, ascent));
 
     g2.setPaint(Color.BLUE);
     float descent = baseline + lm.getDescent();
