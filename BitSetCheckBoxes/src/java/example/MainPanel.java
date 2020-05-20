@@ -15,14 +15,14 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   // Long.MAX_VALUE
   // 0b111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111
-  // protected static final int BIT_LENGTH = 63;
-  protected static final int BIT_LENGTH = 72;
-  protected BitSet status = BitSet.valueOf(new long[] {Long.valueOf("111000111", 2)});
-  protected static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
-  protected final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
+  // public static final int BIT_LENGTH = 63;
+  public static final int BIT_LENGTH = 72;
+  public BitSet status = BitSet.valueOf(new long[] {Long.valueOf("111000111", 2)});
+  public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  public final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel(new GridLayout(0, 8));
 
@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void updateCheckBoxes(BitSet value) {
+  protected void updateCheckBoxes(BitSet value) {
     status = value;
     for (int i = 0; i < BIT_LENGTH; i++) {
       ((JCheckBox) panel.getComponent(i)).setSelected(status.get(i));
