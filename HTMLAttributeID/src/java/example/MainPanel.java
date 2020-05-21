@@ -26,12 +26,12 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
-public class MainPanel extends JPanel {
-  protected static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
-  protected final JTextArea textArea = new JTextArea();
-  protected final JEditorPane editorPane = new JEditorPane();
-  protected final JTextField field = new JTextField("3");
-  protected final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
+public final class MainPanel extends JPanel {
+  public static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
+  public final JTextArea textArea = new JTextArea();
+  public final JEditorPane editorPane = new JEditorPane();
+  public final JTextField field = new JTextField("3");
+  public final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
     @Override public void actionPerformed(ActionEvent e) {
       textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
       String id = field.getText().trim();
@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
       }
     }
   };
-  protected final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
+  public final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
     @Override public void actionPerformed(ActionEvent e) {
       textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
       JToggleButton b = (JToggleButton) e.getSource();
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
       }
     }
   };
-  protected final Action parserAction = new AbstractAction("ParserDelegator") {
+  public final Action parserAction = new AbstractAction("ParserDelegator") {
     @Override public void actionPerformed(ActionEvent e) {
       textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
       String id = field.getText().trim();
@@ -67,12 +67,12 @@ public class MainPanel extends JPanel {
       try {
         delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
           @Override public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
-            Object attrid = a.getAttribute(HTML.Attribute.ID);
-            textArea.append(String.format("%s@id=%s%n", tag, attrid));
-            if (id.equals(attrid)) {
+            Object attrId = a.getAttribute(HTML.Attribute.ID);
+            textArea.append(String.format("%s@id=%s%n", tag, attrId));
+            if (id.equals(attrId)) {
               textArea.append(String.format("found: pos=%d%n", pos));
-              int endoffs = text.indexOf('>', pos);
-              textArea.append(String.format("%s%n", text.substring(pos, endoffs + 1)));
+              int endOffs = text.indexOf('>', pos);
+              textArea.append(String.format("%s%n", text.substring(pos, endOffs + 1)));
             }
           }
         }, Boolean.TRUE);
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     editorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
     editorPane.setText("<html>12<span id='2'>345678</span>90<p>1<a href='..'>23</a>45<span class='insert' id='0'>6</span>7<span id='1'>8</span>90<div class='fff' id='3'>123</div>4567890</p></html>");
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void addHighlight(Element element, boolean isBlock) {
+  protected void addHighlight(Element element, boolean isBlock) {
     Highlighter highlighter = editorPane.getHighlighter();
     int start = element.getStartOffset();
     int lf = isBlock ? 1 : 0;
@@ -121,7 +121,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  protected final void traverseElementById(Element element) {
+  protected void traverseElementById(Element element) {
     if (element.isLeaf()) {
       checkId(element);
     } else {
@@ -135,7 +135,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  protected final void checkId(Element element) {
+  protected void checkId(Element element) {
     AttributeSet attrs = element.getAttributes();
     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
     Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
