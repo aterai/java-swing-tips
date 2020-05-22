@@ -11,8 +11,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-  protected final JComboBox<String> combo = new JComboBox<String>() {
+public final class MainPanel extends JPanel {
+  public final JComboBox<String> combo = new JComboBox<String>() {
     @Override public void updateUI() {
       setRenderer(null);
       super.updateUI();
@@ -29,11 +29,11 @@ public class MainPanel extends JPanel {
       });
     }
   };
-  protected final JButton button = new JButton("load");
-  protected transient SwingWorker<String[], Integer> worker;
-  protected int counter;
+  public final JButton button = new JButton("load");
+  public transient SwingWorker<String[], Integer> worker;
+  public int counter;
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout(5, 5));
     button.addActionListener(e -> {
       button.setEnabled(false);
