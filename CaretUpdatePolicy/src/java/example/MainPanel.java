@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private final JCheckBox check = new JCheckBox("on EDT", true);
   private final JButton start = new JButton("Start");
   private final JButton stop = new JButton("Stop");
@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
     textArea.append(s + "\n");
   }
 
-  protected final void test(String s) {
+  protected void test(String s) {
     insertText(textArea0, s);
     insertText(textArea1, s);
     insertText(textArea2, s);
