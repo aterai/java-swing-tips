@@ -27,7 +27,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final String TEXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
   private final JCheckBox checkWord = new JCheckBox("Match whole word only");
   private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
   private final transient HighlightHandler handler = new HighlightHandler();
-  protected int current;
+  public int current;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -129,7 +129,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  protected final void changeHighlight() {
+  protected void changeHighlight() {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
     Style s = doc.getStyle("highlight-text-foreground");
