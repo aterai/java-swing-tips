@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
-    JLabel label1 = new JLabel("Mail Adress:", SwingConstants.RIGHT);
+    JLabel label1 = new JLabel("Mail Address:", SwingConstants.RIGHT);
     label1.setDisplayedMnemonic('M');
     Component textField1 = new JTextField(12);
     label1.setLabelFor(textField1);
