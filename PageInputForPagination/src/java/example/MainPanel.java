@@ -23,40 +23,28 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
-public class MainPanel extends JPanel {
-  private final String[] columnNames = {"Year", "String", "Comment"};
-  protected final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column == 0 ? Integer.class : Object.class;
-    }
-  };
-  protected final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  protected final JTable table = new JTable(model);
-
+public final class MainPanel extends JPanel {
   private final JButton first = new JButton("|<");
   private final JButton prev = new JButton("<");
   private final JButton next = new JButton(">");
   private final JButton last = new JButton(">|");
-  private final Action enterAction = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      int v = Integer.parseInt(field.getText());
-      if (v > 0 && v <= maxPageIndex) {
-        currentPageIndex = v;
-      }
-      initFilterAndButtons();
+  private final String[] columnNames = {"Year", "String", "Comment"};
+  public final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    @Override public Class<?> getColumnClass(int column) {
+      return column == 0 ? Integer.class : Object.class;
     }
   };
+  public final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+  public final JTable table = new JTable(model);
+  public final JTextField field = new JTextField(2);
+  public final JLabel label = new JLabel("/ 1");
 
-  protected final JTextField field = new JTextField(2);
-  protected final JLabel label = new JLabel("/ 1");
+  public final int itemsPerPage;
+  public int maxPageIndex;
+  public int currentPageIndex;
 
-  protected final int itemsPerPage;
-  protected int maxPageIndex;
-  protected int currentPageIndex;
-
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     itemsPerPage = 100;
     currentPageIndex = 1;
 
@@ -71,6 +59,15 @@ public class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     Stream.of(first, prev, po, next, last).forEach(box::add);
 
+    Action enterAction = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        int v = Integer.parseInt(field.getText());
+        if (v > 0 && v <= maxPageIndex) {
+          currentPageIndex = v;
+        }
+        initFilterAndButtons();
+      }
+    };
     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
     field.getActionMap().put("Enter", enterAction);
@@ -78,14 +75,14 @@ public class MainPanel extends JPanel {
 
     Stream.of(first, prev, next, last).forEach(b -> b.addActionListener(this::updateCurrentPageIndex));
 
-    new TableUpdateTask(2016, itemsPerPage).execute();
+    new TableUpdateTask(2020, itemsPerPage).execute();
 
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void updateCurrentPageIndex(ActionEvent e) {
+  protected void updateCurrentPageIndex(ActionEvent e) {
     Object c = e.getSource();
     if (first.equals(c)) {
       currentPageIndex = 1;
@@ -99,7 +96,7 @@ public class MainPanel extends JPanel {
     initFilterAndButtons();
   }
 
-  protected final class TableUpdateTask extends LoadTask {
+  protected class TableUpdateTask extends LoadTask {
     protected TableUpdateTask(int max, int itemsPerPage) {
       super(max, itemsPerPage);
       field.setEditable(false);
@@ -142,7 +139,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  protected final void initFilterAndButtons() {
+  protected void initFilterAndButtons() {
     sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         int ti = currentPageIndex - 1;
@@ -190,7 +187,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
   }
 
   @Override public String doInBackground() throws InterruptedException {
-    // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default/places.sqlite");
+    // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxx.default/places.sqlite");
     // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
     // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
     int current = 1;
@@ -221,6 +218,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     publish(result);
     return current + result.size();
   }
+
   // private int load(Statement stat, int current, int limit) throws SQLException {
   //   List<Object[]> result = new ArrayList<>(limit);
   //   String q = String.format("select * from moz_bookmarks limit %d offset %d", limit, current - 1);
@@ -258,12 +256,10 @@ class IntegerDocumentFilter extends DocumentFilter {
     fb.replace(offset, length, text, attrs);
   }
 
-  private static int checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (proposedValue.isEmpty()) {
-      return 0;
-    } else {
+  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
+    if (!proposedValue.isEmpty()) {
       try {
-        return Integer.parseInt(proposedValue);
+        Integer.parseInt(proposedValue);
       } catch (NumberFormatException ex) {
         throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
       }
