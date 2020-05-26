@@ -18,55 +18,25 @@ import javax.swing.event.AncestorListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-public class MainPanel extends JPanel {
-  protected final JTree tree = new JTree();
-  protected final JTextField field = new JTextField("b", 10) {
-    private transient AncestorListener listener;
-    @Override public void updateUI() {
-      removeAncestorListener(listener);
-      super.updateUI();
-      listener = new FocusAncestorListener();
-      addAncestorListener(listener);
-    }
-  };
-  protected final JPanel searchBox = new JPanel(new BorderLayout());
-  protected boolean isHidden = true;
-  protected int yy;
-  protected int counter;
-  protected final Timer animator = new Timer(5, null);
-  protected final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (!animator.isRunning()) {
-        // isHidden = !searchBox.isVisible();
-        isHidden = searchBox.isVisible() ^ true;
-        searchBox.setVisible(true);
-        animator.start();
-      }
-    }
-  };
-  protected final Action hideAction = new AbstractAction("Hide Search Box") {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (!animator.isRunning()) {
-        isHidden = false;
-        animator.start();
-      }
-    }
-  };
+public final class MainPanel extends JPanel {
+  public final JPanel searchBox = new JPanel(new BorderLayout());
+  public boolean isHidden = true;
+  public int yy;
+  public int counter;
+  public final Timer animator = new Timer(5, null);
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
-
     animator.addActionListener(e -> {
       int height = searchBox.getPreferredSize().height;
-      double h = height;
       if (isHidden) {
-        yy = (int) (.5 + AnimationUtil.easeInOut(++counter / h) * h);
+        yy = (int) (.5 + AnimationUtil.easeInOut(++counter / (double) height) * height);
         if (yy >= height) {
           yy = height;
           animator.stop();
         }
       } else {
-        yy = (int) (.5 + AnimationUtil.easeInOut(--counter / h) * h);
+        yy = (int) (.5 + AnimationUtil.easeInOut(--counter / (double) height) * height);
         if (yy <= 0) {
           yy = 0;
           animator.stop();
@@ -105,10 +75,21 @@ public class MainPanel extends JPanel {
       }
     });
     p.add(searchBox, BorderLayout.NORTH);
+
+    JTree tree = new JTree();
+    tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     p.add(new JScrollPane(tree));
 
-    tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    JTextField field = new JTextField("b", 10) {
+      private transient AncestorListener listener;
 
+      @Override public void updateUI() {
+        removeAncestorListener(listener);
+        super.updateUI();
+        listener = new FocusAncestorListener();
+        addAncestorListener(listener);
+      }
+    };
     Action findNextAction = new FindNextAction(tree, field);
     JButton button = new JButton(findNextAction);
     button.setFocusable(false);
@@ -122,18 +103,46 @@ public class MainPanel extends JPanel {
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap imap = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
+    InputMap im = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
 
-    p.getActionMap().put("open-searchbox", showHideAction);
-    p.getActionMap().put("close-searchbox", hideAction);
+    p.getActionMap().put("open-searchbox", new ShowHideAction());
+    p.getActionMap().put("close-searchbox", new HideAction());
 
     field.getActionMap().put("find-next", findNextAction);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
 
     add(p);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private class ShowHideAction extends AbstractAction {
+    public ShowHideAction() {
+      super("Show/Hide Search Box");
+    }
+
+    @Override public void actionPerformed(ActionEvent e) {
+      if (!animator.isRunning()) {
+        // isHidden = !searchBox.isVisible();
+        isHidden = !searchBox.isVisible();
+        searchBox.setVisible(true);
+        animator.start();
+      }
+    }
+  }
+
+  private class HideAction extends AbstractAction {
+    public HideAction() {
+      super("Hide Search Box");
+    }
+
+    @Override public void actionPerformed(ActionEvent e) {
+      if (!animator.isRunning()) {
+        isHidden = false;
+        animator.start();
+      }
+    }
   }
 
   public static void main(String[] args) {
@@ -228,22 +237,22 @@ final class AnimationUtil {
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
   // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-  public static double easeIn(double t) {
-    // range: 0.0 <= t <= 1.0
-    return Math.pow(t, N);
-  }
+  // public static double easeIn(double t) {
+  //   // range: 0.0 <= t <= 1.0
+  //   return Math.pow(t, N);
+  // }
 
-  public static double easeOut(double t) {
-    return Math.pow(t - 1d, N) + 1d;
-  }
+  // public static double easeOut(double t) {
+  //   return Math.pow(t - 1d, N) + 1d;
+  // }
 
   public static double easeInOut(double t) {
     double ret;
     boolean isFirstHalf = t < .5;
     if (isFirstHalf) {
-      ret = .5 * intpow(t * 2d, N);
+      ret = .5 * intPow(t * 2d, N);
     } else {
-      ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
+      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
     }
     return ret;
   }
@@ -252,7 +261,7 @@ final class AnimationUtil {
   // http://d.hatena.ne.jp/rexpit/20110328/1301305266
   // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
   // http://www.osix.net/modules/article/?id=696
-  public static double intpow(double da, int ib) {
+  public static double intPow(double da, int ib) {
     int b = ib;
     if (b < 0) {
       throw new IllegalArgumentException("B must be a positive integer or zero");
