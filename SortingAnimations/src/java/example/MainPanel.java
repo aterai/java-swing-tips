@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
   private static final Color DRAW_COLOR = Color.BLACK;
   private static final Color BACK_COLOR = Color.WHITE;
   private static final int MINX = 5;
@@ -34,14 +34,14 @@ public class MainPanel extends JPanel {
   private final JSpinner spinner = new JSpinner(model);
   private final JButton startButton = new JButton("Start");
   private final JButton cancelButton = new JButton("Cancel");
-  protected final JPanel panel = new JPanel() {
+  public final JPanel panel = new JPanel() {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       drawAllOval(g);
     }
   };
 
-  public MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     genArray(number);
 
@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final void drawAllOval(Graphics g) {
+  protected void drawAllOval(Graphics g) {
     // g.setColor(DRAW_COLOR);
     for (int i = 0; i < number; i++) {
       int px = (int) (MINX + factorx * i);
@@ -98,7 +98,7 @@ public class MainPanel extends JPanel {
     }
   }
 
-  protected final void setComponentEnabled(boolean flag) {
+  protected void setComponentEnabled(boolean flag) {
     cancelButton.setEnabled(!flag);
     startButton.setEnabled(flag);
     spinner.setEnabled(flag);
@@ -106,14 +106,14 @@ public class MainPanel extends JPanel {
     algorithmsChoices.setEnabled(flag);
   }
 
-  protected final void genArray(int n) {
+  protected void genArray(int n) {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
     factory = MAXY - MINY;
     distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex()).generate(array, n);
   }
 
-  protected final void workerExecute() {
+  protected void workerExecute() {
     int tmp = model.getNumber().intValue();
     if (tmp != number) {
       number = tmp;
