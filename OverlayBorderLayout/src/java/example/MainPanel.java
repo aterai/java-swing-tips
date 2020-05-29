@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
   }
 
   private class ShowHideAction extends AbstractAction {
-    public ShowHideAction() {
+    protected ShowHideAction() {
       super("Show/Hide Search Box");
     }
 
@@ -133,7 +133,7 @@ public final class MainPanel extends JPanel {
   }
 
   private class HideAction extends AbstractAction {
-    public HideAction() {
+    protected HideAction() {
       super("Hide Search Box");
     }
 
