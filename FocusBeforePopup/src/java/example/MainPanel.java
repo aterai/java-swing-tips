@@ -51,13 +51,13 @@ public final class MainPanel extends JPanel {
     textField4.setName("textField4");
     textField4.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        System.out.println("Close all JPopupMenu(excludes dropdown list of own JComboBox)");
-        // https://ateraimemo.com/Swing/GetAllPopupMenus.html
-        for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
-          if (combo4.isPopupVisible()) { // m instanceof ComboPopup
-            continue;
-          } else if (m instanceof JPopupMenu) {
-            ((JPopupMenu) m).setVisible(false);
+        if (combo4.isPopupVisible()) {
+          System.out.println("Close all JPopupMenu(excludes dropdown list of own JComboBox)");
+          // https://ateraimemo.com/Swing/GetAllPopupMenus.html
+          for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
+            if (m instanceof JPopupMenu) {
+              ((JPopupMenu) m).setVisible(false);
+            }
           }
         }
       }
@@ -142,15 +142,15 @@ public final class MainPanel extends JPanel {
 }
 
 class TextComponentPopupMenu extends JPopupMenu {
-  private final Action cutAction = new DefaultEditorKit.CutAction();
-  private final Action copyAction = new DefaultEditorKit.CopyAction();
-  private final Action pasteAction = new DefaultEditorKit.PasteAction();
+  private final transient Action cutAction = new DefaultEditorKit.CutAction();
+  private final transient Action copyAction = new DefaultEditorKit.CopyAction();
+  // private final transient Action pasteAction = new DefaultEditorKit.PasteAction();
 
   protected TextComponentPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);
-    add(pasteAction);
+    add(new DefaultEditorKit.PasteAction());
   }
 
   @Override public void show(Component c, int x, int y) {
