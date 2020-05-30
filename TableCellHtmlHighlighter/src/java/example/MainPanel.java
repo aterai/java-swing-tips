@@ -21,23 +21,23 @@ public final class MainPanel extends JPanel {
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
   private final JTextField field = new JTextField("ab+");
   private final HighlightTableCellRenderer renderer = new HighlightTableCellRenderer();
+  private final transient TableRowSorter<? extends TableModel> sorter;
 
-  private final String[] columnNames = {"A", "B"};
-  private final Object[][] data = {
-      {"aaa", "bbaacc"}, {"bbb", "defg"},
-      {"ccccbbbbaaabbbbaaeabee", "xxx"}, {"dddaaabbbbb", "ccbbaa"},
-      {"cc cc bbbb aaa bbbb e", "xxx"}, {"ddd aaa b bbbb", "cc bbaa"}};
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
+  private MainPanel() {
+    super(new BorderLayout(5, 5));
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {"aaa", "bb aa cc"}, {"bbb", "def"},
+        {"ccc bbb aaa bbb aae abe", "xxx"}, {"ddd aaa bbb bbb", "cc bb aa"},
+        {"cc cc bb bb aaa bb bb e", "xxx"}, {"ddd aaa b bb bb", "cc bb aa"}};
+    TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return String.class;
       }
     };
-  private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  private final JTable table = new JTable(model);
+    sorter = new TableRowSorter<>(model);
 
-  private MainPanel() {
-    super(new BorderLayout(5, 5));
-
+    JTable table = new JTable(model);
     table.setFillsViewportHeight(true);
     table.setRowSorter(sorter);
     table.setDefaultRenderer(String.class, renderer);
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void fireDocumentChangeEvent() {
+  public void fireDocumentChangeEvent() {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     if (pattern.isEmpty()) {
@@ -105,7 +105,6 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightTableCellRenderer extends DefaultTableCellRenderer {
-  private static final String SPAN = "%s<span style='color:#000000; background-color:#FFFF00'>%s</span>";
   private String pattern = "";
   private String prev;
 
@@ -128,7 +127,8 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
         int end = matcher.end();
-        buf.append(String.format(SPAN, txt.substring(pos, start), txt.substring(start, end)));
+        String span = "%s<span style='color:#000000; background-color:#FFFF00'>%s</span>";
+        buf.append(String.format(span, txt.substring(pos, start), txt.substring(start, end)));
         pos = end;
       }
       buf.append(txt.substring(pos));
