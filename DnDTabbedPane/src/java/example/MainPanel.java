@@ -509,8 +509,8 @@ class GhostGlassPane extends JComponent {
     lineRect.setBounds(x, y, width, height);
   }
 
-  public void setImage(BufferedImage draggingGhost) {
-    this.draggingGhost = draggingGhost;
+  public void setImage(BufferedImage draggingImage) {
+    this.draggingGhost = draggingImage;
   }
 
   public void setPoint(Point pt) {
