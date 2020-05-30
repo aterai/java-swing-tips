@@ -106,9 +106,7 @@ public final class MainPanel extends JPanel {
     InputMap im = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
-
-    p.getActionMap().put("open-searchbox", new ShowHideAction());
-    p.getActionMap().put("close-searchbox", new HideAction());
+    initAction(p);
 
     field.getActionMap().put("find-next", findNextAction);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
@@ -117,32 +115,25 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class ShowHideAction extends AbstractAction {
-    protected ShowHideAction() {
-      super("Show/Hide Search Box");
-    }
-
-    @Override public void actionPerformed(ActionEvent e) {
-      if (!animator.isRunning()) {
-        // isHidden = !searchBox.isVisible();
-        isHidden = !searchBox.isVisible();
-        searchBox.setVisible(true);
-        animator.start();
+  private void initAction(JComponent p) {
+    p.getActionMap().put("open-searchbox", new AbstractAction("Show/Hide Search Box") {
+      @Override public void actionPerformed(ActionEvent e) {
+        if (!animator.isRunning()) {
+          // isHidden = !searchBox.isVisible();
+          isHidden = !searchBox.isVisible();
+          searchBox.setVisible(true);
+          animator.start();
+        }
       }
-    }
-  }
-
-  private class HideAction extends AbstractAction {
-    protected HideAction() {
-      super("Hide Search Box");
-    }
-
-    @Override public void actionPerformed(ActionEvent e) {
-      if (!animator.isRunning()) {
-        isHidden = false;
-        animator.start();
+    });
+    p.getActionMap().put("close-searchbox", new AbstractAction("Hide Search Box") {
+      @Override public void actionPerformed(ActionEvent e) {
+        if (!animator.isRunning()) {
+          isHidden = false;
+          animator.start();
+        }
       }
-    }
+    });
   }
 
   public static void main(String[] args) {
