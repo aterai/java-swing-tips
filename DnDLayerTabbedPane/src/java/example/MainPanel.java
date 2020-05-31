@@ -157,7 +157,7 @@ class DnDTabbedPane extends JTabbedPane {
     private final int index;
     // public boolean canDrop = true; // index >= 0;
 
-    protected DropLocation(Point p, int index) {
+    private DropLocation(Point p, int index) {
       super(p);
       this.index = index;
     }
@@ -492,8 +492,8 @@ class TabTransferHandler extends TransferHandler {
   protected final JWindow dialog = new JWindow();
   protected DragImageMode mode = DragImageMode.LIGHTWEIGHT;
 
-  public void setDragImageMode(DragImageMode mode) {
-    this.mode = mode;
+  public void setDragImageMode(DragImageMode dragMode) {
+    this.mode = dragMode;
     setDragImage(null);
   }
 
