@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
   }
 
   private class CalendarTableRenderer extends DefaultTableCellRenderer {
-    private final JPanel p = new JPanel();
+    private final JPanel panel = new JPanel(new BorderLayout());
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, selected, focused, row, column);
@@ -113,15 +113,14 @@ public final class MainPanel extends JPanel {
           sub.setVerticalAlignment(SwingConstants.BOTTOM);
           sub.setHorizontalAlignment(SwingConstants.RIGHT);
 
-          p.removeAll();
-          p.setLayout(new BorderLayout());
-          p.add(sub, BorderLayout.SOUTH);
-          p.add(c, BorderLayout.NORTH);
-          p.setBorder(c.getBorder());
+          // panel.removeAll();
+          panel.add(sub, BorderLayout.SOUTH);
+          panel.add(c, BorderLayout.NORTH);
+          panel.setBorder(c.getBorder());
           c.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-          updateCellWeekColor(d, sub, p);
-          return new JLayer<>(p, new DiagonallySplitCellLayerUI());
+          updateCellWeekColor(d, sub, panel);
+          return new JLayer<>(panel, new DiagonallySplitCellLayerUI());
         }
       }
       return c;
