@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
           sub.setVerticalAlignment(SwingConstants.BOTTOM);
           sub.setHorizontalAlignment(SwingConstants.RIGHT);
 
-          // panel.removeAll();
+          panel.removeAll();
           panel.add(sub, BorderLayout.SOUTH);
           panel.add(c, BorderLayout.NORTH);
           panel.setBorder(c.getBorder());
