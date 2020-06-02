@@ -40,13 +40,13 @@ public final class MainPanel extends JPanel {
   public final JLabel label = new JLabel("/ 1");
 
   public final int itemsPerPage;
-  public int maxPageIndex;
-  public int currentPageIndex;
+  private int maxPageIndex;
+  private int currentPageIndex;
 
   private MainPanel() {
     super(new BorderLayout());
     itemsPerPage = 100;
-    currentPageIndex = 1;
+    setCurrentPageIndex(1);
 
     table.setFillsViewportHeight(true);
     table.setRowSorter(sorter);
@@ -62,8 +62,8 @@ public final class MainPanel extends JPanel {
     Action enterAction = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int v = Integer.parseInt(field.getText());
-        if (v > 0 && v <= maxPageIndex) {
-          currentPageIndex = v;
+        if (v > 0 && v <= getMaxPageIndex()) {
+          setCurrentPageIndex(v);
         }
         initFilterAndButtons();
       }
@@ -82,21 +82,37 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void updateCurrentPageIndex(ActionEvent e) {
+  public int getCurrentPageIndex() {
+    return currentPageIndex;
+  }
+
+  public void setCurrentPageIndex(int v) {
+    this.currentPageIndex = v;
+  }
+
+  public int getMaxPageIndex() {
+    return maxPageIndex;
+  }
+
+  public void setMaxPageIndex(int v) {
+    this.maxPageIndex = v;
+  }
+
+  public void updateCurrentPageIndex(ActionEvent e) {
     Object c = e.getSource();
     if (first.equals(c)) {
-      currentPageIndex = 1;
+      setCurrentPageIndex(1);
     } else if (prev.equals(c)) {
-      currentPageIndex -= 1;
+      setCurrentPageIndex(getCurrentPageIndex() - 1);
     } else if (next.equals(c)) {
-      currentPageIndex += 1;
+      setCurrentPageIndex(getCurrentPageIndex() + 1);
     } else if (last.equals(c)) {
-      currentPageIndex = maxPageIndex;
+      setCurrentPageIndex(getMaxPageIndex());
     }
     initFilterAndButtons();
   }
 
-  protected class TableUpdateTask extends LoadTask {
+  class TableUpdateTask extends LoadTask {
     protected TableUpdateTask(int max, int itemsPerPage) {
       super(max, itemsPerPage);
       field.setEditable(false);
@@ -117,7 +133,7 @@ public final class MainPanel extends JPanel {
         }
       }
       int rowCount = model.getRowCount();
-      maxPageIndex = rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1);
+      setMaxPageIndex(rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1));
       initFilterAndButtons();
     }
 
@@ -130,8 +146,11 @@ public final class MainPanel extends JPanel {
       String text;
       try {
         text = get();
-      } catch (InterruptedException | ExecutionException ex) {
+      } catch (InterruptedException ex) {
         text = "Interrupted";
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        text = "ExecutionException";
       }
       System.out.println(text);
       table.setEnabled(true);
@@ -139,10 +158,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void initFilterAndButtons() {
+  public void initFilterAndButtons() {
     sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        int ti = currentPageIndex - 1;
+        int ti = getCurrentPageIndex() - 1;
         int ei = entry.getIdentifier();
         return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
       }
@@ -186,7 +205,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     this.itemsPerPage = itemsPerPage;
   }
 
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxx.default/places.sqlite");
     // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
     // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
