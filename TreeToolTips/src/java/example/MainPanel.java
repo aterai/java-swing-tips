@@ -16,12 +16,8 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 1));
     JTree tree1 = new JTree() {
       @Override public String getToolTipText(MouseEvent e) {
-        Object o = null;
         TreePath path = getPathForLocation(e.getX(), e.getY());
-        if (Objects.nonNull(path)) {
-          o = path.getLastPathComponent();
-        }
-        return Objects.toString(o, "getToolTipText");
+        return Objects.nonNull(path) ? "getToolTipText: " + path.getLastPathComponent().toString() : null;
       }
     };
     ToolTipManager.sharedInstance().registerComponent(tree1);
