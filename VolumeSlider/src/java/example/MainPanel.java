@@ -113,8 +113,8 @@ class TriSliderUI extends MetalSliderUI {
 
       // int fillTop = 0;
       // int fillBottom = 0;
-      int fillLeft = 0;
-      int fillRight = 0;
+      int fillLeft;
+      int fillRight;
       if (drawInverted()) {
         fillLeft = middleOfThumb;
         fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
@@ -168,6 +168,7 @@ class TriSliderUI extends MetalSliderUI {
 //     }
 //   }
 // }
+//
 // class TickIcon implements Icon {
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     g.setColor(Color.GREEN);
@@ -175,9 +176,11 @@ class TriSliderUI extends MetalSliderUI {
 //     g.drawLine(x + 1, y + 0, x + 3, y + 0);
 //     g.drawLine(x + 0, y + 1, x + 4, y + 1);
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return 5;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return 3;
 //   }
