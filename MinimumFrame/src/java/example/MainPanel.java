@@ -14,35 +14,40 @@ public final class MainPanel extends JPanel {
   private static final int MH1 = 100;
   private static final int MH2 = 150;
 
-  private MainPanel(JFrame frame) {
+  private MainPanel() {
     super(new BorderLayout());
-
     JLabel label = new JLabel();
     label.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        ((JLabel) e.getComponent()).setText(frame.getSize().toString());
+        Window w = SwingUtilities.getWindowAncestor(getRootPane());
+        ((JLabel) e.getComponent()).setText(w.getSize().toString());
       }
     });
 
     JCheckBox checkbox1 = new JCheckBox("the minimum size of this window: " + MW + "x" + MH1, true);
     checkbox1.addActionListener(e -> {
-      if (!((JCheckBox) e.getSource()).isSelected()) {
-        return;
+      Object o = e.getSource();
+      if (o instanceof JCheckBox && ((JCheckBox) o).isSelected()) {
+        initFrameSize(SwingUtilities.getWindowAncestor(getRootPane()));
       }
-      initFrameSize(frame);
     });
 
     JCheckBox checkbox2 = new JCheckBox("the minimum size of this window(since 1.6): " + MW + "x" + MH2, true);
-    checkbox2.addActionListener(e -> frame.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null));
+    checkbox2.addActionListener(e -> {
+      Window w = SwingUtilities.getWindowAncestor(getRootPane());
+      w.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null);
+    });
 
-    frame.setMinimumSize(new Dimension(MW, MH2));
-    frame.addComponentListener(new ComponentAdapter() {
-      @Override public void componentResized(ComponentEvent e) {
-        if (!checkbox1.isSelected()) {
-          return;
+    EventQueue.invokeLater(() -> {
+      Window w = SwingUtilities.getWindowAncestor(getRootPane());
+      w.setMinimumSize(new Dimension(MW, MH2));
+      w.addComponentListener(new ComponentAdapter() {
+        @Override public void componentResized(ComponentEvent e) {
+          if (checkbox1.isSelected()) {
+            initFrameSize((Window) e.getComponent());
+          }
         }
-        initFrameSize((JFrame) e.getComponent());
-      }
+      });
     });
 
     Box box = Box.createVerticalBox();
@@ -53,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void initFrameSize(JFrame frame) {
+  protected static void initFrameSize(Window frame) {
     int fw = frame.getSize().width;
     int fh = frame.getSize().height;
     frame.setSize(Math.max(MW, fw), Math.max(MH1, fh));
@@ -92,7 +97,7 @@ public final class MainPanel extends JPanel {
     //   }
     // });
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel(frame));
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
