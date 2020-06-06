@@ -14,12 +14,10 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "aaa\na\na\na\na\naaaa\na\na\na\naaaa\n";
-  private final JTextPane textPane = new JTextPane();
+  private static final String TEXT = "aaa\na\na\na\na\naaa\na\na\na\nbbb\n";
 
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
       {"aaa", 12, true}, {"zzz", 6, false}, {"bbb", 22, true}, {"nnn", 9, false},
@@ -38,6 +36,7 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
 
+    JTextPane textPane = new JTextPane();
     textPane.setEditable(false);
     textPane.setMargin(new Insets(5, 10, 5, 5));
 
@@ -129,9 +128,7 @@ class WheelScrollLayerUI extends LayerUI<JScrollPane> {
       int minimum = m.getMinimum();
       int maximum = m.getMaximum();
       int value = m.getValue();
-      if (value + extent >= maximum && dir > 0) {
-        main.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, main));
-      } else if (value <= minimum && dir < 0) {
+      if ((value + extent >= maximum && dir > 0) || (value <= minimum && dir < 0)){
         main.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, main));
       }
     }
