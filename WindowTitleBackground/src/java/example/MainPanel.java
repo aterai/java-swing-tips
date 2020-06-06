@@ -18,61 +18,60 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int KEY_COLIDX = 0;
-  public static final int COLOR_COLIDX = 1;
-  private final String[] columnNames = {"Key", "Color"};
-  private final Object[][] data = {
-    {"activeCaption", UIManager.getColor("activeCaption")},
-    {"activeCaptionBorder", UIManager.getColor("activeCaptionBorder")},
-    {"activeCaptionText", UIManager.getColor("activeCaptionText")},
-    {"control", UIManager.getColor("control")},
-    {"controlDkShadow", UIManager.getColor("controlDkShadow")},
-    {"controlHighlight", UIManager.getColor("controlHighlight")},
-    {"controlLtHighlight", UIManager.getColor("controlLtHighlight")},
-    {"controlShadow", UIManager.getColor("controlShadow")},
-    {"controlText", UIManager.getColor("controlText")},
-    {"desktop", UIManager.getColor("desktop")},
-    {"inactiveCaption", UIManager.getColor("inactiveCaption")},
-    {"inactiveCaptionBorder", UIManager.getColor("inactiveCaptionBorder")},
-    {"inactiveCaptionText", UIManager.getColor("inactiveCaptionText")},
-    {"info", UIManager.getColor("info")},
-    {"infoText", UIManager.getColor("infoText")},
-    {"menu", UIManager.getColor("menu")},
-    {"menuPressedItemB", UIManager.getColor("menuPressedItemB")},
-    {"menuPressedItemF", UIManager.getColor("menuPressedItemF")},
-    {"menuText", UIManager.getColor("menuText")},
-    {"scrollbar", UIManager.getColor("scrollbar")},
-    {"text", UIManager.getColor("text")},
-    {"textHighlight", UIManager.getColor("textHighlight")},
-    {"textHighlightText", UIManager.getColor("textHighlightText")},
-    {"textInactiveText", UIManager.getColor("textInactiveText")},
-    {"textText", UIManager.getColor("textText")},
-    {"window", UIManager.getColor("window")},
-    {"windowBorder", UIManager.getColor("windowBorder")},
-    {"windowText", UIManager.getColor("windowText")}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public boolean isCellEditable(int row, int column) {
-      return column == COLOR_COLIDX;
-    }
-
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
+  public static final int KEY_COL_IDX = 0;
+  public static final int COLOR_COL_IDX = 1;
 
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"Key", "Color"};
+    Object[][] data = {
+      {"activeCaption", UIManager.getColor("activeCaption")},
+      {"activeCaptionBorder", UIManager.getColor("activeCaptionBorder")},
+      {"activeCaptionText", UIManager.getColor("activeCaptionText")},
+      {"control", UIManager.getColor("control")},
+      {"controlDkShadow", UIManager.getColor("controlDkShadow")},
+      {"controlHighlight", UIManager.getColor("controlHighlight")},
+      {"controlLtHighlight", UIManager.getColor("controlLtHighlight")},
+      {"controlShadow", UIManager.getColor("controlShadow")},
+      {"controlText", UIManager.getColor("controlText")},
+      {"desktop", UIManager.getColor("desktop")},
+      {"inactiveCaption", UIManager.getColor("inactiveCaption")},
+      {"inactiveCaptionBorder", UIManager.getColor("inactiveCaptionBorder")},
+      {"inactiveCaptionText", UIManager.getColor("inactiveCaptionText")},
+      {"info", UIManager.getColor("info")},
+      {"infoText", UIManager.getColor("infoText")},
+      {"menu", UIManager.getColor("menu")},
+      {"menuPressedItemB", UIManager.getColor("menuPressedItemB")},
+      {"menuPressedItemF", UIManager.getColor("menuPressedItemF")},
+      {"menuText", UIManager.getColor("menuText")},
+      {"scrollbar", UIManager.getColor("scrollbar")},
+      {"text", UIManager.getColor("text")},
+      {"textHighlight", UIManager.getColor("textHighlight")},
+      {"textHighlightText", UIManager.getColor("textHighlightText")},
+      {"textInactiveText", UIManager.getColor("textInactiveText")},
+      {"textText", UIManager.getColor("textText")},
+      {"window", UIManager.getColor("window")},
+      {"windowBorder", UIManager.getColor("windowBorder")},
+      {"windowText", UIManager.getColor("windowText")}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return column == COLOR_COL_IDX;
+      }
 
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setDefaultRenderer(Color.class, new ColorRenderer());
     table.setDefaultEditor(Color.class, new ColorEditor());
 
     model.addTableModelListener(e -> {
-      if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COLIDX) {
+      if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COL_IDX) {
         int row = e.getFirstRow();
-        String key = Objects.toString(model.getValueAt(row, KEY_COLIDX));
-        Color color = (Color) model.getValueAt(row, COLOR_COLIDX);
+        String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
+        Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
         UIManager.put(key, new ColorUIResource(color));
         EventQueue.invokeLater(() ->
             Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI));
@@ -88,11 +87,6 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-    // try {
-    //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-    //   ex.printStackTrace();
-    // }
     JFrame.setDefaultLookAndFeelDecorated(true);
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
