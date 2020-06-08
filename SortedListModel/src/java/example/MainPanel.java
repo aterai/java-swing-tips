@@ -121,8 +121,9 @@ public final class MainPanel extends JPanel {
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
-    p.add(box1, BorderLayout.NORTH);
-    p.add(box2, BorderLayout.NORTH);
+    p.add(box1);
+    p.add(box2);
+
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
