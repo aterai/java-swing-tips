@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
   private final JTextArea logger = new JTextArea();
   private final FileModel model = new FileModel();
   private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  public final Set<Integer> deleteRowSet = new TreeSet<>();
+  private final Set<Integer> deleteRowSet = new TreeSet<>();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -153,10 +153,14 @@ public final class MainPanel extends JPanel {
       }
       sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
         @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-          return !deleteRowSet.contains(entry.getIdentifier());
+          return !isDeleteRow(entry.getIdentifier());
         }
       });
     }
+  }
+
+  public boolean isDeleteRow(int row) {
+    return deleteRowSet.contains(row);
   }
 
   public void append(String str) {
