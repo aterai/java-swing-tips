@@ -10,12 +10,8 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public static final int MIN_TAB_WIDTH = 100;
-
   private MainPanel() {
     super(new BorderLayout());
-    JPanel p = new JPanel(new GridLayout(0, 1, 0, 2));
-
     JTabbedPane tabbedPane1 = new JTabbedPane() {
       @Override public void removeTabAt(int index) {
         if (getTabCount() > 0) {
@@ -63,6 +59,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
+    JPanel p = new JPanel(new GridLayout(0, 1, 0, 2));
     List<JTabbedPane> list = Arrays.asList(new JTabbedPane(), tabbedPane1, tabbedPane2);
     list.forEach(tabs -> {
       tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -85,15 +82,12 @@ public final class MainPanel extends JPanel {
     });
 
     JButton button = new JButton("Remove");
-    button.addActionListener(e -> list.forEach(tabs -> {
-      if (tabs.getTabCount() > 0) {
-        tabs.removeTabAt(tabs.getTabCount() - 1);
-      }
-    }));
+    button.addActionListener(e -> list.stream()
+        .filter(t -> t.getTabCount() > 0)
+        .forEach(t -> t.removeTabAt(t.getTabCount() - 1)));
 
     add(p);
     add(button, BorderLayout.SOUTH);
-
     setPreferredSize(new Dimension(320, 240));
   }
 
