@@ -26,8 +26,6 @@ import javax.swing.tree.TreeModel;
 
 public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
-  private final JButton save = new JButton("save");
-  private final JButton load = new JButton("load");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -57,6 +55,7 @@ public final class MainPanel extends JPanel {
     tree.expandRow(0);
     // tree.setToggleClickCount(1);
 
+    JButton save = new JButton("save");
     save.addActionListener(e -> {
       try {
         File file = File.createTempFile("output", ".xml");
@@ -75,6 +74,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JButton load = new JButton("load");
     load.addActionListener(e -> {
       String text = textArea.getText();
       if (text.isEmpty()) {
