@@ -25,9 +25,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
-  private final JEditorPane editor = new JEditorPane();
-  private final ScriptEngine engine = createEngine();
-
   private MainPanel() {
     super(new BorderLayout());
 
@@ -47,18 +44,21 @@ public final class MainPanel extends JPanel {
 
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
+
+    JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
     editor.setSelectedTextColor(null);
     editor.setSelectionColor(new Color(0x64_88_AA_AA, true));
     editor.setBackground(new Color(0x64_64_64)); // 0x33_33_33
 
+    ScriptEngine engine = createEngine();
     JButton button = new JButton("open");
     button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       int ret = fileChooser.showOpenDialog(getRootPane());
       if (ret == JFileChooser.APPROVE_OPTION) {
-        loadFile(fileChooser.getSelectedFile().getAbsolutePath());
+        loadFile(fileChooser.getSelectedFile().getAbsolutePath(), engine, editor);
       }
     });
 
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void loadFile(String path) {
+  private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
