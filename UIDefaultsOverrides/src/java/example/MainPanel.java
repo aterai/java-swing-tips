@@ -16,16 +16,14 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"A", "B", "C"};
-  private final Object[][] data = {
-    {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
-    {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
-    {"A2, Line1", "B2, Line1", "C2, Line1"}
-  };
-
   private MainPanel() {
     super(new GridLayout(2, 0));
-
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
+        {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
+        {"A2, Line1", "B2, Line1", "C2, Line1"}
+    };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
@@ -137,10 +135,10 @@ enum CheckIcon {
 
 // @see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
-  // public static final int CHECKICON_ENABLED_SELECTED = 6;
-  // public static final int CHECKICON_SELECTED_MOUSEOVER = 7;
-  // public static final int CHECKICON_ENABLED = 8;
-  // public static final int CHECKICON_MOUSEOVER = 9;
+  // public static final int ICON_ENABLED_SELECTED = 6;
+  // public static final int ICON_SELECTED_MOUSEOVER = 7;
+  // public static final int ICON_ENABLED = 8;
+  // public static final int ICON_MOUSEOVER = 9;
   private final CheckIcon state;
   private final PaintContext ctx;
 
@@ -153,16 +151,16 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
   @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] keys) {
     switch (state) {
       case ENABLED:
-        paintcheckIconEnabled(g);
+        paintCheckIconEnabled(g);
         break;
       case MOUSEOVER:
-        paintcheckIconMouseOver(g);
+        paintCheckIconMouseOver(g);
         break;
       case ENABLED_SELECTED:
-        paintcheckIconEnabledAndSelected(g);
+        paintCheckIconEnabledAndSelected(g);
         break;
       case SELECTED_MOUSEOVER:
-        paintcheckIconSelectedAndMouseOver(g);
+        paintCheckIconSelectedAndMouseOver(g);
         break;
       default:
         break;
@@ -173,22 +171,22 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     return ctx;
   }
 
-  private void paintcheckIconEnabled(Graphics2D g) {
+  private void paintCheckIconEnabled(Graphics2D g) {
     g.setPaint(Color.GREEN);
     g.drawOval(0, 0, 10, 10);
   }
 
-  private void paintcheckIconMouseOver(Graphics2D g) {
+  private void paintCheckIconMouseOver(Graphics2D g) {
     g.setPaint(Color.PINK);
     g.drawOval(0, 0, 10, 10);
   }
 
-  private void paintcheckIconEnabledAndSelected(Graphics2D g) {
+  private void paintCheckIconEnabledAndSelected(Graphics2D g) {
     g.setPaint(Color.ORANGE);
     g.fillOval(0, 0, 10, 10);
   }
 
-  private void paintcheckIconSelectedAndMouseOver(Graphics2D g) {
+  private void paintCheckIconSelectedAndMouseOver(Graphics2D g) {
     g.setPaint(Color.CYAN);
     g.fillOval(0, 0, 10, 10);
   }
@@ -196,8 +194,8 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 
 class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
   private final List<List<Integer>> rowColHeight = new ArrayList<>();
-  private Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
-  private final Border epb = BorderFactory.createEmptyBorder(2, 5, 2, 5);
+  private transient Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
+  private transient Border epb;
 
   @Override public void updateUI() {
     setBorder(null);
@@ -209,6 +207,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
     // System.out.println(UIManager.get("nimbusFocus"));
     Border b = BorderFactory.createLineBorder(new Color(0x73_A4_D1)); // Color(115, 164, 209));
     fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1, 4, 1, 4));
+    epb = BorderFactory.createEmptyBorder(2, 5, 2, 5);
     setBorder(epb);
     // setMargin(new Insets(0, 0, 0, 0));
   }
