@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST MouseWheelTabCycling" />
+  <property name="jnlp.Name"     value="MouseWheelTabCycling" />
+  <property name="jnlp.name"     value="mousewheeltabcycling" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/mousewheeltabcycling/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MouseWheelTabCycling.html" />
+</project>
