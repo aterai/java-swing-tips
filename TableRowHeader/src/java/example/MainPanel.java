@@ -15,7 +15,6 @@ import javax.swing.table.JTableHeader;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultListModel<String> listModel = new DefaultListModel<>();
     RowDataModel model = new RowDataModel(listModel);
     model.addRowData(new RowData("Name 1", "comment"));
@@ -82,8 +81,8 @@ public final class MainPanel extends JPanel {
 
 class RowHeaderList<E> extends JList<E> {
   protected final JTable table;
-  protected final ListSelectionModel tableSelection;
-  protected final ListSelectionModel listSelection;
+  protected final transient ListSelectionModel tableSelection;
+  protected final transient ListSelectionModel listSelection;
   protected int rollOverRowIndex = -1;
   protected int pressedRowIndex = -1;
 
@@ -195,9 +194,9 @@ class RowHeaderList<E> extends JList<E> {
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    // new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, false),
-    new ColumnContext("Comment", String.class, false)
+      // new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, false),
+      new ColumnContext("Comment", String.class, false)
   };
   private int number;
   private final DefaultListModel<String> rowListModel;
@@ -249,20 +248,12 @@ class RowDataModel extends DefaultTableModel {
 }
 
 class RowData {
-  private String name;
-  private String comment;
+  private final String name;
+  private final String comment;
 
   protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
-  }
-
-  public void setName(String str) {
-    name = str;
-  }
-
-  public void setComment(String str) {
-    comment = str;
   }
 
   public String getName() {
