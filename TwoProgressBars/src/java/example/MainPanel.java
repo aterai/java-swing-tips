@@ -45,14 +45,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void executeWorker() {
+  public void executeWorker() {
     if (Objects.isNull(worker)) {
       worker = new ProgressTask();
     }
     worker.execute();
   }
 
-  protected void initStatusPanel(boolean start) {
+  public void initStatusPanel(boolean start) {
     if (start) {
       runButton.setEnabled(false);
       cancelButton.setEnabled(true);
@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void processChunks(List<Progress> chunks) {
+  public void processChunks(List<Progress> chunks) {
     chunks.forEach(s -> {
       switch (s.componentType) {
         case TOTAL:
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  protected void appendLine(String str) {
+  public void appendLine(String str) {
     area.append(str);
     area.setCaretPosition(area.getDocument().getLength());
   }
@@ -158,33 +158,34 @@ class Progress {
 class BackgroundTask extends SwingWorker<String, Progress> {
   private final Random rnd = new Random();
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
-    int lengthOfTask = 12; // fileList.size();
-    publish(new Progress(ComponentType.LOG, "Length Of Task: " + lengthOfTask));
+    int numOfFiles = 12; // fileList.size();
+    publish(new Progress(ComponentType.LOG, "Total number of files: " + numOfFiles));
     publish(new Progress(ComponentType.LOG, "\n------------------------------\n"));
-    while (current < lengthOfTask && !isCancelled()) {
-      publish(new Progress(ComponentType.LOG, "*"));
-      publish(new Progress(ComponentType.TOTAL, 100 * current / lengthOfTask));
-      convertFileToSomething();
+    while (current < numOfFiles && !isCancelled()) {
+      convertFileToSomething(100 * current / numOfFiles);
       current++;
     }
     publish(new Progress(ComponentType.LOG, "\n"));
     return "Done";
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  private void convertFileToSomething() throws InterruptedException {
+  private void convertFileToSomething(int iv) throws InterruptedException {
     int current = 0;
-    int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();
-    while (current <= lengthOfTask && !isCancelled()) {
-      int iv = 100 * current / lengthOfTask;
-      Thread.sleep(20); // dummy
-      publish(new Progress(ComponentType.FILE, iv + 1));
+    int lengthOfFile = 10 + rnd.nextInt(50); // long lengthOfFile = file.length();
+    publish(new Progress(ComponentType.LOG, "*"));
+    publish(new Progress(ComponentType.TOTAL, iv));
+    while (current <= lengthOfFile && !isCancelled()) {
+      doSomething(100 * current / lengthOfFile);
       current++;
     }
+  }
+
+  private void doSomething(int iv) throws InterruptedException {
+    publish(new Progress(ComponentType.FILE, iv + 1));
+    Thread.sleep(20); // dummy
   }
 }
 
@@ -214,6 +215,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     protected RunAction() {
 //       super("run");
 //     }
+//
 //     @Override public void actionPerformed(ActionEvent e) {
 //       // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
 //       JProgressBar bar1 = new JProgressBar();
@@ -227,6 +229,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //       // bar1.setIndeterminate(true);
 //
 //       worker = new SwingWorker<String, String>() {
+//         private final Random r = new Random();
 //         @Override public String doInBackground() {
 //           // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
 //           int current = 0;
@@ -250,7 +253,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //           publish("\n");
 //           return "Done";
 //         }
-//         private final Random r = new Random();
+//
 //         private void convertFileToSomething() throws InterruptedException {
 //           int current = 0;
 //           int lengthOfTask = 10 + r.nextInt(50); // long lengthOfTask = file.length();
@@ -261,12 +264,14 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //             current++;
 //           }
 //         }
+//
 //         @Override protected void process(List<String> chunks) {
 //           // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
 //           for (String message: chunks) {
 //             appendLine(message);
 //           }
 //         }
+//
 //         @Override public void done() {
 //           // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //           runButton.setEnabled(true);
@@ -293,10 +298,12 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //       worker.execute();
 //     }
 //   }
+//
 //   class CancelAction extends AbstractAction {
 //     protected CancelAction() {
 //       super("cancel");
 //     }
+//
 //     @Override public void actionPerformed(ActionEvent e) {
 //       if (Objects.nonNull(worker) && !worker.isDone()) {
 //         worker.cancel(true);
@@ -304,6 +311,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //       worker = null;
 //     }
 //   }
+//
 //   private void appendLine(String str) {
 //     area.append(str);
 //     area.setCaretPosition(area.getDocument().getLength());
