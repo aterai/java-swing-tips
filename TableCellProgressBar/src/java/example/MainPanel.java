@@ -221,17 +221,24 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<Integer, Integer> {
-  private final int sleepDummy = new Random().nextInt(50) + 1;
+  private final Random rnd = new Random();
 
   @Override protected Integer doInBackground() throws InterruptedException {
     int lengthOfTask = 120;
     int current = 0;
+    int total = 0;
     while (current <= lengthOfTask && !isCancelled()) {
       publish(100 * current / lengthOfTask);
-      Thread.sleep(sleepDummy);
+      total += doSomething();
       current++;
     }
-    return sleepDummy * lengthOfTask;
+    return total;
+  }
+
+  private int doSomething() throws InterruptedException {
+    int dummy = rnd.nextInt(50) + 1;
+    Thread.sleep(dummy);
+    return dummy;
   }
 }
 
