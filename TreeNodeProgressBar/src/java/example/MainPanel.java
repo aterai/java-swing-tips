@@ -75,27 +75,27 @@ public final class MainPanel extends JPanel {
     set1.add(new DefaultMutableTreeNode("222222222"));
 
     DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-    set2.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
-    set2.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    set2.add(new DefaultMutableTreeNode("4444444444444"));
+    set2.add(new DefaultMutableTreeNode("5555555"));
 
     DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-    set3.add(new DefaultMutableTreeNode("zzz zz zz"));
-    set3.add(new DefaultMutableTreeNode("aaa aaa aaa aaa"));
-    set3.add(new DefaultMutableTreeNode("ccc ccc ccc"));
+    set3.add(new DefaultMutableTreeNode("zzz"));
+    set3.add(new DefaultMutableTreeNode("aaa"));
+    set3.add(new DefaultMutableTreeNode("ccc"));
 
     set4.add(new DefaultMutableTreeNode("22222222222"));
-    set4.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
-    set4.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
-    set4.add(new DefaultMutableTreeNode("zzz zz zz"));
+    set4.add(new DefaultMutableTreeNode("ddd"));
+    set4.add(new DefaultMutableTreeNode("6666666"));
+    set4.add(new DefaultMutableTreeNode("eee"));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-    root.add(new DefaultMutableTreeNode("xxx xxx xxx xx xx"));
+    root.add(new DefaultMutableTreeNode("9999999"));
     root.add(set3);
-    root.add(new DefaultMutableTreeNode("eee eee eee ee ee"));
+    root.add(new DefaultMutableTreeNode("888888888"));
     root.add(set1);
     root.add(set2);
     root.add(new DefaultMutableTreeNode("222222222222"));
-    root.add(new DefaultMutableTreeNode("bbb bbb bbb bbb"));
+    root.add(new DefaultMutableTreeNode("777777"));
     return root;
   }
 
@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
 
 class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
   private final int lengthOfTask;
-  private final int sleepDummy = new Random().nextInt(100) + 1;
+  private final Random rnd = new Random();
   private final JTree tree;
   private final DefaultTreeModel model;
   private final DefaultMutableTreeNode treeNode;
@@ -137,10 +137,15 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
   @Override protected TreeNode doInBackground() throws InterruptedException {
     int current = 0;
     while (current <= lengthOfTask && !isCancelled()) {
-      Thread.sleep(sleepDummy);
+      doSomething();
       publish(100 * current++ / lengthOfTask);
     }
-    return treeNode; // sleepDummy * lengthOfTask;
+    return treeNode;
+  }
+
+  private void doSomething() throws InterruptedException {
+    int iv = rnd.nextInt(100) + 1;
+    Thread.sleep(iv);
   }
 
   @Override protected void process(List<Integer> c) {
@@ -225,28 +230,28 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 
 class ProgressObject {
   private final String title;
-  private int value;
+  private final int value;
 
-  protected ProgressObject() {
-    this("", 0);
-  }
+  // protected ProgressObject() {
+  //   this("", 0);
+  // }
 
   protected ProgressObject(String title, int value) {
     this.title = title;
     this.value = value;
   }
 
-  public void setValue(int value) {
-    this.value = value;
-  }
+  // public void setValue(int value) {
+  //   this.value = value;
+  // }
 
   public int getValue() {
     return value;
   }
 
-  public String getTitle() {
-    return title;
-  }
+  // public String getTitle() {
+  //   return title;
+  // }
 
   @Override public String toString() {
     return title;
