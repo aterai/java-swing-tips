@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
@@ -132,21 +133,28 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
+  private final Random rnd = new Random();
   @Override public String doInBackground() throws InterruptedException {
     System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     Thread.sleep(2000);
     int current = 0;
+    int total = 0;
     int lengthOfTask = 120; // list.size();
     publish("Length Of Task: " + lengthOfTask);
     publish("\n------------------------------\n");
-
     while (current < lengthOfTask && !isCancelled()) {
-      Thread.sleep(50);
-      setProgress(100 * current / lengthOfTask);
-      publish(".");
+      total += doSomething(100 * current / lengthOfTask);
       current++;
     }
-    return "Done";
+    return String.format("Done(%dms)", total);
+  }
+
+  private int doSomething(int progress) throws InterruptedException {
+    int iv = rnd.nextInt(100) + 1;
+    Thread.sleep(iv);
+    setProgress(progress);
+    publish(".");
+    return iv;
   }
 }
 
