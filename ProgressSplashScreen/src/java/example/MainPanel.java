@@ -75,9 +75,13 @@ class BackgroundTask extends SwingWorker<Void, Void> {
     int current = 0;
     int lengthOfTask = 120;
     while (current < lengthOfTask && !isCancelled()) {
-      Thread.sleep(50);
-      setProgress(100 * current++ / lengthOfTask);
+      doSomething(100 * current++ / lengthOfTask);
     }
     return null;
+  }
+  
+  private void doSomething(int progress) throws InterruptedException {
+    Thread.sleep(50);
+    setProgress(progress);
   }
 }
