@@ -12,11 +12,7 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.Highlighter;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new JTextArea("aaaaaaaaaaaaaaaaa\nbbbbb\nccc");
-  private final JCheckBox hidingCaretCheck = new JCheckBox("Hide Caret");
-  private final JCheckBox hidingHighlighterCheck = new JCheckBox("Hide Highlighter");
-  private final JCheckBox editableCheck = new JCheckBox("Editable", true);
-  private final JCheckBox focusableCheck = new JCheckBox("Focusable", true);
+  private final JTextArea textArea = new JTextArea("11111111111111\n22222\n3333");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -29,18 +25,26 @@ public final class MainPanel extends JPanel {
     Caret defaultCaret = textArea.getCaret();
     Highlighter defaultHighlighter = textArea.getHighlighter();
 
+    JCheckBox hidingCaretCheck = new JCheckBox("Hide Caret");
     hidingCaretCheck.addActionListener(e -> textArea.setCaret(isSelected(e) ? hidingCaret : defaultCaret));
+
+    JCheckBox hidingHighlighterCheck = new JCheckBox("Hide Highlighter");
     hidingHighlighterCheck.addActionListener(e -> textArea.setHighlighter(isSelected(e) ? null : defaultHighlighter));
 
+    JCheckBox editableCheck = new JCheckBox("Editable", true);
     editableCheck.addActionListener(e -> textArea.setEditable(isSelected(e)));
+
+    JCheckBox focusableCheck = new JCheckBox("Focusable", true);
     focusableCheck.addActionListener(e -> textArea.setFocusable(isSelected(e)));
 
     JPanel p1 = new JPanel();
     p1.add(hidingCaretCheck);
     p1.add(hidingHighlighterCheck);
+
     JPanel p2 = new JPanel();
     p2.add(editableCheck);
     p2.add(focusableCheck);
+
     JPanel p = new JPanel(new BorderLayout(0, 0));
     p.add(p1, BorderLayout.NORTH);
     p.add(p2, BorderLayout.SOUTH);
