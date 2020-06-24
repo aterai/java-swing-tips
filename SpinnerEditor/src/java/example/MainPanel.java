@@ -10,14 +10,14 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    AbstractSpinnerModel model = new SpinnerNumberModel(10, 0, 1000, 1);
+    SpinnerModel model = new SpinnerNumberModel(10, 0, 1000, 1);
 
     JSpinner spinner1 = new JSpinner(model);
     spinner1.setEnabled(false);
 
     // UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
     JSpinner spinner2 = new JSpinner(model);
-    JTextField field = ((JSpinner.NumberEditor) spinner2.getEditor()).getTextField();
+    JTextField field = ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField();
     field.setEditable(false);
     field.setBackground(UIManager.getColor("FormattedTextField.background"));
 
