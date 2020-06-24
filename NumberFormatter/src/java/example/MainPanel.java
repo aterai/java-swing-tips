@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(3, 1));
 
     JSpinner spinner = new JSpinner(makeSpinnerNumberModel());
-    JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField.AbstractFormatter formatter = editor.getTextField().getFormatter();
     if (formatter instanceof DefaultFormatter) {
       ((DefaultFormatter) formatter).setAllowsInvalid(false);
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 class WarningSpinner extends JSpinner {
   protected WarningSpinner(SpinnerNumberModel model) {
     super(model);
-    JSpinner.NumberEditor editor = (JSpinner.NumberEditor) getEditor();
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFormatterFactory(makeFFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
@@ -130,7 +130,7 @@ class WarningSpinner extends JSpinner {
 
 //   private static JSpinner makeSpinner2(SpinnerNumberModel m) {
 //     JSpinner s = new JSpinner(m);
-//     JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
+//     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) s.getEditor();
 //     JFormattedTextField ftf = editor.getTextField();
 //     ftf.setFormatterFactory(makeFFactory2(m));
 //     ftf.addFocusListener(new FocusAdapter() {
@@ -155,6 +155,7 @@ class WarningSpinner extends JSpinner {
 //     });
 //     return s;
 //   }
+//
 //   private static DefaultFormatterFactory makeFFactory2(SpinnerNumberModel m) {
 //     NumberFormatter formatter = new NumberFormatter(new DecimalFormat("########0"));
 //     formatter.setAllowsInvalid(false);
@@ -169,9 +170,11 @@ class WarningSpinner extends JSpinner {
 //       replace(fb, offset, 0, text, attr);
 //     }
 //   }
+//
 //   @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
 //     replace(fb, offset, length, "", null);
 //   }
+//
 //   @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //     Document doc = fb.getDocument();
 //     int currentLength = doc.getLength();
@@ -183,6 +186,7 @@ class WarningSpinner extends JSpinner {
 //     checkInput(newValue, offset);
 //     fb.replace(offset, length, text, attrs);
 //   }
+//
 //   private static int checkInput(String proposedValue, int offset) throws BadLocationException {
 //     int newValue = 0;
 //     if (!proposedValue.isEmpty()) {

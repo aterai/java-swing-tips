@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     nm.addChangeListener(e -> fontPanel.repaint());
     JSpinner spinner = new JSpinner(nm);
-    JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
     ftf.setFormatterFactory(makeFFactory());
@@ -68,12 +68,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void setFontPaintFlag(Set<FontPaint> fp) {
-    fontPanel.fontPaintFlag = fp;
+  public void setFontPaintFlag(Set<FontPaint> fp) {
+    fontPanel.setFontPaintFlag(fp);
     fontPanel.repaint();
   }
 
-  protected String getCharacterString() {
+  public String getCharacterString() {
     int code = nm.getNumber().intValue();
     // char[] ca = Character.toChars(code);
     // int len = Character.charCount(code);
@@ -91,9 +91,17 @@ public final class MainPanel extends JPanel {
   }
 
   private class GlyphPaintPanel extends JPanel {
-    protected transient Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
+    private Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
+
+    public void setFontPaintFlag(Set<FontPaint> flg) {
+      fontPaintFlag = flg;
+    }
+
+    public Set<FontPaint> getFontPaintFlag() {
+      return fontPaintFlag;
+    }
 
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();

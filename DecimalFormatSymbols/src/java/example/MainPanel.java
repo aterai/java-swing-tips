@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JFormattedTextField getJFormattedTextField(JSpinner s) {
-    JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) s.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setColumns(8);
     return ftf;
