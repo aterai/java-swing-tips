@@ -127,7 +127,7 @@ class ZoomAndPanePanel extends JPanel {
     private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-      int dir = e.getWheelRotation();
+      double dir = e.getPreciseWheelRotation();
       int z = zoomRange.getValue();
       zoomRange.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
       if (z != zoomRange.getValue()) {
