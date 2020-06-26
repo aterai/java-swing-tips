@@ -13,8 +13,6 @@ import javax.swing.text.StyleContext;
 
 public final class MainPanel extends JPanel {
   private static final String DUMMY_TEXT = "Quartz glyph job vex'd cwm finks.";
-  // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-  private final ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
   private MainPanel() {
     super(new GridLayout(3, 1));
@@ -25,6 +23,8 @@ public final class MainPanel extends JPanel {
     StyleConstants.setLineSpacing(attr, -.2f);
     label1.setParagraphAttributes(attr, true);
     label1.setText("JTextPane\n" + DUMMY_TEXT);
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
+    ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
     add(makeLeftIcon(label1, icon));
 
     JTextArea label2 = new JTextArea("JTextArea\n" + DUMMY_TEXT);
