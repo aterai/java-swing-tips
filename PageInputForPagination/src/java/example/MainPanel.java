@@ -213,14 +213,13 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     int c = max / itemsPerPage;
     int i = 0;
     while (i < c && !isCancelled()) {
-      Thread.sleep(500); // dummy
-      current = makeRowListAndPublish(current, itemsPerPage);
+      current = load(current, itemsPerPage);
       // current = load(stat, current, itemsPerPage);
       i++;
     }
     int surplus = max % itemsPerPage;
     if (surplus > 0) {
-      makeRowListAndPublish(current, surplus);
+      load(current, surplus);
       // load(stat, current, surplus);
     }
     // } catch (SQLException ex) {
@@ -230,10 +229,11 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     return "Done";
   }
 
-  private int makeRowListAndPublish(int current, int size) {
+  protected int load(int current, int size) throws InterruptedException {
     List<Object[]> result = IntStream.range(current, current + size)
         .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
         .collect(Collectors.toList());
+    Thread.sleep(500); // dummy
     publish(result);
     return current + result.size();
   }
