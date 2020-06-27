@@ -128,7 +128,9 @@ class WheelScrollLayerUI extends LayerUI<JScrollPane> {
       int minimum = m.getMinimum();
       int maximum = m.getMaximum();
       int value = m.getValue();
-      if ((value + extent >= maximum && dir > 0) || (value <= minimum && dir < 0)){
+      boolean b1 = dir > 0 && value + extent >= maximum;
+      boolean b2 = dir < 0 && value <= minimum;
+      if (b1 || b2) {
         main.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, main));
       }
     }
