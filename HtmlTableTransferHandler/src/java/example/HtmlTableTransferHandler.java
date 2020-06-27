@@ -49,12 +49,12 @@ public final class HtmlTableTransferHandler extends TransferHandler {
   protected void appendTag(StringBuilder htmlBuf, Object obj) {
     if (obj instanceof Date) {
       String v = Objects.toString(obj, "");
-      htmlBuf.append("  <td><time>" + v + "</time></td>\n");
+      htmlBuf.append("  <td><time>").append(v).append("</time></td>\n");
     } else if (obj instanceof Color) {
       int rgb = ((Color) obj).getRGB() & 0xFF_FF_FF;
       htmlBuf.append(String.format("  <td style='background-color:#%06X'>&nbsp;</td>%n", rgb));
     } else {
-      htmlBuf.append("  <td>" + Objects.toString(obj, "") + "</td>\n");
+      htmlBuf.append("  <td>").append(Objects.toString(obj, "")).append("</td>\n");
     }
   }
 
@@ -81,7 +81,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
           appendTag(htmlBuf, obj);
         }
         // we want a newline at the end of each line and not a tab
-        plainBuf.deleteCharAt(plainBuf.length() - 1).append("\n");
+        plainBuf.deleteCharAt(plainBuf.length() - 1).append('\n');
         htmlBuf.append("</tr>\n");
       }
 
