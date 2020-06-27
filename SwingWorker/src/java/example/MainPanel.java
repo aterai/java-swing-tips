@@ -134,7 +134,8 @@ public final class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<String, String> {
   private final Random rnd = new Random();
-  @Override public String doInBackground() throws InterruptedException {
+
+  @Override protected String doInBackground() throws InterruptedException {
     System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     Thread.sleep(2000);
     int current = 0;
@@ -149,7 +150,7 @@ class BackgroundTask extends SwingWorker<String, String> {
     return String.format("Done(%dms)", total);
   }
 
-  private int doSomething(int progress) throws InterruptedException {
+  protected int doSomething(int progress) throws InterruptedException {
     int iv = rnd.nextInt(100) + 1;
     Thread.sleep(iv);
     setProgress(progress);
