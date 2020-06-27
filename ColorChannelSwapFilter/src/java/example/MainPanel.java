@@ -147,15 +147,19 @@ class RedGreenChannelSwapFilter extends RGBImageFilter {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      Thread.sleep(50);
+      doSomething();
       setProgress(100 * current / lengthOfTask);
       current++;
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(50);
   }
 }
 

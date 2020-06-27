@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     Thread.sleep(1000);
     int current = 0;
@@ -135,10 +135,14 @@ class BackgroundTask extends SwingWorker<String, String> {
     while (current < lengthOfTask && !isCancelled()) {
       publish(".");
       setProgress(100 * current / lengthOfTask);
-      Thread.sleep(50);
+      doSomething();
       current++;
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(50);
   }
 }
 

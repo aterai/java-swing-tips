@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<Void, Void> {
-  @Override public Void doInBackground() throws InterruptedException {
+  @Override protected Void doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
@@ -91,7 +91,7 @@ class BackgroundTask extends SwingWorker<Void, Void> {
     return null;
   }
 
-  private void doSomething(int progress) throws InterruptedException {
+  protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(50); // dummy task
     setProgress(progress);
   }

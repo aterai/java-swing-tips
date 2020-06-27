@@ -64,9 +64,9 @@ public final class MainPanel extends JPanel {
   }
 
   private class BackgroundTask extends SwingWorker<String, String> {
-    @Override public String doInBackground() throws InterruptedException {
+    @Override protected String doInBackground() throws InterruptedException {
       while (!isCancelled()) {
-        Thread.sleep(500);
+        doSomething();
         if (check.isSelected()) {
           publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
         } else {
@@ -74,6 +74,10 @@ public final class MainPanel extends JPanel {
         }
       }
       return "Cancelled";
+    }
+
+    protected void doSomething() throws InterruptedException {
+      Thread.sleep(500);
     }
   }
 

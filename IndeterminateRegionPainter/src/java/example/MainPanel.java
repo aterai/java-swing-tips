@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
     //   @Override protected int getBoxLength(int availableLength, int otherDimension) {
     //     return availableLength; // (int) Math.round(availableLength / 6d);
     //   }
+    //
     //   @Override public void paintIndeterminate(Graphics g, JComponent c) {
     //     if (!(g instanceof Graphics2D)) {
     //       return;
@@ -140,16 +141,20 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     Thread.sleep(5000); // dummy task
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      Thread.sleep(50); // dummy task
+      doSomething();
       setProgress(100 * current / lengthOfTask);
       current++;
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(50); // dummy task
   }
 }
 
