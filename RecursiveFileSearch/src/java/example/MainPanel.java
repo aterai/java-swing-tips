@@ -226,6 +226,7 @@ public final class MainPanel extends JPanel {
 //     super();
 //     this.dir = dir;
 //   }
+//
 //   @Override public String doInBackground() {
 //     if (Objects.isNull(dir) || !dir.exists()) {
 //       publish(new Message("The directory does not exist.", true));
@@ -242,7 +243,7 @@ public final class MainPanel extends JPanel {
 //       publish(new Message("The search was canceled", true));
 //       return "Interrupted1";
 //     }
-//     firePropertyChange("clear-textarea", "", "");
+//     firePropertyChange("clear-JTextArea", "", "");
 //
 //     int lengthOfTask = list.size();
 //     publish(new Message("Length Of Task: " + lengthOfTask, false));
@@ -266,6 +267,7 @@ public final class MainPanel extends JPanel {
 //     }
 //     return "Done";
 //   }
+//
 //   private void recursiveSearch(File dir, List<File> list) throws InterruptedException {
 //     // System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
 //     for (String name: dir.list()) {
@@ -295,8 +297,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     this.dir = dir;
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     if (Objects.isNull(dir) || !dir.exists()) {
       publish(new Message("The directory does not exist.", true));
       return "Error";
@@ -310,21 +311,27 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
       publish(new Message("The search was canceled", true));
       return "Interrupted1";
     }
-    firePropertyChange("clear-textarea", "", "");
+    firePropertyChange("clear-JTextArea", "", "");
 
     int lengthOfTask = list.size();
     publish(new Message("Length Of Task: " + lengthOfTask, false));
     publish(new Message("----------------", true));
 
-    int current = 0;
-    while (current < lengthOfTask && !isCancelled()) {
-      Thread.sleep(10); // dummy
-      setProgress(100 * current / lengthOfTask);
-      Path path = list.get(current);
-      current++;
-      publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
+    int idx = 0;
+    while (idx < lengthOfTask && !isCancelled()) {
+      doSomething(list, idx);
+      idx++;
     }
     return "Done";
+  }
+
+  protected void doSomething(List<Path> list, int idx) throws InterruptedException {
+    int lengthOfTask = list.size();
+    setProgress(100 * idx / lengthOfTask);
+    Thread.sleep(10); // dummy
+    Path path = list.get(idx);
+    int current = idx + 1;
+    publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
   }
 
   // Walking the File Tree (The Java™ Tutorials > Essential Classes > Basic I/O)
