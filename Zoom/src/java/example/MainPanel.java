@@ -15,10 +15,10 @@ public final class MainPanel extends JPanel {
     ZoomImage zoom = new ZoomImage(icon.getImage());
 
     JButton button1 = new JButton("Zoom In");
-    button1.addActionListener(e -> zoom.changeScale(-5));
+    button1.addActionListener(e -> zoom.changeScale(-5d));
 
     JButton button2 = new JButton("Zoom Out");
-    button2.addActionListener(e -> zoom.changeScale(5));
+    button2.addActionListener(e -> zoom.changeScale(5d));
 
     JButton button3 = new JButton("Original size");
     button3.addActionListener(e -> zoom.initScale());
@@ -76,7 +76,7 @@ class ZoomImage extends JPanel {
     //     changeScale(e.getWheelRotation());
     //   }
     // };
-    handler = e -> changeScale(e.getWheelRotation());
+    handler = e -> changeScale(e.getPreciseWheelRotation());
     addMouseWheelListener(handler);
   }
 
@@ -93,14 +93,14 @@ class ZoomImage extends JPanel {
     repaint();
   }
 
-  public void changeScale(int iv) {
-    scale = Math.max(.05, Math.min(5d, scale - iv * .05));
+  public void changeScale(double dv) {
+    scale = Math.max(.05, Math.min(5d, scale - dv * .05));
     repaint();
-    // double v = scale - iv * .1;
+    // double v = scale - dv * .1;
     // if (v - 1d > -1.0e-2) {
     //   scale = Math.min(10d, v);
     // } else {
-    //   scale = Math.max(.01, scale - iv * .01);
+    //   scale = Math.max(.01, scale - dv * .01);
     // }
   }
 }
