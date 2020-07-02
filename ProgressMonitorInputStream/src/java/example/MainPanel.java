@@ -198,17 +198,16 @@ class Chunk {
 class BackgroundTask extends SwingWorker<String, Chunk> {
   protected final ProgressMonitorInputStream pms;
   private final Charset cs;
-  private final int length;
+  private final int lengthOfFile;
 
   protected BackgroundTask(ProgressMonitorInputStream pms, Charset cs, int length) {
     super();
     this.pms = pms;
     this.cs = cs;
-    this.length = length;
+    this.lengthOfFile = length;
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     String ret = "Done";
     // try (BufferedReader reader = new BufferedReader(new InputStreamReader(pms, cs))) {
     //   int i = 0;
@@ -230,18 +229,22 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     // }
     try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pms, cs)))) {
       int i = 0;
-      int size = 0;
+      int readied = 0;
       while (scanner.hasNextLine()) {
-        if (i % 50 == 0) { // Wait
-          Thread.sleep(10);
-        }
-        i++;
-        String line = scanner.nextLine();
-        size += line.getBytes(cs).length + 1; // +1: \n
-        String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
-        publish(new Chunk(line, note));
+        readied = doSomething(scanner, i++, readied);
       }
     }
     return ret;
+  }
+
+  protected int doSomething(Scanner scanner, int idx, int readied) throws InterruptedException {
+    if (idx % 50 == 0) {
+      Thread.sleep(10);
+    }
+    String line = scanner.nextLine();
+    int size = readied + line.getBytes(cs).length + 1; // +1: \n
+    String note = String.format("%03d%% - %d/%d%n", 100 * size / lengthOfFile, size, lengthOfFile);
+    publish(new Chunk(line, note));
+    return size;
   }
 }

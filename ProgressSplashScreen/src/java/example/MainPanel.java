@@ -79,7 +79,7 @@ class BackgroundTask extends SwingWorker<Void, Void> {
     }
     return null;
   }
-  
+
   private void doSomething(int progress) throws InterruptedException {
     Thread.sleep(50);
     setProgress(progress);
