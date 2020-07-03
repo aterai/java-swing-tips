@@ -118,10 +118,10 @@ public final class MainPanel extends JPanel {
 
 // https://community.oracle.com/thread/1373824 XmlViewer
 class XmlTreeNode implements TreeNode {
-  private Node xmlNode;
+  private final Node xmlNode;
   private XmlTreeNode parent;
   private List<XmlTreeNode> list;
-  private Boolean showAttributes;
+  private final Boolean showAttributes;
 
   protected XmlTreeNode(Node xmlNode) {
     this.xmlNode = xmlNode;
@@ -143,9 +143,9 @@ class XmlTreeNode implements TreeNode {
     return false;
   }
 
-  public void setShowAttributes(Boolean set) {
-    showAttributes = set;
-  }
+  // public void setShowAttributes(Boolean set) {
+  //   showAttributes = set;
+  // }
 
   private String getXmlTag() {
     boolean includeAttributes = isShowAttributes();
@@ -173,6 +173,7 @@ class XmlTreeNode implements TreeNode {
     }
     return xmlNode.getNodeName();
   }
+
   // private List<XmlTreeNode> getChildren() {
   //   if (Objects.isNull(list)) {
   //     loadChildren();
@@ -180,7 +181,6 @@ class XmlTreeNode implements TreeNode {
   //   return new ArrayList<>(list);
   // }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void loadChildren() {
     NodeList cn = xmlNode.getChildNodes();
     int count = cn.getLength();
@@ -190,8 +190,12 @@ class XmlTreeNode implements TreeNode {
       if (c instanceof Text && c.getNodeValue().isEmpty()) {
         continue;
       }
-      list.add(new XmlTreeNode(cn.item(i), this));
+      list.add(makeXmlTreeNode(c));
     }
+  }
+
+  private XmlTreeNode makeXmlTreeNode(Node node) {
+    return new XmlTreeNode(node, this);
   }
 
   @Override public Enumeration<XmlTreeNode> children() {
