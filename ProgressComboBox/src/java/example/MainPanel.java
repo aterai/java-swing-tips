@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,17 +14,15 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  public final JProgressBar bar = new JProgressBar();
   public final JComboBox<String> combo = new JComboBox<String>() {
     @Override public void updateUI() {
       setRenderer(null);
       super.updateUI();
+      bar.setBorder(BorderFactory.createEmptyBorder());
       ListCellRenderer<? super String> renderer = new DefaultListCellRenderer();
-      JProgressBar bar = new JProgressBar();
       setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-        if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
-          bar.setFont(list.getFont());
-          bar.setBorder(BorderFactory.createEmptyBorder());
-          bar.setValue(counter);
+        if (index < 0 && isWorking()) {
           return bar;
         }
         return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -30,8 +30,7 @@ public final class MainPanel extends JPanel {
     }
   };
   public final JButton button = new JButton("load");
-  public transient SwingWorker<String[], Integer> worker;
-  public int counter;
+  private transient SwingWorker<String[], Integer> worker;
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
@@ -40,12 +39,17 @@ public final class MainPanel extends JPanel {
       combo.setEnabled(false);
       // combo.removeAllItems();
       worker = new ComboTask();
+      worker.addPropertyChangeListener(new ProgressListener(bar));
       worker.execute();
     });
     add(makeTitledPanel("ProgressComboBox: ", combo, button), BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public boolean isWorking() {
+    return Objects.nonNull(worker) && !worker.isDone();
   }
 
   private class ComboTask extends BackgroundTask {
@@ -59,13 +63,13 @@ public final class MainPanel extends JPanel {
         return;
       }
       for (Integer i: chunks) {
-        counter = i;
+        setProgress(i);
       }
       combo.setSelectedIndex(-1);
       combo.repaint();
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       if (!isDisplayable()) {
         System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
@@ -83,7 +87,6 @@ public final class MainPanel extends JPanel {
       }
       combo.setEnabled(true);
       button.setEnabled(true);
-      counter = 0;
     }
   }
 
@@ -145,17 +148,37 @@ public final class MainPanel extends JPanel {
 class BackgroundTask extends SwingWorker<String[], Integer> {
   private static final int MAX = 30;
 
-  @Override public String[] doInBackground() throws InterruptedException {
+  @Override protected String[] doInBackground() throws InterruptedException {
     int current = 0;
     List<String> list = new ArrayList<>();
     while (current <= MAX && !isCancelled()) {
-      Thread.sleep(50);
-      int iv = 100 * current / MAX;
-      publish(iv);
-      // setProgress(iv);
-      list.add("Test: " + current);
+      list.add(getComboItem(current));
       current++;
     }
     return list.toArray(new String[0]);
+  }
+
+  protected String getComboItem(int current) throws InterruptedException {
+    Thread.sleep(50);
+    publish(100 * current / MAX);
+    return "Test: " + current;
+  }
+}
+
+class ProgressListener implements PropertyChangeListener {
+  private final JProgressBar progressBar;
+
+  protected ProgressListener(JProgressBar progressBar) {
+    this.progressBar = progressBar;
+    this.progressBar.setValue(0);
+  }
+
+  @Override public void propertyChange(PropertyChangeEvent e) {
+    String strPropertyName = e.getPropertyName();
+    if ("progress".equals(strPropertyName)) {
+      progressBar.setIndeterminate(false);
+      int progress = (Integer) e.getNewValue();
+      progressBar.setValue(progress);
+    }
   }
 }
