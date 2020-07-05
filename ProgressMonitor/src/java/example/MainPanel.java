@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
           // if (isCancelled()) {
           //   return;
           // }
-          if (!isDisplayable()) {
-            cancel(true);
-            return;
-          }
+          // if (!isDisplayable()) {
+          //   cancel(true);
+          //   return;
+          // }
           for (String message: chunks) {
             monitor.setNote(message);
           }
@@ -93,17 +93,21 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
     int lengthOfTask = 120; // list.size();
     while (current < lengthOfTask && !isCancelled()) {
-      Thread.sleep(50);
+      doSomething();
       current++;
       setProgress(100 * current / lengthOfTask);
       publish(current + "/" + lengthOfTask);
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(50);
   }
 }
 
