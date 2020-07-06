@@ -10,6 +10,7 @@ import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.LayerUI;
@@ -19,7 +20,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
   private MainPanel() {
     super(new BorderLayout());
-
     BoundedRangeModel m = new DefaultBoundedRangeModel();
     JProgressBar progressBar = new JProgressBar(m);
     progressBar.setOrientation(SwingConstants.VERTICAL);
@@ -121,15 +121,20 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
+  private final Random rnd = new Random();
+
+  @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      Thread.sleep(50);
-      setProgress(100 * current / lengthOfTask);
-      current++;
+      doSomething();
+      setProgress(100 * current++ / lengthOfTask);
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(rnd.nextInt(50) + 1L);
   }
 }
 
