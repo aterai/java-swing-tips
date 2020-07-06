@@ -14,6 +14,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
@@ -171,16 +172,21 @@ class StripedProgressBarUI extends BasicProgressBarUI {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
-    Thread.sleep(5000); // dummy task 1
+  private final Random rnd = new Random();
+
+  @Override protected String doInBackground() throws InterruptedException {
+    Thread.sleep(5000);
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
-      Thread.sleep(50); // dummy task 2
-      setProgress(100 * current / lengthOfTask);
-      current++;
+      doSomething();
+      setProgress(100 * current++ / lengthOfTask);
     }
     return "Done";
+  }
+
+  protected void doSomething() throws InterruptedException {
+    Thread.sleep(rnd.nextInt(50) + 1L);
   }
 }
 
