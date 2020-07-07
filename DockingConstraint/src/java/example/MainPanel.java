@@ -9,18 +9,13 @@ import javax.swing.*;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
-  private final JComboBox<String> combo = new JComboBox<>(makeModel());
-  private final JLabel label = new JLabel();
-  private final JToolBar toolbar = new JToolBar("toolbar");
-  private final JButton button = new JButton("button");
-
   private MainPanel() {
     super(new BorderLayout());
-
     // toolbar.setUI(new BasicToolBarUI() {
     //   @Override public boolean canDock(Component c, Point p) {
     //     return super.canDock(c, p) && isHorizontalDockingConstraint(c, p);
     //   }
+    //
     //   private boolean isHorizontalDockingConstraint(Component c, Point p) {
     //     if (!c.contains(p)) {
     //       return false;
@@ -35,14 +30,20 @@ public final class MainPanel extends JPanel {
     add(Box.createRigidArea(new Dimension()), BorderLayout.WEST);
     add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
 
-    button.setFocusable(false);
+    JToolBar toolbar = new JToolBar("toolbar");
     toolbar.add(new JLabel("label"));
     toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
+
+    JButton button = new JButton("button");
+    button.setFocusable(false);
     toolbar.add(button);
     toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
+
+    JComboBox<String> combo = new JComboBox<>(makeModel());
     toolbar.add(combo);
     toolbar.add(Box.createGlue());
 
+    JLabel label = new JLabel();
     label.setText("<html>dockable: NORTH, SOUTH<br>undockable: EAST, WEST");
     label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(toolbar, BorderLayout.NORTH);
