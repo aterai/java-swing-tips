@@ -8,6 +8,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
@@ -31,12 +32,8 @@ public final class MainPanel extends JPanel {
       monitor.setMillisToDecideToPopup(toDecideToPopup);
       monitor.setMillisToPopup(toPopup);
 
-      // System.out.println(monitor.getMillisToDecideToPopup());
-      // System.out.println(monitor.getMillisToPopup());
-
-      int lengthOfTask = Math.max(10_000, toDecideToPopup * 5);
       runButton.setEnabled(false);
-      executeWorker(monitor, lengthOfTask, runButton, area);
+      executeWorker(monitor, runButton, area);
     });
 
     GridBagConstraints c = new GridBagConstraints();
@@ -65,8 +62,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void executeWorker(ProgressMonitor monitor, int lengthOfTask, JButton button, JTextArea area) {
-    SwingWorker<String, String> worker = new BackgroundTask(lengthOfTask) {
+  private void executeWorker(ProgressMonitor monitor, JButton button, JTextArea area) {
+    SwingWorker<String, String> worker = new BackgroundTask() {
       @Override protected void process(List<String> chunks) {
         // if (isCancelled()) {
         //   return;
@@ -81,7 +78,7 @@ public final class MainPanel extends JPanel {
         }
       }
 
-      @Override public void done() {
+      @Override protected void done() {
         if (!isDisplayable()) {
           System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
@@ -132,25 +129,25 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, String> {
-  private final int lengthOfTask;
+  private final Random rnd = new Random();
 
-  protected BackgroundTask(int lengthOfTask) {
-    super();
-    this.lengthOfTask = lengthOfTask;
-  }
-
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
+    int lengthOfTask = 1_000;
     int current = 0;
+    int total = 0;
     while (current < lengthOfTask && !isCancelled()) {
-      if (current % 10 == 0) {
-        Thread.sleep(5);
-      }
-      int v = 100 * current / lengthOfTask;
+      total += doSomething();
+      int v = 100 * current++ / lengthOfTask;
       setProgress(v);
       publish(String.format("%d%%", v));
-      current++;
     }
-    return "Done";
+    return String.format("Done(%dms)", total);
+  }
+
+  protected int doSomething() throws InterruptedException {
+    int iv = rnd.nextInt(10) + 1;
+    Thread.sleep(iv);
+    return iv;
   }
 }
 
