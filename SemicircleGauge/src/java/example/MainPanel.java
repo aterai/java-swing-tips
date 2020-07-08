@@ -13,6 +13,7 @@ import java.awt.image.PixelGrabber;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -52,20 +53,28 @@ public final class MainPanel extends JPanel {
       b.setEnabled(false);
       int lengthOfTask = progress2.getMaximum() - progress2.getMinimum();
       SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
-        @Override public String doInBackground() throws InterruptedException {
+        private final Random rnd = new Random();
+
+        @Override protected String doInBackground() throws InterruptedException {
           int current = 0;
+          int total = 0;
           while (current <= lengthOfTask && !isCancelled()) {
-            Thread.sleep(10); // dummy task
-            setProgress(100 * current / lengthOfTask);
-            current++;
+            total += doSomething();
+            setProgress(100 * current++ / lengthOfTask);
           }
-          return "Done";
+          return String.format("Done(%dms)", total);
         }
 
-        @Override public void done() {
+        @Override protected void done() {
           if (b.isDisplayable()) {
             b.setEnabled(true);
           }
+        }
+
+        protected int doSomething() throws InterruptedException {
+          int iv = rnd.nextInt(10) + 1;
+          Thread.sleep(iv);
+          return iv;
         }
       };
       worker.addPropertyChangeListener(new ProgressListener(progress2));
