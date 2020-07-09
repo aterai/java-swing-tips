@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
@@ -82,7 +83,7 @@ class ProgressJTabbedPane extends JTabbedPane {
         }
       }
 
-      @Override public void done() {
+      @Override protected void done() {
         if (!isDisplayable()) {
           System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
@@ -109,17 +110,25 @@ class ProgressJTabbedPane extends JTabbedPane {
 }
 
 class BackgroundTask extends SwingWorker<String, Integer> {
-  @Override public String doInBackground() throws InterruptedException {
-    int current = 0;
+  private final Random rnd = new Random();
+
+  @Override protected String doInBackground() throws InterruptedException {
     int lengthOfTask = 120;
+    int total = 0;
+    int current = 0;
     while (current < lengthOfTask) {
-      Thread.sleep(20);
-      current++;
-      int v = 100 * current / lengthOfTask;
+      total += doSomething();
+      int v = 100 * current++ / lengthOfTask;
       setProgress(v);
       publish(v);
     }
-    return "Done";
+    return String.format("Done(%dms)", total);
+  }
+
+  protected int doSomething() throws InterruptedException {
+    int iv = rnd.nextInt(20) + 1;
+    Thread.sleep(iv);
+    return iv;
   }
 }
 
