@@ -10,22 +10,23 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    boolean flg = UIManager.getLookAndFeelDefaults().getBoolean("Spinner.disableOnBoundaryValues");
+    String key = "Spinner.disableOnBoundaryValues";
+    boolean flg = UIManager.getLookAndFeelDefaults().getBoolean(key);
     System.out.println(flg);
 
-    // UIManager.put("Spinner.disableOnBoundaryValues", Boolean.TRUE);
+    // UIManager.put(key, Boolean.TRUE);
     SpinnerModel model = new SpinnerNumberModel(0, 0, 10, 1);
     JSpinner spinner1 = new JSpinner(model);
     spinner1.setFont(spinner1.getFont().deriveFont(32f));
     JSpinner spinner2 = new JSpinner(model);
     spinner2.setFont(spinner2.getFont().deriveFont(32f));
 
-    JCheckBox check = new JCheckBox("Spinner.disableOnBoundaryValues", flg);
+    JCheckBox check = new JCheckBox(key, flg);
     check.addActionListener(e -> {
-      UIManager.put("Spinner.disableOnBoundaryValues", ((JCheckBox) e.getSource()).isSelected());
+      UIManager.put(key, ((JCheckBox) e.getSource()).isSelected());
       // TEST:
-      // System.out.println(sun.swing.DefaultLookup.get(spinner2, spinner2.getUI(), "Spinner.disableOnBoundaryValues"));
-      // System.out.println(UIManager.get("Spinner.disableOnBoundaryValues", spinner2.getLocale()));
+      // System.out.println(sun.swing.DefaultLookup.get(spinner2, spinner2.getUI(), key));
+      // System.out.println(UIManager.get(key, spinner2.getLocale()));
       SwingUtilities.updateComponentTreeUI(spinner2);
     });
 
@@ -36,7 +37,7 @@ public final class MainPanel extends JPanel {
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("default", spinner1));
     box.add(Box.createVerticalStrut(15));
-    box.add(makeTitledPanel("JSpinner disableOnBoundaryValues", p));
+    box.add(makeTitledPanel(key, p));
 
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
