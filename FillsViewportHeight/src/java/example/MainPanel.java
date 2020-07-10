@@ -13,43 +13,42 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      // ArrayIndexOutOfBoundsException: 0 >= 0
-      // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-      // https://bugs.openjdk.java.net/browse/JDK-6967479
-      // return getValueAt(0, column).getClass();
-      switch (column) {
-        case 0: return String.class;
-        case 1: return Number.class;
-        case 2: return Boolean.class;
-        default: return super.getColumnClass(column);
-      }
-    }
-  };
-  private final JTable table = new JTable(model) {
-    private final Color evenColor = new Color(0xF5_F5_F5);
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (isRowSelected(row)) {
-        c.setForeground(getSelectionForeground());
-        c.setBackground(getSelectionBackground());
-      } else {
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-      }
-      return c;
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        // ArrayIndexOutOfBoundsException: 0 >= 0
+        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+        // https://bugs.openjdk.java.net/browse/JDK-6967479
+        // return getValueAt(0, column).getClass();
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xF5_F5_F5);
 
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+    };
     JScrollPane scroll = new JScrollPane(table);
     scroll.setBackground(Color.RED);
     scroll.getViewport().setBackground(Color.GREEN);
