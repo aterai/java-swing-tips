@@ -12,20 +12,19 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     JTableHeader tableHeader = table.getTableHeader();
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -52,7 +51,7 @@ public final class MainPanel extends JPanel {
     // col.setMinWidth(0);
     // col.setMaxWidth(0);
     // // <blockquote cite="https://community.oracle.com/thread/1484284"
-    // //      title="JTable skiping the cells disableds">
+    // //      title="JTable skipping the cells disables">
     // InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     // KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
     // Action oldTabAction = table.getActionMap().get(im.get(tab));
