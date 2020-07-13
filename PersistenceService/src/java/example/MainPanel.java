@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     WindowState windowState = new WindowState();
     SwingWorker<WindowListener, Void> worker = new LoadSaveTask(windowState) {
-      @Override public void done() {
+      @Override protected void done() {
         try {
           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

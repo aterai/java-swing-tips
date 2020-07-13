@@ -128,7 +128,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 200;
     while (current <= lengthOfTask && !isCancelled()) {
@@ -139,7 +139,7 @@ class BackgroundTask extends SwingWorker<String, Void> {
   }
 
   protected void doSomething(int progress) throws InterruptedException {
-    Thread.sleep(10); // dummy task
+    Thread.sleep(10);
     setProgress(progress);
   }
 }

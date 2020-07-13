@@ -36,7 +36,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     this.repaintArea.grow(5, 5);
   }
 
-  @Override public final String doInBackground() throws InterruptedException {
+  @Override protected final String doInBackground() throws InterruptedException {
     switch (sortAlgorithm) {
       case ISORT:
         isort(number);

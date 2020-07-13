@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
           }
         }
 
-        @Override public void done() {
+        @Override protected void done() {
           // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
           runButton.setEnabled(true);
           monitor.close();

@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
       initFilterAndButtons();
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       if (!isDisplayable()) {
         System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
@@ -233,7 +233,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     List<Object[]> result = IntStream.range(current, current + size)
         .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
         .collect(Collectors.toList());
-    Thread.sleep(500); // dummy
+    Thread.sleep(500);
     publish(result);
     return current + result.size();
   }

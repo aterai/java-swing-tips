@@ -136,7 +136,7 @@ public final class MainPanel extends JPanel {
         }
       }
 
-      @Override public void done() {
+      @Override protected void done() {
         if (!isDisplayable()) {
           System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);

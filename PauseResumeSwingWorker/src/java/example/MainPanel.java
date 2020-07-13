@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
       processChunks(chunks);
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       if (!isDisplayable()) {
         System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
@@ -344,7 +344,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //           int lengthOfTask = 10 + rnd.nextInt(50); // long lengthOfTask = file.length();
 //           while (current <= lengthOfTask && !isCancelled()) {
 //             int iv = 100 * current / lengthOfTask;
-//             Thread.sleep(20); // dummy
+//             Thread.sleep(20);
 //             firePropertyChange("progress2", iv, iv + 1);
 //             current++;
 //           }
@@ -357,7 +357,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //           }
 //         }
 //
-//         @Override public void done() {
+//         @Override protected void done() {
 //           // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //           runButton.setEnabled(true);
 //           cancelButton.setEnabled(false);

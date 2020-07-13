@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
           }
         }
 
-        @Override public void done() {
+        @Override protected void done() {
           try {
             File nf = get();
             if (Objects.isNull(nf)) {

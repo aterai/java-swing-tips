@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
       processChunks(chunks);
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       if (!isDisplayable()) {
         cancel(true);
         return;
@@ -158,7 +158,7 @@ class Progress {
 class BackgroundTask extends SwingWorker<String, Progress> {
   private final Random rnd = new Random();
 
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
     int numOfFiles = 12; // fileList.size();
@@ -172,7 +172,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     return "Done";
   }
 
-  private void convertFileToSomething(int iv) throws InterruptedException {
+  protected void convertFileToSomething(int iv) throws InterruptedException {
     int current = 0;
     int lengthOfFile = 10 + rnd.nextInt(50); // long lengthOfFile = file.length();
     publish(new Progress(ComponentType.LOG, "*"));
@@ -183,9 +183,9 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     }
   }
 
-  private void doSomething(int iv) throws InterruptedException {
+  protected void doSomething(int iv) throws InterruptedException {
     publish(new Progress(ComponentType.FILE, iv + 1));
-    Thread.sleep(20); // dummy
+    Thread.sleep(20);
   }
 }
 
@@ -259,7 +259,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //           int lengthOfTask = 10 + r.nextInt(50); // long lengthOfTask = file.length();
 //           while (current <= lengthOfTask && !isCancelled()) {
 //             int iv = 100 * current / lengthOfTask;
-//             Thread.sleep(20); // dummy
+//             Thread.sleep(20);
 //             firePropertyChange("progress2", iv, iv + 1);
 //             current++;
 //           }
@@ -272,7 +272,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //           }
 //         }
 //
-//         @Override public void done() {
+//         @Override protected void done() {
 //           // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
 //           runButton.setEnabled(true);
 //           cancelButton.setEnabled(false);

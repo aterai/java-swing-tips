@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
         return null;
       }
 
-      @Override public void done() {
+      @Override protected void done() {
         if (!isDisplayable()) {
           cancel(true);
           return;

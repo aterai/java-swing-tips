@@ -10,10 +10,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    // dummy task
     new SwingWorker<Void, Void>() {
-      @Override public Void doInBackground() throws InterruptedException {
+      @Override protected Void doInBackground() throws InterruptedException {
         Thread.sleep(3000);
         return null;
       }
@@ -51,7 +49,7 @@ public final class MainPanel extends JPanel {
       splashScreen.setVisible(true);
     });
     SwingWorker<Void, Void> worker = new BackgroundTask() {
-      @Override public void done() {
+      @Override protected void done() {
         splashScreen.dispose();
       }
     };
@@ -71,7 +69,7 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<Void, Void> {
-  @Override public Void doInBackground() throws InterruptedException {
+  @Override protected Void doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 120;
     while (current < lengthOfTask && !isCancelled()) {
@@ -80,7 +78,7 @@ class BackgroundTask extends SwingWorker<Void, Void> {
     return null;
   }
 
-  private void doSomething(int progress) throws InterruptedException {
+  protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(50);
     setProgress(progress);
   }

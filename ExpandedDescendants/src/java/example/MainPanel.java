@@ -196,7 +196,7 @@ public final class MainPanel extends JPanel {
 //         // tree.expandPath(path);
 //       }
 //
-// //        @Override public void done() {
+// //        @Override protected void done() {
 // //          // frame.getGlassPane().setVisible(false);
 // //          // tree.setCursor(Cursor.getDefaultCursor());
 // //        }

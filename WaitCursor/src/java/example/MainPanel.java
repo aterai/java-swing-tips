@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
       Component c = (Component) e.getSource();
       c.setEnabled(false);
       new BackgroundTask() {
-        @Override public void done() {
+        @Override protected void done() {
           if (!isDisplayable()) {
             System.out.println("done: DISPOSE_ON_CLOSE");
             cancel(true);
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 }
 
 class BackgroundTask extends SwingWorker<String, Void> {
-  @Override public String doInBackground() throws InterruptedException {
+  @Override protected String doInBackground() throws InterruptedException {
     Thread.sleep(5000);
     return "Done";
   }

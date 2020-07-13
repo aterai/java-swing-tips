@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
           }
         }
 
-        @Override public void done() {
+        @Override protected void done() {
           check.setEnabled(true);
           start.setEnabled(true);
           stop.setEnabled(false);

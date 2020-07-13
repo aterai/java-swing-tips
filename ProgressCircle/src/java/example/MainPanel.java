@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
       JButton b = (JButton) e.getSource();
       b.setEnabled(false);
       SwingWorker<String, Void> worker = new BackgroundTask() {
-        @Override public void done() {
+        @Override protected void done() {
           b.setEnabled(true);
         }
       };
@@ -166,7 +166,7 @@ class BackgroundTask extends SwingWorker<String, Void> {
   }
 
   protected void doSomething() throws InterruptedException {
-    Thread.sleep(50); // dummy task
+    Thread.sleep(50);
   }
 }
 

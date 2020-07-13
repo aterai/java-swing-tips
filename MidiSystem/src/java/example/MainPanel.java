@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     URL url = getClass().getResource("Mozart_toruko_k.mid");
     SwingWorker<Void, Long> worker = new SwingWorker<Void, Long>() {
       private long tickPos;
-      @Override public Void doInBackground() throws InterruptedException {
+      @Override protected Void doInBackground() throws InterruptedException {
         try (Sequencer sequencer = MidiSystem.getSequencer()) {
           sequencer.open();
           sequencer.setSequence(MidiSystem.getSequence(url));
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
         }
       }
 
-      // @Override public void done() {
+      // @Override protected void done() {
       //   tickPos = 0;
       //   initButtons(true);
       // }

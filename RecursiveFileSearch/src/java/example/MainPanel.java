@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
       processChunks(chunks);
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
       if (!isDisplayable()) {
         System.out.println("done: DISPOSE_ON_CLOSE");
@@ -257,7 +257,7 @@ public final class MainPanel extends JPanel {
 //         // }
 //         File file = list.get(current);
 //         // Path path = list.get(current);
-//         Thread.sleep(50); // dummy
+//         Thread.sleep(50);
 //         setProgress(100 * current / lengthOfTask);
 //         current++;
 //         publish(new Message(current + "/" + lengthOfTask + ", " + file.getAbsolutePath(), true));
@@ -328,7 +328,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
   protected void doSomething(List<Path> list, int idx) throws InterruptedException {
     int lengthOfTask = list.size();
     setProgress(100 * idx / lengthOfTask);
-    Thread.sleep(10); // dummy
+    Thread.sleep(10);
     Path path = list.get(idx);
     int current = idx + 1;
     publish(new Message(current + "/" + lengthOfTask + ", " + path, true));

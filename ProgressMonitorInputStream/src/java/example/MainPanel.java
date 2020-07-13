@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
       monitor.setMinimum(0);
       monitor.setMaximum(length);
       MonitorTask task = new MonitorTask(pms, cs, length) {
-        @Override public void done() {
+        @Override protected void done() {
           super.done();
           loop.exit();
         }
@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
       processChunks(chunks);
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       updateComponentDone();
       String text;
       try {

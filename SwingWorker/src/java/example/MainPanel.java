@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
       chunks.forEach(MainPanel.this::appendText);
     }
 
-    @Override public void done() {
+    @Override protected void done() {
       System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
       if (!isDisplayable()) {
         System.out.println("done: DISPOSE_ON_CLOSE");

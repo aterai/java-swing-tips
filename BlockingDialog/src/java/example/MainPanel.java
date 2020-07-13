@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
       int color = check.isSelected() ? 0x22_FF_00_00 : 0x01_00_00_00;
       dialog.setBackground(new Color(color, true));
       new BackgroundTask() {
-        @Override public void done() {
+        @Override protected void done() {
           if (!isDisplayable()) {
             cancel(true);
             return;
