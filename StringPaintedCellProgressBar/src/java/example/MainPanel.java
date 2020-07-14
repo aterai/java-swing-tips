@@ -240,9 +240,9 @@ class BackgroundTask extends SwingWorker<Integer, ProgressValue> {
 
   protected int doSomething(int current)  throws InterruptedException {
     publish(new ProgressValue(lengthOfTask, current));
-    int dummy = rnd.nextInt(50) + 1;
-    Thread.sleep(dummy);
-    return dummy;
+    int iv = rnd.nextInt(50) + 1;
+    Thread.sleep(iv);
+    return iv;
   }
 }
 

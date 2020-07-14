@@ -126,15 +126,18 @@ class BackgroundTask extends SwingWorker<String, Void> {
   @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 100;
+    int total = 0;
     while (current <= lengthOfTask && !isCancelled()) {
-      doSomething();
+      total += doSomething();
       setProgress(100 * current++ / lengthOfTask);
     }
-    return "Done";
+    return String.format("Done(%dms)", total);
   }
 
-  protected void doSomething() throws InterruptedException {
-    Thread.sleep(rnd.nextInt(50) + 1L);
+  protected int doSomething() throws InterruptedException {
+    int iv = rnd.nextInt(50) + 1;
+    Thread.sleep(iv);
+    return iv;
   }
 }
 

@@ -236,9 +236,9 @@ class BackgroundTask extends SwingWorker<Integer, Integer> {
   }
 
   private int doSomething() throws InterruptedException {
-    int dummy = rnd.nextInt(50) + 1;
-    Thread.sleep(dummy);
-    return dummy;
+    int iv = rnd.nextInt(50) + 1;
+    Thread.sleep(iv);
+    return iv;
   }
 }
 
