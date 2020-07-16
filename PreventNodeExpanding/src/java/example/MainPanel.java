@@ -173,7 +173,7 @@ class BackgroundTask extends SwingWorker<String, File> {
     this.parent = parent;
   }
 
-  @Override public String doInBackground() {
+  @Override protected String doInBackground() {
     Stream.of(fileSystemView.getFiles(parent, true))
         .filter(File::isDirectory)
         .forEach(this::publish);
