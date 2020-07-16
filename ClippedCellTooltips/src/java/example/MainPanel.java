@@ -13,47 +13,46 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String-String/String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 12, true},
-    {"BBB", 2, true}, {"EEE", 3, false},
-    {"CCC", 4, true}, {"FFF", 5, false},
-    {"DDD", 6, true}, {"GGG", 7, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      Component c = super.prepareRenderer(tcr, row, column);
-      if (c instanceof JComponent) {
-        JComponent l = (JComponent) c;
-        Insets i = l.getInsets();
-        Rectangle rect = getCellRect(row, column, false);
-        rect.width -= i.left + i.right;
-        FontMetrics fm = l.getFontMetrics(l.getFont());
-        String str = Objects.toString(getValueAt(row, column), "");
-        int cellTextWidth = fm.stringWidth(str);
-        l.setToolTipText(cellTextWidth > rect.width ? str : null);
-      }
-      return c;
-    }
-
-    @Override public void updateUI() {
-      super.updateUI();
-      TableCellRenderer r = new ToolTipHeaderRenderer();
-      for (int i = 0; i < getColumnModel().getColumnCount(); i++) {
-        getColumnModel().getColumn(i).setHeaderRenderer(r);
-      }
-      // JTableHeader h = getTableHeader();
-      // h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String-String/String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"1234567890123456789012345678901234567890", 12, true},
+        {"BBB", 2, true}, {"EEE", 3, false},
+        {"CCC", 4, true}, {"FFF", 5, false},
+        {"DDD", 6, true}, {"GGG", 7, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (c instanceof JComponent) {
+          JComponent l = (JComponent) c;
+          Insets i = l.getInsets();
+          Rectangle rect = getCellRect(row, column, false);
+          rect.width -= i.left + i.right;
+          FontMetrics fm = l.getFontMetrics(l.getFont());
+          String str = Objects.toString(getValueAt(row, column), "");
+          int cellTextWidth = fm.stringWidth(str);
+          l.setToolTipText(cellTextWidth > rect.width ? str : null);
+        }
+        return c;
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        TableCellRenderer r = new ToolTipHeaderRenderer();
+        for (int i = 0; i < getColumnModel().getColumnCount(); i++) {
+          getColumnModel().getColumn(i).setHeaderRenderer(r);
+        }
+        // JTableHeader h = getTableHeader();
+        // h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
+      }
+    };
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
