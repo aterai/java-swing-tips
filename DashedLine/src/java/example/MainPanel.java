@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
+  private transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         int w = getWidth();
         int h = getHeight() / 2;
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setStroke(dashedStroke);
+        g2.setStroke(getDashedStroke());
         g2.drawLine(i.left, h, w - i.right, h);
         g2.dispose();
       }
@@ -45,6 +45,10 @@ public final class MainPanel extends JPanel {
     add(label);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public BasicStroke getDashedStroke() {
+    return dashedStroke;
   }
 
   private float[] getDashArray(String... strArray) {
