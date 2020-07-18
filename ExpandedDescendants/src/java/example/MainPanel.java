@@ -15,11 +15,10 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
-  private Enumeration<TreePath> expandedState;
+  private transient Enumeration<TreePath> expandedState;
 
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultMutableTreeNode root = makeTreeRoot();
     JTree tree = new JTree(new DefaultTreeModel(root));
 
@@ -156,6 +155,7 @@ public final class MainPanel extends JPanel {
 //   protected FolderSelectionListener(FileSystemView fileSystemView) {
 //     this.fileSystemView = fileSystemView;
 //   }
+//
 //   @Override public void valueChanged(TreeSelectionEvent e) {
 //     JTree tree = (JTree) e.getSource();
 //     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
