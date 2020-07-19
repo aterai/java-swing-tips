@@ -21,13 +21,13 @@ import javax.swing.text.DefaultEditorKit;
 public final class MainPanel extends JPanel {
   private final JDesktopPane desktop = new JDesktopPane();
   private final JMenuBar menuBar = new JMenuBar();
-  private final JMenuBar dummyBar = new JMenuBar();
+  private final JMenuBar sampleBar = new JMenuBar();
 
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button = new JButton(new ModalInternalFrameAction3("Show"));
     button.setMnemonic(KeyEvent.VK_S);
+
     JInternalFrame internal = new JInternalFrame("Button");
     internal.getContentPane().add(button);
     internal.setSize(100, 100);
@@ -35,9 +35,9 @@ public final class MainPanel extends JPanel {
     internal.setVisible(true);
     desktop.add(internal);
 
-    dummyBar.add(new JMenu("Frame"));
-    add(dummyBar, BorderLayout.NORTH);
-    dummyBar.setVisible(false);
+    sampleBar.add(new JMenu("Frame"));
+    add(sampleBar, BorderLayout.NORTH);
+    sampleBar.setVisible(false);
 
     JMenu menu = new JMenu("Frame");
     menu.setMnemonic(KeyEvent.VK_F);
@@ -127,11 +127,12 @@ public final class MainPanel extends JPanel {
   // Creating Modal Internal Frames -- Approach 1 and Approach 2
   // http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
   protected final class ModalInternalFrameAction3 extends AbstractAction {
-    private final JComponent glass = new PrintGlassPane();
+    private final JComponent glassPane = new PrintGlassPane();
+    private transient Component originalGlassPane;
 
     protected ModalInternalFrameAction3(String label) {
       super(label);
-      glass.setVisible(false);
+      glassPane.setVisible(false);
     }
 
     @Override public void actionPerformed(ActionEvent e) {
@@ -165,17 +166,19 @@ public final class MainPanel extends JPanel {
       // optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
       modal.addInternalFrameListener(new InternalFrameAdapter() {
         @Override public void internalFrameClosed(InternalFrameEvent e) {
-          glass.removeAll();
-          glass.setVisible(false);
+          glassPane.removeAll();
+          glassPane.setVisible(false);
+          getRootPane().setGlassPane(originalGlassPane);
         }
       });
-      glass.add(modal);
+      glassPane.add(modal);
       modal.pack();
       // Rectangle screen = desktop.getBounds();
       // modal.setLocation(screen.x + screen.width / 2 - modal.getSize().width / 2,
       //                   screen.y + screen.height / 2 - modal.getSize().height / 2);
-      getRootPane().setGlassPane(glass);
-      glass.setVisible(true);
+      originalGlassPane = getRootPane().getGlassPane();
+      getRootPane().setGlassPane(glassPane);
+      glassPane.setVisible(true);
       modal.setVisible(true);
     }
   }
@@ -183,7 +186,7 @@ public final class MainPanel extends JPanel {
   protected void setJMenuEnabled(boolean flag) {
     JMenuBar bar = getRootPane().getJMenuBar();
     bar.setVisible(flag);
-    dummyBar.setVisible(!flag);
+    sampleBar.setVisible(!flag);
   }
 
   protected static void removeSystemMenuListener(JInternalFrame modal) {
