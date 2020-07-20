@@ -14,7 +14,7 @@ import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
 public final class MainPanel extends JPanel {
-  public BigInteger status = new BigInteger("111000111", 2);
+  private BigInteger status = new BigInteger("111000111", 2);
   public static final int BIT_LENGTH = 50;
   public static final String ONE_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
   public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
