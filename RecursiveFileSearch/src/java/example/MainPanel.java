@@ -227,7 +227,7 @@ public final class MainPanel extends JPanel {
 //     this.dir = dir;
 //   }
 //
-//   @Override public String doInBackground() {
+//   @Override protected String doInBackground() {
 //     if (Objects.isNull(dir) || !dir.exists()) {
 //       publish(new Message("The directory does not exist.", true));
 //       return "Error";

@@ -176,8 +176,8 @@ public final class MainPanel extends JPanel {
 //       return;
 //     }
 //
-//     SwingWorker<String, File> worker = new SwingWorker<String, File>() throws InterruptedException {
-//       @Override public String doInBackground() {
+//     SwingWorker<String, File> worker = new SwingWorker<String, File>() {
+//       @Override protected String doInBackground() throws InterruptedException {
 //         File[] children = fileSystemView.getFiles(parent, true);
 //         for (File child: children) {
 //           if (child.isDirectory()) {

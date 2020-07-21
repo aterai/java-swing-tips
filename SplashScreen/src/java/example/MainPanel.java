@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     try {
-      Thread.sleep(5000); // dummy task
+      Thread.sleep(5000);
     } catch (InterruptedException ex) {
       ex.printStackTrace();
       UIManager.getLookAndFeel().provideErrorFeedback(this);
@@ -90,13 +90,14 @@ public final class MainPanel extends JPanel {
 //     JFrame frame = new JFrame("@title@");
 //     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //     new SwingWorker() {
-//       @Override public Object doInBackground() {
+//       @Override protected Object doInBackground() {
 //         System.out.println("frame make start / EDT: " + EventQueue.isDispatchThread());
 //         frame.getContentPane().add(new MainPanel()); // new MainPanel() take long time
 //         System.out.println("frame make end");
 //         return "Done";
 //       }
-//       @Override public void done() {
+//
+//       @Override protected void done() {
 //         System.out.println("splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
 //         splashScreen.dispose();
 //         System.out.println("splashScreen dispose end");

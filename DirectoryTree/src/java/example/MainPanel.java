@@ -216,6 +216,7 @@ class BackgroundTask extends SwingWorker<String, File> {
 //     requestFocusInWindow();
 //     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //   }
+//
 //   @Override public void setVisible(boolean flag) {
 //     super.setVisible(flag);
 //     setFocusTraversalPolicyProvider(flag);
