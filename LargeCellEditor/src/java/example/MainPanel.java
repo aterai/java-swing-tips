@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
 
   private static <E extends IconItem> TableModel makeIconTableModel(ListModel<E> list) {
     Object[][] data = {
-      {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
-      {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
-      {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)}
+        {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
+        {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
+        {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)}
     };
     return new DefaultTableModel(data, null) {
       @Override public boolean isCellEditable(int row, int column) {
@@ -103,7 +103,7 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class IconTable extends JTable {
-  protected static final int XOFF = 4;
+  protected static final int OFFSET = 4;
   protected final JList<IconItem> editor;
   protected final JComponent glassPane = new JComponent() {
     @Override public void setVisible(boolean flag) {
@@ -121,8 +121,8 @@ class IconTable extends JTable {
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
       g2.setPaint(Color.BLACK);
       Rectangle r = editor.getBounds();
-      for (int i = 0; i < XOFF; i++) {
-        g2.fillRoundRect(r.x - i, r.y + XOFF, r.width + i + i, r.height - XOFF + i, 5, 5);
+      for (int i = 0; i < OFFSET; i++) {
+        g2.fillRoundRect(r.x - i, r.y + OFFSET, r.width + i + i, r.height - OFFSET + i, 5, 5);
       }
       g2.dispose();
       g.drawImage(buffer, 0, 0, this);
@@ -181,7 +181,7 @@ class IconTable extends JTable {
     glassPane.setVisible(false);
   }
 
-  private void initCellSize(int size) {
+  public void initCellSize(int size) {
     setRowHeight(size);
     JTableHeader tableHeader = getTableHeader();
     tableHeader.setResizingAllowed(false);
