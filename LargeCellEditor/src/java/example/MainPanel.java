@@ -103,6 +103,7 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class IconTable extends JTable {
+  protected static final int CELL_SIZE = 50;
   protected static final int OFFSET = 4;
   protected final JList<IconItem> editor;
   protected final JComponent glassPane = new JComponent() {
@@ -133,7 +134,6 @@ class IconTable extends JTable {
     super(model);
     setDefaultRenderer(Object.class, new IconTableCellRenderer());
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    initCellSize(50);
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         startEditing();
@@ -181,16 +181,17 @@ class IconTable extends JTable {
     glassPane.setVisible(false);
   }
 
-  public void initCellSize(int size) {
-    setRowHeight(size);
+  @Override public void updateUI() {
+    super.updateUI();
+    setRowHeight(CELL_SIZE);
     JTableHeader tableHeader = getTableHeader();
     tableHeader.setResizingAllowed(false);
     tableHeader.setReorderingAllowed(false);
     TableColumnModel m = getColumnModel();
     for (int i = 0; i < m.getColumnCount(); i++) {
       TableColumn col = m.getColumn(i);
-      col.setMinWidth(size);
-      col.setMaxWidth(size);
+      col.setMinWidth(CELL_SIZE);
+      col.setMaxWidth(CELL_SIZE);
     }
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
   }
