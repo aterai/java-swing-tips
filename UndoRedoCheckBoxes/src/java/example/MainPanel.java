@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     Action selectAllAction = new AbstractAction("select all") {
       @Override public void actionPerformed(ActionEvent e) {
         BigInteger newValue = new BigInteger(ONE_PAD, 2);
-        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateUndoSupport(newValue);
         updateCheckBoxes(newValue);
         // TEST:
         // undoSupport.beginUpdate();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     Action clearAllAction = new AbstractAction("clear all") {
       @Override public void actionPerformed(ActionEvent e) {
         BigInteger newValue = BigInteger.ZERO;
-        undoSupport.postEdit(new StatusEdit(status, newValue));
+        updateUndoSupport(newValue);
         updateCheckBoxes(newValue);
       }
     };
@@ -91,7 +91,11 @@ public final class MainPanel extends JPanel {
     return c;
   }
 
-  protected void updateCheckBoxes(BigInteger value) {
+  public void updateUndoSupport(BigInteger value) {
+    undoSupport.postEdit(new StatusEdit(status, value));
+  }
+
+  public void updateCheckBoxes(BigInteger value) {
     status = value;
     for (int i = 0; i < BIT_LENGTH; i++) {
       BigInteger l = BigInteger.ONE.shiftLeft(i);
