@@ -38,6 +38,7 @@ public final class MainPanel extends JPanel {
       b.setEnabled(false);
       ExecutorService executor = Executors.newCachedThreadPool();
       new SwingWorker<Boolean, Void>() {
+        @SuppressWarnings("JdkObsolete")
         @Override protected Boolean doInBackground() throws InterruptedException {
           DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
           DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();

@@ -24,6 +24,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("JdkObsolete")
   private JSlider makeSlider(boolean icon) {
     JSlider slider = new JSlider(0, 100);
     slider.setMajorTickSpacing(10);

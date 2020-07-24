@@ -64,6 +64,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("JdkObsolete")
   private JSlider makeSlider() {
     JSlider slider = new JSlider(0, 10_000);
     slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);

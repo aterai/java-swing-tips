@@ -135,6 +135,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
+  @SuppressWarnings("JdkObsolete")
   public void checkId(Element element) {
     AttributeSet attrs = element.getAttributes();
     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);

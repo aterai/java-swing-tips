@@ -197,6 +197,7 @@ final class ZipUtil {
     }
   }
 
+  @SuppressWarnings("JdkObsolete")
   public static void unzip(Path zipFilePath, Path destDir) throws IOException {
     try (ZipFile zipFile = new ZipFile(zipFilePath.toString())) {
       Enumeration<? extends ZipEntry> e = zipFile.entries();

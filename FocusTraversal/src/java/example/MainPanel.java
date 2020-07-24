@@ -23,6 +23,7 @@ public final class MainPanel extends JPanel {
   private final Box box = Box.createHorizontalBox();
   private final JCheckBox check = new JCheckBox("setEditable", true);
 
+  @SuppressWarnings("JdkObsolete")
   private MainPanel() {
     super(new BorderLayout(5, 5));
     panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
