@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void append(Message m) {
+  public void append(Message m) {
     StyledDocument doc = jtp.getStyledDocument();
     try {
       doc.insertString(doc.getLength(), m.text + "\n", doc.getStyle(m.type.toString()));

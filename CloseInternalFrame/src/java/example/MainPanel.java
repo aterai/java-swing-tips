@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static Optional<JInternalFrame> getSelectedFrame(JDesktopPane desktop) {
+  public static Optional<JInternalFrame> getSelectedFrame(JDesktopPane desktop) {
     return Optional.ofNullable(desktop.getSelectedFrame());
   }
 

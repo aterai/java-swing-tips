@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void setTableHeaderColumnRatio(JTable table, String text) {
+  public static void setTableHeaderColumnRatio(JTable table, String text) {
     TableColumnModel m = table.getColumnModel();
     List<Integer> list = getWidthRatioArray(text, m.getColumnCount());
     // System.out.println("a: " + m.getTotalColumnWidth());
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     table.revalidate();
   }
 
-  protected static List<Integer> getWidthRatioArray(String text, int length) {
+  public static List<Integer> getWidthRatioArray(String text, int length) {
     try {
       return Stream.concat(
           Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf),

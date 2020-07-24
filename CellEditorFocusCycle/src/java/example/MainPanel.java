@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected boolean isEditorFocusCycle(Component editor) {
+  public boolean isEditorFocusCycle(Component editor) {
     Component child = CheckBoxesEditor.getEditorFocusCycleAfter(editor);
     if (child != null) {
       child.requestFocus();

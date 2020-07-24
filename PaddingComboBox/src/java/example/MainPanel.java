@@ -133,7 +133,7 @@ public final class MainPanel extends JPanel {
     return list;
   }
 
-  protected static Border getPaddingBorder(boolean isColor) {
+  public static Border getPaddingBorder(boolean isColor) {
     return isColor ? BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(1f, .8f, .8f, .5f))
                    : BorderFactory.createEmptyBorder(0, 5, 0, 0);
   }

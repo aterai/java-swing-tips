@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void initTextFieldBorder(JTextField textField) {
+  public static void initTextFieldBorder(JTextField textField) {
     EventQueue.invokeLater(() -> {
       Border b = new StringBorder(textField, "%");
       if (textField.getUI().getClass().getName().contains("SynthFormattedTextFieldUI")) {

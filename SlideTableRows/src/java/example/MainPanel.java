@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void createActionPerformed(JTable table, DefaultTableModel model) {
+  public void createActionPerformed(JTable table, DefaultTableModel model) {
     model.addRow(new Object[] {"New name", model.getRowCount(), false});
     int index = table.convertRowIndexToView(model.getRowCount() - 1);
     AtomicInteger height = new AtomicInteger(START_HEIGHT);
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     }).start();
   }
 
-  protected void deleteActionPerformed(JTable table, DefaultTableModel model) {
+  public void deleteActionPerformed(JTable table, DefaultTableModel model) {
     int[] selection = table.getSelectedRows();
     if (selection.length == 0) {
       return;

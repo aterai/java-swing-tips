@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void initActions(Action... actlist) {
+  public void initActions(Action... actlist) {
     BAR_FACTORY.initActions(actlist);
   }
 

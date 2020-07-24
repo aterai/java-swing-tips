@@ -72,15 +72,15 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void setExpandedState(Enumeration<TreePath> expandedState) {
+  public void setExpandedState(Enumeration<TreePath> expandedState) {
     this.expandedState = expandedState;
   }
 
-  protected Enumeration<TreePath> getExpandedState() {
+  public Enumeration<TreePath> getExpandedState() {
     return expandedState;
   }
 
-  protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
+  public static void visitAll(JTree tree, TreePath parent, boolean expand) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children())
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected static DefaultMutableTreeNode makeTreeRoot() {
+  public static DefaultMutableTreeNode makeTreeRoot() {
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 004");
     set4.add(new DefaultMutableTreeNode("22222222222"));
     set4.add(new DefaultMutableTreeNode("eee eee eee eee"));

@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void fireDocumentChangeEvent(TableRowSorter<? extends TableModel> sorter) {
+  public void fireDocumentChangeEvent(TableRowSorter<? extends TableModel> sorter) {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     if (pattern.isEmpty()) {

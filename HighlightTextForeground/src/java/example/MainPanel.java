@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void changeHighlight() {
+  public void changeHighlight() {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
     Style s = doc.getStyle("highlight-text-foreground");

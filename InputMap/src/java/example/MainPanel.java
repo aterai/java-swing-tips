@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static Component makePanel(Action act) {
+  public static Component makePanel(Action act) {
     JPanel p = new JPanel(new GridBagLayout()) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();

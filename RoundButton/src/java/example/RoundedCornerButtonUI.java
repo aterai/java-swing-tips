@@ -94,11 +94,11 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     super.paint(g, c);
   }
 
-  protected boolean isShapeContains(Point pt) {
+  public boolean isShapeContains(Point pt) {
     return shape != null && shape.contains(pt.x, pt.y);
   }
 
-  protected void initShape(Component c) {
+  public void initShape(Component c) {
     if (!c.getBounds().equals(base)) {
       base = c.getBounds();
       shape = new RoundRectangle2D.Double(0d, 0d, c.getWidth() - 1d, c.getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
@@ -110,7 +110,7 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     }
   }
 
-  protected void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
+  public void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
     g2.setPaint(new GradientPaint(0f, 0f, color, c.getWidth() - 1f, c.getHeight() - 1f, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(c.getBackground());

@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return combo;
   }
 
-  protected void append(String text) {
+  public void append(String text) {
     log.append(text + "\n");
     log.setCaretPosition(log.getDocument().getLength());
   }

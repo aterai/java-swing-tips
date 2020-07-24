@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
   // notification on this event type.The event instance
   // is lazily created using the parameters passed into
   // the fire method.
-  protected void fireFontChangeEvent(String cmd, Font font) {
+  public void fireFontChangeEvent(String cmd, Font font) {
     // Guaranteed to return a non-null array
     Object[] listeners = listenerList.getListenerList();
     FontChangeEvent e = new FontChangeEvent(this, cmd, font);

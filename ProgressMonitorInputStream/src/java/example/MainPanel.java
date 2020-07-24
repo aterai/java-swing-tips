@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void executeWorker(ActionEvent e) {
+  public void executeWorker(ActionEvent e) {
     JButton b = (JButton) e.getSource();
     b.setEnabled(false);
     textArea.setText("");
@@ -148,18 +148,18 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void updateComponentDone() {
+  public void updateComponentDone() {
     runButton.setEnabled(true);
   }
 
-  protected void processChunks(List<Chunk> chunks) {
+  public void processChunks(List<Chunk> chunks) {
     chunks.forEach(c -> {
       append(c.line);
       monitor.setNote(c.note);
     });
   }
 
-  protected void append(String str) {
+  public void append(String str) {
     textArea.append(str + "\n");
     textArea.setCaretPosition(textArea.getDocument().getLength());
   }

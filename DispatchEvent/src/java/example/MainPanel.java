@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void setTestConnected(boolean flag) {
+  public void setTestConnected(boolean flag) {
     String str = flag ? "<font color='blue'>Connected" : "<font color='red'>Not connected";
     label.setText("<html>Status: " + str);
     combo.setEnabled(flag);

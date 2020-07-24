@@ -52,14 +52,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected boolean isAllValid() {
+  public boolean isAllValid() {
     return Arrays.stream(getComponents())
         .filter(JTextField.class::isInstance)
         .map(JTextField.class::cast)
         .allMatch(t -> t.getInputVerifier().verify(t));
   }
 
-  protected JTextField makeTextField(JButton button) {
+  public JTextField makeTextField(JButton button) {
     JTextField textField = new JTextField(24);
     textField.setInputVerifier(new InputVerifier() {
       @Override public boolean verify(JComponent c) {

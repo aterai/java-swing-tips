@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 
   // Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
   // http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
-  protected static void visitAll(JTree tree, TreePath parent, boolean expand) {
+  public static void visitAll(JTree tree, TreePath parent, boolean expand) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     // Java 9: return Collections.list(node.children())
     Collections.list((Enumeration<?>) node.children()).stream()
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
 
   // Expand or collapse a JTree - Real's Java How-to
   // http://www.rgagnon.com/javadetails/java-0210.html
-  protected static void expandAll(JTree tree) {
+  public static void expandAll(JTree tree) {
     int row = 0;
     while (row < tree.getRowCount()) {
       tree.expandRow(row);
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected static void collapseAll(JTree tree) {
+  public static void collapseAll(JTree tree) {
     int row = tree.getRowCount() - 1;
     while (row >= 0) {
       tree.collapseRow(row);

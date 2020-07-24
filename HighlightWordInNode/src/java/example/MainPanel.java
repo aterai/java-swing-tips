@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void fireDocumentChangeEvent() {
+  public void fireDocumentChangeEvent() {
     String q = field.getText();
     renderer.setQuery(q);
     TreePath root = tree.getPathForRow(0);

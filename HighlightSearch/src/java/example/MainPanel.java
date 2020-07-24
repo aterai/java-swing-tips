@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void changeHighlight() {
+  public void changeHighlight() {
     field.setBackground(Color.WHITE);
     Highlighter highlighter = textArea.getHighlighter();
     highlighter.removeAllHighlights();

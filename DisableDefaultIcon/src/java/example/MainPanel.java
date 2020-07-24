@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void setIconImage(Image image) {
+  public void setIconImage(Image image) {
     Container c = getTopLevelAncestor();
     if (c instanceof JFrame) {
       ((JFrame) c).setIconImage(image);

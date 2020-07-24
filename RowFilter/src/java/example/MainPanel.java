@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected boolean canAddRow() {
+  public boolean canAddRow() {
     return !check1.isSelected() && !check2.isSelected();
     // return filters.isEmpty();
   }

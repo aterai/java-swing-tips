@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void drawAllOval(Graphics g) {
+  public void drawAllOval(Graphics g) {
     // g.setColor(DRAW_COLOR);
     for (int i = 0; i < number; i++) {
       int px = (int) (MINX + factorx * i);
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void setComponentEnabled(boolean flag) {
+  public void setComponentEnabled(boolean flag) {
     cancelButton.setEnabled(!flag);
     startButton.setEnabled(flag);
     spinner.setEnabled(flag);
@@ -106,14 +106,14 @@ public final class MainPanel extends JPanel {
     algorithmsChoices.setEnabled(flag);
   }
 
-  protected void genArray(int n) {
+  public void genArray(int n) {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
     factory = MAXY - MINY;
     distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex()).generate(array, n);
   }
 
-  protected void workerExecute() {
+  public void workerExecute() {
     int tmp = model.getNumber().intValue();
     if (tmp != number) {
       number = tmp;

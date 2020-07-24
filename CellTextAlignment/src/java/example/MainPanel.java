@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void initLabel(JLabel l, int row) {
+  public void initLabel(JLabel l, int row) {
     if (leftRadio.isSelected()) {
       l.setHorizontalAlignment(SwingConstants.LEFT);
     } else if (centerRadio.isSelected()) {

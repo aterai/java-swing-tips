@@ -77,7 +77,7 @@ public final class ReorderbleList<E extends ListItem> extends JList<E> {
            : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
-  protected Path2D getRubberBand() {
+  public Path2D getRubberBand() {
     return rubberBand;
   }
 

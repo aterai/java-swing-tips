@@ -100,8 +100,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected final class FileSearchTask extends RecursiveFileSearchTask {
-    protected FileSearchTask(File dir) {
+  public final class FileSearchTask extends RecursiveFileSearchTask {
+    public FileSearchTask(File dir) {
       super(dir);
     }
 
@@ -142,7 +142,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void updateComponentStatus(boolean start) {
+  public void updateComponentStatus(boolean start) {
     if (start) {
       addItem(dirCombo, Objects.toString(dirCombo.getEditor().getItem()), 4);
       statusPanel.setVisible(true);
@@ -176,14 +176,14 @@ public final class MainPanel extends JPanel {
     dirCombo.setVisible(true);
   }
 
-  protected void executeWorker() {
+  public void executeWorker() {
     File dir = new File(dirCombo.getItemAt(dirCombo.getSelectedIndex()));
     worker = new FileSearchTask(dir);
     worker.addPropertyChangeListener(new ProgressListener(progress));
     worker.execute();
   }
 
-  protected void processChunks(List<Message> chunks) {
+  public void processChunks(List<Message> chunks) {
     chunks.forEach(m -> {
       if (m.append) {
         appendLine(m.text);
@@ -193,7 +193,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  protected void appendLine(String str) {
+  public void appendLine(String str) {
     textArea.append(str + "\n");
     textArea.setCaretPosition(textArea.getDocument().getLength());
   }

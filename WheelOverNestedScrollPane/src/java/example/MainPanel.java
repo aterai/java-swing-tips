@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static JScrollPane createChildScrollPane(Component view) {
+  public static JScrollPane createChildScrollPane(Component view) {
     return new JScrollPane(view) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(240, 120);

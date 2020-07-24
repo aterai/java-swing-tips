@@ -130,7 +130,7 @@ class DnDTabbedPane extends JTabbedPane {
     private final int index;
     // public boolean canDrop = true; // index >= 0;
 
-    protected DropLocation(Point p, int index) {
+    public DropLocation(Point p, int index) {
       super(p);
       this.index = index;
     }

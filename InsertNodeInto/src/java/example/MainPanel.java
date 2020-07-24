@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void expandAll(JTree tree) {
+  public static void expandAll(JTree tree) {
     int row = 0;
     while (row < tree.getRowCount()) {
       tree.expandRow(row);
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected static JScrollPane makeTitledScrollPane(Component view, String title) {
+  public static JScrollPane makeTitledScrollPane(Component view, String title) {
     JScrollPane scroll = new JScrollPane(view);
     scroll.setBorder(BorderFactory.createTitledBorder(title));
     return scroll;

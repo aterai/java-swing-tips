@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void filter() {
+  public void filter() {
     getPattern().ifPresent(pattern -> {
       List<ListItem> selected = list.getSelectedValuesList();
       model.clear();

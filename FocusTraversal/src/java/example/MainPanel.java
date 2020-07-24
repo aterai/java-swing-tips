@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
   protected final class FocusTraversalPolicyChangeAction extends AbstractAction {
     private final FocusTraversalPolicy policy;
 
-    protected FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
+    public FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
       super(name);
       this.policy = p;
     }
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void debugPrint() {
+  public void debugPrint() {
     Container w = getTopLevelAncestor();
     textArea.setText(String.join("\n",
         debugString("JFrame", w),

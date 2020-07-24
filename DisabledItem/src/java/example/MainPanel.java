@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     // return list;
   }
 
-  protected void initDisableIndex(Set<Integer> set) {
+  public void initDisableIndex(Set<Integer> set) {
     set.clear();
     try {
       set.addAll(Stream.of(field.getText().split(","))

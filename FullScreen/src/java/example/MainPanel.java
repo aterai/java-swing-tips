@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void toggleFullScreenWindow() {
+  public void toggleFullScreenWindow() {
     // Component c = SwingUtilities.getRoot(getRootPane());
     Container c = getTopLevelAncestor();
     if (c instanceof JDialog) {

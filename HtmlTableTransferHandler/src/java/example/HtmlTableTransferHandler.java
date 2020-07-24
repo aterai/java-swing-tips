@@ -10,7 +10,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class HtmlTableTransferHandler extends TransferHandler {
-  protected boolean canStartDrag(JComponent c) {
+  public boolean canStartDrag(JComponent c) {
     if (c instanceof JTable) {
       JTable table = (JTable) c;
       return table.getRowSelectionAllowed() || table.getColumnSelectionAllowed();
@@ -46,7 +46,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
     return cols;
   }
 
-  protected void appendTag(StringBuilder htmlBuf, Object obj) {
+  public void appendTag(StringBuilder htmlBuf, Object obj) {
     if (obj instanceof Date) {
       String v = Objects.toString(obj, "");
       htmlBuf.append("  <td><time>").append(v).append("</time></td>\n");

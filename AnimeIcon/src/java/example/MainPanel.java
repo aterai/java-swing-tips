@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void executeWorker() {
+  public void executeWorker() {
     runButton.setEnabled(false);
     cancelButton.setEnabled(true);
     loadingLabel.startAnimation();
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
     worker.execute();
   }
 
-  protected void appendLine(String str) {
+  public void appendLine(String str) {
     area.append(str);
     area.setCaretPosition(area.getDocument().getLength());
   }

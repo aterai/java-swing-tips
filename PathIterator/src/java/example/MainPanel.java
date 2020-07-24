@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
   //   }
   // }
 
-  protected void initStar() {
+  public void initStar() {
     int r1 = outer.getNumber().intValue();
     int r2 = inner.getNumber().intValue();
     int vc = vcModel.getNumber().intValue();

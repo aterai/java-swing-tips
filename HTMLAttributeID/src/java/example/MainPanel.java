@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void addHighlight(Element element, boolean isBlock) {
+  public void addHighlight(Element element, boolean isBlock) {
     Highlighter highlighter = editorPane.getHighlighter();
     int start = element.getStartOffset();
     int lf = isBlock ? 1 : 0;
@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void traverseElementById(Element element) {
+  public void traverseElementById(Element element) {
     if (element.isLeaf()) {
       checkId(element);
     } else {
@@ -135,7 +135,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void checkId(Element element) {
+  public void checkId(Element element) {
     AttributeSet attrs = element.getAttributes();
     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
     Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;

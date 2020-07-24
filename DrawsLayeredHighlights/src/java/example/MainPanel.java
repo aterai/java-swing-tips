@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void fireDocumentChangeEvent() {
+  public void fireDocumentChangeEvent() {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     Highlighter highlighter = textArea.getHighlighter();

@@ -116,17 +116,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected File getFile() {
+  public File getFile() {
     return file;
   }
 
-  protected void setFile(File file) {
+  public void setFile(File file) {
     this.file = file;
     label.setIcon(i2);
     label.setText("tmpFile#exists(): true(draggable)");
   }
 
-  protected void clearFile() {
+  public void clearFile() {
     file = null;
     label.setIcon(i1);
     label.setText("tmpFile#exists(): false");

@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
   }
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  protected void updateHistory(Path path) {
+  public void updateHistory(Path path) {
     fileHistoryMenu.removeAll();
     fileHistoryCache.remove(path);
     fileHistoryCache.add(0, path);
@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void initActions(Action... actlist) {
+  public void initActions(Action... actlist) {
     BAR_FACTORY.initActions(actlist);
   }
 

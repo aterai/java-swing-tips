@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void updateCheckBoxes(BitSet value) {
+  public void updateCheckBoxes(BitSet value) {
     status = value;
     for (int i = 0; i < BIT_LENGTH; i++) {
       ((JCheckBox) panel.getComponent(i)).setSelected(status.get(i));

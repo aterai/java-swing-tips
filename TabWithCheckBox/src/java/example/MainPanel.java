@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void addTab(JTabbedPane tabs) {
+  public void addTab(JTabbedPane tabs) {
     Component c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
     tabs.addTab("Title" + count, c);
     tabs.setSelectedIndex(tabs.getTabCount() - 1);

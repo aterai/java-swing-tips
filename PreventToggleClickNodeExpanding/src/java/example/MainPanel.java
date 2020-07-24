@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  protected static File getFileFromTreePath(TreePath path) {
+  public static File getFileFromTreePath(TreePath path) {
     Object o = Objects.nonNull(path) ? path.getLastPathComponent() : null;
     if (o instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;

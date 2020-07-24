@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected void executeWorker() {
+  public void executeWorker() {
     System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
     runButton.setEnabled(false);
     cancelButton.setEnabled(true);
@@ -99,14 +99,14 @@ public final class MainPanel extends JPanel {
     worker.execute();
   }
 
-  protected void updateComponentDone() {
+  public void updateComponentDone() {
     loadingLabel.stopAnimation();
     runButton.setEnabled(true);
     cancelButton.setEnabled(false);
     statusPanel.setVisible(false);
   }
 
-  protected void appendText(String str) {
+  public void appendText(String str) {
     area.append(str);
     area.setCaretPosition(area.getDocument().getLength());
   }

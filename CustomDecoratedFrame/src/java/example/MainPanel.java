@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
   //   iconify.addActionListener(e -> frame.setExtendedState(state | Frame.ICONIFIED));
   // }
 
-  protected Container getMainContentPane() {
+  public Container getMainContentPane() {
     return contentPanel;
   }
 

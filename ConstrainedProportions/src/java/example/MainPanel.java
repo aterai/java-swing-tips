@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void initFrameSize(JFrame frame) {
+  public void initFrameSize(JFrame frame) {
     if (!checkbox.isSelected()) {
       return;
     }

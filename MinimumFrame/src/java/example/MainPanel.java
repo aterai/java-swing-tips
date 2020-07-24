@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void initFrameSize(Window frame) {
+  public static void initFrameSize(Window frame) {
     int fw = frame.getSize().width;
     int fh = frame.getSize().height;
     frame.setSize(Math.max(MW, fw), Math.max(MH1, fh));

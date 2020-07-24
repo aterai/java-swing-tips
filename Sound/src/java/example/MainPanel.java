@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void loadAndPlayAudio(String path) {
+  public void loadAndPlayAudio(String path) {
     try (AudioInputStream sound = AudioSystem.getAudioInputStream(getClass().getResource(path));
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, sound.getFormat()))) {
       SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();

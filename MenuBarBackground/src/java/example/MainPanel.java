@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     return menu;
   }
 
-  protected static TexturePaint makeCheckerTexture() {
+  public static TexturePaint makeCheckerTexture() {
     int cs = 6;
     int sz = cs * cs;
     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);

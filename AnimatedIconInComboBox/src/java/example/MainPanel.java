@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     return icon;
   }
 
-  protected static void repaintComboBox(JComboBox<?> combo, int row) {
+  public static void repaintComboBox(JComboBox<?> combo, int row) {
     if (combo.getSelectedIndex() == row) {
       combo.repaint();
     }

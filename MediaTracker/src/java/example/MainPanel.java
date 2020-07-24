@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void addImage(Path path) {
+  public void addImage(Path path) {
     int id = imageId.getAndIncrement();
     Image img = Toolkit.getDefaultToolkit().createImage(path.toAbsolutePath().toString());
     tracker = Optional.ofNullable(tracker).orElseGet(() -> new MediaTracker(this));

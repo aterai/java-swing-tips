@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     return f;
   }
 
-  protected static void addIconifiedFrame(JDesktopPane desktop, JInternalFrame f) {
+  public static void addIconifiedFrame(JDesktopPane desktop, JInternalFrame f) {
     desktop.add(f);
     try {
       f.setIcon(true);

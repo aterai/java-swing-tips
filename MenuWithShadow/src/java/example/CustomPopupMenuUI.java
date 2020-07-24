@@ -101,7 +101,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
     return pp;
   }
 
-  protected static BufferedImage makeShadowImage(int x, int y, int w, int h) {
+  public static BufferedImage makeShadowImage(int x, int y, int w, int h) {
     BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

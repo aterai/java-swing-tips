@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
     textArea.append(s + "\n");
   }
 
-  protected void test(String s) {
+  public void test(String s) {
     insertText(textArea0, s);
     insertText(textArea1, s);
     insertText(textArea2, s);
