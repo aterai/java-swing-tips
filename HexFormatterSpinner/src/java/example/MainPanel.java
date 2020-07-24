@@ -99,9 +99,9 @@ public final class MainPanel extends JPanel {
       fontPaintFlag = flg;
     }
 
-    public Set<FontPaint> getFontPaintFlag() {
-      return fontPaintFlag;
-    }
+    // public Set<FontPaint> getFontPaintFlag() {
+    //   return fontPaintFlag;
+    // }
 
     @Override protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
