@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     // updateCheckBox("MainPanel: init");
 
     UIManager.addPropertyChangeListener(e -> {
-      if (e.getPropertyName().equals("lookAndFeel")) {
+      if ("lookAndFeel".equals(e.getPropertyName())) {
         // String lnf = e.getNewValue().toString();
         updateCheckBox("UIManager: propertyChange");
       }

@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
       node.add(child);
       if (file.isDirectory()) {
         createChildren(file, child);
-      } else if (file.getName().equals("MainPanel.java")) {
+      } else if ("MainPanel.java".equals(file.getName())) {
         child.add(new DefaultMutableTreeNode("MainPanel()"));
         child.add(new DefaultMutableTreeNode("createAndShowGui():void"));
         child.add(new DefaultMutableTreeNode("createChildren(File, DefaultMutableTreeNode):void"));
