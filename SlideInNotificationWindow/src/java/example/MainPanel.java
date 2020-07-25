@@ -106,7 +106,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     AtomicInteger count = new AtomicInteger();
     listener = e -> {
       double v = count.addAndGet(STEP) / (double) d.height;
-      double a = 1d;
+      double a;
       if (slideInAnimation == SlideInAnimation.EASE_IN) {
         a = AnimationUtil.easeIn(v);
       } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {

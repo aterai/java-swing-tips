@@ -96,7 +96,7 @@ class ExitAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Component root = null;
+    Component root;
     Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
     if (parent instanceof JPopupMenu) {
       JPopupMenu popup = (JPopupMenu) parent;

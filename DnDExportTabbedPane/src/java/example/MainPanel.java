@@ -550,7 +550,7 @@ class TabTransferHandler extends TransferHandler {
     //   }
     // }
 
-    boolean canDrop = false;
+    boolean canDrop;
     boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
     if (target.equals(source)) {
       // System.out.println("target == source");
