@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private static final int MAX_HISTORY = 3;
   private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
-  private final List<Path> fileHistoryCache = new ArrayList<>();
+  private static final List<Path> FILE_HISTORY_CACHE = new ArrayList<>();
   private final JMenuItem noFile = new JMenuItem("(Empty)");
   private JMenu fileHistoryMenu;
 
@@ -28,21 +28,20 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     initActions(getActions());
-    JPanel menupanel = new JPanel(new BorderLayout());
+    JPanel menuPanel = new JPanel(new BorderLayout());
     JMenuBar menuBar = BAR_FACTORY.createMenuBar();
-    menupanel.add(menuBar, BorderLayout.NORTH);
+    menuPanel.add(menuBar, BorderLayout.NORTH);
     initHistory();
 
     JToolBar toolBar = BAR_FACTORY.createToolBar();
     if (Objects.nonNull(toolBar)) {
-      menupanel.add(toolBar, BorderLayout.SOUTH);
+      menuPanel.add(toolBar, BorderLayout.SOUTH);
     }
-    add(menupanel, BorderLayout.NORTH);
+    add(menuPanel, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void initHistory() {
     JMenu fm = BAR_FACTORY.getMenu("file");
     if (Objects.nonNull(fileHistoryMenu)) {
@@ -56,43 +55,42 @@ public final class MainPanel extends JPanel {
       fm.addSeparator();
       fm.add(exit);
     }
-    if (fileHistoryCache.isEmpty()) {
+    if (FILE_HISTORY_CACHE.isEmpty()) {
       noFile.setEnabled(false);
       fileHistoryMenu.add(noFile);
     } else {
       fm.remove(noFile);
-      for (int i = 0; i < fileHistoryCache.size(); i++) {
-        Path name = fileHistoryCache.get(i);
-        String num = Integer.toString(i + 1);
-        // String path = Paths.get(name).toAbsolutePath().toString();
-        JMenuItem mi = fileHistoryMenu.add(new HistoryAction(name));
-        mi.setText(num + ": " + name);
-        mi.setMnemonic(num.codePointAt(0));
-        // fileHistoryMenu.add(mi);
+      for (int i = 0; i < FILE_HISTORY_CACHE.size(); i++) {
+        JMenuItem mi = makeHistoryMenuItem(FILE_HISTORY_CACHE.get(i), i);
+        fileHistoryMenu.add(mi);
       }
     }
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   public void updateHistory(Path path) {
     fileHistoryMenu.removeAll();
-    fileHistoryCache.remove(path);
-    fileHistoryCache.add(0, path);
-    if (fileHistoryCache.size() > MAX_HISTORY) {
-      fileHistoryCache.remove(fileHistoryCache.size() - 1);
+    FILE_HISTORY_CACHE.remove(path);
+    FILE_HISTORY_CACHE.add(0, path);
+    if (FILE_HISTORY_CACHE.size() > MAX_HISTORY) {
+      FILE_HISTORY_CACHE.remove(FILE_HISTORY_CACHE.size() - 1);
     }
-    for (int i = 0; i < fileHistoryCache.size(); i++) {
-      Path name = fileHistoryCache.get(i);
-      String num = Integer.toString(i + 1);
-      JMenuItem mi = new JMenuItem(new HistoryAction(name));
-      mi.setText(num + ": " + name);
-      mi.setMnemonic(num.codePointAt(0));
+    for (int i = 0; i < FILE_HISTORY_CACHE.size(); i++) {
+      JMenuItem mi = makeHistoryMenuItem(FILE_HISTORY_CACHE.get(i), i);
       fileHistoryMenu.add(mi, i);
     }
   }
 
+  private JMenuItem makeHistoryMenuItem(Path name, int idx) {
+    String num = Integer.toString(idx + 1);
+    JMenuItem mi = new JMenuItem(new HistoryAction(name));
+    mi.setText(num + ": " + name);
+    mi.setMnemonic(num.codePointAt(0));
+    return mi;
+  }
+
+
   private class HistoryAction extends AbstractAction {
-    private final Path path;
+    private final transient Path path;
 
     protected HistoryAction(Path path) {
       super();
@@ -111,8 +109,8 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void initActions(Action... actlist) {
-    BAR_FACTORY.initActions(actlist);
+  public void initActions(Action... actions) {
+    BAR_FACTORY.initActions(actions);
   }
 
   private Action[] getActions() {
@@ -165,15 +163,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class SaveAsAction extends AbstractAction {
-  protected SaveAsAction() {
-    super("saveAs");
-  }
-
-  @Override public void actionPerformed(ActionEvent e) {
-    // dummy
-  }
-}
+//class SaveAsAction extends AbstractAction {
+//  protected SaveAsAction() {
+//    super("saveAs");
+//  }
+//
+//  @Override public void actionPerformed(ActionEvent e) {
+//    // save as...
+//  }
+//}
 
 class ExitAction extends AbstractAction {
   protected ExitAction() {
@@ -181,7 +179,7 @@ class ExitAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Component root = null;
+    Component root;
     Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
     if (parent instanceof JPopupMenu) {
       JPopupMenu popup = (JPopupMenu) parent;
