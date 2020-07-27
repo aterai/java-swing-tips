@@ -34,12 +34,10 @@ public final class MainPanel extends JPanel {
         int rowCount = getModel().getRowCount();
         int defaultRowHeight = height / rowCount;
         if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
-          // int remainder = height - rowCount * defaultRowHeight;
           int remainder = height % rowCount;
           for (int i = 0; i < rowCount; i++) {
-            int a = i == rowCount - 1 ? Math.max(0, remainder) : 1;
+            int a = Math.min(1, Math.max(0, remainder--));
             setRowHeight(i, defaultRowHeight + a);
-            remainder--;
           }
         }
         prevHeight = height;

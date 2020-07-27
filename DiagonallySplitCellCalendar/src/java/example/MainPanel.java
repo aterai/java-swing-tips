@@ -29,9 +29,8 @@ public final class MainPanel extends JPanel {
       int defaultRowHeight = height / rowCount;
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = i == rowCount - 1 ? Math.max(0, remainder) : 1;
+        int a = Math.min(1, Math.max(0, remainder--));
         setRowHeight(i, defaultRowHeight + a);
-        remainder--;
       }
     }
 
@@ -75,12 +74,8 @@ public final class MainPanel extends JPanel {
     p.add(prev, BorderLayout.WEST);
     p.add(next, BorderLayout.EAST);
 
-    JScrollPane scroll = new JScrollPane(monthTable);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
     add(p, BorderLayout.NORTH);
-    add(scroll);
+    add(new JScrollPane(monthTable));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
