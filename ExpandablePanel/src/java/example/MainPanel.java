@@ -85,9 +85,13 @@ public final class MainPanel extends JPanel {
           Box p = Box.createVerticalBox();
           p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
           for (int i = 0; i < 16; i++) {
-            p.add(new JLabel(String.format("%02d", i)));
+            p.add(makeLabel(i));
           }
           return p;
+        }
+
+        private JLabel makeLabel(int i) {
+          return new JLabel(String.format("%02d", i));
         }
       },
       new AbstractExpansionPanel("Panel3") {

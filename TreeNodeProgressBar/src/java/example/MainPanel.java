@@ -47,11 +47,15 @@ public final class MainPanel extends JPanel {
           while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             if (!root.equals(node) && !model.isLeaf(node)) {
-              executor.execute(new NodeProgressWorker(tree, node));
+              executor.execute(makeWorker(tree, node));
             }
           }
           executor.shutdown();
           return executor.awaitTermination(1, TimeUnit.MINUTES);
+        }
+
+        private SwingWorker<TreeNode, Integer> makeWorker(JTree tree, DefaultMutableTreeNode node) {
+          return new NodeProgressWorker(tree, node);
         }
 
         @Override protected void done() {

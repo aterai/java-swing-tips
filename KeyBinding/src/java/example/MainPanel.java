@@ -120,7 +120,6 @@ public final class MainPanel extends JPanel {
   //   return h;
   // }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
     if (Objects.isNull(im.allKeys())) {
       return;
@@ -133,9 +132,9 @@ public final class MainPanel extends JPanel {
       Object actionMapKey = im.get(ks);
       Action action = am.get(actionMapKey);
       if (Objects.isNull(action)) {
-        model.addBinding(new Binding(focusType, "____" + actionMapKey.toString(), ks.toString()));
+        model.addBinding(makeBinding(focusType, "____" + actionMapKey.toString(), ks.toString()));
       } else {
-        model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
+        model.addBinding(makeBinding(focusType, actionMapKey.toString(), ks.toString()));
       }
       tmpAm.remove(actionMapKey);
     }
@@ -143,10 +142,14 @@ public final class MainPanel extends JPanel {
       return;
     }
     for (Object actionMapKey: tmpAm.allKeys()) {
-      model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
+      model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
     }
   }
   // <--------
+
+  private Binding makeBinding(Integer focusType, String actionName, String keyDescription) {
+    return new Binding(focusType, actionName, keyDescription);
+  }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
