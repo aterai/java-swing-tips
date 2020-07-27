@@ -30,6 +30,7 @@ public final class MainPanel extends JPanel {
   //     "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘",
   //     "㉙", "㉚", "㉛"
   // };
+  // public static final String CIRCLED_IDEOGRAPH_CONGRATULATION = "㊗"; // "\u3297";
   public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
@@ -61,7 +62,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    monthTable.setDefaultRenderer(LocalDate.class, new example.MainPanel.CalendarTableRenderer());
+    monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
     monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     monthTable.setCellSelectionEnabled(true);
     monthTable.setFillsViewportHeight(true);
@@ -93,38 +94,13 @@ public final class MainPanel extends JPanel {
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
     monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
-    monthTable.setModel(new example.CalendarViewTableModel(localDate));
+    monthTable.setModel(new CalendarViewTableModel(localDate));
   }
 
   private class CalendarTableRenderer implements TableCellRenderer {
-    private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEADING));
-    private final JLabel label = new JLabel("", SwingConstants.CENTER) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = 18;
-        return d;
-      }
-
-      @Override protected void paintComponent(Graphics g) {
-        if (!Objects.equals(getBackground(), Color.WHITE)) {
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-          g2.setPaint(getBackground());
-          g2.fill(getShape());
-          g2.dispose();
-        }
-        super.paintComponent(g);
-      }
-
-      protected Shape getShape() {
-        Dimension d = getSize();
-        if (Objects.equals(getBackground(), Color.BLUE)) {
-          return new Ellipse2D.Double(0d, 0d, d.width - 1d, d.height - 1d);
-        } else {
-          return new RoundRectangle2D.Double(0d, 0d, d.width - 1d, d.height - 1d, 5d, 5d);
-        }
-      }
-    };
+    private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEADING, 1, 1));
+    private final JLabel label = new EnclosedLabel();
+    // private final JLabel holiday = new EnclosedLabel();
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       renderer.setOpaque(true);
@@ -134,24 +110,13 @@ public final class MainPanel extends JPanel {
 
       if (value instanceof LocalDate) {
         LocalDate d = (LocalDate) value;
-        label.setText("<html><b>" + Objects.toString(d.getDayOfMonth()));
-        // label.setText(getDayOfWeekText(d));
-        label.setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 1));
-        boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
-        if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SUNDAY) {
-          label.setForeground(Color.WHITE);
-          label.setBackground(Color.BLACK);
-        } else if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SATURDAY) {
-          label.setForeground(Color.WHITE);
-          label.setBackground(Color.BLUE);
-        } else if (isThisMonth) {
-          label.setBackground(Color.WHITE);
-          label.setForeground(Color.BLACK);
-        } else {
-          label.setBackground(Color.WHITE);
-          label.setForeground(Color.GRAY);
-          label.setText(Objects.toString(d.getDayOfMonth()));
-        }
+        updateEnclosedLabel(label, d);
+        // if (isJapaneseNationalHoliday(d)) {
+        //   holiday.setText(CIRCLED_IDEOGRAPH_CONGRATULATION);
+        //   holiday.setForeground(Color.WHITE);
+        //   holiday.setBackground(Color.BLACK);
+        //   renderer.add(holiday);
+        // }
         if (selected) {
           renderer.setBackground(table.getSelectionBackground());
         } else if (d.isEqual(realLocalDate)) {
@@ -163,12 +128,37 @@ public final class MainPanel extends JPanel {
       return renderer;
     }
 
+    private void updateEnclosedLabel(JLabel lbl, LocalDate d) {
+      lbl.setText("<html><b>" + Objects.toString(d.getDayOfMonth()));
+      // label.setText(getDayOfWeekText(d));
+      boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
+      if (isThisMonth && (d.getDayOfWeek() == DayOfWeek.SUNDAY || isJapaneseNationalHoliday(d))) {
+        lbl.setForeground(Color.WHITE);
+        lbl.setBackground(Color.BLACK);
+      } else if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SATURDAY) {
+        lbl.setForeground(Color.WHITE);
+        lbl.setBackground(Color.BLUE);
+      } else if (isThisMonth) {
+        lbl.setBackground(Color.WHITE);
+        lbl.setForeground(Color.BLACK);
+      } else {
+        lbl.setBackground(Color.WHITE);
+        lbl.setForeground(Color.GRAY);
+        lbl.setText(Objects.toString(d.getDayOfMonth()));
+      }
+    }
+
     private Color getDayOfWeekColor(DayOfWeek dow) {
       switch (dow) {
         case SUNDAY: return new Color(0xFF_DC_DC);
         case SATURDAY: return new Color(0xDC_DC_FF);
         default: return Color.WHITE;
       }
+    }
+
+    protected boolean isJapaneseNationalHoliday(LocalDate d) {
+      return LocalDate.of(2020, 7, 23).equals(d)
+          || LocalDate.of(2020, 7, 24).equals(d);
     }
   }
 
@@ -181,7 +171,7 @@ public final class MainPanel extends JPanel {
   // }
 
   public static void main(String[] args) {
-    EventQueue.invokeLater(example.MainPanel::createAndShowGui);
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
   private static void createAndShowGui() {
@@ -193,10 +183,47 @@ public final class MainPanel extends JPanel {
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new example.MainPanel());
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class EnclosedLabel extends JLabel {
+  protected EnclosedLabel() {
+    super("", SwingConstants.CENTER);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 1));
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    d.width = 18;
+    return d;
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    if (!Objects.equals(getBackground(), Color.WHITE)) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(getBackground());
+      g2.fill(getShape());
+      g2.dispose();
+    }
+    super.paintComponent(g);
+  }
+
+  protected Shape getShape() {
+    Dimension d = getSize();
+    if (Objects.equals(getBackground(), Color.BLUE)) {
+      return new Ellipse2D.Double(0d, 0d, d.width - 1d, d.height - 1d);
+    } else {
+      return new RoundRectangle2D.Double(0d, 0d, d.width - 1d, d.height - 1d, 5d, 5d);
+    }
   }
 }
 
