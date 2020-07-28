@@ -16,14 +16,13 @@ import javax.swing.text.NumberFormatter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
     JSpinner s1 = makeSpinner1(makeSpinnerNumberModel());
     JSpinner s2 = makeSpinner2(makeSpinnerNumberModel());
     JSpinner s3 = makeSpinner3(makeSpinnerNumberModel());
 
     JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
-      private Object old;
+      private transient Object old;
       @Override public void actionPerformed(ActionEvent e) {
         boolean flg = ((JCheckBox) e.getSource()).isSelected();
         Stream.of(s0, s1, s2, s3).forEach(c -> c.setEnabled(flg));
