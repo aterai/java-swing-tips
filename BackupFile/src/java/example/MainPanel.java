@@ -7,6 +7,8 @@ package example;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +24,8 @@ public final class MainPanel extends JPanel {
   private static final String FILE_NAME = "example.txt";
   private final SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, 6, 1);
   private final SpinnerNumberModel model2 = new SpinnerNumberModel(2, 0, 6, 1);
+  private final JSpinner spinner1 = new JSpinner(model1);
+  private final JSpinner spinner2 = new JSpinner(model2);
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
   private final JTextPane jtp = new JTextPane();
 
@@ -38,42 +42,7 @@ public final class MainPanel extends JPanel {
     StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
 
     JButton ok = new JButton("Create new " + FILE_NAME);
-    ok.addActionListener(e -> {
-      File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
-      new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
-        @Override protected void process(List<Message> chunks) {
-          if (isCancelled()) {
-            return;
-          }
-          if (!isDisplayable()) {
-            cancel(true);
-            return;
-          }
-          for (Message m: chunks) {
-            append(m);
-          }
-        }
-
-        @Override protected void done() {
-          try {
-            File nf = get();
-            if (Objects.isNull(nf)) {
-              append(new Message("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
-            } else if (nf.createNewFile()) {
-              append(new Message(nf.getName() + "を生成しました。", MessageType.REGULAR));
-            } else {
-              append(new Message(nf.getName() + "の生成に失敗しました。", MessageType.ERROR));
-            }
-          } catch (InterruptedException ex) {
-            append(new Message(ex.getMessage(), MessageType.ERROR));
-            Thread.currentThread().interrupt();
-          } catch (ExecutionException | IOException ex) {
-            append(new Message(ex.getMessage(), MessageType.ERROR));
-          }
-          append(new Message("----------------------------------", MessageType.REGULAR));
-        }
-      }.execute();
-    });
+    ok.addActionListener(e -> addActionPerformed());
 
     JButton clear = new JButton("clear");
     clear.addActionListener(e -> jtp.setText(""));
@@ -85,12 +54,10 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(5));
     box.add(clear);
 
-    JSpinner spinner1 = new JSpinner(model1);
     JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0");
     editor1.getTextField().setEditable(false);
     spinner1.setEditor(editor1);
 
-    JSpinner spinner2 = new JSpinner(model2);
     JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(spinner2, "0");
     editor2.getTextField().setEditable(false);
     spinner2.setEditor(editor2);
@@ -102,6 +69,55 @@ public final class MainPanel extends JPanel {
 
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 
+    JScrollPane scroll = new JScrollPane(jtp);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll.getVerticalScrollBar().setUnitIncrement(25);
+
+    add(makeNorthBox(), BorderLayout.NORTH);
+    add(scroll);
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void addActionPerformed() {
+    File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
+    new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
+      @Override protected void process(List<Message> chunks) {
+        if (isCancelled()) {
+          return;
+        }
+        if (!isDisplayable()) {
+          cancel(true);
+          return;
+        }
+        for (Message m: chunks) {
+          append(m);
+        }
+      }
+
+      @Override protected void done() {
+        try {
+          File nf = get();
+          if (Objects.isNull(nf)) {
+            append(makeMessage("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
+          } else if (nf.createNewFile()) {
+            append(makeMessage(nf.getName() + "を生成しました。", MessageType.REGULAR));
+          } else {
+            append(makeMessage(nf.getName() + "の生成に失敗しました。", MessageType.ERROR));
+          }
+        } catch (InterruptedException ex) {
+          append(makeMessage(ex.getMessage(), MessageType.ERROR));
+          Thread.currentThread().interrupt();
+        } catch (ExecutionException | IOException ex) {
+          append(makeMessage(ex.getMessage(), MessageType.ERROR));
+        }
+        append(makeMessage("----------------------------------", MessageType.REGULAR));
+      }
+    }.execute();
+  }
+
+  private Component makeNorthBox() {
     // Box northBox = Box.createHorizontalBox();
     JPanel northBox = new JPanel(new GridLayout(3, 2, 5, 5));
     northBox.add(new JLabel("削除しないバックアップの数:", SwingConstants.RIGHT));
@@ -110,16 +126,7 @@ public final class MainPanel extends JPanel {
     northBox.add(spinner2);
     northBox.add(new JLabel("合計バックアップ数:", SwingConstants.RIGHT));
     northBox.add(label);
-
-    JScrollPane scroll = new JScrollPane(jtp);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    scroll.getVerticalScrollBar().setUnitIncrement(25);
-
-    add(northBox, BorderLayout.NORTH);
-    add(scroll);
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return northBox;
   }
 
   public void append(Message m) {
@@ -170,14 +177,14 @@ class Message {
 
 class BackgroundTask extends SwingWorker<File, Message> {
   private final File orgFile;
-  private final int intold;
-  private final int intnew;
+  private final int oldIndex;
+  private final int newIndex;
 
-  protected BackgroundTask(File file, int intold, int intnew) {
+  protected BackgroundTask(File file, int oldIndex, int newIndex) {
     super();
     this.orgFile = file;
-    this.intold = intold;
-    this.intnew = intnew;
+    this.oldIndex = oldIndex;
+    this.newIndex = newIndex;
   }
 
   @Override public File doInBackground() throws IOException {
@@ -185,43 +192,42 @@ class BackgroundTask extends SwingWorker<File, Message> {
       return orgFile;
     }
 
-    String newfilename = orgFile.getAbsolutePath();
-
-    if (intold == 0 && intnew == 0) { // = backup off
-      if (orgFile.delete()) {
-        return new File(newfilename);
-      } else {
-        publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
+    String newFileName = orgFile.getAbsolutePath();
+    if (oldIndex == 0 && newIndex == 0) { // = backup off
+      try {
+        Files.delete(orgFile.toPath());
+        return new File(newFileName);
+      } catch (IOException ex) {
+        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
         return null;
       }
     }
 
-    File tmpFile = renameAndBackup(orgFile, newfilename);
+    File tmpFile = renameAndBackup(orgFile, newFileName);
     if (Objects.nonNull(tmpFile)) {
       return tmpFile;
     }
 
     if (renameAndShiftBackup(orgFile)) {
-      return new File(newfilename);
+      return new File(newFileName);
     } else {
       return null;
     }
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-  private File renameAndBackup(File file, String newfilename) throws IOException {
+  private File renameAndBackup(File file, String newFileName) throws IOException {
     boolean simpleRename = false;
     File testFile = null;
-    for (int i = 1; i <= intold; i++) {
-      testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
+    for (int i = 1; i <= oldIndex; i++) {
+      testFile = createBackupFile(file, i);
       if (!testFile.exists()) {
         simpleRename = true;
         break;
       }
     }
     if (!simpleRename) {
-      for (int i = intold + 1; i <= intold + intnew; i++) {
-        testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
+      for (int i = oldIndex + 1; i <= oldIndex + newIndex; i++) {
+        testFile = createBackupFile(file, i);
         if (!testFile.exists()) {
           simpleRename = true;
           break;
@@ -229,48 +235,66 @@ class BackgroundTask extends SwingWorker<File, Message> {
       }
     }
     if (simpleRename) {
-      if (file.renameTo(testFile)) {
-        publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
-        publish(new Message(String.format("  %s -> %s", file.getName(), testFile.getName()), MessageType.BLUE));
-        return new File(newfilename);
-      } else {
-        publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
-        throw new IOException();
+      Path path = file.toPath();
+      try {
+        publish(makeMessage("古い同名ファイルをリネーム", MessageType.REGULAR));
+        publish(makeMessage(String.format("  %s -> %s", file.getName(), testFile.getName()), MessageType.BLUE));
+        Files.move(path, path.resolveSibling(testFile.getName()));
+        return new File(newFileName);
+      } catch (IOException ex) {
+        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+        throw ex;
       }
     }
     return null;
   }
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   private boolean renameAndShiftBackup(File file) {
-    File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold + 1));
-    publish(new Message("古いバックアップファイルを削除", MessageType.REGULAR));
-    publish(new Message("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
-    if (!tmpFile3.delete()) {
-      publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
+    File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIndex + 1));
+    publish(makeMessage("古いバックアップファイルを削除", MessageType.REGULAR));
+    publish(makeMessage("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
+    try {
+      Files.delete(tmpFile3.toPath());
+    } catch (IOException ex) {
+      publish(makeMessage(ex.getMessage(), MessageType.ERROR));
       return false;
     }
-    for (int i = intold + 2; i <= intold + intnew; i++) {
-      File tmpFile1 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
-      File tmpFile2 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i - 1));
-      if (!tmpFile1.renameTo(tmpFile2)) {
-        publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
+    for (int i = oldIndex + 2; i <= oldIndex + newIndex; i++) {
+      File tmpFile1 = createBackupFile(file, i);
+      File tmpFile2 = createBackupFile(file, i - 1);
+      Path oldPath = tmpFile1.toPath();
+      try {
+        Files.move(oldPath, oldPath.resolveSibling(tmpFile2.getName()));
+      } catch (IOException ex) {
+        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
         return false;
       }
-      publish(new Message("古いバックアップファイルの番号を更新", MessageType.REGULAR));
-      publish(new Message("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
+      publish(makeMessage("古いバックアップファイルの番号を更新", MessageType.REGULAR));
+      publish(makeMessage("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
     }
-    File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold + intnew));
-    publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
-    publish(new Message("  " + file.getName() + " -> " + tmpFile.getName(), MessageType.BLUE));
-    if (!file.renameTo(tmpFile)) {
-      publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
+    File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIndex + newIndex));
+    publish(makeMessage("古い同名ファイルをリネーム", MessageType.REGULAR));
+    publish(makeMessage("  " + file.getName() + " -> " + tmpFile.getName(), MessageType.BLUE));
+
+    Path path = file.toPath();
+    try {
+      Files.move(path, path.resolveSibling(tmpFile.getName()));
+    } catch (IOException ex) {
+      publish(makeMessage(ex.getMessage(), MessageType.ERROR));
       return false;
     }
     return true;
   }
 
+  protected static Message makeMessage(String text, MessageType type) {
+    return new Message(text, type);
+  }
+
   private static String makeBackupFileName(String name, int num) {
     return String.format("%s.%d~", name, num);
+  }
+
+  private static File createBackupFile(File file, int idx) {
+    return new File(file.getParentFile(), makeBackupFileName(file.getName(), idx));
   }
 }
