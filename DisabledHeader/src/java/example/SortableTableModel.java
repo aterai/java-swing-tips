@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,7 @@ import javax.swing.table.TableColumnModel;
 // @author Nobuo Tamemasa
 // modified by aterai aterai@outlook.com
 public class SortableTableModel extends DefaultTableModel {
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "JdkObsolete"})
   public final void sortByColumn(int column, boolean isAscent) {
     getDataVector().sort(new ColumnComparator(column, isAscent));
     fireTableDataChanged();
