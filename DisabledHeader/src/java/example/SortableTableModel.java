@@ -25,7 +25,7 @@ import javax.swing.table.TableColumnModel;
 public class SortableTableModel extends DefaultTableModel {
   @SuppressWarnings("unchecked")
   public final void sortByColumn(int column, boolean isAscent) {
-    Collections.sort(getDataVector(), new ColumnComparator(column, isAscent));
+    getDataVector().sort(new ColumnComparator(column, isAscent));
     fireTableDataChanged();
   }
 }
@@ -45,7 +45,7 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     if (one instanceof List && two instanceof List) {
       Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
       Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
-      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.<Comparable<Object>>naturalOrder()));
+      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
       return c * (ascending ? 1 : -1);
     }
     return 0;
