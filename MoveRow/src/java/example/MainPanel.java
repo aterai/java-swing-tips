@@ -87,10 +87,10 @@ public final class MainPanel extends JPanel {
 }
 
 class TablePopupMenu extends JPopupMenu {
-  private final Action createAction;
-  private final Action deleteAction;
-  private final Action upAction;
-  private final Action downAction;
+  private final transient Action createAction;
+  private final transient Action deleteAction;
+  private final transient Action upAction;
+  private final transient Action downAction;
   private final JTable table;
 
   protected TablePopupMenu(JTable table) {
@@ -172,7 +172,7 @@ class DeleteAction extends AbstractAction {
     int[] selection = table.getSelectedRows();
     RowDataModel model = (RowDataModel) table.getModel();
     for (int i = selection.length - 1; i >= 0; i--) {
-      // RowData ixsc = model.getRowData(selection[i]);
+      // RowData isc = model.getRowData(selection[i]);
       model.removeRow(selection[i]);
     }
   }
@@ -262,10 +262,10 @@ class InitAction extends AbstractAction {
       return;
     }
     RowDataModel model = (RowDataModel) table.getModel();
-    RowDataModel nmodel = new RowDataModel();
+    RowDataModel currentModel = new RowDataModel();
     List<?> dv = model.getDataVector();
     for (int i = 0; i < row; i++) {
-      nmodel.addRowData(makeRowData((List<?>) dv.get(i)));
+      currentModel.addRowData(makeRowData((List<?>) dv.get(i)));
     }
     JTableHeader h = table.getTableHeader();
     TableCellRenderer tcr = h.getDefaultRenderer();
@@ -275,7 +275,7 @@ class InitAction extends AbstractAction {
       sbr.setSelectedColumn(-1);
     }
     table.setAutoCreateColumnsFromModel(false);
-    table.setModel(nmodel);
+    table.setModel(currentModel);
     table.clearSelection();
   }
 
@@ -328,21 +328,21 @@ class RowDataModel extends SortableTableModel {
 }
 
 class RowData {
-  private String name;
-  private String comment;
+  private final String name;
+  private final String comment;
 
   protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
   }
 
-  public void setName(String str) {
-    name = str;
-  }
+  // public void setName(String str) {
+  //   name = str;
+  // }
 
-  public void setComment(String str) {
-    comment = str;
-  }
+  // public void setComment(String str) {
+  //   comment = str;
+  // }
 
   public String getName() {
     return name;
