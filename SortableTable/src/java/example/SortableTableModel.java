@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +22,9 @@ import javax.swing.table.TableColumnModel;
 // @author Nobuo Tamemasa
 // modified by aterai aterai@outlook.com
 public class SortableTableModel extends DefaultTableModel {
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "JdkObsolete"})
   public final void sortByColumn(int column, boolean isAscent) {
-    Collections.sort(getDataVector(), new ColumnComparator(column, isAscent));
+    getDataVector().sort(new ColumnComparator(column, isAscent));
     fireTableDataChanged();
   }
 }
@@ -45,7 +44,7 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     if (one instanceof List && two instanceof List) {
       Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
       Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
-      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.<Comparable<Object>>naturalOrder()));
+      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
       return c * (ascending ? 1 : -1);
     }
     return 0;
@@ -110,13 +109,13 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     setText(Objects.toString(value, ""));
     setIcon(new EmptyIcon(iconSize));
     int modelColumn = table.convertColumnIndexToModel(column);
-    Integer ivalue = state.get(modelColumn);
-    if (ivalue != null) {
-      if (ivalue == DOWN) {
+    Integer iv = state.get(modelColumn);
+    if (iv != null) {
+      if (iv == DOWN) {
         setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
         // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
         // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-      } else if (ivalue == UP) {
+      } else if (iv == UP) {
         setIcon(UIManager.getIcon("Table.descendingSortIcon"));
         // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
         // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));

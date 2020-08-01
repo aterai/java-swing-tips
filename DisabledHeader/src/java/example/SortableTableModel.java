@@ -121,13 +121,13 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
       return this;
     }
     getModel().setEnabled(true);
-    Integer ivalue = state.get(modelColumn);
-    if (ivalue != null) {
-      if (ivalue == DOWN) {
+    Integer iv = state.get(modelColumn);
+    if (iv != null) {
+      if (iv == DOWN) {
         setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
         // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
         // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-      } else if (ivalue == UP) {
+      } else if (iv == UP) {
         setIcon(UIManager.getIcon("Table.descendingSortIcon"));
         // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
         // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
