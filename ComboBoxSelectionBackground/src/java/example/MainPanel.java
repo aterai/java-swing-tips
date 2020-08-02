@@ -37,15 +37,15 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super String> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           if (isSelected) {
-            l.setForeground(Color.WHITE);
-            l.setBackground(Color.ORANGE);
+            c.setForeground(Color.WHITE);
+            c.setBackground(Color.ORANGE);
           } else {
-            l.setForeground(Color.BLACK);
-            l.setBackground(Color.WHITE);
+            c.setForeground(Color.BLACK);
+            c.setBackground(Color.WHITE);
           }
-          return l;
+          return c;
         });
       }
     };
