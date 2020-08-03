@@ -94,17 +94,18 @@ class BadgeLabel extends JLabel {
       FontRenderContext frc = new FontRenderContext(null, true, true);
 
       Shape ribbon = new Rectangle2D.Double(cx, -fontSize, d.width, fontSize);
-      AffineTransform at1 = AffineTransform.getRotateInstance(theta, cx, 0);
+      AffineTransform at = AffineTransform.getRotateInstance(theta, cx, 0);
       g2.setPaint(ribbonColor);
-      g2.fill(at1.createTransformedShape(ribbon));
+      g2.fill(at.createTransformedShape(ribbon));
 
-      AffineTransform tx = AffineTransform.getTranslateInstance(cx + fontSize / 2, 0);
-      Shape beta = new TextLayout(ribbonText, font, frc).getOutline(tx);
+      TextLayout tl = new TextLayout(ribbonText, font, frc);
       g2.setPaint(Color.WHITE);
-      AffineTransform at2 = AffineTransform.getRotateInstance(theta, cx, beta.getBounds().height);
-      g2.fill(at2.createTransformedShape(beta));
+      Rectangle2D r = tl.getOutline(null).getBounds2D();
+      double dx = cx + (d.width - cx) / Math.sqrt(2d) - r.getWidth() / 2d;
+      double dy = fontSize / 2d + r.getY();
+      Shape s = tl.getOutline(AffineTransform.getTranslateInstance(dx, dy));
+      g2.fill(at.createTransformedShape(s));
     }
-
     g2.dispose();
   }
 
