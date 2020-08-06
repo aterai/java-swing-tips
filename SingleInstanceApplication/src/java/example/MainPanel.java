@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     // Java Swing Hacks #68
-    try (ServerSocket socket = new ServerSocket(38_765)) {
+    try (ServerSocket ignored = new ServerSocket(38_765)) {
       JFrame frame = new JFrame("@title@");
       frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       frame.getContentPane().add(new MainPanel());
@@ -65,18 +65,18 @@ public final class MainPanel extends JPanel {
 // }
 //
 // class JVMDescriptorInstanceCounter implements IAppInstanceCounter {
-//   private final String mainclassName;
+//   private final String mainClassName;
 //   protected JVMDescriptorInstanceCounter() {
 //     StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-//     mainclassName = traces[traces.length-1].getClassName();
-//     // System.out.println(mainclassName);
+//     mainClassName = traces[traces.length-1].getClassName();
+//     // System.out.println(mainClassName);
 //   }
 //   public int getInstanceCount() {
 //     return FinderUtil.findAll(
 //       VirtualMachine.list(),
 //       new IPredicate<VirtualMachineDescriptor>() {
 //         @Override public boolean evaluate(VirtualMachineDescriptor input) {
-//           return input.displayName().equals(mainclassName);
+//           return input.displayName().equals(mainClassName);
 //         }
 //       }).size();
 //   }
@@ -106,6 +106,7 @@ public final class MainPanel extends JPanel {
 //     this.launchLimit = launchLimit;
 //     Runtime.getRuntime().addShutdownHook(new Thread(() -> semaphore.release()));
 //   }
+//
 //   @Override public int getInstanceCount() {
 //     int result = this.semaphore.tryAcquire();
 //     return result != 0 ? result : this.launchLimit + 1;
