@@ -114,14 +114,14 @@ class ComboItem {
 }
 
 class CheckComboBoxRenderer<E extends ComboItem> implements ListCellRenderer<E> {
-  private static final Color SBGC = new Color(0x64_C8_FF);
+  private static final Color SELECTED_BGC = new Color(0x64_C8_FF);
   private final EditorPanel renderer = new EditorPanel(new ComboItem());
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     renderer.setItem(value);
     if (isSelected && index >= 0) {
       renderer.setOpaque(true);
-      renderer.setBackground(SBGC);
+      renderer.setBackground(SELECTED_BGC);
     } else {
       renderer.setOpaque(false);
       renderer.setBackground(Color.WHITE);
@@ -182,7 +182,7 @@ final class EditorPanel extends JPanel {
   private final transient ComboItem data;
   private int editingIndex = -1;
 
-  public EditorPanel(ComboItem data) {
+  EditorPanel(ComboItem data) {
     super();
     this.data = data;
     setItem(data);
