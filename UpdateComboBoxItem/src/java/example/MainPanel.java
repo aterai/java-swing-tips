@@ -45,14 +45,13 @@ public final class MainPanel extends JPanel {
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
 
-    // CheckableItem displayValue = new CheckableItem("MMMMMMMMMM", false);
     CheckableItem[] m = {
       new CheckableItem("aaa", false),
-      new CheckableItem("bbbbb", true),
+      new CheckableItem("bbb bbb", true),
       new CheckableItem("111", false),
       new CheckableItem("33333", true),
       new CheckableItem("2222", true),
-      new CheckableItem("ccccccc", false)
+      new CheckableItem("ccc ccc", false)
     };
 
     JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
@@ -150,9 +149,9 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   private boolean keepOpen;
   private transient ActionListener listener;
 
-  protected CheckedComboBox() {
-    super();
-  }
+  // protected CheckedComboBox() {
+  //   super();
+  // }
 
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);
@@ -163,9 +162,9 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   //   super(m);
   // }
 
-  @SafeVarargs protected CheckedComboBox(E... m) {
-    super(m);
-  }
+  // @SafeVarargs protected CheckedComboBox(E... m) {
+  //   super(m);
+  // }
 
   @Override public Dimension getPreferredSize() {
     return new Dimension(200, 20);
