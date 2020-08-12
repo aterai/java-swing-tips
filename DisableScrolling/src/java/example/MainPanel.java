@@ -12,24 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false},
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model) {
-    @Override public String getToolTipText(MouseEvent e) {
-      int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-      TableModel m = getModel();
-      return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
-    }
-  };
-  private final JScrollPane scroll = new JScrollPane(table);
   // [JDK-6299213] The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731) - Java Bug System
   // Fixed: https://bugs.openjdk.java.net/browse/JDK-6299213
   // private final JScrollPane scroll = new JScrollPane(table) {
@@ -44,6 +26,24 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false},
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model) {
+      @Override public String getToolTipText(MouseEvent e) {
+        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
+        TableModel m = getModel();
+        return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+      }
+    };
+    JScrollPane scroll = new JScrollPane(table);
 
     IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
     table.setAutoCreateRowSorter(true);
