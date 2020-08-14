@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeStringBufferedImage(String str) {
+  public static BufferedImage makeStringBufferedImage(String str) {
     BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
     g2.setPaint(Color.BLACK);
