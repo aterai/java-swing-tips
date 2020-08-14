@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
   // menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Normal)"));
   // menuItem.setMnemonic(KeyEvent.VK_1);
   private final class ModalInternalFrameAction1 extends AbstractAction {
-    public ModalInternalFrameAction1(String label) {
+    ModalInternalFrameAction1(String label) {
       super(label);
     }
 
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
   private final class ModalInternalFrameAction2 extends AbstractAction {
     private final JComponent glass = new FocusLockGlassPane();
 
-    public ModalInternalFrameAction2(String label) {
+    ModalInternalFrameAction2(String label) {
       super(label);
       glass.setOpaque(false);
       glass.setVisible(false);
@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
   private final class ModalInternalFrameAction3 extends AbstractAction {
     private final JComponent glassPane = new PrintGlassPane();
 
-    public ModalInternalFrameAction3(String label) {
+    ModalInternalFrameAction3(String label) {
       super(label);
       glassPane.setVisible(false);
     }
