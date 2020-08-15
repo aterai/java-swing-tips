@@ -14,24 +14,24 @@ public final class MainPanel extends JPanel {
     Point hotSpot = new Point(16, 16);
 
     BufferedImage bi1 = makeStringBufferedImage("?");
-    JButton label1 = new JButton("?");
-    label1.setCursor(getToolkit().createCustomCursor(bi1, hotSpot, "?"));
+    JButton button1 = new JButton("?");
+    button1.setCursor(getToolkit().createCustomCursor(bi1, hotSpot, "?"));
 
     BufferedImage bi2 = makeOvalBufferedImage();
-    JButton label2 = new JButton("Oval");
-    label2.setCursor(getToolkit().createCustomCursor(bi2, hotSpot, "oval"));
-    label2.setIcon(new ImageIcon(bi2));
+    JButton button2 = new JButton("Oval");
+    button2.setCursor(getToolkit().createCustomCursor(bi2, hotSpot, "oval"));
+    button2.setIcon(new ImageIcon(bi2));
 
     Icon icon = new GreenBlueIcon();
     BufferedImage bi3 = makeIconBufferedImage(icon);
-    JButton label3 = new JButton("Rect");
-    label3.setCursor(getToolkit().createCustomCursor(bi3, hotSpot, "rect"));
-    label3.setIcon(icon);
+    JButton button3 = new JButton("Rect");
+    button3.setCursor(getToolkit().createCustomCursor(bi3, hotSpot, "rect"));
+    button3.setIcon(icon);
 
     JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));
-    p.add(makeTitledPanel("String", label1));
-    p.add(makeTitledPanel("drawOval", label2));
-    p.add(makeTitledPanel("paintIcon", label3));
+    p.add(makeTitledPanel("String", button1));
+    p.add(makeTitledPanel("drawOval", button2));
+    p.add(makeTitledPanel("paintIcon", button3));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(p);
     setPreferredSize(new Dimension(320, 240));
