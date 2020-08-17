@@ -115,11 +115,11 @@ class IntegerInputVerifier extends InputVerifier {
 // http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
-  private int currentValue;
+  protected int currentValue;
 
-  public int getValue() {
-    return currentValue;
-  }
+  // public int getValue() {
+  //   return currentValue;
+  // }
 
   @Override public void insertString(int offset, String str, AttributeSet attributes) throws BadLocationException {
     if (Objects.nonNull(str)) {
@@ -183,8 +183,10 @@ class IntegerDocumentFilter extends DocumentFilter {
     String before = currentContent.substring(0, offset);
     String after = currentContent.substring(length + offset, currentLength);
     String newValue = before + Objects.toString(text, "") + after;
-    checkInput(newValue, offset);
-    fb.replace(offset, length, text, attrs);
+    int currentValue = checkInput(newValue, offset);
+    if (currentValue != 0) {
+      fb.replace(offset, length, text, attrs);
+    }
   }
 
   private static int checkInput(String proposedValue, int offset) throws BadLocationException {
@@ -206,7 +208,7 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
   // private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
   // private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();
   // private static MaskFormatter mf;
-  private static NumberFormatter numberFormatter = new NumberFormatter();
+  private static final NumberFormatter FORMATTER = new NumberFormatter();
 
   static {
     // amountDisplayFormat.setMinimumFractionDigits(0);
@@ -214,12 +216,12 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
     // try {
     //   mf = new MaskFormatter("#######");
     // } catch (ParseException ex) {}
-    numberFormatter.setValueClass(Integer.class);
-    ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
+    FORMATTER.setValueClass(Integer.class);
+    ((NumberFormat) FORMATTER.getFormat()).setGroupingUsed(false);
   }
 
   protected NumberFormatterFactory() {
-    super(numberFormatter, numberFormatter, numberFormatter);
+    super(FORMATTER, FORMATTER, FORMATTER);
     // super(new NumberFormatter(amountEditFormat),
     //     new NumberFormatter(amountEditFormat),
     //     new NumberFormatter(amountEditFormat));
