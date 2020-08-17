@@ -115,12 +115,6 @@ class IntegerInputVerifier extends InputVerifier {
 // http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
-  protected int currentValue;
-
-  // public int getValue() {
-  //   return currentValue;
-  // }
-
   @Override public void insertString(int offset, String str, AttributeSet attributes) throws BadLocationException {
     if (Objects.nonNull(str)) {
       String newValue;
@@ -133,7 +127,7 @@ class IntegerDocument extends PlainDocument {
         currentBuffer.insert(offset, str);
         newValue = currentBuffer.toString();
       }
-      currentValue = checkInput(newValue, offset);
+      checkInput(newValue, offset);
       super.insertString(offset, str, attributes);
     }
   }
@@ -144,16 +138,14 @@ class IntegerDocument extends PlainDocument {
     String before = currentContent.substring(0, offset);
     String after = currentContent.substring(length + offset, currentLength);
     String newValue = before + after;
-    currentValue = checkInput(newValue, offset);
+    checkInput(newValue, offset);
     super.remove(offset, length);
   }
 
-  private int checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (proposedValue.isEmpty()) {
-      return 0;
-    } else {
+  private void checkInput(String proposedValue, int offset) throws BadLocationException {
+    if (!proposedValue.isEmpty()) {
       try {
-        return Integer.parseInt(proposedValue);
+        Integer.parseInt(proposedValue);
       } catch (NumberFormatException ex) {
         throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
       }
@@ -165,7 +157,6 @@ class IntegerDocument extends PlainDocument {
 // http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with a Document Filter
 class IntegerDocumentFilter extends DocumentFilter {
-  // int currentValue = 0;
   @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     if (Objects.nonNull(text)) {
       replace(fb, offset, 0, text, attr);
@@ -183,18 +174,14 @@ class IntegerDocumentFilter extends DocumentFilter {
     String before = currentContent.substring(0, offset);
     String after = currentContent.substring(length + offset, currentLength);
     String newValue = before + Objects.toString(text, "") + after;
-    int currentValue = checkInput(newValue, offset);
-    if (currentValue != 0) {
-      fb.replace(offset, length, text, attrs);
-    }
+    checkInput(newValue, offset);
+    fb.replace(offset, length, text, attrs);
   }
 
-  private static int checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (proposedValue.isEmpty()) {
-      return 0;
-    } else {
+  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
+    if (!proposedValue.isEmpty()) {
       try {
-        return Integer.parseInt(proposedValue);
+        Integer.parseInt(proposedValue);
       } catch (NumberFormatException ex) {
         throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
       }
