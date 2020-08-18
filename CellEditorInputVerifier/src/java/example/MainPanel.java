@@ -145,12 +145,10 @@ class IntegerDocumentFilter extends DocumentFilter {
     fb.replace(offset, length, text, attrs);
   }
 
-  private static int checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (proposedValue.isEmpty()) {
-      return 0;
-    } else {
+  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
+    if (!proposedValue.isEmpty()) {
       try {
-        return Integer.parseInt(proposedValue);
+        Integer.parseInt(proposedValue);
       } catch (NumberFormatException ex) {
         throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
       }
@@ -161,14 +159,14 @@ class IntegerDocumentFilter extends DocumentFilter {
 // How to Use Formatted Text Fields (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
 class NumberFormatterFactory extends DefaultFormatterFactory {
-  private static NumberFormatter numberFormatter = new NumberFormatter();
+  private static final NumberFormatter FORMATTER = new NumberFormatter();
 
   static {
-    numberFormatter.setValueClass(Integer.class);
-    ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
+    FORMATTER.setValueClass(Integer.class);
+    ((NumberFormat) FORMATTER.getFormat()).setGroupingUsed(false);
   }
 
   protected NumberFormatterFactory() {
-    super(numberFormatter, numberFormatter, numberFormatter);
+    super(FORMATTER, FORMATTER, FORMATTER);
   }
 }
