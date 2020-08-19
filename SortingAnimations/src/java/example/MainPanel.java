@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
   public void genArray(int n) {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
-    factory = MAXY - MINY;
+    factory = (double) MAXY - MINY;
     distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex()).generate(array, n);
   }
 
