@@ -75,8 +75,8 @@ public final class MainPanel extends JPanel {
         @Override public Container makePanel() {
           Box p = Box.createVerticalBox();
           p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-          p.add(new JCheckBox("aaaa"));
-          p.add(new JCheckBox("bbbbbbbbb"));
+          p.add(new JCheckBox("11111"));
+          p.add(new JCheckBox("2222222222"));
           return p;
         }
       },
@@ -165,9 +165,9 @@ abstract class AbstractExpansionPanel extends JPanel {
     listenerList.add(ExpansionListener.class, l);
   }
 
-  public void removeExpansionListener(ExpansionListener l) {
-    listenerList.remove(ExpansionListener.class, l);
-  }
+  // public void removeExpansionListener(ExpansionListener l) {
+  //   listenerList.remove(ExpansionListener.class, l);
+  // }
 
   // Notify all listeners that have registered interest for
   // notification on this event type.The event instance
