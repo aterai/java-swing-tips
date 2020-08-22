@@ -12,24 +12,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "String"};
-  private final Object[][] data = {
-    {"aaa", 1, "eee"}, {"bbb", 2, "FFF"},
-    {"CCC", 0, "GGG"}, {"DDD", 3, "hhh"}
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column == 1 ? Integer.class : String.class;
-    }
-
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "String"};
+    Object[][] data = {
+      {"aaa", 1, "eee"}, {"bbb", 2, "FFF"},
+      {"CCC", 0, "GGG"}, {"DDD", 3, "hhh"}
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 1 ? Integer.class : String.class;
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    JTable table = new JTable(model);
     table.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         JTable t = (JTable) e.getComponent();
