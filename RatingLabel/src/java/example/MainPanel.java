@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
         makeStarImageIcon(ip, new SelectedImageFilter(1f, .1f, .1f)));
     add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list2, 1) {
       @Override protected void repaintIcon(int index) {
-        for (int i = 0; i < labelList.size(); i++) {
-          labelList.get(i).setIcon(i <= index ? iconList.get(index) : defaultIcon);
+        for (int i = 0; i < getLabelList().size(); i++) {
+          getLabelList().get(i).setIcon(i <= index ? getIconList().get(index) : defaultIcon);
         }
         repaint();
       }
@@ -102,8 +102,8 @@ public final class MainPanel extends JPanel {
 
 class LevelBar extends JPanel {
   private final int gap;
-  protected final List<ImageIcon> iconList;
-  protected final List<JLabel> labelList = Arrays.asList(
+  private final List<ImageIcon> iconList;
+  private final List<JLabel> labelList = Arrays.asList(
       new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel()
   );
   protected final ImageIcon defaultIcon;
@@ -121,6 +121,14 @@ class LevelBar extends JPanel {
         add(l);
       }
     });
+  }
+
+  public List<ImageIcon> getIconList() {
+    return iconList;
+  }
+
+  public List<JLabel> getLabelList() {
+    return labelList;
   }
 
   @Override public void updateUI() {
@@ -153,14 +161,14 @@ class LevelBar extends JPanel {
     repaintIcon(clicked);
   }
 
-  public int getLevel() {
-    return clicked;
-  }
+  // public int getLevel() {
+  //   return clicked;
+  // }
 
-  public void setLevel(int l) {
-    clicked = l;
-    repaintIcon(clicked);
-  }
+  // public void setLevel(int l) {
+  //   clicked = l;
+  //   repaintIcon(clicked);
+  // }
 
   protected int getSelectedIconIndex(Point p) {
     for (int i = 0; i < labelList.size(); i++) {
