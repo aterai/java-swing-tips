@@ -10,20 +10,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"family", "name", "postscript name"};
-  private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
-    }
-
-    @Override public Class<?> getColumnClass(int column) {
-      return String.class;
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"family", "name", "postscript name"};
+    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
     Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
         .map(f -> new String[] {f.getFamily(), f.getName(), f.getPSName()})
