@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -60,21 +59,17 @@ class TextFieldPopupMenu extends JPopupMenu {
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());
     add(new DefaultEditorKit.PasteAction());
-    add(new AbstractAction("delete") {
-      @Override public void actionPerformed(ActionEvent e) {
-        Component c = getInvoker();
-        if (c instanceof JTextComponent) {
-          ((JTextComponent) c).replaceSelection(null);
-        }
+    add("delete").addActionListener(e -> {
+      Component c = getInvoker();
+      if (c instanceof JTextComponent) {
+        ((JTextComponent) c).replaceSelection(null);
       }
     });
     addSeparator();
-    add(new AbstractAction("cut2") {
-      @Override public void actionPerformed(ActionEvent e) {
-        Component c = getInvoker();
-        if (c instanceof JTextComponent) {
-          ((JTextComponent) c).cut();
-        }
+    add("cut2").addActionListener(e -> {
+      Component c = getInvoker();
+      if (c instanceof JTextComponent) {
+        ((JTextComponent) c).cut();
       }
     });
   }
