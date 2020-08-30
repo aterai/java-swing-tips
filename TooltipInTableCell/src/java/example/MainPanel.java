@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ListIconRenderer implements TableCellRenderer {
-  JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+  private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.removeAll();
