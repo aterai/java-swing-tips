@@ -62,16 +62,17 @@ public final class MainPanel extends JPanel {
 }
 
 class DragHereIcon implements Icon {
-  private static final int ICON_SIZE = 100;
-  private static final float BORDER_WIDTH = 8f;
+  private static final int ICON_WIDTH = 100;
+  private static final int ICON_HEIGHT = 100;
+  private static final float BORDER_SIZE = 8f;
   private static final float SLIT_WIDTH = 8f;
   private static final int ARC_SIZE = 16;
   private static final int SLIT_NUM = 3;
   private static final Shape BORDER = new RoundRectangle2D.Double(
-      BORDER_WIDTH, BORDER_WIDTH,
-      ICON_SIZE - 2 * BORDER_WIDTH - 1, ICON_SIZE - 2 * BORDER_WIDTH - 1,
+      BORDER_SIZE, BORDER_SIZE,
+      ICON_WIDTH - 2 * BORDER_SIZE - 1, ICON_HEIGHT - 2 * BORDER_SIZE - 1,
       ARC_SIZE, ARC_SIZE);
-  private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
+  private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_WIDTH);
   // FontRenderContext FRC = new FontRenderContext(null, true, true);
   // U+21E9: DOWNWARDS WHITE ARROW
   // Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null);
@@ -84,7 +85,7 @@ class DragHereIcon implements Icon {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.translate(x, y);
 
-    g2.setStroke(new BasicStroke(BORDER_WIDTH));
+    g2.setStroke(new BasicStroke(BORDER_SIZE));
     g2.setPaint(LINE_COLOR);
     g2.draw(BORDER);
 
@@ -92,7 +93,7 @@ class DragHereIcon implements Icon {
     g2.setPaint(UIManager.getColor("Panel.background"));
 
     int n = SLIT_NUM + 1;
-    int v = ICON_SIZE / n;
+    int v = ICON_WIDTH / n;
     int m = n * v;
     for (int i = 1; i < n; i++) {
       int a = i * v;
@@ -111,36 +112,36 @@ class DragHereIcon implements Icon {
     Shape arrow = new TextLayout("⇩", FONT, frc).getOutline(null);
     g2.setPaint(LINE_COLOR);
     Rectangle2D b = arrow.getBounds2D();
-    double cx = ICON_SIZE / 2d - b.getCenterX();
-    double cy = ICON_SIZE / 2d - b.getCenterY();
+    double cx = ICON_WIDTH / 2d - b.getCenterX();
+    double cy = ICON_HEIGHT / 2d - b.getCenterY();
     AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
     g2.fill(toCenterAtf.createTransformedShape(arrow));
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return ICON_SIZE;
+    return ICON_WIDTH;
   }
 
   @Override public int getIconHeight() {
-    return ICON_SIZE;
+    return ICON_HEIGHT;
   }
 }
 
 class FileDropTargetAdapter extends DropTargetAdapter {
-  @Override public void dragOver(DropTargetDragEvent dtde) {
-    if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-      dtde.acceptDrag(DnDConstants.ACTION_COPY);
+  @Override public void dragOver(DropTargetDragEvent e) {
+    if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+      e.acceptDrag(DnDConstants.ACTION_COPY);
       return;
     }
-    dtde.rejectDrag();
+    e.rejectDrag();
   }
 
-  @Override public void drop(DropTargetDropEvent dtde) {
+  @Override public void drop(DropTargetDropEvent e) {
     try {
-      if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-        dtde.acceptDrop(DnDConstants.ACTION_COPY);
-        Transferable t = dtde.getTransferable();
+      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        e.acceptDrop(DnDConstants.ACTION_COPY);
+        Transferable t = e.getTransferable();
         List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
         for (Object o: list) {
           if (o instanceof File) {
@@ -148,12 +149,12 @@ class FileDropTargetAdapter extends DropTargetAdapter {
             System.out.println(f.getAbsolutePath());
           }
         }
-        dtde.dropComplete(true);
+        e.dropComplete(true);
       } else {
-        dtde.rejectDrop();
+        e.rejectDrop();
       }
     } catch (UnsupportedFlavorException | IOException ex) {
-      dtde.rejectDrop();
+      e.rejectDrop();
     }
   }
 }
