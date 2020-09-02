@@ -12,25 +12,23 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", 12, true}, {"bbb", 5, false},
-    {"CCC", 92, true}, {"DDD", 0, false}
-  };
-  private final TableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-  private final JTable table = new JTable(model);
-
   private MainPanel() {
     super(new BorderLayout());
-
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    JTable table = new JTable(model);
     table.setTableHeader(new JTableHeader(table.getColumnModel()) {
       @Override public String getToolTipText(MouseEvent e) {
         int c = columnAtPoint(e.getPoint());
-        return getTable().getColumnName(c) + " (aaaaaaaaaaaaaaaaaaaaaaa...)";
+        return getTable().getColumnName(c) + " (12345678901234567890...)";
       }
     });
 
