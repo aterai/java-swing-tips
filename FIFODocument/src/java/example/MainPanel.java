@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -19,17 +20,20 @@ import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new JTextArea();
-  private final Timer timer = new Timer(200, e -> {
-    String s = LocalDateTime.now(ZoneId.systemDefault()).toString();
-    textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
-  });
-
   private MainPanel() {
     super(new BorderLayout());
-    // TEST: ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FifoDocumentFilter());
-    textArea.getDocument().addDocumentListener(new FifoDocumentListener(textArea));
-    textArea.setEditable(false);
+    JTextArea textArea1 = new JTextArea();
+    textArea1.getDocument().addDocumentListener(new FifoDocumentListener(textArea1));
+    textArea1.setEditable(false);
+
+    JTextArea textArea2 = new JTextArea();
+    ((AbstractDocument) textArea2.getDocument()).setDocumentFilter(new FifoDocumentFilter());
+
+    Timer timer = new Timer(200, e -> {
+      String s = LocalDateTime.now(ZoneId.systemDefault()).toString();
+      textArea1.append(textArea1.getDocument().getLength() > 0 ? "\n" + s : s);
+      textArea2.append(textArea2.getDocument().getLength() > 0 ? "\n" + s : s);
+    });
 
     JButton start = new JButton("Start");
     start.addActionListener(e -> {
@@ -42,7 +46,10 @@ public final class MainPanel extends JPanel {
     stop.addActionListener(e -> timer.stop());
 
     JButton clear = new JButton("Clear");
-    clear.addActionListener(e -> textArea.setText(""));
+    clear.addActionListener(e -> {
+      textArea1.setText("");
+      textArea2.setText("");
+    });
 
     addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
@@ -57,7 +64,11 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(5));
     box.add(clear);
 
-    add(new JScrollPane(textArea));
+    JPanel p = new JPanel(new GridLayout(1, 2));
+    p.add(new JScrollPane(textArea1));
+    p.add(new JScrollPane(textArea2));
+
+    add(p);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -132,10 +143,4 @@ class FifoDocumentFilter extends DocumentFilter {
       fb.remove(0, root.getElement(0).getEndOffset());
     }
   }
-  // @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-  //   fb.remove(offset, length);
-  // }
-  // @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-  //   fb.replace(offset, length, text, attrs);
-  // }
 }
