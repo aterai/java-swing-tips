@@ -13,12 +13,11 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final ImageIcon iia = new ImageIcon(getClass().getResource("a.png"));
-  private final ImageIcon iib = new ImageIcon(getClass().getResource("b.png"));
-  private final JLabel label = new JLabel(iia);
-
   private MainPanel() {
     super(new BorderLayout());
+    ImageIcon iia = new ImageIcon(getClass().getResource("a.png"));
+    ImageIcon iib = new ImageIcon(getClass().getResource("b.png"));
+    JLabel label = new JLabel(iia);
 
     int w = iia.getIconWidth();
     int h = iia.getIconHeight();
@@ -63,6 +62,7 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
+
   // private BufferedImage makeBI(String str) {
   //   BufferedImage image;
   //   try {
