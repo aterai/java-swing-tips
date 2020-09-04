@@ -12,19 +12,20 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 
 public final class MainPanel extends JPanel {
-  private static final String MYSITE = "https://ateraimemo.com/";
-  private final JTextArea textArea = new JTextArea();
+  private static final String SITE = "https://ateraimemo.com/";
 
   private MainPanel() {
     super(new BorderLayout());
-    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
+    JTextArea textArea = new JTextArea();
+
+    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", SITE, SITE));
     editor.setOpaque(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setEditable(false);
     editor.addHyperlinkListener(e -> {
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED && Desktop.isDesktopSupported()) {
+      if (Desktop.isDesktopSupported() && e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
         try {
-          Desktop.getDesktop().browse(new URI(MYSITE));
+          Desktop.getDesktop().browse(new URI(SITE));
         } catch (IOException | URISyntaxException ex) {
           ex.printStackTrace();
           textArea.setText(ex.getMessage());
@@ -32,6 +33,7 @@ public final class MainPanel extends JPanel {
         textArea.setText(e.toString());
       }
     });
+
     JPanel p = new JPanel();
     p.add(editor);
     p.setBorder(BorderFactory.createTitledBorder("Desktop.getDesktop().browse(URI)"));
