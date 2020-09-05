@@ -20,8 +20,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    URL url = getClass().getResource("duke.running.gif");
     JLabel label = new JLabel();
-    label.setIcon(new ImageIcon(getClass().getResource("duke.running.gif")));
+    label.setIcon(new ImageIcon(url));
     label.setBorder(BorderFactory.createTitledBorder("duke.running.gif"));
 
     Box box = Box.createHorizontalBox();
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
     // https://bugs.openjdk.java.net/browse/JDK-8080225
     // try (InputStream is = getClass().getResourceAsStream("duke.running.gif");
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-    URL url = getClass().getResource("duke.running.gif");
+    // URL url = getClass().getResource("duke.running.gif");
     // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
