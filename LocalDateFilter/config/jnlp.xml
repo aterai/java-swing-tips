@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST LocalDateFilter" />
+  <property name="jnlp.Name"     value="LocalDateFilter" />
+  <property name="jnlp.name"     value="localdatefilter" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/localdatefilter/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/LocalDateFilter.html" />
+</project>
