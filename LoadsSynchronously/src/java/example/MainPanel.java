@@ -20,14 +20,9 @@ import javax.swing.text.html.ImageView;
 public final class MainPanel extends JPanel {
   private static final String TEXT = "<span style='background-color:red'>1111111111111111111</span><br />";
   private final JLabel label = new JLabel("screenshot");
-  private final JTabbedPane tabs = new JTabbedPane();
-  private final JEditorPane editor0 = new JEditorPane();
-  private final JEditorPane editor1 = new JEditorPane();
-  private final JEditorPane editor2 = new JEditorPane();
 
   private MainPanel() {
     super(new BorderLayout());
-
     label.setVerticalAlignment(SwingConstants.CENTER);
     label.setVerticalTextPosition(SwingConstants.BOTTOM);
     label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -39,8 +34,11 @@ public final class MainPanel extends JPanel {
     String html1 = String.join("\n", Collections.nCopies(50, TEXT));
     String html2 = String.join("\n", Collections.nCopies(3, TEXT));
 
+    JTabbedPane tabs = new JTabbedPane();
+
     String img0 = String.format("<p><img src='%s'></p>", path);
     String st0 = html1 + img0 + html2;
+    JEditorPane editor0 = new JEditorPane();
     editor0.setEditorKit(new HTMLEditorKit());
     editor0.setText(st0);
     tabs.addTab("default", new JScrollPane(editor0));
@@ -63,12 +61,14 @@ public final class MainPanel extends JPanel {
     // }
     String img1 = String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h);
     String st1 = html1 + img1 + html2;
+    JEditorPane editor1 = new JEditorPane();
     editor1.setEditorKit(new HTMLEditorKit());
     editor1.setText(st1);
     tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
     // [JDK-8223384] ImageView incorrectly calculates size when synchronously loaded - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-8223384
+    JEditorPane editor2 = new JEditorPane();
     editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());
     tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));
 
