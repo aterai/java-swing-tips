@@ -24,7 +24,6 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JPanel searchBox = new JPanel(new BorderLayout());
     LayoutAnimator handler = new LayoutAnimator(searchBox);
-
     JPanel p = new JPanel(handler) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
@@ -69,7 +68,7 @@ public final class MainPanel extends JPanel {
     p.getActionMap().put("open-searchbox", new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
-          handler.isDirectionOfHiding = !searchBox.isVisible();
+          handler.isDirectionOfShowing = !searchBox.isVisible();
           searchBox.setVisible(true);
           animator.start();
         }
@@ -78,7 +77,7 @@ public final class MainPanel extends JPanel {
     p.getActionMap().put("close-searchbox", new AbstractAction("Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
-          handler.isDirectionOfHiding = false;
+          handler.isDirectionOfShowing = false;
           animator.start();
         }
       }
@@ -113,7 +112,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LayoutAnimator extends BorderLayout implements ActionListener {
-  protected boolean isDirectionOfHiding = true;
+  protected boolean isDirectionOfShowing = true;
   private final JComponent component;
   private int yy;
   private int counter;
@@ -126,7 +125,7 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
   @Override public void actionPerformed(ActionEvent e) {
     Timer animator = (Timer) e.getSource();
     int height = component.getPreferredSize().height;
-    if (isDirectionOfHiding) {
+    if (isDirectionOfShowing) {
       yy = (int) (.5 + AnimationUtil.easeInOut(++counter / (double) height) * height);
       if (yy >= height) {
         yy = height;
