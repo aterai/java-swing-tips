@@ -55,7 +55,6 @@ public final class MainPanel extends JPanel {
   private final JCheckBox checkWord = new JCheckBox("Match whole word only");
   private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
   private final transient HighlightHandler handler = new HighlightHandler();
-  public int current;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -94,7 +93,7 @@ public final class MainPanel extends JPanel {
     sp.add(bp, BorderLayout.EAST);
     sp.add(cp, BorderLayout.SOUTH);
 
-    EventQueue.invokeLater(this::changeHighlight);
+    EventQueue.invokeLater(() -> changeHighlight(0));
 
     add(sp, BorderLayout.NORTH);
     add(new JScrollPane(textPane));
@@ -106,9 +105,9 @@ public final class MainPanel extends JPanel {
     // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
     Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
     if (Objects.nonNull(rect) && c instanceof JViewport) {
-      rect.x = (int) (rect.x - c.getWidth() * .5);
+      rect.x = Math.round(rect.x - c.getWidth() / 2f);
       rect.width = c.getWidth();
-      rect.height = (int) (c.getHeight() * .5);
+      rect.height = Math.round(c.getHeight() / 2f);
       tc.scrollRectToVisible(rect);
     }
   }
@@ -129,7 +128,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void changeHighlight() {
+  public int changeHighlight(int index) {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
     Style s = doc.getStyle("highlight-text-foreground");
@@ -165,13 +164,14 @@ public final class MainPanel extends JPanel {
     JLabel label = layerUI.hint;
     Highlighter.Highlight[] array = highlighter.getHighlights();
     int hits = array.length;
+    int idx = index;
     if (hits == 0) {
-      current = -1;
+      idx = -1;
       label.setOpaque(true);
     } else {
-      current = (current + hits) % hits;
+      idx = (idx + hits) % hits;
       label.setOpaque(false);
-      Highlighter.Highlight hh = highlighter.getHighlights()[current];
+      Highlighter.Highlight hh = highlighter.getHighlights()[idx];
       highlighter.removeHighlight(hh);
       try {
         highlighter.addHighlight(hh.getStartOffset(), hh.getEndOffset(), currentPainter);
@@ -185,21 +185,24 @@ public final class MainPanel extends JPanel {
         throw wrap;
       }
     }
-    label.setText(String.format("%02d / %02d%n", current + 1, hits));
+    label.setText(String.format("%02d / %02d%n", idx + 1, hits));
     field.repaint();
+    return idx;
   }
 
   private class HighlightHandler implements DocumentListener, ActionListener {
+    private int current;
+
     @Override public void changedUpdate(DocumentEvent e) {
       /* not needed */
     }
 
     @Override public void insertUpdate(DocumentEvent e) {
-      changeHighlight();
+      current = changeHighlight(current);
     }
 
     @Override public void removeUpdate(DocumentEvent e) {
-      changeHighlight();
+      current = changeHighlight(current);
     }
 
     @Override public void actionPerformed(ActionEvent e) {
@@ -212,7 +215,7 @@ public final class MainPanel extends JPanel {
           current++;
         }
       }
-      changeHighlight();
+      current = changeHighlight(current);
     }
   }
 
