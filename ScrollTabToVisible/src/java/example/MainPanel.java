@@ -9,16 +9,16 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("setSelectedIndex");
-
   private MainPanel() {
     super(new BorderLayout());
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    IntStream.range(0, 100).forEach(i -> tabbedPane.addTab("title" + i, new JLabel("label" + i)));
 
-    JTabbedPane jtp = new JTabbedPane();
-    jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    IntStream.range(0, 100).forEach(i -> jtp.addTab("title" + i, new JLabel("label" + i)));
+    JCheckBox check = new JCheckBox("setSelectedIndex");
+    check.setHorizontalAlignment(SwingConstants.RIGHT);
 
-    JSlider slider = new JSlider(0, jtp.getTabCount() - 1, 50);
+    JSlider slider = new JSlider(0, tabbedPane.getTabCount() - 1, 50);
     slider.setMajorTickSpacing(10);
     slider.setMinorTickSpacing(5);
     slider.setPaintTicks(true);
@@ -26,23 +26,23 @@ public final class MainPanel extends JPanel {
     slider.addChangeListener(e -> {
       int i = ((JSlider) e.getSource()).getValue();
       if (check.isSelected()) {
-        jtp.setSelectedIndex(i);
+        tabbedPane.setSelectedIndex(i);
       }
-      scrollTabAt(jtp, i);
+      scrollTabAt(tabbedPane, i);
     });
-    check.setHorizontalAlignment(SwingConstants.RIGHT);
+
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder("Scroll Slider"));
     p.add(check, BorderLayout.SOUTH);
     p.add(slider, BorderLayout.NORTH);
     add(p, BorderLayout.NORTH);
-    add(jtp);
+    add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void scrollTabAt(JTabbedPane tp, int index) {
+  private static void scrollTabAt(JTabbedPane tabbedPane, int index) {
     Component cmp = null;
-    for (Component c: tp.getComponents()) {
+    for (Component c: tabbedPane.getComponents()) {
       if ("TabbedPane.scrollableViewport".equals(c.getName())) {
         cmp = c;
         break;
@@ -50,11 +50,11 @@ public final class MainPanel extends JPanel {
     }
     if (cmp instanceof JViewport) {
       JViewport viewport = (JViewport) cmp;
-      for (int i = 0; i < tp.getTabCount(); i++) {
-        tp.setForegroundAt(i, i == index ? Color.RED : Color.BLACK);
+      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+        tabbedPane.setForegroundAt(i, i == index ? Color.RED : Color.BLACK);
       }
-      Dimension d = tp.getSize();
-      Rectangle r = tp.getBoundsAt(index);
+      Dimension d = tabbedPane.getSize();
+      Rectangle r = tabbedPane.getBoundsAt(index);
       int gw = (d.width - r.width) / 2;
       r.grow(gw, 0);
       viewport.scrollRectToVisible(r);
