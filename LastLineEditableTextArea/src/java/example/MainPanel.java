@@ -5,7 +5,9 @@
 package example;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -75,15 +77,14 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
       if (LB.equals(str)) {
         String line = doc.getText(promptPosition, offset - promptPosition);
         // String[] args = line.split("\\s");
-        String[] args = Stream.of(line.split(","))
-          .map(String::trim)
-          .filter(s -> !s.isEmpty())
-          .toArray(String[]::new);
-        String cmd = args[0];
-        if (cmd.isEmpty()) {
+        List<String> args = Stream.of(line.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toList());
+        if (args.isEmpty() || args.get(0).isEmpty()) {
           str = String.format("%n%s", PROMPT);
         } else {
-          str = String.format("%n%s: command not found%n%s", cmd, PROMPT);
+          str = String.format("%n%s: command not found%n%s", args.get(0), PROMPT);
         }
       }
       fb.replace(offset, length, str, attrs);
