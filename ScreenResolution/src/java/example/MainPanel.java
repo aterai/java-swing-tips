@@ -11,21 +11,21 @@ import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
   private final Dimension defaultSize = new Dimension(320, 240);
-  private Dimension preferredSize;
+  private Dimension dpiPreferredSize;
 
-  public static float getSizeOfText() {
+  public static float getDpiScaling() {
     int sr = Toolkit.getDefaultToolkit().getScreenResolution();
     float dpi = System.getProperty("os.name").startsWith("Windows") ? 96f : 72f;
     return sr / dpi;
   }
 
   @Override public Dimension getPreferredSize() {
-    if (Objects.isNull(preferredSize)) {
-      float sot = getSizeOfText();
-      preferredSize = new Dimension((int) (defaultSize.width * sot), (int) (defaultSize.height * sot));
+    if (Objects.isNull(dpiPreferredSize)) {
+      float s = getDpiScaling();
+      dpiPreferredSize = new Dimension((int) (defaultSize.width * s), (int) (defaultSize.height * s));
     }
-    System.out.println(preferredSize);
-    return preferredSize;
+    System.out.println(dpiPreferredSize);
+    return dpiPreferredSize;
   }
 
   private MainPanel() {
@@ -43,15 +43,16 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
-        // @see BasicTableUI#installDefaults()
-        // JTable's original row height is 16.  To correctly display the
-        // contents on Linux we should have set it to 18, Windows 19 and
-        // Solaris 20.  As these values vary so much it's too hard to
-        // be backward compatible and try to update the row height, we're
-        // therefor NOT going to adjust the row height based on font.  If the
-        // developer changes the font, it's there responsibility to update
-        // the row height.
-        setRowHeight((int) (getRowHeight() * getSizeOfText()));
+        /* @see BasicTableUI#installDefaults()
+        JTable's original row height is 16. To correctly display the
+        contents on Linux we should have set it to 18, Windows 19 and
+        Solaris 20. As these values vary so much it's too hard to be
+        backward compatible and try to update the row height, we're
+        therefore NOT going to adjust the row height based on font.
+        If the developer changes the font, it's there responsibility
+        to update the row height.
+        */
+        setRowHeight((int) (getRowHeight() * getDpiScaling()));
       }
     };
     table.setAutoCreateRowSorter(true);
@@ -60,24 +61,26 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         if (isFixedRowHeight()) {
-          setRowHeight((int) (getRowHeight() * getSizeOfText()));
+          setRowHeight((int) (getRowHeight() * getDpiScaling()));
           System.out.println("Tree.rowHeight: " + getRowHeight());
         }
       }
     };
     // tree.setRowHeight(0);
-    JSplitPane sp = new JSplitPane() {
-      // // TEST:
-      // @Override protected void paintComponent(Graphics g) {
-      //   Graphics2D g2 = (Graphics2D) g.create();
-      //   GraphicsConfiguration gc = g2.getDeviceConfiguration();
-      //   System.out.println(gc.getDefaultTransform());
-      //   g2.setTransform(gc.getDefaultTransform());
-      //   System.out.println(gc.getNormalizingTransform());
-      //   g2.transform(gc.getNormalizingTransform());
-      //   super.paintComponent(g2);
-      // }
-    };
+
+    JSplitPane sp = new JSplitPane();
+    // // TEST:
+    // JSplitPane sp = new JSplitPane() {
+    //   @Override protected void paintComponent(Graphics g) {
+    //     Graphics2D g2 = (Graphics2D) g.create();
+    //     GraphicsConfiguration gc = g2.getDeviceConfiguration();
+    //     System.out.println(gc.getDefaultTransform());
+    //     g2.setTransform(gc.getDefaultTransform());
+    //     System.out.println(gc.getNormalizingTransform());
+    //     g2.transform(gc.getNormalizingTransform());
+    //     super.paintComponent(g2);
+    //   }
+    // };
     sp.setLeftComponent(new JScrollPane(table));
     sp.setRightComponent(new JScrollPane(tree));
     sp.setResizeWeight(.5);
