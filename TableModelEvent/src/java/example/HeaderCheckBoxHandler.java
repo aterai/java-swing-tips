@@ -103,10 +103,8 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       }
       if (deselected) {
         column.setHeaderValue(Status.DESELECTED);
-      } else if (selected) {
-        column.setHeaderValue(Status.SELECTED);
       } else {
-        return false;
+        column.setHeaderValue(Status.SELECTED);
       }
     } else {
       column.setHeaderValue(Status.INDETERMINATE);
