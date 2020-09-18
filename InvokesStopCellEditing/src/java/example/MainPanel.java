@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     tree.setEditable(true);
 
-    JCheckBox check = new JCheckBox("terminateEditOnFocusLost");
+    JCheckBox check = new JCheckBox("InvokesStopCellEditing");
     check.addActionListener(e -> tree.setInvokesStopCellEditing(((JCheckBox) e.getSource()).isSelected()));
 
     add(check, BorderLayout.NORTH);
