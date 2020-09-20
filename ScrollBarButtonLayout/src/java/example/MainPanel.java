@@ -8,19 +8,24 @@ import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
+import javax.swing.plaf.synth.SynthScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
-    scrollbar.setUnitIncrement(10);
-    if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
-      scrollbar.setUI(new WindowsCustomScrollBarUI());
-    } else {
-      scrollbar.setUI(new MetalCustomScrollBarUI());
-    }
+    JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsScrollBarUI) {
+          setUI(new WindowsCustomScrollBarUI());
+        } else if (!(getUI() instanceof SynthScrollBarUI)) {
+          setUI(new MetalCustomScrollBarUI());
+        }
+        setUnitIncrement(10);
+      }
+    };
     JScrollPane scroll = new JScrollPane(new JTable(new DefaultTableModel(20, 3)));
     scroll.setVerticalScrollBar(scrollbar);
     add(scroll);
@@ -86,7 +91,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     // // <----
 
     int gaps = decrGap + incrGap;
-    float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
+    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
 
     /* Compute the height and origin of the thumb. The case
      * where the thumb is at the bottom edge is handled specially
@@ -106,7 +111,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 
     int thumbY = incrButtonY - incrGap - thumbH;
     if (value < (sb.getMaximum() - sb.getVisibleAmount())) {
-      float thumbRange = trackH - thumbH;
+      int thumbRange = trackH - thumbH;
       // thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
       thumbY = Math.round(thumbRange * ((value - min) / (range - extent)));
       // thumbY += decrButtonY + decrButtonH + decrGap;
@@ -141,7 +146,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
      * make sure it fits between the buttons. Note that setting the
      * thumbs bounds will cause a repaint.
      */
-    if (thumbH >= (int) trackH) {
+    if (thumbH >= trackH) {
       setThumbBounds(0, 0, 0, 0);
     } else {
       // if ((thumbY + thumbH) > incrButtonY - incrGap) {
@@ -199,7 +204,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     // // <----
 
     int gaps = decrGap + incrGap;
-    float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
+    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
 
     /* Compute the height and origin of the thumb. The case
      * where the thumb is at the bottom edge is handled specially
@@ -219,7 +224,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
 
     int thumbY = incrButtonY - incrGap - thumbH;
     if (value < (sb.getMaximum() - sb.getVisibleAmount())) {
-      float thumbRange = trackH - thumbH;
+      int thumbRange = trackH - thumbH;
       thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
       // thumbY += decrButtonY + decrButtonH + decrGap;
     }
@@ -253,7 +258,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
      * make sure it fits between the buttons. Note that setting the
      * thumbs bounds will cause a repaint.
      */
-    if (thumbH >= (int) trackH) {
+    if (thumbH >= trackH) {
       setThumbBounds(0, 0, 0, 0);
     } else {
       // if ((thumbY + thumbH) > incrButtonY - incrGap) {
