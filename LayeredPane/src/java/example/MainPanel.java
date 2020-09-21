@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final int OFFSET = 30;
+  private static final AtomicInteger OPEN_FRAME_COUNT = new AtomicInteger();
   private final JDesktopPane desktop = new JDesktopPane();
 
   private MainPanel() {
@@ -40,10 +42,10 @@ public final class MainPanel extends JPanel {
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("new");
     menuItem.addActionListener(e -> {
-      JInternalFrame jif = new MyInternalFrame();
-      desktop.add(jif);
-      jif.setVisible(true);
-      // desktop.getDesktopManager().activateFrame(jif);
+      JInternalFrame f = makeInternalFrame();
+      desktop.add(f);
+      f.setVisible(true);
+      // desktop.getDesktopManager().activateFrame(f);
     });
     menu.add(menuItem);
 
@@ -55,6 +57,14 @@ public final class MainPanel extends JPanel {
         Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose));
     menu.add(menuItem);
     return menuBar;
+  }
+
+  private static JInternalFrame makeInternalFrame() {
+    String title = String.format("Document #%s", OPEN_FRAME_COUNT.getAndIncrement());
+    JInternalFrame f = new JInternalFrame(title, true, true, true, true);
+    f.setSize(180, 100);
+    f.setLocation(OFFSET * OPEN_FRAME_COUNT.intValue(), OFFSET * OPEN_FRAME_COUNT.intValue());
+    return f;
   }
 
   public static void main(String[] args) {
@@ -74,17 +84,5 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-}
-
-class MyInternalFrame extends JInternalFrame {
-  private static final int OFFSET = 30;
-  private static AtomicInteger openFrameCount = new AtomicInteger();
-
-  protected MyInternalFrame() {
-    // title, resizable, closable, maximizable, iconifiable
-    super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
-    setSize(180, 100);
-    setLocation(OFFSET * openFrameCount.intValue(), OFFSET * openFrameCount.intValue());
   }
 }
