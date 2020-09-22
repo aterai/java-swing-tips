@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -27,8 +28,10 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model);
     table.setTableHeader(new JTableHeader(table.getColumnModel()) {
       @Override public String getToolTipText(MouseEvent e) {
-        int c = columnAtPoint(e.getPoint());
-        return getTable().getColumnName(c) + " (12345678901234567890...)";
+        int i = columnAtPoint(e.getPoint());
+        // return getTable().getColumnName(i) + " (...)";
+        TableColumn c = getColumnModel().getColumn(i);
+        return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
       }
     });
 
