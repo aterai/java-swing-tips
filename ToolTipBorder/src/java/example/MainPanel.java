@@ -11,11 +11,11 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JButton button0 = new JButton("ToolTip") {
+    JButton button0 = new JButton("ToolTip1") {
       @Override public JToolTip createToolTip() {
         JToolTip tip = new JToolTip();
         Border b1 = tip.getBorder();
-        Border b2 = BorderFactory.createTitledBorder("ToolTip");
+        Border b2 = BorderFactory.createTitledBorder("TitledBorder ToolTip");
         tip.setBorder(BorderFactory.createCompoundBorder(b1, b2));
         tip.setComponent(this);
         return tip;
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     };
     button0.setToolTipText("Test - ToolTipText0");
 
-    JButton button1 = new JButton("ToolTip") {
+    JButton button1 = new JButton("ToolTip2") {
       @Override public JToolTip createToolTip() {
         JToolTip tip = new JToolTip();
         Border b1 = tip.getBorder();
