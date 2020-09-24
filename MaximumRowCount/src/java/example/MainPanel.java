@@ -11,26 +11,24 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> comboBox = new JComboBox<>(makeModel());
+
     SpinnerNumberModel m = new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1);
     m.addChangeListener(e -> comboBox.setMaximumRowCount(m.getNumber().intValue()));
+    JSpinner spinner = new JSpinner(m);
+
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder("JComboBox#setMaximumRowCount:"));
+    p.add(spinner);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    box.add(makeTitledPanel("JComboBox#setMaximumRowCount:", new JSpinner(m)));
+    box.add(p);
     box.add(Box.createVerticalStrut(10));
     box.add(comboBox);
 
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Component makeTitledPanel(String title, Component c) {
-    JPanel p = new JPanel(new BorderLayout());
-    p.setBorder(BorderFactory.createTitledBorder(title));
-    p.add(c);
-    return p;
   }
 
   private static DefaultComboBoxModel<String> makeModel() {
