@@ -174,39 +174,39 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
   }
 }
 
-class CellTextArea extends JTextArea {
-  private Dimension preferredSize;
-
-  @Override public void setPreferredSize(Dimension d) {
-    if (Objects.nonNull(d)) {
-      preferredSize = d;
-    }
-  }
-
-  @Override public Dimension getPreferredSize() {
-    return preferredSize;
-  }
-
-  // Multi-line tree items
-  // http://www.codeguru.com/java/articles/141.shtml
-  @Override public void setText(String str) {
-    FontMetrics fm = getFontMetrics(getFont());
-    int maxWidth = 0;
-    int lineCounter = 0;
-    try (Scanner sc = new Scanner(new BufferedReader(new StringReader(str)))) {
-      while (sc.hasNextLine()) {
-        int w = SwingUtilities.computeStringWidth(fm, sc.nextLine());
-        maxWidth = Math.max(maxWidth, w);
-        lineCounter++;
-      }
-    }
-    lineCounter = Math.max(lineCounter, 1);
-    int height = fm.getHeight() * lineCounter;
-    Insets i = getInsets();
-    setPreferredSize(new Dimension(maxWidth + i.left + i.right, height + i.top + i.bottom));
-    super.setText(str);
-  }
-}
+// class CellTextArea extends JTextArea {
+//   private Dimension preferredSize;
+//
+//   @Override public void setPreferredSize(Dimension d) {
+//     if (Objects.nonNull(d)) {
+//       preferredSize = d;
+//     }
+//   }
+//
+//   @Override public Dimension getPreferredSize() {
+//     return preferredSize;
+//   }
+//
+//   // Multi-line tree items
+//   // http://www.codeguru.com/java/articles/141.shtml
+//   @Override public void setText(String str) {
+//     FontMetrics fm = getFontMetrics(getFont());
+//     int maxWidth = 0;
+//     int lineCounter = 0;
+//     try (Scanner sc = new Scanner(new BufferedReader(new StringReader(str)))) {
+//       while (sc.hasNextLine()) {
+//         int w = SwingUtilities.computeStringWidth(fm, sc.nextLine());
+//         maxWidth = Math.max(maxWidth, w);
+//         lineCounter++;
+//       }
+//     }
+//     lineCounter = Math.max(lineCounter, 1);
+//     int height = fm.getHeight() * lineCounter;
+//     Insets i = getInsets();
+//     setPreferredSize(new Dimension(maxWidth + i.left + i.right, height + i.top + i.bottom));
+//     super.setText(str);
+//   }
+// }
 
 class CellTextArea2 extends JTextArea {
   @Override public Dimension getPreferredSize() {
