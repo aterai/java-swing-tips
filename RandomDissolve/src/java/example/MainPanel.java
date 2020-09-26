@@ -68,6 +68,7 @@ public final class MainPanel extends JPanel {
 
 class RandomDissolve extends JComponent implements ActionListener {
   private static final int STAGES = 16;
+  private final Random rnd = new Random();
   private final Timer animator;
   private final transient BufferedImage image1;
   private final transient BufferedImage image2;
@@ -124,7 +125,6 @@ class RandomDissolve extends JComponent implements ActionListener {
     dst = getData(copyImage(mode ? image1 : image2));
     step = new int[src.length];
     mode ^= true;
-    Random rnd = new Random();
     for (int i = 0; i < step.length; i++) {
       step[i] = rnd.nextInt(currentStage);
     }
