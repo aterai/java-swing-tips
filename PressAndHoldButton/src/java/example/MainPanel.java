@@ -66,11 +66,13 @@ class PressAndHoldButton extends JButton {
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Dimension dim = getSize();
-    Insets ins = getInsets();
-    int x = dim.width - ins.right;
-    int y = ins.top + (dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
-    ARROW_ICON.paintIcon(this, g, x, y);
+    // Dimension dim = getSize();
+    // Insets ins = getInsets();
+    // int x = dim.width - ins.right;
+    // int y = ins.top + (dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
+    // ARROW_ICON.paintIcon(this, g, x, y);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    ARROW_ICON.paintIcon(this, g, r.x + r.width, r.y + (r.height - ARROW_ICON.getIconHeight()) / 2);
   }
 }
 
@@ -78,19 +80,19 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
   public final JPopupMenu pop = new JPopupMenu();
   private final ButtonGroup bg = new ButtonGroup();
   private AbstractButton arrowButton;
-  private final Timer holdTimer = new Timer(1000, null);
+  private final Timer holdTimer = new Timer(1000, e -> {
+    System.out.println("InitialDelay(1000)");
+    Timer timer = (Timer) e.getSource();
+    if (Objects.nonNull(arrowButton) && arrowButton.getModel().isPressed() && timer.isRunning()) {
+      timer.stop();
+      pop.show(arrowButton, 0, arrowButton.getHeight());
+      pop.requestFocusInWindow();
+    }
+  });
 
   protected PressAndHoldHandler() {
     super();
     holdTimer.setInitialDelay(1000);
-    holdTimer.addActionListener(e -> {
-      System.out.println("InitialDelay(1000)");
-      if (Objects.nonNull(arrowButton) && arrowButton.getModel().isPressed() && holdTimer.isRunning()) {
-        holdTimer.stop();
-        pop.show(arrowButton, 0, arrowButton.getHeight());
-        pop.requestFocusInWindow();
-      }
-    });
     pop.setLayout(new GridLayout(0, 3, 5, 5));
     makeMenuList().stream()
         .map(PressAndHoldHandler::makeMenuButton)
@@ -208,6 +210,7 @@ class MenuArrowIcon implements Icon {
 //   protected ColorIcon(Color color) {
 //     this.color = color;
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.translate(x, y);
@@ -215,9 +218,11 @@ class MenuArrowIcon implements Icon {
 //     g2.fillOval(4, 4, 16, 16);
 //     g2.dispose();
 //   }
+//
 //   @Override public int getIconWidth() {
 //     return 24;
 //   }
+//
 //   @Override public int getIconHeight() {
 //     return 24;
 //   }
@@ -227,6 +232,7 @@ class MenuArrowIcon implements Icon {
 //   protected ColorIcon2(Color color) {
 //     super(color);
 //   }
+//
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     super.paintIcon(c, g, x, y);
 //     Graphics2D g2 = (Graphics2D) g.create();
