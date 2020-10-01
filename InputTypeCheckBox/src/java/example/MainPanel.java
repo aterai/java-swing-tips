@@ -199,31 +199,6 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     }
   }
 
-  // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-  //   if (status == Status.INDETERMINATE) {
-  //     boolean selected = true;
-  //     boolean deselected = true;
-  //     for (int i = 0; i < m.getRowCount(); i++) {
-  //       Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-  //       selected &= b;
-  //       deselected &= !b;
-  //       if (selected == deselected) {
-  //         return false;
-  //       }
-  //     }
-  //     if (deselected) {
-  //       column.setHeaderValue(Status.DESELECTED);
-  //     } else if (selected) {
-  //       column.setHeaderValue(Status.SELECTED);
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     column.setHeaderValue(Status.INDETERMINATE);
-  //   }
-  //   return true;
-  // }
-
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
     JTable tbl = header.getTable();
@@ -240,26 +215,6 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
       column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
       // header.repaint();
     }
-  }
-}
-
-class ComponentIcon implements Icon {
-  private final Component cmp;
-
-  protected ComponentIcon(Component cmp) {
-    this.cmp = cmp;
-  }
-
-  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
-  }
-
-  @Override public int getIconWidth() {
-    return cmp.getPreferredSize().width;
-  }
-
-  @Override public int getIconHeight() {
-    return cmp.getPreferredSize().height;
   }
 }
 
