@@ -36,14 +36,13 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    Timer animator = new Timer(50, null);
-    animator.addActionListener(e -> {
+    Timer animator = new Timer(50, e -> {
       if (mode == Crossfade.IN && alpha.get() < 10) {
         alpha.incrementAndGet(); // alpha += 1;
       } else if (mode == Crossfade.OUT && alpha.get() > 0) {
         alpha.decrementAndGet(); // alpha -= 1;
       } else {
-        animator.stop();
+        ((Timer) e.getSource()).stop();
       }
       crossfade.repaint();
     });
