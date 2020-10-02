@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
 // }
 
 class ButtonsPanel extends JPanel {
-  public final List<JButton> buttons = Arrays.asList(new JButton("view"), new JButton("edit"));
+  private final List<JButton> buttons = Arrays.asList(new JButton("view"), new JButton("edit"));
 
   protected ButtonsPanel() {
     super();
@@ -97,6 +97,10 @@ class ButtonsPanel extends JPanel {
       b.setRolloverEnabled(false);
       add(b);
     }
+  }
+  
+  protected List<JButton> getButtons() {
+    return buttons;
   }
 }
 
@@ -170,11 +174,12 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   protected ButtonsEditor(JTable table) {
     super();
     this.table = table;
-    panel.buttons.get(0).setAction(new ViewAction(table));
-    panel.buttons.get(1).setAction(new EditAction(table));
+    List<JButton> list = panel.getButtons();
+    list.get(0).setAction(new ViewAction(table));
+    list.get(1).setAction(new EditAction(table));
 
     EditingStopHandler handler = new EditingStopHandler();
-    for (JButton b: panel.buttons) {
+    for (JButton b: list) {
       b.addMouseListener(handler);
       b.addActionListener(handler);
     }
