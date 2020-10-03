@@ -27,13 +27,16 @@ import javax.swing.text.View;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
-    if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-      tabbedPane.setUI(new LeftAlignmentWindowsTabbedPaneUI());
-    } else {
-      tabbedPane.setUI(new LeftAlignmentTabbedPaneUI());
-    }
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsTabbedPaneUI) {
+          setUI(new LeftAlignmentWindowsTabbedPaneUI());
+        } else {
+          setUI(new LeftAlignmentTabbedPaneUI());
+        }
+      }
+    };
 
     List<? extends JTabbedPane> list = Arrays.asList(
         makeTestTabbedPane(new JTabbedPane(SwingConstants.LEFT)),
@@ -46,7 +49,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("TOP");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      list.forEach(t -> t.setTabPlacement(b ? SwingConstants.LEFT : SwingConstants.TOP));
+      list.forEach(t -> t.setTabPlacement(b ? SwingConstants.TOP : SwingConstants.LEFT));
     });
 
     add(check, BorderLayout.NORTH);
@@ -57,10 +60,10 @@ public final class MainPanel extends JPanel {
   private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("bbbbbbbbb"));
-    jtp.addTab("33333333333333", new ColorIcon(Color.BLUE), new JScrollPane(new JTree()));
-    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("dddddddddd"));
-    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("e"));
+    jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("JLabel 2"));
+    jtp.addTab("33333333333333", new ColorIcon(Color.BLUE), new JSplitPane());
+    jtp.addTab("444444444444444", new ColorIcon(Color.ORANGE), new JLabel("JLabel 4"));
+    jtp.addTab("55555555555555555555555555555555", new ColorIcon(Color.CYAN), new JLabel("5"));
     return jtp;
   }
 
@@ -86,9 +89,9 @@ public final class MainPanel extends JPanel {
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
-  protected ClippedTitleTabbedPane() {
-    super();
-  }
+  // protected ClippedTitleTabbedPane() {
+  //   super();
+  // }
 
   protected ClippedTitleTabbedPane(int tabPlacement) {
     super(tabPlacement);
@@ -125,7 +128,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     int gap;
 
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      tabWidth = areaWidth / 2;
+      tabWidth = areaWidth / 3;
       gap = 0;
     } else { // TOP || BOTTOM
       tabWidth = areaWidth / tabCount;
@@ -294,8 +297,13 @@ class TabButton extends JButton {
   private static final int SIZE = 17;
   private static final int DELTA = 6;
 
-  protected TabButton() {
-    super();
+  @Override public Dimension getPreferredSize() {
+    return new Dimension(SIZE, SIZE);
+  }
+
+  @Override public void updateUI() {
+    // we don't want to update UI for this button
+    // super.updateUI();
     setUI(new BasicButtonUI());
     setToolTipText("close this tab");
     setContentAreaFilled(false);
@@ -303,14 +311,6 @@ class TabButton extends JButton {
     setBorder(BorderFactory.createEtchedBorder());
     setBorderPainted(false);
     setRolloverEnabled(true);
-  }
-
-  @Override public Dimension getPreferredSize() {
-    return new Dimension(SIZE, SIZE);
-  }
-
-  @Override public void updateUI() {
-    // we don't want to update UI for this button
   }
 
   @Override protected void paintComponent(Graphics g) {
