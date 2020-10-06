@@ -10,42 +10,43 @@ import javax.swing.border.Border;
 import javax.swing.plaf.InsetsUIResource;
 
 public final class MainPanel extends JPanel {
-  private final JTextField field00 = new JTextField("aaaaaaaaaaaaaaaa");
-  private final JTextField field01 = new JTextField("bbbbbbb");
-  private final JTextField field02 = new JTextField("ccccccccccccc");
+  private final JTextArea log = new JTextArea();
 
   private MainPanel() {
     super(new BorderLayout());
-    Insets m = field01.getMargin();
-    System.out.println(m.toString());
+    JTextField field1 = new JTextField("1111111111");
+    Insets m = field1.getMargin();
+    log.append(m.toString() + "\n");
     Insets margin = new Insets(m.top, m.left + 10, m.bottom, m.right);
-    field01.setMargin(margin);
+    field1.setMargin(margin);
 
+    JTextField field2 = new JTextField("2222222222222");
     Border b1 = BorderFactory.createEmptyBorder(0, 20, 0, 0);
-    Border b2 = BorderFactory.createCompoundBorder(field02.getBorder(), b1);
-    field02.setBorder(b2);
+    Border b2 = BorderFactory.createCompoundBorder(field2.getBorder(), b1);
+    field2.setBorder(b2);
 
     Box box = Box.createVerticalBox();
-    box.add(makePanel(field00));
+    box.add(makePanel(new JTextField("000000000000000000")));
     box.add(Box.createVerticalStrut(5));
-    box.add(makePanel(field01));
+    box.add(makePanel(field1));
     box.add(Box.createVerticalStrut(5));
-    box.add(makePanel(field02));
+    box.add(makePanel(field2));
     add(box, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static int getLeftMargin(JTextField c) {
-    System.out.println("----");
-    System.out.println("getMargin().left: " + c.getMargin().left);
-    System.out.println("getInsets().left: " + c.getInsets().left);
-    System.out.println("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left);
+  private int getLeftMargin(JTextField c) {
+    log.append("----\n");
+    log.append("getMargin().left: " + c.getMargin().left + "\n");
+    log.append("getInsets().left: " + c.getInsets().left + "\n");
+    log.append("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left + "\n");
     // c.getInsets() == Optional.ofNullable(c.getBorder()).map(b -> b.getBorderInsets(c)).orElse(new Insets(0, 0, 0, 0))
     return c.getInsets().left;
   }
 
-  private static Component makePanel(JTextField field) {
+  private Component makePanel(JTextField field) {
     JPanel p = new JPanel(new BorderLayout());
     String title = "left margin = " + getLeftMargin(field);
     p.setBorder(BorderFactory.createTitledBorder(title));
