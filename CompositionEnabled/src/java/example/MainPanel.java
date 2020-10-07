@@ -9,10 +9,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
-
   private  MainPanel() {
     super(new BorderLayout());
+    JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
+
     JTable table = new JTable(4, 3) {
       @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
         // System.out.println("key: " + ks.toString());
