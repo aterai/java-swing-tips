@@ -11,10 +11,6 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea log = new JTextArea();
-  private final JTextField field = new JTextField(24);
-  private final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
-  private final JCheckBox check2 = new JCheckBox("isParent reset?");
   private final JFileChooser fc0 = new JFileChooser();
   private final JFileChooser fc1 = new JFileChooser();
   private final JFileChooser fc2 = new JFileChooser() {
@@ -49,12 +45,14 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser.DIRECTORIES_ONLY"));
     fc0.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+
+    JTextField field = new JTextField(24);
     try {
       field.setText(new File(".").getCanonicalPath());
     } catch (IOException ex) {
@@ -62,6 +60,9 @@ public final class MainPanel extends JPanel {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
 
+    JTextArea log = new JTextArea();
+
+    JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
     JButton button1 = new JButton("setCurrentDirectory");
     button1.addActionListener(e -> {
       File f = new File(field.getText().trim());
@@ -73,6 +74,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JCheckBox check2 = new JCheckBox("isParent reset?");
     JButton button2 = new JButton("setSelectedFile");
     button2.addActionListener(e -> {
       File f = new File(field.getText().trim());
