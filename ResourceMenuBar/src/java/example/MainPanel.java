@@ -17,21 +17,21 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     initActions(getActions());
-    JPanel menupanel = new JPanel(new BorderLayout());
+    JPanel menuPanel = new JPanel(new BorderLayout());
     JMenuBar menuBar = BAR_FACTORY.createMenuBar();
-    menupanel.add(menuBar, BorderLayout.NORTH);
+    menuPanel.add(menuBar, BorderLayout.NORTH);
 
     JToolBar toolBar = BAR_FACTORY.createToolBar();
     if (Objects.nonNull(toolBar)) {
-      menupanel.add(toolBar, BorderLayout.SOUTH);
+      menuPanel.add(toolBar, BorderLayout.SOUTH);
     }
-    add(menupanel, BorderLayout.NORTH);
+    add(menuPanel, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void initActions(Action... actlist) {
-    BAR_FACTORY.initActions(actlist);
+  public void initActions(Action... actions) {
+    BAR_FACTORY.initActions(actions);
   }
 
   private Action[] getActions() {
@@ -80,15 +80,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class SaveAsAction extends AbstractAction {
-  protected SaveAsAction() {
-    super("saveAs");
-  }
-
-  @Override public void actionPerformed(ActionEvent e) {
-    // dummy
-  }
-}
+// class SaveAsAction extends AbstractAction {
+//   protected SaveAsAction() {
+//     super("saveAs");
+//   }
+//
+//   @Override public void actionPerformed(ActionEvent e) {
+//     // dummy
+//   }
+// }
 
 class ExitAction extends AbstractAction {
   protected ExitAction() {
