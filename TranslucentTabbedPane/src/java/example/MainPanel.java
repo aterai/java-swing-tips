@@ -8,7 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final Image bgImage = new ImageIcon(getClass().getResource("test.png")).getImage();
+  private final transient Image bgImage = new ImageIcon(getClass().getResource("test.png")).getImage();
 
   private MainPanel() {
     super(new BorderLayout());
