@@ -13,10 +13,10 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String SHOW_MNEMONICS = "Button.showMnemonics";
-  private final JCheckBox showMnemonicsCheck = new JCheckBox(SHOW_MNEMONICS);
 
   private MainPanel() {
     super();
+    JCheckBox showMnemonicsCheck = new JCheckBox(SHOW_MNEMONICS);
     showMnemonicsCheck.setSelected(UIManager.getBoolean(SHOW_MNEMONICS));
     showMnemonicsCheck.setMnemonic(KeyEvent.VK_B);
     showMnemonicsCheck.addActionListener(e -> {
@@ -38,7 +38,6 @@ public final class MainPanel extends JPanel {
     add(button);
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
-
     setPreferredSize(new Dimension(320, 240));
   }
 
