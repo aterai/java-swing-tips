@@ -128,7 +128,7 @@ class DragMouseListener extends MouseAdapter {
 
 // 背景画像を描画する JLayeredPane
 class BackImageLayeredPane extends JLayeredPane {
-  private final Image bgImage;
+  private final transient Image bgImage;
 
   protected BackImageLayeredPane(Image img) {
     super();
