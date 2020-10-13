@@ -5,8 +5,10 @@
 package example;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -38,18 +40,23 @@ public final class MainPanel extends JPanel {
       b.setEnabled(false);
       ExecutorService executor = Executors.newCachedThreadPool();
       new SwingWorker<Boolean, Void>() {
-        @SuppressWarnings("JdkObsolete")
         @Override protected Boolean doInBackground() throws InterruptedException {
           DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
           DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-          // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-          Enumeration<?> e = root.breadthFirstEnumeration();
-          while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            if (!root.equals(node) && !model.isLeaf(node)) {
-              executor.execute(makeWorker(tree, node));
-            }
-          }
+          // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+          Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+              .filter(DefaultMutableTreeNode.class::isInstance)
+              .map(DefaultMutableTreeNode.class::cast)
+              .filter(node -> !Objects.equals(root, node) && !model.isLeaf(node))
+              .forEach(node -> executor.execute(makeWorker(tree, node)));
+          // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
+          // Enumeration<?> e = root.breadthFirstEnumeration();
+          // while (e.hasMoreElements()) {
+          //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+          //   if (!root.equals(node) && !model.isLeaf(node)) {
+          //     executor.execute(makeWorker(tree, node));
+          //   }
+          // }
           executor.shutdown();
           return executor.awaitTermination(1, TimeUnit.MINUTES);
         }
