@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -67,13 +68,15 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JPanel renderer = new JPanel(new BorderLayout());
   private final JLabel icon = new JLabel();
   private final JLabel text = new JLabel();
-  private final Border insideBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
-  private final Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-  private final Border emptyBorder = BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
-  private final Border compoundFocusBorder;
+  private final CompoundBorder emptyBorder;
+  private final CompoundBorder compoundFocusBorder;
 
   protected CompoundTreeCellRenderer() {
     super();
+    Border insideBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
+    Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+    emptyBorder = BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
+
     Color bsColor = getBorderSelectionColor();
     Color focusBgsColor = new Color(~getBackgroundSelectionColor().getRGB());
     compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), insideBorder);
