@@ -139,7 +139,7 @@ class TransparentMenu extends JMenu {
 
   // [JDK-4688783] JPopupMenu hardcoded i JMenu - Java Bug System
   // https://bugs.openjdk.java.net/browse/JDK-4688783
-  private void ensurePopupMenuCreated() {
+  private void ensurePopupMenuCreated2() {
     if (Objects.isNull(popupMenu)) {
       this.popupMenu = new TranslucentPopupMenu();
       popupMenu.setInvoker(this);
@@ -147,19 +147,29 @@ class TransparentMenu extends JMenu {
     }
   }
 
+  // // @see javax/swing/JMenu.java
+  // private void ensurePopupMenuCreated() {
+  //   if (popupMenu == null) {
+  //     final JMenu thisMenu = this;
+  //     this.popupMenu = new JPopupMenu();
+  //     popupMenu.setInvoker(this);
+  //     popupListener = createWinListener(popupMenu);
+  //   }
+  // }
+
   @Override public JPopupMenu getPopupMenu() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     return popupMenu;
   }
 
   @Override public JMenuItem add(JMenuItem menuItem) {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     menuItem.setOpaque(false);
     return popupMenu.add(menuItem);
   }
 
   @Override public Component add(Component c) {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     if (c instanceof JComponent) {
       ((JComponent) c).setOpaque(false);
     }
@@ -168,37 +178,37 @@ class TransparentMenu extends JMenu {
   }
 
   @Override public void addSeparator() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     popupMenu.addSeparator();
   }
 
-  @Override public void insert(String s, int pos) {
+  private void checkIndex(int pos) {
     if (pos < 0) {
       throw new IllegalArgumentException("index less than zero.");
     }
-    ensurePopupMenuCreated();
+  }
+
+  @Override public void insert(String s, int pos) {
+    checkIndex(pos);
+    ensurePopupMenuCreated2();
     popupMenu.insert(new JMenuItem(s), pos);
   }
 
   @Override public JMenuItem insert(JMenuItem mi, int pos) {
-    if (pos < 0) {
-      throw new IllegalArgumentException("index less than zero.");
-    }
-    ensurePopupMenuCreated();
+    checkIndex(pos);
+    ensurePopupMenuCreated2();
     popupMenu.insert(mi, pos);
     return mi;
   }
 
   @Override public void insertSeparator(int index) {
-    if (index < 0) {
-      throw new IllegalArgumentException("index less than zero.");
-    }
-    ensurePopupMenuCreated();
+    checkIndex(index);
+    ensurePopupMenuCreated2();
     popupMenu.insert(new JPopupMenu.Separator(), index);
   }
 
   @Override public boolean isPopupMenuVisible() {
-    ensurePopupMenuCreated();
+    ensurePopupMenuCreated2();
     return popupMenu.isVisible();
   }
 }
