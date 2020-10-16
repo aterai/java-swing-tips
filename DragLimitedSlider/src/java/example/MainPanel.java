@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -32,6 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("JdkObsolete")
   private static JSlider makeSlider(String title) {
     JSlider slider = new JSlider(0, 100, 40);
     slider.setBorder(BorderFactory.createTitledBorder(title));
@@ -40,20 +42,28 @@ public final class MainPanel extends JPanel {
     slider.setPaintLabels(true);
     Dictionary<?, ?> dictionary = slider.getLabelTable();
     if (Objects.nonNull(dictionary)) {
-      Enumeration<?> elements = dictionary.elements();
-      while (elements.hasMoreElements()) {
-        JLabel label = (JLabel) elements.nextElement();
-        int v = Integer.parseInt(label.getText());
-        if (v > MAXI || v < MINI) {
-          label.setForeground(Color.RED);
-        }
-      }
+      // Java 9: Collections.list(dictionary.elements()).stream()
+      Collections.list((Enumeration<?>) slider.getLabelTable().elements()).stream()
+          .filter(JLabel.class::isInstance)
+          .map(JLabel.class::cast)
+          .forEach(MainPanel::updateForeground);
+      // Enumeration<?> elements = dictionary.elements();
+      // while (elements.hasMoreElements()) {
+      //   updateForeground((JLabel) elements.nextElement());
+      // }
     }
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
       m.setValue(Math.max(MINI, Math.min(m.getValue(), MAXI)));
     });
     return slider;
+  }
+
+  private static void updateForeground(JLabel label) {
+    int v = Integer.parseInt(label.getText());
+    if (v > MAXI || v < MINI) {
+      label.setForeground(Color.RED);
+    }
   }
 
   private static class WindowsDragLimitedSliderUI extends WindowsSliderUI {
