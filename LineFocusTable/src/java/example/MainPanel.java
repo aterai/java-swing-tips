@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 import java.util.Set;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableModel;
@@ -96,7 +95,7 @@ public final class MainPanel extends JPanel {
 
 class LineFocusTable extends JTable {
   private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
-  private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+  // private final Border emptyBorder = new EmptyBorder(2, 2, 2, 2);
 
   protected LineFocusTable(TableModel model) {
     super(model);
@@ -157,12 +156,12 @@ class LineFocusTable extends JTable {
   }
 
   private void updateBorderType(DotBorder border, int column) {
-    border.type.clear(); // = EnumSet.noneOf(Type.class);
+    border.getType().clear(); // = EnumSet.noneOf(Type.class);
     if (column == 0) {
-      border.type.add(Type.START);
+      border.getType().add(Type.START);
     }
     if (column == getColumnCount() - 1) {
-      border.type.add(Type.END);
+      border.getType().add(Type.END);
     }
   }
 
@@ -176,7 +175,7 @@ class LineFocusTable extends JTable {
       ((JComponent) c).setBorder(dotBorder);
       updateBorderType(dotBorder, column);
     } else {
-      ((JComponent) c).setBorder(emptyBorder);
+      ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     }
     return c;
   }
@@ -204,10 +203,14 @@ class DotBorder extends EmptyBorder {
   private static final BasicStroke DASHED = new BasicStroke(
       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
   private static final Color DOT_COLOR = new Color(0xC8_96_96);
-  public final Set<Type> type = EnumSet.noneOf(Type.class);
+  private final Set<Type> type = EnumSet.noneOf(Type.class);
 
   protected DotBorder(int top, int left, int bottom, int right) {
     super(top, left, bottom, right);
+  }
+
+  public Set<Type> getType() {
+    return type;
   }
 
   @Override public boolean isBorderOpaque() {
