@@ -13,11 +13,11 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] empty = {"", ""};
-    String[] columnNames = {"DefalutTableRowSorter", "EmptiesLastTableRowSorter"};
+    String[] columnNames = {"DefaultTableRowSorter", "EmptiesLastTableRowSorter"};
     Object[][] data = {
-      {"aaa", "aaa"}, {"eee", "eee"},
-      {"bbb", "bbb"}, {"fff", "fff"},
-      {"ccc", "ddd"}, {"ggg", "ggg"},
+      {"aaa", "aaa"}, {"ddd", "ddd"},
+      {"bbb", "bbb"}, {"eee", "eee"},
+      {"ccc", "ddd"}, {"fff", "fff"},
       empty, empty, empty, empty, empty
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
