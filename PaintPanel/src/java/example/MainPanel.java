@@ -151,7 +151,7 @@ class PaintPanel extends JPanel {
       }
 
       @Override public void mouseDragged(MouseEvent e) {
-        if (Objects.nonNull(path)) {
+        if (path != null) {
           path.lineTo(e.getX(), e.getY());
           repaint();
         }
