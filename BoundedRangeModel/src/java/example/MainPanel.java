@@ -22,7 +22,7 @@ import javax.swing.table.TableCellRenderer;
 public final class MainPanel extends JPanel {
   private static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
   private static final String PATTERN = "Swing";
-  private final transient List<Integer> emphasisIndices = new ArrayList<>();
+  private final List<Integer> emphasisIndices = new ArrayList<>();
   private final DefaultTableModel model = new DefaultTableModel(0, 2);
   private final JTable table = new JTable(model) {
     @Override public void updateUI() {
