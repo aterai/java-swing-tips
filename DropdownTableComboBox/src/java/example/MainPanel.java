@@ -22,7 +22,6 @@ import javax.swing.table.TableCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     List<List<Object>> aseries = new ArrayList<>();
     aseries.add(Arrays.asList("A1", 594, 841));
     aseries.add(Arrays.asList("A2", 420, 594));
@@ -140,11 +139,11 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
       getTableHeader().setReorderingAllowed(false);
     }
   };
-  private final transient List<E> list;
+  private final List<E> list = new ArrayList<>();
 
   protected DropdownTableComboBox(List<E> list, DefaultTableModel model) {
     super();
-    this.list = list;
+    this.list.addAll(list);
     table.setModel(model);
     list.forEach(this::addItem);
     list.forEach(v -> model.addRow(v.toArray(new Object[0])));
