@@ -92,7 +92,7 @@ class ColorItem implements Serializable {
 
 class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
-  private final Color sbgc = new Color(0xF0_F5_FA);
+  private final Color color = new Color(0xF0_F5_FA);
   private final JComboBox<E> combo;
 
   protected ComboForegroundRenderer(JComboBox<E> combo) {
@@ -105,30 +105,31 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
     if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
       combo.setForeground(ic); // Windows, Motif Look&Feel
       list.setSelectionForeground(ic);
-      list.setSelectionBackground(sbgc);
+      list.setSelectionBackground(color);
     }
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    l.setForeground(ic);
-    l.setBackground(isSelected ? sbgc : list.getBackground());
-    // l.setText(item.description);
-    return l;
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    c.setForeground(ic);
+    c.setBackground(isSelected ? color : list.getBackground());
+    // ((JLabel) c).setText(item.description);
+    return c;
   }
 }
 
 class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
-  private final Color sbgc = new Color(0xF0_F5_FA);
+  private final Color color = new Color(0xF0_F5_FA);
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     if (index < 0) {
-      list.setSelectionBackground(sbgc);
+      list.setSelectionBackground(color);
     }
     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     // l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
     l.setText(String.format("<html><font color='#%06X'>%s", value.color.getRGB() & 0xFF_FF_FF, value.description));
-    l.setBackground(isSelected ? sbgc : list.getBackground());
+    l.setBackground(isSelected ? color : list.getBackground());
     return l;
   }
+
   // private static String hex(Color c) {
   //   return String.format("#%06X", c.getRGB() & 0xFF_FF_FF);
   // }
