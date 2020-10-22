@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     }
 
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-      @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
+      @Override public void treeWillExpand(TreeExpansionEvent e) { // throws ExpandVetoException {
         // throw new ExpandVetoException(e, "Tree expansion cancelled");
       }
 
