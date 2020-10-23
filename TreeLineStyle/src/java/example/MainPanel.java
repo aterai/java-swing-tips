@@ -10,15 +10,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
+    String key = "JTree.lineStyle";
 
     JTree tree0 = new JTree();
-    tree0.putClientProperty("JTree.lineStyle", "Angled");
+    tree0.putClientProperty(key, "Angled");
 
     JTree tree1 = new JTree();
-    tree1.putClientProperty("JTree.lineStyle", "Horizontal");
+    tree1.putClientProperty(key, "Horizontal");
 
     JTree tree2 = new JTree();
-    tree2.putClientProperty("JTree.lineStyle", "None");
+    tree2.putClientProperty(key, "None");
 
     add(makeTitledPanel("Angled(default)", new JScrollPane(tree0)));
     add(makeTitledPanel("Horizontal", new JScrollPane(tree1)));
