@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
 class TableHeaderTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel contentsPanel = new JPanel(cardLayout);
-  private final JTableHeader header;
-  private final transient TableColumnModel model;
+  private final JTable table = new JTable(new DefaultTableModel(null, new String[] {}));
+  private final JTableHeader header = table.getTableHeader();
   protected transient Object selectedColumn;
   protected int rolloverColumn = -1;
 
@@ -64,11 +64,6 @@ class TableHeaderTabbedPane extends JPanel {
     JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
     tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
     contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
-
-    JTable table = new JTable(new DefaultTableModel(null, new String[] {}));
-    // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    header = table.getTableHeader();
-    model = header.getColumnModel();
 
     MouseAdapter handler = new TableHeaderMouseInputHandler();
     header.addMouseListener(handler);
@@ -99,9 +94,10 @@ class TableHeaderTabbedPane extends JPanel {
 
   public void addTab(String title, Component comp) {
     contentsPanel.add(comp, title);
-    TableColumn tc = new TableColumn(model.getColumnCount(), 75, header.getDefaultRenderer(), null);
+    TableColumnModel m = header.getColumnModel();
+    TableColumn tc = new TableColumn(m.getColumnCount(), 75, header.getDefaultRenderer(), null);
     tc.setHeaderValue(title);
-    model.addColumn(tc);
+    m.addColumn(tc);
     if (Objects.isNull(selectedColumn)) {
       cardLayout.show(contentsPanel, title);
       selectedColumn = title;
