@@ -35,6 +35,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea log = new JTextArea();
 
     UIManager.put("FileChooser.readOnly", Boolean.TRUE);
     // Locale.setDefault(new Locale("en", "US"));
@@ -52,17 +53,22 @@ public final class MainPanel extends JPanel {
       fileChooser.setLocale(combo.getItemAt(combo.getSelectedIndex()));
       SwingUtilities.updateComponentTreeUI(fileChooser);
       int retValue = fileChooser.showOpenDialog(getRootPane());
-      System.out.println(retValue);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
+      }
     });
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.setBorder(BorderFactory.createTitledBorder("Open JFileChooser"));
     p.add(combo);
     p.add(button, BorderLayout.EAST);
+
     add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // private static void printLocale(JFileChooser fileChooser) {
   //   System.out.println("Locale: " + fileChooser.getLocale());
   //   System.out.println("DefaultLocale: " + fileChooser.getDefaultLocale());
