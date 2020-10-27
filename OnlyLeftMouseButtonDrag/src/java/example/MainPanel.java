@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(box1, BorderLayout.WEST);
     add(box2);

@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     });
     add(check);
 
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
     setPreferredSize(new Dimension(320, 240));
   }
 

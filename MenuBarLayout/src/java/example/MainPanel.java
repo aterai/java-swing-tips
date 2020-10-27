@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     //     });
     //   }
     // });
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }

@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     //   })
     //   .filter(mi -> mi instanceof JRadioButtonMenuItem)
     //   .forEach(mi -> System.out.println("----\n" + mi.getClass()));
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
 
     JPopupMenu popup = new JPopupMenu();
     MenuBarUtil.initMenu(popup);

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
     JMenuBar mb = new JMenuBar();
     mb.add(SizeVariantUtil.createSizeVariantMenu());
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(new JSlider(), BorderLayout.NORTH);
     add(p1);

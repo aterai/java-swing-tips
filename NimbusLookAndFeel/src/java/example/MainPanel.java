@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }

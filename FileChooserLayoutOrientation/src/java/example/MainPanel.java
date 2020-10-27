@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    SwingUtilities.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
