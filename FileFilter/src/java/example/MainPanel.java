@@ -13,8 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
-
+    super(new BorderLayout(5, 5));
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.addChoosableFileFilter(new PngFileFilter());
     fileChooser.addChoosableFileFilter(new JpgFileFilter());
@@ -27,22 +26,25 @@ public final class MainPanel extends JPanel {
     // https://bugs.openjdk.java.net/browse/JDK-4776197
     // fileChooser.setFileFilter(fileChooser.getAcceptAllFileFilter());
 
+    JTextArea log = new JTextArea();
     JButton button = new JButton("showOpenDialog");
     button.addActionListener(e -> {
       int retValue = fileChooser.showOpenDialog(getRootPane());
-      System.out.println(retValue);
-      // if (retValue == JFileChooser.APPROVE_OPTION) {
-      //   File file = fileChooser.getSelectedFile();
-      //   ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
-      //   combo1.setSelectedIndex(0);
-      // }
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
+        // File file = fileChooser.getSelectedFile();
+        // ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
+        // combo1.setSelectedIndex(0);
+      }
     });
 
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showOpenDialog(...)"));
     p.add(button);
-    add(p);
-    setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
