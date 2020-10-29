@@ -8,10 +8,16 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
-    super(new GridLayout(2, 1));
-    add(makeDefaultChooserPanel());
-    add(makeCustomChooserPanel());
+    super(new BorderLayout());
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(makeDefaultChooserPanel());
+    p.add(makeCustomChooserPanel());
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -23,15 +29,20 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("custom"));
 
-    JButton showOpenDialog = new JButton("Open:取消し->キャンセル");
+    // JButton showOpenDialog = new JButton("Open:取消し->キャンセル");
+    JButton showOpenDialog = new JButton("Open:取消->キャンセル");
     showOpenDialog.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.setApproveButtonText("開く(O)");
       // fileChooser.setApproveButtonMnemonic('O');
       int retValue = fileChooser.showOpenDialog(p);
-      System.out.println(retValue);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
+      }
     });
-    JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
+
+    // JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
+    JButton showSaveDialog = new JButton("Save:取消->キャンセル");
     showSaveDialog.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.addPropertyChangeListener(e -> {
@@ -45,7 +56,9 @@ public final class MainPanel extends JPanel {
       //   }
       // });
       int retValue = fileChooser.showSaveDialog(p);
-      System.out.println(retValue);
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
+      }
     });
     p.add(showOpenDialog);
     p.add(showSaveDialog);
