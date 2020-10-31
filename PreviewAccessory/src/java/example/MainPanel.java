@@ -13,20 +13,31 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private transient JFileChooser fileChooser;
+  private final JFileChooser fileChooser = new JFileChooser() {
+    @Override public void updateUI() {
+      super.updateUI();
+      setAccessory(new ImagePreview(this));
+    }
+  };
 
   private MainPanel() {
     super(new GridBagLayout());
     JButton button = new JButton("Open JFileChooser");
     button.addActionListener(e -> fileChooser.showOpenDialog(getRootPane()));
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(button);
     setPreferredSize(new Dimension(320, 240));
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    fileChooser = new JFileChooser();
-    fileChooser.setAccessory(new ImagePreview(fileChooser));
+    if (Objects.nonNull(fileChooser)) {
+      SwingUtilities.updateComponentTreeUI(fileChooser);
+    }
   }
 
   public static void main(String[] args) {
@@ -59,10 +70,9 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
   private ImageIcon thumbnail;
   private File file;
 
-  protected ImagePreview(JFileChooser fc) {
+  protected ImagePreview(JFileChooser chooser) {
     super();
-    fc.addPropertyChangeListener(this);
-    // setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, SystemColor.inactiveCaption));
+    chooser.addPropertyChangeListener(this);
   }
 
   @Override public Dimension getPreferredSize() {
@@ -121,6 +131,56 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
       int x = Math.max(PREVIEW_MARGIN, getWidth() / 2 - thumbnail.getIconWidth() / 2);
       int y = Math.max(0, getHeight() / 2 - thumbnail.getIconHeight() / 2);
       thumbnail.paintIcon(this, g, x, y);
+    }
+  }
+}
+
+final class LookAndFeelUtil {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtil() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup lafGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+      menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
+    }
+    return menu;
+  }
+
+  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
+    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClassName);
+    lafItem.setHideActionText(true);
+    lafItem.addActionListener(e -> {
+      ButtonModel m = lafGroup.getSelection();
+      try {
+        setLookAndFeel(m.getActionCommand());
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        ex.printStackTrace();
+        Toolkit.getDefaultToolkit().beep();
+      }
+    });
+    lafGroup.add(lafItem);
+    return lafItem;
+  }
+
+  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
+    if (!oldLookAndFeel.equals(lookAndFeel)) {
+      UIManager.setLookAndFeel(lookAndFeel);
+      LookAndFeelUtil.lookAndFeel = lookAndFeel;
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window: Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
     }
   }
 }
