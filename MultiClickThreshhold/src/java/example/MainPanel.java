@@ -5,48 +5,40 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private int num;
-
   private MainPanel() {
     super(new BorderLayout());
-
     JDesktopPane desktop = new JDesktopPane();
 
+    AtomicInteger num = new AtomicInteger();
     JButton button = new JButton("add");
-    button.addActionListener(e -> addInternalFrame(desktop));
+    button.addActionListener(e -> addInternalFrame(desktop, num.getAndIncrement()));
 
-    Long lv = Long.valueOf(button.getMultiClickThreshhold());
-    SpinnerNumberModel m = new SpinnerNumberModel(lv, Long.valueOf(0), Long.valueOf(10_000), Long.valueOf(100));
+    long lv = button.getMultiClickThreshhold();
+    SpinnerNumberModel m = new SpinnerNumberModel(lv, 0L, 10_000L, 100L);
     m.addChangeListener(e -> button.setMultiClickThreshhold(m.getNumber().longValue()));
 
     JMenuBar mb = new JMenuBar();
-    mb.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     mb.add(new JLabel("MultiClickThreshhold: "));
     mb.add(new JSpinner(m));
     mb.add(Box.createHorizontalGlue());
     mb.add(button);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(desktop);
-    add(mb, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void addInternalFrame(JDesktopPane desktop) {
-    JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
+  private static void addInternalFrame(JDesktopPane desktop, int idx) {
+    String title = "#" + idx;
+    JInternalFrame f = new JInternalFrame(title, true, true, true, true);
+    f.setBounds(idx * 10, idx * 10, 200, 100);
+    f.setVisible(true);
     desktop.add(f);
     desktop.getDesktopManager().activateFrame(f);
-    num++;
-  }
-
-  private static JInternalFrame createFrame(String t, int x, int y) {
-    JInternalFrame f = new JInternalFrame(t, true, true, true, true);
-    f.setSize(200, 100);
-    f.setLocation(x, y);
-    f.setVisible(true);
-    return f;
   }
 
   public static void main(String[] args) {
