@@ -5,15 +5,14 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JDesktopPane desktop = new JDesktopPane();
     desktop.setDesktopManager(new DefaultDesktopManager() {
       @Override public void iconifyFrame(JInternalFrame f) {
@@ -26,16 +25,16 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame("looooooooooooong title #", 1));
     desktop.add(createFrame("#", 0));
 
+    AtomicInteger idx = new AtomicInteger(2);
+    JButton button = new JButton("add");
+    button.addActionListener(e -> {
+      JInternalFrame f = createFrame("#", idx.getAndIncrement());
+      desktop.add(f);
+      desktop.getDesktopManager().activateFrame(f);
+    });
+
     add(desktop);
-    add(new JButton(new AbstractAction("add") {
-      private int num = 2;
-      @Override public void actionPerformed(ActionEvent e) {
-        JInternalFrame f = createFrame("#", num);
-        desktop.add(f);
-        desktop.getDesktopManager().activateFrame(f);
-        num++;
-      }
-    }), BorderLayout.SOUTH);
+    add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
