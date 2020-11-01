@@ -32,10 +32,7 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model) {
       // https://community.oracle.com/thread/1350192 JTable starts editing when F3 is pressed - howto disable?
       @Override public boolean editCellAt(int row, int column, EventObject e) {
-        if (!check.isSelected()) {
-          return super.editCellAt(row, column, e);
-        }
-        if (e instanceof KeyEvent) {
+        if (check.isSelected() && e instanceof KeyEvent) {
           int c = ((KeyEvent) e).getKeyCode();
           if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
             return false;
