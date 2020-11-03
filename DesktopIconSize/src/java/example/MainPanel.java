@@ -6,13 +6,13 @@ package example;
 
 import java.awt.*;
 import java.beans.PropertyVetoException;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final Dimension ICON_SIZE = new Dimension(150, 40);
   private final String info = String.format("JDesktopIcon: %dx%d", ICON_SIZE.width, ICON_SIZE.height);
   public final JCheckBox check = new JCheckBox(info);
-  private int num;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -28,12 +28,13 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    AtomicInteger idx = new AtomicInteger();
     JButton button = new JButton("add");
     button.addActionListener(e -> {
-      JInternalFrame f = createFrame("#" + num, num * 10, num * 10);
+      int i = idx.getAndIncrement();
+      JInternalFrame f = createFrame("#" + i, i * 10, i * 10);
       desktop.add(f);
       desktop.getDesktopManager().activateFrame(f);
-      num++;
     });
 
     JMenuBar mb = new JMenuBar();
