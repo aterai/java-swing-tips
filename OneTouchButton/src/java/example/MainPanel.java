@@ -23,25 +23,7 @@ public final class MainPanel extends JPanel {
     JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT) {
       @Override public void updateUI() {
         super.updateUI();
-        BasicSplitPaneDivider divider = ((BasicSplitPaneUI) getUI()).getDivider();
-        // divider.setBorder(BorderFactory.createMatteBorder(20, 0, 5, 0, Color.RED)); // bug?
-        // divider.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
-        divider.setBackground(Color.ORANGE);
-        for (Component c: divider.getComponents()) {
-          if (c instanceof JButton) {
-            JButton b = (JButton) c;
-            // @see BasicSplitPaneDivider#createLeftOneTouchButton()
-            // @see BasicSplitPaneDivider#createRightOneTouchButton()
-            // public void paint(Graphics g) {
-            //  ... then draw the arrow.
-            //  g.setColor(Color.black);
-            //  g.fillPolygon(xs, ys, 3);
-            //  ...
-            // b.setOpaque(false);
-            // b.setForeground(Color.BLUE);
-            b.setBackground(Color.ORANGE);
-          }
-        }
+        EventQueue.invokeLater(() -> updateDividerColor(((BasicSplitPaneUI) getUI()).getDivider()));
       }
     };
     splitPane.setTopComponent(new JScrollPane(new JTable(8, 3)));
@@ -49,17 +31,32 @@ public final class MainPanel extends JPanel {
     splitPane.setOneTouchExpandable(true);
     splitPane.setDividerSize(32);
 
-    BasicSplitPaneDivider divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+    // BasicSplitPaneDivider divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+    // updateDividerColor(divider);
+
+    add(splitPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void updateDividerColor(BasicSplitPaneDivider divider) {
+    // divider.setBorder(BorderFactory.createMatteBorder(20, 0, 5, 0, Color.RED)); // bug?
+    // divider.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
     divider.setBackground(Color.ORANGE);
     for (Component c: divider.getComponents()) {
       if (c instanceof JButton) {
         JButton b = (JButton) c;
+        // @see BasicSplitPaneDivider#createLeftOneTouchButton()
+        // @see BasicSplitPaneDivider#createRightOneTouchButton()
+        // public void paint(Graphics g) {
+        //  ... then draw the arrow.
+        //  g.setColor(Color.black);
+        //  g.fillPolygon(xs, ys, 3);
+        //  ...
+        // b.setOpaque(false);
+        // b.setForeground(Color.BLUE);
         b.setBackground(Color.ORANGE);
       }
     }
-
-    add(splitPane);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
