@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -105,7 +106,6 @@ class ScrollAction extends AbstractAction {
   private final JScrollPane scrollPane;
   private final Timer scroller = new Timer(5, null);
   private transient ActionListener listener;
-  private int count;
 
   protected ScrollAction(String name, JScrollPane scrollPane, Point vec) {
     super(name);
@@ -129,12 +129,12 @@ class ScrollAction extends AbstractAction {
     int sy = vport.getViewPosition().y;
     Rectangle rect = new Rectangle(w, h);
     scroller.removeActionListener(listener);
-    count = (int) SIZE;
+    AtomicInteger counter = new AtomicInteger((int) SIZE);
     listener = e -> {
-      double a = easeInOut(--count / SIZE);
+      double a = easeInOut(counter.getAndDecrement() / SIZE);
       int dx = (int) (w - a * w + .5);
       int dy = (int) (h - a * h + .5);
-      if (count <= 0) {
+      if (counter.get() <= 0) {
         dx = w;
         dy = h;
         scroller.stop();
