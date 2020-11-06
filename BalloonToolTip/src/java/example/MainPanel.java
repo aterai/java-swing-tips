@@ -106,7 +106,7 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
 }
 
 class BalloonToolTip extends JToolTip {
-  private HierarchyListener listener;
+  private transient HierarchyListener listener;
 
   @Override public void updateUI() {
     removeHierarchyListener(listener);
