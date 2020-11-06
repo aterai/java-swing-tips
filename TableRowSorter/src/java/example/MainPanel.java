@@ -35,13 +35,13 @@ public final class MainPanel extends JPanel {
 
     TableCellRenderer renderer = (tbl, value, isSelected, hasFocus, row, column) -> {
       TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-      JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+      Component c = r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
       RowSorter<? extends TableModel> rs = tbl.getRowSorter();
       if (rs instanceof DefaultRowSorter) {
         int cmi = tbl.convertColumnIndexToModel(column);
-        l.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
+        c.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
       }
-      return l;
+      return c;
     };
     TableColumnModel columns = table.getColumnModel();
     for (int i = 0; i < columns.getColumnCount(); i++) {
