@@ -19,8 +19,10 @@ public final class MainPanel extends JPanel {
     JComboBox<String> combo1 = new JComboBox<String>(items) {
       @Override public void updateUI() {
         super.updateUI();
-        JLabel r = (JLabel) getRenderer();
-        r.setPreferredSize(new Dimension(0, 32));
+        ListCellRenderer<? super String> r = getRenderer();
+        if (r instanceof Component) {
+          ((Component) r).setPreferredSize(new Dimension(0, 32));
+        }
       }
     };
     p.add(makeTitledPanel("setPreferredSize", combo1));
