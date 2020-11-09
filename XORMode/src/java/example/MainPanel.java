@@ -69,7 +69,24 @@ class ImageIconPanel extends JPanel {
     int y = (dim.height - ih) / 2;
     g.drawImage(icon.getImage(), x, y, iw, ih, this);
 
+    g2.setPaint(Color.RED);
+    g2.fillOval(10, 10, 32, 32);
+
+    g2.setPaint(Color.GREEN);
+    g2.fillOval(50, 10, 32, 32);
+
+    g2.setPaint(Color.BLUE);
+    g2.fillOval(90, 10, 32, 32);
+
+    g2.setPaint(Color.PINK);
+    g2.fillOval(130, 10, 32, 32);
+
+    g2.setPaint(Color.CYAN);
+    g2.fillOval(170, 10, 32, 32);
+
     g2.setPaint(Color.ORANGE);
+    g2.fillOval(210, 10, 32, 32);
+
     g2.setXORMode(Color.PINK);
     g2.fill(rubberBand);
 
