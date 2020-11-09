@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -38,18 +39,18 @@ public final class MainPanel extends JPanel {
 }
 
 class TabbedPanePopupMenu extends JPopupMenu {
-  private transient int count;
   private final JMenuItem closePage;
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
   protected TabbedPanePopupMenu() {
     super();
+    AtomicInteger counter = new AtomicInteger();
     add("New tab").addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
+      int iv = counter.getAndIncrement();
+      tabbedPane.addTab("Title: " + iv, new JLabel("Tab: " + iv));
       tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-      count++;
     });
     addSeparator();
     closePage = add("Close");
@@ -66,9 +67,9 @@ class TabbedPanePopupMenu extends JPopupMenu {
     closeAllButActive = add("Close all bat active");
     closeAllButActive.addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      int tabidx = tabbedPane.getSelectedIndex();
-      String title = tabbedPane.getTitleAt(tabidx);
-      Component cmp = tabbedPane.getComponentAt(tabidx);
+      int idx = tabbedPane.getSelectedIndex();
+      String title = tabbedPane.getTitleAt(idx);
+      Component cmp = tabbedPane.getComponentAt(idx);
       tabbedPane.removeAll();
       tabbedPane.addTab(title, cmp);
     });
@@ -77,7 +78,7 @@ class TabbedPanePopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTabbedPane) {
       JTabbedPane tabbedPane = (JTabbedPane) c;
-      // JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
+      // JDK 1.3: tabIndex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
       closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
       closeAll.setEnabled(tabbedPane.getTabCount() > 0);
       closeAllButActive.setEnabled(tabbedPane.getTabCount() > 0);
