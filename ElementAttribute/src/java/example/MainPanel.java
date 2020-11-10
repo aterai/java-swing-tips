@@ -14,6 +14,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.Position;
 import javax.swing.text.StyleConstants;
@@ -155,9 +156,9 @@ class CustomTooltipEditorPane extends JEditorPane {
       if (bias[0] == Position.Bias.Backward && pos > 0) {
         pos--;
       }
-      if (pos >= 0 && editor.getDocument() instanceof HTMLDocument) {
-        HTMLDocument doc = (HTMLDocument) editor.getDocument();
-        return getSpanTitleAttribute(doc, pos).orElse(title);
+      Document doc = editor.getDocument();
+      if (pos >= 0 && doc instanceof HTMLDocument) {
+        return getSpanTitleAttribute((HTMLDocument) doc, pos).orElse(title);
       }
     }
     return title;
