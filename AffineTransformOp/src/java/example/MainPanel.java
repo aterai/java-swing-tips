@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -29,9 +30,11 @@ public final class MainPanel extends JPanel {
       box.add(Box.createHorizontalStrut(5));
     });
 
-    BufferedImage img = Optional.ofNullable(getClass().getResource("test.jpg")).map(url -> {
-      try {
-        return ImageIO.read(url);
+    String path = "example/test.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
       } catch (IOException ex) {
         return makeMissingImage();
       }
