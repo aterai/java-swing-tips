@@ -10,29 +10,33 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public static final Dimension CELLSZ = new Dimension(8, 8);
+  public static final Dimension CELL_SIZE = new Dimension(8, 8);
 
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel();
     JLabel label1 = new JLabel();
     p.add(label1);
     JLabel label2 = new JLabel();
     p.add(label2);
 
-    BufferedImage image;
-    try {
-      image = ImageIO.read(getClass().getResource("duke.gif"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      image = makeMissingImage();
-    }
+    String path = "example/duke.gif";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     label1.setIcon(new ImageIcon(image));
 
     ColorModel colorModel = image.getColorModel();
@@ -59,8 +63,8 @@ public final class MainPanel extends JPanel {
           super.updateUI();
           setLayoutOrientation(JList.HORIZONTAL_WRAP);
           setVisibleRowCount(8);
-          setFixedCellWidth(CELLSZ.width);
-          setFixedCellHeight(CELLSZ.height);
+          setFixedCellWidth(CELL_SIZE.width);
+          setFixedCellHeight(CELL_SIZE.height);
           setCellRenderer(new IndexedColorListRenderer());
           getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
           setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -177,11 +181,11 @@ class ColorIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return MainPanel.CELLSZ.width - 2;
+    return MainPanel.CELL_SIZE.width - 2;
   }
 
   @Override public int getIconHeight() {
-    return MainPanel.CELLSZ.height - 2;
+    return MainPanel.CELL_SIZE.height - 2;
   }
 }
 
