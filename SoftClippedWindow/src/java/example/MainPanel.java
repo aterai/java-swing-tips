@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,15 +18,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-
-    BufferedImage img;
-    try {
-      img = ImageIO.read(getClass().getResource("test.jpg"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      img = makeMissingImage();
-    }
-    BufferedImage image = img;
+    String path = "example/test.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
     int width = image.getWidth();
     int height = image.getHeight();
