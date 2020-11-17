@@ -120,7 +120,7 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     String txt = Objects.toString(value, "");
-    if (Objects.nonNull(pattern) && !pattern.isEmpty() && !Objects.equals(pattern, prev)) {
+    if (!pattern.isEmpty() && !Objects.equals(pattern, prev)) {
       Matcher matcher = Pattern.compile(pattern).matcher(txt);
       int pos = 0;
       StringBuilder buf = new StringBuilder("<html>");
