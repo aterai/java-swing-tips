@@ -20,7 +20,6 @@ import javax.swing.plaf.synth.SynthStyle;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // http://www.famfamfam.com/lab/icons/mini/
     JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
       private transient MouseListener handler;
@@ -52,14 +51,15 @@ public final class MainPanel extends JPanel {
 
     ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane() {
       @Override public void updateUI() {
-        UIManager.put("TabbedPane.tabAreaInsets", null); // uninstall
+        String key = "TabbedPane.tabAreaInsets";
+        UIManager.put(key, null); // uninstall
         super.updateUI();
         // setAlignmentX(Component.LEFT_ALIGNMENT);
         // setAlignmentY(Component.TOP_ALIGNMENT);
         // System.out.println(button.getAlignmentY());
         // button.setAlignmentY(Component.TOP_ALIGNMENT);
         // System.out.println(button.getAlignmentY());
-        UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets());
+        UIManager.put(key, getButtonPaddingTabAreaInsets());
         super.updateUI(); // reinstall
       }
 
