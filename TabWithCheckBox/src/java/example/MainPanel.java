@@ -5,14 +5,12 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private int count;
-
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabs = new JTabbedPane() {
       @Override public void addTab(String title, Component content) {
         super.addTab(title, content);
@@ -54,6 +52,7 @@ public final class MainPanel extends JPanel {
         //       return super.contains(x, y);
         //     }
         //   }
+        //
         //   @Override public void updateUI() {
         //     super.updateUI();
         //     setOpaque(false);
@@ -64,6 +63,7 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox();
         check.setOpaque(false);
         check.setFocusable(false);
+
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
         p.setOpaque(false);
         p.add(check, BorderLayout.WEST);
@@ -72,21 +72,20 @@ public final class MainPanel extends JPanel {
       }
     };
     tabs.addTab("JTree", new JScrollPane(new JTree()));
-    tabs.addTab("JLabel", new JLabel("aaaaaaaaaaaaa"));
+    tabs.addTab("JLabel", new JLabel("JLabel"));
 
+    AtomicInteger counter = new AtomicInteger(0);
     JButton button = new JButton("Add");
-    button.addActionListener(e -> addTab(tabs));
+    button.addActionListener(e -> {
+      int i = counter.getAndIncrement();
+      Component tab = i % 2 == 0 ? new JTree() : new JLabel("JLabel: " + i);
+      tabs.addTab("Tab" + i, tab);
+      tabs.setSelectedIndex(tabs.getTabCount() - 1);
+    });
 
     add(tabs);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  public void addTab(JTabbedPane tabs) {
-    Component c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
-    tabs.addTab("Title" + count, c);
-    tabs.setSelectedIndex(tabs.getTabCount() - 1);
-    count++;
   }
 
   public static void main(String[] args) {
