@@ -9,20 +9,24 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String path = "example/duke.gif";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
-    BufferedImage image;
-    try {
-      image = ImageIO.read(getClass().getResource("duke.gif"));
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      image = makeMissingImage();
-    }
     JLabel icon = makeLabelIcon(image);
     icon.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     icon.setSize(icon.getPreferredSize());
