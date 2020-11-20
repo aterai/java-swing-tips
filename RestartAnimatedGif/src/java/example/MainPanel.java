@@ -9,22 +9,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String path = "example/9-0.gif";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    BufferedImage bi = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
-    URL url = getClass().getResource("9-0.gif");
-    BufferedImage bi;
-    try {
-      bi = ImageIO.read(url);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      bi = makeMissingImage();
-    }
     ImageIcon icon9 = new ImageIcon(bi);
     ImageIcon animatedIcon = new ImageIcon(url);
 
