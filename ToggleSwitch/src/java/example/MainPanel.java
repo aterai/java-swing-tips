@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     def.put("Slider.thumbHeight", 40);
     JSlider slider0 = makeToggleSlider(def);
 
-    UIDefaults d = makeSliderPaiter();
+    UIDefaults d = makeSliderPainter();
     JSlider slider1 = makeToggleSlider(d);
     slider1.addMouseMotionListener(new MouseAdapter() {
       @Override public void mouseDragged(MouseEvent e) {
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  private static UIDefaults makeSliderPaiter() {
+  private static UIDefaults makeSliderPainter() {
     UIDefaults d = new UIDefaults();
     d.put("Slider.thumbWidth", 40);
     d.put("Slider.thumbHeight", 40);
