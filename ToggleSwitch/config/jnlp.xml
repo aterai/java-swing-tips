@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ToggleSwitch" />
+  <property name="jnlp.Name"     value="ToggleSwitch" />
+  <property name="jnlp.name"     value="toggleswitch" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/toggleswitch/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToggleSwitch.html" />
+</project>
