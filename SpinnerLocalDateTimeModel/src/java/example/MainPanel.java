@@ -77,6 +77,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("JdkObsolete")
   private static Date toDate(LocalDateTime localDateTime) {
     return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
   }
@@ -188,7 +189,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
   }
 
   @Override public Object getValue() {
-    return value;
+    return getLocalDateTime();
   }
 
   @Override public void setValue(Object value) {
@@ -242,7 +243,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
       super(dateTimeFormatter.toFormat());
     }
 
-    @Override public String valueToString(Object value) throws ParseException {
+    @Override public String valueToString(Object value) {
       // System.out.println(value.getClass().getName());
       if (value instanceof TemporalAccessor) {
         // return ((LocalDateTime) value).format(dateTimeFormatter);
@@ -268,9 +269,9 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         }
         Comparable<ChronoLocalDateTime<?>> min = m.getStart();
         Comparable<ChronoLocalDateTime<?>> max = m.getEnd();
-        if (Objects.nonNull(min) && min.compareTo(value) > 0) {
-          throw new ParseException(text + " is out of range", 0);
-        } else if (Objects.nonNull(max) && max.compareTo(value) < 0) {
+        boolean a = Objects.nonNull(min) && min.compareTo(value) > 0;
+        boolean b = Objects.nonNull(max) && max.compareTo(value) < 0;
+        if (a || b) {
           throw new ParseException(text + " is out of range", 0);
         }
         return value;
