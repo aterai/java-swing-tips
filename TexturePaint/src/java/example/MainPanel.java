@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,14 +17,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    BufferedImage bi = Optional.ofNullable(getClass().getResource("16x16.png"))
-        .map(url -> {
-          try {
-            return ImageIO.read(url);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    String path = "example/16x16.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
 
     add(new JLabel("@title@"));
