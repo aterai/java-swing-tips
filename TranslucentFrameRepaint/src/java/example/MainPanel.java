@@ -182,14 +182,15 @@ final class TextureUtil {
 
   public static TexturePaint makeImageTexture() {
     // unkaku_w.png http://www.viva-edo.com/komon/edokomon.html
-    BufferedImage bi = Optional.ofNullable(TextureUtil.class.getResource("unkaku_w.png"))
-        .map(url -> {
-          try {
-            return ImageIO.read(url);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(TextureUtil::makeMissingImage);
+    String path = "example/unkaku_w.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(TextureUtil::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 
