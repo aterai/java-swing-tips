@@ -12,6 +12,7 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import javax.imageio.ImageIO;
@@ -104,14 +105,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image = Optional.ofNullable(url)
-        .map(u -> {
-          try {
-            return ImageIO.read(u);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    BufferedImage image = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(u);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
     BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
