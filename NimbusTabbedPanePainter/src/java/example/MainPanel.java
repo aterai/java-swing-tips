@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
 }
 
 final class NimbusTabbedPanePainterUtils {
-  public static final int OVERPAINT = 6;
-  public static final int STROKE_SIZE = 2;
+  public static final int OVER_PAINT = 6;
+  public static final float STROKE_SIZE = 2f;
   public static final int ARC = 10;
   public static final Color CONTENT_BACKGROUND = Color.LIGHT_GRAY;
   public static final Color CONTENT_BORDER = Color.ORANGE; // Color.GRAY;
@@ -63,7 +63,7 @@ final class NimbusTabbedPanePainterUtils {
     d.put("TabbedPane:TabbedPaneContent.contentMargins", new Insets(0, 5, 5, 5));
     // d.put("TabbedPane:TabbedPaneTab.contentMargins", new Insets(2, 8, 3, 8));
     // d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, 4, 10));
-    d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, OVERPAINT, 10));
+    d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, OVER_PAINT, 10));
 
     Painter<JComponent> tabAreaPainter = new TabAreaPainter();
     d.put("TabbedPane:TabbedPaneTabArea[Disabled].backgroundPainter", tabAreaPainter);
@@ -97,23 +97,23 @@ final class NimbusTabbedPanePainterUtils {
     }
 
     @Override public void paint(Graphics2D g, JComponent c, int width, int height) {
-      int a = selected ? OVERPAINT : 0;
+      int a = selected ? OVER_PAINT : 0;
       int r = 6;
-      int x = 3;
-      int y = 3;
+      double x = 3d;
+      double y = 3d;
       Graphics2D g2 = (Graphics2D) g.create(0, 0, width, height + a);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      int w = width - x;
-      int h = height + a;
+      double w = width - x;
+      double h = (height + a);
 
       // Paint tab shadow
       if (selected) {
         g2.setPaint(new Color(0, 0, 0, 20));
-        RoundRectangle2D rrect = new RoundRectangle2D.Double(0d, 0d, w, h, r, r);
+        RoundRectangle2D rect = new RoundRectangle2D.Double(0d, 0d, w, h, r, r);
         for (int i = 0; i < x; i++) {
-          rrect.setFrame(x - i, y - i, w + i + i, h);
-          g2.fill(rrect);
+          rect.setFrame(x - i, y - i, w + i + i, h);
+          g2.fill(rect);
         }
       }
 
@@ -127,9 +127,9 @@ final class NimbusTabbedPanePainterUtils {
         g2.setPaint(TABAREA_BORDER);
         g2.draw(new RoundRectangle2D.Double(x, y, w - 1d, h + a, r, r));
 
-        // Overpaint the overexposed area with the background color
+        // Over paint the overexposed area with the background color
         g2.setColor(TAB_TABAREA_MASK);
-        g2.fill(new Rectangle2D.Double(0d, height + STROKE_SIZE, width, OVERPAINT));
+        g2.fill(new Rectangle2D.Double(0d, height + STROKE_SIZE, width, OVER_PAINT));
       }
       g2.dispose();
     }
@@ -139,8 +139,8 @@ final class NimbusTabbedPanePainterUtils {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-      Shape r = new RoundRectangle2D.Double(0d, h - OVERPAINT, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
+      double dy = (h - OVER_PAINT);
+      Shape r = new RoundRectangle2D.Double(0d, dy, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
       g2.setPaint(TABAREA_BACKGROUND);
       g2.fill(r);
       g2.setColor(TABAREA_BORDER);
@@ -154,9 +154,9 @@ final class NimbusTabbedPanePainterUtils {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.translate(0, -OVERPAINT);
+      g2.translate(0, -OVER_PAINT);
 
-      Shape r = new RoundRectangle2D.Double(0d, 0d, w - STROKE_SIZE, h - STROKE_SIZE + OVERPAINT, ARC, ARC);
+      Shape r = new RoundRectangle2D.Double(0d, 0d, w - STROKE_SIZE, h - STROKE_SIZE + OVER_PAINT, ARC, ARC);
       g2.setPaint(CONTENT_BACKGROUND);
       g2.fill(r);
       g2.setColor(CONTENT_BORDER);
