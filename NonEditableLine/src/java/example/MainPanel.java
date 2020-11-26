@@ -23,15 +23,15 @@ public final class MainPanel extends JPanel {
     int maskRange = 2;
     HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.GRAY);
     JTextArea textArea = new JTextArea();
-    textArea.setText("aaaaaaaasdfasdfasdfasdf\nasdfasdfasdfasdfasdfasdf\n1234567890\naaaaaaaaaaaaaaaaaasdfasd");
+    textArea.setText("Non editable lines\naaa bbb ccc ddd eee\n1234567890\n1234567890987654321");
     ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter(maskRange));
     try {
-      Highlighter hilite = textArea.getHighlighter();
+      Highlighter highlighter = textArea.getHighlighter();
       Document doc = textArea.getDocument();
       Element root = doc.getDefaultRootElement();
       for (int i = 0; i < maskRange; i++) { // root.getElementCount(); i++) {
         Element elem = root.getElement(i);
-        hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
+        highlighter.addHighlight(elem.getStartOffset(), elem.getEndOffset() - 1, highlightPainter);
       }
     } catch (BadLocationException ex) {
       // should never happen
