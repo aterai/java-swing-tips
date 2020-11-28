@@ -11,6 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,15 +19,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    Image img = Optional.ofNullable(getClass().getResource("CRW_3857_JFR.jpg"))
-        .map(u -> {
-          try {
-            return ImageIO.read(u);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    String path = "example/CRW_3857_JFR.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
     add(new JScrollPane(new ZoomAndPanePanel(img)));
     setPreferredSize(new Dimension(320, 240));
