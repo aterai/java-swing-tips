@@ -96,18 +96,19 @@ public final class MainPanel extends JPanel {
   }
 
   private static Charset getCharset(URLConnection urlConnection) {
-    Charset cs = StandardCharsets.UTF_8;
     String encoding = urlConnection.getContentEncoding();
+    Charset cs;
     if (Objects.nonNull(encoding)) {
       cs = Charset.forName(encoding);
     } else {
       String contentType = urlConnection.getContentType();
-      Stream.of(contentType.split(";"))
+      cs = Stream.of(contentType.split(";"))
           .map(String::trim)
           .filter(s -> !s.isEmpty() && s.toLowerCase(Locale.ENGLISH).startsWith("charset="))
           .map(s -> s.substring("charset=".length()))
           .findFirst()
-          .ifPresent(Charset::forName);
+          .map(Charset::forName)
+          .orElse(StandardCharsets.UTF_8);
     }
     System.out.println(cs);
     return cs;
