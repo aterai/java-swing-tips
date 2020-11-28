@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
 import javax.imageio.ImageIO;
@@ -63,14 +64,15 @@ public final class MainPanel extends JPanel {
 
   public TexturePaint makeTexturePaint() {
     // unkaku_w.gif http://www.viva-edo.com/komon/edokomon.html
-    BufferedImage bi = Optional.ofNullable(getClass().getResource("unkaku_w.gif"))
-        .map(url -> {
-          try {
-            return ImageIO.read(url);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    String path = "example/unkaku_w.gif";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 
