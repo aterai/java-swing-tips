@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TranslucentLabelForeground" />
+  <property name="jnlp.Name"     value="TranslucentLabelForeground" />
+  <property name="jnlp.name"     value="translucentlabelforeground" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/translucentlabelforeground" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TranslucentLabelForeground.html" />
+</project>
