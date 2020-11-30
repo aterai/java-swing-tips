@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -74,16 +75,17 @@ public final class MainPanel extends JPanel {
     super.paintComponent(g);
   }
 
-  private TexturePaint makeImageTexture() {
+  private static TexturePaint makeImageTexture() {
     // unkaku_w.png http://www.viva-edo.com/komon/edokomon.html
-    BufferedImage bi = Optional.ofNullable(getClass().getResource("unkaku_w.png"))
-        .map(url -> {
-          try {
-            return ImageIO.read(url);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    String path = "example/unkaku_w.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 
