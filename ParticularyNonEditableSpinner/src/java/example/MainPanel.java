@@ -13,7 +13,7 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 1, .01));
+    JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0d, 0d, 1d, .01));
     JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0%");
     spinner1.setEditor(editor1);
 
