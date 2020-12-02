@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static SpinnerNumberModel makeSpinnerNumberModel() {
-    return new SpinnerNumberModel(Double.valueOf(10), Double.valueOf(0), Double.valueOf(100), Double.valueOf(1));
+    return new SpinnerNumberModel(10d, 0d, 100d, 1d);
   }
 
   private static JSpinner makeSpinner1(SpinnerNumberModel m) {
