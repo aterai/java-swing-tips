@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
 // https://community.oracle.com/thread/1385467 JTextPane edit mode (insert or overwrite)???
 class OvertypeTextArea extends JTextArea {
   private boolean overtypeMode = true;
-  private Caret defaultCaret;
-  private Caret overtypeCaret;
+  private transient Caret defaultCaret;
+  private transient Caret overtypeCaret;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -122,6 +122,7 @@ class OvertypeTextArea extends JTextArea {
           JTextComponent component = getComponent();
           TextUI mapper = component.getUI();
           Rectangle r = mapper.modelToView(component, getDot());
+          // Java 9: Rectangle rect = mapper.modelToView2D(c, pos, Position.Bias.Forward).getBounds();
           g.setColor(component.getCaretColor());
           int width = g.getFontMetrics().charWidth('w');
           // A patch for full width characters >>>>
