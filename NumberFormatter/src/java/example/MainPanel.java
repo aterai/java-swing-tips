@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static SpinnerNumberModel makeSpinnerNumberModel() {
-    return new SpinnerNumberModel(Long.valueOf(10), Long.valueOf(0), Long.valueOf(99_999), Long.valueOf(1));
+    return new SpinnerNumberModel(10L, 0L, 99_999L, 1L);
   }
 
   private static Component makeTitledPanel(String title, Component cmp) {
