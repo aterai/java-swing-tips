@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import javax.imageio.ImageIO;
@@ -49,14 +50,13 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p3));
 
     URL url = getClass().getResource("tokeidai.jpg");
-    BufferedImage image = Optional.ofNullable(url)
-        .map(u -> {
-          try {
-            return ImageIO.read(u);
-          } catch (IOException ex) {
-            return makeMissingImage();
-          }
-        }).orElseGet(MainPanel::makeMissingImage);
+    BufferedImage image = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     desktop.setBorder(new CentredBackgroundBorder(image));
     // [JDK-6655001] D3D/OGL: Window translucency doesn't work with accelerated pipelines - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6655001
