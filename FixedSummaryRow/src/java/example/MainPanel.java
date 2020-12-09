@@ -18,7 +18,6 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"aaa", "bbb"};
     Object[][] data = {
       {Integer.MIN_VALUE, Integer.MIN_VALUE},
@@ -61,19 +60,18 @@ public final class MainPanel extends JPanel {
     });
     TableCellRenderer renderer = new DefaultTableCellRenderer() {
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JLabel l;
+        Component c;
         TableModel m = table.getModel();
         if (row == m.getRowCount() - 2) {
-          // int total = getSum(model, table.convertColumnIndexToModel(column));
           int total = IntStream.range(1, m.getRowCount() - 1).map(i -> (Integer) m.getValueAt(i, column)).sum();
-          l = (JLabel) super.getTableCellRendererComponent(table, total, isSelected, hasFocus, row, column);
-          l.setBackground(Color.ORANGE);
+          c = super.getTableCellRendererComponent(table, total, isSelected, hasFocus, row, column);
+          c.setBackground(Color.ORANGE);
         } else {
-          l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-          l.setBackground(Color.WHITE);
+          c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+          c.setBackground(Color.WHITE);
         }
-        l.setForeground(Color.BLACK);
-        return l;
+        c.setForeground(Color.BLACK);
+        return c;
       }
     };
     TableColumnModel cm = table.getColumnModel();
@@ -84,13 +82,6 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
-  // protected static int getSum(DefaultTableModel model, int column) {
-  //   int counter = 0;
-  //   for (int i = 1; i < model.getRowCount() - 1; i++) {
-  //     counter += (Integer) model.getValueAt(i, column);
-  //   }
-  //   return counter;
-  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
