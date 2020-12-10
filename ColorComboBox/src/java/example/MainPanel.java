@@ -101,9 +101,9 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
 
   @Override public void setEditable(boolean flag) {
     super.setEditable(flag);
-    if (flag) {
-      JTextField field = (JTextField) getEditor().getEditorComponent();
-      field.setOpaque(true);
+    Component field = getEditor().getEditorComponent();
+    if (flag && field instanceof JComponent) {
+      ((JComponent) field).setOpaque(true);
       field.setBackground(getAlternateRowColor(getSelectedIndex()));
     }
   }
@@ -129,8 +129,7 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
       JComboBox<?> cb = (JComboBox<?>) e.getItemSelectable();
       Color rc = getAlternateRowColor(cb.getSelectedIndex());
       if (cb.isEditable()) {
-        JTextField field = (JTextField) cb.getEditor().getEditorComponent();
-        field.setBackground(rc);
+        cb.getEditor().getEditorComponent().setBackground(rc);
       } else {
         cb.setBackground(rc);
       }
@@ -138,10 +137,9 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     addItemListener(itemColorListener);
     EventQueue.invokeLater(() -> {
       Component c = getEditor().getEditorComponent();
-      if (c instanceof JTextField) {
-        JTextField field = (JTextField) c;
-        field.setOpaque(true);
-        field.setBackground(getAlternateRowColor(getSelectedIndex()));
+      c.setBackground(getAlternateRowColor(getSelectedIndex()));
+      if (c instanceof JComponent) {
+        ((JComponent) c).setOpaque(true);
       }
     });
   }
