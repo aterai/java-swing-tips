@@ -91,12 +91,13 @@ public final class MainPanel extends JPanel {
     private final JPanel panel = new JPanel(new BorderLayout());
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-      JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-      if (value instanceof LocalDate) {
+      Component c = super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+      if (value instanceof LocalDate && c instanceof JLabel) {
         LocalDate d = (LocalDate) value;
-        c.setText(Objects.toString(d.getDayOfMonth()));
-        c.setVerticalAlignment(SwingConstants.TOP);
-        c.setHorizontalAlignment(SwingConstants.LEFT);
+        JLabel l = (JLabel) c;
+        l.setText(Objects.toString(d.getDayOfMonth()));
+        l.setVerticalAlignment(SwingConstants.TOP);
+        l.setHorizontalAlignment(SwingConstants.LEFT);
         updateCellWeekColor(d, c, c);
 
         LocalDate nextWeekDay = d.plusDays(7);
@@ -111,8 +112,8 @@ public final class MainPanel extends JPanel {
           panel.removeAll();
           panel.add(sub, BorderLayout.SOUTH);
           panel.add(c, BorderLayout.NORTH);
-          panel.setBorder(c.getBorder());
-          c.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+          panel.setBorder(l.getBorder());
+          l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
           updateCellWeekColor(d, sub, panel);
           return new JLayer<>(panel, new DiagonallySplitCellLayerUI());
@@ -121,7 +122,7 @@ public final class MainPanel extends JPanel {
       return c;
     }
 
-    private void updateCellWeekColor(LocalDate d, JComponent fgc, JComponent bgc) {
+    private void updateCellWeekColor(LocalDate d, Component fgc, Component bgc) {
       if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
         fgc.setForeground(Color.BLACK);
       } else {
