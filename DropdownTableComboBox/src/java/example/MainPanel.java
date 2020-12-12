@@ -63,8 +63,7 @@ public final class MainPanel extends JPanel {
     });
     ListCellRenderer<? super List<Object>> renderer = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      c.setOpaque(true);
+      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (isSelected) {
         c.setBackground(list.getSelectionBackground());
         c.setForeground(list.getSelectionForeground());
@@ -72,7 +71,11 @@ public final class MainPanel extends JPanel {
         c.setBackground(list.getBackground());
         c.setForeground(list.getForeground());
       }
-      c.setText(Objects.toString(value.get(0), ""));
+      if (c instanceof JLabel) {
+        JLabel l = (JLabel) c;
+        l.setOpaque(true);
+        l.setText(Objects.toString(value.get(0), ""));
+      }
       return c;
     });
 
