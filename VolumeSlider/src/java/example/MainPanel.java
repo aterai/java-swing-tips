@@ -11,7 +11,6 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     JSlider slider1 = new JSlider(0, 100, 0);
     slider1.setUI(new TriSliderUI());
     slider1.setMajorTickSpacing(10);
@@ -21,12 +20,11 @@ public final class MainPanel extends JPanel {
 
     JSlider slider2 = new JSlider(0, 100, 0);
     slider2.setUI(new MetalSliderUI() {
-      @Override protected void paintHorizontalLabel(Graphics g, int v, Component l) {
+      @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
         // [JDK-5099681] Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
         // https://bugs.openjdk.java.net/browse/JDK-5099681
-        JLabel lbl = (JLabel) l;
-        lbl.setForeground(Color.GREEN);
-        super.paintHorizontalLabel(g, v, lbl);
+        label.setForeground(Color.GREEN);
+        super.paintHorizontalLabel(g, value, label);
       }
     });
     // slider2.setBackground(Color.BLACK);
