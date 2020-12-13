@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
     Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     tableColumn.setHeaderRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
       TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-      JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
-      l.setFont(font);
-      return l;
+      Component c = r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+      c.setFont(font);
+      return c;
     });
 
     // all column
@@ -69,8 +69,8 @@ public final class MainPanel extends JPanel {
 //
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-//     JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//     l.setFont(font);
-//     return l;
+//     Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//     c.setFont(font);
+//     return c;
 //   }
 // }
