@@ -91,29 +91,29 @@ public final class MainPanel extends JPanel {
 }
 
 class RemoveButtonComboBox<E> extends JComboBox<E> {
-  private transient CellButtonsMouseListener cbml;
+  private transient CellButtonsMouseListener listener;
 
   protected RemoveButtonComboBox(ComboBoxModel<E> model) {
     super(model);
   }
 
   @Override public void updateUI() {
-    if (Objects.nonNull(cbml)) {
+    if (Objects.nonNull(listener)) {
       getList().ifPresent(list -> {
-        list.removeMouseListener(cbml);
-        list.removeMouseMotionListener(cbml);
+        list.removeMouseListener(listener);
+        list.removeMouseMotionListener(listener);
       });
     }
     super.updateUI();
     setRenderer(new ButtonsRenderer<>(this));
     getList().ifPresent(list -> {
-      cbml = new CellButtonsMouseListener();
-      list.addMouseListener(cbml);
-      list.addMouseMotionListener(cbml);
+      listener = new CellButtonsMouseListener();
+      list.addMouseListener(listener);
+      list.addMouseMotionListener(listener);
     });
   }
 
-  protected Optional<JList<?>> getList() {
+  protected Optional<JComponent> getList() {
     Accessible a = getAccessibleContext().getAccessibleChild(0);
     if (a instanceof ComboPopup) {
       return Optional.of(((ComboPopup) a).getList());
