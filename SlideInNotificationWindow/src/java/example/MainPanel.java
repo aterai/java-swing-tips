@@ -125,7 +125,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
-    if (dialog.isVisible() && JOptionPane.UNINITIALIZED_VALUE.equals(e.getNewValue())) {
+    if (dialog.isVisible() && !JOptionPane.UNINITIALIZED_VALUE.equals(e.getNewValue())) {
       dialog.setVisible(false);
       dialog.getContentPane().removeAll();
     }
