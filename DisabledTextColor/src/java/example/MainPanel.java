@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         ListCellRenderer<?super String> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
           Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-          if (index < 0 && !isEnabled()) {
+          if (index < 0 && !isEnabled() && c instanceof JLabel) {
             JLabel l = (JLabel) c;
             l.setText("<html><font color='red'>" + l.getText());
             l.setOpaque(false);
