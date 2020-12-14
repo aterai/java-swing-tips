@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -126,7 +125,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
-    if (dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+    if (dialog.isVisible() && JOptionPane.UNINITIALIZED_VALUE.equals(e.getNewValue())) {
       dialog.setVisible(false);
       dialog.getContentPane().removeAll();
     }
