@@ -20,18 +20,17 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"Type", "Value"};
-  private final Object[][] data = {
-    {"String", "text"},
-    {"Date", new Date()},
-    {"Integer", 12},
-    {"Double", 3.45},
-    {"Boolean", Boolean.TRUE},
-    {"Color", Color.RED}
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"Type", "Value"};
+    Object[][] data = {
+      {"String", "text"},
+      {"Date", new Date()},
+      {"Integer", 12},
+      {"Double", 3.45},
+      {"Boolean", Boolean.TRUE},
+      {"Color", Color.RED}
+    };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
@@ -331,13 +330,14 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 
 class ColorRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (value instanceof Color) {
+    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (value instanceof Color && c instanceof JLabel) {
       Color color = (Color) value;
+      JLabel l = (JLabel) c;
       l.setIcon(new ColorIcon(color));
       l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
     }
-    return l;
+    return c;
   }
 }
 
