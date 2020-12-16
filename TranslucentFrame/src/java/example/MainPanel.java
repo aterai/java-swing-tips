@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.synth.ColorType;
 import javax.swing.plaf.synth.Region;
@@ -114,7 +115,7 @@ class MySynthStyleFactory extends SynthStyleFactory {
   @Override public SynthStyle getStyle(JComponent c, Region id) {
     SynthStyle s = wrappedFactory.getStyle(c, id);
     // if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
-    if (id == Region.INTERNAL_FRAME) {
+    if (Region.INTERNAL_FRAME.equals(id)) {
       s = new TranslucentSynthStyle(s);
     }
     return s;
@@ -183,7 +184,7 @@ class TranslucentSynthStyle extends SynthStyle {
   }
 
   @Override public boolean isOpaque(SynthContext context) {
-    return context.getRegion() != Region.INTERNAL_FRAME && style.isOpaque(context);
+    return !Objects.equals(context.getRegion(), Region.INTERNAL_FRAME) && style.isOpaque(context);
     // if (context.getRegion() == Region.INTERNAL_FRAME) {
     //   return false;
     // } else {
