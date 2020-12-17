@@ -6,8 +6,10 @@ package example;
 
 import java.awt.*;
 import java.text.ParseException;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
 public final class MainPanel extends JPanel {
@@ -18,19 +20,23 @@ public final class MainPanel extends JPanel {
 
     String mask = "###-####";
 
-    MaskFormatter formatter0 = createFormatter(mask);
-    JFormattedTextField field0 = new JFormattedTextField(formatter0);
+    JFormattedTextField field0 = new JFormattedTextField();
+    createFormatter(mask).ifPresent(f -> field0.setFormatterFactory(new DefaultFormatterFactory(f)));
     box.add(makeTitledPanel("new MaskFormatter(\"###-####\")", field0));
     box.add(Box.createVerticalStrut(15));
 
-    MaskFormatter formatter1 = createFormatter(mask);
-    formatter1.setPlaceholderCharacter('_');
-    JFormattedTextField field1 = new JFormattedTextField(formatter1);
+    JFormattedTextField field1 = new JFormattedTextField();
+    createFormatter(mask).ifPresent(formatter -> {
+      formatter.setPlaceholderCharacter('_');
+      field1.setFormatterFactory(new DefaultFormatterFactory(formatter));
+    });
 
-    MaskFormatter formatter2 = createFormatter(mask);
-    formatter2.setPlaceholderCharacter('_');
-    formatter2.setPlaceholder("000-0000");
-    JFormattedTextField field2 = new JFormattedTextField(formatter2);
+    JFormattedTextField field2 = new JFormattedTextField();
+    createFormatter(mask).ifPresent(formatter -> {
+      formatter.setPlaceholderCharacter('_');
+      formatter.setPlaceholder("000-0000");
+      field2.setFormatterFactory(new DefaultFormatterFactory(formatter));
+    });
     box.add(makeTitledPanel("MaskFormatter#setPlaceholderCharacter('_')", field1));
     box.add(Box.createVerticalStrut(15));
 
@@ -48,14 +54,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static MaskFormatter createFormatter(String s) {
-    MaskFormatter formatter = null;
+  private static Optional<MaskFormatter> createFormatter(String s) {
     try {
-      formatter = new MaskFormatter(s);
+      return Optional.of(new MaskFormatter(s));
     } catch (ParseException ex) {
       System.err.println("formatter is bad: " + ex.getMessage());
+      return Optional.empty();
     }
-    return formatter;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
