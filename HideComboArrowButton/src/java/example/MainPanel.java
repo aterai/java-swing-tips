@@ -45,14 +45,16 @@ public final class MainPanel extends JPanel {
         });
         ListCellRenderer<? super String> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JLabel c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-          c.setHorizontalAlignment(SwingConstants.RIGHT);
+          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           if (isSelected) {
             c.setForeground(list.getSelectionForeground());
             c.setBackground(list.getSelectionBackground());
           } else {
             c.setForeground(list.getForeground());
             c.setBackground(list.getBackground());
+          }
+          if (c instanceof JLabel) {
+            ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
           }
           return c;
         });
