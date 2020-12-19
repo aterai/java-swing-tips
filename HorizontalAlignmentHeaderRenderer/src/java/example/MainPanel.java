@@ -14,7 +14,6 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTable table0 = makeTable();
     ((JLabel) table0.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -106,9 +105,11 @@ class HorizontalAlignmentHeaderRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    l.setHorizontalAlignment(horizontalAlignment);
-    return l;
+    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      ((JLabel) c).setHorizontalAlignment(horizontalAlignment);
+    }
+    return c;
   }
 }
 
