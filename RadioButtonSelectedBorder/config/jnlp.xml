@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RadioButtonSelectedBorder" />
+  <property name="jnlp.Name"     value="RadioButtonSelectedBorder" />
+  <property name="jnlp.name"     value="radiobuttonselectedborder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/radiobuttonselectedborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RadioButtonSelectedBorder.html" />
+</project>
