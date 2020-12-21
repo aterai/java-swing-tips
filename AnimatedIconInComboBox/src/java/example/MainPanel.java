@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Icon makeImageIcon(URL url, JComboBox<?> combo, int row) {
+  public static Icon makeImageIcon(URL url, JComboBox<?> combo, int row) {
     ImageIcon icon = new ImageIcon(url);
     // Wastefulness: icon.setImageObserver(combo);
     icon.setImageObserver((img, infoflags, x, y, w, h) -> {
