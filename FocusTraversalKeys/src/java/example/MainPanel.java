@@ -11,18 +11,16 @@ import java.util.Set;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final String HELP1 = "FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\n";
+  private static final String HELP2 = "BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP";
+
   private MainPanel() {
     super(new BorderLayout());
 
     JButton button = new JButton("showOptionDialog");
     button.addActionListener(e -> {
       JComponent c = (JComponent) e.getSource();
-      String[] keyHelp = {
-        "FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN",
-        "BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP"
-      };
-      String info = "<html>" + String.join("<br />", keyHelp);
-      int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), info);
+      int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), HELP1 + HELP2);
       if (retValue == JOptionPane.YES_OPTION) {
         System.out.println("YES_OPTION");
       } else if (retValue == JOptionPane.NO_OPTION) {
@@ -61,7 +59,7 @@ public final class MainPanel extends JPanel {
     setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
         // return !Objects.equals(c, textarea) && super.accept(c);
-        return !JTextArea.class.isInstance(c) && super.accept(c);
+        return !(c instanceof JTextArea) && super.accept(c);
       }
 
       @Override public Component getDefaultComponent(Container container) {
@@ -70,8 +68,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    String help = "FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP";
-    add(new JScrollPane(new JTextArea(help)));
+    add(new JScrollPane(new JTextArea(HELP1 + HELP2)));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
