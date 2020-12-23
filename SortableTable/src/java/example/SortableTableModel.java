@@ -110,16 +110,14 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     setIcon(new EmptyIcon(iconSize));
     int modelColumn = table.convertColumnIndexToModel(column);
     Integer iv = state.get(modelColumn);
-    if (iv != null) {
-      if (iv == DOWN) {
-        setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
-        // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
-        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-      } else if (iv == UP) {
-        setIcon(UIManager.getIcon("Table.descendingSortIcon"));
-        // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
-        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
-      }
+    if (iv == DOWN) {
+      setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
+      // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
+      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
+    } else if (iv == UP) {
+      setIcon(UIManager.getIcon("Table.descendingSortIcon"));
+      // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
+      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
     }
     boolean isPressed = modelColumn == pushedColumn;
     getModel().setPressed(isPressed);

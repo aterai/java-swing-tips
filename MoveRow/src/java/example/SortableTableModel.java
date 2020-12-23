@@ -109,17 +109,15 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     setText(Objects.toString(value, ""));
     setIcon(new EmptyIcon(iconSize));
     int modelColumn = table.convertColumnIndexToModel(column);
-    Integer ivalue = state.get(modelColumn);
-    if (ivalue != null) {
-      if (ivalue == DOWN) {
-        setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
-        // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
-        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-      } else if (ivalue == UP) {
-        setIcon(UIManager.getIcon("Table.descendingSortIcon"));
-        // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
-        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
-      }
+    Integer iv = state.get(modelColumn);
+    if (iv == DOWN) {
+      setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
+      // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
+      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
+    } else if (iv == UP) {
+      setIcon(UIManager.getIcon("Table.descendingSortIcon"));
+      // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
+      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
     }
     boolean isPressed = modelColumn == pushedColumn;
     getModel().setPressed(isPressed);
