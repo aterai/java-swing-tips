@@ -152,12 +152,14 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super String> lcr = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-          l.setBorder(getPaddingBorder(false));
-          return l;
+          Component c = lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JComponent) {
+            ((JComponent) c).setBorder(getPaddingBorder(false));
+          }
+          return c;
         });
         // ???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0, 5, 0, 0));
-        // ???: ((JLabel) lcr).setBorder(getPaddingBorder(false));
+        // ???: ((JComponent) lcr).setBorder(getPaddingBorder(false));
       }
     };
   }
