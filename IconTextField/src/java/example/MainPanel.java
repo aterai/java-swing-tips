@@ -5,13 +5,28 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
-    JLabel label1 = new JLabel(image);
+    String path = "example/16x16.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
+    Icon icon = new ImageIcon(image);
+    JLabel label1 = new JLabel(icon);
     JTextField field1 = new JTextField("1111111111111111") {
       @Override public void updateUI() {
         super.updateUI();
@@ -19,14 +34,14 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    int w = image.getIconWidth();
+    int w = icon.getIconWidth();
     Insets m = field1.getMargin();
     field1.setMargin(new Insets(m.top, m.left + w, m.bottom, m.right));
     label1.setCursor(Cursor.getDefaultCursor());
     label1.setBorder(BorderFactory.createEmptyBorder());
-    label1.setBounds(m.left, m.top, w, image.getIconHeight());
+    label1.setBounds(m.left, m.top, w, icon.getIconHeight());
 
-    JLabel label2 = new JLabel(image);
+    JLabel label2 = new JLabel(icon);
     label2.setCursor(Cursor.getDefaultCursor());
     label2.setBorder(BorderFactory.createEmptyBorder());
     JTextField field2 = new JTextField("2222222222222222222222222222222222222") {
@@ -63,6 +78,17 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
     return p;
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 8 - w / 2, 8 - h / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
