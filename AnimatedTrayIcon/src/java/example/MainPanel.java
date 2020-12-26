@@ -23,11 +23,11 @@ public final class MainPanel extends JPanel {
       throw new UnsupportedOperationException("SystemTray is not supported");
     }
 
-    Class<?> clz = MainPanel.class;
-    images[0] = new ImageIcon(clz.getResource("16x16.png")).getImage();
-    images[1] = new ImageIcon(clz.getResource("16x16l.png")).getImage();
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    images[0] = new ImageIcon(cl.getResource("example/16x16.png")).getImage();
+    images[1] = new ImageIcon(cl.getResource("example/16x16l.png")).getImage();
     images[2] = images[0];
-    images[3] = new ImageIcon(clz.getResource("16x16r.png")).getImage();
+    images[3] = new ImageIcon(cl.getResource("example/16x16r.png")).getImage();
 
     dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     dialog.setSize(new Dimension(120, 100));
