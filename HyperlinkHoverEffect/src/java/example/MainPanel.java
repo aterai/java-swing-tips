@@ -15,14 +15,13 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
 
 public final class MainPanel extends JPanel {
-  private static final String S = "https://ateraimemo.com/";
-  private static final String S0 = "<a href='%s' color='%s'>%s</a><br><br>";
-  private final String s1 = String.format(S0, S, "blue", S);
-  private final String s2 = String.format(S0, S, "#0000FF", "localhost");
-  private final JEditorPane editor = new JEditorPane("text/html", "<html>" + s1 + s2);
-
   private MainPanel() {
     super(new BorderLayout());
+    String format = "<a href='%s' color='%s'>%s</a><br><br>";
+    String site = "https://ateraimemo.com/";
+    String s1 = String.format(format, site, "blue", site);
+    String s2 = String.format(format, "http://example.com/", "#0000FF", "example");
+    JEditorPane editor = new JEditorPane("text/html", "<html>" + s1 + s2);
     editor.setEditable(false);
     // @see: BasicEditorPaneUI#propertyChange(PropertyChangeEvent evt) {
     //    if ("foreground".equals(name)) {
@@ -49,7 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void setElementColor(Element element, String color) {
+  private static void setElementColor(Element element, String color) {
     AttributeSet attrs = element.getAttributes();
     Object o = attrs.getAttribute(HTML.Tag.A);
     if (o instanceof MutableAttributeSet) {
