@@ -12,14 +12,14 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new JTextArea();
-  private final JTextPane textPane = new JTextPane();
-
   private MainPanel() {
     super(new BorderLayout());
+    JTextPane textPane = new JTextPane();
     textPane.setComponentPopupMenu(new HtmlColorPopupMenu());
     // textPane.setEditorKit(new HTMLEditorKit());
     textPane.setContentType("text/html");
+
+    JTextArea textArea = new JTextArea();
     textArea.setText(textPane.getText());
 
     JTabbedPane tabbedPane = new JTabbedPane();
