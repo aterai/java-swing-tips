@@ -40,28 +40,15 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    DnDTable table = new DnDTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
+    JTable table = new DnDTable(model);
+    table.setFillsViewportHeight(true);
+    table.setComponentPopupMenu(new TablePopupMenu());
 
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(60);
     col.setMaxWidth(60);
     col.setResizable(false);
 
-    table.setFillsViewportHeight(true);
-    table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -118,10 +105,11 @@ class TablePopupMenu extends JPopupMenu {
   }
 }
 
-class DnDTable extends JTable implements DragGestureListener, Transferable {
+final class DnDTable extends JTable implements DragGestureListener, Transferable {
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
   private static final Color LINE_COLOR = new Color(0xFF_64_64);
+  private static final Color EVEN_COLOR = new Color(0xF0_F0_F0);
   private final Rectangle targetLine = new Rectangle();
   protected int draggedIndex = -1;
   protected int targetIndex = -1;
@@ -142,6 +130,18 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
       g2.fill(targetLine);
       g2.dispose();
     }
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+    Component c = super.prepareRenderer(tcr, row, column);
+    if (isRowSelected(row)) {
+      c.setForeground(getSelectionForeground());
+      c.setBackground(getSelectionBackground());
+    } else {
+      c.setForeground(getForeground());
+      c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
+    }
+    return c;
   }
 
   protected void initTargetLine(Point p) {
