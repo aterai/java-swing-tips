@@ -56,7 +56,8 @@ public final class MainPanel extends JPanel {
   private static void initBreadcrumbList(Container p, JTree tree) {
     p.removeAll();
     ButtonGroup bg = new ButtonGroup();
-    Object[] paths = tree.getSelectionPath().getPath();
+    Object[] paths = Optional.ofNullable(tree.getSelectionPath())
+        .map(TreePath::getPath).orElseGet(() -> new Object[0]);
     for (int i = 0; i < paths.length; i++) {
       AbstractButton b = makeButton(tree, copyTreePath(paths, i + 1), Color.ORANGE);
       p.add(b);
@@ -196,7 +197,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
 }
 
 class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
-  private Shape shape;
+  private transient Shape shape;
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
