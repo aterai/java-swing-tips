@@ -53,6 +53,7 @@ public class CloseTabIcon implements Icon {
 
   /**
    * Creates a new instance of <code>CloseTabIcon</code>.
+   *
    * @param fileIcon  the additional fileicon, if there is one set
    */
   public CloseTabIcon(Icon fileIcon) {
@@ -65,6 +66,7 @@ public class CloseTabIcon implements Icon {
    * Draw the icon at the specified location. Icon implementations may use the
    * Component argument to get properties useful for painting, e.g. the
    * foreground or background color.
+   *
    * @param c  the component which the icon belongs to
    * @param g  the graphic object to draw on
    * @param x  the upper left point of the icon in the x direction
@@ -134,6 +136,7 @@ public class CloseTabIcon implements Icon {
 
   /**
    * Returns the icon's width.
+   *
    * @return an int specifying the fixed width of the icon.
    */
   @Override public int getIconWidth() {
@@ -142,6 +145,7 @@ public class CloseTabIcon implements Icon {
 
   /**
    * Returns the icon's height.
+   *
    * @return an int specifying the fixed height of the icon.
    */
   @Override public int getIconHeight() {
@@ -152,6 +156,7 @@ public class CloseTabIcon implements Icon {
    * Gets the bounds of this icon in the form of a <code>Rectangle</code>
    * object. The bounds specify this icon's width, height, and location
    * relative to its parent.
+   *
    * @return a rectangle indicating this icon's bounds
    */
   public Rectangle getBounds() {

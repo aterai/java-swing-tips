@@ -81,6 +81,7 @@ public final class MainPanel extends JPanel {
 
 /**
  * GroupableTableHeader.
+ *
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeader</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
@@ -137,6 +138,7 @@ class GroupableTableHeader extends JTableHeader {
 
 /**
  * GroupableTableHeaderUI.
+ *
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeaderUI</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
@@ -246,6 +248,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
 
 /**
  * ColumnGroup.
+ *
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">ColumnGroup</a>
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
@@ -261,6 +264,7 @@ class ColumnGroup {
 
   /**
    * Add TableColumn or ColumnGroup.
+   *
    * @param obj TableColumn or ColumnGroup
    */
   public void add(Object obj) {

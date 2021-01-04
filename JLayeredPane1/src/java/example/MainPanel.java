@@ -13,6 +13,7 @@ import javax.swing.border.Border;
 
 /**
  * JLayeredPane1.
+ *
  * @author Taka
  */
 public final class MainPanel extends JPanel {

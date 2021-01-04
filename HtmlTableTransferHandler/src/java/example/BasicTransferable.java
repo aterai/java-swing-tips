@@ -55,6 +55,7 @@ class BasicTransferable implements Transferable {
    * Returns an array of DataFlavor objects indicating the flavors the data
    * can be provided in.  The array should be ordered according to preference
    * for providing the data (from most richly descriptive to least descriptive).
+   *
    * @return an array of data flavors in which this data can be transferred
    */
   @Override public DataFlavor[] getTransferDataFlavors() {
@@ -90,6 +91,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is supported for
    * this object.
+   *
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
@@ -174,6 +176,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is an HTML flavor that
    * is supported.
+   *
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
@@ -223,6 +226,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is an plain flavor that
    * is supported.
+   *
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
@@ -272,6 +276,7 @@ class BasicTransferable implements Transferable {
   /**
    * Returns whether or not the specified data flavor is a String flavor that
    * is supported.
+   *
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */

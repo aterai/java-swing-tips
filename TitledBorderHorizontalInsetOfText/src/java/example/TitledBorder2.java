@@ -191,6 +191,7 @@ public class TitledBorder2 extends AbstractBorder {
   /**
    * Paints the border for the specified component with the
    * specified position and size.
+   *
    * @param c  the component for which this border is being painted
    * @param g  the paint graphics
    * @param x  the x position of the painted border
@@ -305,6 +306,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Reinitialize the insets parameter with this Border's current Insets.
+   *
    * @param c  the component for which this border insets value applies
    * @param insets  the object to be reinitialized
    */
@@ -417,6 +419,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title of the titled border.
+   *
    * @param title  the title for the border
    */
   public void setTitle(String title) {
@@ -425,6 +428,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the border of the titled border.
+   *
    * @param border  the border
    */
   public void setBorder(Border border) {
@@ -433,6 +437,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-position of the titled border.
+   *
    * @param titlePosition  the position for the border
    */
   public void setTitlePosition(int titlePosition) {
@@ -453,6 +458,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-justification of the titled border.
+   *
    * @param titleJustification  the justification for the border
    */
   public void setTitleJustification(int titleJustification) {
@@ -472,6 +478,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-font of the titled border.
+   *
    * @param titleFont  the font for the border title
    */
   public void setTitleFont(Font titleFont) {
@@ -480,6 +487,7 @@ public class TitledBorder2 extends AbstractBorder {
 
   /**
    * Sets the title-color of the titled border.
+   *
    * @param titleColor  the color for the border title
    */
   public void setTitleColor(Color titleColor) {
@@ -489,6 +497,7 @@ public class TitledBorder2 extends AbstractBorder {
   /**
    * Returns the minimum dimensions this border requires
    * in order to fully display the border and title.
+   *
    * @param c  the component where this border will be drawn
    * @return the {@code Dimension} object
    */
