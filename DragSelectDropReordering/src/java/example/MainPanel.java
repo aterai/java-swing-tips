@@ -370,7 +370,7 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o: values) {
+      for (Object o : values) {
         int i = index++;
         listModel.add(i, o);
         target.addSelectionInterval(i, i);

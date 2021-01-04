@@ -150,7 +150,7 @@ class ListItemTransferHandler extends TransferHandler {
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
     ListCellRenderer<? super E> renderer = source.getCellRenderer();
-    for (int i: source.getSelectedIndices()) {
+    for (int i : source.getSelectedIndices()) {
       Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
       SwingUtilities.paintComponent(g2, c, source, source.getCellBounds(i, i));
     }
@@ -176,7 +176,7 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o: values) {
+      for (Object o : values) {
         int i = index++;
         listModel.add(i, o);
         target.addSelectionInterval(i, i);

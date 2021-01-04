@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"Button.textShiftOffset\", offset)"));
     box.add(new JLabel("offset = "));
     boolean isFirst = true;
-    for (JRadioButton rb: rl) {
+    for (JRadioButton rb : rl) {
       if (isFirst) {
         rb.setSelected(true);
         isFirst = false;

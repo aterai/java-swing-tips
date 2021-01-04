@@ -100,7 +100,7 @@ final class LookAndFeelUtil {
     JMenu menu = new JMenu("LookAndFeel");
     menu.setMnemonic(KeyEvent.VK_L);
     ButtonGroup lafGroup = new ButtonGroup();
-    for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
       menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
     }
     return menu;
@@ -135,7 +135,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Window.getWindows()) {
+    for (Window window : Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }

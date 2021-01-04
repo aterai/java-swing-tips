@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     Container p = makeContainer(overlap + LINE_WIDTH);
     ButtonGroup bg = new ButtonGroup();
     boolean f = true;
-    for (String title: list) {
+    for (String title : list) {
       AbstractButton b = makeButton(title, color, f);
       p.add(b);
       bg.add(b);

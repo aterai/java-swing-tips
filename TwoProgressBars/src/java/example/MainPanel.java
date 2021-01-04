@@ -267,7 +267,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //
 //         @Override protected void process(List<String> chunks) {
 //           // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-//           for (String message: chunks) {
+//           for (String message : chunks) {
 //             appendLine(message);
 //           }
 //         }

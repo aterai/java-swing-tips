@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 
   private static void scrollTabAt(JTabbedPane tabbedPane, int index) {
     Component cmp = null;
-    for (Component c: tabbedPane.getComponents()) {
+    for (Component c : tabbedPane.getComponents()) {
       if ("TabbedPane.scrollableViewport".equals(c.getName())) {
         cmp = c;
         break;

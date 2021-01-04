@@ -111,7 +111,7 @@ class RadioButtonsPanel extends JPanel {
     buttons.clear();
     removeAll();
     bg = new ButtonGroup();
-    for (String title: answer) {
+    for (String title : answer) {
       JRadioButton b = makeButton(title);
       buttons.add(b);
       add(b);
@@ -163,7 +163,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   protected RadioButtonsEditor() {
     super();
     ActionListener al = e -> fireEditingStopped();
-    for (AbstractButton b: renderer.buttons) {
+    for (AbstractButton b : renderer.buttons) {
       b.addActionListener(al);
     }
   }
@@ -197,7 +197,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //   protected RadioButtonsEditor() {
 //     super();
 //     ActionListener al = e -> fireEditingStopped();
-//     for (AbstractButton b: buttons) {
+//     for (AbstractButton b : buttons) {
 //       b.addActionListener(al);
 //     }
 //   }

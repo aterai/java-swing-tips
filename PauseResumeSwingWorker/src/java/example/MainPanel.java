@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
   }
 
   public void processChunks(List<Progress> chunks) {
-    for (Progress s: chunks) {
+    for (Progress s : chunks) {
       switch (s.component) {
         case TOTAL:
           bar1.setValue((Integer) s.value);
@@ -173,7 +173,7 @@ public final class MainPanel extends JPanel {
     Spring y = Spring.constant(gap);
     Spring g = Spring.minus(Spring.constant(gap));
     Spring w = Spring.constant(buttonWidth);
-    for (Component b: list) {
+    for (Component b : list) {
       SpringLayout.Constraints constraints = layout.getConstraints(b);
       x = Spring.sum(x, g);
       constraints.setConstraint(SpringLayout.EAST, x);
@@ -352,7 +352,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //
 //         @Override protected void process(List<String> chunks) {
 //           // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-//           for (String message: chunks) {
+//           for (String message : chunks) {
 //             appendLine(message);
 //           }
 //         }

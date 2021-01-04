@@ -120,7 +120,7 @@ class DnDTabbedPane extends JTabbedPane {
   private void clickArrowButton(String actionKey) {
     JButton scrollForwardButton = null;
     JButton scrollBackwardButton = null;
-    for (Component c: getComponents()) {
+    for (Component c : getComponents()) {
       if (c instanceof JButton) {
         if (Objects.isNull(scrollForwardButton)) {
           scrollForwardButton = (JButton) c;

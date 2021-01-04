@@ -246,7 +246,7 @@ class FileListTable extends JTable {
       int[] indices = IntStream.range(0, getModel().getRowCount())
           .filter(i -> rb.intersects(getCellRect2(FileListTable.this, i, col)))
           .toArray();
-      for (int i: indices) {
+      for (int i : indices) {
         addRowSelectionInterval(i, i);
         changeSelection(i, col, true, true);
       }

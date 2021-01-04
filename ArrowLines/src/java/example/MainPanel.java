@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(4));
         g2.setColor(Color.BLACK);
-        for (Arrow a: arrows) {
+        for (Arrow a : arrows) {
           a.draw(g2);
         }
         g2.dispose();

@@ -97,7 +97,7 @@ class ToolTipComboBox<E> extends JComboBox<E> {
   }
 
   private static JButton getArrowButton(Container combo) {
-    for (Component c: combo.getComponents()) {
+    for (Component c : combo.getComponents()) {
       if (c instanceof JButton) {
         return (JButton) c;
       }

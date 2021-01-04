@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
 
-    for (ListItem item: defaultModel) {
+    for (ListItem item : defaultModel) {
       model.addElement(item);
     }
 
@@ -90,14 +90,14 @@ public final class MainPanel extends JPanel {
       List<ListItem> selected = list.getSelectedValuesList();
       model.clear();
       Stream.of(defaultModel).filter(item -> pattern.matcher(item.title).find()).forEach(model::addElement);
-      // for (ListItem item: defaultModel) {
+      // for (ListItem item : defaultModel) {
       //   if (!pattern.matcher(item.title).find()) {
       //     model.removeElement(item);
       //   } else if (!model.contains(item)) {
       //     model.addElement(item);
       //   }
       // }
-      for (ListItem item: selected) {
+      for (ListItem item : selected) {
         int i = model.indexOf(item);
         list.addSelectionInterval(i, i);
       }

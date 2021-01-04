@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     buttons.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override public Component getDefaultComponent(Container focusCycleRoot) {
         ButtonModel selection = bg2.getSelection();
-        // for (Component c: focusCycleRoot.getComponents()) {
+        // for (Component c : focusCycleRoot.getComponents()) {
         //   JRadioButton r = (JRadioButton) c;
         //   if (r.getModel().equals(selection)) {
         //     return r;

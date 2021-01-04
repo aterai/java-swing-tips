@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   MenuElement[] sub = me.getSubElements();
   //   if (sub.length != 0) {
-  //     for (MenuElement e: sub) {
+  //     for (MenuElement e : sub) {
   //       searchAllMenuElements(e, list);
   //     }
   //   }
@@ -164,7 +164,7 @@ final class LookAndFeelUtil {
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup lafGroup = new ButtonGroup();
-    for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
       menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
     }
     return menu;
@@ -198,7 +198,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Window.getWindows()) {
+    for (Window window : Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }

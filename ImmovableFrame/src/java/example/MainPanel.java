@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame immovableFrame = new JInternalFrame("immovable", false, false, true, true);
     Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
     MouseMotionListener[] actions = north.getListeners(MouseMotionListener.class);
-    for (MouseMotionListener l: actions) {
+    for (MouseMotionListener l : actions) {
       north.removeMouseMotionListener(l);
     }
     // immovableFrame.setLocation(0, 0);

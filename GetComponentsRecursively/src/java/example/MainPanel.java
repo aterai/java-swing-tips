@@ -93,7 +93,7 @@ final class SwingUtils {
 
   // TEST1
   public static boolean searchAndResizeMode(Container parent) {
-    for (Component c: parent.getComponents()) {
+    for (Component c : parent.getComponents()) {
       if (c instanceof JTable) {
         ((JTable) c).setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         return true;
@@ -126,7 +126,7 @@ final class SwingUtils {
     if (clz.isInstance(parent)) {
       return Optional.of(clz.cast(parent));
     }
-    for (Component c: parent.getComponents()) {
+    for (Component c : parent.getComponents()) {
       if (c instanceof Container) {
         Optional<T> op = getComponentByClass((Container) c, clz);
         if (op.isPresent()) {

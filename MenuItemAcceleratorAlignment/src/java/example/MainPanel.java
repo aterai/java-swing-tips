@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, msk3));
     list.add(menuItem);
 
-    for (JMenuItem mi: list) {
+    for (JMenuItem mi : list) {
       menu0.add(mi);
       menu1.add(makeMenuItem1(mi));
       // menu2.add(makeMenuItem2(mi));

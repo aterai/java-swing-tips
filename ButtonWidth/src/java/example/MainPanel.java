@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
     Spring y = Spring.constant(gap);
     Spring g = Spring.minus(Spring.constant(gap));
     Spring w = Spring.constant(width);
-    for (Component b: list) {
+    for (Component b : list) {
       SpringLayout.Constraints constraints = layout.getConstraints(b);
       x = Spring.sum(x, g);
       constraints.setConstraint(SpringLayout.EAST, x);
@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
     Spring y = Spring.constant(gap);
     Spring g = Spring.constant(gap);
     Spring w = Spring.constant(width);
-    for (Component b: list) {
+    for (Component b : list) {
       SpringLayout.Constraints constraints = layout.getConstraints(b);
       constraints.setX(x);
       constraints.setY(y);

@@ -194,7 +194,7 @@ public final class MainPanel extends JPanel {
     Stream.of(titleBar.getComponents())
         .filter(c -> c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName()))
         .forEach(MainPanel::removeComponentMouseListener);
-    // for (Component c: titleBar.getComponents()) {
+    // for (Component c : titleBar.getComponents()) {
     //   if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
     //     removeComponentMouseListener(c);
     //   }
@@ -202,7 +202,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void removeComponentMouseListener(Component c) {
-    for (MouseListener ml: c.getMouseListeners()) {
+    for (MouseListener ml : c.getMouseListeners()) {
       c.removeMouseListener(ml);
     }
   }

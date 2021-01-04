@@ -162,7 +162,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
 
   public void setDisableIndex(Set<Integer> set) {
     disableIndexSet.clear();
-    for (Integer i: set) {
+    for (Integer i : set) {
       disableIndexSet.add(i);
     }
   }

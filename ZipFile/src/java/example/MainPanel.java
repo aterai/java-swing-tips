@@ -185,7 +185,7 @@ final class ZipUtil {
     try (Stream<Path> s = Files.walk(srcDir).filter(f -> f.toFile().isFile())) {
       List<Path> files = s.collect(Collectors.toList());
       try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zip))) {
-        for (Path path: files) {
+        for (Path path : files) {
           String relativePath = srcDir.relativize(path).toString().replace('\\', '/');
           LOGGER.info(() -> String.format("zip: %s", relativePath));
           zos.putNextEntry(createZipEntry(relativePath));

@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
   private static void initDividerButtonModel(Container divider, JButton minButton, JButton maxButton) {
     ButtonModel selectMinModel = null;
     ButtonModel selectMaxModel = null;
-    for (Component c: divider.getComponents()) {
+    for (Component c : divider.getComponents()) {
       if (c instanceof JButton) {
         ButtonModel m = ((JButton) c).getModel();
         if (Objects.isNull(selectMinModel)) {

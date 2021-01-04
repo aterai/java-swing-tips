@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
   //   JMenu menu = new JMenu("LookAndFeel");
   //   lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
   //   lafGroup = new ButtonGroup();
-  //   for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+  //   for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
   //     menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
   //   }
   //   return menu;
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
   // }
   //
   // private void updateLookAndFeel() {
-  //   for (Window window: Window.getWindows()) {
+  //   for (Window window : Window.getWindows()) {
   //     if (window instanceof RootPaneContainer) {
   //       RootPaneContainer rpc = (RootPaneContainer) window;
   //       SwingUtilities.updateComponentTreeUI(rpc.getContentPane());
@@ -174,7 +174,7 @@ class DraggableInternalFrame extends JInternalFrame {
     super.updateUI();
     BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
     Component titleBar = ui.getNorthPane();
-    for (MouseMotionListener l: titleBar.getListeners(MouseMotionListener.class)) {
+    for (MouseMotionListener l : titleBar.getListeners(MouseMotionListener.class)) {
       titleBar.removeMouseMotionListener(l);
     }
     DragWindowListener dwl = new DragWindowListener();
@@ -194,7 +194,7 @@ final class LookAndFeelUtil {
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup lafGroup = new ButtonGroup();
-    for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
       menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
     }
     return menu;
@@ -228,7 +228,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Window.getWindows()) {
+    for (Window window : Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }

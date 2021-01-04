@@ -242,7 +242,7 @@ class ButtonsPanel extends JPanel {
     super();
     setOpaque(true);
     add(label);
-    for (JButton b: buttons) {
+    for (JButton b : buttons) {
       b.setFocusable(false);
       b.setRolloverEnabled(false);
       add(b);

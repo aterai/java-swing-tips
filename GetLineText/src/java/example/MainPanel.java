@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         }
       }
       // // String#split >>>>
-      // for (String line: textArea.getText().split("\\n")) {
+      // for (String line : textArea.getText().split("\\n")) {
       //   if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
       //     count++;
       //   }

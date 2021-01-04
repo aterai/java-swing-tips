@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
 
   private void updateFont(Font font) {
     FontUIResource fontResource = new FontUIResource(font);
-    // for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
+    // for (Object o : UIManager.getLookAndFeelDefaults().keySet()) {
     //   if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
     //     UIManager.put(o, fontResource);
     //   }
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void recursiveUpdateUI(Container p) {
-    for (Component c: p.getComponents()) {
+    for (Component c : p.getComponents()) {
       if (c instanceof JComponent && !(c instanceof JToolBar)) {
         JComponent jc = (JComponent) c;
         jc.updateUI();

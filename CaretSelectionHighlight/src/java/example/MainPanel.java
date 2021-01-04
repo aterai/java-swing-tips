@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), makeTextArea(true)));
     desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), makeTextArea(true)));
     EventQueue.invokeLater(() -> {
-      for (JInternalFrame f: desktop.getAllFrames()) {
+      for (JInternalFrame f : desktop.getAllFrames()) {
         f.setVisible(true);
       }
     });

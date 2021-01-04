@@ -108,8 +108,8 @@ class TablePopupMenu extends JPopupMenu {
     select = add("select");
     select.addActionListener(e -> {
       JTable table = (JTable) getInvoker();
-      for (int row: table.getSelectedRows()) {
-        for (int col: table.getSelectedColumns()) {
+      for (int row : table.getSelectedRows()) {
+        for (int col : table.getSelectedColumns()) {
           table.setValueAt(true, row, col);
         }
       }
@@ -118,8 +118,8 @@ class TablePopupMenu extends JPopupMenu {
     clear = add("clear");
     clear.addActionListener(e -> {
       JTable table = (JTable) getInvoker();
-      for (int row: table.getSelectedRows()) {
-        for (int col: table.getSelectedColumns()) {
+      for (int row : table.getSelectedRows()) {
+        for (int col : table.getSelectedColumns()) {
           table.setValueAt(false, row, col);
         }
       }
@@ -128,8 +128,8 @@ class TablePopupMenu extends JPopupMenu {
     toggle = add("toggle");
     toggle.addActionListener(e -> {
       JTable table = (JTable) getInvoker();
-      for (int row: table.getSelectedRows()) {
-        for (int col: table.getSelectedColumns()) {
+      for (int row : table.getSelectedRows()) {
+        for (int col : table.getSelectedColumns()) {
           Boolean b = (Boolean) table.getValueAt(row, col);
           table.setValueAt(!b, row, col);
         }

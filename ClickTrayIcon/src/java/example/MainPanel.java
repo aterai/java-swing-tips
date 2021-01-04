@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     MenuItem exit = new MenuItem("Exit");
     exit.addActionListener(e -> {
       SystemTray tray = SystemTray.getSystemTray();
-      for (TrayIcon icon: tray.getTrayIcons()) {
+      for (TrayIcon icon : tray.getTrayIcons()) {
         tray.remove(icon);
       }
       // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

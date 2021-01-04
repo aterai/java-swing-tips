@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame internal = new JInternalFrame("@title@");
     BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
     Component title = ui.getNorthPane();
-    for (MouseMotionListener l: title.getListeners(MouseMotionListener.class)) {
+    for (MouseMotionListener l : title.getListeners(MouseMotionListener.class)) {
       title.removeMouseMotionListener(l);
     }
     DragWindowListener dwl = new DragWindowListener();

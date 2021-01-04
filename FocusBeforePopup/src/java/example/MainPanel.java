@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         if (combo4.isPopupVisible()) {
           System.out.println("Close all JPopupMenu(excludes dropdown list of own JComboBox)");
           // https://ateraimemo.com/Swing/GetAllPopupMenus.html
-          for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
+          for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
             if (m instanceof JPopupMenu) {
               ((JPopupMenu) m).setVisible(false);
             }
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     // textField4.addFocusListener(new FocusAdapter() {
     //   @Override public void focusGained(FocusEvent e) {
     //     System.out.println("focusGained");
-    //     for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
+    //     for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
     //       if (m instanceof JPopupMenu) {
     //         ((JPopupMenu) m).setVisible(false);
     //       }

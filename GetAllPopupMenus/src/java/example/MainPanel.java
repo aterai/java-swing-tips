@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
       tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
       tabs.getActionMap().put("next2", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-          for (MenuElement m: MenuSelectionManager.defaultManager().getSelectedPath()) {
+          for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
             if (m instanceof JPopupMenu) {
               ((JPopupMenu) m).setVisible(false);
             }

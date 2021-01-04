@@ -115,7 +115,7 @@ class HtmlColorPopupMenu extends JPopupMenu {
       int start = t.getSelectionStart();
       int end = t.getSelectionEnd();
       boolean flag = end - start > 0;
-      for (MenuElement me: getSubElements()) {
+      for (MenuElement me : getSubElements()) {
         me.getComponent().setEnabled(flag);
       }
       super.show(c, x, y);

@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
   private JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar();
     String[] menuKeys = {"File", "Edit", "Help"};
-    for (String key: menuKeys) {
+    for (String key : menuKeys) {
       JMenu m = createMenu(key);
       mb.add(m);
     }

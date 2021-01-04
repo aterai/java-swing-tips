@@ -116,7 +116,7 @@ class LevelBar extends JPanel {
     this.iconList = list;
     this.gap = gap;
     EventQueue.invokeLater(() -> {
-      for (JLabel l: labelList) {
+      for (JLabel l : labelList) {
         l.setIcon(defaultIcon);
         add(l);
       }

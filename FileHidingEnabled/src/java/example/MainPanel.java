@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JPopupMenu searchPopupMenu(Container parent) {
-    for (Component c: parent.getComponents()) {
+    for (Component c : parent.getComponents()) {
       if (c instanceof JComponent && Objects.nonNull(((JComponent) c).getComponentPopupMenu())) {
         return ((JComponent) c).getComponentPopupMenu();
       } else {

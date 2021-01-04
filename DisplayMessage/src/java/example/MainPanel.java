@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         ((Window) c).dispose();
       }
       SystemTray tray = SystemTray.getSystemTray();
-      for (TrayIcon icon: tray.getTrayIcons()) {
+      for (TrayIcon icon : tray.getTrayIcons()) {
         tray.remove(icon);
       }
     });

@@ -66,8 +66,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addListenerToJMenu(JMenuBar menuBar, MouseListener l) {
-    // for (Component menu: menuBar.getComponents()) {
-    for (MenuElement menu: menuBar.getSubElements()) {
+    // for (Component menu : menuBar.getComponents()) {
+    for (MenuElement menu : menuBar.getSubElements()) {
       if (menu instanceof JMenu) {
         ((JMenu) menu).addMouseListener(l);
       }

@@ -131,7 +131,7 @@ public final class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        for (Rectangle r: chunks) {
+        for (Rectangle r : chunks) {
           panel.repaint(r);
         }
       }

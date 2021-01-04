@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             dtde.acceptDrop(DnDConstants.ACTION_COPY);
             Transferable transferable = dtde.getTransferable();
             List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-            for (Object o: list) {
+            for (Object o : list) {
               if (o instanceof File) {
                 model.addPath(((File) o).toPath());
               }
@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
 //       if (canImport(component, transferable.getTransferDataFlavors())) {
 //         // DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
 //         FileModel model = (FileModel) ((JTable) component).getModel();
-//         for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//         for (Object o : (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //           if (o instanceof File) {
 //             File file = (File) o;
 //             // model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
@@ -120,7 +120,7 @@ public final class MainPanel extends JPanel {
 //     return false;
 //   }
 //   @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
-//     for (DataFlavor f: flavors) {
+//     for (DataFlavor f : flavors) {
 //       if (DataFlavor.javaFileListFlavor.equals(f)) {
 //         return true;
 //       }

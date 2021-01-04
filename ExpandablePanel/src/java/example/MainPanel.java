@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       northBox.removeAll();
       southBox.removeAll();
       boolean insertSouth = false;
-      for (AbstractExpansionPanel exp: panelList) {
+      for (AbstractExpansionPanel exp : panelList) {
         if (source.equals(exp) && exp.isExpanded()) {
           centerBox.add(exp);
           insertSouth = true;

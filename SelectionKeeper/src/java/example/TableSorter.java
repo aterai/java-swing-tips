@@ -222,7 +222,7 @@ public class TableSorter extends AbstractTableModel {
   private Directive getDirective(int column) {
     return sortingColumns.stream().filter(directive -> directive.column == column)
       .findFirst().orElse(EMPTY_DIRECTIVE);
-    // for (Directive directive: sortingColumns) {
+    // for (Directive directive : sortingColumns) {
     //   if (directive.column == column) {
     //     return directive;
     //   }
@@ -359,7 +359,7 @@ public class TableSorter extends AbstractTableModel {
     @Override public int compare(Row r1, Row r2) {
       int row1 = r1.modelIndex;
       int row2 = r2.modelIndex;
-      for (Directive directive: sortingColumns) {
+      for (Directive directive : sortingColumns) {
         int column = directive.column;
         Object o1 = tableModel.getValueAt(row1, column);
         Object o2 = tableModel.getValueAt(row2, column);

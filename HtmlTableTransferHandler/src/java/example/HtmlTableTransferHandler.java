@@ -72,9 +72,9 @@ public final class HtmlTableTransferHandler extends TransferHandler {
       StringBuilder plainBuf = new StringBuilder();
       StringBuilder htmlBuf = new StringBuilder(64);
       htmlBuf.append("<html>\n<body>\n<table border='1'>\n");
-      for (int row: rows) {
+      for (int row : rows) {
         htmlBuf.append("<tr>\n");
-        for (int col: cols) {
+        for (int col : cols) {
           Object obj = table.getValueAt(row, col);
           String val = Objects.toString(obj, "") + "\t";
           plainBuf.append(val);

@@ -262,7 +262,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         TemporalAccessor ta = dateTimeFormatter.parse(text);
         ChronoLocalDateTime<?> value = m.getLocalDateTime();
         // @see https://tips4java.wordpress.com/2015/04/09/temporal-spinners/
-        for (ChronoField field: ChronoField.values()) {
+        for (ChronoField field : ChronoField.values()) {
           if (field.isSupportedBy(value) && ta.isSupported(field)) {
             value = field.adjustInto(value, ta.getLong(field));
           }

@@ -136,7 +136,7 @@ public final class MainPanel extends JPanel {
 
     // clear the previous highlight:
     Highlighter highlighter = textPane.getHighlighter();
-    for (Highlighter.Highlight h: highlighter.getHighlights()) {
+    for (Highlighter.Highlight h : highlighter.getHighlights()) {
       doc.setCharacterAttributes(h.getStartOffset(), h.getEndOffset() - h.getStartOffset(), def, true);
     }
     highlighter.removeAllHighlights();

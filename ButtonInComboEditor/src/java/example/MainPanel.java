@@ -263,7 +263,7 @@ class SiteComboBoxLayout implements LayoutManager {
     }
 
     // JButton rssButton = feedButton;
-    // for (Component c: cb.getComponents()) {
+    // for (Component c : cb.getComponents()) {
     //   if ("ComboBox.rssButton".equals(c.getName())) {
     //     rssButton = (JButton) c;
     //     break;

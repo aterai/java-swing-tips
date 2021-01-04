@@ -143,7 +143,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
         e.acceptDrop(DnDConstants.ACTION_COPY);
         Transferable t = e.getTransferable();
         List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
-        for (Object o: list) {
+        for (Object o : list) {
           if (o instanceof File) {
             File f = (File) o;
             System.out.println(f.getAbsolutePath());
@@ -162,7 +162,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 // class FileTransferHandler extends TransferHandler {
 //   @Override public boolean importData(TransferHandler.TransferSupport support) {
 //     try {
-//       for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+//       for (Object o : (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
 //         if (o instanceof File) {
 //           File file = (File) o;
 //           System.out.println(file.getAbsolutePath());

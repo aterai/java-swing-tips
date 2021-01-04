@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     //   URI uri = MainPanel.class.getResource("prettify.js").toURI();
     //   // https://stackoverflow.com/questions/22605666/java-access-files-in-jar-causes-java-nio-file-filesystemnotfoundexception
     //   if ("jar".equals(uri.getScheme())) {
-    //     for (FileSystemProvider provider: FileSystemProvider.installedProviders()) {
+    //     for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
     //       if (provider.getScheme().equalsIgnoreCase("jar")) {
     //         try {
     //           provider.getFileSystem(uri);

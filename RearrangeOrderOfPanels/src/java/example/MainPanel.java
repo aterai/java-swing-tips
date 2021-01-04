@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     box.addMouseMotionListener(dh);
 
     int idx = 0;
-    for (Component c: Arrays.asList(
+    for (Component c : Arrays.asList(
         new JLabel("<html>1<br>11<br>111"),
         new JButton("22"),
         new JCheckBox("333"),

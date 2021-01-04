@@ -92,7 +92,7 @@ class ButtonsPanel extends JPanel {
   protected ButtonsPanel() {
     super();
     setOpaque(true);
-    for (JButton b: buttons) {
+    for (JButton b : buttons) {
       b.setFocusable(false);
       b.setRolloverEnabled(false);
       add(b);
@@ -179,7 +179,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     list.get(1).setAction(new EditAction(table));
 
     EditingStopHandler handler = new EditingStopHandler();
-    for (JButton b: list) {
+    for (JButton b : list) {
       b.addMouseListener(handler);
       b.addActionListener(handler);
     }
@@ -226,7 +226,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //     buttons.get(1).setAction(new EditAction(table));
 //
 //     EditingStopHandler handler = new EditingStopHandler();
-//     for (JButton b: buttons) {
+//     for (JButton b : buttons) {
 //       b.addMouseListener(handler);
 //       b.addActionListener(handler);
 //     }

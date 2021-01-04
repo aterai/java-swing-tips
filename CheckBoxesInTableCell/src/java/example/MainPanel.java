@@ -98,7 +98,7 @@ class CheckBoxesPanel extends JPanel {
 
   private void initButtons() {
     removeAll();
-    for (JCheckBox b: buttons) {
+    for (JCheckBox b : buttons) {
       add(b);
       add(Box.createHorizontalStrut(5));
     }
@@ -178,7 +178,7 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
 //         String t = titles[i];
 //         am.put(t, new AbstractAction(t) {
 //           @Override public void actionPerformed(ActionEvent e) {
-//             for (JCheckBox b: buttons) {
+//             for (JCheckBox b : buttons) {
 //               if (b.getText().equals(t)) {
 //                 b.doClick();
 //                 break;

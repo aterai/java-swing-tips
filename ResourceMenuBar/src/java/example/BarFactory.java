@@ -54,7 +54,7 @@ public final class BarFactory {
 
   public void initActions(Action... actions) {
     // Action[] actions = getActions();
-    for (Action a: actions) {
+    for (Action a : actions) {
       commands.put(a.getValue(Action.NAME), a);
     }
   }
@@ -95,7 +95,7 @@ public final class BarFactory {
     JToolBar toolbar = new JToolBar();
     toolbar.setRollover(true);
     toolbar.setFloatable(false);
-    for (String key: tokenize(tmp)) {
+    for (String key : tokenize(tmp)) {
       if ("-".equals(key)) {
         toolbar.add(Box.createHorizontalStrut(5));
         toolbar.addSeparator();
@@ -147,7 +147,7 @@ public final class BarFactory {
 
   public JMenuBar createMenuBar() {
     JMenuBar mb = new JMenuBar();
-    for (String key: tokenize(getResourceString("menubar"))) {
+    for (String key : tokenize(getResourceString("menubar"))) {
       mb.add(createMenu(key));
     }
     return mb;
@@ -165,7 +165,7 @@ public final class BarFactory {
           }
           menu.setMnemonic(txt.codePointAt(0));
         });
-    for (String m: tokenize(getResourceString(key))) {
+    for (String m : tokenize(getResourceString(key))) {
       if ("-".equals(m)) {
         menu.addSeparator();
       } else {

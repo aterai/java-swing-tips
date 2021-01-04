@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
       buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
       IIOMetadata meta = reader.getImageMetadata(0);
-      for (String s: meta.getMetadataFormatNames()) {
+      for (String s : meta.getMetadataFormatNames()) {
         buf.append(String.format("MetadataFormatName: %s%n", s));
       }
 
@@ -237,7 +237,7 @@ class XmlTreeNode implements TreeNode {
       loadChildren();
     }
     int i = 0;
-    for (XmlTreeNode c: list) {
+    for (XmlTreeNode c : list) {
       if (xmlNode == c.xmlNode) {
         return i;
       }

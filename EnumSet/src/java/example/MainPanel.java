@@ -146,7 +146,7 @@ class CheckBoxesPanel extends JPanel {
 
   private void initButtons() {
     removeAll();
-    for (JCheckBox b: buttons) {
+    for (JCheckBox b : buttons) {
       add(b);
       add(Box.createHorizontalStrut(5));
     }

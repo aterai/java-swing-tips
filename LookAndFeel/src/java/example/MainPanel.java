@@ -167,7 +167,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Window.getWindows()) {
+    for (Window window : Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }

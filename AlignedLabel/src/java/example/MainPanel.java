@@ -107,10 +107,10 @@ class AlignedLabel extends JLabel {
   private int getMaxWidth() {
     if (maxWidth == 0 && Objects.nonNull(group)) {
       // int max = 0;
-      // for (AlignedLabel al: group) {
+      // for (AlignedLabel al : group) {
       //  max = Math.max(al.getSuperPreferredWidth(), max);
       // }
-      // for (AlignedLabel al: group) {
+      // for (AlignedLabel al : group) {
       //   al.maxWidth = max;
       // }
       int max = group.stream()

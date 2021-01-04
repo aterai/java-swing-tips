@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     DesktopManager dm = desktop.getDesktopManager();
     if (dm instanceof ReIconifyDesktopManager) {
       ReIconifyDesktopManager rdm = (ReIconifyDesktopManager) dm;
-      for (JInternalFrame f: desktop.getAllFrames()) {
+      for (JInternalFrame f : desktop.getAllFrames()) {
         if (f.isIcon()) {
           rdm.reIconifyFrame(f);
         }

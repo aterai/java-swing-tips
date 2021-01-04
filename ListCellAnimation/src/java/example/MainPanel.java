@@ -174,7 +174,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       if (isAnimatingCell()) {
         float alpha = .1f;
-        for (Shape s: flipbookFrames) {
+        for (Shape s : flipbookFrames) {
           g2.setPaint(makeColor(alpha));
           g2.fill(s);
           alpha += .1f;
@@ -183,7 +183,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
         Collections.rotate(flipbookFrames, 1);
       } else {
         g2.setPaint(new Color(0x99_99_99));
-        for (Shape s: flipbookFrames) {
+        for (Shape s : flipbookFrames) {
           g2.fill(s);
         }
       }

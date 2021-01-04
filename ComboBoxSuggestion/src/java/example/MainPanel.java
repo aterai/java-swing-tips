@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     //       @Override public void configureArrowButton() {}
     //     });
     //     // // Remove click on a JComboBox Border
-    //     // for (MouseListener ml: getMouseListeners()) {
+    //     // for (MouseListener ml : getMouseListeners()) {
     //     //   removeMouseListener(ml);
     //     // }
     //   }
@@ -176,7 +176,7 @@ class ComboKeyHandler extends KeyAdapter {
     shouldHide = false;
     switch (e.getKeyCode()) {
       case KeyEvent.VK_RIGHT:
-        for (String s: list) {
+        for (String s : list) {
           if (s.startsWith(text)) {
             textField.setText(s);
             return;
@@ -208,7 +208,7 @@ class ComboKeyHandler extends KeyAdapter {
 
   private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
     DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
-    for (String s: list) {
+    for (String s : list) {
       if (s.startsWith(text)) {
         m.addElement(s);
       }
@@ -264,7 +264,7 @@ class ComboKeyHandler extends KeyAdapter {
 //       shouldHide = false;
 //       switch (e.getKeyCode()) {
 //         case KeyEvent.VK_RIGHT:
-//         for (String s: list) {
+//         for (String s : list) {
 //           if (s.startsWith(t)) {
 //             textField.setText(s);
 //             return;
@@ -292,7 +292,7 @@ class ComboKeyHandler extends KeyAdapter {
 //     private ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
 //       DefaultComboBoxModel m = new DefaultComboBoxModel();
 //       if (Objects.nonNull(text) && text.isEmpty()) {
-//         for (String s: list) {
+//         for (String s : list) {
 //           if (s.startsWith(text)) {
 //             m.addElement(s);
 //           }

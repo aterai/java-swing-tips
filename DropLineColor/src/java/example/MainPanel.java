@@ -248,7 +248,7 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o: values) {
+      for (Object o : values) {
         int i = index++;
         listModel.add(i, o);
         target.addSelectionInterval(i, i);
@@ -345,7 +345,7 @@ class TableRowTransferHandler extends TransferHandler {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       addCount = values.size();
       Object[] array = new Object[0];
-      for (Object o: values) {
+      for (Object o : values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
         model.insertRow(row, ((List<?>) o).toArray(array));

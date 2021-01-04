@@ -270,7 +270,7 @@ public final class MainPanel extends JPanel {
 //
 //   private void recursiveSearch(File dir, List<File> list) throws InterruptedException {
 //     // System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
-//     for (String name: dir.list()) {
+//     for (String name : dir.list()) {
 //       if (Thread.interrupted()) {
 //         throw new InterruptedException();
 //       }

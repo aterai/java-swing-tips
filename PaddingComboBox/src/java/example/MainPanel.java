@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
 
     if (isColor) {
       Color c = new Color(.8f, 1f, .8f);
-      for (JComboBox<?> cb: list) {
+      for (JComboBox<?> cb : list) {
         cb.setOpaque(true);
         cb.setBackground(c);
         JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
@@ -195,7 +195,7 @@ final class LookAndFeelUtil {
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup lafGroup = new ButtonGroup();
-    for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
       menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
     }
     return menu;
@@ -229,7 +229,7 @@ final class LookAndFeelUtil {
   }
 
   private static void updateLookAndFeel() {
-    for (Window window: Window.getWindows()) {
+    for (Window window : Window.getWindows()) {
       SwingUtilities.updateComponentTreeUI(window);
     }
   }

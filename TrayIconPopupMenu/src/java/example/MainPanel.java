@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
           group.add(rb);
           box.add(rb);
         });
-    // for (LookAndFeelEnum lnf: LookAndFeelEnum.values()) {
+    // for (LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
     //   JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
     //   group.add(rb);
     //   box.add(rb);
@@ -94,10 +94,10 @@ public final class MainPanel extends JPanel {
     });
     popup.add("Exit").addActionListener(e -> {
       SystemTray tray = SystemTray.getSystemTray();
-      for (TrayIcon ti: tray.getTrayIcons()) {
+      for (TrayIcon ti : tray.getTrayIcons()) {
         tray.remove(ti);
       }
-      for (Frame f: Frame.getFrames()) {
+      for (Frame f : Frame.getFrames()) {
         f.dispose();
       }
       // tray.remove(icon);
@@ -143,7 +143,7 @@ final class TrayIconPopupMenuUtil {
   // Try to find GraphicsConfiguration, that includes mouse pointer position
   private static GraphicsConfiguration getGraphicsConfiguration(Point p) {
     GraphicsConfiguration gc = null;
-    for (GraphicsDevice gd: GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+    for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
       if (gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
         GraphicsConfiguration dgc = gd.getDefaultConfiguration();
         if (dgc.getBounds().contains(p)) {
@@ -281,7 +281,7 @@ class ChangeLookAndFeelAction extends AbstractAction {
       Toolkit.getDefaultToolkit().beep();
       System.out.println("Failed loading L&F: " + lnf);
     }
-    for (Frame f: Frame.getFrames()) {
+    for (Frame f : Frame.getFrames()) {
       SwingUtilities.updateComponentTreeUI(f);
       f.pack();
     }

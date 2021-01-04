@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     float[] list = new float[slist.length];
     int i = 0;
     try {
-      for (String s: slist) {
+      for (String s : slist) {
         String ss = s.trim();
         if (!ss.isEmpty()) {
           list[i++] = Float.parseFloat(ss);

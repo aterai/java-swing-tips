@@ -113,7 +113,7 @@ class GroupableTableHeader extends JTableHeader {
   }
 
   public List<?> getColumnGroups(TableColumn col) {
-    for (ColumnGroup cg: columnGroups) {
+    for (ColumnGroup cg : columnGroups) {
       List<?> groups = cg.getColumnGroupList(col, createMutableList());
       if (!groups.isEmpty()) {
         return groups;
@@ -164,7 +164,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
       cellRect.setSize(tc.getWidth(), headerHeight);
 
       int groupHeight = 0;
-      for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
+      for (Object o : ((GroupableTableHeader) header).getColumnGroups(tc)) {
         ColumnGroup cg = (ColumnGroup) o;
         Rectangle groupRect = Optional.ofNullable(h.get(cg))
             .orElseGet(() -> {
@@ -216,7 +216,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
       TableColumn tc = columnModel.getColumn(column);
       Component comp = getHeaderRenderer(column);
       int rendererHeight = comp.getPreferredSize().height;
-      for (Object o: ((GroupableTableHeader) header).getColumnGroups(tc)) {
+      for (Object o : ((GroupableTableHeader) header).getColumnGroups(tc)) {
         ColumnGroup cg = (ColumnGroup) o;
         rendererHeight += cg.getSize(header).height;
       }
@@ -272,7 +272,7 @@ class ColumnGroup {
     if (list.contains(c)) {
       return g;
     }
-    for (Object obj: list) {
+    for (Object obj : list) {
       if (obj instanceof ColumnGroup) {
         List<?> groups = ((ColumnGroup) obj).getColumnGroupList(c, createMutableList(g));
         if (!groups.isEmpty()) {
@@ -295,7 +295,7 @@ class ColumnGroup {
     TableCellRenderer r = header.getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(header.getTable(), getHeaderValue(), false, false, -1, -1);
     int width = 0;
-    for (Object obj: list) {
+    for (Object obj : list) {
       if (obj instanceof TableColumn) {
         TableColumn tc = (TableColumn) obj;
         width += tc.getWidth();

@@ -165,7 +165,7 @@ public final class MainPanel extends JPanel {
       if (selection.length == 0) {
         return;
       }
-      for (int i: selection) {
+      for (int i : selection) {
         int mi = table.convertRowIndexToModel(i);
         deletedRowSet.add(mi);
         SwingWorker<?, ?> worker = getSwingWorker(mi);
@@ -187,7 +187,7 @@ public final class MainPanel extends JPanel {
 
     private void cancelActionPerformed() {
       int[] selection = table.getSelectedRows();
-      for (int i: selection) {
+      for (int i : selection) {
         int mi = table.convertRowIndexToModel(i);
         SwingWorker<?, ?> worker = getSwingWorker(mi);
         if (Objects.nonNull(worker) && !worker.isDone()) {

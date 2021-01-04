@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText("");
-        for (File file: fileChooser.getSelectedFiles()) {
+        for (File file : fileChooser.getSelectedFiles()) {
           log.append(file.getAbsolutePath() + "\n");
         }
       }

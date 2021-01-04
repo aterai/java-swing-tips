@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         color = JColorChooser.showDialog(getRootPane(), "JColorChooser", null);
       } else {
         JColorChooser cc = new JColorChooser();
-        for (AbstractColorChooserPanel p: cc.getChooserPanels()) {
+        for (AbstractColorChooserPanel p : cc.getChooserPanels()) {
           if (!selected.contains(p.getDisplayName())) {
             cc.removeChooserPanel(p);
           }
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     });
 
     Box box = Box.createVerticalBox();
-    for (AbstractButton b: list) {
+    for (AbstractButton b : list) {
       box.add(b);
       box.add(Box.createVerticalStrut(5));
     }

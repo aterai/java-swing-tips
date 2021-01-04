@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     //   EventQueue.invokeLater(new Runnable() {
     //     @Override public void run() {
     //       Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-    //       for (Component c: divider.getComponents()) {
+    //       for (Component c : divider.getComponents()) {
     //         if (c instanceof JButton) {
     //           ((JButton) c).doClick();
     //           break;

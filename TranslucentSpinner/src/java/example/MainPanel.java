@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void configureSpinnerButtons(Container comp, UIDefaults d) {
-    for (Component c: comp.getComponents()) {
+    for (Component c : comp.getComponents()) {
       String name = Objects.toString(c.getName(), "");
       if (c instanceof JButton && name.endsWith("Button")) {
         ((JButton) c).putClientProperty("Nimbus.Overrides", d);

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
     int idx = 0;
-    for (Color c: Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
+    for (Color c : Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
       JInternalFrame f = makeInternalFrame(c, ++idx);
       desktop.add(f);
       f.setVisible(true);

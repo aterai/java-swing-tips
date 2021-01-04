@@ -25,10 +25,10 @@ public final class MainPanel extends JPanel {
     // // TEST:
     // FileSystemView fileSystemView = FileSystemView.getFileSystemView();
     // DefaultTreeModel treeModel = new DefaultTreeModel(root);
-    // for (File fileSystemRoot: fileSystemView.getRoots()) {
+    // for (File fileSystemRoot : fileSystemView.getRoots()) {
     //   DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
     //   root.add(node);
-    //   for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
+    //   for (File file : fileSystemView.getFiles(fileSystemRoot, true)) {
     //     if (file.isDirectory()) {
     //       node.add(new DefaultMutableTreeNode(file));
     //     }
@@ -179,7 +179,7 @@ public final class MainPanel extends JPanel {
 //     SwingWorker<String, File> worker = new SwingWorker<String, File>() {
 //       @Override protected String doInBackground() throws InterruptedException {
 //         File[] children = fileSystemView.getFiles(parent, true);
-//         for (File child: children) {
+//         for (File child : children) {
 //           if (child.isDirectory()) {
 //             publish(child);
 // //          Thread.sleep(500);
@@ -189,7 +189,7 @@ public final class MainPanel extends JPanel {
 //       }
 //
 //       @Override protected void process(List<File> chunks) {
-//         for (File file: chunks) {
+//         for (File file : chunks) {
 //           node.add(new DefaultMutableTreeNode(file));
 //         }
 //         model.reload(parent); // = model.nodeStructureChanged(parent);

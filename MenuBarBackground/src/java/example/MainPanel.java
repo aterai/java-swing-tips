@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     };
     mb.setOpaque(false);
     String[] menuKeys = {"File", "Edit", "Help"};
-    for (String key: menuKeys) {
+    for (String key : menuKeys) {
       JMenu m = createMenu(key);
       // if (m != null)
       mb.add(m);

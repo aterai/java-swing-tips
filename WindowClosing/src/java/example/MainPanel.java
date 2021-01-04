@@ -162,7 +162,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
 
   private void fireUnsavedFlagChangeEvent(boolean unsaved) {
     frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
-    for (Component c: list) {
+    for (Component c : list) {
       c.setEnabled(unsaved);
     }
   }

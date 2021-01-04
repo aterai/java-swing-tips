@@ -154,7 +154,7 @@ class BackgroundTask extends SwingWorker<String, File> {
         .filter(File::isDirectory)
         .forEach(this::publish);
     // File[] children = fileSystemView.getFiles(parent, true);
-    // for (File child: children) {
+    // for (File child : children) {
     //   if (child.isDirectory()) {
     //     publish(child);
     //     // try { // Test

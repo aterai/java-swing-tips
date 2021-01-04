@@ -217,7 +217,7 @@ class LabelTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    for (DataFlavor f: getTransferDataFlavors()) {
+    for (DataFlavor f : getTransferDataFlavors()) {
       if (flavor.equals(f)) {
         return true;
       }

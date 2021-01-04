@@ -121,7 +121,7 @@ class HeaderRenderer implements TableCellRenderer {
     // System.out.println(l.getText());
 
     // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
-    for (Component c: l.getComponents()) {
+    for (Component c : l.getComponents()) {
       updateCheckBox(((Container) c).getComponent(0), value);
     }
     return l;

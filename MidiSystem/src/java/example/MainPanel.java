@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void process(List<Long> chunks) {
-        for (Long tp: chunks) {
+        for (Long tp : chunks) {
           tickPos = tp;
           if (tickPos == 0) {
             initButtons(true);

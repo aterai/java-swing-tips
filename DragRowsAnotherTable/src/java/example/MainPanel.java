@@ -121,7 +121,7 @@ class TableRowTransferHandler extends TransferHandler {
     DefaultTableModel model = (DefaultTableModel) table.getModel();
     // List<Object> list = new ArrayList<>();
     // indices = table.getSelectedRows();
-    // for (int i: indices) {
+    // for (int i : indices) {
     //   list.add(model.getDataVector().get(i));
     // }
     // Object[] transferData = list.toArray();
@@ -183,7 +183,7 @@ class TableRowTransferHandler extends TransferHandler {
         addCount = values.size();
       }
       Object[] type = new Object[0];
-      for (Object o: values) {
+      for (Object o : values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
         model.insertRow(row, ((List<?>) o).toArray(type));

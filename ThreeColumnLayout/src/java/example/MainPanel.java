@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
       }
     }
     if (selectedIndices.length > 0) {
-      for (int i: selectedIndices) {
+      for (int i : selectedIndices) {
         toModel.addElement(fromModel.get(i));
       }
       fromModel.clear();
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     box.add(Box.createVerticalGlue());
-    for (JButton b: buttons) {
+    for (JButton b : buttons) {
       box.add(b);
       box.add(Box.createVerticalStrut(20));
     }

@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
         return;
       }
 
-      for (WatchEvent<?> event: key.pollEvents()) {
+      for (WatchEvent<?> event : key.pollEvents()) {
         WatchEvent.Kind<?> kind = event.kind();
 
         // This key is registered only for ENTRY_CREATE events,

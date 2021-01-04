@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JButton getArrowButton(Container box) {
-    for (Component c: box.getComponents()) {
+    for (Component c : box.getComponents()) {
       if (c instanceof JButton) { // && "ComboBox.arrowButton".equals(c.getName())) {
         // System.out.println(c.getName());
         return (JButton) c;

@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 
     // // System.out.println(table.getActionMap().get("startEditing"));
     // InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    // for (KeyStroke ks: im.allKeys()) {
+    // for (KeyStroke ks : im.allKeys()) {
     //   Object actionMapKey = im.get(ks);
     //   if ("startEditing".equals(actionMapKey.toString())) {
     //     System.out.println("startEditing: "+ ks.toString());

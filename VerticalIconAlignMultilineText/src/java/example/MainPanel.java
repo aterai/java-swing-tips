@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     JToggleButton button = new JToggleButton("setFont: 24pt");
     button.addActionListener(e -> {
       boolean flag = button.isSelected();
-      for (Component c: list) {
+      for (Component c : list) {
         c.setFont(flag ? font1 : font0);
       }
     });

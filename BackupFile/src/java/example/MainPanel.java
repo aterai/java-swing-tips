@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        for (Message m: chunks) {
+        for (Message m : chunks) {
           append(m);
         }
       }

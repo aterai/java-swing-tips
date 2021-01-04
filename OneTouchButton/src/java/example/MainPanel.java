@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     // divider.setBorder(BorderFactory.createMatteBorder(20, 0, 5, 0, Color.RED)); // bug?
     // divider.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
     divider.setBackground(Color.ORANGE);
-    for (Component c: divider.getComponents()) {
+    for (Component c : divider.getComponents()) {
       if (c instanceof JButton) {
         JButton b = (JButton) c;
         // @see BasicSplitPaneDivider#createLeftOneTouchButton()

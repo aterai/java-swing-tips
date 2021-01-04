@@ -173,7 +173,7 @@ class HighlightIcon implements Icon {
     g2.translate(x, y);
     g2.setPaint(Color.RED);
     try {
-      for (Highlighter.Highlight hh: highlighter.getHighlights()) {
+      for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
@@ -228,7 +228,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
     Highlighter highlighter = textArea.getHighlighter();
     g.setColor(Color.YELLOW);
     try {
-      for (Highlighter.Highlight hh: highlighter.getHighlights()) {
+      for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
@@ -260,7 +260,7 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
     Highlighter highlighter = textArea.getHighlighter();
     g.setColor(Color.YELLOW);
     try {
-      for (Highlighter.Highlight hh: highlighter.getHighlights()) {
+      for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);

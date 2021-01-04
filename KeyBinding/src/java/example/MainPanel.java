@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       model.setRowCount(0);
       JComponent c = componentChoices.getItemAt(componentChoices.getSelectedIndex());
-      for (Integer f: focusTypes) {
+      for (Integer f : focusTypes) {
         loadBindingMap(f, c.getInputMap(f), c.getActionMap());
       }
     });
@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
   //   if (Objects.isNull(im.allKeys())) {
   //     return h;
   //   }
-  //   for (KeyStroke ks: im.allKeys()) {
+  //   for (KeyStroke ks : im.allKeys()) {
   //     Object name = im.get(ks);
   //     if (h.containsKey(name)) {
   //       h.get(name).add(ks);
@@ -125,10 +125,10 @@ public final class MainPanel extends JPanel {
       return;
     }
     ActionMap tmpAm = new ActionMap();
-    for (Object actionMapKey: am.allKeys()) {
+    for (Object actionMapKey : am.allKeys()) {
       tmpAm.put(actionMapKey, am.get(actionMapKey));
     }
-    for (KeyStroke ks: im.allKeys()) {
+    for (KeyStroke ks : im.allKeys()) {
       Object actionMapKey = im.get(ks);
       Action action = am.get(actionMapKey);
       if (Objects.isNull(action)) {
@@ -141,7 +141,7 @@ public final class MainPanel extends JPanel {
     if (Objects.isNull(tmpAm.allKeys())) {
       return;
     }
-    for (Object actionMapKey: tmpAm.allKeys()) {
+    for (Object actionMapKey : tmpAm.allKeys()) {
       model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
     }
   }

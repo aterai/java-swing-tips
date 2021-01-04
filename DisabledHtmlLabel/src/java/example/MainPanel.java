@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("setEnabled", true);
     check.addActionListener(e -> {
       boolean f = ((JCheckBox) e.getSource()).isSelected();
-      for (Component c: p.getComponents()) {
+      for (Component c : p.getComponents()) {
         c.setEnabled(f);
       }
     });

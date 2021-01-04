@@ -112,7 +112,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
     super.addTab(title, new CloseTabIcon(null), component);
 
     // if (Objects.isNull(headerViewport)) {
-    //   for (Component c: getComponents()) {
+    //   for (Component c : getComponents()) {
     //     if ("TabbedPane.scrollableViewport".equals(c.getName())) {
     //       headerViewport = (JViewport) c;
     //       break;
@@ -140,7 +140,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
   //   super.addTab(title, new CloseTabIcon(extraIcon), component);
   //
   //   if (Objects.isNull(headerViewport)) {
-  //     // for (Component c: getComponents()) {
+  //     // for (Component c : getComponents()) {
   //     //   if ("TabbedPane.scrollableViewport".equals(c.getName())) {
   //     //     headerViewport = (JViewport) c;
   //     //   }
@@ -191,7 +191,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
     boolean closeit = true;
     // Guaranteed to return a non-null array
     Object[] listeners = eventListenerList.getListenerList();
-    for (Object o: listeners) {
+    for (Object o : listeners) {
       if (o instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) o).closeTab(tabIndexToClose)) {
         closeit = false;
         break;
@@ -207,7 +207,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
       .findFirst()
       .map(c -> ((JViewport) c).getViewPosition())
       .orElseGet(Point::new);
-    // for (Component c: getComponents()) {
+    // for (Component c : getComponents()) {
     //   if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
     //     return ((JViewport) c).getViewPosition();
     //   }

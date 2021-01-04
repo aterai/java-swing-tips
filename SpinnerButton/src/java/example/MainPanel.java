@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void searchSpinnerButtons(Container comp) {
-    for (Component c: comp.getComponents()) {
+    for (Component c : comp.getComponents()) {
       // System.out.println(c.getName());
       if ("Spinner.nextButton".equals(c.getName())) {
         ((JButton) c).setToolTipText("getName: next next");

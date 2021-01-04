@@ -137,7 +137,7 @@ class TreeTransferHandler extends TransferHandler {
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
       // int idx = childIndex < 0 ? parent.getChildCount() : childIndex;
       // // DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
-      // for (DefaultMutableTreeNode node: nodes) {
+      // for (DefaultMutableTreeNode node : nodes) {
       //   // sm.removeNodeFromParent(node);
       //   // model.insertNodeInto(node, parent, idx++);
       //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());

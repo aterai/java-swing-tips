@@ -155,7 +155,7 @@ class ListItemTransferHandler extends TransferHandler {
     try {
       // Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o: values) {
+      for (Object o : values) {
         int i = index++;
         listModel.add(i, o);
         target.addSelectionInterval(i, i);

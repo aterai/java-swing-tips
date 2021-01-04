@@ -214,7 +214,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     g.drawRect(x + SIZE / 2, y + SIZE / 2, w - SIZE, h - SIZE);
     Rectangle rect = new Rectangle(SIZE, SIZE);
     Rectangle r = new Rectangle(x, y, w, h);
-    for (Locations loc: Locations.values()) {
+    for (Locations loc : Locations.values()) {
       rect.setLocation(loc.getPoint(r));
       g.setColor(Color.WHITE);
       g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
@@ -240,7 +240,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
     Rectangle rect = new Rectangle(SIZE, SIZE);
     Rectangle r = new Rectangle(0, 0, w, h);
-    for (Locations loc: Locations.values()) {
+    for (Locations loc : Locations.values()) {
       rect.setLocation(loc.getPoint(r));
       if (rect.contains(pt)) {
         return loc.getCursor();

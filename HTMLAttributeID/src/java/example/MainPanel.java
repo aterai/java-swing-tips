@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
       textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
       JToggleButton b = (JToggleButton) e.getSource();
       if (b.isSelected()) {
-        for (Element root: editorPane.getDocument().getRootElements()) {
+        for (Element root : editorPane.getDocument().getRootElements()) {
           traverseElementById(root);
         }
       } else {

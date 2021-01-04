@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     MenuItem item2 = new MenuItem("EXIT");
     item2.addActionListener(e -> {
       SystemTray tray = SystemTray.getSystemTray();
-      for (TrayIcon icon: tray.getTrayIcons()) {
+      for (TrayIcon icon : tray.getTrayIcons()) {
         tray.remove(icon);
       }
       frame.dispose();

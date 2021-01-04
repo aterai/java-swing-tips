@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    for (JSlider slider: list) {
+    for (JSlider slider : list) {
       box.add(slider);
       box.add(Box.createVerticalStrut(10));
     }

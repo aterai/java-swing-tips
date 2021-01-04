@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
 
   private static String print(BitSet bitSet) {
     StringBuilder buf = new StringBuilder();
-    for (long lv: bitSet.toLongArray()) {
+    for (long lv : bitSet.toLongArray()) {
       buf.insert(0, Long.toUnsignedString(lv, 2));
     }
     String b = buf.toString();

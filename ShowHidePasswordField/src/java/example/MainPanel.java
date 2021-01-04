@@ -185,7 +185,7 @@ enum PasswordField {
 //     if (!proposedValue.isEmpty() && !asciiEncoder.canEncode(proposedValue)) {
 //       throw new BadLocationException(proposedValue, offset);
 //     }
-// //     for (char c: proposedValue.toCharArray()) {
+// //     for (char c : proposedValue.toCharArray()) {
 // //       if (((int) c) > 127) {
 // //         throw new BadLocationException(proposedValue, offset);
 // //       }

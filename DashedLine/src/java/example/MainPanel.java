@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     float[] dist = new float[strArray.length];
     int i = 0;
     try {
-      for (String s: strArray) {
+      for (String s : strArray) {
         String ss = s.trim();
         if (!ss.isEmpty()) {
           dist[i++] = Float.parseFloat(ss);

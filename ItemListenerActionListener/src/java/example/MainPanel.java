@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
       String ac = c.getActionCommand();
       print(textArea, e, c.getClass(), b, ac);
       // if (e.getStateChange() == ItemEvent.SELECTED) {
-      //   for (Object o: e.getItemSelectable().getSelectedObjects()) {
+      //   for (Object o : e.getItemSelectable().getSelectedObjects()) {
       //     System.out.println(Objects.toString(o));
       //   }
       // }

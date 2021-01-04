@@ -127,8 +127,8 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      for (List<Object[]> list: chunks) {
-        for (Object[] o: list) {
+      for (List<Object[]> list : chunks) {
+        for (Object[] o : list) {
           model.addRow(o);
         }
       }

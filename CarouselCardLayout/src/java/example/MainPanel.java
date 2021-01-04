@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     JPanel cards = new JPanel(cardLayout) {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (Component c: getComponents()) {
+        for (Component c : getComponents()) {
           if (c.isVisible()) {
             paintSideComponents(g, getComponentZOrder(c));
             return;

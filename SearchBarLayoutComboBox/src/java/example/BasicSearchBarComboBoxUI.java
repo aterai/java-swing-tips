@@ -292,7 +292,7 @@ class SearchBarLayout implements LayoutManager {
       arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
     }
     JButton loupeButton = null;
-    for (Component c: cb.getComponents()) {
+    for (Component c : cb.getComponents()) {
       if ("ComboBox.loupeButton".equals(c.getName())) {
         loupeButton = (JButton) c;
         break;
