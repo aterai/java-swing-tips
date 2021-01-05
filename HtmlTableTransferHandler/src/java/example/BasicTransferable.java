@@ -42,7 +42,7 @@ class BasicTransferable implements Transferable {
       stringFlavors[1] = DataFlavor.stringFlavor;
 
     } catch (ClassNotFoundException ex) {
-      System.err.println("error initializing javax.swing.plaf.basic.BasicTranserable");
+      System.err.println("error initializing javax.swing.plaf.basic.BasicTransferable");
     }
   }
 
