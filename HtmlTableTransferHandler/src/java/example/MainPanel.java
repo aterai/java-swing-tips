@@ -21,7 +21,7 @@ import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
+    super(new GridLayout(3, 1));
     String[] columnNames = {"Type", "Value"};
     Object[][] data = {
       {"String", "text"},
@@ -40,11 +40,9 @@ public final class MainPanel extends JPanel {
     JTable table2 = new PropertyTable(model);
     table2.setTransferHandler(new HtmlTableTransferHandler());
 
-    JPanel p = new JPanel(new GridLayout(3, 1));
-    p.add(new JScrollPane(table1));
-    p.add(new JScrollPane(table2));
-    p.add(new JScrollPane(new JEditorPane("text/html", "")));
-    add(p);
+    add(new JScrollPane(table1));
+    add(new JScrollPane(table2));
+    add(new JScrollPane(new JEditorPane("text/html", "")));
     setPreferredSize(new Dimension(320, 240));
   }
 
