@@ -105,7 +105,7 @@ class TablePopupMenu extends JPopupMenu {
   }
 }
 
-final class DnDTable extends JTable implements DragGestureListener, Transferable {
+class DnDTable extends JTable implements DragGestureListener, Transferable {
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
   private static final Color LINE_COLOR = new Color(0xFF_64_64);
@@ -118,8 +118,7 @@ final class DnDTable extends JTable implements DragGestureListener, Transferable
     super(model);
     // DropTarget dropTarget =
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
-    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -178,7 +177,7 @@ final class DnDTable extends JTable implements DragGestureListener, Transferable
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new TableDragSourceListener());
+      e.startDrag(DragSource.DefaultMoveDrop, this, new TableDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
