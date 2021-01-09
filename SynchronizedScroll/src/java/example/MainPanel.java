@@ -32,10 +32,10 @@ public final class MainPanel extends JPanel {
       @Override public void stateChanged(ChangeEvent e) {
         JViewport src = null;
         JViewport tgt = null;
-        if (e.getSource() == sp1.getViewport()) {
+        if (Objects.equals(e.getSource(), sp1.getViewport())) {
           src = sp1.getViewport();
           tgt = sp2.getViewport();
-        } else if (e.getSource() == sp2.getViewport()) {
+        } else if (Objects.equals(e.getSource(), sp2.getViewport())) {
           src = sp2.getViewport();
           tgt = sp1.getViewport();
         }
