@@ -238,7 +238,7 @@ class XmlTreeNode implements TreeNode {
     }
     int i = 0;
     for (XmlTreeNode c : list) {
-      if (xmlNode == c.xmlNode) {
+      if (Objects.equals(xmlNode, c.xmlNode)) {
         return i;
       }
       i++;
