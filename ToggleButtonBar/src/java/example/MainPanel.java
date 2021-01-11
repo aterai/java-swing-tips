@@ -141,7 +141,7 @@ class ToggleButtonBarCellIcon implements Icon {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     Path2D p = new Path2D.Float();
-    if (c == parent.getComponent(0)) {
+    if (Objects.equals(c, parent.getComponent(0))) {
       // :first-child
       p.moveTo(x, y + r);
       p.quadTo(x, y, x + r, y);
@@ -149,7 +149,7 @@ class ToggleButtonBarCellIcon implements Icon {
       p.lineTo(x + w, y + h);
       p.lineTo(x + r, y + h);
       p.quadTo(x, y + h, x, y + h - r);
-    } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
+    } else if (Objects.equals(c, parent.getComponent(parent.getComponentCount() - 1))) {
       // :last-child
       w--;
       p.moveTo(x, y);

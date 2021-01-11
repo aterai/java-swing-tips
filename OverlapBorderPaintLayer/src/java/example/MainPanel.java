@@ -154,7 +154,7 @@ class ArrowToggleButtonIcon implements Icon {
     p.lineTo(w, h2);
     p.lineTo(w - w2, h);
     p.lineTo(0d, h);
-    if (c != parent.getComponent(0)) {
+    if (!Objects.equals(c, parent.getComponent(0))) {
       p.lineTo(w2, h2);
     }
     p.closePath();
@@ -220,7 +220,7 @@ class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
     p.moveTo(w - h2, 0d);
     p.quadTo(w, 0d, w, h2);
     p.quadTo(w, 0d + h, w - h2, h);
-    if (c == parent.getComponent(0)) {
+    if (Objects.equals(c, parent.getComponent(0))) {
       // :first-child
       p.lineTo(r, h);
       p.quadTo(0d, h, 0d, h - r);
