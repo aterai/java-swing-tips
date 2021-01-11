@@ -76,7 +76,7 @@ class AnimatedBorder extends EmptyBorder {
   private final transient Stroke bottomStroke = new BasicStroke(BORDER / 2f);
   private long startTime = -1L;
   private final transient List<Point2D> points = new ArrayList<>();
-  private transient Shape shape;
+  protected transient Shape shape;
 
   public AnimatedBorder(JComponent c) {
     super(BORDER, BORDER, BORDER + BOTTOM_SPACE, BORDER);
@@ -143,7 +143,7 @@ class AnimatedBorder extends EmptyBorder {
     g2.dispose();
   }
 
-  private static void makePointList(Shape shape, List<Point2D> points) {
+  public static void makePointList(Shape shape, List<Point2D> points) {
     points.clear();
     PathIterator pi = shape.getPathIterator(null, .01);
     Point2D prev = new Point2D.Double();
