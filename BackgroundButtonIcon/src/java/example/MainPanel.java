@@ -137,7 +137,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
     p.lineTo(w, h2);
     p.lineTo(w - w2, h);
     p.lineTo(0d, h);
-    if (c != parent.getComponent(0)) {
+    if (!Objects.equals(c, parent.getComponent(0))) {
       p.lineTo(w2, h2);
     }
     p.closePath();
