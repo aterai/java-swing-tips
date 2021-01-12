@@ -53,16 +53,12 @@ public final class MainPanel extends JPanel {
 
             reset.addActionListener(e -> {
               sequencer.stop();
-              tickPos = 0;
+              tickPos = 0L;
               initButtons(true);
             });
           });
-
           while (sequencer.isOpen()) {
-            if (sequencer.isRunning()) {
-              publish(sequencer.getTickPosition());
-            }
-            Thread.sleep(1000);
+            updateTickPosition(sequencer);
           }
         } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
           ex.printStackTrace();
@@ -73,17 +69,24 @@ public final class MainPanel extends JPanel {
         return null;
       }
 
+      private void updateTickPosition(Sequencer sequencer) throws InterruptedException {
+        if (sequencer.isRunning()) {
+          publish(sequencer.getTickPosition());
+        }
+        Thread.sleep(1000L);
+      }
+
       @Override protected void process(List<Long> chunks) {
-        for (Long tp : chunks) {
+        chunks.forEach(tp -> {
           tickPos = tp;
-          if (tickPos == 0) {
+          if (tickPos == 0L) {
             initButtons(true);
           }
-        }
+        });
       }
 
       // @Override protected void done() {
-      //   tickPos = 0;
+      //   tickPos = 0L;
       //   initButtons(true);
       // }
 
