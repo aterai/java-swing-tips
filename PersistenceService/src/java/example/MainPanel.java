@@ -30,7 +30,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private final JScrollPane scroll = new JScrollPane(new JTree());
 
-  protected MainPanel() {
+  public MainPanel() {
     super(new BorderLayout());
     // // Test
     // JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {
