@@ -72,7 +72,7 @@ class TableHeaderTabbedPane extends JPanel {
     TabButton l = new TabButton();
     header.setDefaultRenderer((table1, value, isSelected, hasFocus, row, column) -> {
       l.setText(Objects.toString(value, ""));
-      l.setSelected(Objects.equals(value, selectedColumn) || Objects.equals(column, rolloverColumn));
+      l.setSelected(Objects.equals(value, selectedColumn) || column == rolloverColumn);
       return l;
     });
 
