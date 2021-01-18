@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected static void repaintWindowAncestor(JComponent c) {
+  public static void repaintWindowAncestor(JComponent c) {
     Optional.ofNullable(c.getRootPane())
         .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
 

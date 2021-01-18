@@ -192,7 +192,7 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
    * @param tabIndexToClose  the index of the tab which should be closed
    * @return true if the tab can be closed, false otherwise
    */
-  protected boolean fireCloseTab(int tabIndexToClose) {
+  public boolean fireCloseTab(int tabIndexToClose) {
     boolean closeit = true;
     // Guaranteed to return a non-null array
     Object[] listeners = eventListenerList.getListenerList();
