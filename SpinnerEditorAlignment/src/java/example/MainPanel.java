@@ -42,6 +42,7 @@ public final class MainPanel extends JPanel {
     JSpinner spinner0 = new JSpinner(new SpinnerListModel(weeks));
     System.out.println(((JSpinner.DefaultEditor) spinner0.getEditor()).getTextField().getHorizontalAlignment());
 
+    @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
     System.out.println(((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().getHorizontalAlignment());

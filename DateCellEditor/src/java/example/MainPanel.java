@@ -18,6 +18,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     String[] columnNames = {"Integer", "String", "Date"};
+    @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
       {-1, "AAA", new Date()}, {2, "BBB", new Date()},
       {-9, "EEE", new Date()}, {1, "", new Date()},

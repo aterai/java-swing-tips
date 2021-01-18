@@ -23,6 +23,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(3, 1));
     String[] columnNames = {"Type", "Value"};
+    @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
       {"String", "text"},
       {"Date", new Date()},
