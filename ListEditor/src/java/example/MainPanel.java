@@ -193,7 +193,6 @@ class EditableList<E extends ListItem> extends JList<E> {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
-      ListItem item = getSelectedValue();
       Rectangle rect = getCellBounds(idx, idx);
       Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
       rect.setLocation(p);
@@ -202,7 +201,7 @@ class EditableList<E extends ListItem> extends JList<E> {
       rect.height = h;
       rect.grow(-2, 0);
       editor.setBounds(rect);
-      editor.setText(item.title);
+      editor.setText(getSelectedValue().title);
       editor.selectAll();
       glassPane.add(editor);
       glassPane.setVisible(true);
