@@ -9,6 +9,7 @@ import java.awt.event.HierarchyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -79,7 +80,7 @@ public final class MainPanel extends JPanel {
       @Override protected void process(List<Long> chunks) {
         chunks.forEach(tp -> {
           tickPos = tp;
-          if (tickPos == 0L) {
+          if (Objects.equals(tp, 0L)) {
             initButtons(true);
           }
         });
