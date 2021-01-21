@@ -90,21 +90,25 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
   }
 
   @Override public void focusLost(FocusEvent e) {
-    showWatermark = getPassword().length == 0;
-    repaint();
+    update();
   }
 
   @Override public void insertUpdate(DocumentEvent e) {
-    showWatermark = e.getDocument().getLength() == 0;
-    repaint();
+    update();
   }
 
   @Override public void removeUpdate(DocumentEvent e) {
-    showWatermark = e.getDocument().getLength() == 0;
-    repaint();
+    update();
   }
 
   @Override public void changedUpdate(DocumentEvent e) {
     /* not needed */
+  }
+
+  protected void update() {
+    // update(DocumentEvent e) {
+    //   showWatermark = e.getDocument().getLength() == 0;
+    showWatermark = getPassword().length == 0;
+    repaint();
   }
 }
