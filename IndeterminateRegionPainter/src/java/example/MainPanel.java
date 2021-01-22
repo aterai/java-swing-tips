@@ -262,7 +262,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     float w = (float) bounds.getWidth();
     float h = (float) bounds.getHeight();
     return decodeGradient(
-      .5f * w + x, 0f * h + y, .5f * w + x, 1f * h + y,
+      .5f * w + x, y, .5f * w + x, h + y,
       new float[] {
         .038709678f, .05483871f, .07096774f, .28064516f, .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
       },
@@ -286,7 +286,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     float w = (float) bounds.getWidth();
     float h = (float) bounds.getHeight();
     return decodeGradient(
-      .5f * w + x, 0f * h + y, .5f * w + x, 1f * h + y,
+      .5f * w + x, y, .5f * w + x, h + y,
       new float[] {
         .038709678f, .061290324f, .08387097f, .27258065f, .46129033f, .4903226f,
         .5193548f, .71774197f, .91612905f, .92419356f, .93225807f
