@@ -23,15 +23,17 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JDesktopPane p = new JDesktopPane();
+    TransferHandler handler = new TableRowTransferHandler();
+    // TransferHandler handler2 = new TableColumnTransferHandler();
 
     JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
-    f1.add(new JScrollPane(makeDnDTable()));
+    f1.add(new JScrollPane(makeDnDTable(handler)));
     f1.setOpaque(false);
     p.add(f1, 1, 1);
     f1.setBounds(0, 0, 240, 160);
     f1.setVisible(true);
     JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
-    f2.add(new JScrollPane(makeDnDTable()));
+    f2.add(new JScrollPane(makeDnDTable(handler)));
     p.add(f2, 1, 0);
     f2.setBounds(50, 50, 240, 160);
     f2.setVisible(true);
@@ -41,9 +43,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeDnDTable() {
-    TransferHandler handler = new TableRowTransferHandler();
-    // TransferHandler handler2 = new TableColumnTransferHandler();
+  private static JTable makeDnDTable(TransferHandler handler) {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
       {"AAA", 12, true}, {"aaa", 1, false},
