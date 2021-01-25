@@ -15,8 +15,9 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String key = "Slider.paintThumbArrowShape";
     JSlider slider0 = new JSlider();
-    slider0.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider0.putClientProperty(key, Boolean.TRUE);
 
     JSlider slider1 = new JSlider() {
       @Override public void updateUI() {
@@ -44,12 +45,12 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    slider1.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider1.putClientProperty(key, Boolean.TRUE);
 
     // https://ateraimemo.com/Swing/OnlyLeftMouseButtonDrag.html
     UIManager.put("Slider.onlyLeftMouseButtonDrag", false);
     JSlider slider2 = new JSlider();
-    slider2.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider2.putClientProperty(key, Boolean.TRUE);
     JLayer<Component> layer = new JLayer<>(slider2, new DisableLeftPressedLayerUI<>());
 
     Box box = Box.createVerticalBox();
