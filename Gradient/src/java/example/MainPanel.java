@@ -15,8 +15,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTestPanel("JSeparator", new JSeparator(), 10));
-    p.add(makeTestPanel("GradientSeparator", new GradientSeparator(), 10));
+    p.add(makeIndentPanel("JSeparator", new JSeparator(), 10));
+    p.add(makeIndentPanel("GradientSeparator", new GradientSeparator(), 10));
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTestPanel(String title, JSeparator sp, int indent) {
+  public static Component makeIndentPanel(String title, JSeparator sp, int indent) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
