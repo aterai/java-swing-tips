@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static MaskFormatter createFormatter(String s) {
+  public static MaskFormatter createFormatter(String s) {
     MaskFormatter formatter = null;
     try {
       formatter = new MaskFormatter(s);
