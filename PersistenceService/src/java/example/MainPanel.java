@@ -70,6 +70,7 @@ public final class MainPanel extends JPanel {
             frame.addWindowListener(windowListener);
           }
         } catch (InterruptedException | ExecutionException ex) {
+          Thread.currentThread().interrupt();
           ex.printStackTrace();
           Toolkit.getDefaultToolkit().beep();
         }
@@ -181,6 +182,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
 //   protected TestBufferedInputStream(InputStream in) {
 //     super(in);
 //   }
+//
 //   @Override public void close() throws IOException {
 //     System.out.println("BufferedInputStream");
 //     super.close();
