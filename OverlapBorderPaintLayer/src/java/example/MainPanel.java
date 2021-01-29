@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeBreadcrumb(List<String> list, Color color, int overlap) {
+  public static JPanel makeBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeChevronBreadcrumb(List<String> list, Color color, int overlap) {
+  public static JPanel makeChevronBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeRibbonBreadcrumb(List<String> list, Color color, int overlap) {
+  public static JPanel makeRibbonBreadcrumb(List<String> list, Color color, int overlap) {
     JPanel p = makePanel(overlap);
     p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
     ButtonGroup bg = new ButtonGroup();
@@ -237,7 +237,7 @@ class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
 }
 
 class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
-  private Shape shape;
+  private transient Shape shape;
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
