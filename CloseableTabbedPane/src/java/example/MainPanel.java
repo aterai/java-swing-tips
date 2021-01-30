@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane0 = new CloseableTabbedPane();
     JTabbedPane tabbedPane1 = new JTabbedPane();
     Stream.of(tabbedPane0, tabbedPane1).forEach(t -> {
-      t.addTab("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new JLabel("aaa"));
-      t.addTab("bbbbbbbbaa", new JLabel("bbb"));
-      t.addTab("ccc", new JLabel("ccc"));
-      t.addTab("d", new JLabel("ddd"));
+      t.addTab("JLabel: 111111111111111111111", new JLabel("JLabel1"));
+      t.addTab("JLabel: 22222", new JLabel("JLabel2"));
+      t.addTab("333", new JLabel("JLabel3"));
+      t.addTab("4", new JLabel("JLabel4"));
     });
 
     // TEST:
@@ -215,6 +215,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //     button.setContentAreaFilled(false);
 //     button.setRolloverEnabled(false);
 //   }
+//
 //   @Override protected void paintComponent(Graphics g) {
 //     Point glassPt = SwingUtilities.convertPoint(tabbedPane, 0, 0, this);
 //     for (int i = 0; i < tabbedPane.getTabCount(); i++) {
@@ -227,6 +228,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //       SwingUtilities.paintComponent(g, button, this, buttonRect);
 //     }
 //   }
+//
 //   class Handler extends MouseAdapter {
 //     @Override public void mouseClicked(MouseEvent e) {
 //       pt.setLocation(e.getPoint());
@@ -242,6 +244,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //       }
 //       tabbedPane.repaint();
 //     }
+//
 //     @Override public void mouseMoved(MouseEvent e) {
 //       pt.setLocation(e.getPoint());
 //       int index = tabbedPane.indexAtLocation(pt.x, pt.y);
