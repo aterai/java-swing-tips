@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ComboBoxHighlightFilter" />
+  <property name="jnlp.Name"     value="ComboBoxHighlightFilter" />
+  <property name="jnlp.name"     value="comboboxhighlightfilter" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxhighlightfilter" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxHighlightFilter.html" />
+</project>
