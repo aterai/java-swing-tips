@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] array = {
-      "aaaa", "aaaabbb", "aaaabbbcc", "aaaabbbccddd",
-      "abcde", "abefg", "bbb1", "bbb12"};
+      "1111", "1111222", "111122233", "111122233444",
+      "12345", "67890", "55551", "555512"};
     JComboBox<String> combo = makeComboBox(array);
     combo.setEditable(true);
     combo.setSelectedIndex(-1);
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
 
   private static JComboBox<String> makeComboBox(String... model) {
     return new JComboBox<>(model);
-    // // Test: Remove ArrowButtn(look like a JTextField)
+    // // Test: Remove ArrowButton(look like a JTextField)
     // // UIManager.put("ComboBox.squareButton", Boolean.FALSE);
     // return new JComboBox(model) {
     //   @Override public void updateUI() {
