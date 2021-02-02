@@ -33,12 +33,12 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    popup.add("aaa");
-    popup.add("bbbbbb");
-    popup.add("cc");
+    popup.add("JMenuItem: 11111");
+    popup.add("JMenuItem: 222");
+    popup.add("JMenuItem: 3");
     // setComponentPopupMenu(popup);
 
-    JLabel label = new JLabel("aaaaaaaaaaaa");
+    JLabel label = new JLabel("JLabel: 1234567890");
     label.setOpaque(true);
     // label.setInheritsPopupMenu(true);
     // check.setInheritsPopupMenu(true);
