@@ -124,9 +124,9 @@ class CustomTooltipEditorPane extends JEditorPane {
       private String tooltip;
       @Override public void hyperlinkUpdate(HyperlinkEvent e) {
         JEditorPane editor = (JEditorPane) e.getSource();
-        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+        if (Objects.equals(e.getEventType(), HyperlinkEvent.EventType.ACTIVATED)) {
           JOptionPane.showMessageDialog(editor, e.getURL());
-        } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+        } else if (Objects.equals(e.getEventType(), HyperlinkEvent.EventType.ENTERED)) {
           tooltip = editor.getToolTipText();
           Optional.ofNullable(e.getSourceElement())
               .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
@@ -139,7 +139,7 @@ class CustomTooltipEditorPane extends JEditorPane {
           //     editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
           //   }
           // }
-        } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+        } else if (Objects.equals(e.getEventType(), HyperlinkEvent.EventType.EXITED)) {
           editor.setToolTipText(tooltip);
         }
       }
