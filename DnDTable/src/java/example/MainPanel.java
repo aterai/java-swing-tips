@@ -193,7 +193,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return flavor.getHumanPresentableName().equals(NAME);
+    return NAME.equals(flavor.getHumanPresentableName());
   }
 
   private class CDropTargetListener implements DropTargetListener {

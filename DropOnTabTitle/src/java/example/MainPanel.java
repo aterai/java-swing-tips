@@ -125,7 +125,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return flavor.getHumanPresentableName().equals(NAME);
+    return NAME.equals(flavor.getHumanPresentableName());
     // return flavor.getRepresentationClass().equals(Object.class);
   }
 }

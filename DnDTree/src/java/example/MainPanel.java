@@ -278,7 +278,7 @@ class TreeNodeTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor df) {
-    return df.getHumanPresentableName().equals(NAME);
+    return NAME.equals(df.getHumanPresentableName());
     // return (df.equals(FLAVOR));
   }
 

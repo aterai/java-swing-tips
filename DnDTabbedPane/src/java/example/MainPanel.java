@@ -351,7 +351,7 @@ class TabTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return flavor.getHumanPresentableName().equals(NAME);
+    return NAME.equals(flavor.getHumanPresentableName());
   }
 }
 
