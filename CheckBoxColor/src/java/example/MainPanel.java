@@ -16,19 +16,22 @@ public final class MainPanel extends JPanel {
     // UIManager.put("CheckBox.darkShadow", new ColorUIResource(Color.RED));
     // UIManager.put("CheckBox.icon", new IconUIResource(new CheckBoxIcon()));
 
-    JCheckBox cb1 = new JCheckBox("bbbbbbbbbb");
+    JCheckBox cb1 = new JCheckBox("JCheckBox: 1");
     cb1.setIcon(new CheckBoxIcon());
 
-    JCheckBox cb2 = new JCheckBox("ccccccccccccccc");
+    JCheckBox cb2 = new JCheckBox("JCheckBox: 2");
     cb2.setIcon(new CheckBoxIcon2());
 
-    JCheckBox cb3 = new JCheckBox("dddddddd");
+    JCheckBox cb3 = new JCheckBox("JCheckBox: 3");
     cb3.setIcon(new CheckBoxIcon3());
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Default", new JCheckBox("aaaaaaaaaaaaa")));
+    box.add(makeTitledPanel("Default", new JCheckBox("JCheckBox: 0")));
+    box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("WindowsIconFactory", cb1));
+    box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("CheckBox.icon+RED", cb2));
+    box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("MetalCheckBoxIcon+GRAY", cb3));
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -122,7 +125,7 @@ class CheckBoxIcon2 implements Icon {
 
 class CheckBoxIcon implements Icon {
   // com/sun/java/swing/plaf/windows/WindowsIconFactory.java
-  private static final int CSIZE = 13;
+  private static final int CHECK_SIZE = 13;
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     if (!(c instanceof JCheckBox)) {
@@ -136,14 +139,14 @@ class CheckBoxIcon implements Icon {
     // outer bevel
     if (cb.isBorderPaintedFlat()) {
       g2.setColor(UIManager.getColor("CheckBox.shadow"));
-      g2.drawRect(1, 1, CSIZE - 3, CSIZE - 3);
+      g2.drawRect(1, 1, CHECK_SIZE - 3, CHECK_SIZE - 3);
 
       if (model.isPressed() && model.isArmed()) {
         g2.setColor(UIManager.getColor("CheckBox.background"));
       } else {
         g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
       }
-      g2.fillRect(2, 2, CSIZE - 4, CSIZE - 4);
+      g2.fillRect(2, 2, CHECK_SIZE - 4, CHECK_SIZE - 4);
     } else {
       // Outer top/left
       g2.setColor(UIManager.getColor("CheckBox.shadow"));
@@ -174,7 +177,7 @@ class CheckBoxIcon implements Icon {
         // g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
         g2.setColor(color);
       }
-      g2.fillRect(2, 2, CSIZE - 4, CSIZE - 4);
+      g2.fillRect(2, 2, CHECK_SIZE - 4, CHECK_SIZE - 4);
     }
 
     // if (model.isEnabled()) {
@@ -199,17 +202,17 @@ class CheckBoxIcon implements Icon {
 
     if (model.isRollover()) {
       g2.setColor(Color.ORANGE);
-      g2.drawLine(1, 1, 1 + CSIZE - 3, 1);
-      g2.drawLine(1, 1, 1, 1 + CSIZE - 3);
+      g2.drawLine(1, 1, 1 + CHECK_SIZE - 3, 1);
+      g2.drawLine(1, 1, 1, 1 + CHECK_SIZE - 3);
     }
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return CSIZE;
+    return CHECK_SIZE;
   }
 
   @Override public int getIconHeight() {
-    return CSIZE;
+    return getIconWidth();
   }
 }
