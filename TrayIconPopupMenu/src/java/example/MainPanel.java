@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     });
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
     popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
-    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem aaaaaaaaaaa"));
+    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem: 1234567890"));
     popup.add("Open").addActionListener(e -> {
       frame.setExtendedState(Frame.NORMAL);
       frame.setVisible(true);
@@ -156,8 +156,8 @@ final class TrayIconPopupMenuUtil {
   }
 
   // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
-  public static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
-    Point p = new Point(xposition, yposition);
+  public static Point adjustPopupLocation(JPopupMenu popup, Point pt) {
+    Point p = new Point(pt);
     if (GraphicsEnvironment.isHeadless()) {
       return p;
     }
@@ -212,7 +212,7 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
 
   private void showJPopupMenu(MouseEvent e) {
     if (e.isPopupTrigger()) {
-      Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getX(), e.getY());
+      Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getPoint());
       dummy.setLocation(p);
       dummy.setVisible(true);
       // dummy.toFront();
@@ -251,10 +251,10 @@ class ChangeLookAndFeelAction extends AbstractAction {
   private final String lnf;
   private final List<? extends Component> list;
 
-  protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<? extends Component> list) {
-    super(lnfe.toString());
+  protected ChangeLookAndFeelAction(LookAndFeelEnum lookAndFeelEnum, List<? extends Component> list) {
+    super(lookAndFeelEnum.toString());
     this.list = list;
-    this.lnf = lnfe.getClassName();
+    this.lnf = lookAndFeelEnum.getClassName();
     this.setEnabled(isAvailableLookAndFeel(lnf));
   }
 
