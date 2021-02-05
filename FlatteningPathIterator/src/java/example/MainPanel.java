@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
 
   // http://java-sl.com/tip_flatteningpathiterator_moving_shape.html
   // via: https://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
-  public static Polygon convertShape2Polygon(Shape s) {
-    PathIterator i = new FlatteningPathIterator(s.getPathIterator(null), 1d);
-    Polygon polygon = new Polygon();
-    float[] coords = new float[6];
-    while (!i.isDone()) {
-      i.currentSegment(coords);
-      polygon.addPoint((int) coords[0], (int) coords[1]);
-      i.next();
-    }
-    return polygon;
-  }
+  // public static Polygon convertShape2Polygon(Shape s) {
+  //   PathIterator i = new FlatteningPathIterator(s.getPathIterator(null), 1d);
+  //   Polygon polygon = new Polygon();
+  //   float[] coords = new float[6];
+  //   while (!i.isDone()) {
+  //     i.currentSegment(coords);
+  //     polygon.addPoint((int) coords[0], (int) coords[1]);
+  //     i.next();
+  //   }
+  //   return polygon;
+  // }
 
   private static JLabel makeLabel(String title, Shape shape) {
     JLabel l = new JLabel(title, new ShapeIcon(shape), SwingConstants.CENTER);
