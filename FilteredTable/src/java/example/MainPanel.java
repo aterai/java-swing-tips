@@ -150,21 +150,21 @@ class RowDataModel extends DefaultTableModel {
 
 class RowData implements Serializable {
   private static final long serialVersionUID = 1L;
-  private String name;
-  private String comment;
+  private final String name;
+  private final String comment;
 
   protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
   }
 
-  public void setName(String str) {
-    name = str;
-  }
+  // public void setName(String str) {
+  //   name = str;
+  // }
 
-  public void setComment(String str) {
-    comment = str;
-  }
+  // public void setComment(String str) {
+  //   comment = str;
+  // }
 
   public String getName() {
     return name;
