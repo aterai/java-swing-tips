@@ -104,13 +104,12 @@ class DragMouseListener extends MouseAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    JComponent panel = (JComponent) e.getComponent();
     origin.setLocation(e.getPoint());
-    parent.moveToFront(panel);
+    parent.moveToFront(e.getComponent());
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    JComponent panel = (JComponent) e.getComponent();
+    Component panel = e.getComponent();
     int dx = e.getX() - origin.x;
     int dy = e.getY() - origin.y;
     Point pt = panel.getLocation();
