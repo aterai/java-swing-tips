@@ -602,7 +602,7 @@ class Arrow implements Icon, Serializable {
   }
 
   @Override public int getIconHeight() {
-    return size;
+    return getIconWidth();
   }
 }
 
