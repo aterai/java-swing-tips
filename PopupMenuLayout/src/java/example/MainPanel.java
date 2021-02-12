@@ -99,8 +99,8 @@ public final class MainPanel extends JPanel {
 }
 
 class SymbolIcon implements Icon {
-  private static final int ICON_SIZE = 32;
-  private final Font font = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
+  private static final Dimension ICON_SIZE = new Dimension(32, 32);
+  private final Font font = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE.height);
   private final String str;
 
   protected SymbolIcon(String str) {
@@ -124,10 +124,10 @@ class SymbolIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return ICON_SIZE;
+    return ICON_SIZE.width;
   }
 
   @Override public int getIconHeight() {
-    return ICON_SIZE;
+    return ICON_SIZE.height;
   }
 }
