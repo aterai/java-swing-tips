@@ -19,11 +19,11 @@ public final class MainPanel extends JPanel {
     JLabel l1 = new JLabel("label: 5%, 5%, 90%, 55%", SwingConstants.CENTER);
     l1.setOpaque(true);
     l1.setBackground(Color.ORANGE);
-    l1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+    l1.setBorder(BorderFactory.createLineBorder(Color.RED));
 
     JButton l2 = new JButton("button: 50%, 65%, 40%, 30%");
     // JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
-    // l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+    // l2.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
     setScaleAndAdd(panel, layout, l1, new Rectangle2D.Float(.05f, .05f, .90f, .55f));
     setScaleAndAdd(panel, layout, l2, new Rectangle2D.Float(.50f, .65f, .40f, .30f));

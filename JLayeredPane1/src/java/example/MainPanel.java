@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new BorderLayout());
     p.setOpaque(true);
     p.setBackground(new Color(COLORS[i]));
-    p.setBorder(BorderFactory.createLineBorder(getColor(COLORS[i], .5f), 1));
+    p.setBorder(BorderFactory.createLineBorder(getColor(COLORS[i], .5f)));
 
     // for moving the Window
     DragMouseListener li = new DragMouseListener(layerPane);

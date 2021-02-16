@@ -112,7 +112,7 @@ class CellRendererTooltipList<E> extends JList<E> {
   protected CellRendererTooltipList(ListModel<E> m) {
     super(m);
     // TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
-    label.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+    label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {

@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
 
       @Override public void updateUI() {
         super.updateUI();
-        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setAlignmentY(BOTTOM_ALIGNMENT);
       }
     };
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
       @Override public void updateUI() {
         super.updateUI();
-        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setAlignmentY(BOTTOM_ALIGNMENT);
       }
     };

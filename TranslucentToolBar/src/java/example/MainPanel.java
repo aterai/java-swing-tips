@@ -167,7 +167,7 @@ class LabelWithToolBox extends JLabel {
     //     JButton button = (JButton) e.getSource();
     //     ButtonModel model = button.getModel();
     //     if (button.isRolloverEnabled() && model.isRollover()) {
-    //       button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+    //       button.setBorder(BorderFactory.createLineBorder(Color.WHITE));
     //     } else {
     //       button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     //     }

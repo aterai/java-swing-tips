@@ -232,7 +232,7 @@ class EditableList<E extends ListItem> extends JList<E> {
 
   protected EditableList(DefaultListModel<E> model) {
     super(model);
-    editor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    editor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     editor.setHorizontalAlignment(SwingConstants.CENTER);
     // editor.setOpaque(false);
     // editor.setLineWrap(true);
