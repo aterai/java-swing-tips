@@ -148,52 +148,11 @@ class ColorIcon implements Icon {
   }
 }
 
-// https://github.com/aterai/java-swing-tips/blob/master/ClearSelection/src/java/example/MainPanel.java
-class ClearSelectionListener extends MouseAdapter {
-  private boolean startOutside;
-
-  private static <E> void clearSelectionAndFocus(JList<E> list) {
-    list.clearSelection();
-    list.getSelectionModel().setAnchorSelectionIndex(-1);
-    list.getSelectionModel().setLeadSelectionIndex(-1);
-  }
-
-  private static <E> boolean contains(JList<E> list, Point pt) {
-    for (int i = 0; i < list.getModel().getSize(); i++) {
-      if (list.getCellBounds(i, i).contains(pt)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override public void mousePressed(MouseEvent e) {
-    JList<?> list = (JList<?>) e.getComponent();
-    startOutside = !contains(list, e.getPoint());
-    if (startOutside) {
-      clearSelectionAndFocus(list);
-    }
-  }
-
-  @Override public void mouseReleased(MouseEvent e) {
-    startOutside = false;
-  }
-
-  @Override public void mouseDragged(MouseEvent e) {
-    JList<?> list = (JList<?>) e.getComponent();
-    if (contains(list, e.getPoint())) {
-      startOutside = false;
-    } else if (startOutside) {
-      clearSelectionAndFocus(list);
-    }
-  }
-}
-
 class EditableList<E extends ListItem> extends JList<E> {
   public static final String RENAME = "rename-title";
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
-  private transient MouseAdapter handler;
+  protected int editingIndex = -1;
   // protected final Container glassPane = new EditorGlassPane();
   // protected final JPopupMenu popup = new JPopupMenu();
   protected final JFrame window = new JFrame();
@@ -202,25 +161,26 @@ class EditableList<E extends ListItem> extends JList<E> {
     @Override public void actionPerformed(ActionEvent e) {
       // getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
+      editingIndex = idx;
       Rectangle rect = getCellBounds(idx, idx);
       // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
       // rect.setLocation(p);
       editor.setText(getSelectedValue().title);
       // int h = editor.getPreferredSize().height;
       int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-      rect.y = rect.y + rect.height - rowHeight - 1;
+      rect.y += rect.height - rowHeight - 2 - 2 - 1;
       // rect.grow(-2, 0);
+      rect.height = editor.getPreferredSize().height;
       editor.setBounds(rect);
       editor.selectAll();
       // glassPane.add(editor);
       // glassPane.setVisible(true);
       // popup.show(EditableList.this, rect.x, rect.y);
-      window.pack();
       Point p = new Point(rect.getLocation());
       SwingUtilities.convertPointToScreen(p, EditableList.this);
       window.setLocation(p);
+      window.pack();
       window.setVisible(true);
-      editor.setEditable(true);
       editor.requestFocusInWindow();
     }
   };
@@ -228,27 +188,27 @@ class EditableList<E extends ListItem> extends JList<E> {
     @Override public void actionPerformed(ActionEvent e) {
       // glassPane.setVisible(false);
       // popup.setVisible(false);
-      editor.setEditable(false);
       window.setVisible(false);
+      editingIndex = -1;
     }
   };
   protected final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       ListModel<E> m = getModel();
       String title = editor.getText().trim();
-      int index = getSelectedIndex();
+      int index = editingIndex; // getSelectedIndex();
       if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
         @SuppressWarnings("unchecked")
         DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
         ListItem item = m.getElementAt(index);
         model.remove(index);
         model.add(index, new ListItem(editor.getText().trim(), item.icon));
-        setSelectedIndex(index);
+        EventQueue.invokeLater(() -> setSelectedIndex(index));
       }
       // glassPane.setVisible(false);
       // popup.setVisible(false);
-      editor.setEditable(false);
       window.setVisible(false);
+      editingIndex = -1;
     }
   };
 
@@ -273,9 +233,10 @@ class EditableList<E extends ListItem> extends JList<E> {
     window.setAlwaysOnTop(true);
     window.addWindowListener(new WindowAdapter() {
       @Override public void windowDeactivated(WindowEvent e) {
-        if (editor.isEditable()) {
+        if (editingIndex >= 0) {
           renameTitle.actionPerformed(new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, ""));
         }
+        editingIndex = -1;
       }
     });
     window.add(editor);
@@ -331,7 +292,7 @@ class EditableList<E extends ListItem> extends JList<E> {
           return;
         }
         int h = editor.getPreferredSize().height;
-        rect.y = rect.y + rect.height - h;
+        rect.y = rect.y + rect.height - h - 2 - 2 - 1;
         rect.height = h;
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick && rect.contains(e.getPoint())) {
@@ -344,7 +305,6 @@ class EditableList<E extends ListItem> extends JList<E> {
   }
 
   @Override public void updateUI() {
-    removeMouseListener(handler);
     setSelectionForeground(null);
     setSelectionBackground(null);
     setCellRenderer(null);
@@ -352,12 +312,10 @@ class EditableList<E extends ListItem> extends JList<E> {
     setLayoutOrientation(JList.HORIZONTAL_WRAP);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
-    setFixedCellWidth(56);
+    setFixedCellWidth(64);
     setFixedCellHeight(56);
     setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     setCellRenderer(new ListItemListCellRenderer<>());
-    handler = new ClearSelectionListener();
-    addMouseListener(handler);
   }
 
   // protected JTextComponent getEditorTextField() {
