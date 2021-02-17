@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
-    String path = getClass().getResource("CRW_3857_JFR.jpg").toString();
+    // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/GIANT_TCR1_2013.jpg";
+    String path = getClass().getResource("GIANT_TCR1_2013.jpg").toString();
 
     String html1 = String.join("\n", Collections.nCopies(50, TEXT));
     String html2 = String.join("\n", Collections.nCopies(3, TEXT));
@@ -149,6 +149,7 @@ class ImageLoadSynchronouslyHtmlEditorKit extends HTMLEditorKit {
       }
     };
   }
+
   // @Override public Document createDefaultDocument() {
   //   Document doc = super.createDefaultDocument ();
   //   ((HTMLDocument) doc).setAsynchronousLoadPriority(-1);
