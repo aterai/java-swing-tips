@@ -104,12 +104,12 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     clipRect.grow(ADJ2 + 1, 0);
     g2.setClip(clipRect);
 
-    int textShiftOffset = isSelected ? 0 : 1;
+    float textShiftOffset = isSelected ? 0f : 1f;
     GeneralPath trapezoid = new GeneralPath();
-    trapezoid.moveTo(x - ADJ2, y + h);
-    trapezoid.lineTo(x + ADJ2, y + textShiftOffset);
-    trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);
-    trapezoid.lineTo(x + w + ADJ2, y + h);
+    trapezoid.moveTo((float) (x - ADJ2), (float) (y + h));
+    trapezoid.lineTo((float) (x + ADJ2), y + textShiftOffset);
+    trapezoid.lineTo((float) (x + w - ADJ2), y + textShiftOffset);
+    trapezoid.lineTo((float) (x + w + ADJ2), (float) (y + h));
     // trapezoid.closePath();
 
     // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
