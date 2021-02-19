@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    URL url = getClass().getResource("tokeidai.jpg");
+    URL url = getClass().getResource("GIANT_TCR1_2013.jpg");
     BufferedImage bi = getFilteredImage(url);
     JScrollPane scroll = new JScrollPane(editorPane);
     scroll.getViewport().setOpaque(false);

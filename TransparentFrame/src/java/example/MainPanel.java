@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p2));
     desktop.add(createFrame(p3));
 
-    URL url = getClass().getResource("tokeidai.jpg");
+    URL url = getClass().getResource("GIANT_TCR1_2013.jpg");
     BufferedImage image = Optional.ofNullable(url).map(u -> {
       try (InputStream s = u.openStream()) {
         return ImageIO.read(s);

@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         "}"
     ));
 
-    BufferedImage bi = getFilteredImage(getClass().getResource("tokeidai.jpg"));
+    BufferedImage bi = getFilteredImage(getClass().getResource("GIANT_TCR1_2013.jpg"));
     JScrollPane scroll = new JScrollPane(area);
     scroll.getViewport().setOpaque(false);
     scroll.setViewportBorder(new CentredBackgroundBorder(bi));

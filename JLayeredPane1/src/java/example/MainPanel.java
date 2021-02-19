@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Image image = new ImageIcon(getClass().getResource("tokeidai.jpg")).getImage();
+    Image image = new ImageIcon(getClass().getResource("GIANT_TCR1_2013.jpg")).getImage();
     JLayeredPane layer = new BackImageLayeredPane(image);
     for (int i = 0; i < 7; i++) {
       JPanel p = createPanel(layer, i);

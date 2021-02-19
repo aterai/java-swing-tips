@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
     tabbedPane.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
     // addImageTab(tab, getClass().getResource("wi0124-48.png"));
-    addImageTab(tabbedPane, getClass().getResource("tokeidai.jpg"));
+    addImageTab(tabbedPane, getClass().getResource("GIANT_TCR1_2013.jpg"));
     addImageTab(tabbedPane, getClass().getResource("CRW_3857_JFR.jpg")); // http://sozai-free.com/
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
