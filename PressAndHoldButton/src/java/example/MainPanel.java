@@ -17,7 +17,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JToolBar toolbar = new JToolBar("toolbar");
-    toolbar.add(new PressAndHoldButton(new ImageIcon(getClass().getResource("ei0021-16.png"))));
+    // toolbar.add(new PressAndHoldButton(new ImageIcon(getClass().getResource("ei0021-16.png"))));
+    toolbar.add(new PressAndHoldButton(UIManager.getIcon("FileChooser.detailsViewIcon")));
     add(toolbar, BorderLayout.NORTH);
     add(new JLabel("press and hold the button for 1000 milliseconds"));
     setPreferredSize(new Dimension(320, 240));
