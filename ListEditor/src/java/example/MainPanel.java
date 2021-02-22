@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
@@ -60,7 +59,9 @@ public final class MainPanel extends JPanel {
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
   protected static final Color SELECTED_COLOR = new Color(0xAE_16_64_FF, true);
-  private final JLabel label = new JLabel("", null, SwingConstants.CENTER) {
+  private final JLabel icon = new JLabel(null, null, SwingConstants.CENTER);
+  private final JLabel label = new JLabel(" ", SwingConstants.CENTER);
+  private final JPanel renderer = new JPanel(new BorderLayout()) {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if (SELECTED_COLOR.equals(getBackground())) {
@@ -71,7 +72,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
       }
     }
   };
-  private final JPanel renderer = new JPanel(new BorderLayout());
   private final Border focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
   private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
@@ -82,21 +82,21 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
       b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
     }
     noFocusBorder = b;
-    label.setVerticalTextPosition(SwingConstants.BOTTOM);
-    label.setHorizontalTextPosition(SwingConstants.CENTER);
+    renderer.setBorder(noFocusBorder);
+    renderer.setOpaque(true);
     label.setForeground(renderer.getForeground());
     label.setBackground(renderer.getBackground());
-    label.setBorder(noFocusBorder);
+    label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     label.setOpaque(false);
-    renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    renderer.add(label);
-    renderer.setOpaque(true);
+    icon.setOpaque(false);
+    renderer.add(icon);
+    renderer.add(label, BorderLayout.SOUTH);
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    icon.setIcon(value.icon);
     label.setText(value.title);
-    label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
-    label.setIcon(value.icon);
+    renderer.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
       label.setForeground(list.getSelectionForeground());
       renderer.setBackground(SELECTED_COLOR);
@@ -145,7 +145,7 @@ class ColorIcon implements Icon {
 }
 
 // https://github.com/aterai/java-swing-tips/blob/master/ClearSelection/src/java/example/MainPanel.java
-class ClearSelectionListener extends MouseInputAdapter {
+class ClearSelectionListener extends MouseAdapter {
   private boolean startOutside;
 
   private static <E> void clearSelectionAndFocus(JList<E> list) {
@@ -186,7 +186,10 @@ class ClearSelectionListener extends MouseInputAdapter {
 }
 
 class EditableList<E extends ListItem> extends JList<E> {
-  private transient MouseInputAdapter handler;
+  public static final String RENAME = "rename-title";
+  public static final String CANCEL = "cancel-editing";
+  public static final String EDITING = "start-editing";
+  private transient MouseAdapter handler;
   protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
@@ -196,12 +199,11 @@ class EditableList<E extends ListItem> extends JList<E> {
       Rectangle rect = getCellBounds(idx, idx);
       Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
       rect.setLocation(p);
-      int h = editor.getPreferredSize().height;
-      rect.y = rect.y + rect.height - h - 1;
-      rect.height = h;
-      rect.grow(-2, 0);
-      editor.setBounds(rect);
       editor.setText(getSelectedValue().title);
+      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
+      rect.y += rect.height - rowHeight - 2 - 1;
+      rect.height = editor.getPreferredSize().height;
+      editor.setBounds(rect);
       editor.selectAll();
       glassPane.add(editor);
       glassPane.setVisible(true);
@@ -217,13 +219,13 @@ class EditableList<E extends ListItem> extends JList<E> {
     @Override public void actionPerformed(ActionEvent e) {
       ListModel<E> m = getModel();
       String title = editor.getText().trim();
-      if (!title.isEmpty() && m instanceof DefaultListModel<?>) {
+      int index = getSelectedIndex();
+      if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
         @SuppressWarnings("unchecked")
         DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
-        int index = getSelectedIndex();
         ListItem item = m.getElementAt(index);
         model.remove(index);
-        model.add(index, new ListItem(editor.getText(), item.icon));
+        model.add(index, new ListItem(editor.getText().trim(), item.icon));
         setSelectedIndex(index);
       }
       glassPane.setVisible(false);
@@ -232,18 +234,20 @@ class EditableList<E extends ListItem> extends JList<E> {
 
   protected EditableList(DefaultListModel<E> model) {
     super(model);
-    editor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    editor.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.BLACK), BorderFactory.createEmptyBorder(0, 2, 0, 0)));
     editor.setHorizontalAlignment(SwingConstants.CENTER);
     // editor.setOpaque(false);
     // editor.setLineWrap(true);
 
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), RENAME);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
 
     ActionMap am = editor.getActionMap();
-    am.put("rename-title", renameTitle);
-    am.put("cancel-editing", cancelEditing);
+    am.put(RENAME, renameTitle);
+    am.put(CANCEL, cancelEditing);
 
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
@@ -261,8 +265,8 @@ class EditableList<E extends ListItem> extends JList<E> {
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
-    getActionMap().put("start-editing", startEditing);
+    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDITING);
+    getActionMap().put(EDITING, startEditing);
   }
 
   @Override public void updateUI() {
@@ -274,9 +278,9 @@ class EditableList<E extends ListItem> extends JList<E> {
     setLayoutOrientation(JList.HORIZONTAL_WRAP);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
-    setFixedCellWidth(56);
-    setFixedCellHeight(56);
-    setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    setFixedCellWidth(64);
+    setFixedCellHeight(64);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setCellRenderer(new ListItemListCellRenderer<>());
     handler = new ClearSelectionListener();
     addMouseListener(handler);

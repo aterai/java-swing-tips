@@ -64,7 +64,9 @@ public final class MainPanel extends JPanel {
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
   protected static final Color SELECTED_COLOR = new Color(0xAE_16_64_FF, true);
-  private final JLabel label = new JLabel("", null, SwingConstants.CENTER) {
+  private final JLabel icon = new JLabel(null, null, SwingConstants.CENTER);
+  private final JLabel label = new JLabel(" ", SwingConstants.CENTER);
+  private final JPanel renderer = new JPanel(new BorderLayout()) {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if (SELECTED_COLOR.equals(getBackground())) {
@@ -75,7 +77,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
       }
     }
   };
-  private final JPanel renderer = new JPanel(new BorderLayout());
   private final Border focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
   private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
@@ -86,21 +87,21 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
       b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
     }
     noFocusBorder = b;
-    label.setVerticalTextPosition(SwingConstants.BOTTOM);
-    label.setHorizontalTextPosition(SwingConstants.CENTER);
+    renderer.setBorder(noFocusBorder);
+    renderer.setOpaque(true);
     label.setForeground(renderer.getForeground());
     label.setBackground(renderer.getBackground());
-    label.setBorder(noFocusBorder);
+    label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     label.setOpaque(false);
-    renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    renderer.add(label);
-    renderer.setOpaque(true);
+    icon.setOpaque(false);
+    renderer.add(icon);
+    renderer.add(label, BorderLayout.SOUTH);
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    icon.setIcon(value.icon);
     label.setText(value.title);
-    label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
-    label.setIcon(value.icon);
+    renderer.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
       label.setForeground(list.getSelectionForeground());
       renderer.setBackground(SELECTED_COLOR);
@@ -148,10 +149,52 @@ class ColorIcon implements Icon {
   }
 }
 
+// https://github.com/aterai/java-swing-tips/blob/master/ClearSelection/src/java/example/MainPanel.java
+class ClearSelectionListener extends MouseAdapter {
+  private boolean startOutside;
+
+  private static <E> void clearSelectionAndFocus(JList<E> list) {
+    list.clearSelection();
+    list.getSelectionModel().setAnchorSelectionIndex(-1);
+    list.getSelectionModel().setLeadSelectionIndex(-1);
+  }
+
+  private static <E> boolean contains(JList<E> list, Point pt) {
+    for (int i = 0; i < list.getModel().getSize(); i++) {
+      if (list.getCellBounds(i, i).contains(pt)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override public void mousePressed(MouseEvent e) {
+    JList<?> list = (JList<?>) e.getComponent();
+    startOutside = !contains(list, e.getPoint());
+    if (startOutside) {
+      clearSelectionAndFocus(list);
+    }
+  }
+
+  @Override public void mouseReleased(MouseEvent e) {
+    startOutside = false;
+  }
+
+  @Override public void mouseDragged(MouseEvent e) {
+    JList<?> list = (JList<?>) e.getComponent();
+    if (contains(list, e.getPoint())) {
+      startOutside = false;
+    } else if (startOutside) {
+      clearSelectionAndFocus(list);
+    }
+  }
+}
+
 class EditableList<E extends ListItem> extends JList<E> {
   public static final String RENAME = "rename-title";
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
+  private transient MouseAdapter handler;
   protected int editingIndex = -1;
   // protected final Container glassPane = new EditorGlassPane();
   // protected final JPopupMenu popup = new JPopupMenu();
@@ -166,10 +209,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
       // rect.setLocation(p);
       editor.setText(getSelectedValue().title);
-      // int h = editor.getPreferredSize().height;
       int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-      rect.y += rect.height - rowHeight - 2 - 2 - 1;
-      // rect.grow(-2, 0);
+      rect.y += rect.height - rowHeight - 2 - 1;
       rect.height = editor.getPreferredSize().height;
       editor.setBounds(rect);
       editor.selectAll();
@@ -203,7 +244,8 @@ class EditableList<E extends ListItem> extends JList<E> {
         ListItem item = m.getElementAt(index);
         model.remove(index);
         model.add(index, new ListItem(editor.getText().trim(), item.icon));
-        EventQueue.invokeLater(() -> setSelectedIndex(index));
+        setSelectedIndex(index); // 1. Both must be run
+        EventQueue.invokeLater(() -> setSelectedIndex(index)); // 2. Both must be run
       }
       // glassPane.setVisible(false);
       // popup.setVisible(false);
@@ -292,7 +334,7 @@ class EditableList<E extends ListItem> extends JList<E> {
           return;
         }
         int h = editor.getPreferredSize().height;
-        rect.y = rect.y + rect.height - h - 2 - 2 - 1;
+        rect.y = rect.y + rect.height - h;
         rect.height = h;
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick && rect.contains(e.getPoint())) {
@@ -305,6 +347,7 @@ class EditableList<E extends ListItem> extends JList<E> {
   }
 
   @Override public void updateUI() {
+    removeMouseListener(handler);
     setSelectionForeground(null);
     setSelectionBackground(null);
     setCellRenderer(null);
@@ -313,39 +356,12 @@ class EditableList<E extends ListItem> extends JList<E> {
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
     setFixedCellWidth(64);
-    setFixedCellHeight(56);
-    setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    setFixedCellHeight(64);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setCellRenderer(new ListItemListCellRenderer<>());
+    handler = new ClearSelectionListener();
+    addMouseListener(handler);
   }
-
-  // protected JTextComponent getEditorTextField() {
-  //   return editor;
-  // }
-  //
-  // private class EditorGlassPane extends JComponent {
-  //   protected EditorGlassPane() {
-  //     super();
-  //     setOpaque(false);
-  //     setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-  //       @Override public boolean accept(Component c) {
-  //         return Objects.equals(c, getEditorTextField());
-  //       }
-  //     });
-  //     addMouseListener(new MouseAdapter() {
-  //       @Override public void mouseClicked(MouseEvent e) {
-  //         if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-  //           renameTitle.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
-  //         }
-  //       }
-  //     });
-  //   }
-  //
-  //   @Override public void setVisible(boolean flag) {
-  //     super.setVisible(flag);
-  //     setFocusTraversalPolicyProvider(flag);
-  //     setFocusCycleRoot(flag);
-  //   }
-  // }
 }
 
 class TextComponentPopupMenu extends JPopupMenu {

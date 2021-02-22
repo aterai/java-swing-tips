@@ -45,9 +45,9 @@ public final class MainPanel extends JPanel {
       setLayoutOrientation(JList.HORIZONTAL_WRAP);
       getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
       setVisibleRowCount(0);
-      setFixedCellWidth(56);
-      setFixedCellHeight(56);
-      setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+      setFixedCellWidth(64);
+      setFixedCellHeight(64);
+      setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       setCellRenderer(new ListItemListCellRenderer<>());
       handler = new ClearSelectionListener();
       addMouseListener(handler);
