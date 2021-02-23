@@ -74,7 +74,7 @@ public final class ReorderbleList<E extends ListItem> extends JList<E> {
     int g = c.getGreen();
     int b = c.getBlue();
     return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-           : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+                 : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
   public Path2D getRubberBand() {
@@ -120,8 +120,7 @@ public final class ReorderbleList<E extends ListItem> extends JList<E> {
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
-      Rectangle rect = l.getCellBounds(index, index);
-      if (rect.contains(e.getPoint())) {
+      if (l.getCellBounds(index, index).contains(e.getPoint())) {
         l.setFocusable(true);
         if (l.getDragEnabled()) {
           return;
@@ -175,12 +174,15 @@ class SelectedImageFilter extends RGBImageFilter {
 //   protected DotBorder(Insets borderInsets) {
 //     super(borderInsets);
 //   }
+//
 //   protected DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);
 //   }
+//
 //   @Override public boolean isBorderOpaque() {
 //     return true;
 //   }
+//
 //   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.translate(x, y);
@@ -191,8 +193,6 @@ class SelectedImageFilter extends RGBImageFilter {
 //     BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //     g2.dispose();
 //   }
-//   // @Override public Insets getBorderInsets(Component c)
-//   // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
@@ -215,6 +215,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     label.setForeground(renderer.getForeground());
     label.setBackground(renderer.getBackground());
     label.setBorder(noFocusBorder);
+
     renderer.setOpaque(false);
     renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     renderer.add(icon);
@@ -223,15 +224,14 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     label.setText(value.title);
-    // label.setBorder(cellHasFocus ? dotBorder : empBorder);
     label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
-      icon.setIcon(value.sicon);
+      icon.setIcon(value.selectedIcon);
       label.setForeground(list.getSelectionForeground());
       label.setBackground(list.getSelectionBackground());
       label.setOpaque(true);
     } else {
-      icon.setIcon(value.nicon);
+      icon.setIcon(value.icon);
       label.setForeground(list.getForeground());
       label.setBackground(list.getBackground());
       label.setOpaque(false);
@@ -242,14 +242,14 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 
 class ListItem implements Serializable {
   private static final long serialVersionUID = 1L;
-  public final ImageIcon nicon;
-  public final ImageIcon sicon;
+  public final ImageIcon icon;
+  public final ImageIcon selectedIcon;
   public final String title;
 
-  protected ListItem(String title, String iconfile) {
-    this.nicon = new ImageIcon(getClass().getResource(iconfile));
-    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-    this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+  protected ListItem(String title, String path) {
     this.title = title;
+    this.icon = new ImageIcon(getClass().getResource(path));
+    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 }

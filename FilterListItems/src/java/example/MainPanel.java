@@ -124,19 +124,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ListItem {
-  public final ImageIcon nicon;
-  public final ImageIcon sicon;
-  public final String title;
-
-  protected ListItem(String iconfile) {
-    this.nicon = new ImageIcon(getClass().getResource(iconfile));
-    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-    this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
-    this.title = iconfile;
-  }
-}
-
 class SelectedImageFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     return (argb & 0xFF_FF_FF_00) | ((argb & 0xFF) >> 1);
@@ -172,16 +159,29 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     label.setText(value.title);
     label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
-      icon.setIcon(value.sicon);
+      icon.setIcon(value.selectedIcon);
       label.setForeground(list.getSelectionForeground());
       label.setBackground(list.getSelectionBackground());
       label.setOpaque(true);
     } else {
-      icon.setIcon(value.nicon);
+      icon.setIcon(value.icon);
       label.setForeground(list.getForeground());
       label.setBackground(list.getBackground());
       label.setOpaque(false);
     }
     return renderer;
+  }
+}
+
+class ListItem {
+  public final ImageIcon icon;
+  public final ImageIcon selectedIcon;
+  public final String title;
+
+  protected ListItem(String path) {
+    this.title = path;
+    this.icon = new ImageIcon(getClass().getResource(path));
+    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 }

@@ -19,17 +19,17 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
     model.addElement(new ListItem("test", "wi0062-32.png"));
     model.addElement(new ListItem("adfasdf", "wi0063-32.png"));
     model.addElement(new ListItem("Test", "wi0064-32.png"));
+    model.addElement(new ListItem("3333", "wi0063-32.png"));
     model.addElement(new ListItem("12345", "wi0096-32.png"));
     model.addElement(new ListItem("111111", "wi0054-32.png"));
     model.addElement(new ListItem("22222", "wi0062-32.png"));
-    model.addElement(new ListItem("3333", "wi0063-32.png"));
+    model.addElement(new ListItem("Test2", "wi0064-32.png"));
 
     add(new JScrollPane(new RubberBandSelectionList<>(model)));
     setPreferredSize(new Dimension(320, 240));
@@ -55,19 +55,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ListItem {
-  public final ImageIcon nicon;
-  public final ImageIcon sicon;
-  public final String title;
-
-  protected ListItem(String title, String iconfile) {
-    this.nicon = new ImageIcon(getClass().getResource(iconfile));
-    ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-    this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
-    this.title = title;
-  }
-}
-
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient RubberBandingListener rbl;
@@ -89,9 +76,9 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     rubberBandColor = makeRubberBandColor(getSelectionBackground());
     setLayoutOrientation(JList.HORIZONTAL_WRAP);
     setVisibleRowCount(0);
-    setFixedCellWidth(62);
-    setFixedCellHeight(62);
-    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    setFixedCellWidth(74);
+    setFixedCellHeight(64);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     setCellRenderer(new ListItemListCellRenderer<>());
     rbl = new RubberBandingListener();
@@ -115,7 +102,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     int g = c.getGreen();
     int b = c.getBlue();
     return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-           : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+                 : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
   protected Path2D getRubberBand() {
@@ -154,8 +141,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
-      Rectangle rect = l.getCellBounds(index, index);
-      if (rect.contains(e.getPoint())) {
+      if (l.getCellBounds(index, index).contains(e.getPoint())) {
         l.setFocusable(true);
       } else {
         l.clearSelection();
@@ -167,6 +153,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       l.repaint();
     }
   }
+
   // // JDK 1.7.0
   // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
   //   ListModel model = l.getModel();
@@ -202,12 +189,15 @@ class SelectedImageFilter extends RGBImageFilter {
 //   protected DotBorder(Insets borderInsets) {
 //     super(borderInsets);
 //   }
+//
 //   protected DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);
 //   }
+//
 //   @Override public boolean isBorderOpaque() {
 //     return true;
 //   }
+//
 //   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.translate(x, y);
@@ -218,8 +208,6 @@ class SelectedImageFilter extends RGBImageFilter {
 //     BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //     g2.dispose();
 //   }
-//   // @Override public Insets getBorderInsets(Component c)
-//   // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
@@ -242,6 +230,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     label.setForeground(renderer.getForeground());
     label.setBackground(renderer.getBackground());
     label.setBorder(noFocusBorder);
+
     renderer.setOpaque(false);
     renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     renderer.add(icon);
@@ -250,19 +239,31 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     label.setText(value.title);
-    // label.setBorder(cellHasFocus ? dotBorder : empBorder);
     label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
-      icon.setIcon(value.sicon);
+      icon.setIcon(value.selectedIcon);
       label.setForeground(list.getSelectionForeground());
       label.setBackground(list.getSelectionBackground());
       label.setOpaque(true);
     } else {
-      icon.setIcon(value.nicon);
+      icon.setIcon(value.icon);
       label.setForeground(list.getForeground());
       label.setBackground(list.getBackground());
       label.setOpaque(false);
     }
     return renderer;
+  }
+}
+
+class ListItem {
+  public final ImageIcon icon;
+  public final ImageIcon selectedIcon;
+  public final String title;
+
+  protected ListItem(String title, String path) {
+    this.title = title;
+    this.icon = new ImageIcon(getClass().getResource(path));
+    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 }

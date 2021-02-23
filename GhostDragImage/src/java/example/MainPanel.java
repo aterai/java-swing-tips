@@ -19,7 +19,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     model.addElement(new ListItem("wi0009-32", "wi0009-32.png"));
@@ -32,7 +31,6 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("t467467est", "wi0122-32.png"));
     model.addElement(new ListItem("test123", "wi0124-32.png"));
     model.addElement(new ListItem("test(1)", "wi0126-32.png"));
-
     ReorderbleList<ListItem> list = new ReorderbleList<>(model);
 
     JCheckBox check = new JCheckBox("Compact drag image mode") {
@@ -48,6 +46,7 @@ public final class MainPanel extends JPanel {
         list.setTransferHandler(new ListItemTransferHandler());
       }
     });
+
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
