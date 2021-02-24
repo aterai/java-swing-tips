@@ -29,18 +29,18 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    model.addElement(new ListItem("asdasdfsd", "wi0009-32.png"));
+    model.addElement(new ListItem("wi0009", "wi0009-32.png"));
     model.addElement(new ListItem("12345", "wi0054-32.png"));
-    model.addElement(new ListItem("ADFFDF.asd", "wi0062-32.png"));
+    model.addElement(new ListItem("wi0062-32", "wi0062-32.png"));
     model.addElement(new ListItem("test", "wi0063-32.png"));
     model.addElement(new ListItem("32.png", "wi0064-32.png"));
-    model.addElement(new ListItem("asdfsd.jpg", "wi0096-32.png"));
+    model.addElement(new ListItem("67890.jpg", "wi0096-32.png"));
     model.addElement(new ListItem("6896", "wi0111-32.png"));
     model.addElement(new ListItem("t467467est", "wi0122-32.png"));
     model.addElement(new ListItem("test123", "wi0124-32.png"));
     model.addElement(new ListItem("test(1)", "wi0126-32.png"));
 
-    add(new JScrollPane(new ReorderbleList<>(model)));
+    add(new JScrollPane(new ReorderableList<>(model)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -64,13 +64,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ReorderbleList<E extends ListItem> extends JList<E> {
+class ReorderableList<E extends ListItem> extends JList<E> {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient MouseInputListener rbl;
   private Color rubberBandColor;
   protected final Path2D rubberBand = new Path2D.Double();
 
-  protected ReorderbleList(ListModel<E> model) {
+  protected ReorderableList(ListModel<E> model) {
     super(model);
   }
 

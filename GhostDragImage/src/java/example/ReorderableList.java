@@ -18,13 +18,13 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
-public final class ReorderbleList<E extends ListItem> extends JList<E> {
+public final class ReorderableList<E extends ListItem> extends JList<E> {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient MouseInputListener rbl;
   private Color rubberBandColor;
   private final Path2D rubberBand = new Path2D.Double();
 
-  public ReorderbleList(ListModel<E> model) {
+  public ReorderableList(ListModel<E> model) {
     super(model);
   }
 

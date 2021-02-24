@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("t467467est", "wi0122-32.png"));
     model.addElement(new ListItem("test123", "wi0124-32.png"));
     model.addElement(new ListItem("test(1)", "wi0126-32.png"));
-    ReorderbleList<ListItem> list = new ReorderbleList<>(model);
+    ReorderableList<ListItem> list = new ReorderableList<>(model);
 
     JCheckBox check = new JCheckBox("Compact drag image mode") {
       @Override public void updateUI() {
