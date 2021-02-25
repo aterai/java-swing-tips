@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
+    model.addElement(new ListItem("32x32Icon", "wi0054-32.png"));
     model.addElement(new ListItem("test", "wi0062-32.png"));
-    model.addElement(new ListItem("adfasdf", "wi0063-32.png"));
+    model.addElement(new ListItem("PngImage", "wi0063-32.png"));
     model.addElement(new ListItem("Test", "wi0064-32.png"));
     model.addElement(new ListItem("3333", "wi0063-32.png"));
     model.addElement(new ListItem("12345", "wi0096-32.png"));
@@ -101,8 +101,15 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
-    return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-                 : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+    int max = Math.max(Math.max(r, g), b);
+    if (max == r) {
+      max <<= 8;
+    } else if (max == g) {
+      max <<= 4;
+    }
+    return new Color(max);
+    // return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
+    //              : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
   }
 
   protected Path2D getRubberBand() {
