@@ -50,11 +50,13 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // private static int getStringWidth(JTable table, int row, int column) {
   //   FontMetrics fm = table.getFontMetrics(table.getFont());
   //   Object o = table.getValueAt(row, column);
   //   return fm.stringWidth(o.toString()) + ICON_SIZE + 2 + 2;
   // }
+
   // private static boolean isOnLabel(JTable table, Point pt, int row, int col) {
   //   Rectangle rect = table.getCellRect(row, col, true);
   //   rect.setSize(getStringWidth(table, row, col), rect.height);
@@ -166,7 +168,7 @@ class FileNameRenderer implements TableCellRenderer {
 
 class FileListTable extends JTable {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
-  private static final Color BAND_COLOR = makeColor(SystemColor.activeCaption);
+  private static final Color BAND_COLOR = makeRubberBandColor(SystemColor.activeCaption);
   private static final Path2D RUBBER_BAND = new Path2D.Double();
   private transient RubberBandingListener rbl;
 
@@ -311,11 +313,16 @@ class FileListTable extends JTable {
   //   return il;
   // }
 
-  public static Color makeColor(Color c) {
+  public static Color makeRubberBandColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
-    return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-        : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+    int max = Math.max(Math.max(r, g), b);
+    if (max == r) {
+      max <<= 8;
+    } else if (max == g) {
+      max <<= 4;
+    }
+    return new Color(max);
   }
 }
