@@ -25,11 +25,12 @@ public final class MainPanel extends JPanel {
     p.add(initTitledBorder("JLabel+Html", label1));
 
     JLabel label2 = new JLabel(HTML_TEXT) {
-      // JLabel with html tag can not be disabled or setForegroud?!
+      // JLabel with html tag can not be disabled or setForeground?!
       // https://community.oracle.com/thread/1377943
-      @Override public void setEnabled(boolean b) {
-        super.setEnabled(b);
-        setForeground(b ? UIManager.getColor("Label.foreground") : UIManager.getColor("Label.disabledForeground"));
+      @Override public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        String key = enabled ? "Label.foreground" : "Label.disabledForeground";
+        setForeground(UIManager.getColor(key));
       }
     };
     p.add(initTitledBorder("JLabel+Html+", label2));
@@ -95,10 +96,11 @@ class DisabledHtmlLabel extends JLabel {
     super(text);
   }
 
-  @Override public void setEnabled(boolean b) {
-    setForeground(b ? UIManager.getColor("Label.foreground")
-            : UIManager.getColor("Label.disabledForeground"));
-    if (!b) {
+  @Override public void setEnabled(boolean enabled) {
+    if (enabled) {
+      setForeground(UIManager.getColor("Label.foreground"));
+    } else {
+      setForeground(UIManager.getColor("Label.disabledForeground"));
       BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = source.createGraphics();
       g2.setPaint(new Color(0x0, true));
@@ -108,7 +110,7 @@ class DisabledHtmlLabel extends JLabel {
       g2.dispose();
       shadow = GRAY_CCO.filter(source, null);
     }
-    super.setEnabled(b);
+    super.setEnabled(enabled);
   }
 
   @Override protected void paintComponent(Graphics g) {
