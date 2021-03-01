@@ -42,7 +42,8 @@ public final class MainPanel extends JPanel {
       resetEditor(editor, b);
       JFrame window = new JFrame();
       window.setUndecorated(true);
-      window.setAlwaysOnTop(true);
+      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+      // window.setAlwaysOnTop(true);
       window.add(editor);
       window.pack();
       Point p = b.getLocation();
@@ -60,7 +61,8 @@ public final class MainPanel extends JPanel {
       resetEditor(editor, b);
       Window window = new JWindow();
       window.setFocusableWindowState(true);
-      window.setAlwaysOnTop(true);
+      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+      // window.setAlwaysOnTop(true);
       window.add(editor);
       window.pack();
       Point p = b.getLocation();
@@ -81,7 +83,8 @@ public final class MainPanel extends JPanel {
       SwingUtilities.convertPointToScreen(p, b.getParent());
       Window window = new JWindow(SwingUtilities.getWindowAncestor(b));
       window.setFocusableWindowState(true);
-      window.setAlwaysOnTop(true);
+      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+      // window.setAlwaysOnTop(true);
       window.add(editor);
       window.pack();
       window.setLocation(p);
