@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
     label.setText(print(status));
   }
 
-  class StatusEdit extends AbstractUndoableEdit {
+  /* default */ class StatusEdit extends AbstractUndoableEdit {
     private final BigInteger oldValue;
     private final BigInteger newValue;
 

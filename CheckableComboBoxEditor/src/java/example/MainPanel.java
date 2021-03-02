@@ -182,7 +182,7 @@ final class EditorPanel extends JPanel {
   private final transient ComboItem data;
   private int editingIndex = -1;
 
-  EditorPanel(ComboItem data) {
+  /* default */ EditorPanel(ComboItem data) {
     super();
     this.data = data;
     setItem(data);

@@ -17,7 +17,6 @@
     <exclude name="OnlyOneReturn" />
     <exclude name="LongVariable" />
     <exclude name="ShortVariable" />
-    <exclude name="CommentDefaultAccessModifier" />
   </rule>
   <rule ref="category/java/design.xml">
     <exclude name="DataClass" />
