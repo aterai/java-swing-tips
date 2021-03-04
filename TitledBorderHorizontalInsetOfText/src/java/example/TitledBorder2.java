@@ -199,7 +199,7 @@ public class TitledBorder2 extends AbstractBorder {
    * @param width  the width of the painted border
    * @param height  the height of the painted border
    */
-  @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary"})
+  @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.ConfusingTernary", "PMD.NcssCount"})
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Border b = getBorder();
     String str = getTitle();

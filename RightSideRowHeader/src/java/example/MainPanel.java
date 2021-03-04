@@ -159,7 +159,7 @@ public final class MainPanel extends JPanel {
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.GodClass"})
 class RightFixedScrollPaneLayout extends ScrollPaneLayout {
-  @SuppressWarnings({"PMD.ExcessiveMethodLength", "checkstyle:methodlength"})
+  @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "checkstyle:methodlength"})
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {
       return;

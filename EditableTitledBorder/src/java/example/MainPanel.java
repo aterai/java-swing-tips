@@ -170,7 +170,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     return justification;
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity")
+  @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
   private Rectangle getTitleBounds(Component c, int x, int y, int width, int height) {
     String title = getTitle();
     if (Objects.nonNull(title) && !title.isEmpty()) {
