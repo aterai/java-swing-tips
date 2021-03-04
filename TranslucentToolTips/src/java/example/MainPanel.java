@@ -30,18 +30,48 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   public static final Dimension CELL_SIZE = new Dimension(10, 10);
   public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-  public final Color color = new Color(0x32_C8_32);
 
   private MainPanel() {
     super(new BorderLayout());
+    Color color = new Color(0x32_C8_32);
     List<Icon> activityIcons = Arrays.asList(
         new ContributionIcon(new Color(0xC8_C8_C8)),
         new ContributionIcon(color.brighter()),
         new ContributionIcon(color),
         new ContributionIcon(color.darker()),
         new ContributionIcon(color.darker().darker()));
+    JList<Contribution> weekList = makeWeekList(activityIcons);
+    Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
 
-    JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
+    Box box = Box.createHorizontalBox();
+    box.add(makeLabel("Less", font));
+    box.add(Box.createHorizontalStrut(2));
+    activityIcons.forEach(icon -> {
+      box.add(new JLabel(icon));
+      box.add(Box.createHorizontalStrut(2));
+    });
+    box.add(makeLabel("More", font));
+
+    JPanel p = new JPanel(new GridBagLayout());
+    p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
+    p.setBackground(Color.WHITE);
+
+    GridBagConstraints c = new GridBagConstraints();
+    p.add(makeWeekCalendar(weekList, font), c);
+
+    c.insets = new Insets(10, 0, 2, 0);
+    c.gridy = 1;
+    c.anchor = GridBagConstraints.LINE_END;
+    p.add(box, c);
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(new JTextArea()));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JList<Contribution> makeWeekList(List<Icon> activityIcons) {
+    return new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
       private transient JToolTip tip;
 
       @Override public void updateUI() {
@@ -101,33 +131,6 @@ public final class MainPanel extends JPanel {
         return tip;
       }
     };
-    Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
-
-    Box box = Box.createHorizontalBox();
-    box.add(makeLabel("Less", font));
-    box.add(Box.createHorizontalStrut(2));
-    activityIcons.forEach(icon -> {
-      box.add(new JLabel(icon));
-      box.add(Box.createHorizontalStrut(2));
-    });
-    box.add(makeLabel("More", font));
-
-    JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
-    p.setBackground(Color.WHITE);
-
-    GridBagConstraints c = new GridBagConstraints();
-    p.add(makeWeekCalendar(weekList, font), c);
-
-    c.insets = new Insets(10, 0, 2, 0);
-    c.gridy = 1;
-    c.anchor = GridBagConstraints.LINE_END;
-    p.add(box, c);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea()));
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {

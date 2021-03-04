@@ -29,7 +29,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
     UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
@@ -40,7 +39,22 @@ public final class MainPanel extends JPanel {
     UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
     UIManager.put("ComboBox.buttonShadow", FOREGROUND);
 
-    JComboBox<String> combo0 = new JComboBox<String>(makeModel()) {
+    JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
+    p.setOpaque(true);
+    p.setBackground(PANEL_BACKGROUND);
+    p.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    p.add(makeComboBox0());
+    p.add(makeComboBox1());
+    p.add(makeComboBox2());
+
+    add(p, BorderLayout.NORTH);
+    setOpaque(true);
+    setBackground(PANEL_BACKGROUND);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JComboBox<String> makeComboBox0() {
+    return new JComboBox<String>(makeModel()) {
       @Override public void updateUI() {
         UIManager.put(KEY, BorderFactory.createLineBorder(FOREGROUND));
         super.updateUI();
@@ -54,8 +68,10 @@ public final class MainPanel extends JPanel {
         }
       }
     };
+  }
 
-    JComboBox<String> combo1 = new JComboBox<String>(makeModel()) {
+  private static JComboBox<String> makeComboBox1() {
+    return new JComboBox<String>(makeModel()) {
       private transient PopupMenuListener listener;
       @Override public void updateUI() {
         removePopupMenuListener(listener);
@@ -73,8 +89,10 @@ public final class MainPanel extends JPanel {
         }
       }
     };
+  }
 
-    JComboBox<String> combo2 = new JComboBox<String>(makeModel()) {
+  private static JComboBox<String> makeComboBox2() {
+    return new JComboBox<String>(makeModel()) {
       private transient MouseListener handler;
       private transient PopupMenuListener listener;
       @Override public void updateUI() {
@@ -104,19 +122,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-
-    JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
-    p.setOpaque(true);
-    p.setBackground(PANEL_BACKGROUND);
-    p.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-    p.add(combo0);
-    p.add(combo1);
-    p.add(combo2);
-
-    add(p, BorderLayout.NORTH);
-    setOpaque(true);
-    setBackground(PANEL_BACKGROUND);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static DefaultComboBoxModel<String> makeModel() {

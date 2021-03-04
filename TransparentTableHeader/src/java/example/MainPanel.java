@@ -25,7 +25,35 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    TexturePaint texture = makeImageTexture();
+    JTable table = makeTable();
+    JScrollPane scroll = new JScrollPane(table) {
+      @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(texture);
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+        super.paintComponent(g);
+      }
+    };
+    scroll.setOpaque(false);
+    scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    scroll.setBackground(alphaZero);
+    scroll.getViewport().setOpaque(false);
+    scroll.getViewport().setBackground(alphaZero);
+    scroll.setColumnHeader(new JViewport());
+    scroll.getColumnHeader().setOpaque(false);
+    scroll.getColumnHeader().setBackground(alphaZero);
 
+    JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
+    check.addActionListener(e -> table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
+
+    add(check, BorderLayout.NORTH);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
       {"aaa", 12, true}, {"bbb", 5, false},
@@ -40,7 +68,7 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
+    return new JTable(model) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
         if (c instanceof JComponent) {
@@ -90,32 +118,6 @@ public final class MainPanel extends JPanel {
         getTableHeader().setBackground(alphaZero);
       }
     };
-
-    TexturePaint texture = makeImageTexture();
-    JScrollPane scroll = new JScrollPane(table) {
-      @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(texture);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.dispose();
-        super.paintComponent(g);
-      }
-    };
-    scroll.setOpaque(false);
-    scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    scroll.setBackground(alphaZero);
-    scroll.getViewport().setOpaque(false);
-    scroll.getViewport().setBackground(alphaZero);
-    scroll.setColumnHeader(new JViewport());
-    scroll.getColumnHeader().setOpaque(false);
-    scroll.getColumnHeader().setBackground(alphaZero);
-
-    JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
-    check.addActionListener(e -> table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
-
-    add(check, BorderLayout.NORTH);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static TexturePaint makeImageTexture() {
