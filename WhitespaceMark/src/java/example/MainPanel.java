@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
@@ -70,14 +71,16 @@ public final class MainPanel extends JPanel {
 class CustomEditorKit extends StyledEditorKit {
   private static final MutableAttributeSet ATTRS = new SimpleAttributeSet();
 
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override public void install(JEditorPane c) {
     FontMetrics fm = c.getFontMetrics(c.getFont());
     int tabLength = fm.charWidth('m') * 4;
-    TabStop[] tabs = new TabStop[100];
-    for (int j = 0; j < tabs.length; j++) {
-      tabs[j] = new TabStop((j + 1f) * tabLength);
-    }
+    // TabStop[] tabs = new TabStop[100];
+    // for (int j = 0; j < tabs.length; j++) {
+    //   tabs[j] = new TabStop((j + 1f) * tabLength);
+    // }
+    TabStop[] tabs = IntStream.range(0, 100)
+        .mapToObj(i -> (i + 1f) * tabLength)
+        .map(TabStop::new).toArray(TabStop[]::new);
     TabSet tabSet = new TabSet(tabs);
     StyleConstants.setTabSet(ATTRS, tabSet);
     super.install(c);
