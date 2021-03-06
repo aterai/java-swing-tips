@@ -148,8 +148,13 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
     super();
     this.list.addAll(list);
     table.setModel(model);
-    list.forEach(this::addItem);
-    list.forEach(v -> model.addRow(v.toArray(new Object[0])));
+    Object[] a = new Object[0];
+    for (E v : list) {
+      addItem(v);
+      model.addRow(v.toArray(a));
+    }
+    // list.forEach(this::addItem);
+    // list.forEach(v -> model.addRow(v.toArray(a)));
   }
 
   @Override public void updateUI() {
