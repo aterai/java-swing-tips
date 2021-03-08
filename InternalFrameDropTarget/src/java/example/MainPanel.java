@@ -204,7 +204,7 @@ public final class MainPanel extends JPanel {
 class TableRowTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
   // private int[] indices;
-  private final ArrayList<Integer> indices = new ArrayList<>();
+  private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
   private Component source;

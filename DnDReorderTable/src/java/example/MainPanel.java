@@ -11,7 +11,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -52,15 +52,15 @@ public final class MainPanel extends JPanel {
     // table.setAutoCreateRowSorter(true); // XXX
 
     // Disable row Cut, Copy, Paste
-    ActionMap map = table.getActionMap();
+    ActionMap am = table.getActionMap();
     Action dummy = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* Dummy action */
       }
     };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(table));
@@ -97,7 +97,8 @@ public final class MainPanel extends JPanel {
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
-  private int[] indices;
+  // private int[] indices;
+  private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
 
@@ -117,10 +118,17 @@ class TableRowTransferHandler extends TransferHandler {
     //   list.add(model.getDataVector().get(i));
     // }
     // Object[] transferredObjects = list.toArray();
-    indices = table.getSelectedRows();
+    // indices = table.getSelectedRows();
+    for (int i : table.getSelectedRows()) {
+      indices.add(i);
+    }
     @SuppressWarnings("JdkObsolete")
-    List<?> transferredObjects = Arrays.stream(indices)
-        .mapToObj(model.getDataVector()::get).collect(Collectors.toList());
+    List<?> transferredObjects = indices.stream()
+        .map(model.getDataVector()::get)
+        .collect(Collectors.toList());
+    // List<?> transferredObjects = Arrays.stream(indices)
+    //     .mapToObj(model.getDataVector()::get)
+    //     .collect(Collectors.toList());
     // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
@@ -193,20 +201,22 @@ class TableRowTransferHandler extends TransferHandler {
   private void cleanup(JComponent c, boolean remove) {
     c.getRootPane().getGlassPane().setVisible(false);
     // c.setCursor(Cursor.getDefaultCursor());
-    if (remove && Objects.nonNull(indices)) {
+    if (remove && !indices.isEmpty()) {
       DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       if (addCount > 0) {
-        for (int i = 0; i < indices.length; i++) {
-          if (indices[i] >= addIndex) {
-            indices[i] += addCount;
+        for (int i = 0; i < indices.size(); i++) {
+          if (indices.get(i) >= addIndex) {
+            // indices[i] += addCount;
+            indices.set(i, indices.get(i) + addCount);
           }
         }
       }
-      for (int i = indices.length - 1; i >= 0; i--) {
-        model.removeRow(indices[i]);
+      for (int i = indices.size() - 1; i >= 0; i--) {
+        model.removeRow(indices.get(i));
       }
     }
-    indices = null;
+    // indices = null;
+    indices.clear();
     addCount = 0;
     addIndex = -1;
   }
