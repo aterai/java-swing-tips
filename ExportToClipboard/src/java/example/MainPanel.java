@@ -10,6 +10,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -107,12 +108,12 @@ class ListPopupMenu extends JPopupMenu {
   }
 }
 
-// Demo - BasicDnD (The Java? Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
   private JList<?> source;
-  private int[] indices;
+  private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
 
@@ -125,7 +126,9 @@ class ListItemTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
-    indices = source.getSelectedIndices();
+    for (int i : source.getSelectedIndices()) {
+      indices.add(i);
+    }
     // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
     // Object[] transferredObjects = source.getSelectedValuesList().toArray(new Object[0]);
     List<?> transferredObjects = source.getSelectedValuesList();
@@ -208,24 +211,24 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   private void cleanup(JComponent c, boolean remove) {
-    if (remove && Objects.nonNull(indices)) {
+    if (remove && !indices.isEmpty()) {
       // If we are moving items around in the same list, we
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
       if (addCount > 0) {
-        for (int i = 0; i < indices.length; i++) {
-          if (indices[i] >= addIndex) {
-            indices[i] += addCount;
+        for (int i = 0; i < indices.size(); i++) {
+          if (indices.get(i) >= addIndex) {
+            indices.set(i, indices.get(i) + addCount);
           }
         }
       }
       JList<?> src = (JList<?>) c;
       DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
-      for (int i = indices.length - 1; i >= 0; i--) {
-        model.remove(indices[i]);
+      for (int i = indices.size() - 1; i >= 0; i--) {
+        model.remove(indices.get(i));
       }
     }
-    indices = null;
+    indices.clear();
     addCount = 0;
     addIndex = -1;
   }
