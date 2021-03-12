@@ -106,13 +106,13 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
 
   private void repaintPrevButton(ButtonsRenderer<?> renderer, int index) {
     renderer.rolloverIndex = -1;
-    Rectangle r;
     if (prevIndex == index) {
-      r = Objects.nonNull(prevButton) ? list.getCellBounds(prevIndex, prevIndex) : null;
+      if (Objects.nonNull(prevButton)) {
+        rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
+      }
     } else {
-      r = list.getCellBounds(index, index);
+      rectRepaint(list, list.getCellBounds(index, index));
     }
-    rectRepaint(list, r);
     prevIndex = -1;
   }
 
