@@ -59,7 +59,7 @@ class BadgeLabel extends JLabel {
 
   protected BadgeLabel(Icon image) {
     super(image);
-    this.ribbonText = null;
+    this.ribbonText = "";
   }
 
   protected BadgeLabel(Icon image, String ribbonText) {
@@ -83,7 +83,7 @@ class BadgeLabel extends JLabel {
     g2.fill(getShape());
     super.paintComponent(g);
 
-    if (ribbonText != null) {
+    if (!ribbonText.isEmpty()) {
       Dimension d = getSize();
       float fontSize = 10f;
       int cx = (d.width - (int) fontSize) / 2;
