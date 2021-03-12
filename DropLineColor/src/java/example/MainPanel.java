@@ -11,7 +11,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -117,15 +117,15 @@ public final class MainPanel extends JPanel {
     table.setFillsViewportHeight(true);
 
     // Disable row Cut, Copy, Paste
-    ActionMap map = table.getActionMap();
+    ActionMap am = table.getActionMap();
     Action dummy = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* Dummy action */
       }
     };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -198,13 +198,15 @@ public final class MainPanel extends JPanel {
 
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
-  private int[] indices;
+  private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
 
   @Override protected Transferable createTransferable(JComponent c) {
     JList<?> source = (JList<?>) c;
-    indices = source.getSelectedIndices();
+    for (int i : source.getSelectedIndices()) {
+      indices.add(i);
+    }
     List<?> transferredObjects = source.getSelectedValuesList();
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
@@ -265,21 +267,21 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   private void cleanup(JComponent c, boolean remove) {
-    if (remove && Objects.nonNull(indices)) {
+    if (remove && !indices.isEmpty()) {
       if (addCount > 0) {
-        for (int i = 0; i < indices.length; i++) {
-          if (indices[i] >= addIndex) {
-            indices[i] += addCount;
+        for (int i = 0; i < indices.size(); i++) {
+          if (indices.get(i) >= addIndex) {
+            indices.set(i, indices.get(i) + addCount);
           }
         }
       }
-      JList<?> source = (JList<?>) c;
-      DefaultListModel<?> model = (DefaultListModel<?>) source.getModel();
-      for (int i = indices.length - 1; i >= 0; i--) {
-        model.remove(indices[i]);
+      JList<?> src = (JList<?>) c;
+      DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
+      for (int i = indices.size() - 1; i >= 0; i--) {
+        model.remove(indices.get(i));
       }
     }
-    indices = null;
+    indices.clear();
     addCount = 0;
     addIndex = -1;
   }
@@ -287,7 +289,7 @@ class ListItemTransferHandler extends TransferHandler {
 
 class TableRowTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
-  private int[] indices;
+  private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
 
@@ -295,10 +297,13 @@ class TableRowTransferHandler extends TransferHandler {
     c.getRootPane().getGlassPane().setVisible(true);
     JTable table = (JTable) c;
     DefaultTableModel model = (DefaultTableModel) table.getModel();
-    indices = table.getSelectedRows();
+    for (int i : table.getSelectedRows()) {
+      indices.add(i);
+    }
     @SuppressWarnings("JdkObsolete")
-    List<?> transferredObjects = Arrays.stream(indices)
-        .mapToObj(model.getDataVector()::get).collect(Collectors.toList());
+    List<?> transferredObjects = indices.stream()
+        .map(model.getDataVector()::get)
+        .collect(Collectors.toList());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -344,11 +349,10 @@ class TableRowTransferHandler extends TransferHandler {
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       addCount = values.size();
-      Object[] array = new Object[0];
+      Object[] type = new Object[0];
       for (Object o : values) {
         int row = index++;
-        // model.insertRow(row, (Vector<?>) o);
-        model.insertRow(row, ((List<?>) o).toArray(array));
+        model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
       }
       return true;
@@ -364,20 +368,20 @@ class TableRowTransferHandler extends TransferHandler {
   private void cleanup(JComponent c, boolean remove) {
     c.getRootPane().getGlassPane().setVisible(false);
     // c.setCursor(Cursor.getDefaultCursor());
-    if (remove && Objects.nonNull(indices)) {
+    if (remove && !indices.isEmpty()) {
       DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       if (addCount > 0) {
-        for (int i = 0; i < indices.length; i++) {
-          if (indices[i] >= addIndex) {
-            indices[i] += addCount;
+        for (int i = 0; i < indices.size(); i++) {
+          if (indices.get(i) >= addIndex) {
+            indices.set(i, indices.get(i) + addCount);
           }
         }
       }
-      for (int i = indices.length - 1; i >= 0; i--) {
-        model.removeRow(indices[i]);
+      for (int i = indices.size() - 1; i >= 0; i--) {
+        model.removeRow(indices.get(i));
       }
     }
-    indices = null;
+    indices.clear();
     addCount = 0;
     addIndex = -1;
   }
