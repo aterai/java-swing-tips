@@ -30,7 +30,6 @@
   <rule ref="category/java/errorprone.xml">
     <exclude name="BeanMembersShouldSerialize" />
     <exclude name="MissingSerialVersionUID" />
-    <exclude name="DataflowAnomalyAnalysis" />
     <exclude name="NullAssignment" />
   </rule>
   <rule ref="category/java/multithreading.xml">
