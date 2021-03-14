@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
       }
-      worker = null;
+      // worker = null;
     });
 
     openButton.addActionListener(e -> {

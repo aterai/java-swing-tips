@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
       }
-      worker = null;
+      // worker = null;
     });
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -308,7 +308,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //       if (Objects.nonNull(worker) && !worker.isDone()) {
 //         worker.cancel(true);
 //       }
-//       worker = null;
+//       // worker = null;
 //     }
 //   }
 //

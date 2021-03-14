@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     runButton.addActionListener(e -> executeWorker());
     cancelButton.addActionListener(e -> {
       Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
-      worker = null;
+      // worker = null;
     });
 
     Box box = Box.createHorizontalBox();

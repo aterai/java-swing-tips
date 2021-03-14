@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
       // TEST: thread = null;
       if (Objects.nonNull(worker)) {
         worker.cancel(true);
-        worker = null;
+        // worker = null;
       }
     });
 

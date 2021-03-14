@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
       }
-      worker = null;
+      // worker = null;
       pauseButton.setText(PAUSE);
       pauseButton.setEnabled(false);
     });
@@ -393,7 +393,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //       if (Objects.nonNull(worker) && !worker.isDone()) {
 //         worker.cancel(true);
 //       }
-//       worker = null;
+//       // worker = null;
 //     }
 //   }
 //

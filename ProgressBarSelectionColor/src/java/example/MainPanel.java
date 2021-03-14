@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
       if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
         System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
-        worker = null;
+        // worker = null;
       }
     });
     add(p);
