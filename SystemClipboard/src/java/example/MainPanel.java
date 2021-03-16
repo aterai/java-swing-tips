@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
       } catch (UnsupportedFlavorException | IOException ex) {
         Toolkit.getDefaultToolkit().beep();
         str = ex.getMessage();
-        image = null;
+        // image = null;
       }
       label.setText(str);
       label.setIcon(image);
