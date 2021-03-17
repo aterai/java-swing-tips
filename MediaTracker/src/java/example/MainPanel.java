@@ -182,15 +182,13 @@ class FileModel extends DefaultTableModel {
 
 class RowData {
   private final int id;
-  private final String name;
-  private final String absolutePath;
+  private final Path path;
   private final int width;
   private final int height;
 
   protected RowData(int id, Path path, int width, int height) {
     this.id = id;
-    this.name = Objects.toString(path.getFileName());
-    this.absolutePath = Objects.toString(path.toAbsolutePath());
+    this.path = path;
     this.width = width;
     this.height = height;
   }
@@ -216,11 +214,11 @@ class RowData {
   }
 
   public String getName() {
-    return name;
+    return Objects.toString(path.getFileName());
   }
 
   public String getAbsolutePath() {
-    return absolutePath;
+    return Objects.toString(path.toAbsolutePath());
   }
 
   public int getWidth() {

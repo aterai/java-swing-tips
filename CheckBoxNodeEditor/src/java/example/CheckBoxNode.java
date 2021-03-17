@@ -5,17 +5,17 @@
 package example;
 
 public final class CheckBoxNode {
-  private String label;
-  private Status status;
+  private final String label;
+  private final Status status;
 
   public CheckBoxNode() {
     this.label = "";
-    status = Status.INDETERMINATE;
+    this.status = Status.INDETERMINATE;
   }
 
   public CheckBoxNode(String label) {
     this.label = label;
-    status = Status.INDETERMINATE;
+    this.status = Status.INDETERMINATE;
   }
 
   public CheckBoxNode(String label, Status status) {
@@ -23,17 +23,17 @@ public final class CheckBoxNode {
     this.status = status;
   }
 
-  public void setLabel(String label) {
-    this.label = label;
-  }
+  // public void setLabel(String label) {
+  //   this.label = label;
+  // }
 
   public String getLabel() {
     return label;
   }
 
-  public void setStatus(Status status) {
-    this.status = status;
-  }
+  // public void setStatus(Status status) {
+  //   this.status = status;
+  // }
 
   public Status getStatus() {
     return status;

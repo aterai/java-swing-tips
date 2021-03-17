@@ -119,11 +119,11 @@ class RowDataModel extends DefaultTableModel {
   }
 }
 
-final class RowData {
+class RowData {
   private final String name;
   private final String comment;
 
-  /* default */ RowData(String name, String comment) {
+  protected RowData(String name, String comment) {
     this.name = name;
     this.comment = comment;
   }
