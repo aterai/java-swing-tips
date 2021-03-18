@@ -201,6 +201,10 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
       fireStateChanged();
     }
   }
+
+  @Override public String toString() {
+    return "LocalDateTime SpinnerModel";
+  }
 }
 
 class LocalDateTimeEditor extends JSpinner.DefaultEditor {

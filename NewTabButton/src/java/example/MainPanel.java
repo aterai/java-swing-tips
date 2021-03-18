@@ -232,6 +232,16 @@ class TabButton extends JRadioButton {
     super.fireStateChanged();
   }
 
+  @Override public Dimension getMinimumSize() {
+    Dimension d = super.getMinimumSize();
+    d.width = 16;
+    return d;
+  }
+
+  @Override public String toString() {
+    return "TabButton";
+  }
+
   public Color getTextColor() {
     return textColor;
   }
