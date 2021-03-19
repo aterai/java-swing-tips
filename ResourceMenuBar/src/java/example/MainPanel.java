@@ -43,6 +43,7 @@ public final class MainPanel extends JPanel {
     };
     // return defaultActions;
   }
+
   // private final Action[] defaultActions = {
   //   new NewAction(),
   //   new ExitAction(),
@@ -56,7 +57,7 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      // dummy
+      // new action...
     }
   }
 
@@ -86,7 +87,7 @@ public final class MainPanel extends JPanel {
 //   }
 //
 //   @Override public void actionPerformed(ActionEvent e) {
-//     // dummy
+//     // save as...
 //   }
 // }
 
