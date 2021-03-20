@@ -73,6 +73,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
+@SuppressWarnings("PMD.DataClass")
 class ComboItem {
   private boolean enabled;
   private boolean editable;

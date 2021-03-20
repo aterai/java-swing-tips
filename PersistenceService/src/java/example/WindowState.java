@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.io.Serializable;
 
+@SuppressWarnings("PMD.DataClass")
 public class WindowState implements Serializable {
   private static final long serialVersionUID = 1415435143L;
   private Point location = new Point();
