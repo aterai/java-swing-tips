@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MainPanel::makeMissingImage);
 
     ImageIcon icon9 = new ImageIcon(bi);
-    ImageIcon animatedIcon = new ImageIcon(url);
+    ImageIcon animatedIcon = url == null ? icon9 : new ImageIcon(url);
 
     JTextArea textArea = new JTextArea();
     JButton button = new JButton(icon9) {
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
       @Override public void mousePressed(MouseEvent e) {
         textArea.append("JLabel: mousePressed, Image: flush\n");
         animatedIcon.getImage().flush();
-        repaint(getBounds());
+        e.getComponent().repaint();
       }
     });
 
