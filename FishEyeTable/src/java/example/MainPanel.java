@@ -19,18 +19,17 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"String", "Integer", "Boolean"};
-  private final Object[][] data = {
-    {"aaa", -1, true}
-  };
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return getValueAt(0, column).getClass();
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+      {"aaa", -1, true}
+    };
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
     IntStream.range(0, 20)
         .mapToObj(i -> new Object[] {"Name: " + i, i, i % 2 == 0})
         .forEach(model::addRow);
@@ -94,13 +93,13 @@ class FishEyeTable extends JTable {
     Color color32 = new Color(0xE6_E6_FA);
 
     fishEyeRowList = Arrays.asList(
-      new FishEyeRowContext(12, font12, color12),
-      new FishEyeRowContext(18, font18, color18),
-      new FishEyeRowContext(24, font24, color24),
-      new FishEyeRowContext(32, font32, color32),
-      new FishEyeRowContext(24, font24, color24),
-      new FishEyeRowContext(18, font18, color18),
-      new FishEyeRowContext(12, font12, color12)
+        new FishEyeRowContext(12, font12, color12),
+        new FishEyeRowContext(18, font18, color18),
+        new FishEyeRowContext(24, font24, color24),
+        new FishEyeRowContext(32, font32, color32),
+        new FishEyeRowContext(24, font24, color24),
+        new FishEyeRowContext(18, font18, color18),
+        new FishEyeRowContext(12, font12, color12)
     );
   }
 
@@ -124,32 +123,25 @@ class FishEyeTable extends JTable {
     protected int prevHeight;
 
     @Override public void mouseMoved(MouseEvent e) {
-      int row = rowAtPoint(e.getPoint());
-      if (prevRow == row) {
-        return;
-      }
-      initRowHeight(prevHeight, row);
-      prevRow = row;
+      update(rowAtPoint(e.getPoint()));
     }
 
     @Override public void mouseDragged(MouseEvent e) {
-      int row = rowAtPoint(e.getPoint());
-      if (prevRow == row) {
-        return;
-      }
-      initRowHeight(prevHeight, row);
-      prevRow = row;
+      update(rowAtPoint(e.getPoint()));
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      repaint();
+      e.getComponent().repaint();
     }
 
     @Override public void valueChanged(ListSelectionEvent e) {
       if (e.getValueIsAdjusting()) {
         return;
       }
-      int row = getSelectedRow();
+      update(getSelectedRow());
+    }
+
+    private void update(int row) {
       if (prevRow == row) {
         return;
       }
@@ -198,13 +190,13 @@ class FishEyeTable extends JTable {
     return c;
   }
 
-  private int getViewableColoredRowCount(int ridx) {
+  private int getViewableColoredRowCount(int idx) {
     int rd2 = (fishEyeRowList.size() - 1) / 2;
     int rc = getModel().getRowCount();
-    if (rd2 - ridx > 0 && ridx < rd2) {
-      return rd2 + 1 + ridx;
-    } else if (ridx > rc - 1 - rd2 && ridx < rc - 1 + rd2) {
-      return rc - ridx + rd2;
+    if (rd2 - idx > 0) {
+      return rd2 + 1 + idx;
+    } else if (idx > rc - 1 - rd2 && idx < rc - 1 + rd2) {
+      return rc - idx + rd2;
     }
     return fishEyeRowList.size();
   }
