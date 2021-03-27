@@ -116,11 +116,9 @@ public final class MainPanel extends JPanel {
           continue;
         }
 
+        // @SuppressWarnings("unchecked") WatchEvent<Path> ev = (WatchEvent<Path>) event;
         // The filename is the context of the event.
-        @SuppressWarnings("unchecked")
-        WatchEvent<Path> ev = (WatchEvent<Path>) event;
-        Path filename = ev.context();
-
+        Path filename = (Path) event.context();
         Path child = dir.resolve(filename);
         EventQueue.invokeLater(() -> {
           append(String.format("%s: %s", kind, child));
