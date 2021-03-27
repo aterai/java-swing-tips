@@ -104,7 +104,7 @@ class OvertypeTextArea extends JTextArea {
       setCaretPosition(getCaretPosition()); // add
       moveCaretPosition(getCaretPosition()); // add
       setOvertypeMode(!isOvertypeMode());
-      repaint(); // add
+      e.getComponent().repaint(); // add
     }
   }
 
