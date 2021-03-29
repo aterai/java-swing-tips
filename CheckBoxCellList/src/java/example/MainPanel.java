@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.EventObject;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -23,7 +24,7 @@ public final class MainPanel extends JPanel {
     Box list1 = Box.createVerticalBox();
 
     DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
-    JList<CheckBoxNode> list2 = new CheckBoxList<>(model);
+    JList<CheckBoxNode> list2 = new CheckBoxList(model);
 
     JTree list3 = new JTree() {
       @Override public void updateUI() {
@@ -87,11 +88,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class CheckBoxNode {
+final class CheckBoxNode {
   public final String text;
   public final boolean selected;
 
-  protected CheckBoxNode(String text, boolean selected) {
+  /* default */ CheckBoxNode(String text, boolean selected) {
     this.text = text;
     this.selected = selected;
   }
@@ -101,10 +102,11 @@ class CheckBoxNode {
   }
 }
 
-class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
-  private transient CheckBoxCellRenderer<E> renderer;
+class CheckBoxList extends JList<CheckBoxNode> {
+  private transient CheckBoxCellRenderer renderer;
+  private transient MouseListener handler;
 
-  protected CheckBoxList(ListModel<E> model) {
+  protected CheckBoxList(ListModel<CheckBoxNode> model) {
     super(model);
   }
 
@@ -113,10 +115,23 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     setBackground(null);
     setSelectionForeground(null);
     setSelectionBackground(null);
+    removeMouseListener(handler);
     removeMouseListener(renderer);
     removeMouseMotionListener(renderer);
     super.updateUI();
-    renderer = new CheckBoxCellRenderer<>();
+    handler = new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        int index = locationToIndex(e.getPoint());
+        if (e.getButton() == MouseEvent.BUTTON1 && index >= 0) {
+          DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>) getModel();
+          CheckBoxNode n = m.get(index);
+          m.set(index, new CheckBoxNode(n.text, !n.selected));
+          repaint(getCellBounds(index, index));
+        }
+      }
+    };
+    addMouseListener(handler);
+    renderer = new CheckBoxCellRenderer();
     setCellRenderer(renderer);
     addMouseListener(renderer);
     addMouseMotionListener(renderer);
@@ -126,7 +141,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
   // @see SwingUtilities2.pointOutsidePrefSize(...)
   private boolean pointOutsidePrefSize(Point p) {
     int i = locationToIndex(p);
-    E cbn = getModel().getElementAt(i);
+    CheckBoxNode cbn = getModel().getElementAt(i);
     Component c = getCellRenderer().getListCellRendererComponent(this, cbn, i, false, false);
     Rectangle rect = getCellBounds(i, i);
     rect.width = c.getPreferredSize().width;
@@ -152,11 +167,11 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
   }
 }
 
-class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implements ListCellRenderer<E> {
+class CheckBoxCellRenderer extends MouseAdapter implements ListCellRenderer<CheckBoxNode> {
   private final JCheckBox checkBox = new JCheckBox();
   private int rollOverRowIndex = -1;
 
-  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+  @Override public Component getListCellRendererComponent(JList<? extends CheckBoxNode> list, CheckBoxNode value, int index, boolean isSelected, boolean cellHasFocus) {
     checkBox.setOpaque(true);
     if (isSelected) {
       checkBox.setBackground(list.getSelectionBackground());
@@ -176,21 +191,6 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implemen
       JList<?> l = (JList<?>) e.getComponent();
       l.repaint(l.getCellBounds(rollOverRowIndex, rollOverRowIndex));
       rollOverRowIndex = -1;
-    }
-  }
-
-  @Override public void mouseClicked(MouseEvent e) {
-    if (e.getButton() == MouseEvent.BUTTON1) {
-      JList<?> l = (JList<?>) e.getComponent();
-      Point p = e.getPoint();
-      int index = l.locationToIndex(p);
-      if (index >= 0) {
-        @SuppressWarnings("unchecked")
-        DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>) l.getModel();
-        CheckBoxNode n = m.get(index);
-        m.set(index, new CheckBoxNode(n.text, !n.selected));
-        l.repaint(l.getCellBounds(index, index));
-      }
     }
   }
 
