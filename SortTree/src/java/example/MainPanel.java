@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         } else {
           TreeUtil.sortTree3(r);
         }
-        log(check.getText());
+        swapCounter(check.getText());
         tree.setModel(new DefaultTreeModel(r));
       }
       TreeUtil.expandAll(tree);
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void log(String title) {
+  private static void swapCounter(String title) {
     if (TreeUtil.SWAP_COUNTER.get() == 0) {
       int cc = TreeUtil.COMPARE_COUNTER.get();
       System.out.format("%-24s - compare: %3d, swap: ---%n", title, cc);
