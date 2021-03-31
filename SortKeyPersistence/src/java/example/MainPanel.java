@@ -19,6 +19,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,7 +28,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
+      {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);
@@ -71,8 +72,13 @@ public final class MainPanel extends JPanel {
       }
       byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
       try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
-        @SuppressWarnings("unchecked")
-        List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        // @SuppressWarnings("unchecked")
+        // List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
+        List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject()).stream()
+            .filter(clz::isInstance)
+            .map(clz::cast)
+            .collect(Collectors.toList());
         DefaultTableModel model = (DefaultTableModel) xd.readObject();
         table.setModel(model);
         table.setAutoCreateRowSorter(true);

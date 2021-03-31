@@ -19,6 +19,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
+      {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);
@@ -45,8 +46,8 @@ public final class MainPanel extends JPanel {
     sp.setTopComponent(new JScrollPane(table));
     sp.setBottomComponent(new JScrollPane(textArea));
 
-    JButton encButton = new JButton("XMLEncoder");
-    encButton.addActionListener(e -> {
+    JButton encodeButton = new JButton("XMLEncoder");
+    encodeButton.addActionListener(e -> {
       try {
         File file = File.createTempFile("output", ".xml");
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -70,16 +71,21 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JButton decButton = new JButton("XMLDecoder");
-    decButton.addActionListener(e -> {
+    JButton decodeButton = new JButton("XMLDecoder");
+    decodeButton.addActionListener(e -> {
       String text = textArea.getText();
       if (text.isEmpty()) {
         return;
       }
       byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
       try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
-        @SuppressWarnings("unchecked")
-        List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        // @SuppressWarnings("unchecked")
+        // List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
+        List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject()).stream()
+            .filter(clz::isInstance)
+            .map(clz::cast)
+            .collect(Collectors.toList());
         DefaultTableModel model = (DefaultTableModel) xd.readObject();
         table.setModel(model);
         table.setAutoCreateRowSorter(true);
@@ -93,8 +99,8 @@ public final class MainPanel extends JPanel {
     clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
 
     JPanel p = new JPanel();
-    p.add(encButton);
-    p.add(decButton);
+    p.add(encodeButton);
+    p.add(decodeButton);
     p.add(clearButton);
     add(sp);
     add(p, BorderLayout.SOUTH);
