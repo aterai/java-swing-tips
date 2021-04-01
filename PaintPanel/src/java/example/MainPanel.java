@@ -147,13 +147,13 @@ class PaintPanel extends JPanel {
         path = new Path2D.Double();
         path.moveTo(e.getX(), e.getY());
         getList().add(path);
-        repaint();
+        e.getComponent().repaint();
       }
 
       @Override public void mouseDragged(MouseEvent e) {
         if (path != null) {
           path.lineTo(e.getX(), e.getY());
-          repaint();
+          e.getComponent().repaint();
         }
       }
     };

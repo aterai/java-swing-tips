@@ -270,14 +270,14 @@ class EditorFromList<E extends IconItem> extends JList<E> {
   private class RollOverListener extends MouseAdapter {
     @Override public void mouseExited(MouseEvent e) {
       rollOverRowIndex = -1;
-      repaint();
+      e.getComponent().repaint();
     }
 
     @Override public void mouseMoved(MouseEvent e) {
       int row = locationToIndex(e.getPoint());
       if (row != rollOverRowIndex) {
         rollOverRowIndex = row;
-        repaint();
+        e.getComponent().repaint();
       }
     }
   }

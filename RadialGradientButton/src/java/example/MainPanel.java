@@ -115,7 +115,7 @@ class RadialGradientButton extends JButton {
 
       private void update(MouseEvent e) {
         pt.setLocation(e.getPoint());
-        repaint();
+        e.getComponent().repaint();
       }
     };
     addMouseListener(listener);
@@ -232,7 +232,7 @@ class RadialGradientPaintButton extends JButton {
 
       private void update(MouseEvent e) {
         pt.setLocation(e.getPoint());
-        repaint();
+        e.getComponent().repaint();
       }
     };
     addMouseListener(listener);
