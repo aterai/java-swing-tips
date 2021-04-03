@@ -137,7 +137,7 @@ class RowHeaderList<E> extends JList<E> {
       if (pressedRowIndex < 0) {
         // pressedRowIndex = -1;
         rollOverRowIndex = -1;
-        repaint();
+        e.getComponent().repaint();
       }
     }
 
@@ -145,7 +145,7 @@ class RowHeaderList<E> extends JList<E> {
       int row = locationToIndex(e.getPoint());
       if (row != rollOverRowIndex) {
         rollOverRowIndex = row;
-        repaint();
+        e.getComponent().repaint();
       }
     }
 
@@ -158,7 +158,7 @@ class RowHeaderList<E> extends JList<E> {
         listSelection.clearSelection();
         tableSelection.addSelectionInterval(start, end);
         listSelection.addSelectionInterval(start, end);
-        repaint();
+        e.getComponent().repaint();
       }
     }
 
@@ -187,7 +187,7 @@ class RowHeaderList<E> extends JList<E> {
       listSelection.clearSelection();
       pressedRowIndex = -1;
       rollOverRowIndex = -1;
-      repaint();
+      e.getComponent().repaint();
     }
   }
 }

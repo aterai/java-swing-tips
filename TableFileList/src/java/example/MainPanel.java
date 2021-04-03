@@ -252,25 +252,25 @@ class FileListTable extends JTable {
         addRowSelectionInterval(i, i);
         changeSelection(i, col, true, true);
       }
-      repaint();
+      e.getComponent().repaint();
     }
 
     @Override public void mouseReleased(MouseEvent e) {
       getRubberBand().reset();
-      repaint();
+      e.getComponent().repaint();
     }
 
     @Override public void mousePressed(MouseEvent e) {
       srcPoint.setLocation(e.getPoint());
       if (rowAtPoint(e.getPoint()) < 0) {
         clearSelection();
-        repaint();
+        e.getComponent().repaint();
       } else {
         int index = rowAtPoint(e.getPoint());
         Rectangle rect = getCellRect2(FileListTable.this, index, convertColumnIndexToView(0));
         if (!rect.contains(e.getPoint())) {
           clearSelection();
-          repaint();
+          e.getComponent().repaint();
         }
       }
     }
