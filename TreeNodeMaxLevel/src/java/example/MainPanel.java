@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  protected void updateLabel(TreePath path) {
+  public void updateLabel(TreePath path) {
     countLabel.setText("PathCount: " + path.getPathCount());
     Object o = path.getLastPathComponent();
     if (o instanceof DefaultMutableTreeNode) {
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  protected final class TreePopupMenu extends JPopupMenu {
+  public final class TreePopupMenu extends JPopupMenu {
     private static final int NODE_MAXIMUM_LEVELS = 2;
 
-    protected TreePopupMenu() {
+    public TreePopupMenu() {
       super();
       add("path").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
