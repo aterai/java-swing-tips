@@ -91,12 +91,12 @@ class WatermarkTextField extends JTextField implements FocusListener {
 
   @Override public void focusGained(FocusEvent e) {
     showWatermark = false;
-    repaint();
+    e.getComponent().repaint();
   }
 
   @Override public void focusLost(FocusEvent e) {
     showWatermark = "".equals(getText().trim());
-    repaint();
+    e.getComponent().repaint();
   }
 }
 
