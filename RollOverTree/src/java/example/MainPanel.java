@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
             int row = getRowForLocation(e.getX(), e.getY());
             if (row != rollOverRowIndex) {
               rollOverRowIndex = row;
-              repaint();
+              e.getComponent().repaint();
             }
           }
         };

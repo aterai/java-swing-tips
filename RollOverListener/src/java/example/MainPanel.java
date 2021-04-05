@@ -87,7 +87,7 @@ class RollOverList<E> extends JList<E> {
 
     @Override public void mouseExited(MouseEvent e) {
       rollOverRowIndex = -1;
-      repaint();
+      e.getComponent().repaint();
     }
 
     @Override public void mouseMoved(MouseEvent e) {
@@ -98,7 +98,7 @@ class RollOverList<E> extends JList<E> {
           rect.add(getCellBounds(rollOverRowIndex, rollOverRowIndex));
         }
         rollOverRowIndex = row;
-        repaint(rect);
+        ((JComponent) e.getComponent()).repaint(rect);
       }
     }
   }
