@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     JButton clearButton = new JButton("Clear");
     clearButton.addActionListener(e -> {
       clearFile();
-      repaint();
+      ((Component) e.getSource()).repaint();
     });
 
     Box box = Box.createHorizontalBox();
