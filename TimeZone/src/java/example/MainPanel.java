@@ -15,9 +15,9 @@ import java.util.TimeZone;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings("JavaUtilDate")
   private MainPanel() {
     super(new BorderLayout());
-
     SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
     DateFormat df = DateFormat.getDateTimeInstance();
     // df.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));

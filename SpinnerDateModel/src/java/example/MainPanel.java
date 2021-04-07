@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(3, 1));
     String dateFormat = "yyyy/MM/dd";
 
+    @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));

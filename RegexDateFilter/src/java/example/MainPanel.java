@@ -19,9 +19,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings("JavaUtilDate")
   private MainPanel() {
     super(new BorderLayout());
-
     Calendar cal = Calendar.getInstance();
     // cal.set(2002, 12 - 1, 31, 10, 30, 15);
     cal.set(2002, Calendar.DECEMBER, 31, 10, 30, 15);
