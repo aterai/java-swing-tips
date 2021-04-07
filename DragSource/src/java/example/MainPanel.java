@@ -11,17 +11,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private final JLabel label = new JLabel();
-  private final URL u1 = getClass().getResource("i03-04.gif");
-  private final URL u2 = getClass().getResource("i03-10.gif");
-  private final ImageIcon i1 = new ImageIcon(u1);
-  private final ImageIcon i2 = new ImageIcon(u2);
+  private final ImageIcon i1 = new ImageIcon(getClass().getResource("i03-04.gif"));
+  private final ImageIcon i2 = new ImageIcon(getClass().getResource("i03-10.gif"));
   private File file;
 
   private MainPanel() {
@@ -36,19 +33,19 @@ public final class MainPanel extends JPanel {
     // // JDK 1.5.0
     // DragSource.getDefaultDragSource()
     //     .createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
-    //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
+    //   @Override public void dragGestureRecognized(DragGestureEvent e) {
     //     File tmpFile = getFile();
     //     if (Objects.isNull(tmpFile)) {
     //       return;
     //     }
     //     DragSourceAdapter dsa = new DragSourceAdapter() {
-    //       @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-    //         if (dsde.getDropSuccess()) {
+    //       @Override public void dragDropEnd(DragSourceDropEvent ev) {
+    //         if (ev.getDropSuccess()) {
     //           clearFile();
     //         }
     //       }
     //     };
-    //     dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpFile), dsa);
+    //     e.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpFile), dsa);
     //   }
     // });
 
@@ -102,7 +99,7 @@ public final class MainPanel extends JPanel {
     JButton clearButton = new JButton("Clear");
     clearButton.addActionListener(e -> {
       clearFile();
-      ((Component) e.getSource()).repaint();
+      label.repaint();
     });
 
     Box box = Box.createHorizontalBox();
