@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // JPanel p1 = new JPanel();
     // Box p1 = Box.createHorizontalBox();
     JPanel p1 = new JPanel(new GridLayout(1, 0, 2, 2));
@@ -37,17 +36,22 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("rotate");
     button.setFocusable(false);
     button.addActionListener(e -> {
-      p1.setComponentZOrder(p1.getComponent(p1.getComponentCount() - 1), 0);
-      p2.setComponentZOrder(p2.getComponent(p2.getComponentCount() - 1), 0);
-      revalidate();
+      rotateChildComponent(p1);
+      rotateChildComponent(p2);
     });
 
     JPanel panel = new JPanel(new GridLayout(2, 1));
     panel.add(p1);
     panel.add(p2);
+
     add(panel);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void rotateChildComponent(Container p) {
+    p.setComponentZOrder(p.getComponent(p.getComponentCount() - 1), 0);
+    p.revalidate();
   }
 
   public static void main(String[] args) {
