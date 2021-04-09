@@ -26,10 +26,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {"aaa", "ccccccc"}, {"bbb", "☀☁☂☃"}
+      {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames);
-    JTable table = new JTable(model);
+    JTable table = new JTable(new DefaultTableModel(data, columnNames));
 
     JTextArea textArea = new JTextArea();
 
@@ -38,8 +37,8 @@ public final class MainPanel extends JPanel {
     sp.setTopComponent(new JScrollPane(table));
     sp.setBottomComponent(new JScrollPane(textArea));
 
-    JButton encButton = new JButton("XMLEncoder");
-    encButton.addActionListener(e -> {
+    JButton encodeButton = new JButton("XMLEncoder");
+    encodeButton.addActionListener(e -> {
       try {
         File file = File.createTempFile("output", ".xml");
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -66,8 +65,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JButton decButton = new JButton("XMLDecoder");
-    decButton.addActionListener(e -> {
+    JButton decodeButton = new JButton("XMLDecoder");
+    decodeButton.addActionListener(e -> {
       String text = textArea.getText();
       if (text.isEmpty()) {
         return;
@@ -83,10 +82,9 @@ public final class MainPanel extends JPanel {
     clearButton.addActionListener(e -> table.setModel(new DefaultTableModel()));
 
     JPanel p = new JPanel();
-    p.add(encButton);
-    p.add(decButton);
+    p.add(encodeButton);
+    p.add(decodeButton);
     p.add(clearButton);
-
     add(sp);
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
