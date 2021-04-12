@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -75,9 +76,11 @@ public final class MainPanel extends JPanel {
 
   private JRadioButton makeRadioButton(Flip f) {
     JRadioButton rb = new JRadioButton(f.toString(), f == Flip.NONE);
-    rb.addActionListener(e -> {
-      mode = f;
-      rb.getRootPane().repaint();
+    rb.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        mode = f;
+        rb.getRootPane().repaint();
+      }
     });
     return rb;
   }
