@@ -15,16 +15,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
+  private static final String BOLD_KEY = "swing.boldMetal";
   private static final String TAG = "<html><b>";
 
   private MainPanel() {
     super(new BorderLayout());
-
-    JCheckBox check = new JCheckBox("swing.boldMetal");
+    JCheckBox check = new JCheckBox(BOLD_KEY);
     check.addActionListener(e -> {
       // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/metal/DefaultMetalTheme.html
       JCheckBox c = (JCheckBox) e.getSource();
-      UIManager.put("swing.boldMetal", c.isSelected());
+      UIManager.put(BOLD_KEY, c.isSelected());
       // re-install the Metal Look and Feel
       try {
         UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
   }
 
   public static void main(String[] args) {
-    UIManager.put("swing.boldMetal", Boolean.FALSE);
+    UIManager.put(BOLD_KEY, Boolean.FALSE);
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
