@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
 import javax.swing.*;
-// import com.sun.tools.attach.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -23,7 +22,6 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
 
-  // private static final IAppInstanceCounter counter = new JVMDescriptorInstanceCounter();
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -31,10 +29,6 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    // if (counter.getInstanceCount() > 1) {
-    //   JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
-    //   return;
-    // }
 
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     // Java Swing Hacks #68
@@ -57,58 +51,3 @@ public final class MainPanel extends JPanel {
     }
   }
 }
-
-// // Attach API
-// // http://d.hatena.ne.jp/Kazzz/20071221/p1
-// interface IAppInstanceCounter {
-//   int getInstanceCount();
-// }
-//
-// class JVMDescriptorInstanceCounter implements IAppInstanceCounter {
-//   private final String mainClassName;
-//   protected JVMDescriptorInstanceCounter() {
-//     StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-//     mainClassName = traces[traces.length-1].getClassName();
-//     // System.out.println(mainClassName);
-//   }
-//   public int getInstanceCount() {
-//     return FinderUtil.findAll(
-//       VirtualMachine.list(),
-//       new IPredicate<VirtualMachineDescriptor>() {
-//         @Override public boolean evaluate(VirtualMachineDescriptor input) {
-//           return input.displayName().equals(mainClassName);
-//         }
-//       }).size();
-//   }
-// }
-//
-// interface IPredicate<T> {
-//  boolean evaluate(T input);
-// }
-//
-// final class FinderUtil {
-//   public static final <T> List<T> findAll(List<T> list, IPredicate<T> match) {
-//     List<T> temp = new ArrayList<>();
-//     for (T t : list) {
-//       if (match.evaluate(t)) {
-//         temp.add(t);
-//       }
-//     }
-//     return temp;
-//   }
-// }
-
-// class PseudoFileSemaphoreCounter implements IAppInstanceCounter {
-//   private PseudoFileSemaphore semaphore;
-//   private int launchLimit;
-//   protected PseudoFileSemaphoreCounter(String appName, int launchLimit) {
-//     this.semaphore = new PseudoFileSemaphore(appName, launchLimit);
-//     this.launchLimit = launchLimit;
-//     Runtime.getRuntime().addShutdownHook(new Thread(() -> semaphore.release()));
-//   }
-//
-//   @Override public int getInstanceCount() {
-//     int result = this.semaphore.tryAcquire();
-//     return result != 0 ? result : this.launchLimit + 1;
-//   }
-// }
