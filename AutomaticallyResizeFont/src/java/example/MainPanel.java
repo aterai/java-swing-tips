@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
       private float fontSize;
       @Override public void doLayout() {
         float f = .08f * SwingUtilities.calculateInnerArea(this, rect).width;
-        boolean fontSizeShouldChange = Math.abs(fontSize - f) > 1.0e-1;
-        if (fontSizeShouldChange) {
+        boolean diff = Math.abs(fontSize - f) > 1.0e-1;
+        if (diff) {
           setFont(font.deriveFont(f));
           fontSize = f;
         }
