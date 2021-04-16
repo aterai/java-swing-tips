@@ -133,8 +133,8 @@ public final class MainPanel extends JPanel {
       // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
       // System.out.println(weekNumberOfMonth);
       // ignore WeekFields#getMinimalDaysInFirstWeek()
-      boolean isSimplyFirstWeekOfMonth = date.getMonth() != date.minusWeeks(1L).getMonth();
-      if (isSimplyFirstWeekOfMonth) {
+      boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
+      if (isFirst) {
         colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
       }
     }
@@ -206,16 +206,16 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
   public static final int WEEK_VIEW = 27;
   private final LocalDate startDate;
   private final int displayDays;
-  private final Map<LocalDate, Integer> contributionActivity;
+  private final Map<LocalDate, Integer> contribution;
 
   protected CalendarViewListModel(LocalDate date) {
     super();
     int dow = date.get(WeekFields.of(Locale.getDefault()).dayOfWeek());
     this.startDate = date.minusWeeks(WEEK_VIEW - 1L).minusDays(dow - 1L);
     this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
-    this.contributionActivity = new ConcurrentHashMap<>(displayDays);
+    this.contribution = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
-    IntStream.range(0, displayDays).forEach(i -> contributionActivity.put(startDate.plusDays(i), rnd.nextInt(5)));
+    IntStream.range(0, displayDays).forEach(i -> contribution.put(startDate.plusDays(i), rnd.nextInt(5)));
   }
 
   @Override public int getSize() {
@@ -224,7 +224,7 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
 
   @Override public Contribution getElementAt(int index) {
     LocalDate date = startDate.plusDays(index);
-    return new Contribution(date, contributionActivity.get(date));
+    return new Contribution(date, contribution.get(date));
   }
 }
 
