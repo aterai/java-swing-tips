@@ -98,8 +98,8 @@ class LightboxGlassPane extends JPanel {
     }
 
     @Override public void hierarchyChanged(HierarchyEvent e) {
-      boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (isDisplayableChanged && !e.getComponent().isDisplayable()) {
+      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (displayability && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
     }

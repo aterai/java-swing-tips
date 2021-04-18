@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(2));
 
     addHierarchyListener(e -> {
-      boolean isDisplayableChanged = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (isDisplayableChanged && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
         System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
         // worker = null;
