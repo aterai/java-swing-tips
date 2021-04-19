@@ -71,7 +71,7 @@ class RearrangingHandler extends MouseAdapter {
   private static final Rectangle R1 = new Rectangle();
   private static final Rectangle R2 = new Rectangle();
   private final Rectangle prevRect = new Rectangle();
-  private final int gestureMotionThreshold = DragSource.getDragThreshold();
+  private final int dragThreshold = DragSource.getDragThreshold();
   private final JWindow window = new JWindow();
   private final Point startPt = new Point();
   private int index = -1;
@@ -142,7 +142,7 @@ class RearrangingHandler extends MouseAdapter {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
     if (Objects.isNull(draggingComponent)) {
-      if (startPt.distance(pt) > gestureMotionThreshold) {
+      if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
       return;

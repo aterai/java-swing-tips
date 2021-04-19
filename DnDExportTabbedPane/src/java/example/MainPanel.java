@@ -388,9 +388,9 @@ class DnDTabbedPane extends JTabbedPane {
 
   private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
     private Point startPt;
-    private final int gestureMotionThreshold = DragSource.getDragThreshold();
+    private final int dragThreshold = DragSource.getDragThreshold();
     // Toolkit tk = Toolkit.getDefaultToolkit();
-    // Integer gestureMotionThreshold = (Integer) tk.getDesktopProperty("DnD.gestureMotionThreshold");
+    // Integer dragThreshold = (Integer) tk.getDesktopProperty("DnD.gestureMotionThreshold");
 
     private void repaintDropLocation() {
       Component c = getRootPane().getGlassPane();
@@ -428,7 +428,7 @@ class DnDTabbedPane extends JTabbedPane {
 
     @Override public void mouseDragged(MouseEvent e) {
       Point tabPt = e.getPoint(); // e.getDragOrigin();
-      if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
+      if (Objects.nonNull(startPt) && startPt.distance(tabPt) > dragThreshold) {
         DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
         TransferHandler th = src.getTransferHandler();
         // When a tab runs rotation occurs, a tab that is not the target is dragged.

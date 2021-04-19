@@ -68,7 +68,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private final Point startPt = new Point();
   private final Point dragOffset = new Point();
   private final Container canvas = new JPanel();
-  private final int gestureMotionThreshold = DragSource.getDragThreshold();
+  private final int dragThreshold = DragSource.getDragThreshold();
 
   private Component draggingComponent;
   private Component fillerComponent;
@@ -126,7 +126,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private void mouseDragged(JComponent parent, Point pt) {
     if (Objects.isNull(draggingComponent)) {
       // MotionThreshold
-      if (startPt.distance(pt) > gestureMotionThreshold) {
+      if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
       return;

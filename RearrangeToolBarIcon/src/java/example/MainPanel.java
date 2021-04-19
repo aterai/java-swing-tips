@@ -69,7 +69,7 @@ class DragHandler extends MouseAdapter {
   private int index = -1;
   private final Component gap = Box.createHorizontalStrut(24);
   private final Point startPt = new Point();
-  private final int gestureMotionThreshold = DragSource.getDragThreshold();
+  private final int dragThreshold = DragSource.getDragThreshold();
 
   @Override public void mousePressed(MouseEvent e) {
     Container parent = (Container) e.getComponent();
@@ -110,7 +110,7 @@ class DragHandler extends MouseAdapter {
     Container parent = (Container) e.getComponent();
 
     if (!window.isVisible() || Objects.isNull(draggingComponent)) {
-      if (startPt.distance(pt) > gestureMotionThreshold) {
+      if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
       return;
