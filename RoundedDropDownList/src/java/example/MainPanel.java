@@ -23,15 +23,15 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 public final class MainPanel extends JPanel {
   public static final Color BACKGROUND = Color.BLACK;
   public static final Color FOREGROUND = Color.WHITE;
-  public static final Color SELECTION_FOREGROUND = Color.ORANGE;
-  public static final Color PANEL_BACKGROUND = Color.GRAY;
+  public static final Color SELECTION_FGC = Color.ORANGE;
+  public static final Color PANEL_BGC = Color.GRAY;
   public static final String KEY = "ComboBox.border";
 
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
-    UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
     UIManager.put("ComboBox.selectionBackground", BACKGROUND);
 
     UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
     JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
     p.setOpaque(true);
-    p.setBackground(PANEL_BACKGROUND);
+    p.setBackground(PANEL_BGC);
     p.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
     p.add(makeComboBox0());
     p.add(makeComboBox1());
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 
     add(p, BorderLayout.NORTH);
     setOpaque(true);
-    setBackground(PANEL_BACKGROUND);
+    setBackground(PANEL_BGC);
     setPreferredSize(new Dimension(320, 240));
   }
 

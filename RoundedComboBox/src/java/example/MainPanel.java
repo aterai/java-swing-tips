@@ -23,7 +23,7 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 public final class MainPanel extends JPanel {
   public static final Color BACKGROUND = Color.BLACK; // RED;
   public static final Color FOREGROUND = Color.WHITE; // YELLOW;
-  public static final Color SELECTION_FOREGROUND = Color.CYAN;
+  public static final Color SELECTION_FGC = Color.CYAN;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
-    UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
     UIManager.put("ComboBox.selectionBackground", BACKGROUND);
 
     UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);

@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Color EVEN_BACKGROUND = new Color(0xAA_DD_FF_FF, true);
+  private static final Color EVEN_BGC = new Color(0xAA_DD_FF_FF, true);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
             c.setBackground(list.getSelectionBackground());
           } else {
             c.setForeground(list.getForeground());
-            c.setBackground(index % 2 == 0 ? EVEN_BACKGROUND : list.getBackground());
+            c.setBackground(index % 2 == 0 ? EVEN_BGC : list.getBackground());
           }
           return c;
         });

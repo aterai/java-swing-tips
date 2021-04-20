@@ -47,11 +47,11 @@ final class NimbusTabbedPanePainterUtils {
   public static final int OVER_PAINT = 6;
   public static final float STROKE_SIZE = 2f;
   public static final int ARC = 10;
-  public static final Color CONTENT_BACKGROUND = Color.LIGHT_GRAY;
+  public static final Color CONTENT_BGC = Color.LIGHT_GRAY;
   public static final Color CONTENT_BORDER = Color.ORANGE; // Color.GRAY;
-  public static final Color TAB_TABAREA_MASK = Color.GREEN; // CONTENT_BACKGROUND;
-  public static final Color TAB_BACKGROUND = Color.PINK; // CONTENT_BORDER;
-  public static final Color TABAREA_BACKGROUND = Color.CYAN; // CONTENT_BACKGROUND;
+  public static final Color TAB_TABAREA_MASK = Color.GREEN; // CONTENT_BGC;
+  public static final Color TAB_BGC = Color.PINK; // CONTENT_BORDER;
+  public static final Color TABAREA_BGC = Color.CYAN; // CONTENT_BGC;
   public static final Color TABAREA_BORDER = Color.RED; // CONTENT_BORDER;
 
   private NimbusTabbedPanePainterUtils() {
@@ -93,7 +93,7 @@ final class NimbusTabbedPanePainterUtils {
 
     protected TabPainter(boolean selected) {
       this.selected = selected;
-      this.color = selected ? CONTENT_BACKGROUND : TAB_BACKGROUND;
+      this.color = selected ? CONTENT_BGC : TAB_BGC;
     }
 
     @Override public void paint(Graphics2D g, JComponent c, int width, int height) {
@@ -141,7 +141,7 @@ final class NimbusTabbedPanePainterUtils {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       int y = h - OVER_PAINT;
       Shape r = new RoundRectangle2D.Double(0d, y, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
-      g2.setPaint(TABAREA_BACKGROUND);
+      g2.setPaint(TABAREA_BGC);
       g2.fill(r);
       g2.setColor(TABAREA_BORDER);
       g2.setStroke(new BasicStroke(STROKE_SIZE));
@@ -157,7 +157,7 @@ final class NimbusTabbedPanePainterUtils {
       g2.translate(0, -OVER_PAINT);
 
       Shape r = new RoundRectangle2D.Double(0d, 0d, w - STROKE_SIZE, h - STROKE_SIZE + OVER_PAINT, ARC, ARC);
-      g2.setPaint(CONTENT_BACKGROUND);
+      g2.setPaint(CONTENT_BGC);
       g2.fill(r);
       g2.setColor(CONTENT_BORDER);
       g2.setStroke(new BasicStroke(STROKE_SIZE));

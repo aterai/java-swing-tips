@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
 class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
   private static final int ADJ2 = 3;
   private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
-  private static final Color TAB_BACKGROUND = Color.LIGHT_GRAY;
+  private static final Color TAB_BGC = Color.LIGHT_GRAY;
   private static final Color TAB_BORDER = Color.GRAY;
 
   @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
@@ -113,7 +113,7 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     // trapezoid.closePath();
 
     // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
-    g2.setColor(isSelected ? selectedTabColor : TAB_BACKGROUND);
+    g2.setColor(isSelected ? selectedTabColor : TAB_BGC);
     g2.fill(trapezoid);
 
     g2.setColor(TAB_BORDER);

@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
-  private static final Color BACKGROUND_SELECTION_COLOR = new Color(0xDC_F0_FF);
+  private static final Color SELECTION_BGC = new Color(0xDC_F0_FF);
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
   private String query;
 
@@ -128,7 +128,7 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     String txt = Objects.toString(value, "");
     getHighlighter().removeAllHighlights();
     setText(txt);
-    setBackground(selected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
+    setBackground(selected ? SELECTION_BGC : Color.WHITE);
     if (query != null && !query.isEmpty() && txt.startsWith(query)) {
       try {
         getHighlighter().addHighlight(0, query.length(), HIGHLIGHT);

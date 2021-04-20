@@ -192,7 +192,7 @@ class TranslucentObjectRenderer extends DefaultTableCellRenderer {
 }
 
 class TranslucentBooleanRenderer implements TableCellRenderer {
-  private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
+  private static final Color SELECTION_BGC = new Color(0, 0, 100, 50);
   private final JCheckBox renderer = new JCheckBox() {
     @Override public void updateUI() {
       super.updateUI();
@@ -218,7 +218,7 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
       renderer.setForeground(table.getSelectionForeground());
-      renderer.setBackground(SELECTION_BACKGROUND);
+      renderer.setBackground(SELECTION_BGC);
     } else {
       renderer.setForeground(table.getForeground());
       renderer.setBackground(table.getBackground());

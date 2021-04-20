@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   public static final Color BACKGROUND = Color.WHITE;
   public static final Color FOREGROUND = Color.BLACK;
-  public static final Color SELECTION_FOREGROUND = Color.BLUE;
+  public static final Color SELECTION_FGC = Color.BLUE;
   public static final Color THUMB = new Color(0xCD_CD_CD);
   public static final String KEY = "ComboBox.border";
 
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 
         UIManager.put("ComboBox.foreground", FOREGROUND);
         UIManager.put("ComboBox.background", BACKGROUND);
-        UIManager.put("ComboBox.selectionForeground", SELECTION_FOREGROUND);
+        UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
         UIManager.put("ComboBox.selectionBackground", BACKGROUND);
         UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
         UIManager.put("ComboBox.buttonBackground", FOREGROUND);
