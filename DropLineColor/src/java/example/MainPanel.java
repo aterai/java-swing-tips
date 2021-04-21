@@ -207,7 +207,6 @@ class ListItemTransferHandler extends TransferHandler {
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
-    List<?> transferredObjects = source.getSelectedValuesList();
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -219,7 +218,7 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return transferredObjects;
+          return source.getSelectedValuesList();
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -300,10 +299,6 @@ class TableRowTransferHandler extends TransferHandler {
     for (int i : table.getSelectedRows()) {
       indices.add(i);
     }
-    @SuppressWarnings("JdkObsolete")
-    List<?> transferredObjects = indices.stream()
-        .map(model.getDataVector()::get)
-        .collect(Collectors.toList());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -313,9 +308,10 @@ class TableRowTransferHandler extends TransferHandler {
         return Objects.equals(FLAVOR, flavor);
       }
 
+      @SuppressWarnings("JdkObsolete")
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return transferredObjects;
+          return indices.stream().map(model.getDataVector()::get).collect(Collectors.toList());
         } else {
           throw new UnsupportedFlavorException(flavor);
         }

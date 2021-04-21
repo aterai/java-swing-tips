@@ -107,8 +107,6 @@ class ListItemTransferHandler extends TransferHandler {
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
-    // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
-    List<?> transferredObjects = source.getSelectedValuesList();
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -120,7 +118,7 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return transferredObjects;
+          return source.getSelectedValuesList();
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
