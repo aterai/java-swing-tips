@@ -212,8 +212,8 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 
     DefaultTreeModel model = (DefaultTreeModel) e.getSource();
     Object[] children = e.getChildren();
-    boolean isOnlyOneNodeSelected = Objects.nonNull(children) && children.length == 1;
-    Object current = isOnlyOneNodeSelected ? children[0] : model.getRoot();
+    boolean isOneNodeSelected = Objects.nonNull(children) && children.length == 1;
+    Object current = isOneNodeSelected ? children[0] : model.getRoot();
     if (current instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
       CheckBoxNode c = (CheckBoxNode) node.getUserObject();
