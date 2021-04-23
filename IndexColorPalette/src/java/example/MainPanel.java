@@ -139,12 +139,12 @@ public final class MainPanel extends JPanel {
 class IndexedColor {
   public final int index;
   public final Color color;
-  public final boolean isTransparentPixel;
+  public final boolean isTransparent;
 
-  protected IndexedColor(int index, Color color, boolean isTransparentPixel) {
+  protected IndexedColor(int index, Color color, boolean isTransparent) {
     this.index = index;
     this.color = color;
-    this.isTransparentPixel = isTransparentPixel;
+    this.isTransparent = isTransparent;
   }
 }
 
@@ -196,7 +196,7 @@ class IndexedColorListRenderer implements ListCellRenderer<IndexedColor> {
     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     l.setIcon(new ColorIcon(value.color));
     l.setToolTipText("index: " + value.index);
-    l.setBorder(BorderFactory.createLineBorder(value.isTransparentPixel ? Color.RED : Color.WHITE));
+    l.setBorder(BorderFactory.createLineBorder(value.isTransparent ? Color.RED : Color.WHITE));
     return l;
   }
 }

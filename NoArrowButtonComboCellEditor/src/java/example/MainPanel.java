@@ -64,8 +64,8 @@ public final class MainPanel extends JPanel {
 }
 
 class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
-  private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+  private static final String DATE_PATTERN = "yyyy/MM/dd";
+  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -162,8 +162,8 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
 }
 
 class LocalDateTimeCellRenderer extends JLabel implements ListCellRenderer<LocalDateTime> {
-  private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+  private static final String DATE_PATTERN = "yyyy/MM/dd";
+  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
   @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
     if (Objects.nonNull(value)) {
