@@ -191,8 +191,8 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     add(textArea);
 
     deleteButton.addActionListener(e -> {
-      boolean isMoreThanOneItem = model.getSize() > 1;
-      if (isMoreThanOneItem) {
+      boolean oneOrMore = model.getSize() > 1;
+      if (oneOrMore) {
         model.remove(targetIndex);
       }
     });

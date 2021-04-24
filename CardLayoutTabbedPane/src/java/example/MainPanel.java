@@ -106,8 +106,8 @@ class CardLayoutTabbedPane extends JPanel {
     // close.addActionListener(e -> {
     //   tabPanel.remove(tab);
     //   contentsPanel.remove(comp);
-    //   boolean isMoreThanOne = tabPanel.getComponentCount() > 1;
-    //   if (isMoreThanOne) {
+    //   boolean oneOrMore = tabPanel.getComponentCount() > 1;
+    //   if (oneOrMore) {
     //     tabPanel.revalidate();
     //     TabButton b = (TabButton) tabPanel.getComponent(0);
     //     b.setSelected(true);

@@ -168,8 +168,8 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
 
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
-    boolean isMoreThanOneRowSelected = getSelectedRowCount() > 1;
-    if (isMoreThanOneRowSelected) {
+    boolean oneOrMore = getSelectedRowCount() > 1;
+    if (oneOrMore) {
       return;
     }
     draggedIndex = rowAtPoint(e.getDragOrigin());

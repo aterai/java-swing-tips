@@ -250,8 +250,8 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     Rectangle rect = source.getCellBounds(idx, idx);
     SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
     int selectedCount = selectedIndices.length;
-    boolean isMoreThanOneItemSelected = selectedCount > 1;
-    if (isMoreThanOneItemSelected) {
+    boolean oneOrMore = selectedCount > 1;
+    if (oneOrMore) {
       LABEL.setText(Objects.toString(selectedCount));
       Dimension d = LABEL.getPreferredSize();
       SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);

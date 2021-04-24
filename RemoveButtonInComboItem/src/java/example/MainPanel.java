@@ -248,8 +248,8 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
   protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
     deleteButton.addActionListener(e -> {
       ComboBoxModel<E> m = comboBox.getModel();
-      boolean isMoreThanOneItem = m.getSize() > 1;
-      if (isMoreThanOneItem && m instanceof MutableComboBoxModel) {
+      boolean oneOrMore = m.getSize() > 1;
+      if (oneOrMore && m instanceof MutableComboBoxModel) {
         ((MutableComboBoxModel<?>) m).removeElementAt(targetIndex);
         comboBox.setSelectedIndex(-1);
         comboBox.showPopup();
