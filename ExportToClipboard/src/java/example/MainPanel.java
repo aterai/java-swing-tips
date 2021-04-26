@@ -126,11 +126,7 @@ class ListItemTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
-    for (int i : source.getSelectedIndices()) {
-      indices.add(i);
-    }
-    // Object[] transferredObjects = source.getSelectedValuesList().toArray(new Object[0]);
-    // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
+    // return new DataHandler(source.getSelectedValuesList().toArray(new Object[0]), FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -142,7 +138,11 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return source.getSelectedValuesList();
+          JList<?> src = (JList<?>) c;
+          for (int i : src.getSelectedIndices()) {
+            indices.add(i);
+          }
+          return src.getSelectedValuesList();
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
