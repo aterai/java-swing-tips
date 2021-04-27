@@ -44,12 +44,9 @@ public final class MainPanel extends JPanel {
           };
         })
         .forEach(model::addRow);
-    add(new JScrollPane(table));
     table.getSelectionModel().addListSelectionListener(e -> {
-      int sc = table.getSelectedRowCount();
-      if (!e.getValueIsAdjusting() && sc == 1) {
-        Font f = fonts[table.getSelectedRow()];
-        label.setFont(f.deriveFont(24f));
+      if (!e.getValueIsAdjusting() && table.getSelectedRowCount() == 1) {
+        label.setFont(fonts[table.getSelectedRow()].deriveFont(24f));
       }
     });
 
