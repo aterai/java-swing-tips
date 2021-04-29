@@ -17,16 +17,16 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public Component makeUI(String prototypeCellValue, int visibleRowCount) {
+  public Component makeUI(String prototypeValue, int visibleRowCount) {
     String[] model1 = IntStream.range(0, 20).mapToObj(Objects::toString).toArray(String[]::new);
     JList<String> list1 = new JList<>(model1);
     list1.setVisibleRowCount(visibleRowCount);
-    list1.setPrototypeCellValue(prototypeCellValue);
+    list1.setPrototypeCellValue(prototypeValue);
 
     String[] model2 = {"looooooooooooooong"};
     JList<String> list2 = new JList<>(model2);
     list2.setVisibleRowCount(visibleRowCount);
-    list2.setPrototypeCellValue(prototypeCellValue);
+    list2.setPrototypeCellValue(prototypeValue);
 
     JList<String> list3 = new JList<String>(model2) {
       @Override public Dimension getPreferredScrollableViewportSize() {
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     list3.setVisibleRowCount(visibleRowCount);
-    list3.setPrototypeCellValue(prototypeCellValue);
+    list3.setPrototypeCellValue(prototypeValue);
 
     JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
