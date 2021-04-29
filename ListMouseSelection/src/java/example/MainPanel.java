@@ -107,7 +107,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
 class SingleClickSelectList<E> extends JList<E> {
   private transient SelectionHandler listener;
   protected boolean isDragging;
-  protected boolean isCellInsideDragging;
+  protected boolean isInsideDragging;
   protected boolean startOutside;
   protected int startIndex = -1;
 
@@ -132,13 +132,13 @@ class SingleClickSelectList<E> extends JList<E> {
     if (anchor == lead && lead >= 0) {
       if (isDragging) {
         addSelectionInterval(anchor, anchor);
-      } else if (!isCellInsideDragging) {
+      } else if (!isInsideDragging) {
         if (isSelectedIndex(anchor)) {
           removeSelectionInterval(anchor, anchor);
         } else {
           addSelectionInterval(anchor, anchor);
         }
-        isCellInsideDragging = true;
+        isInsideDragging = true;
       }
     } else {
       super.setSelectionInterval(anchor, lead);
@@ -174,17 +174,17 @@ class SingleClickSelectList<E> extends JList<E> {
     @Override public void mouseReleased(MouseEvent e) {
       startOutside = false;
       isDragging = false;
-      isCellInsideDragging = false;
+      isInsideDragging = false;
       startIndex = -1;
     }
 
     @Override public void mouseDragged(MouseEvent e) {
       // JList<?> list = (JList<?>) e.getComponent();
       if (!isDragging && startIndex == locationToIndex(e.getPoint())) {
-        isCellInsideDragging = true;
+        isInsideDragging = true;
       } else {
         isDragging = true;
-        isCellInsideDragging = false;
+        isInsideDragging = false;
       }
       if (cellsContains(e.getPoint())) {
         startOutside = false;
