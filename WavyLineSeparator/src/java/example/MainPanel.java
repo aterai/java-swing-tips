@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
 
 class WavyLineSeparator extends JSeparator {
   protected static final int ICON_WIDTH = 3;
-  protected static final Icon WAVY_HORIZONTAL_ICON = new WavyLineIcon();
-  protected static final Icon WAVY_VERTICAL_ICON = new WavyLineIcon(SwingConstants.VERTICAL);
+  protected static final Icon HORIZONTAL_ICON = new WavyLineIcon();
+  protected static final Icon VERTICAL_ICON = new WavyLineIcon(SwingConstants.VERTICAL);
 
   protected WavyLineSeparator() {
     this(SwingConstants.HORIZONTAL);
@@ -74,12 +74,12 @@ class WavyLineSeparator extends JSeparator {
     int pos;
     Insets i = getInsets();
     if (getOrientation() == SwingConstants.HORIZONTAL) {
-      for (pos = i.left; getWidth() - pos > 0; pos += WAVY_HORIZONTAL_ICON.getIconWidth()) {
-        WAVY_HORIZONTAL_ICON.paintIcon(this, g, pos, i.top);
+      for (pos = i.left; getWidth() - pos > 0; pos += HORIZONTAL_ICON.getIconWidth()) {
+        HORIZONTAL_ICON.paintIcon(this, g, pos, i.top);
       }
     } else {
-      for (pos = i.top; getHeight() - pos > 0; pos += WAVY_VERTICAL_ICON.getIconHeight()) {
-        WAVY_VERTICAL_ICON.paintIcon(this, g, i.left, pos);
+      for (pos = i.top; getHeight() - pos > 0; pos += VERTICAL_ICON.getIconHeight()) {
+        VERTICAL_ICON.paintIcon(this, g, i.left, pos);
       }
     }
   }
