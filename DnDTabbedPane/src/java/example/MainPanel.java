@@ -118,18 +118,18 @@ class DnDTabbedPane extends JTabbedPane {
   protected Rectangle rectForward = new Rectangle();
 
   private void clickArrowButton(String actionKey) {
-    JButton scrollForwardButton = null;
-    JButton scrollBackwardButton = null;
+    JButton forwardButton = null;
+    JButton backwardButton = null;
     for (Component c : getComponents()) {
       if (c instanceof JButton) {
-        if (Objects.isNull(scrollForwardButton)) {
-          scrollForwardButton = (JButton) c;
-        } else if (Objects.isNull(scrollBackwardButton)) {
-          scrollBackwardButton = (JButton) c;
+        if (Objects.isNull(forwardButton)) {
+          forwardButton = (JButton) c;
+        } else if (Objects.isNull(backwardButton)) {
+          backwardButton = (JButton) c;
         }
       }
     }
-    JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
+    JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
     Optional.ofNullable(button)
         .filter(JButton::isEnabled)
         .ifPresent(JButton::doClick);
@@ -225,8 +225,8 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   protected void initTargetLine(int next) {
-    boolean isLeftOrRightNeighbor = next < 0 || dragTabIndex == next || next - dragTabIndex == 1;
-    if (isLeftOrRightNeighbor) {
+    boolean isSideNeighbor = next < 0 || dragTabIndex == next || next - dragTabIndex == 1;
+    if (isSideNeighbor) {
       glassPane.setTargetRect(0, 0, 0, 0);
       return;
     }

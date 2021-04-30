@@ -63,12 +63,12 @@ public final class MainPanel extends JPanel {
     sub.setName("JTabbedPane#sub1");
     sub2.setName("JTabbedPane#sub2");
 
-    DropTargetListener dropTargetListener = new TabDropTargetAdapter();
+    DropTargetListener listener = new TabDropTargetAdapter();
     Stream.of(tabbedPane, sub, sub2).forEach(t -> {
       t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
       t.setTransferHandler(handler);
       try {
-        t.getDropTarget().addDropTargetListener(dropTargetListener);
+        t.getDropTarget().addDropTargetListener(listener);
       } catch (TooManyListenersException ex) {
         ex.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
@@ -175,18 +175,18 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   private void clickArrowButton(String actionKey) {
-    JButton scrollForwardButton = null;
-    JButton scrollBackwardButton = null;
+    JButton forwardButton = null;
+    JButton backwardButton = null;
     for (Component c : getComponents()) {
       if (c instanceof JButton) {
-        if (Objects.isNull(scrollForwardButton)) {
-          scrollForwardButton = (JButton) c;
-        } else if (Objects.isNull(scrollBackwardButton)) {
-          scrollBackwardButton = (JButton) c;
+        if (Objects.isNull(forwardButton)) {
+          forwardButton = (JButton) c;
+        } else if (Objects.isNull(backwardButton)) {
+          backwardButton = (JButton) c;
         }
       }
     }
-    JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
+    JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
     Optional.ofNullable(button)
         .filter(JButton::isEnabled)
         .ifPresent(JButton::doClick);
