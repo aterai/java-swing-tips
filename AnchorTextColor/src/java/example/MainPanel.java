@@ -141,7 +141,7 @@ public final class MainPanel extends JPanel {
 // }
 //
 // class BasicLinkViewButtonUI extends LinkViewButtonUI {
-//   private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
+//   private static final LinkViewButtonUI LINKVIEW_UI = new BasicLinkViewButtonUI();
 //   private final Dimension size = new Dimension();
 //   private final Rectangle viewRect = new Rectangle();
 //   private final Rectangle iconRect = new Rectangle();
@@ -151,7 +151,7 @@ public final class MainPanel extends JPanel {
 //     // b.setForeground(Color.BLUE);
 //     // b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
 //     // b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//     return LINKVIEW_BUTTON_UI;
+//     return LINKVIEW_UI;
 //   }
 //
 //   @Override public synchronized void paint(Graphics g, JComponent c) {
