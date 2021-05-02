@@ -39,12 +39,12 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        Color selectionBackground = new Color(0x39_69_8A);
+        Color selectionBgc = new Color(0x39_69_8A);
         TreeCellRenderer renderer = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, isLeaf, row, focused) -> {
           Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
           if (selected) {
-            c.setBackground(selectionBackground);
+            c.setBackground(selectionBgc);
           }
           if (c instanceof JComponent) {
             ((JComponent) c).setOpaque(selected);
