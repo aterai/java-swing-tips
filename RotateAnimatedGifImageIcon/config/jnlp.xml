@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RotateAnimatedGifImageIcon" />
+  <property name="jnlp.Name"     value="RotateAnimatedGifImageIcon" />
+  <property name="jnlp.name"     value="rotateanimatedgifimageicon" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rotateanimatedgifimageicon" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RotateAnimatedGifImageIcon.html" />
+</project>
