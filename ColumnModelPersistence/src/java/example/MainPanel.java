@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
+import java.beans.PersistenceDelegate;
 import java.beans.Statement;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -52,8 +53,8 @@ public final class MainPanel extends JPanel {
         File file = File.createTempFile("output", ".xml");
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
         try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-          String[] constructorPropertyNames = {"column", "sortOrder"};
-          xe.setPersistenceDelegate(RowSorter.SortKey.class, new DefaultPersistenceDelegate(constructorPropertyNames));
+          PersistenceDelegate d = new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"});
+          xe.setPersistenceDelegate(RowSorter.SortKey.class, d);
           xe.writeObject(table.getRowSorter().getSortKeys());
 
           xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());

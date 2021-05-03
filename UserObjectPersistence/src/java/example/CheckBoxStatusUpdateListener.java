@@ -37,8 +37,8 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
 
     DefaultMutableTreeNode node;
     CheckBoxNode c; // = (CheckBoxNode) node.getUserObject();
-    boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children) && children.length == 1;
-    if (isNotRootAndOnlyOneNodeChanged) {
+    boolean isNotRoot = Objects.nonNull(children) && children.length == 1;
+    if (isNotRoot) {
       node = (DefaultMutableTreeNode) children[0];
       c = (CheckBoxNode) node.getUserObject();
       TreePath parent = e.getTreePath();
