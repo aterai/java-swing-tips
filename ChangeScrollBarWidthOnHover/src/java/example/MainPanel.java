@@ -16,100 +16,70 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {
-  private static final int MIN_WIDTH = 6;
-  public boolean willExpand;
-
-  @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength"})
   private MainPanel() {
-    super(new BorderLayout());
+    super(new GridLayout(1, 2));
+    add(makeScrollBarOnHoverScrollPane());
+    add(new JLayer<>(makeTranslucentScrollBar(makeList()), new ScrollBarOnHoverLayerUI()));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Component makeScrollBarOnHoverScrollPane() {
     JScrollPane scroll = new JScrollPane(makeList());
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JPanel controls = new JPanel();
-    Timer animator = new Timer(10, e -> controls.revalidate());
-    controls.setLayout(new BorderLayout(0, 0) {
+    JPanel scrollBar = new JPanel();
+    Timer expand = new Timer(10, e -> scrollBar.revalidate());
+    Timer collapse = new Timer(10, e -> scrollBar.revalidate());
+    scrollBar.setLayout(new BorderLayout(0, 0) {
+      private static final int MIN_WIDTH = 6;
       private int controlsWidth = MIN_WIDTH;
 
       @Override public Dimension preferredLayoutSize(Container target) {
         Dimension ps = super.preferredLayoutSize(target);
-        int controlsPreferredWidth = ps.width;
-        if (animator.isRunning()) {
-          if (willExpand) {
-            if (controls.getWidth() < controlsPreferredWidth) {
-              controlsWidth += 1;
-            }
-          } else {
-            if (controls.getWidth() > MIN_WIDTH) {
-              controlsWidth -= 1;
-            }
+        int barInitWidth = ps.width;
+        if (expand.isRunning() && scrollBar.getWidth() < barInitWidth) {
+          controlsWidth += 1;
+          if (controlsWidth >= barInitWidth) {
+            controlsWidth = barInitWidth;
+            expand.stop();
           }
+        } else if (collapse.isRunning() && scrollBar.getWidth() > MIN_WIDTH) {
+          controlsWidth -= 1;
           if (controlsWidth <= MIN_WIDTH) {
             controlsWidth = MIN_WIDTH;
-            animator.stop();
-          } else if (controlsWidth >= controlsPreferredWidth) {
-            controlsWidth = controlsPreferredWidth;
-            animator.stop();
+            collapse.stop();
           }
         }
         ps.width = controlsWidth;
         return ps;
       }
     });
-    controls.add(scroll.getVerticalScrollBar());
+    scrollBar.add(scroll.getVerticalScrollBar());
 
-    JPanel p = new JPanel(new BorderLayout());
-    p.add(controls, BorderLayout.EAST);
-    p.add(scroll);
-
-    JPanel pp = new JPanel(new GridLayout(1, 2));
-    pp.add(new JLayer<>(p, new LayerUI<JPanel>() {
-      private boolean isDragging;
-
-      @Override public void installUI(JComponent c) {
-        super.installUI(c);
-        if (c instanceof JLayer) {
-          ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
-        }
-      }
-
-      @Override public void uninstallUI(JComponent c) {
-        if (c instanceof JLayer) {
-          ((JLayer<?>) c).setLayerEventMask(0);
-        }
-        super.uninstallUI(c);
-      }
-
-      @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-        int id = e.getID();
-        Component c = e.getComponent();
-        if (c instanceof JScrollBar && id == MouseEvent.MOUSE_DRAGGED) {
-          isDragging = true;
-        }
-      }
-
+    JPanel wrap = new JPanel(new BorderLayout());
+    wrap.add(scrollBar, BorderLayout.EAST);
+    wrap.add(scroll);
+    return new JLayer<>(wrap, new ScrollBarLayerUI() {
       @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
         if (e.getComponent() instanceof JScrollBar) {
           switch (e.getID()) {
             case MouseEvent.MOUSE_ENTERED:
-              if (!animator.isRunning() && !isDragging) {
-                willExpand = true;
-                animator.setInitialDelay(0);
-                animator.start();
+              if (!expand.isRunning() && !isDragging) {
+                expand.setInitialDelay(0);
+                expand.start();
               }
               break;
             case MouseEvent.MOUSE_EXITED:
-              if (!animator.isRunning() && !isDragging) {
-                willExpand = false;
-                animator.setInitialDelay(500);
-                animator.start();
+              if (!collapse.isRunning() && !isDragging) {
+                collapse.setInitialDelay(500);
+                collapse.start();
               }
               break;
             case MouseEvent.MOUSE_RELEASED:
               isDragging = false;
-              if (!animator.isRunning() && !e.getComponent().getBounds().contains(e.getPoint())) {
-                willExpand = false;
-                animator.setInitialDelay(500);
-                animator.start();
+              if (!collapse.isRunning() && !e.getComponent().getBounds().contains(e.getPoint())) {
+                collapse.setInitialDelay(500);
+                collapse.start();
               }
               break;
             default:
@@ -118,11 +88,7 @@ public final class MainPanel extends JPanel {
           l.getView().repaint();
         }
       }
-    }));
-    pp.add(new JLayer<>(makeTranslucentScrollBar(makeList()), new ScrollBarOnHoverLayerUI()));
-
-    add(pp);
-    setPreferredSize(new Dimension(320, 240));
+    });
   }
 
   private static Component makeList() {
@@ -172,6 +138,32 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ScrollBarLayerUI extends LayerUI<JPanel> {
+  protected boolean isDragging;
+
+  @Override public void installUI(JComponent c) {
+    super.installUI(c);
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+    }
+  }
+
+  @Override public void uninstallUI(JComponent c) {
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(0);
+    }
+    super.uninstallUI(c);
+  }
+
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+    int id = e.getID();
+    Component c = e.getComponent();
+    if (c instanceof JScrollBar && id == MouseEvent.MOUSE_DRAGGED) {
+      isDragging = true;
+    }
   }
 }
 
