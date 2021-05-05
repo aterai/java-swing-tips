@@ -14,7 +14,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final int OFFSET = 30;
-  private static final AtomicInteger OPEN_FRAME_COUNTER = new AtomicInteger();
+  private static final AtomicInteger OPEN_COUNTER = new AtomicInteger();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -67,11 +67,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static JInternalFrame createInternalFrame() {
-    String title = String.format("Document #%s", OPEN_FRAME_COUNTER.getAndIncrement());
+    String title = String.format("Document #%s", OPEN_COUNTER.getAndIncrement());
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     f.getContentPane().add(new JScrollPane(new JTree()));
     f.setSize(160, 100);
-    f.setLocation(OFFSET * OPEN_FRAME_COUNTER.intValue(), OFFSET * OPEN_FRAME_COUNTER.intValue());
+    f.setLocation(OFFSET * OPEN_COUNTER.intValue(), OFFSET * OPEN_COUNTER.intValue());
     return f;
   }
 
