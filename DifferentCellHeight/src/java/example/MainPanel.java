@@ -18,25 +18,21 @@ public final class MainPanel extends JPanel {
     m.addElement("111\n222222\n333333333");
     m.addElement("111\n222222\n333333333\n444444444444");
 
-    add(new JScrollPane(makeList(m, false)));
-    add(new JScrollPane(makeList(m, true)));
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static <E> JList<E> makeList(ListModel<E> model, boolean hasTextAreaRenderer) {
-    return new JList<E>(model) {
+    JList<String> list = new JList<String>(m) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        if (hasTextAreaRenderer) {
-          setCellRenderer(new TextAreaRenderer<>());
-          if (getFixedCellHeight() != -1) {
-            System.out.println(getFixedCellHeight());
-            setFixedCellHeight(-1);
-          }
+        setCellRenderer(new TextAreaRenderer<>());
+        if (getFixedCellHeight() != -1) {
+          // System.out.println(getFixedCellHeight());
+          setFixedCellHeight(-1);
         }
       }
     };
+
+    add(new JScrollPane(new JList<>(m)));
+    add(new JScrollPane(list));
+    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -99,9 +95,11 @@ class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
 //   protected DotBorder(Color color, int thickness) {
 //     super(color, thickness);
 //   }
+//
 //   @Override public boolean isBorderOpaque() {
 //     return true;
 //   }
+//
 //   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.translate(x, y);
@@ -115,15 +113,19 @@ class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
 //   private static final BasicStroke dashed = new BasicStroke(
 //     1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 //     new float[]{1f}, 0f);
+//
 //   protected DotBorder(Insets borderInsets) {
 //     super(borderInsets);
 //   }
+//
 //   protected DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);
 //   }
+//
 //   @Override public boolean isBorderOpaque() {
 //     return true;
 //   }
+//
 //   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //     Graphics2D g2 = (Graphics2D) g.create();
 //     g2.setPaint(c.getForeground());
@@ -132,7 +134,4 @@ class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
 //     g2.drawRect(0, 0, w - 1, h - 1);
 //     g2.dispose();
 //   }
-//   // @Override public Insets getBorderInsets()
-//   // @Override public Insets getBorderInsets(Component c)
-//   // @Override public Insets getBorderInsets(Component c, Insets insets)
 // }
