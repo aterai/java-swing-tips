@@ -5,14 +5,17 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,29 +27,39 @@ public final class MainPanel extends JPanel {
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     JViewport viewport = new JViewport() {
-      private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
-      private boolean flag;
+      private static final boolean MIDDLEWEIGHT = false;
+      private boolean adjusting;
       @Override public void revalidate() {
-        if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
+        if (!MIDDLEWEIGHT && adjusting) {
           return;
         }
         super.revalidate();
       }
 
       @Override public void setViewPosition(Point p) {
-        if (HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
+        if (MIDDLEWEIGHT) {
           super.setViewPosition(p);
         } else {
-          flag = true;
+          adjusting = true;
           super.setViewPosition(p);
-          flag = false;
+          adjusting = false;
         }
       }
     };
     scroll.setViewport(viewport);
     // JViewport viewport = scroll.getViewport(); // JDK 1.6.0
 
-    JLabel label = new JLabel(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
+    String path = "example/GIANT_TCR1_2013.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
+    JLabel label = new JLabel(new ImageIcon(img));
     viewport.add(label);
     KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
     KineticScrollingListener2 l2 = new KineticScrollingListener2(label);
@@ -91,6 +104,17 @@ public final class MainPanel extends JPanel {
     scroll.setPreferredSize(new Dimension(320, 240));
   }
 
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -129,10 +153,10 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     this.label = comp;
     this.dc = comp.getCursor();
     this.scroller = new Timer(DELAY, e -> {
-      JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Point vp = vport.getViewPosition();
+      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+      Point vp = viewport.getViewPosition();
       vp.translate(-delta.x, -delta.y);
-      label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
       // System.out.println(delta);
       if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
         delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
@@ -150,11 +174,11 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
 
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
-    JViewport vport = (JViewport) e.getComponent(); // label.getParent();
-    Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
+    JViewport viewport = (JViewport) e.getComponent(); // label.getParent();
+    Point vp = viewport.getViewPosition(); // = SwingUtilities.convertPoint(viewport, 0, 0, label);
     vp.translate(startPt.x - pt.x, startPt.y - pt.y);
     delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
-    label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+    label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
     startPt.setLocation(pt);
   }
 
@@ -179,66 +203,66 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
   protected final Point delta = new Point();
   protected final Cursor dc;
   protected final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  protected final Timer inside = new Timer(DELAY, new ActionListener() {
-    @Override public void actionPerformed(ActionEvent e) {
-      JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Point vp = vport.getViewPosition();
-      // System.out.format("s: %s, %s%n", delta, vp);
-      vp.translate(-delta.x, -delta.y);
-      vport.setViewPosition(vp);
-      if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-        delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
-        // Outside
-        if (vp.x < 0 || vp.x + vport.getWidth() - label.getWidth() > 0) {
-          delta.x = (int) (delta.x * D);
-        }
-        if (vp.y < 0 || vp.y + vport.getHeight() - label.getHeight() > 0) {
-          delta.y = (int) (delta.y * D);
-        }
-      } else {
-        // inside.stop();
-        ((Timer) e.getSource()).stop();
-        if (!isInside(vport, label)) {
-          outside.start();
-        }
-      }
-    }
-  });
-  protected final Timer outside = new Timer(DELAY, new ActionListener() {
-    @Override public void actionPerformed(ActionEvent e) {
-      JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Point vp = vport.getViewPosition();
-      // System.out.format("r: %s%n", vp);
-      if (vp.x < 0) {
-        vp.x = (int) (vp.x * D);
-      }
-      if (vp.y < 0) {
-        vp.y = (int) (vp.y * D);
-      }
-      if (vp.x + vport.getWidth() - label.getWidth() > 0) {
-        vp.x = (int) (vp.x - (vp.x + vport.getWidth() - label.getWidth()) * (1d - D));
-      }
-      if (vp.y + vport.getHeight() > label.getHeight()) {
-        vp.y = (int) (vp.y - (vp.y + vport.getHeight() - label.getHeight()) * (1d - D));
-      }
-      vport.setViewPosition(vp);
-      if (isInside(vport, label)) {
-        // outside.stop();
-        ((Timer) e.getSource()).stop();
-      }
-    }
-  });
+  protected final Timer inside = new Timer(DELAY, null);
+  protected final Timer outside = new Timer(DELAY, null);
 
-  protected static boolean isInside(JViewport vport, JComponent comp) {
-    Point vp = vport.getViewPosition();
-    return vp.x >= 0 && vp.x + vport.getWidth() - comp.getWidth() <= 0
-      && vp.y >= 0 && vp.y + vport.getHeight() - comp.getHeight() <= 0;
+  protected static boolean isInside(JViewport viewport, JComponent comp) {
+    Point vp = viewport.getViewPosition();
+    return vp.x >= 0 && vp.x + viewport.getWidth() - comp.getWidth() <= 0
+        && vp.y >= 0 && vp.y + viewport.getHeight() - comp.getHeight() <= 0;
   }
 
   protected KineticScrollingListener2(JComponent comp) {
     super();
     this.label = comp;
     this.dc = comp.getCursor();
+    inside.addActionListener(e -> dragInside());
+    outside.addActionListener(e -> dragOutside());
+  }
+
+  private void dragInside() {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    Point vp = viewport.getViewPosition();
+    // System.out.format("s: %s, %s%n", delta, vp);
+    vp.translate(-delta.x, -delta.y);
+    viewport.setViewPosition(vp);
+    if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+      delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+      // Outside
+      if (vp.x < 0 || vp.x + viewport.getWidth() - label.getWidth() > 0) {
+        delta.x = (int) (delta.x * D);
+      }
+      if (vp.y < 0 || vp.y + viewport.getHeight() - label.getHeight() > 0) {
+        delta.y = (int) (delta.y * D);
+      }
+    } else {
+      inside.stop();
+      if (!isInside(viewport, label)) {
+        outside.start();
+      }
+    }
+  }
+
+  private void dragOutside() {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    Point vp = viewport.getViewPosition();
+    // System.out.format("r: %s%n", vp);
+    if (vp.x < 0) {
+      vp.x = (int) (vp.x * D);
+    }
+    if (vp.y < 0) {
+      vp.y = (int) (vp.y * D);
+    }
+    if (vp.x + viewport.getWidth() - label.getWidth() > 0) {
+      vp.x = (int) (vp.x - (vp.x + viewport.getWidth() - label.getWidth()) * (1d - D));
+    }
+    if (vp.y + viewport.getHeight() > label.getHeight()) {
+      vp.y = (int) (vp.y - (vp.y + viewport.getHeight() - label.getHeight()) * (1d - D));
+    }
+    viewport.setViewPosition(vp);
+    if (isInside(viewport, label)) {
+      outside.stop();
+    }
   }
 
   @Override public void mousePressed(MouseEvent e) {
@@ -250,18 +274,18 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
 
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
-    JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-    Point vp = vport.getViewPosition();
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    Point vp = viewport.getViewPosition();
     vp.translate(startPt.x - pt.x, startPt.y - pt.y);
-    vport.setViewPosition(vp);
+    viewport.setViewPosition(vp);
     delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
     startPt.setLocation(pt);
   }
 
   @Override public void mouseReleased(MouseEvent e) {
     e.getComponent().setCursor(dc);
-    JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-    if (isInside(vport, label)) {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    if (isInside(viewport, label)) {
       inside.start();
     } else {
       outside.start();
@@ -273,5 +297,33 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
       inside.stop();
       outside.stop();
     }
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 1024;
+  }
+
+  @Override public int getIconHeight() {
+    return 1024;
   }
 }
