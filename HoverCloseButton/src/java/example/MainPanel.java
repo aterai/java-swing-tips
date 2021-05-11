@@ -89,7 +89,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
 }
 
 class TabPanel extends JPanel {
-  protected static final int PREFERRED_TAB_WIDTH = 80;
+  protected static final int TAB_WIDTH = 80;
   private final JButton button = new JButton(new CloseTabIcon()) {
     @Override public void updateUI() {
       super.updateUI();
@@ -110,7 +110,7 @@ class TabPanel extends JPanel {
       @Override public Dimension getPreferredSize() {
         Dimension dim = super.getPreferredSize();
         int bw = button.isVisible() ? button.getPreferredSize().width : 0;
-        return new Dimension(PREFERRED_TAB_WIDTH - bw, dim.height);
+        return new Dimension(TAB_WIDTH - bw, dim.height);
       }
     };
     label.setText(title);

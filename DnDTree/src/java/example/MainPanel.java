@@ -136,8 +136,8 @@ class DnDTree extends JTree {
 
     @Override public void dragOver(DropTargetDragEvent e) {
       DataFlavor[] f = e.getCurrentDataFlavors();
-      boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(TreeNodeTransferable.NAME);
-      if (!isDataFlavorSupported) {
+      boolean isSupported = f[0].getHumanPresentableName().equals(TreeNodeTransferable.NAME);
+      if (!isSupported) {
         // This DataFlavor is not supported(e.g. files from the desktop)
         rejectDrag(e);
         return;
