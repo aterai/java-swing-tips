@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -32,6 +34,7 @@ public final class MainPanel extends JPanel {
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
@@ -41,13 +44,27 @@ public final class MainPanel extends JPanel {
 
 class AnalogClock extends JPanel {
   protected LocalTime time = LocalTime.now(ZoneId.systemDefault());
+  protected Timer timer = new Timer(200, e -> {
+    time = LocalTime.now(ZoneId.systemDefault());
+    repaint();
+  });
+  private transient HierarchyListener listener;
 
-  protected AnalogClock() {
-    super();
-    new Timer(200, e -> {
-      time = LocalTime.now(ZoneId.systemDefault());
-      repaint();
-    }).start();
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
+    listener = e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+        if (e.getComponent().isShowing()) {
+          // System.out.println("start");
+          timer.start();
+        } else {
+          // System.out.println("stop");
+          timer.stop();
+        }
+      }
+    };
+    addHierarchyListener(listener);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -77,7 +94,7 @@ class AnalogClock extends JPanel {
     }
 
     // Drawing the hour hand
-    float hourHandLen = radius / 3f;
+    float hourHandLen = 1.5f * radius / 3f;
     Shape hourHand = new Line2D.Float(0f, 0f, 0f, -hourHandLen);
     double minuteRot = time.getMinute() * Math.PI / 30d;
     // double hourRot = time.getHour() * Math.PI * 2d / 12d + time.getMinute() * Math.PI * 2d / (12d * 60d);
