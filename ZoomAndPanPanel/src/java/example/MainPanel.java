@@ -121,7 +121,7 @@ class ZoomAndPanePanel extends JPanel {
   }
 
   protected class ZoomHandler extends MouseAdapter {
-    private static final double ZOOM_MULTIPLICATION_FACTOR = 1.2;
+    private static final double ZOOM_FACTOR = 1.2;
     private static final int MIN_ZOOM = -10;
     private static final int MAX_ZOOM = 10;
     private static final int EXTENT = 1;
@@ -137,7 +137,7 @@ class ZoomAndPanePanel extends JPanel {
         if (p instanceof JViewport) {
           JViewport vport = (JViewport) p;
           Rectangle ovr = vport.getViewRect();
-          double s = dir > 0 ? 1d / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
+          double s = dir > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
           zoomTransform.scale(s, s);
           // double s = 1d + zoomRange.getValue() * .1;
           // zoomTransform.setToScale(s, s);

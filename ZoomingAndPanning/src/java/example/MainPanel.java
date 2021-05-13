@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ZoomAndPanHandler extends MouseAdapter {
-  private static final double ZOOM_MULTIPLICATION_FACTOR = 1.2;
+  private static final double ZOOM_FACTOR = 1.2;
   private static final int MIN_ZOOM = -10;
   private static final int MAX_ZOOM = 10;
   private static final int EXTENT = 1;
@@ -95,7 +95,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     Rectangle r = c.getBounds();
     Point2D p = new Point2D.Double(r.getCenterX(), r.getCenterY());
     Point2D p1 = transformPoint(p);
-    double scale = dir > 0 ? 1 / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
+    double scale = dir > 0 ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
     coordAndZoomTransform.scale(scale, scale);
     Point2D p2 = transformPoint(p);
     coordAndZoomTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
