@@ -94,7 +94,7 @@ class AnalogClock extends JPanel {
     }
 
     // Drawing the hour hand
-    float hourHandLen = 1.5f * radius / 3f;
+    float hourHandLen = radius / 2f;
     Shape hourHand = new Line2D.Float(0f, 0f, 0f, -hourHandLen);
     double minuteRot = time.getMinute() * Math.PI / 30d;
     // double hourRot = time.getHour() * Math.PI * 2d / 12d + time.getMinute() * Math.PI * 2d / (12d * 60d);
