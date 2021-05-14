@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
   }
 
   public final class TreePopupMenu extends JPopupMenu {
-    private static final int NODE_MAXIMUM_LEVELS = 2;
+    private static final int MAX_NODE_LEVELS = 2;
 
     public TreePopupMenu() {
       super();
@@ -59,14 +59,14 @@ public final class MainPanel extends JPanel {
       add("add").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
         TreePath path = tree.getSelectionPath();
-        if (path != null && path.getPathCount() <= NODE_MAXIMUM_LEVELS) {
+        if (path != null && path.getPathCount() <= MAX_NODE_LEVELS) {
           DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
           DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
           DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
           self.add(child);
           model.reload(self);
         } else {
-          String message = String.format("ERROR: Maximum levels of %d exceeded.", NODE_MAXIMUM_LEVELS);
+          String message = String.format("ERROR: Maximum levels of %d exceeded.", MAX_NODE_LEVELS);
           JOptionPane.showMessageDialog(tree, message, "add node", JOptionPane.ERROR_MESSAGE);
         }
       });
