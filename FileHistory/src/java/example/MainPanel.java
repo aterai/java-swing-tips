@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private static final int MAX_HISTORY = 3;
   private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
-  private static final List<Path> FILE_HISTORY_CACHE = new ArrayList<>();
+  private static final List<Path> RECENT_FILES = new ArrayList<>();
   private final JMenuItem noFile = new JMenuItem("(Empty)");
   private JMenu fileHistoryMenu;
 
@@ -55,13 +55,13 @@ public final class MainPanel extends JPanel {
       fm.addSeparator();
       fm.add(exit);
     }
-    if (FILE_HISTORY_CACHE.isEmpty()) {
+    if (RECENT_FILES.isEmpty()) {
       noFile.setEnabled(false);
       fileHistoryMenu.add(noFile);
     } else {
       fm.remove(noFile);
-      for (int i = 0; i < FILE_HISTORY_CACHE.size(); i++) {
-        JMenuItem mi = makeHistoryMenuItem(FILE_HISTORY_CACHE.get(i), i);
+      for (int i = 0; i < RECENT_FILES.size(); i++) {
+        JMenuItem mi = makeHistoryMenuItem(RECENT_FILES.get(i), i);
         fileHistoryMenu.add(mi);
       }
     }
@@ -69,13 +69,13 @@ public final class MainPanel extends JPanel {
 
   public void updateHistory(Path path) {
     fileHistoryMenu.removeAll();
-    FILE_HISTORY_CACHE.remove(path);
-    FILE_HISTORY_CACHE.add(0, path);
-    if (FILE_HISTORY_CACHE.size() > MAX_HISTORY) {
-      FILE_HISTORY_CACHE.remove(FILE_HISTORY_CACHE.size() - 1);
+    RECENT_FILES.remove(path);
+    RECENT_FILES.add(0, path);
+    if (RECENT_FILES.size() > MAX_HISTORY) {
+      RECENT_FILES.remove(RECENT_FILES.size() - 1);
     }
-    for (int i = 0; i < FILE_HISTORY_CACHE.size(); i++) {
-      JMenuItem mi = makeHistoryMenuItem(FILE_HISTORY_CACHE.get(i), i);
+    for (int i = 0; i < RECENT_FILES.size(); i++) {
+      JMenuItem mi = makeHistoryMenuItem(RECENT_FILES.get(i), i);
       fileHistoryMenu.add(mi, i);
     }
   }
