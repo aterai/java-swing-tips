@@ -12,7 +12,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  public static final int USER_SPECIFIED_NUMBER_OF_ROWS = 5;
+  public static final int MAXIMUM_ROW_COUNT = 5;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         int vidx = table.convertRowIndexToView(entry.getIdentifier());
-        return vidx < USER_SPECIFIED_NUMBER_OF_ROWS;
+        return vidx < MAXIMUM_ROW_COUNT;
       }
     };
     TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(sorter);
     sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
-    JCheckBox check2 = new JCheckBox("viewRowIndex < " + USER_SPECIFIED_NUMBER_OF_ROWS);
+    JCheckBox check2 = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
     check2.addActionListener(e -> sorter.setRowFilter(((JCheckBox) e.getSource()).isSelected() ? filter : null));
 
     Box box = Box.createHorizontalBox();
