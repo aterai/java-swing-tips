@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
     tc.getActionMap().put(undoAction, new UndoAction(manager));
     tc.getActionMap().put(redoAction, new RedoAction(manager));
 
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    int modifiers = tc.getToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = tc.getToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoAction);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoAction);

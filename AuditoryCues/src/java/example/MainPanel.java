@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource));
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, soundStream.getFormat()))) {
 
-      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
         System.out.println(t);

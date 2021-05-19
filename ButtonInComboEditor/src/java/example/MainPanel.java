@@ -128,7 +128,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   private static JButton makeRssButton(ImageIcon rss) {
     JButton button = new JButton(rss);
     ImageProducer ip = new FilteredImageSource(rss.getImage().getSource(), new SelectedImageFilter());
-    button.setRolloverIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip)));
+    button.setRolloverIcon(new ImageIcon(button.getToolkit().createImage(ip)));
     // button.setRolloverIcon(makeFilteredImage(rss));
     // button.setRolloverIcon(makeFilteredImage2(rss));
     button.addActionListener(e -> System.out.println("clicked..."));
