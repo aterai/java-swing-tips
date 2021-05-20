@@ -143,7 +143,7 @@ class UndoAction extends AbstractAction {
     try {
       undoManager.undo();
     } catch (CannotUndoException ex) {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
     }
   }
 }
@@ -160,7 +160,7 @@ class RedoAction extends AbstractAction {
     try {
       undoManager.redo();
     } catch (CannotRedoException ex) {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
     }
   }
 }

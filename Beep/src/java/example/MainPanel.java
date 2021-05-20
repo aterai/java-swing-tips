@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder("Toolkit.getDefaultToolkit().beep()"));
     JButton button = new JButton("showMessageDialog");
     button.addActionListener(e -> {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(button);
       JOptionPane.showMessageDialog(getRootPane(), "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
     });
     p.add(button);
