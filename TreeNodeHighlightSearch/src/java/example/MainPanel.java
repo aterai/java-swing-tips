@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-  private static final Color ROLLOVER_ROW_COLOR = new Color(0xDC_F0_FF);
+  private static final Color HIGHLIGHT_ROW_BGC = new Color(0xDC_F0_FF);
   private String query;
   private boolean rollOver;
 
@@ -122,7 +122,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Color getBackgroundNonSelectionColor() {
-    return rollOver ? ROLLOVER_ROW_COLOR : super.getBackgroundNonSelectionColor();
+    return rollOver ? HIGHLIGHT_ROW_BGC : super.getBackgroundNonSelectionColor();
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
