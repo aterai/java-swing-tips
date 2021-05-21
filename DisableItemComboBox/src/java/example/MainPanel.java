@@ -17,7 +17,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextField field = new JTextField("1, 2, 5");
 
     DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
@@ -59,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (NumberFormatException ex) {
       Toolkit.getDefaultToolkit().beep();
       JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-      return Collections.<Integer>emptySet();
+      return Collections.emptySet();
     }
   }
 
@@ -84,7 +83,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DisableItemComboBox<E> extends JComboBox<E> {
-  protected final Set<Integer> disableIndexSet = new HashSet<>();
+  protected final HashSet<Integer> disableIndexSet = new HashSet<>();
   protected boolean isDisableIndex;
   protected final Action up = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
@@ -109,13 +108,14 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     }
   };
 
-  protected DisableItemComboBox() {
-    super();
-  }
+  // protected DisableItemComboBox() {
+  //   super();
+  // }
 
   protected DisableItemComboBox(ComboBoxModel<E> model) {
     super(model);
   }
+
   // protected DisableItemComboBox(E[] items) {
   //   super(items);
   // }
@@ -149,22 +149,22 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     //   }
     // });
     EventQueue.invokeLater(() -> {
+      String selectPrev = "selectPrevious3";
+      String selectNext = "selectNext3";
       ActionMap am = getActionMap();
-      am.put("selectPrevious3", up);
-      am.put("selectNext3", down);
+      am.put(selectPrev, up);
+      am.put(selectNext, down);
       InputMap im = getInputMap();
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "selectPrevious3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), "selectPrevious3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "selectNext3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrev);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrev);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNext);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNext);
     });
   }
 
   public void setDisableIndex(Set<Integer> set) {
     disableIndexSet.clear();
-    for (Integer i : set) {
-      disableIndexSet.add(i);
-    }
+    disableIndexSet.addAll(set);
   }
 
   @Override public void setPopupVisible(boolean v) {
