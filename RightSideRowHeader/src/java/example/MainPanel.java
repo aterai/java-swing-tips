@@ -14,33 +14,33 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  public static final int FIXEDCOLUMN_RANGE = 2;
+  public static final int FIXED_COLUMN = 2;
   private static final String ES = "";
-  private final Object[][] data = {
-    {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
-    {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
-    {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
-    {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
-    {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
-    {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
-  };
-  private final String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
-  private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column < FIXEDCOLUMN_RANGE ? Integer.class : Object.class;
-    }
-  };
-  private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-  private final JButton addButton = new JButton("add");
 
   private MainPanel() {
     super(new BorderLayout());
+    Object[][] data = {
+      {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
+      {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
+      {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
+      {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
+      {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
+      {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
+    };
+    String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column < FIXED_COLUMN ? Integer.class : Object.class;
+      }
+    };
+    RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+
     JTable fixedTable = new JTable(model);
     JTable table = new JTable(model);
     fixedTable.setSelectionModel(table.getSelectionModel());
 
     for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-      if (i < FIXEDCOLUMN_RANGE) {
+      if (i < FIXED_COLUMN) {
         table.removeColumn(table.getColumnModel().getColumn(i));
         fixedTable.getColumnModel().getColumn(i).setResizable(false);
       } else {
@@ -81,6 +81,7 @@ public final class MainPanel extends JPanel {
       scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
     });
 
+    JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
       sorter.setSortKeys(null);
       IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
@@ -90,6 +91,7 @@ public final class MainPanel extends JPanel {
     add(addButton, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
+
   // private MainPanel() {
   //   super(new BorderLayout());
   //
@@ -101,7 +103,7 @@ public final class MainPanel extends JPanel {
   //   rightTable.setSelectionModel(leftTable.getSelectionModel());
   //
   //   for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-  //     if (i < FIXED_COLUMNRANGE) {
+  //     if (i < FIXED_COLUMN) {
   //       leftTable.removeColumn(leftTable.getColumnModel().getColumn(i));
   //       rightTable.getColumnModel().getColumn(i).setResizable(false);
   //     } else {
@@ -178,7 +180,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     availR.width -= insets.left + insets.right;
     availR.height -= insets.top + insets.bottom;
 
-    boolean leftToRight = true; // SwingUtilities.isLeftToRight(scrollPane);
+    boolean leftToRight = scrollPane.getComponentOrientation().isLeftToRight();
 
     Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
 
@@ -219,14 +221,14 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     Dimension viewPrefSize = Objects.nonNull(view) ? view.getPreferredSize() : new Dimension();
     Dimension extentSize = Objects.nonNull(viewport) ? viewport.toViewCoordinates(availR.getSize()) : new Dimension();
 
-    boolean viewTracksViewportWidth = false;
-    boolean viewTracksViewportHeight = false;
+    boolean scrollableWidth = false;
+    boolean scrollableHeight = false;
     boolean isEmpty = availR.width < 0 || availR.height < 0;
     Scrollable sv;
     if (!isEmpty && view instanceof Scrollable) {
       sv = (Scrollable) view;
-      viewTracksViewportWidth = sv.getScrollableTracksViewportWidth();
-      viewTracksViewportHeight = sv.getScrollableTracksViewportHeight();
+      scrollableWidth = sv.getScrollableTracksViewportWidth();
+      scrollableHeight = sv.getScrollableTracksViewportHeight();
     } else {
       sv = null;
     }
@@ -239,7 +241,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     } else if (vsbPolicy == VERTICAL_SCROLLBAR_NEVER) {
       vsbNeeded = false;
     } else { // vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED
-      vsbNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
+      vsbNeeded = !scrollableHeight && viewPrefSize.height > extentSize.height;
     }
 
     if (Objects.nonNull(vsb) && vsbNeeded) {
@@ -254,7 +256,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     } else if (hsbPolicy == HORIZONTAL_SCROLLBAR_NEVER) {
       hsbNeeded = false;
     } else { // hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED
-      hsbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
+      hsbNeeded = !scrollableWidth && viewPrefSize.width > extentSize.width;
     }
 
     if (Objects.nonNull(hsb) && hsbNeeded) {
@@ -279,10 +281,10 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
 
         final boolean oldHsbNeeded = hsbNeeded;
         final boolean oldVsbNeeded = vsbNeeded;
-        viewTracksViewportWidth = sv.getScrollableTracksViewportWidth();
-        viewTracksViewportHeight = sv.getScrollableTracksViewportHeight();
+        scrollableWidth = sv.getScrollableTracksViewportWidth();
+        scrollableHeight = sv.getScrollableTracksViewportHeight();
         if (Objects.nonNull(vsb) && vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
-          boolean newVsbNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
+          boolean newVsbNeeded = !scrollableHeight && viewPrefSize.height > extentSize.height;
           if (newVsbNeeded != vsbNeeded) {
             vsbNeeded = newVsbNeeded;
             // adjustForVsb(vsbNeeded, availR, vsbR, vpbInsets, leftToRight);
@@ -291,7 +293,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
           }
         }
         if (Objects.nonNull(hsb) && hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
-          boolean newHsbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
+          boolean newHsbNeeded = !scrollableWidth && viewPrefSize.width > extentSize.width;
           if (newHsbNeeded != hsbNeeded) {
             hsbNeeded = newHsbNeeded;
             adjustForHsb(hsbNeeded, availR, hsbR, vpbInsets);
