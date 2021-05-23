@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
   //     try {
   //       setLookAndFeel(m.getActionCommand());
   //     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-  //       ex.printStackTrace();
+  //       UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
   //     }
   //   });
   //   lafGroup.add(lafItem);
@@ -209,8 +209,7 @@ final class LookAndFeelUtil {
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-        ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
     lafGroup.add(lafItem);

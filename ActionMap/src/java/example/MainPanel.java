@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     am.put(DefaultEditorKit.pasteAction, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         EventQueue.invokeLater(() -> {
-          Toolkit.getDefaultToolkit().beep();
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
           JOptionPane.showMessageDialog(getRootPane(), "paste is disabled", "title", JOptionPane.ERROR_MESSAGE);
         });
       }
