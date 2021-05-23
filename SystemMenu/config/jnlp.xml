@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SystemMenu" />
+  <property name="jnlp.Name"     value="SystemMenu" />
+  <property name="jnlp.name"     value="systemmenu" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/systemmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SystemMenu.html" />
+</project>
