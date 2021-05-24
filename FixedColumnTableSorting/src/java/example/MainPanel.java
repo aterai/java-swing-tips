@@ -12,7 +12,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  public static final int FIXED_COLUMN_RANGE = 2;
+  public static final int FIXED_RANGE = 2;
   private static final String ES = "";
 
   private MainPanel() {
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     // </blockquote>
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
-        return column < FIXED_COLUMN_RANGE ? Integer.class : Object.class;
+        return column < FIXED_RANGE ? Integer.class : Object.class;
       }
     };
     RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     fixedTable.setSelectionModel(table.getSelectionModel());
 
     for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-      if (i < FIXED_COLUMN_RANGE) {
+      if (i < FIXED_RANGE) {
         table.removeColumn(table.getColumnModel().getColumn(i));
         fixedTable.getColumnModel().getColumn(i).setResizable(false);
       } else {
