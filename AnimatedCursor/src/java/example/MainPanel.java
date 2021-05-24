@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
 
     Point pt = new Point();
     Class<?> clz = getClass();
-    Toolkit tk = Toolkit.getDefaultToolkit();
+    Toolkit tk = getToolkit();
     List<Cursor> list = Stream.of("00", "01", "02")
         .map(s -> tk.createCustomCursor(tk.createImage(clz.getResource(s + ".png")), pt, s))
         .collect(Collectors.toList());
