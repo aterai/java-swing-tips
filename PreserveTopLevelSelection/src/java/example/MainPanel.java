@@ -14,18 +14,18 @@ public final class MainPanel extends JPanel {
 
     Boolean b = UIManager.getBoolean(key);
     System.out.println(key + ": " + b);
-    JCheckBox preserveTopLevelSelectionCheck = new JCheckBox(key, b) {
+    JCheckBox keepTopLvlSel = new JCheckBox(key, b) {
       @Override public void updateUI() {
         super.updateUI();
         setSelected(UIManager.getLookAndFeelDefaults().getBoolean(key));
         UIManager.put(key, isSelected());
       }
     };
-    preserveTopLevelSelectionCheck.addActionListener(e ->
+    keepTopLvlSel.addActionListener(e ->
         UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(makeMenuBar()));
-    add(preserveTopLevelSelectionCheck);
+    add(keepTopLvlSel);
     setPreferredSize(new Dimension(320, 240));
   }
 
