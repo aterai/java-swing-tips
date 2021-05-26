@@ -245,7 +245,7 @@ class TablePopupMenu extends JPopupMenu {
         try {
           Files.delete(path);
         } catch (IOException ex) {
-          Toolkit.getDefaultToolkit().beep();
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
         }
       }
     });

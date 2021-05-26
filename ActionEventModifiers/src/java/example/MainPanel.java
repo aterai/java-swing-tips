@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
     field.getActionMap().put("beep", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Toolkit.getDefaultToolkit().beep();
+        // UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
     field.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK), "beep");

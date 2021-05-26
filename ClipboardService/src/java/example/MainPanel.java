@@ -155,7 +155,7 @@ class UndoAction extends AbstractAction {
       undoManager.undo();
     } catch (CannotUndoException ex) {
       ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
     }
   }
 }

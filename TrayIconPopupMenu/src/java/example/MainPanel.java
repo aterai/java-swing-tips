@@ -278,7 +278,7 @@ class ChangeLookAndFeelAction extends AbstractAction {
       UIManager.setLookAndFeel(lnf);
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       System.out.println("Failed loading L&F: " + lnf);
     }
     for (Frame f : Frame.getFrames()) {

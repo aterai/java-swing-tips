@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
       loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
       ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(p);
     }
   }
 

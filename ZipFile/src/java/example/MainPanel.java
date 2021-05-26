@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
       } catch (IOException ex) {
         // ex.printStackTrace();
         LOGGER.info(() -> String.format("Cant zip! : %s", path));
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
 
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
         } catch (IOException ex) {
           // ex.printStackTrace();
           LOGGER.info(() -> String.format("Cant unzip! : %s", path));
-          Toolkit.getDefaultToolkit().beep();
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
         }
       });
     });

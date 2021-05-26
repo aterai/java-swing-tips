@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
           .map(Integer::valueOf)
           .collect(Collectors.toSet()));
     } catch (NumberFormatException ex) {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(field);
       JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
