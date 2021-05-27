@@ -17,8 +17,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private final JLabel label = new JLabel();
-  private final ImageIcon i1 = new ImageIcon(getClass().getResource("i03-04.gif"));
-  private final ImageIcon i2 = new ImageIcon(getClass().getResource("i03-10.gif"));
+  private final ImageIcon i1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("i03-04.gif")));
+  private final ImageIcon i2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("i03-10.gif")));
   private File file;
 
   private MainPanel() {
@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
         outfile = File.createTempFile("test", ".tmp");
         outfile.deleteOnExit();
       } catch (IOException ex) {
-        Component c = (Component) e.getSource();
+        JComponent c = (JComponent) e.getSource();
         UIManager.getLookAndFeel().provideErrorFeedback(c);
         String msg = "Could not create file.";
         JOptionPane.showMessageDialog(c.getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
