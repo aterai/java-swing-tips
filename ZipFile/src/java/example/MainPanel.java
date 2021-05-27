@@ -70,9 +70,10 @@ public final class MainPanel extends JPanel {
       String name = path.getFileName() + ".zip";
       Path tgt = path.resolveSibling(name);
       // if (Files.exists(tgt)) { // noticeably poor performance in JDK 8
+      JComponent c = (JComponent) e.getSource();
       if (tgt.toFile().exists()) {
-        String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", tgt.toString());
-        int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Zip", JOptionPane.YES_NO_OPTION);
+        String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", tgt);
+        int rv = JOptionPane.showConfirmDialog(c.getRootPane(), m, "Zip", JOptionPane.YES_NO_OPTION);
         if (rv != JOptionPane.YES_OPTION) {
           return;
         }
@@ -80,9 +81,8 @@ public final class MainPanel extends JPanel {
       try {
         ZipUtil.zip(path, tgt);
       } catch (IOException ex) {
-        // ex.printStackTrace();
         LOGGER.info(() -> String.format("Cant zip! : %s", path));
-        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+        UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
     });
 
@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
         try {
           //if (Files.exists(destDir)) { // noticeably poor performance in JDK 8
           if (destDir.toFile().exists()) {
-            String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", destDir.toString());
+            String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", destDir);
             int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Unzip", JOptionPane.YES_NO_OPTION);
             if (rv != JOptionPane.YES_OPTION) {
               return;
@@ -250,7 +250,13 @@ class TextAreaOutputStream extends OutputStream {
 }
 
 class TextAreaHandler extends StreamHandler {
-  private void configure() {
+  protected TextAreaHandler(OutputStream os) {
+    super();
+    configureEncoding();
+    setOutputStream(os);
+  }
+
+  private void configureEncoding() {
     setFormatter(new SimpleFormatter());
     try {
       setEncoding("UTF-8");
@@ -264,16 +270,10 @@ class TextAreaHandler extends StreamHandler {
     }
   }
 
-  protected TextAreaHandler(OutputStream os) {
-    super();
-    configure();
-    setOutputStream(os);
-  }
-
   // [UnsynchronizedOverridesSynchronized] Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
-  @Override public synchronized void publish(LogRecord record) {
-    super.publish(record);
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
     flush();
   }
 
