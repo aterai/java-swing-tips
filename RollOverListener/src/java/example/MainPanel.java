@@ -68,14 +68,14 @@ class RollOverList<E> extends JList<E> {
   }
 
   private class RollOverCellHandler extends MouseAdapter implements ListCellRenderer<E> {
-    private final Color rolloverBackground = new Color(0xDC_F0_FF);
+    private final Color rolloverBgc = new Color(0xDC_F0_FF);
     private int rollOverRowIndex = -1;
     private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
       Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (index == rollOverRowIndex) {
-        c.setBackground(rolloverBackground);
+        c.setBackground(rolloverBgc);
         if (isSelected) {
           c.setForeground(Color.BLACK);
         }
