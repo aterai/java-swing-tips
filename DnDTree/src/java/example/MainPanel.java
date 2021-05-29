@@ -11,7 +11,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragGestureRecognizer;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
@@ -90,7 +89,6 @@ public final class MainPanel extends JPanel {
 // Java Swing Hacks - HACK #26: DnD JTree
 // https://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-  private transient DragGestureRecognizer dragGestureHandler;
   private transient DropTarget treeDropTarget;
   protected transient TreeNode dropTargetNode;
   protected transient TreeNode draggedNode;
@@ -99,9 +97,9 @@ class DnDTree extends JTree {
     setCellRenderer(null);
     super.updateUI();
     setCellRenderer(new DnDTreeCellRenderer());
-    if (Objects.isNull(dragGestureHandler) || Objects.isNull(treeDropTarget)) {
-      dragGestureHandler = DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-          this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+        this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+    if (Objects.isNull(treeDropTarget)) {
       treeDropTarget = new DropTarget(this, new NodeDropTargetListener());
     }
   }
@@ -136,7 +134,7 @@ class DnDTree extends JTree {
 
     @Override public void dragOver(DropTargetDragEvent e) {
       DataFlavor[] f = e.getCurrentDataFlavors();
-      boolean isSupported = f[0].getHumanPresentableName().equals(TreeNodeTransferable.NAME);
+      boolean isSupported = TreeNodeTransferable.NAME.equals(f[0].getHumanPresentableName());
       if (!isSupported) {
         // This DataFlavor is not supported(e.g. files from the desktop)
         rejectDrag(e);

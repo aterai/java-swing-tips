@@ -127,7 +127,7 @@ class LinkViewButtonUI extends BasicButtonUI {
     b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     b.setTransferHandler(new TransferHandler("text") {
       @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-        return flavors.length > 0 && flavors[0].equals(URI_FLAVOR);
+        return flavors.length > 0 && URI_FLAVOR.equals(flavors[0]);
       }
 
       @Override protected Transferable createTransferable(JComponent c) {
@@ -143,7 +143,7 @@ class LinkViewButtonUI extends BasicButtonUI {
 
           @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
             // System.out.println(flavor.getMimeType());
-            return flavor.equals(URI_FLAVOR);
+            return URI_FLAVOR.equals(flavor);
           }
         };
       }
