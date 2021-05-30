@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
     model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
 
-    JList<ListItem> list = new EditableList<>(model);
+    JList<ListItem> list = new NewspaperStyleList<>(model);
     list.setComponentPopupMenu(popup);
 
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
@@ -174,8 +174,8 @@ class ColorIcon implements Icon {
   }
 }
 
-class EditableList<E extends ListItem> extends JList<E> {
-  protected EditableList(DefaultListModel<E> model) {
+class NewspaperStyleList<E extends ListItem> extends JList<E> {
+  protected NewspaperStyleList(DefaultListModel<E> model) {
     super(model);
   }
 
