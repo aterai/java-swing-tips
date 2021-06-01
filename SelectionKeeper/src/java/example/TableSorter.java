@@ -113,7 +113,7 @@ public class TableSorter extends AbstractTableModel {
   public static final int ASCENDING = 1;
 
   private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
-  public static final Comparator<Object> LEXICAL_COMPARATOR = new LexicalComparator();
+  public static final Comparator<Object> LEXICAL_COMP = new LexicalComparator();
 
   protected TableModel tableModel;
 
@@ -125,23 +125,23 @@ public class TableSorter extends AbstractTableModel {
   private final transient Map<Class<?>, Comparator<?>> columnComparators = new ConcurrentHashMap<>();
   private final transient RowComparator<Row> rowComparator = new RowComparator<>();
   private transient MouseListener mouseListener;
-  private transient TableModelListener tableModelListener;
+  private transient TableModelListener modelListener;
 
   public void readObject() {
     this.mouseListener = new MouseHandler();
-    this.tableModelListener = new TableModelHandler();
+    this.modelListener = new TableModelHandler();
   }
 
   public Object readResolve() {
     this.mouseListener = new MouseHandler();
-    this.tableModelListener = new TableModelHandler();
+    this.modelListener = new TableModelHandler();
     return this;
   }
 
   public TableSorter() {
     super();
     this.mouseListener = new MouseHandler();
-    this.tableModelListener = new TableModelHandler();
+    this.modelListener = new TableModelHandler();
   }
 
   public TableSorter(TableModel tableModel) {
@@ -165,14 +165,14 @@ public class TableSorter extends AbstractTableModel {
   // }
 
   public final void setTableModel(TableModel tableModel) {
-    Optional.ofNullable(this.tableModel).ifPresent(m -> m.removeTableModelListener(tableModelListener));
+    Optional.ofNullable(this.tableModel).ifPresent(m -> m.removeTableModelListener(modelListener));
     // if (this.tableModel != null) {
-    //   this.tableModel.removeTableModelListener(tableModelListener);
+    //   this.tableModel.removeTableModelListener(modelListener);
     // }
     this.tableModel = tableModel;
-    Optional.ofNullable(this.tableModel).ifPresent(m -> m.addTableModelListener(tableModelListener));
+    Optional.ofNullable(this.tableModel).ifPresent(m -> m.addTableModelListener(modelListener));
     // if (this.tableModel != null) {
-    //   this.tableModel.addTableModelListener(tableModelListener);
+    //   this.tableModel.addTableModelListener(modelListener);
     // }
 
     EventQueue.invokeLater(() -> {
@@ -288,7 +288,7 @@ public class TableSorter extends AbstractTableModel {
     } else if (Comparable.class.isAssignableFrom(columnType)) {
       return Comparator.naturalOrder();
     } else {
-      return LEXICAL_COMPARATOR;
+      return LEXICAL_COMP;
     }
   }
 
