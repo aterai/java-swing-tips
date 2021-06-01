@@ -73,23 +73,16 @@ public final class MainPanel extends JPanel {
     tree.setModel(model);
     tree.setRowHeight(32);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    // https://ateraimemo.com/Swing/ExpandAllNodes.html
-    int row = 0;
-    while (row < tree.getRowCount()) {
-      tree.expandRow(row++);
-    }
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.addTreeSelectionListener(e -> {
-      if (!tree.isEnabled()) {
-        return;
-      }
       Object o = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (o instanceof DefaultMutableTreeNode) {
+      if (o instanceof DefaultMutableTreeNode && tree.isEnabled()) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
         String ref = Objects.toString(node.getUserObject());
         editor.scrollToReference(ref);
       }
     });
+    expandAllNodes(tree);
 
     // scroll to top of page
     EventQueue.invokeLater(() -> editor.scrollRectToVisible(editor.getBounds()));
@@ -172,6 +165,14 @@ public final class MainPanel extends JPanel {
     root.add(c3);
 
     return new DefaultTreeModel(root);
+  }
+
+  // https://ateraimemo.com/Swing/ExpandAllNodes.html
+  private static void expandAllNodes(JTree tree) {
+    int row = 0;
+    while (row < tree.getRowCount()) {
+      tree.expandRow(row++);
+    }
   }
 
   public static void main(String[] args) {
