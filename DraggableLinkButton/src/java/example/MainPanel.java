@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     //       Desktop.getDesktop().browse(new URI(SITE));
     //     } catch (IOException | URISyntaxException ex) {
     //       ex.printStackTrace();
-    //       Toolkit.getDefaultToolkit().beep();
+    //       UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
     //     }
     //   }
     // });
