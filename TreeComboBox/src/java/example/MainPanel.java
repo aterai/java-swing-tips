@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
-  private boolean isNotSelectableIndex;
+  private boolean notSelectable;
   private final Action up = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
@@ -148,20 +148,22 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
       return l;
     });
     EventQueue.invokeLater(() -> {
+      String selectPrevKey = "selectPrevious3";
+      String selectNextKey = "selectNext3";
       ActionMap am = getActionMap();
-      am.put("selectPrevious3", up);
-      am.put("selectNext3", down);
+      am.put(selectPrevKey, up);
+      am.put(selectNextKey, down);
       InputMap im = getInputMap();
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "selectPrevious3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), "selectPrevious3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "selectNext3");
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
     });
   }
 
   @Override public void setPopupVisible(boolean v) {
-    if (!v && isNotSelectableIndex) {
-      isNotSelectableIndex = false;
+    if (!v && notSelectable) {
+      notSelectable = false;
     } else {
       super.setPopupVisible(v);
     }
@@ -172,7 +174,7 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     if (Objects.nonNull(node) && node.isLeaf()) {
       super.setSelectedIndex(index);
     } else {
-      isNotSelectableIndex = true;
+      notSelectable = true;
     }
   }
 }
