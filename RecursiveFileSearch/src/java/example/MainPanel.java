@@ -57,14 +57,15 @@ public final class MainPanel extends JPanel {
     openButton.addActionListener(e -> {
       fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       fileChooser.setSelectedFile(new File(Objects.toString(dirCombo.getEditor().getItem())));
-      int fcSelected = fileChooser.showOpenDialog(getRootPane());
+      Component c = dirCombo.getRootPane();
+      int fcSelected = fileChooser.showOpenDialog(c);
       String title = "title";
       if (fcSelected == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         if (Objects.isNull(file) || !file.isDirectory()) {
           Object[] obj = {"Please select directory."};
-          Toolkit.getDefaultToolkit().beep();
-          JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
+          UIManager.getLookAndFeel().provideErrorFeedback(c);
+          JOptionPane.showMessageDialog(c, obj, title, JOptionPane.ERROR_MESSAGE);
           return;
         }
         addItem(dirCombo, file.getAbsolutePath(), 4);
@@ -73,8 +74,8 @@ public final class MainPanel extends JPanel {
         System.out.println("Cancel");
       } else {
         Object[] obj = {"Error."};
-        Toolkit.getDefaultToolkit().beep();
-        JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
+        UIManager.getLookAndFeel().provideErrorFeedback(c);
+        JOptionPane.showMessageDialog(c, obj, title, JOptionPane.ERROR_MESSAGE);
       }
     });
 

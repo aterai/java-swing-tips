@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
 //     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //     addMouseListener(new MouseAdapter() {
 //       @Override public void mousePressed(MouseEvent e) {
-//         Toolkit.getDefaultToolkit().beep();
+//         UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
 //       }
 //     });
 //   }
