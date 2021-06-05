@@ -19,28 +19,28 @@ public final class MainPanel extends JPanel {
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
 
-    JComboBox<Vertical> verticalAlignment = new JComboBox<>(Vertical.values());
-    verticalAlignment.setSelectedItem(Vertical.CENTER);
+    JComboBox<Vertical> vertAlignment = new JComboBox<>(Vertical.values());
+    vertAlignment.setSelectedItem(Vertical.CENTER);
 
-    JComboBox<Vertical> verticalTextPosition = new JComboBox<>(Vertical.values());
-    verticalTextPosition.setSelectedItem(Vertical.CENTER);
+    JComboBox<Vertical> vertTextPosition = new JComboBox<>(Vertical.values());
+    vertTextPosition.setSelectedItem(Vertical.CENTER);
 
-    JComboBox<Horizontal> horizontalAlignment = new JComboBox<>(Horizontal.values());
-    horizontalAlignment.setSelectedItem(Horizontal.CENTER);
+    JComboBox<Horizontal> horizAlignment = new JComboBox<>(Horizontal.values());
+    horizAlignment.setSelectedItem(Horizontal.CENTER);
 
-    JComboBox<Horizontal> horizontalTextPosition = new JComboBox<>(Horizontal.values());
-    horizontalTextPosition.setSelectedItem(Horizontal.TRAILING);
+    JComboBox<Horizontal> horizTextPosition = new JComboBox<>(Horizontal.values());
+    horizTextPosition.setSelectedItem(Horizontal.TRAILING);
 
     ItemListener listener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        label.setVerticalAlignment(getSelectedItem(verticalAlignment).alignment);
-        label.setVerticalTextPosition(getSelectedItem(verticalTextPosition).alignment);
-        label.setHorizontalAlignment(getSelectedItem(horizontalAlignment).alignment);
-        label.setHorizontalTextPosition(getSelectedItem(horizontalTextPosition).alignment);
+        label.setVerticalAlignment(getSelectedItem(vertAlignment).alignment);
+        label.setVerticalTextPosition(getSelectedItem(vertTextPosition).alignment);
+        label.setHorizontalAlignment(getSelectedItem(horizAlignment).alignment);
+        label.setHorizontalTextPosition(getSelectedItem(horizTextPosition).alignment);
         label.repaint();
       }
     };
-    Stream.of(verticalAlignment, verticalTextPosition, horizontalAlignment, horizontalTextPosition)
+    Stream.of(vertAlignment, vertTextPosition, horizAlignment, horizTextPosition)
         .forEach(c -> c.addItemListener(listener));
 
     JPanel p1 = new JPanel(new BorderLayout());
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p2.add(verticalAlignment, c);
-    p2.add(verticalTextPosition, c);
-    p2.add(horizontalAlignment, c);
-    p2.add(horizontalTextPosition, c);
+    p2.add(vertAlignment, c);
+    p2.add(vertTextPosition, c);
+    p2.add(horizAlignment, c);
+    p2.add(horizTextPosition, c);
 
     add(p1);
     add(p2, BorderLayout.NORTH);

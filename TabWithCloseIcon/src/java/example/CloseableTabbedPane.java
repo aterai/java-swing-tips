@@ -66,12 +66,12 @@ public final class CloseableTabbedPane extends JTabbedPane { // implements Mouse
   //
   // /**
   //  * Creates a new instance of <code>CloseableTabbedPane</code>.
-  //  * @param horizontalTextPosition  the horizontal position of the text (e.g.
+  //  * @param horizTextPosition  the horizontal position of the text (e.g.
   //  * SwingConstants.TRAILING or SwingConstants.LEFT)
   //  */
-  // public CloseableTabbedPane(int horizontalTextPosition) {
+  // public CloseableTabbedPane(int horizTextPosition) {
   //   super();
-  //   init(horizontalTextPosition);
+  //   init(horizTextPosition);
   // }
 
   @Override public void updateUI() {
@@ -404,7 +404,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizontalTextPosition = SwingConstants.LEFT;
+  private int horizTextPosition = SwingConstants.LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -416,11 +416,11 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
    *
-   * @param horizontalTextPosition  the horizontal position of the text (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
+   * @param horizTextPosition  the horizontal position of the text (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
    */
-  protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
+  protected CloseableWindowsTabbedPaneUI(int horizTextPosition) {
     super();
-    this.horizontalTextPosition = horizontalTextPosition;
+    this.horizTextPosition = horizTextPosition;
   }
 
   /**
@@ -452,7 +452,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         SwingConstants.CENTER,
         SwingConstants.CENTER,
         // SwingConstants.TRAILING,
-        horizontalTextPosition,
+        horizTextPosition,
         tabRect,
         iconRect,
         textRect,
@@ -478,7 +478,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizontalTextPosition = SwingConstants.LEFT;
+  private int horizTextPosition = SwingConstants.LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -490,12 +490,12 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
    *
-   * @param horizontalTextPosition  the horizontal position of the text
+   * @param horizTextPosition  the horizontal position of the text
    *     (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
    */
-  protected CloseableTabbedPaneUI(int horizontalTextPosition) {
+  protected CloseableTabbedPaneUI(int horizTextPosition) {
     super();
-    this.horizontalTextPosition = horizontalTextPosition;
+    this.horizTextPosition = horizTextPosition;
   }
 
   /**
@@ -527,7 +527,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         SwingConstants.CENTER,
         SwingConstants.CENTER,
         // SwingConstants.TRAILING,
-        horizontalTextPosition,
+        horizTextPosition,
         tabRect,
         iconRect,
         textRect,

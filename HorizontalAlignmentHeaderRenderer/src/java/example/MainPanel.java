@@ -97,17 +97,17 @@ public final class MainPanel extends JPanel {
 }
 
 class HorizontalAlignmentHeaderRenderer implements TableCellRenderer {
-  private final int horizontalAlignment; // = SwingConstants.LEFT;
+  private final int horizAlignment; // = SwingConstants.LEFT;
 
-  protected HorizontalAlignmentHeaderRenderer(int horizontalAlignment) {
-    this.horizontalAlignment = horizontalAlignment;
+  protected HorizontalAlignmentHeaderRenderer(int horizAlignment) {
+    this.horizAlignment = horizAlignment;
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
-      ((JLabel) c).setHorizontalAlignment(horizontalAlignment);
+      ((JLabel) c).setHorizontalAlignment(horizAlignment);
     }
     return c;
   }
