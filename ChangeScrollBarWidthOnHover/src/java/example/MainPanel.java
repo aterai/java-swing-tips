@@ -16,6 +16,10 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {
+  public final JPanel scrollBar = new JPanel();
+  public final Timer expand = new Timer(10, e -> scrollBar.revalidate());
+  public final Timer collapse = new Timer(10, e -> scrollBar.revalidate());
+
   private MainPanel() {
     super(new GridLayout(1, 2));
     add(makeScrollBarOnHoverScrollPane());
@@ -23,73 +27,81 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeScrollBarOnHoverScrollPane() {
+  private Component makeScrollBarOnHoverScrollPane() {
     JScrollPane scroll = new JScrollPane(makeList());
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JPanel scrollBar = new JPanel();
-    Timer expand = new Timer(10, e -> scrollBar.revalidate());
-    Timer collapse = new Timer(10, e -> scrollBar.revalidate());
-    scrollBar.setLayout(new BorderLayout(0, 0) {
-      private static final int MIN_WIDTH = 6;
-      private int controlsWidth = MIN_WIDTH;
-
-      @Override public Dimension preferredLayoutSize(Container target) {
-        Dimension ps = super.preferredLayoutSize(target);
-        int barInitWidth = ps.width;
-        if (expand.isRunning() && scrollBar.getWidth() < barInitWidth) {
-          controlsWidth += 1;
-          if (controlsWidth >= barInitWidth) {
-            controlsWidth = barInitWidth;
-            expand.stop();
-          }
-        } else if (collapse.isRunning() && scrollBar.getWidth() > MIN_WIDTH) {
-          controlsWidth -= 1;
-          if (controlsWidth <= MIN_WIDTH) {
-            controlsWidth = MIN_WIDTH;
-            collapse.stop();
-          }
-        }
-        ps.width = controlsWidth;
-        return ps;
-      }
-    });
+    scrollBar.setLayout(new ScrollBarLayout());
     scrollBar.add(scroll.getVerticalScrollBar());
 
     JPanel wrap = new JPanel(new BorderLayout());
     wrap.add(scrollBar, BorderLayout.EAST);
     wrap.add(scroll);
-    return new JLayer<>(wrap, new ScrollBarLayerUI() {
-      @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-        if (e.getComponent() instanceof JScrollBar) {
-          switch (e.getID()) {
-            case MouseEvent.MOUSE_ENTERED:
-              if (!expand.isRunning() && !isDragging) {
-                expand.setInitialDelay(0);
-                expand.start();
-              }
-              break;
-            case MouseEvent.MOUSE_EXITED:
-              if (!collapse.isRunning() && !isDragging) {
-                collapse.setInitialDelay(500);
-                collapse.start();
-              }
-              break;
-            case MouseEvent.MOUSE_RELEASED:
-              isDragging = false;
-              if (!collapse.isRunning() && !e.getComponent().getBounds().contains(e.getPoint())) {
-                collapse.setInitialDelay(500);
-                collapse.start();
-              }
-              break;
-            default:
-              break;
-          }
-          l.getView().repaint();
+    return new JLayer<>(wrap, new TimerScrollBarLayerUI());
+  }
+
+  private class ScrollBarLayout extends BorderLayout {
+    public static final int MIN_WIDTH = 6;
+    private int controlsWidth = MIN_WIDTH;
+
+    @Override public Dimension preferredLayoutSize(Container target) {
+      Dimension ps = super.preferredLayoutSize(target);
+      int barInitWidth = ps.width;
+      if (expand.isRunning() && scrollBar.getWidth() < barInitWidth) {
+        controlsWidth += 1;
+        if (controlsWidth >= barInitWidth) {
+          controlsWidth = barInitWidth;
+          expand.stop();
+        }
+      } else if (collapse.isRunning() && scrollBar.getWidth() > MIN_WIDTH) {
+        controlsWidth -= 1;
+        if (controlsWidth <= MIN_WIDTH) {
+          controlsWidth = MIN_WIDTH;
+          collapse.stop();
         }
       }
-    });
+      ps.width = controlsWidth;
+      return ps;
+    }
   }
+
+  private class TimerScrollBarLayerUI extends ScrollBarLayerUI {
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+      if (!(e.getComponent() instanceof JScrollBar)) {
+        return;
+      }
+      switch (e.getID()) {
+        case MouseEvent.MOUSE_ENTERED:
+          expandStart(isDragging);
+          break;
+        case MouseEvent.MOUSE_EXITED:
+          collapseStart(isDragging);
+          break;
+        case MouseEvent.MOUSE_RELEASED:
+          isDragging = false;
+          collapseStart(!e.getComponent().getBounds().contains(e.getPoint()));
+          break;
+        default:
+          break;
+      }
+      l.getView().repaint();
+    }
+
+    private void expandStart(boolean dragging) {
+      if (!expand.isRunning() && !dragging) {
+        expand.setInitialDelay(0);
+        expand.start();
+      }
+    }
+
+    private void collapseStart(boolean dragging) {
+      if (!collapse.isRunning() && !dragging) {
+        collapse.setInitialDelay(500);
+        collapse.start();
+      }
+    }
+  }
+
 
   private static Component makeList() {
     DefaultListModel<String> m = new DefaultListModel<>();
