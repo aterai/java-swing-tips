@@ -127,11 +127,12 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      for (List<Object[]> list : chunks) {
-        for (Object[] o : list) {
-          model.addRow(o);
-        }
-      }
+      // for (List<Object[]> list : chunks) {
+      //   for (Object[] o : list) {
+      //     model.addRow(o);
+      //   }
+      // }
+      chunks.forEach(l -> l.forEach(model::addRow));
       int rowCount = model.getRowCount();
       setMaxPageIndex(rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1));
       initFilterAndButtons();

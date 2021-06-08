@@ -62,9 +62,7 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      for (Integer i : chunks) {
-        setProgress(i);
-      }
+      chunks.forEach(this::setProgress);
       combo.setSelectedIndex(-1);
       combo.repaint();
     }

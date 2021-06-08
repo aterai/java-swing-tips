@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
   private double factory;
   private transient SwingWorker<String, Rectangle> worker;
 
-  private final JComboBox<GenerateInputs> distributionsChoices = new JComboBox<>(GenerateInputs.values());
-  private final JComboBox<SortAlgorithms> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
+  private final JComboBox<GenerateInputs> distributionsCmb = new JComboBox<>(GenerateInputs.values());
+  private final JComboBox<SortAlgorithms> algorithmsCmb = new JComboBox<>(SortAlgorithms.values());
   private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
   private final JSpinner spinner = new JSpinner(model);
   private final JButton startButton = new JButton("Start");
@@ -62,20 +62,20 @@ public final class MainPanel extends JPanel {
         panel.repaint();
       }
     };
-    distributionsChoices.addItemListener(il);
-    algorithmsChoices.addItemListener(il);
+    distributionsCmb.addItemListener(il);
+    algorithmsCmb.addItemListener(il);
     panel.setBackground(BACK_COLOR);
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box1.add(new JLabel(" Number:"));
     box1.add(spinner);
     box1.add(new JLabel(" Input:"));
-    box1.add(distributionsChoices);
+    box1.add(distributionsCmb);
 
     Box box2 = Box.createHorizontalBox();
     box2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box2.add(new JLabel(" Algorithm:"));
-    box2.add(algorithmsChoices);
+    box2.add(algorithmsCmb);
     box2.add(startButton);
     box2.add(cancelButton);
 
@@ -102,15 +102,15 @@ public final class MainPanel extends JPanel {
     cancelButton.setEnabled(!flag);
     startButton.setEnabled(flag);
     spinner.setEnabled(flag);
-    distributionsChoices.setEnabled(flag);
-    algorithmsChoices.setEnabled(flag);
+    distributionsCmb.setEnabled(flag);
+    algorithmsCmb.setEnabled(flag);
   }
 
   public void genArray(int n) {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
     factory = (double) MAXY - MINY;
-    distributionsChoices.getItemAt(distributionsChoices.getSelectedIndex()).generate(array, n);
+    distributionsCmb.getItemAt(distributionsCmb.getSelectedIndex()).generate(array, n);
   }
 
   public void workerExecute() {
@@ -119,7 +119,7 @@ public final class MainPanel extends JPanel {
       number = tmp;
       genArray(number);
     }
-    SortAlgorithms sa = algorithmsChoices.getItemAt(algorithmsChoices.getSelectedIndex());
+    SortAlgorithms sa = algorithmsCmb.getItemAt(algorithmsCmb.getSelectedIndex());
     Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
     worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
       @Override protected void process(List<Rectangle> chunks) {
@@ -131,9 +131,7 @@ public final class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        for (Rectangle r : chunks) {
-          panel.repaint(r);
-        }
+        chunks.forEach(panel::repaint);
       }
 
       @Override protected void done() {

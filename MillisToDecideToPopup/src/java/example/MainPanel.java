@@ -73,9 +73,7 @@ public final class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        for (String message : chunks) {
-          monitor.setNote(message);
-        }
+        chunks.forEach(monitor::setNote);
       }
 
       @Override protected void done() {

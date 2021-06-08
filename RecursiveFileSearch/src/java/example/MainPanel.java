@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      processChunks(chunks);
+      chunks.forEach(MainPanel.this::updateMessage);
     }
 
     @Override protected void done() {
@@ -184,14 +184,12 @@ public final class MainPanel extends JPanel {
     worker.execute();
   }
 
-  public void processChunks(List<Message> chunks) {
-    chunks.forEach(m -> {
-      if (m.append) {
-        appendLine(m.text);
-      } else {
-        textArea.setText(m.text + "\n");
-      }
-    });
+  public void updateMessage(Message m) {
+    if (m.append) {
+      appendLine(m.text);
+    } else {
+      textArea.setText(m.text + "\n");
+    }
   }
 
   public void appendLine(String str) {

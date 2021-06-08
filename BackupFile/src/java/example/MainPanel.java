@@ -91,9 +91,7 @@ public final class MainPanel extends JPanel {
           cancel(true);
           return;
         }
-        for (Message m : chunks) {
-          append(m);
-        }
+        chunks.forEach(MainPanel.this::append);
       }
 
       @Override protected void done() {

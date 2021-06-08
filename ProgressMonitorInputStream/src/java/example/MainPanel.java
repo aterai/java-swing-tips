@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      processChunks(chunks);
+      chunks.forEach(MainPanel.this::update);
     }
 
     @Override protected void done() {
@@ -153,11 +153,9 @@ public final class MainPanel extends JPanel {
     runButton.setEnabled(true);
   }
 
-  public void processChunks(List<Chunk> chunks) {
-    chunks.forEach(c -> {
-      append(c.line);
-      monitor.setNote(c.note);
-    });
+  public void update(Chunk c) {
+    append(c.line);
+    monitor.setNote(c.note);
   }
 
   public void append(String str) {

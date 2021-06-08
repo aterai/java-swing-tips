@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      processChunks(chunks);
+      chunks.forEach(MainPanel.this::updateProgress);
     }
 
     @Override protected void done() {
@@ -97,22 +97,20 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void processChunks(List<Progress> chunks) {
-    chunks.forEach(s -> {
-      switch (s.componentType) {
-        case TOTAL:
-          bar1.setValue((Integer) s.value);
-          break;
-        case FILE:
-          bar2.setValue((Integer) s.value);
-          break;
-        case LOG:
-          area.append(Objects.toString(s.value));
-          break;
-        default:
-          throw new AssertionError("Unknown Progress");
-      }
-    });
+  public void updateProgress(Progress s) {
+    switch (s.componentType) {
+      case TOTAL:
+        bar1.setValue((Integer) s.value);
+        break;
+      case FILE:
+        bar2.setValue((Integer) s.value);
+        break;
+      case LOG:
+        area.append(Objects.toString(s.value));
+        break;
+      default:
+        throw new AssertionError("Unknown Progress");
+    }
   }
 
   public void appendLine(String str) {

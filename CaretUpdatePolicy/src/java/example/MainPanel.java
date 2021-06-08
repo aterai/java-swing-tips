@@ -120,9 +120,7 @@ public final class MainPanel extends JPanel {
     if (Objects.isNull(worker)) {
       worker = new BackgroundTask() {
         @Override protected void process(List<String> chunks) {
-          for (String message : chunks) {
-            test(message);
-          }
+          chunks.forEach(MainPanel.this::test);
         }
 
         @Override protected void done() {
