@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
       } catch (IOException ex) {
         ex.printStackTrace();
         label.setIcon(null);
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
     });
   }

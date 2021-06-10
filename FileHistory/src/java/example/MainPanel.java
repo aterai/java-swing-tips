@@ -24,7 +24,6 @@ public final class MainPanel extends JPanel {
   private final JMenuItem noFile = new JMenuItem("(Empty)");
   private JMenu fileHistoryMenu;
 
-
   private MainPanel() {
     super(new BorderLayout());
     initActions(getActions());
@@ -87,7 +86,6 @@ public final class MainPanel extends JPanel {
     mi.setMnemonic(num.codePointAt(0));
     return mi;
   }
-
 
   private class HistoryAction extends AbstractAction {
     private final transient Path path;

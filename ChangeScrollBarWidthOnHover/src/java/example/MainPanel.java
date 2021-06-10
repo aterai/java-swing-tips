@@ -102,7 +102,6 @@ public final class MainPanel extends JPanel {
     }
   }
 
-
   private static Component makeList() {
     DefaultListModel<String> m = new DefaultListModel<>();
     IntStream.range(0, 50)

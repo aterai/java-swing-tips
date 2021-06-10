@@ -120,10 +120,11 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
   // }
 
   @Override public boolean stopCellEditing() {
+    JSpinner spinner = renderer.getSpinner();
     try {
-      renderer.getSpinner().commitEdit();
+      spinner.commitEdit();
     } catch (ParseException ex) {
-      Toolkit.getDefaultToolkit().beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(spinner);
       return false;
     }
     return super.stopCellEditing();
@@ -171,7 +172,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //     try {
 //       spinner.commitEdit();
 //     } catch (ParseException ex) {
-//       Toolkit.getDefaultToolkit().beep();
+//       UIManager.getLookAndFeel().provideErrorFeedback(spinner);
 //       return false;
 //     }
 //     fireEditingStopped();

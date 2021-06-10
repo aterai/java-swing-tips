@@ -51,7 +51,6 @@ public final class MainPanel extends JPanel {
     fc1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-
     JTextField field = new JTextField(24);
     try {
       field.setText(new File(".").getCanonicalPath());

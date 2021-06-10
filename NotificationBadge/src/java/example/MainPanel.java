@@ -65,7 +65,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-
 class BadgeLabel extends JLabel {
   private final BadgePosition pos;
   private final int counter;

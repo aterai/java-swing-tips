@@ -98,7 +98,7 @@ class ButtonsPanel extends JPanel {
       add(b);
     }
   }
-  
+
   protected List<JButton> getButtons() {
     return buttons;
   }
