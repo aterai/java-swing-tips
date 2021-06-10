@@ -11,6 +11,11 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,7 +24,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    icon = new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"));
+    String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    icon = new ImageIcon(img);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -40,6 +54,17 @@ public final class MainPanel extends JPanel {
     g2.setTransform(zoomAndPanHandler.getCoordAndZoomTransform());
     icon.paintIcon(this, g2, 0, 0);
     g2.dispose();
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -68,7 +93,7 @@ class ZoomAndPanHandler extends MouseAdapter {
   private static final int MAX_ZOOM = 10;
   private static final int EXTENT = 1;
   private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
-  private final AffineTransform coordAndZoomTransform = new AffineTransform();
+  private final AffineTransform coordAndZoomAtf = new AffineTransform();
   private final Point2D dragStartPoint = new Point();
 
   @Override public void mousePressed(MouseEvent e) {
@@ -79,7 +104,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     Point2D dragEndPoint = e.getPoint();
     Point2D dragStart = transformPoint(dragStartPoint);
     Point2D dragEnd = transformPoint(dragEndPoint);
-    coordAndZoomTransform.translate(dragEnd.getX() - dragStart.getX(), dragEnd.getY() - dragStart.getY());
+    coordAndZoomAtf.translate(dragEnd.getX() - dragStart.getX(), dragEnd.getY() - dragStart.getY());
     dragStartPoint.setLocation(dragEndPoint);
     e.getComponent().repaint();
   }
@@ -96,20 +121,20 @@ class ZoomAndPanHandler extends MouseAdapter {
     Point2D p = new Point2D.Double(r.getCenterX(), r.getCenterY());
     Point2D p1 = transformPoint(p);
     double scale = dir > 0 ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
-    coordAndZoomTransform.scale(scale, scale);
+    coordAndZoomAtf.scale(scale, scale);
     Point2D p2 = transformPoint(p);
-    coordAndZoomTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
+    coordAndZoomAtf.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
     c.repaint();
   }
 
   // https://community.oracle.com/thread/1263955
   // How to implement Zoom & Pan in Java using Graphics2D
   private Point2D transformPoint(Point2D p1) {
-    AffineTransform inverse = coordAndZoomTransform;
-    boolean hasInverse = coordAndZoomTransform.getDeterminant() != 0d;
+    AffineTransform inverse = coordAndZoomAtf;
+    boolean hasInverse = coordAndZoomAtf.getDeterminant() != 0d;
     if (hasInverse) {
       try {
-        inverse = coordAndZoomTransform.createInverse();
+        inverse = coordAndZoomAtf.createInverse();
       } catch (NoninvertibleTransformException ex) {
         // should never happen
         assert false;
@@ -121,6 +146,34 @@ class ZoomAndPanHandler extends MouseAdapter {
   }
 
   public AffineTransform getCoordAndZoomTransform() {
-    return coordAndZoomTransform;
+    return coordAndZoomAtf;
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 1000;
+  }
+
+  @Override public int getIconHeight() {
+    return 1000;
   }
 }
