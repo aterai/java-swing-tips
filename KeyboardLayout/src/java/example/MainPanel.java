@@ -37,10 +37,6 @@ public final class MainPanel extends JPanel {
 
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
-    // c.weightx = 1d;
-    // c.weighty = 1d;
-    // c.gridheight = 1;
-    // c.gridx = 0;
     c.gridy = 50;
     for (int i = 0; i < KEYS[0].length * 2; i++) {
       c.gridx = i;
@@ -53,10 +49,7 @@ public final class MainPanel extends JPanel {
       for (int col = 0; col < KEYS[row].length; col++) {
         String key = KEYS[row][col];
         int len = key.length();
-        c.gridwidth = len > 10 ? 14
-                    : len > 4  ? 4
-                    : len > 1  ? 3
-                    : len == 1 ? 2 : 1;
+        c.gridwidth = getGridWidth(len);
         if (key.isEmpty()) {
           keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE), c);
         } else {
@@ -66,6 +59,24 @@ public final class MainPanel extends JPanel {
       }
     }
     return keyboard;
+  }
+
+  @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+  private static int getGridWidth(int len) {
+    // return len > 10 ? 14 : len > 4  ? 4 : len > 1  ? 3 : len == 1 ? 2 : 1;
+    int l;
+    if (len > 10) {
+      l = 14;
+    } else if (len > 4) {
+      l = 4;
+    } else if (len > 1) {
+      l = 3;
+    } else if (len == 1) {
+      l = 2;
+    } else {
+      l = 1;
+    }
+    return l;
   }
 
   private static AbstractButton createKeyButton(String key, boolean square) {
@@ -96,9 +107,9 @@ class KeyButton extends JButton {
   public static final int SIZE = 10;
   private final boolean square;
 
-  protected KeyButton(String str) {
-    this(str, true);
-  }
+  // protected KeyButton(String str) {
+  //   this(str, true);
+  // }
 
   protected KeyButton(String str, boolean square) {
     super(str);
