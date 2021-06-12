@@ -141,19 +141,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
     if (Objects.nonNull(boxRect)) {
       int w = 10;
       int x = getAnimationIndex();
-      GeneralPath p = new GeneralPath();
-      if (dir) {
-        p.moveTo(boxRect.x, boxRect.y);
-        p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
-        p.lineTo(boxRect.x + (float) w, boxRect.getMaxY());
-      } else {
-        p.moveTo(boxRect.x, boxRect.getMaxY());
-        p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
-        p.lineTo(boxRect.x + (float) w, boxRect.y);
-      }
-      p.lineTo(boxRect.x + w * .5f, boxRect.y);
-      p.closePath();
-
+      Shape p = makeIndeterminateBox(w);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(progressBar.getForeground());
@@ -168,6 +156,22 @@ class StripedProgressBarUI extends BasicProgressBarUI {
       }
       g2.dispose();
     }
+  }
+
+  private Shape makeIndeterminateBox(int w) {
+    GeneralPath p = new GeneralPath();
+    if (dir) {
+      p.moveTo(boxRect.x, boxRect.y);
+      p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
+      p.lineTo(boxRect.x + (float) w, boxRect.getMaxY());
+    } else {
+      p.moveTo(boxRect.x, boxRect.getMaxY());
+      p.lineTo(boxRect.x + w * .5f, boxRect.getMaxY());
+      p.lineTo(boxRect.x + (float) w, boxRect.y);
+    }
+    p.lineTo(boxRect.x + w * .5f, boxRect.y);
+    p.closePath();
+    return p;
   }
 }
 
