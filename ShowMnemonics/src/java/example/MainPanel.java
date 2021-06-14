@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
-    JCheckBox showMnemonicsCheck = new JCheckBox(SHOW_MNEMONICS);
-    showMnemonicsCheck.setSelected(UIManager.getBoolean(SHOW_MNEMONICS));
-    showMnemonicsCheck.setMnemonic(KeyEvent.VK_B);
-    showMnemonicsCheck.addActionListener(e -> {
+    JCheckBox check = new JCheckBox(SHOW_MNEMONICS);
+    check.setSelected(UIManager.getBoolean(SHOW_MNEMONICS));
+    check.setMnemonic(KeyEvent.VK_B);
+    check.addActionListener(e -> {
       UIManager.put(SHOW_MNEMONICS, ((JCheckBox) e.getSource()).isSelected());
       if (UIManager.getLookAndFeel() instanceof WindowsLookAndFeel) {
         // System.out.println("isMnemonicHidden: " + WindowsLookAndFeel.isMnemonicHidden());
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    add(showMnemonicsCheck);
+    add(check);
 
     JButton button = new JButton("Dummy");
     button.setMnemonic(KeyEvent.VK_D);

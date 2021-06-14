@@ -16,34 +16,32 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     Caret hidingCaret = new DefaultCaret() {
       @Override public boolean isVisible() {
         return false;
       }
     };
     Caret defaultCaret = textArea.getCaret();
-    Highlighter defaultHighlighter = textArea.getHighlighter();
+    JCheckBox check1 = new JCheckBox("Hide Caret");
+    check1.addActionListener(e -> textArea.setCaret(isSelected(e) ? hidingCaret : defaultCaret));
 
-    JCheckBox hidingCaretCheck = new JCheckBox("Hide Caret");
-    hidingCaretCheck.addActionListener(e -> textArea.setCaret(isSelected(e) ? hidingCaret : defaultCaret));
+    Highlighter highlighter = textArea.getHighlighter();
+    JCheckBox check2 = new JCheckBox("Hide Highlighter");
+    check2.addActionListener(e -> textArea.setHighlighter(isSelected(e) ? null : highlighter));
 
-    JCheckBox hidingHighlighterCheck = new JCheckBox("Hide Highlighter");
-    hidingHighlighterCheck.addActionListener(e -> textArea.setHighlighter(isSelected(e) ? null : defaultHighlighter));
+    JCheckBox check3 = new JCheckBox("Editable", true);
+    check3.addActionListener(e -> textArea.setEditable(isSelected(e)));
 
-    JCheckBox editableCheck = new JCheckBox("Editable", true);
-    editableCheck.addActionListener(e -> textArea.setEditable(isSelected(e)));
-
-    JCheckBox focusableCheck = new JCheckBox("Focusable", true);
-    focusableCheck.addActionListener(e -> textArea.setFocusable(isSelected(e)));
+    JCheckBox check4 = new JCheckBox("Focusable", true);
+    check4.addActionListener(e -> textArea.setFocusable(isSelected(e)));
 
     JPanel p1 = new JPanel();
-    p1.add(hidingCaretCheck);
-    p1.add(hidingHighlighterCheck);
+    p1.add(check1);
+    p1.add(check2);
 
     JPanel p2 = new JPanel();
-    p2.add(editableCheck);
-    p2.add(focusableCheck);
+    p2.add(check3);
+    p2.add(check4);
 
     JPanel p = new JPanel(new BorderLayout(0, 0));
     p.add(p1, BorderLayout.NORTH);

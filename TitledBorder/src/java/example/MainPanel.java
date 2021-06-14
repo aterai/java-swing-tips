@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel();
     panel.setBorder(border);
 
-    JComboBox<VerticalOrientation> positionChoices = new JComboBox<>(VerticalOrientation.values());
-    positionChoices.addItemListener(e -> {
+    JComboBox<VerticalOrientation> combo1 = new JComboBox<>(VerticalOrientation.values());
+    combo1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         border.setTitlePosition(((VerticalOrientation) e.getItem()).mode);
         panel.repaint();
       }
     });
 
-    JComboBox<Justification> justificationChoices = new JComboBox<>(Justification.values());
-    justificationChoices.addItemListener(e -> {
+    JComboBox<Justification> combo2 = new JComboBox<>(Justification.values());
+    combo2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         border.setTitleJustification(((Justification) e.getItem()).mode);
         panel.repaint();
@@ -43,8 +43,8 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p2.add(positionChoices, c);
-    p2.add(justificationChoices, c);
+    p2.add(combo1, c);
+    p2.add(combo2, c);
 
     add(p2, BorderLayout.NORTH);
     add(panel);

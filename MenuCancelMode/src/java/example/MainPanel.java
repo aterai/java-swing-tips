@@ -18,8 +18,8 @@ public final class MainPanel extends JPanel {
     String cancelMode = UIManager.getString(key);
     System.out.println(key + ": " + cancelMode);
     boolean defaultMode = "hideMenuTree".equals(cancelMode);
-    JRadioButton hideMenuTreeRadio = makeRadioButton("hideMenuTree", defaultMode);
-    JRadioButton hideLastSubmenuRadio = makeRadioButton("hideLastSubmenu", !defaultMode);
+    JRadioButton radio1 = makeRadioButton("hideMenuTree", defaultMode);
+    JRadioButton radio2 = makeRadioButton("hideLastSubmenu", !defaultMode);
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createTitledBorder(key));
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       }
     };
     ButtonGroup bg = new ButtonGroup();
-    Stream.of(hideLastSubmenuRadio, hideMenuTreeRadio).forEach(r -> {
+    Stream.of(radio2, radio1).forEach(r -> {
       r.addItemListener(handler);
       bg.add(r);
       box.add(r);

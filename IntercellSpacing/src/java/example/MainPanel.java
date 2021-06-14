@@ -13,7 +13,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
       {"aaa", 12, true}, {"bbb", 5, false},
@@ -46,8 +45,8 @@ public final class MainPanel extends JPanel {
     table.setShowHorizontalLines(false);
     table.setIntercellSpacing(new Dimension());
 
-    JCheckBox verticalLinesButton = new JCheckBox("setShowVerticalLines");
-    verticalLinesButton.addActionListener(e -> {
+    JCheckBox check1 = new JCheckBox("setShowVerticalLines");
+    check1.addActionListener(e -> {
       Dimension d = table.getIntercellSpacing();
       if (((JCheckBox) e.getSource()).isSelected()) {
         table.setShowVerticalLines(true);
@@ -58,8 +57,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JCheckBox horizontalLinesButton = new JCheckBox("setShowHorizontalLines");
-    horizontalLinesButton.addActionListener(e -> {
+    JCheckBox check2 = new JCheckBox("setShowHorizontalLines");
+    check2.addActionListener(e -> {
       Dimension d = table.getIntercellSpacing();
       if (((JCheckBox) e.getSource()).isSelected()) {
         table.setShowHorizontalLines(true);
@@ -71,8 +70,8 @@ public final class MainPanel extends JPanel {
     });
 
     JPanel p = new JPanel(new BorderLayout());
-    p.add(verticalLinesButton, BorderLayout.WEST);
-    p.add(horizontalLinesButton, BorderLayout.EAST);
+    p.add(check1, BorderLayout.WEST);
+    p.add(check2, BorderLayout.EAST);
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));

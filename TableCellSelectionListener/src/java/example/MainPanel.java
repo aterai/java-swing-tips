@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     TableModel model = makeModel();
     JTable table0 = new JTable(model);
     table0.setCellSelectionEnabled(true);
-    ListSelectionListener selectionListener0 = new AbstractTableCellSelectionListener() {
+    ListSelectionListener lsl0 = new AbstractTableCellSelectionListener() {
       @Override public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
           return;
@@ -35,12 +35,12 @@ public final class MainPanel extends JPanel {
         textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     };
-    table0.getSelectionModel().addListSelectionListener(selectionListener0);
-    table0.getColumnModel().getSelectionModel().addListSelectionListener(selectionListener0);
+    table0.getSelectionModel().addListSelectionListener(lsl0);
+    table0.getColumnModel().getSelectionModel().addListSelectionListener(lsl0);
 
     JTable table1 = new JTable(model);
     table1.setCellSelectionEnabled(true);
-    ListSelectionListener selectionListener1 = new AbstractTableCellSelectionListener() {
+    ListSelectionListener lsl1 = new AbstractTableCellSelectionListener() {
       @Override public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
           return;
@@ -55,8 +55,8 @@ public final class MainPanel extends JPanel {
         textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     };
-    table1.getSelectionModel().addListSelectionListener(selectionListener1);
-    table1.getColumnModel().getSelectionModel().addListSelectionListener(selectionListener1);
+    table1.getSelectionModel().addListSelectionListener(lsl1);
+    table1.getColumnModel().getSelectionModel().addListSelectionListener(lsl1);
 
     JTable table2 = new JTable(model);
     table2.setCellSelectionEnabled(true);
