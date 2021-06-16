@@ -8,8 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -28,12 +29,13 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 public final class MainPanel extends JPanel {
   public static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
+  public static final String SEPARATOR = "----%n%s%n";
   public final JTextArea textArea = new JTextArea();
   public final JEditorPane editorPane = new JEditorPane();
   public final JTextField field = new JTextField("3");
   public final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
       String id = field.getText().trim();
       HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
       Element element = doc.getElement(id);
@@ -46,7 +48,7 @@ public final class MainPanel extends JPanel {
   };
   public final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
       JToggleButton b = (JToggleButton) e.getSource();
       if (b.isSelected()) {
         for (Element root : editorPane.getDocument().getRootElements()) {
@@ -60,7 +62,7 @@ public final class MainPanel extends JPanel {
   };
   public final Action parserAction = new AbstractAction("ParserDelegator") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
       String id = field.getText().trim();
       String text = editorPane.getText();
       ParserDelegator delegator = new ParserDelegator();
@@ -148,26 +150,48 @@ public final class MainPanel extends JPanel {
     }
     textArea.append(String.format("%s%n", tag));
     if (tag.isBlock()) { // block
-      Object bid = attrs.getAttribute(HTML.Attribute.ID);
-      if (Objects.nonNull(bid)) {
-        textArea.append(String.format("block: id=%s%n", bid));
-        addHighlight(element, true);
-      }
+      blockHighlight(element, attrs);
     } else { // inline
-      Enumeration<?> e = attrs.getAttributeNames();
-      while (e.hasMoreElements()) {
-        Object obj = attrs.getAttribute(e.nextElement());
-        // System.out.println("AttributeNames: " + obj);
-        if (obj instanceof AttributeSet) {
-          AttributeSet a = (AttributeSet) obj;
-          Object iid = a.getAttribute(HTML.Attribute.ID);
-          if (Objects.nonNull(iid)) {
-            textArea.append(String.format("inline: id=%s%n", iid));
-            addHighlight(element, false);
-          }
-        }
-      }
+      inlineHighlight(element, attrs);
     }
+  }
+
+  private void blockHighlight(Element element, AttributeSet attrs) {
+    Optional.ofNullable(attrs.getAttribute(HTML.Attribute.ID))
+        .ifPresent(id -> {
+          textArea.append(String.format("block: id=%s%n", id));
+          addHighlight(element, true);
+        });
+    // Object bid = attrs.getAttribute(HTML.Attribute.ID);
+    // if (Objects.nonNull(bid)) {
+    //   textArea.append(String.format("block: id=%s%n", bid));
+    //   addHighlight(element, true);
+    // }
+  }
+
+  private void inlineHighlight(Element element, AttributeSet attrs) {
+    Collections.list(attrs.getAttributeNames()).stream()
+        .filter(AttributeSet.class::isInstance)
+        .map(AttributeSet.class::cast)
+        .map(a -> a.getAttribute(HTML.Attribute.ID))
+        .filter(Objects::nonNull)
+        .forEach(id -> {
+          textArea.append(String.format("inline: id=%s%n", id));
+          addHighlight(element, false);
+        });
+    // Enumeration<?> e = attrs.getAttributeNames();
+    // while (e.hasMoreElements()) {
+    //   Object obj = attrs.getAttribute(e.nextElement());
+    //   // System.out.println("AttributeNames: " + obj);
+    //   if (obj instanceof AttributeSet) {
+    //     AttributeSet a = (AttributeSet) obj;
+    //     Object iid = a.getAttribute(HTML.Attribute.ID);
+    //     if (Objects.nonNull(iid)) {
+    //       textArea.append(String.format("inline: id=%s%n", iid));
+    //       addHighlight(element, false);
+    //     }
+    //   }
+    // }
   }
 
   public static void main(String[] args) {
