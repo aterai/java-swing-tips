@@ -20,10 +20,10 @@ public final class MainPanel extends JPanel {
     JTextField field = new JTextField("1, 2, 5");
 
     DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
-    combo.setDisableIndex(getDisableIndexFromTextField(field));
+    combo.setDisableIndexSet(getDisableIndexFromTextField(field));
 
     JButton button = new JButton("init");
-    button.addActionListener(e -> combo.setDisableIndex(getDisableIndexFromTextField(field)));
+    button.addActionListener(e -> combo.setDisableIndexSet(getDisableIndexFromTextField(field)));
 
     Box box = Box.createHorizontalBox();
     box.add(new JLabel("Disabled Item Index:"));
@@ -83,13 +83,13 @@ public final class MainPanel extends JPanel {
 }
 
 class DisableItemComboBox<E> extends JComboBox<E> {
-  protected final HashSet<Integer> disableIndexSet = new HashSet<>();
+  private final Set<Integer> disableIndexSet = new HashSet<>();
   protected boolean isDisableIndex;
   protected final Action up = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
       for (int i = si - 1; i >= 0; i--) {
-        if (!disableIndexSet.contains(i)) {
+        if (isEnabledIndex(i)) {
           setSelectedIndex(i);
           break;
         }
@@ -100,7 +100,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
       for (int i = si + 1; i < getModel().getSize(); i++) {
-        if (!disableIndexSet.contains(i)) {
+        if (isEnabledIndex(i)) {
           setSelectedIndex(i);
           break;
         }
@@ -126,28 +126,15 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     ListCellRenderer<? super E> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c;
-      if (disableIndexSet.contains(index)) {
-        c = renderer.getListCellRendererComponent(list, value, index, false, false);
-        c.setEnabled(false);
-      } else {
+      if (isEnabledIndex(index)) {
         c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         c.setEnabled(true);
+      } else {
+        c = renderer.getListCellRendererComponent(list, value, index, false, false);
+        c.setEnabled(false);
       }
       return c;
     });
-    // setRenderer(new DefaultListCellRenderer() {
-    //   @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-    //     Component c;
-    //     if (disableIndexSet.contains(index)) {
-    //       c = super.getListCellRendererComponent(list, value, index, false, false);
-    //       c.setEnabled(false);
-    //     } else {
-    //       c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    //       c.setEnabled(true);
-    //     }
-    //     return c;
-    //   }
-    // });
     EventQueue.invokeLater(() -> {
       String selectPrev = "selectPrevious3";
       String selectNext = "selectNext3";
@@ -162,11 +149,6 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     });
   }
 
-  public void setDisableIndex(Set<Integer> set) {
-    disableIndexSet.clear();
-    disableIndexSet.addAll(set);
-  }
-
   @Override public void setPopupVisible(boolean v) {
     if (!v && isDisableIndex) {
       isDisableIndex = false;
@@ -176,11 +158,20 @@ class DisableItemComboBox<E> extends JComboBox<E> {
   }
 
   @Override public void setSelectedIndex(int index) {
-    if (disableIndexSet.contains(index)) {
-      isDisableIndex = true;
-    } else {
+    if (isEnabledIndex(index)) {
       // isDisableIndex = false;
       super.setSelectedIndex(index);
+    } else {
+      isDisableIndex = true;
     }
+  }
+
+  public boolean isEnabledIndex(int idx) {
+    return !disableIndexSet.contains(idx);
+  }
+
+  public void setDisableIndexSet(Set<Integer> set) {
+    disableIndexSet.clear();
+    disableIndexSet.addAll(set);
   }
 }
