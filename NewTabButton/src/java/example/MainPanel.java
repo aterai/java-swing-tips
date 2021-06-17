@@ -167,10 +167,10 @@ class CardLayoutTabbedPane extends JPanel {
 class TabButton extends JRadioButton {
   private static final String UI_CLASS_ID = "TabViewButtonUI";
   private Color textColor; // = Color.WHITE;
-  private Color pressedTextColor; // = Color.WHITE.darker();
-  private Color rolloverTextColor; // = Color.WHITE;
-  private Color rolloverSelectedTextColor; // = Color.WHITE;
-  private Color selectedTextColor; // = Color.WHITE;
+  private Color pressedTc; // = Color.WHITE.darker();
+  private Color rolloverTc; // = Color.WHITE;
+  private Color rolloverSelTc; // = Color.WHITE;
+  private Color selectedTc; // = Color.WHITE;
 
   @Override public void updateUI() {
     if (Objects.nonNull(UIManager.get(getUIClassID()))) {
@@ -183,6 +183,7 @@ class TabButton extends JRadioButton {
   @Override public String getUIClassID() {
     return UI_CLASS_ID;
   }
+
   // @Override public void setUI(TabViewButtonUI ui) {
   //   super.setUI(ui);
   // }
@@ -247,19 +248,19 @@ class TabButton extends JRadioButton {
   }
 
   public Color getPressedTextColor() {
-    return pressedTextColor;
+    return pressedTc;
   }
 
   public Color getRolloverTextColor() {
-    return rolloverTextColor;
+    return rolloverTc;
   }
 
   public Color getRolloverSelectedTextColor() {
-    return rolloverSelectedTextColor;
+    return rolloverSelTc;
   }
 
   public Color getSelectedTextColor() {
-    return selectedTextColor;
+    return selectedTc;
   }
 
   public void setTextColor(Color color) {
@@ -267,19 +268,19 @@ class TabButton extends JRadioButton {
   }
 
   public void setPressedTextColor(Color color) {
-    pressedTextColor = color;
+    pressedTc = color;
   }
 
   public void setRolloverTextColor(Color color) {
-    rolloverTextColor = color;
+    rolloverTc = color;
   }
 
   public void setRolloverSelectedTextColor(Color color) {
-    rolloverSelectedTextColor = color;
+    rolloverSelTc = color;
   }
 
   public void setSelectedTextColor(Color color) {
-    selectedTextColor = color;
+    selectedTc = color;
   }
 }
 
