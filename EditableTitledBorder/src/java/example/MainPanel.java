@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
 class EditableTitledBorder extends TitledBorder implements MouseListener {
   protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
-  protected final JLabel dummy = new JLabel();
+  protected final JLabel renderer = new JLabel();
   protected final Rectangle rect = new Rectangle();
   protected Component comp;
 
@@ -103,24 +103,30 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     this(null, title, LEADING, DEFAULT_POSITION, null, null, c);
   }
 
-  protected EditableTitledBorder(Border border, Component c) {
-    this(border, "", LEADING, DEFAULT_POSITION, null, null, c);
-  }
+  // protected EditableTitledBorder(Border border, Component c) {
+  //   this(border, "", LEADING, DEFAULT_POSITION, null, null, c);
+  // }
 
-  protected EditableTitledBorder(Border border, String title, Component c) {
-    this(border, title, LEADING, DEFAULT_POSITION, null, null, c);
-  }
+  // protected EditableTitledBorder(Border border, String title, Component c) {
+  //   this(border, title, LEADING, DEFAULT_POSITION, null, null, c);
+  // }
 
   protected EditableTitledBorder(Border border, String title, int justification, int pos, Component c) {
     this(border, title, justification, pos, null, null, c);
   }
 
-  protected EditableTitledBorder(Border border, String title, int justification, int pos, Font font, Component c) {
-    this(border, title, justification, pos, font, null, c);
-  }
+  // protected EditableTitledBorder(Border border, String title, int justification, int pos, Font font, Component c) {
+  //   this(border, title, justification, pos, font, null, c);
+  // }
 
-  protected EditableTitledBorder(Border border, String title, int justification,
-                                 int pos, Font font, Color color, Component c) {
+  protected EditableTitledBorder(
+      Border border,
+      String title,
+      int justification,
+      int pos,
+      Font font,
+      Color color,
+      Component c) {
     super(border, title, justification, pos, font, color);
     this.comp = c;
     comp.addMouseListener(this);
@@ -134,119 +140,11 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     return true;
   }
 
-  private JLabel getLabel(Component c) {
-    this.dummy.setText(getTitle());
-    this.dummy.setFont(getFont(c));
-    // this.dummy.setForeground(getColor(c));
-    this.dummy.setComponentOrientation(c.getComponentOrientation());
-    this.dummy.setEnabled(c.isEnabled());
-    return this.dummy;
-  }
-
-  // Checkstyle False Positive: OverloadMethodsDeclarationOrder
-  // private static Insets getBorderInsets(Border border, Component c, Insets insets) {
-  @SuppressWarnings("PMD.AvoidReassigningParameters")
-  private static Insets makeBorderInsets(Border border, Component c, Insets insets) {
-    if (Objects.isNull(border)) {
-      insets.set(0, 0, 0, 0);
-    } else if (border instanceof AbstractBorder) {
-      AbstractBorder ab = (AbstractBorder) border;
-      insets = ab.getBorderInsets(c, insets);
-    } else {
-      Insets i = border.getBorderInsets(c);
-      insets.set(i.top, i.left, i.bottom, i.right);
-    }
-    return insets;
-  }
-
-  private int getJustification(Component c) {
-    int justification = getTitleJustification();
-    if (justification == LEADING || justification == DEFAULT_JUSTIFICATION) {
-      return c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
-    }
-    if (justification == TRAILING) {
-      return c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
-    }
-    return justification;
-  }
-
-  @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount"})
-  private Rectangle getTitleBounds(Component c, int x, int y, int width, int height) {
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      Border border = getBorder();
-      int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      JLabel label = getLabel(c);
-      Dimension size = label.getPreferredSize();
-      Insets insets = makeBorderInsets(border, c, new Insets(0, 0, 0, 0));
-
-      int labelY = y;
-      int labelH = size.height;
-      int position = getTitlePosition();
-      switch (position) {
-        case ABOVE_TOP:
-          insets.left = 0;
-          insets.right = 0;
-          break;
-        case TOP:
-          insets.top = edge + insets.top / 2 - labelH / 2;
-          if (insets.top >= edge) {
-            labelY += insets.top;
-          }
-          break;
-        case BELOW_TOP:
-          labelY += insets.top + edge;
-          break;
-        case ABOVE_BOTTOM:
-          labelY += height - labelH - insets.bottom - edge;
-          break;
-        case BOTTOM:
-          labelY += height - labelH;
-          insets.bottom = edge + (insets.bottom - labelH) / 2;
-          if (insets.bottom >= edge) {
-            labelY -= insets.bottom;
-          }
-          break;
-        case BELOW_BOTTOM:
-          insets.left = 0;
-          insets.right = 0;
-          labelY += height - labelH;
-          break;
-        default:
-          break;
-      }
-      insets.left += edge + TEXT_INSET_H;
-      insets.right += edge + TEXT_INSET_H;
-
-      int labelX = x;
-      int labelW = width - insets.left - insets.right;
-      if (labelW > size.width) {
-        labelW = size.width;
-      }
-      switch (getJustification(c)) {
-        case LEFT:
-          labelX += insets.left;
-          break;
-        case RIGHT:
-          labelX += width - insets.right - labelW;
-          break;
-        case CENTER:
-          labelX += (width - labelW) / 2;
-          break;
-        default:
-          break;
-      }
-      return new Rectangle(labelX, labelY, labelW, labelH);
-    }
-    return new Rectangle();
-  }
-
   @Override public void mouseClicked(MouseEvent e) {
     boolean isDoubleClick = e.getClickCount() >= 2;
     if (isDoubleClick) {
       Component src = e.getComponent();
-      Dimension dim = src.getSize();
-      rect.setBounds(getTitleBounds(src, 0, 0, dim.width, dim.height));
+      rect.setBounds(getTitleBounds(src));
       if (rect.contains(e.getPoint())) {
         startEditing.actionPerformed(new ActionEvent(src, ActionEvent.ACTION_PERFORMED, ""));
       }
@@ -267,6 +165,115 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
 
   @Override public void mouseReleased(MouseEvent e) {
     /* not needed */
+  }
+
+  private JLabel getLabel2(Component c) {
+    renderer.setText(getTitle());
+    renderer.setFont(getFont(c));
+    // renderer.setForeground(getColor(c));
+    renderer.setComponentOrientation(c.getComponentOrientation());
+    renderer.setEnabled(c.isEnabled());
+    return renderer;
+  }
+
+  private int getJustification2(Component c) {
+    int justification = getTitleJustification();
+    if (justification == LEADING || justification == DEFAULT_JUSTIFICATION) {
+      return c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
+    }
+    if (justification == TRAILING) {
+      return c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
+    }
+    return justification;
+  }
+
+  // @see public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
+  private Rectangle getTitleBounds(Component c) {
+    String title = getTitle();
+    if (Objects.nonNull(title) && !title.isEmpty()) {
+      Border border = getBorder();
+      int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
+      Insets i = getBorderInsets(border, c);
+      JLabel label = getLabel2(c);
+      Dimension size = label.getPreferredSize();
+      Rectangle r = new Rectangle(c.getWidth() - i.left - i.right, size.height);
+      calcLabelPosition(c, edge, i, r);
+      calcLabelJustification(c, size, i, r);
+      return r;
+    }
+    return new Rectangle();
+  }
+
+  private void calcLabelPosition(Component c, int edge, Insets insets, Rectangle lblR) {
+    switch (getTitlePosition()) {
+      case ABOVE_TOP:
+        insets.left = 0;
+        insets.right = 0;
+        break;
+      case TOP:
+        insets.top = edge + insets.top / 2 - lblR.height / 2;
+        if (insets.top >= edge) {
+          lblR.y += insets.top;
+        }
+        break;
+      case BELOW_TOP:
+        lblR.y += insets.top + edge;
+        break;
+      case ABOVE_BOTTOM:
+        lblR.y += c.getHeight() - lblR.height - insets.bottom - edge;
+        break;
+      case BOTTOM:
+        lblR.y += c.getHeight() - lblR.height;
+        insets.bottom = edge + (insets.bottom - lblR.height) / 2;
+        if (insets.bottom >= edge) {
+          lblR.y -= insets.bottom;
+        }
+        break;
+      case BELOW_BOTTOM:
+        insets.left = 0;
+        insets.right = 0;
+        lblR.y += c.getHeight() - lblR.height;
+        break;
+      default:
+        break;
+    }
+    insets.left += edge + TEXT_INSET_H;
+    insets.right += edge + TEXT_INSET_H;
+  }
+
+  private void calcLabelJustification(Component c, Dimension size, Insets insets, Rectangle lblR) {
+    if (lblR.width > size.width) {
+      lblR.width = size.width;
+    }
+    switch (getJustification2(c)) {
+      case LEFT:
+        lblR.x += insets.left;
+        break;
+      case RIGHT:
+        lblR.x += c.getWidth() - insets.right - lblR.width;
+        break;
+      case CENTER:
+        lblR.x += (c.getWidth() - lblR.width) / 2;
+        break;
+      default:
+        break;
+    }
+  }
+
+  // @SuppressWarnings("PMD.AvoidReassigningParameters")
+  // @see private Insets getBorderInsets(Border border, Component c, Insets insets) {
+  private static Insets getBorderInsets(Border border, Component c) {
+    Insets insets = new Insets(0, 0, 0, 0);
+    if (Objects.isNull(border)) {
+      insets.set(0, 0, 0, 0);
+    } else if (border instanceof AbstractBorder) {
+      AbstractBorder ab = (AbstractBorder) border;
+      insets = ab.getBorderInsets(c, insets);
+    } else {
+      Insets i = border.getBorderInsets(c);
+      insets.set(i.top, i.left, i.bottom, i.right);
+    }
+    return insets;
   }
 
   protected JTextField getEditorTextField() {
