@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
     @Override public Dimension preferredLayoutSize(Container target) {
       // synchronized (target.getTreeLock()) {
       Dimension ps = super.preferredLayoutSize(target);
-      int controlsPreferredHeight = ps.height;
+      int defaultHeight = ps.height;
       if (Objects.nonNull(animator)) {
         if (isHidden) {
-          if (controls.getHeight() < controlsPreferredHeight) {
+          if (controls.getHeight() < defaultHeight) {
             controlsHeight += 5;
           }
         } else {
@@ -32,8 +32,8 @@ public final class MainPanel extends JPanel {
         if (controlsHeight <= 0) {
           controlsHeight = 0;
           animator.stop();
-        } else if (controlsHeight >= controlsPreferredHeight) {
-          controlsHeight = controlsPreferredHeight;
+        } else if (controlsHeight >= defaultHeight) {
+          controlsHeight = defaultHeight;
           animator.stop();
         }
       }

@@ -95,11 +95,11 @@ class ScrollableWrapPanel extends JPanel implements Scrollable {
 }
 
 class ScrollableWrapLayout extends FlowLayout {
-  private final int fixedHorizontalGap;
+  private final int fixedHorizGap;
 
   protected ScrollableWrapLayout(int align, int hgap, int vgap) {
     super(align, hgap, vgap);
-    fixedHorizontalGap = hgap;
+    fixedHorizGap = hgap;
   }
 
   private int getPreferredHorizontalGap(Container target) {
@@ -109,19 +109,19 @@ class ScrollableWrapLayout extends FlowLayout {
     if (target.getParent() instanceof JViewport) {
       width = target.getParent().getBounds().width;
     }
-    width -= insets.left + insets.right + fixedHorizontalGap * 2;
+    width -= insets.left + insets.right + fixedHorizGap * 2;
     for (int i = 0; i < target.getComponentCount(); i++) {
       Component m = target.getComponent(i);
       if (m.isVisible()) {
         Dimension d = m.getPreferredSize();
-        if (width - d.width - fixedHorizontalGap < 0) {
+        if (width - d.width - fixedHorizGap < 0) {
           columns = i;
           break;
         }
-        width -= d.width + fixedHorizontalGap;
+        width -= d.width + fixedHorizGap;
       }
     }
-    return fixedHorizontalGap + width / columns;
+    return fixedHorizGap + width / columns;
   }
 
   @Override public void layoutContainer(Container target) {

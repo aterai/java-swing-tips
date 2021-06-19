@@ -30,7 +30,7 @@ import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
   private static final String TAB_TXT = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-  private static final String IDEOGRAPHIC_SPACE_TXT = String.join("\n",
+  private static final String IDEOGRAPHIC_SPACE = String.join("\n",
       "123456789012",
       "bbb2　　1 3 ccc3\n",
       "　00000　12345　",
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 
     editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
     editor.setEditorKit(new CustomEditorKit());
-    editor.setText(IDEOGRAPHIC_SPACE_TXT + TAB_TXT);
+    editor.setText(IDEOGRAPHIC_SPACE + TAB_TXT);
 
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));

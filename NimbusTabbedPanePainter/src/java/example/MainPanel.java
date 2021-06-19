@@ -78,13 +78,13 @@ final class NimbusTabbedPanePainterUtils {
     d.put("TabbedPane:TabbedPaneTab[Enabled+Pressed].backgroundPainter", tabPainter);
     d.put("TabbedPane:TabbedPaneTab[Enabled].backgroundPainter", tabPainter);
 
-    Painter<JComponent> selectedTabPainter = new TabPainter(true);
-    d.put("TabbedPane:TabbedPaneTab[Focused+MouseOver+Selected].backgroundPainter", selectedTabPainter);
-    d.put("TabbedPane:TabbedPaneTab[Focused+Pressed+Selected].backgroundPainter", selectedTabPainter);
-    d.put("TabbedPane:TabbedPaneTab[Focused+Selected].backgroundPainter", selectedTabPainter);
-    d.put("TabbedPane:TabbedPaneTab[MouseOver+Selected].backgroundPainter", selectedTabPainter);
-    d.put("TabbedPane:TabbedPaneTab[Selected].backgroundPainter", selectedTabPainter);
-    d.put("TabbedPane:TabbedPaneTab[Pressed+Selected].backgroundPainter", selectedTabPainter);
+    Painter<JComponent> selTabPainter = new TabPainter(true);
+    d.put("TabbedPane:TabbedPaneTab[Focused+MouseOver+Selected].backgroundPainter", selTabPainter);
+    d.put("TabbedPane:TabbedPaneTab[Focused+Pressed+Selected].backgroundPainter", selTabPainter);
+    d.put("TabbedPane:TabbedPaneTab[Focused+Selected].backgroundPainter", selTabPainter);
+    d.put("TabbedPane:TabbedPaneTab[MouseOver+Selected].backgroundPainter", selTabPainter);
+    d.put("TabbedPane:TabbedPaneTab[Selected].backgroundPainter", selTabPainter);
+    d.put("TabbedPane:TabbedPaneTab[Pressed+Selected].backgroundPainter", selTabPainter);
   }
 
   protected static class TabPainter implements Painter<JComponent> {

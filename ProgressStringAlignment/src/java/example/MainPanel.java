@@ -94,9 +94,9 @@ class StringAlignmentProgressBar extends JProgressBar {
   private final JLabel label;
   // private transient ChangeListener changeListener;
 
-  protected StringAlignmentProgressBar(BoundedRangeModel model, int horizontalAlignment) {
+  protected StringAlignmentProgressBar(BoundedRangeModel model, int horizAlignment) {
     super(model);
-    label = new JLabel(getString(), horizontalAlignment);
+    label = new JLabel(getString(), horizAlignment);
   }
 
   @Override public void updateUI() {
