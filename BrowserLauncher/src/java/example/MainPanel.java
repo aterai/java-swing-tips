@@ -13,19 +13,19 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 
 public final class MainPanel extends JPanel {
-  private static final String MYSITE = "https://ateraimemo.com/";
+  private static final String SITE = "https://ateraimemo.com/";
 
   private MainPanel() {
     super(new BorderLayout());
     JTextArea textArea = new JTextArea();
 
-    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
+    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", SITE, SITE));
     editor.setOpaque(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setEditable(false);
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        BrowserLauncher.openUrl(MYSITE);
+        BrowserLauncher.openUrl(SITE);
         textArea.setText(e.toString());
       }
     });
@@ -81,33 +81,45 @@ final class BrowserLauncher {
     String osName = System.getProperty("os.name");
     try {
       if (osName.startsWith("Mac OS")) {
-        Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
-        // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
-        Method openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
-        openUrl.invoke(null, url);
+        macOpenUrl(url);
       } else if (osName.startsWith("Windows")) {
-        Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);
+        windowsOpenUrl(url);
       } else { // assume Unix or Linux
-        String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape"};
-        String browser = null;
-        for (int count = 0; count < browsers.length && Objects.isNull(browser); count++) {
-          String[] cmd = {"which", browsers[count]};
-          if (Runtime.getRuntime().exec(cmd).waitFor() == 0) {
-            browser = browsers[count];
-          }
-        }
-        if (Objects.nonNull(browser)) {
-          Runtime.getRuntime().exec(new String[] {browser, url});
-        } else {
-          throw new UnsupportedOperationException("Could not find web browser");
-        }
+        linuxOpenUrl(url);
       }
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
     } catch (IOException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
       Toolkit.getDefaultToolkit().beep();
       String msg = ERR_MSG + ":\n" + ex.getLocalizedMessage();
-      JOptionPane.showMessageDialog(null, msg, "titlebar", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, msg, "title", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private static void macOpenUrl(String url) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
+    // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
+    Method openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
+    openUrl.invoke(null, url);
+  }
+
+  private static void windowsOpenUrl(String url) throws IOException {
+    Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);
+  }
+
+  private static void linuxOpenUrl(String url) throws InterruptedException, IOException {
+    String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape"};
+    String browser = null;
+    for (int count = 0; count < browsers.length && Objects.isNull(browser); count++) {
+      String[] cmd = {"which", browsers[count]};
+      if (Runtime.getRuntime().exec(cmd).waitFor() == 0) {
+        browser = browsers[count];
+      }
+    }
+    if (Objects.nonNull(browser)) {
+      Runtime.getRuntime().exec(new String[] {browser, url});
+    } else {
+      throw new UnsupportedOperationException("Could not find web browser");
     }
   }
 }
