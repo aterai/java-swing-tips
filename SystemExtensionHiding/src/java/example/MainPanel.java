@@ -10,13 +10,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea log = new JTextArea();
-    String useSystemExtensionHiding = "FileChooser.useSystemExtensionHiding";
+    String key = "FileChooser.useSystemExtensionHiding";
 
     JButton button1 = new JButton("false");
     button1.addActionListener(e -> {
-      UIManager.put(useSystemExtensionHiding, Boolean.FALSE);
+      UIManager.put(key, Boolean.FALSE);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -26,7 +25,7 @@ public final class MainPanel extends JPanel {
 
     JButton button2 = new JButton("true");
     button2.addActionListener(e -> {
-      UIManager.put(useSystemExtensionHiding, Boolean.TRUE);
+      UIManager.put(key, Boolean.TRUE);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -35,7 +34,7 @@ public final class MainPanel extends JPanel {
     });
 
     Box box = Box.createHorizontalBox();
-    box.setBorder(BorderFactory.createTitledBorder(useSystemExtensionHiding));
+    box.setBorder(BorderFactory.createTitledBorder(key));
     box.add(Box.createHorizontalGlue());
     box.add(button1);
     box.add(Box.createHorizontalStrut(5));

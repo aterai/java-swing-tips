@@ -40,8 +40,9 @@ public final class MainPanel extends JPanel {
   }
 
   private Box makeRadioPane(JTable table) {
-    Icon customAscendingSortIcon = new ImageIcon(getClass().getResource("ascending.png"));
-    Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL ascendingPath = Objects.requireNonNull(cl.getResource("example/ascending.png"));
+    URL descendingPath = Objects.requireNonNull(cl.getResource("example/descending.png"));
     JRadioButton r0 = new JRadioButton("Default", true);
     JRadioButton r1 = new JRadioButton("Empty");
     JRadioButton r2 = new JRadioButton("Custom");
@@ -56,8 +57,8 @@ public final class MainPanel extends JPanel {
         ascending = new IconUIResource(EMPTY_ICON);
         descending = new IconUIResource(EMPTY_ICON);
       } else {
-        ascending = new IconUIResource(customAscendingSortIcon);
-        descending = new IconUIResource(customDescendingSortIcon);
+        ascending = new IconUIResource(new ImageIcon(ascendingPath));
+        descending = new IconUIResource(new ImageIcon(descendingPath));
       }
       UIManager.put("Table.ascendingSortIcon", ascending);
       UIManager.put("Table.descendingSortIcon", descending);

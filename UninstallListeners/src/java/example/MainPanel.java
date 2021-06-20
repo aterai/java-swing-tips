@@ -38,12 +38,12 @@ public final class MainPanel extends JPanel {
           try {
             // https://community.oracle.com/thread/1360123
             Class<BasicSliderUI> uiClass = BasicSliderUI.class;
-            Method uninstallListeners = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
-            uninstallListeners.setAccessible(true);
-            uninstallListeners.invoke(getUI(), slider);
-            Method uninstallKeyboardActions = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
-            uninstallKeyboardActions.setAccessible(true);
-            uninstallKeyboardActions.invoke(getUI(), slider);
+            Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
+            uninstall.setAccessible(true);
+            uninstall.invoke(getUI(), slider);
+            Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
+            uninstallKbdActs.setAccessible(true);
+            uninstallKbdActs.invoke(getUI(), slider);
           } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             throw new UnsupportedOperationException(ex);
           }
