@@ -21,7 +21,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int CELLSIZE = 24;
+  public static final int CELL_SIZE = 24;
 
   private MainPanel() {
     super(new GridBagLayout());
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     TableColumnModel m = table.getColumnModel();
     for (int i = 0; i < m.getColumnCount(); i++) {
       TableColumn col = m.getColumn(i);
-      col.setPreferredWidth(CELLSIZE);
+      col.setPreferredWidth(CELL_SIZE);
       col.setResizable(false);
     }
 
@@ -106,35 +106,30 @@ class TablePopupMenu extends JPopupMenu {
     super();
 
     select = add("select");
-    select.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      for (int row : table.getSelectedRows()) {
-        for (int col : table.getSelectedColumns()) {
-          table.setValueAt(true, row, col);
-        }
-      }
-    });
+    select.addActionListener(e -> initAllTableValue((JTable) getInvoker(), true));
 
     clear = add("clear");
-    clear.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      for (int row : table.getSelectedRows()) {
-        for (int col : table.getSelectedColumns()) {
-          table.setValueAt(false, row, col);
-        }
-      }
-    });
+    clear.addActionListener(e -> initAllTableValue((JTable) getInvoker(), false));
 
     toggle = add("toggle");
-    toggle.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      for (int row : table.getSelectedRows()) {
-        for (int col : table.getSelectedColumns()) {
-          Boolean b = (Boolean) table.getValueAt(row, col);
-          table.setValueAt(!b, row, col);
-        }
+    toggle.addActionListener(e -> toggleTableValue((JTable) getInvoker()));
+  }
+
+  private static void initAllTableValue(JTable table, boolean value) {
+    for (int row : table.getSelectedRows()) {
+      for (int col : table.getSelectedColumns()) {
+        table.setValueAt(value, row, col);
       }
-    });
+    }
+  }
+
+  private static void toggleTableValue(JTable table) {
+    for (int row : table.getSelectedRows()) {
+      for (int col : table.getSelectedColumns()) {
+        Boolean b = (Boolean) table.getValueAt(row, col);
+        table.setValueAt(!b, row, col);
+      }
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
