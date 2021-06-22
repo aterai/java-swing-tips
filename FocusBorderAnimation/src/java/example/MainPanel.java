@@ -78,7 +78,7 @@ class AnimatedBorder extends EmptyBorder {
   private final transient List<Point2D> points = new ArrayList<>();
   protected transient Shape shape;
 
-  public AnimatedBorder(JComponent c) {
+  protected AnimatedBorder(JComponent c) {
     super(BORDER, BORDER, BORDER + BOTTOM_SPACE, BORDER);
     animator.addActionListener(e -> {
       if (startTime < 0) {
