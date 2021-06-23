@@ -69,7 +69,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JLabel icon = new JLabel();
   private final JLabel text = new JLabel();
   private final CompoundBorder emptyBorder;
-  private final CompoundBorder compoundFocusBorder;
+  private final CompoundBorder focusBorder;
 
   protected CompoundTreeCellRenderer() {
     super();
@@ -79,7 +79,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
     Color bsColor = getBorderSelectionColor();
     Color focusBgsColor = new Color(~getBackgroundSelectionColor().getRGB());
-    compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), insideBorder);
+    focusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBgsColor, bsColor), insideBorder);
 
     icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
     text.setBorder(emptyBorder);
@@ -105,7 +105,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     text.setForeground(fgColor);
     text.setBackground(bgColor);
-    text.setBorder(hasFocus ? compoundFocusBorder : emptyBorder);
+    text.setBorder(hasFocus ? focusBorder : emptyBorder);
 
     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     text.setText(l.getText());
@@ -120,11 +120,11 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class DotBorder extends LineBorder {
-  private final Color borderSelectionColor;
+  private final Color selectionColor;
 
-  protected DotBorder(Color color, Color borderSelectionColor) {
+  protected DotBorder(Color color, Color selectionColor) {
     super(color, 1);
-    this.borderSelectionColor = borderSelectionColor;
+    this.selectionColor = selectionColor;
   }
 
   @Override public boolean isBorderOpaque() {
@@ -134,7 +134,7 @@ class DotBorder extends LineBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
-    g2.setPaint(borderSelectionColor);
+    g2.setPaint(selectionColor);
     g2.drawRect(0, 0, w - 1, h - 1);
     g2.setPaint(getLineColor());
     BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
