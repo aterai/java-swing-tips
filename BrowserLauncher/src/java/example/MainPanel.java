@@ -68,7 +68,6 @@ public final class MainPanel extends JPanel {
 //  Public Domain Software -- Free to Use as You Like  //
 /////////////////////////////////////////////////////////
 // class BareBonesBrowserLaunch {
-@SuppressWarnings("PMD.ClassNamingConventions")
 final class BrowserLauncher {
   private static final String ERR_MSG = "Error attempting to launch web browser";
 
@@ -76,7 +75,6 @@ final class BrowserLauncher {
     /* Singleton */
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity")
   public static void openUrl(String url) {
     String osName = System.getProperty("os.name");
     try {

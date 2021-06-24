@@ -103,12 +103,12 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
-          System.out.println("done: DISPOSE_ON_CLOSE");
-          cancel(true);
-          // executor.shutdown();
-          return;
-        }
+        // if (!isDisplayable()) {
+        //   System.out.println("done: DISPOSE_ON_CLOSE");
+        //   cancel(true);
+        //   // executor.shutdown();
+        //   return;
+        // }
         String text;
         int i = -1;
         if (isCancelled()) {
