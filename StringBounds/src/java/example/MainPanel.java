@@ -83,9 +83,6 @@ public final class MainPanel extends JPanel {
 
   private static Rectangle getLayoutCompoundLabelBounds(JLabel label) {
     Rectangle viewR = new Rectangle();
-    viewR.x = 0;
-    viewR.y = 0;
-    viewR.width = viewR.height = Short.MAX_VALUE;
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle();
     SwingUtilities.layoutCompoundLabel(
