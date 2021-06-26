@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
     });
     slider.addMouseWheelListener(e -> {
       JSlider s = (JSlider) e.getComponent();
-      boolean hasMinorTickSpacing = s.getMinorTickSpacing() > 0;
-      int tickSpacing = hasMinorTickSpacing ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
+      boolean hasMinorTickSp = s.getMinorTickSpacing() > 0;
+      int tickSpacing = hasMinorTickSp ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
       s.setValue(s.getValue() - e.getWheelRotation() * tickSpacing);
       // int v = s.getValue() - e.getWheelRotation() * tickSpacing;
       // BoundedRangeModel m = s.getModel();
@@ -127,18 +127,18 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
           snappedPos = trackRight;
         } else {
           // int tickSpacing = slider.getMajorTickSpacing();
-          // float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
+          // float tickPixels = trackLength * tickSpacing / (float) slider.getMaximum();
 
           // a problem if you choose to set a negative MINIMUM for the JSlider;
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
-          int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
-          boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
-          int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
-          float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
+          int possibleTickPos = slider.getMaximum() - slider.getMinimum();
+          boolean hasMinorTickSp = slider.getMinorTickSpacing() > 0;
+          int tickSpacing = hasMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
+          float tickPixels = trackLength * tickSpacing / (float) possibleTickPos;
           pos -= trackLeft;
-          // snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
-          snappedPos = Math.round(Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick) + trackLeft;
+          // snappedPos = (int) (Math.round(pos / tickPixels) * tickPixels + .5) + trackLeft;
+          snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
           offset = 0;
           // System.out.println(snappedPos);
         }
@@ -177,18 +177,18 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
           snappedPos = trackRight;
         } else {
           // int tickSpacing = slider.getMajorTickSpacing();
-          // float actualPixelsForOneTick = trackLength * tickSpacing / (float) slider.getMaximum();
+          // float tickPixels = trackLength * tickSpacing / (float) slider.getMaximum();
 
           // a problem if you choose to set a negative MINIMUM for the JSlider;
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
-          int possibleTickPositions = slider.getMaximum() - slider.getMinimum();
-          boolean hasMinorTickSpacing = slider.getMinorTickSpacing() > 0;
-          int tickSpacing = hasMinorTickSpacing ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
-          float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
+          int possibleTickPos = slider.getMaximum() - slider.getMinimum();
+          boolean hasMinorTickSp = slider.getMinorTickSpacing() > 0;
+          int tickSpacing = hasMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
+          float tickPixels = trackLength * tickSpacing / (float) possibleTickPos;
           pos -= trackLeft;
-          // snappedPos = (int) (Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
-          snappedPos = Math.round(Math.round(pos / actualPixelsForOneTick) * actualPixelsForOneTick) + trackLeft;
+          // snappedPos = (int) (Math.round(pos / tickPixels) * tickPixels + .5) + trackLeft;
+          snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
           offset = 0;
           // System.out.println(snappedPos);
         }
