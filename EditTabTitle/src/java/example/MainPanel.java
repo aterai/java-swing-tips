@@ -79,15 +79,16 @@ class EditableTabbedPane extends JTabbedPane {
   };
   protected final Action renameTab = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
+      glassPane.setVisible(false);
       String str = editor.getText();
       for (int i = 0; i < str.length(); i++) {
         if (!Character.isWhitespace(str.charAt(i))) {
           setTitleAt(getSelectedIndex(), str.trim());
           Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
               .ifPresent(Component::revalidate);
+          return;
         }
       }
-      glassPane.setVisible(false);
     }
   };
 
