@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -78,11 +79,12 @@ class EditableTabbedPane extends JTabbedPane {
   };
   protected final Action renameTab = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      if (!editor.getText().trim().isEmpty()) {
-        setTitleAt(getSelectedIndex(), editor.getText());
-        Component c = getTabComponentAt(getSelectedIndex());
-        if (c != null) {
-          c.revalidate();
+      String str = editor.getText();
+      for (int i = 0; i < str.length(); i++) {
+        if (!Character.isWhitespace(str.charAt(i))) {
+          setTitleAt(getSelectedIndex(), str.trim());
+          Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
+              .ifPresent(Component::revalidate);
         }
       }
       glassPane.setVisible(false);
