@@ -75,9 +75,7 @@ public final class MainPanel extends JPanel {
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         comparator = Comparator.comparing(ListItem::getTitle);
-        if (descending.isSelected()) {
-          comparator = comparator.reversed();
-        }
+        reversed();
         sort();
       }
     });
@@ -86,9 +84,7 @@ public final class MainPanel extends JPanel {
     r3.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         comparator = Comparator.comparing(item -> item.getColor().getRGB());
-        if (descending.isSelected()) {
-          comparator = comparator.reversed();
-        }
+        reversed();
         sort();
       }
     });
@@ -127,6 +123,12 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void reversed() {
+    if (descending.isSelected()) {
+      comparator = comparator.reversed();
+    }
   }
 
   private void sort() {
