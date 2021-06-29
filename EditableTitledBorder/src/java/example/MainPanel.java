@@ -92,14 +92,11 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
   };
   protected final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      glassPane.setVisible(false);
-      String str = editor.getText();
-      for (int i = 0; i < str.length(); i++) {
-        if (!Character.isWhitespace(str.charAt(i))) {
-          setTitle(str.trim());
-          return;
-        }
+      String str = editor.getText().trim();
+      if (!str.isEmpty()) {
+        setTitle(str);
       }
+      glassPane.setVisible(false);
     }
   };
 

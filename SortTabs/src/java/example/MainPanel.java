@@ -117,16 +117,12 @@ class EditableTabbedPane extends JTabbedPane {
     editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
     editor.getActionMap().put("rename-tab", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        glassPane.setVisible(false);
-        String str = editor.getText();
-        for (int i = 0; i < str.length(); i++) {
-          if (!Character.isWhitespace(str.charAt(i))) {
-            setTitleAt(getSelectedIndex(), str.trim());
-            Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
-                .ifPresent(Component::revalidate);
-            return;
-          }
+        String str = editor.getText().trim();
+        if (!str.isEmpty()) {
+          setTitleAt(getSelectedIndex(), str);
+          Optional.ofNullable(getTabComponentAt(getSelectedIndex())).ifPresent(Component::revalidate);
         }
+        glassPane.setVisible(false);
       }
     });
     editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
