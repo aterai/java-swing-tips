@@ -318,42 +318,48 @@ class TableOfContentsTree extends JTree {
     g.fillRect(0, 0, getWidth(), getHeight());
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    FontMetrics fm = g.getFontMetrics();
-    int pageNumMaxWidth = fm.stringWidth("000");
-    Insets ins = getInsets();
-    Rectangle rect = getVisibleRect(); // getVisibleRowsRect();
+    int pageNumMaxWidth = g.getFontMetrics().stringWidth("000");
+    int maxX = (int) SwingUtilities.calculateInnerArea(this, null).getMaxX();
+    Rectangle rect = getVisibleRect();
     for (int i = 0; i < getRowCount(); i++) {
       Rectangle r = getRowBounds(i);
       if (rect.intersects(r)) {
-        TreePath path = getPathForRow(i);
-        TreeCellRenderer tcr = getCellRenderer();
-        if (isSynth && isRowSelected(i)) {
-          if (tcr instanceof DefaultTreeCellRenderer) {
-            DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tcr;
-            g2.setPaint(renderer.getTextSelectionColor());
-          }
-        } else {
-          g2.setPaint(getForeground());
-        }
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-        Object o = node.getUserObject();
-        if (o instanceof TableOfContents) {
-          TableOfContents toc = (TableOfContents) o;
-          String pn = Integer.toString(toc.page);
-          int x = getWidth() - 1 - fm.stringWidth(pn) - ins.right;
-          // int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
-          int y = r.y + ((Component) tcr).getBaseline(r.width, r.height);
-          g2.drawString(pn, x, y);
-
-          int gap = 5;
-          int x2 = getWidth() - 1 - pageNumMaxWidth - ins.right;
-          Stroke s = g2.getStroke();
-          g2.setStroke(READER);
-          g2.drawLine(r.x + r.width + gap, y, x2 - gap, y);
-          g2.setStroke(s);
-        }
+        drawReader(g2, pageNumMaxWidth, maxX, r, i);
       }
     }
     g2.dispose();
+  }
+
+  private void drawReader(Graphics2D g2, int pageNumMaxWidth, int maxX, Rectangle r, int i) {
+    TreePath path = getPathForRow(i);
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+    Object o = node.getUserObject();
+    if (o instanceof TableOfContents) {
+      TableOfContents toc = (TableOfContents) o;
+      String pn = Integer.toString(toc.page);
+      TreeCellRenderer tcr = getCellRenderer();
+      g2.setPaint(getTextSelectionColor(i, tcr));
+
+      int x1 = maxX - g2.getFontMetrics().stringWidth(pn);
+      // int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
+      int y = r.y + ((Component) tcr).getBaseline(r.width, r.height);
+      g2.drawString(pn, x1, y);
+
+      int gap = 5;
+      int x2 = maxX - pageNumMaxWidth;
+      Stroke s = g2.getStroke();
+      g2.setStroke(READER);
+      g2.drawLine(r.x + r.width + gap, y, x2 - gap, y);
+      g2.setStroke(s);
+    }
+  }
+
+  private Paint getTextSelectionColor(int i, TreeCellRenderer tcr) {
+    if (isSynth && isRowSelected(i) && tcr instanceof DefaultTreeCellRenderer) {
+      DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tcr;
+      return renderer.getTextSelectionColor();
+    } else {
+      return getForeground();
+    }
   }
 }
