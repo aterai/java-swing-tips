@@ -28,8 +28,6 @@ import javax.jnlp.UnavailableServiceException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JScrollPane scroll = new JScrollPane(new JTree());
-
   public MainPanel() {
     super(new BorderLayout());
     // // Test
@@ -45,6 +43,7 @@ public final class MainPanel extends JPanel {
     // box.add(Box.createHorizontalGlue());
     // box.add(clearButton);
     // add(box, BorderLayout.SOUTH);
+    JScrollPane scroll = new JScrollPane(new JTree());
     add(scroll);
   }
 
@@ -105,9 +104,9 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
       bs = null;
     }
     if (Objects.nonNull(ps) && Objects.nonNull(bs)) {
-      PersistenceService persistenceService = ps;
+      PersistenceService service = ps;
       URL codebase = bs.getCodeBase();
-      loadWindowState(persistenceService, codebase, windowState);
+      loadWindowState(service, codebase, windowState);
       return new WindowAdapter() {
         @Override public void windowClosing(WindowEvent e) {
           JFrame f = (JFrame) e.getComponent();
@@ -119,7 +118,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
             // }
             windowState.setLocation(f.getLocationOnScreen());
           }
-          saveWindowState(persistenceService, codebase, windowState);
+          saveWindowState(service, codebase, windowState);
         }
       };
     } else {
@@ -148,9 +147,9 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
       try {
         long size = ps.create(codebase, 64_000);
         System.out.println("Cache created - size: " + size);
-      } catch (IOException ioex) {
+      } catch (IOException ignore) {
         // PMD: PreserveStackTrace false positive when using UncheckedIOException in the nested try-catch blocks?
-        // throw new UncheckedIOException("Application codebase is not a valid URL?!", ioex);
+        // throw new UncheckedIOException("Application codebase is not a valid URL?!", ignore);
         assert false : "Application codebase is not a valid URL?!";
       }
     }
@@ -160,7 +159,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     try {
       FileContents fc = ps.get(codebase);
       try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
-        // Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxxxxx-xxxxx.muf
+        // Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxx-xxx.muf
         // ps.delete(codebase);
         // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
         HashMap<String, Serializable> map = new HashMap<>();
