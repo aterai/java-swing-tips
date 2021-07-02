@@ -38,26 +38,7 @@ public final class MainPanel extends JPanel {
               publish(0L);
             }
           });
-
-          EventQueue.invokeLater(() -> {
-            start.addActionListener(e -> {
-              sequencer.setTickPosition(tickPos);
-              sequencer.start();
-              initButtons(false);
-            });
-
-            pause.addActionListener(e -> {
-              publish(sequencer.getTickPosition());
-              sequencer.stop();
-              initButtons(true);
-            });
-
-            reset.addActionListener(e -> {
-              sequencer.stop();
-              tickPos = 0L;
-              initButtons(true);
-            });
-          });
+          EventQueue.invokeLater(() -> addListener(sequencer));
           while (sequencer.isOpen()) {
             updateTickPosition(sequencer);
           }
@@ -68,6 +49,26 @@ public final class MainPanel extends JPanel {
           System.out.println("try-with-resources: AutoCloseable");
         }
         return null;
+      }
+
+      private void addListener(Sequencer sequencer) {
+        start.addActionListener(e -> {
+          sequencer.setTickPosition(tickPos);
+          sequencer.start();
+          initButtons(false);
+        });
+
+        pause.addActionListener(e -> {
+          publish(sequencer.getTickPosition());
+          sequencer.stop();
+          initButtons(true);
+        });
+
+        reset.addActionListener(e -> {
+          sequencer.stop();
+          tickPos = 0L;
+          initButtons(true);
+        });
       }
 
       private void updateTickPosition(Sequencer sequencer) throws InterruptedException {
@@ -98,12 +99,7 @@ public final class MainPanel extends JPanel {
     };
     worker.execute();
 
-    addHierarchyListener(e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-        System.out.println("DISPLAYABILITY_CHANGED");
-        worker.cancel(true);
-      }
-    });
+    addHierarchyListener(worker);
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
@@ -116,6 +112,15 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void addHierarchyListener(SwingWorker<?, ?> worker) {
+    addHierarchyListener(e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+        System.out.println("DISPLAYABILITY_CHANGED");
+        worker.cancel(true);
+      }
+    });
   }
 
   private static Component makeTitle(Color bgc) {
