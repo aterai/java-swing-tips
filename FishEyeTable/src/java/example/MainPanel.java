@@ -205,10 +205,7 @@ class FishEyeTable extends JTable {
     int rd2 = (fishEyeRowList.size() - 1) / 2;
     int rowCount = getModel().getRowCount();
     int viewRc = getViewableColoredRowCount(ccRow);
-    int viewH = 0;
-    for (int i = 0; i < viewRc; i++) {
-      viewH += fishEyeRowList.get(i).height;
-    }
+    int viewH = getViewHeight(viewRc);
     int restRc = rowCount - viewRc;
     int restH = height - viewH;
     int restRh = Math.max(1, restH / restRc); // restRh = restRh > 0 ? restRh : 1;
@@ -232,5 +229,13 @@ class FishEyeTable extends JTable {
       }
       setRowHeight(i, crh);
     }
+  }
+
+  private int getViewHeight(int count) {
+    int h = 0;
+    for (int i = 0; i < count; i++) {
+      h += fishEyeRowList.get(i).height;
+    }
+    return h;
   }
 }
