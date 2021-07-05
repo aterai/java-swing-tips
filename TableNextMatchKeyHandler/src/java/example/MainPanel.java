@@ -94,7 +94,6 @@ class TableNextMatchKeyHandler extends KeyAdapter {
       // Nothing to select
       return;
     }
-    boolean startingFromSelection = !src.getSelectionModel().isSelectionEmpty();
     char c = e.getKeyChar();
     int increment = e.isShiftDown() ? -1 : 1;
     long time = e.getWhen();
@@ -115,17 +114,17 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     }
     lastTime = time;
 
-    scrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
+    scrollNextMatch(src, max, e, prefix, startIndex);
   }
 
-  private void scrollNextMatch(JTable src, int max, KeyEvent e, String prf, int startIdx, boolean startSelection) {
+  private void scrollNextMatch(JTable src, int max, KeyEvent e, String prf, int startIdx) {
     int start = startIdx;
-    boolean startingFromSelection = startSelection;
+    boolean sfs = !src.getSelectionModel().isSelectionEmpty();
     if (start < 0 || start >= max) {
       if (e.isShiftDown()) {
         start = max - 1;
       } else {
-        startingFromSelection = false;
+        sfs = false;
         start = 0;
       }
     }
@@ -134,7 +133,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     if (index >= 0) {
       src.getSelectionModel().setSelectionInterval(index, index);
       src.scrollRectToVisible(src.getCellRect(index, TARGET_COLUMN, true));
-    } else if (startingFromSelection) { // wrap
+    } else if (sfs) { // wrap
       index = getNextMatch(src, prf, 0, bias);
       if (index >= 0) {
         src.getSelectionModel().setSelectionInterval(index, index);
@@ -156,8 +155,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
       throw new IllegalArgumentException("(0 <= startingRow < max) is false");
     }
 
-    String uprefix = prefix.toUpperCase(Locale.ENGLISH);
-
+    String upperPrefix = prefix.toUpperCase(Locale.ENGLISH);
     // start search from the next/previous element from the
     // selected element
     int increment = bias == Position.Bias.Forward ? 1 : -1;
@@ -165,7 +163,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     do {
       Object value = table.getValueAt(row, TARGET_COLUMN);
       String text = Objects.toString(value, "");
-      if (text.toUpperCase(Locale.ENGLISH).startsWith(uprefix)) {
+      if (text.toUpperCase(Locale.ENGLISH).startsWith(upperPrefix)) {
         return row;
       }
       row = (row + increment + max) % max;
