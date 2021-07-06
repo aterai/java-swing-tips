@@ -94,17 +94,17 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     startPoint.setLocation(e.getPoint());
   }
 
-  private void paintStamp(Point2D pt, int penColor) {
+  private void paintStamp(Point2D pt, int color) {
     int px = (int) pt.getX();
     int py = (int) pt.getY();
     // 1 x 1:
-    // pixels[px + py * 320] = penColor;
+    // pixels[px + py * 320] = color;
     // 3 x 3 square:
     for (int n = -1; n <= 1; n++) {
       for (int m = -1; m <= 1; m++) {
         int t = px + n + (py + m) * rect.width;
         if (t >= 0 && t < rect.width * rect.height) {
-          pixels[t] = penColor;
+          pixels[t] = color;
         }
       }
     }
