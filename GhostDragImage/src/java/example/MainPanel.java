@@ -228,9 +228,11 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     if (!(c instanceof JList)) {
       return TransferHandler.NONE;
     }
+    int cellLabelHeight = 21; // = height(15) + top(2) + bottom(2) + cell.bottom(2)
     JList<?> source = (JList<?>) c;
     int w = source.getFixedCellWidth();
-    int h = source.getFixedCellHeight() - 20; // TODO: 20
+    int h = source.getFixedCellHeight() - cellLabelHeight;
+    System.out.println(h);
     setDragImage(createCompactDragImage(source, w, h));
     setDragImageOffset(new Point(w / 2, h));
     return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
