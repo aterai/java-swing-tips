@@ -247,8 +247,8 @@ final class MenuItemHelper {
         g.setColor(accFg);
       }
       drawString(menuItem, g, text,
-                 viewRect.x + viewRect.width - menuItem.getIconTextGap() - accRect.width,
-                 accRect.y + ascent);
+          viewRect.x + viewRect.width - menuItem.getIconTextGap() - accRect.width,
+          accRect.y + ascent);
     } else {
       // *** paint the accText disabled
       if (Objects.nonNull(disabledFg)) {
@@ -299,34 +299,34 @@ final class MenuItemHelper {
     });
   }
 
-  public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
-    StringBuilder accText = new StringBuilder();
-    // KeyStroke accelerator = mi.getAccelerator();
-    Optional.ofNullable(mi.getAccelerator()).ifPresent(accelerator -> {
-      int modifiers = accelerator.getModifiers();
-      if (modifiers > 0) {
-        // accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
-        accText.append(InputEvent.getModifiersExText(modifiers)).append(acceleratorDelimiter);
-      }
-      int keyCode = accelerator.getKeyCode();
-      if (keyCode == 0) {
-        accText.append(accelerator.getKeyChar());
-      } else {
-        accText.append(KeyEvent.getKeyText(keyCode));
-      }
-    });
-    return accText.toString();
-  }
+  // public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
+  //   StringBuilder accText = new StringBuilder();
+  //   // KeyStroke accelerator = mi.getAccelerator();
+  //   Optional.ofNullable(mi.getAccelerator()).ifPresent(accelerator -> {
+  //     int modifiers = accelerator.getModifiers();
+  //     if (modifiers > 0) {
+  //       // accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
+  //       accText.append(InputEvent.getModifiersExText(modifiers)).append(acceleratorDelimiter);
+  //     }
+  //     int keyCode = accelerator.getKeyCode();
+  //     if (keyCode == 0) {
+  //       accText.append(accelerator.getKeyChar());
+  //     } else {
+  //       accText.append(KeyEvent.getKeyText(keyCode));
+  //     }
+  //   });
+  //   return accText.toString();
+  // }
 }
 
 class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
-  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
+  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int textIconGap) {
     // // Save original graphics font and color
     // Font holdf = g.getFont();
     // Color holdc = g.getColor();
 
     Graphics2D g2 = (Graphics2D) g.create();
-    // System.out.println(defaultTextIconGap);
+    // System.out.println(textIconGap);
 
     JMenuItem mi = (JMenuItem) c;
     g2.setFont(mi.getFont());
@@ -335,7 +335,7 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     MenuItemHelper.applyInsets(viewRect, mi.getInsets());
 
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
-        mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
+        mi, checkIcon, arrowIcon, viewRect, textIconGap, "+", // acceleratorDelimiter,
         true, mi.getFont(), acceleratorFont,
         sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
     sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
@@ -367,13 +367,13 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
 }
 
 class RaaBasicMenuItemUI extends BasicMenuItemUI {
-  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
+  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int textIconGap) {
     // // Save original graphics font and color
     // Font holdf = g.getFont();
     // Color holdc = g.getColor();
 
     Graphics2D g2 = (Graphics2D) g.create();
-    // System.out.println(defaultTextIconGap);
+    // System.out.println(textIconGap);
 
     JMenuItem mi = (JMenuItem) c;
     g2.setFont(mi.getFont());
@@ -382,7 +382,7 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     MenuItemHelper.applyInsets(viewRect, mi.getInsets());
 
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
-        mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, "+", // acceleratorDelimiter,
+        mi, checkIcon, arrowIcon, viewRect, textIconGap, "+", // acceleratorDelimiter,
         true, mi.getFont(), acceleratorFont,
         sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
     sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
@@ -390,7 +390,7 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     paintBackground(g2, mi, background);
     MenuItemHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
     MenuItemHelper.paintIcon(g2, lh, lr); // , g.getColor());
-    paintText(g2, lh, lr);
+    paintMenuText(g2, lh, lr);
     MenuItemHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
     MenuItemHelper.paintArrowIcon(g2, lh, lr, foreground);
 
@@ -399,8 +399,8 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     // g.setFont(holdf);
   }
 
-  private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
-                         sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
+  private void paintMenuText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
+                             sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
     if (!lh.getText().isEmpty()) {
       if (Objects.nonNull(lh.getHtmlView())) {
         // Text is HTML
