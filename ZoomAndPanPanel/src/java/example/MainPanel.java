@@ -19,7 +19,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String path = "example/CRW_3857_JFR.jpg";
+    String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {

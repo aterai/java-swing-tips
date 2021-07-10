@@ -10,31 +10,67 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = new JLabel();
-    label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
-    JScrollPane scroll = new JScrollPane(label);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
+    JLabel label1 = makeImageLabel();
+    JScrollPane scroll = makeScrollPane(label1);
     ViewportDragScrollListener l = new ViewportDragScrollListener();
     JViewport v = scroll.getViewport();
     v.addMouseMotionListener(l);
     v.addMouseListener(l);
     v.addHierarchyListener(l);
 
-    // // TEST:
-    // ComponentDragScrollListener l = new ComponentDragScrollListener();
-    // label.addMouseMotionListener(l);
-    // label.addMouseListener(l);
-    // label.addHierarchyListener(l);
+    JLabel label2 = makeImageLabel();
+    ComponentDragScrollListener l2 = new ComponentDragScrollListener();
+    label2.addMouseMotionListener(l2);
+    label2.addMouseListener(l2);
+    label2.addHierarchyListener(l2);
 
-    add(scroll);
-    scroll.setPreferredSize(new Dimension(320, 240));
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addTab("ViewportDragScrollListener", scroll);
+    tabbedPane.addTab("ComponentDragScrollListener", makeScrollPane(label2));
+
+    add(tabbedPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JLabel makeImageLabel() {
+    String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    return new JLabel(new ImageIcon(img));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+
+  private static JScrollPane makeScrollPane(Component c) {
+    JScrollPane scroll = new JScrollPane(c);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    return scroll;
   }
 
   public static void main(String[] args) {
@@ -189,5 +225,33 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     scroller.removeActionListener(listener);
     e.getComponent().setCursor(DC);
     move.setLocation(0, 0);
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 1000;
+  }
+
+  @Override public int getIconHeight() {
+    return 1000;
   }
 }

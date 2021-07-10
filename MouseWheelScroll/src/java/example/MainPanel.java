@@ -11,7 +11,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,8 +24,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = new JLabel();
-    label.setIcon(new ImageIcon(MainPanel.class.getResource("CRW_3857_JFR.jpg"))); // http://sozai-free.com/
+    JLabel label = makeImageLabel();
 
     MouseAdapter ml = new DragScrollListener();
     label.addMouseMotionListener(ml);
@@ -117,6 +121,30 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private JLabel makeImageLabel() {
+    String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    return new JLabel(new ImageIcon(img));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+
   public boolean isShiftPressed() {
     return shiftPressed;
   }
@@ -176,5 +204,33 @@ class DragScrollListener extends MouseAdapter {
 
   @Override public void mouseReleased(MouseEvent e) {
     e.getComponent().setCursor(defCursor);
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 1000;
+  }
+
+  @Override public int getIconHeight() {
+    return 1000;
   }
 }
