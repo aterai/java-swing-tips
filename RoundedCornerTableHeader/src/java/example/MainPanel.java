@@ -243,7 +243,7 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
     }
   };
 
-  public RoundedHeaderRenderer() {
+  protected RoundedHeaderRenderer() {
     super();
     firstLabel.setOpaque(false);
     lastLabel.setOpaque(false);
