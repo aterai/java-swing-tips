@@ -7,7 +7,12 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -24,7 +29,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Image image = new ImageIcon(getClass().getResource("GIANT_TCR1_2013.jpg")).getImage();
+    String path = "example/GIANT_TCR1_2013.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
     JLayeredPane layer = new BackImageLayeredPane(image);
     for (int i = 0; i < 7; i++) {
       JPanel p = createPanel(layer, i);
@@ -71,6 +85,17 @@ public final class MainPanel extends JPanel {
     int g = (int) ((i >> 8 & 0xFF) * f);
     int b = (int) ((i & 0xFF) * f);
     return new Color(r, g, b);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -142,5 +167,33 @@ class BackImageLayeredPane extends JLayeredPane {
         }
       }
     }
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.LIGHT_GRAY);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
   }
 }
