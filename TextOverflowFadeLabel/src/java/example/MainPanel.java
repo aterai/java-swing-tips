@@ -67,25 +67,23 @@ class FadeOutLabel extends JLabel {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
-    int h = getHeight() - i.top - i.bottom;
-
-    Rectangle rect = new Rectangle(i.left, i.top, w - LENGTH, h);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    r.width -= LENGTH;
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setFont(g.getFont());
-    g2.setClip(rect);
+    g2.setClip(r);
     g2.setComposite(AlphaComposite.SrcOver.derive(.99f));
     super.paintComponent(g2);
 
-    rect.width = 1;
+    int rw = r.width;
+    r.width = 1;
     float alpha = 1f;
-    for (int x = w - LENGTH; x < w; x++) {
-      rect.x = x;
+    for (int x = rw; x < rw + LENGTH; x++) {
+      r.x = x;
       alpha = Math.max(0f, alpha - DIFF);
       g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
-      g2.setClip(rect);
+      g2.setClip(r);
       super.paintComponent(g2);
     }
     g2.dispose();
@@ -101,30 +99,28 @@ class TextOverflowFadeLabel extends JLabel {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
-    int h = getHeight() - i.top - i.bottom;
-    Rectangle rect = new Rectangle(i.left, i.top, w - LENGTH, h);
-
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setFont(g.getFont());
     g2.setPaint(getForeground());
 
     FontRenderContext frc = g2.getFontRenderContext();
     TextLayout tl = new TextLayout(getText(), getFont(), frc);
-    int baseline = getBaseline(w, h);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    int baseline = getBaseline(r.width, r.height);
+    r.width -= LENGTH;
+    int rx = r.x;
+    g2.setClip(r);
+    tl.draw(g2, rx, baseline);
 
-    g2.setClip(rect);
-    tl.draw(g2, i.left, baseline);
-
-    rect.width = 1;
+    int rw = r.width;
+    r.width = 1;
     float alpha = 1f;
-    for (int x = w - LENGTH; x < w; x++) {
-      rect.x = x;
+    for (int x = rw; x < rw + LENGTH; x++) {
+      r.x = x;
       alpha = Math.max(0f, alpha - DIFF);
       g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
-      g2.setClip(rect);
-      tl.draw(g2, i.left, baseline);
+      g2.setClip(r);
+      tl.draw(g2, rx, baseline);
     }
     g2.dispose();
   }
