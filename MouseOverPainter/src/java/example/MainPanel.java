@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
-import javax.swing.text.Document;
 import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
@@ -53,25 +52,25 @@ class HighlightCursorTextArea extends JTextArea {
     super();
   }
 
-  protected HighlightCursorTextArea(Document doc) {
-    super(doc);
-  }
+  // public HighlightCursorTextArea(Document doc) {
+  //   super(doc);
+  // }
 
-  protected HighlightCursorTextArea(Document doc, String text, int rows, int columns) {
-    super(doc, text, rows, columns);
-  }
+  // public HighlightCursorTextArea(Document doc, String text, int rows, int columns) {
+  //   super(doc, text, rows, columns);
+  // }
 
-  protected HighlightCursorTextArea(int rows, int columns) {
-    super(rows, columns);
-  }
+  // public HighlightCursorTextArea(int rows, int columns) {
+  //   super(rows, columns);
+  // }
 
-  protected HighlightCursorTextArea(String text) {
-    super(text);
-  }
+  // public HighlightCursorTextArea(String text) {
+  //   super(text);
+  // }
 
-  protected HighlightCursorTextArea(String text, int rows, int columns) {
-    super(text, rows, columns);
-  }
+  // public HighlightCursorTextArea(String text, int rows, int columns) {
+  //   super(text, rows, columns);
+  // }
 
   @Override public void updateUI() {
     removeMouseMotionListener(rolloverHandler);
@@ -86,11 +85,11 @@ class HighlightCursorTextArea extends JTextArea {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    Insets i = getInsets();
-    int h = g2.getFontMetrics().getHeight();
-    int y = rollOverRowIndex * h + i.top;
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    r.height = g2.getFontMetrics().getHeight();
+    r.y += rollOverRowIndex * r.height;
     g2.setPaint(LINE_COLOR);
-    g2.fillRect(i.left, y, getSize().width - i.left - i.right, h);
+    g2.fill(r);
     g2.dispose();
     super.paintComponent(g);
   }

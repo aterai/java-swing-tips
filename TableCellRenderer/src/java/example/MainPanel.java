@@ -109,12 +109,11 @@ class WrappedLabel extends JLabel {
   }
 
   @Override public void doLayout() {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
     Font font = getFont();
     FontMetrics fm = getFontMetrics(font);
     FontRenderContext frc = fm.getFontRenderContext();
-    gvText = getWrappedGlyphVector(getText(), w, font, frc);
+    gvText = getWrappedGlyphVector(getText(), r.width, font, frc);
     super.doLayout();
   }
 

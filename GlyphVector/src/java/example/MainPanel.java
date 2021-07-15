@@ -80,10 +80,10 @@ class WrappingLabel extends JLabel {
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(getForeground());
-    Insets i = getInsets();
-    float x = i.left;
-    float y = i.top;
-    int w = getWidth() - i.left - i.right;
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    float x = r.x;
+    float y = r.y;
+    int w = r.width;
     AttributedString as = new AttributedString(getText());
     as.addAttribute(TextAttribute.FONT, getFont());
     AttributedCharacterIterator aci = as.getIterator();
@@ -111,14 +111,13 @@ class WrappedLabel extends JLabel {
   }
 
   @Override public void doLayout() {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
-    if (w != prevWidth) {
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    if (r.width != prevWidth) {
       Font font = getFont();
       FontMetrics fm = getFontMetrics(font);
       FontRenderContext frc = fm.getFontRenderContext();
-      gvText = getWrappedGlyphVector(getText(), w, font, frc);
-      prevWidth = w;
+      gvText = getWrappedGlyphVector(getText(), r.width, font, frc);
+      prevWidth = r.width;
     }
     super.doLayout();
   }

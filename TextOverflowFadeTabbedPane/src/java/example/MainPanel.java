@@ -76,9 +76,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super();
   }
 
-  protected ClippedTitleTabbedPane(int tabPlacement) {
-    super(tabPlacement);
-  }
+  // public ClippedTitleTabbedPane(int tabPlacement) {
+  //   super(tabPlacement);
+  // }
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
@@ -152,9 +152,9 @@ class TextOverflowFadeTabbedPane extends ClippedTitleTabbedPane {
     super();
   }
 
-  protected TextOverflowFadeTabbedPane(int tabPlacement) {
-    super(tabPlacement);
-  }
+  // public TextOverflowFadeTabbedPane(int tabPlacement) {
+  //   super(tabPlacement);
+  // }
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
@@ -175,30 +175,28 @@ class TextOverflowFadeLabel extends JLabel {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Insets i = getInsets();
-    int w = getWidth() - i.left - i.right;
-    int h = getHeight() - i.top - i.bottom;
-    Rectangle rect = new Rectangle(i.left, i.top, w - LENGTH, h);
-
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setFont(g.getFont());
     g2.setPaint(getForeground());
 
     FontRenderContext frc = g2.getFontRenderContext();
     TextLayout tl = new TextLayout(getText(), getFont(), frc);
-    int baseline = getBaseline(w, h);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    int baseline = getBaseline(r.width, r.height);
+    r.width -= LENGTH;
+    int rx = r.x;
+    g2.setClip(r);
+    tl.draw(g2, rx, baseline);
 
-    g2.setClip(rect);
-    tl.draw(g2, getInsets().left, baseline);
-
-    rect.width = 1;
+    int rw = r.width;
+    r.width = 1;
     float alpha = 1f;
-    for (int x = w - LENGTH; x < w; x++) {
-      rect.x = x;
+    for (int x = rw; x < rw + LENGTH; x++) {
+      r.x = x;
       alpha = Math.max(0f, alpha - DIFF);
       g2.setComposite(AlphaComposite.SrcOver.derive(alpha));
-      g2.setClip(rect);
-      tl.draw(g2, getInsets().left, baseline);
+      g2.setClip(r);
+      tl.draw(g2, rx, baseline);
     }
     g2.dispose();
   }
