@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = new DropcapLabel(TEXT);
+    JLabel label = new DropCapLabel(TEXT);
     label.setFont(new Font(Font.SERIF, Font.PLAIN, 17));
     label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(label);
@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DropcapLabel extends JLabel {
-  protected DropcapLabel(String text) {
+class DropCapLabel extends JLabel {
+  protected DropCapLabel(String text) {
     super(text);
   }
 
@@ -63,9 +63,9 @@ class DropcapLabel extends JLabel {
     g2.setPaint(getBackground());
     g2.fillRect(0, 0, getWidth(), getHeight());
 
-    Insets i = getInsets();
-    float x0 = i.left;
-    float y0 = i.top;
+    Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
+    float x0 = rect.x;
+    float y0 = rect.y;
 
     Font font = getFont();
     String txt = getText();
@@ -75,20 +75,17 @@ class DropcapLabel extends JLabel {
 
     AffineTransform at1 = AffineTransform.getScaleInstance(5d, 5d);
     Shape s1 = at1.createTransformedShape(shape);
-    Rectangle r = s1.getBounds();
-    r.grow(6, 2);
-    int rw = r.width;
-    int rh = r.height;
+    Rectangle firstLetter = s1.getBounds();
+    firstLetter.grow(6, 2);
 
-    AffineTransform at2 = AffineTransform.getTranslateInstance(x0, y0 + rh);
+    AffineTransform at2 = AffineTransform.getTranslateInstance(x0, y0 + firstLetter.height);
     Shape s2 = at2.createTransformedShape(s1);
     g2.setPaint(getForeground());
     g2.fill(s2);
 
-    float x = x0 + rw;
+    float x = x0 + firstLetter.width;
     float y = y0;
-    int w0 = getWidth() - i.left - i.right;
-    int w = w0 - rw;
+    int w = rect.width - firstLetter.width;
 
     AttributedString as = new AttributedString(txt.substring(1));
     as.addAttribute(TextAttribute.FONT, font);
@@ -98,9 +95,9 @@ class DropcapLabel extends JLabel {
       TextLayout tl = lbm.nextLayout(w);
       tl.draw(g2, x, y + tl.getAscent());
       y += tl.getDescent() + tl.getLeading() + tl.getAscent();
-      if (y0 + rh < y) {
+      if (y0 + firstLetter.height < y) {
         x = x0;
-        w = w0;
+        w = rect.width;
       }
     }
     g2.dispose();

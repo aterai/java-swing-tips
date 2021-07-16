@@ -10,20 +10,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel panel2 = new JPanel() {
       protected static final double A2 = 4d;
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Insets i = getInsets();
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.translate(i.left, i.top);
+        Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+        g2.translate(r.x, r.y);
         g2.setPaint(Color.RED);
-        int w = getWidth() - i.left - i.right;
         int px = 0;
         int py = 0;
-        for (int x = 0; x < w; x++) {
+        for (int x = 0; x < r.width; x++) {
           int y = (int) Math.pow(x / A2, 2d);
           g2.drawLine(px, py, x, y);
           px = x;
@@ -38,22 +36,22 @@ public final class MainPanel extends JPanel {
           @Override public void layoutContainer(Container target) {
             synchronized (target.getTreeLock()) {
               int nmembers = target.getComponentCount();
-              if (nmembers <= 0) {
+              if (nmembers <= 0 || !(target instanceof JComponent)) {
                 return;
               }
-              Insets insets = target.getInsets();
+              Rectangle r = SwingUtilities.calculateInnerArea((JComponent) target, null);
               int vgap = getVgap();
               int hgap = getHgap();
-              int rowh = (target.getHeight() - insets.top - insets.bottom - vgap * 2) / nmembers;
-              int x = insets.left + hgap;
-              int y = insets.top + vgap;
+              int rh = (r.height - vgap * 2) / nmembers;
+              int x = r.x + hgap;
+              int y = r.y + vgap;
               for (int i = 0; i < nmembers; i++) {
                 Component m = target.getComponent(i);
                 if (m.isVisible()) {
                   Dimension d = m.getPreferredSize();
                   m.setSize(d.width, d.height);
                   m.setLocation(x, y);
-                  y += vgap + Math.min(rowh, d.height);
+                  y += vgap + Math.min(rh, d.height);
                   x = (int) (A2 * Math.sqrt(y));
                 }
               }
@@ -72,11 +70,11 @@ public final class MainPanel extends JPanel {
 
   private static Component initPanel(String title, JComponent p) {
     p.setBorder(BorderFactory.createTitledBorder(title));
-    p.add(new JCheckBox("aaaaaaaaaaaaaaa"));
-    p.add(new JCheckBox("bbbbbbbb"));
-    p.add(new JCheckBox("ccccccccccc"));
-    p.add(new JCheckBox("ddddddd"));
-    p.add(new JCheckBox("eeeeeeeeeee"));
+    p.add(new JCheckBox("111111111111111"));
+    p.add(new JCheckBox("2222222222"));
+    p.add(new JCheckBox("33333333"));
+    p.add(new JCheckBox("4444444444"));
+    p.add(new JCheckBox("555555555555"));
     return p;
   }
 
