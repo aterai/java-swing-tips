@@ -52,6 +52,7 @@ public final class MainPanel extends JPanel {
 
 class HighlightCursorTextArea extends JTextArea {
   private static final Color LINE_COLOR = new Color(0xFA_FA_DC);
+  private final Rectangle rect = new Rectangle();
 
   @Override public void updateUI() {
     super.updateUI();
@@ -80,12 +81,12 @@ class HighlightCursorTextArea extends JTextArea {
     Caret c = getCaret();
     if (c instanceof DefaultCaret) {
       Graphics2D g2 = (Graphics2D) g.create();
-      Insets i = getInsets();
       DefaultCaret caret = (DefaultCaret) c;
-      int h = caret.height;
-      int y = caret.y;
+      Rectangle r = SwingUtilities.calculateInnerArea(this, rect);
+      r.y = caret.y;
+      r.height = caret.height;
       g2.setPaint(LINE_COLOR);
-      g2.fillRect(i.left, y, getSize().width - i.left - i.right, h);
+      g2.fill(r);
       g2.dispose();
     }
     super.paintComponent(g);

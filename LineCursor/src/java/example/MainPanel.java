@@ -9,7 +9,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
@@ -50,29 +49,29 @@ public final class MainPanel extends JPanel {
 class LineCursorTextArea extends JTextArea {
   private static final Color LINE_COLOR = Color.BLUE;
 
-  protected LineCursorTextArea() {
-    super();
-  }
+  // public LineCursorTextArea() {
+  //   super();
+  // }
 
-  protected LineCursorTextArea(Document doc) {
-    super(doc);
-  }
+  // public LineCursorTextArea(Document doc) {
+  //   super(doc);
+  // }
 
-  protected LineCursorTextArea(Document doc, String text, int rows, int columns) {
-    super(doc, text, rows, columns);
-  }
+  // public LineCursorTextArea(Document doc, String text, int rows, int columns) {
+  //   super(doc, text, rows, columns);
+  // }
 
-  protected LineCursorTextArea(int rows, int columns) {
-    super(rows, columns);
-  }
+  // public LineCursorTextArea(int rows, int columns) {
+  //   super(rows, columns);
+  // }
 
   protected LineCursorTextArea(String text) {
     super(text);
   }
 
-  protected LineCursorTextArea(String text, int rows, int columns) {
-    super(text, rows, columns);
-  }
+  // public LineCursorTextArea(String text, int rows, int columns) {
+  //   super(text, rows, columns);
+  // }
 
   @Override public void updateUI() {
     super.updateUI();
@@ -101,12 +100,11 @@ class LineCursorTextArea extends JTextArea {
     Caret c = getCaret();
     if (c instanceof DefaultCaret) {
       Graphics2D g2 = (Graphics2D) g.create();
-      Insets i = getInsets();
-      // int y = g2.getFontMetrics().getHeight() * getLineAtCaret(this) + i.top;
+      Rectangle r = SwingUtilities.calculateInnerArea(this, null);
       DefaultCaret caret = (DefaultCaret) c;
       int y = caret.y + caret.height - 1;
       g2.setPaint(LINE_COLOR);
-      g2.drawLine(i.left, y, getSize().width - i.left - i.right, y);
+      g2.drawLine(r.x, y, (int) r.getMaxX(), y);
       g2.dispose();
     }
   }
