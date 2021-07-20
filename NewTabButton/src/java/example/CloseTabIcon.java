@@ -37,20 +37,15 @@ class CloseTabIcon implements Icon {
 }
 
 class PlusIcon implements Icon {
-  private static Rectangle viewRect = new Rectangle();
+  private final Rectangle viewRect = new Rectangle();
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
 
-    Insets i = c instanceof JComponent ? ((JComponent) c).getInsets() : new Insets(0, 0, 0, 0);
-    Dimension size = c.getSize();
-
-    viewRect.x = i.left;
-    viewRect.y = i.top;
-    viewRect.width = size.width - i.right - viewRect.x;
-    viewRect.height = size.height - i.bottom - viewRect.y;
-    OperaTabViewButtonUI.tabPainter(g2, viewRect);
+    viewRect.setBounds(c.getBounds());
+    JComponent jc = c instanceof JComponent ? (JComponent) c : null;
+    OperaTabViewButtonUI.tabPainter(g2, SwingUtilities.calculateInnerArea(jc, viewRect));
 
     g2.setPaint(Color.WHITE);
     int w = viewRect.width;

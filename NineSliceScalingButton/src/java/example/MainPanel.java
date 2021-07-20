@@ -208,11 +208,9 @@ class NineSliceScalingIcon implements Icon {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     // g2.translate(x, y); // 1.8.0: work fine?
 
-    if (!(c instanceof JComponent)) {
-      return;
-    }
-
-    SwingUtilities.calculateInnerArea((JComponent) c, RECT);
+    JComponent jc = c instanceof JComponent ? (JComponent) c : null;
+    RECT.setBounds(c.getBounds());
+    SwingUtilities.calculateInnerArea(jc, RECT);
     width = RECT.width;
     height = RECT.height;
 
