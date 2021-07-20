@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -13,11 +14,10 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
-    Class<?> clz = MainPanel.class;
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
     JCheckBox check = new JCheckBox("Crossfade Type?", true);
-    ImageIcon icon1 = new ImageIcon(clz.getResource("test.png"));
-    ImageIcon icon2 = new ImageIcon(clz.getResource("test.jpg"));
+    ImageIcon icon1 = new ImageIcon(Objects.requireNonNull(cl.getResource("example/test.png")));
+    ImageIcon icon2 = new ImageIcon(Objects.requireNonNull(cl.getResource("example/test.jpg")));
     JButton button = new JButton("change");
 
     AtomicInteger alpha = new AtomicInteger(10);
@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         if (check.isSelected()) {
           g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha.get() * .1f));
         }
-        g2.drawImage(icon1.getImage(), 0, 0, icon1.getIconWidth(), icon1.getIconHeight(), this);
+        icon1.paintIcon(this, g2, 0, 0);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha.get() * .1f));
-        g2.drawImage(icon2.getImage(), 0, 0, icon2.getIconWidth(), icon2.getIconHeight(), this);
+        icon2.paintIcon(this, g2, 0, 0);
         g2.dispose();
       }
     };

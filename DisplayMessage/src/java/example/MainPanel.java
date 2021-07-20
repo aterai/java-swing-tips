@@ -7,6 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -36,7 +41,15 @@ public final class MainPanel extends JPanel {
     popup.add(openItem);
     popup.add(exitItem);
 
-    Image image = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
     try {
       SystemTray.getSystemTray().add(new TrayIcon(image, "TRAY", popup));
       // icon.addActionListener(e -> log.append(e.toString() + "\n"));
@@ -61,6 +74,17 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {

@@ -5,13 +5,14 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
+    ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("16x16.png")));
 
     // JComboBox<String> combo01 = new JComboBox<>(makeModel());
 
@@ -147,7 +148,7 @@ final class ComboBoxUtil {
         int ih = icon.getIconHeight();
         int ch = getIconHeight();
         int yy = Math.max(Math.round((ch - ih) / 2f), 0);
-        g2.drawImage(icon.getImage(), 0, yy, c);
+        icon.paintIcon(c, g2, 0, yy);
         g2.dispose();
       }
 
