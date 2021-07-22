@@ -13,24 +13,34 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JSplitPane split = new JSplitPane();
     split.setContinuousLayout(true);
     split.setResizeWeight(.5);
     split.setDividerSize(0);
 
-    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage source = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
 
-    BufferedImage source = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics g = source.createGraphics();
-    g.drawImage(icon.getImage(), 0, 0, this);
+    g.drawImage(source, 0, 0, this);
     g.dispose();
     ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
     BufferedImage destination = colorConvert.filter(source, null);
@@ -38,13 +48,12 @@ public final class MainPanel extends JPanel {
     Component beforeCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        int iw = icon.getIconWidth();
-        int ih = icon.getIconHeight();
+        int iw = source.getWidth();
+        int ih = source.getHeight();
         Dimension dim = split.getSize();
         int x = (dim.width - iw) / 2;
         int y = (dim.height - ih) / 2;
-        g.drawImage(icon.getImage(), x, y, iw, ih, this);
+        g.drawImage(source, x, y, iw, ih, this);
       }
     };
     split.setLeftComponent(beforeCanvas);
@@ -74,6 +83,17 @@ public final class MainPanel extends JPanel {
     add(check, BorderLayout.SOUTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -219,5 +239,33 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
         thumb.setFrame(splitPane.getWidth() / 2d - R, pos - R, R + R, R + R);
       }
     }
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.ORANGE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.CYAN);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
   }
 }
