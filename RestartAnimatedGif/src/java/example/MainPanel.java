@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/9-0.gif";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    BufferedImage bi = Optional.ofNullable(url).map(u -> {
+    Image img = Optional.ofNullable(url).map(u -> {
       try (InputStream s = u.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeMissingImage);
 
-    ImageIcon icon9 = new ImageIcon(bi);
+    ImageIcon icon9 = new ImageIcon(img);
     ImageIcon animatedIcon = url == null ? icon9 : new ImageIcon(url);
 
     JTextArea textArea = new JTextArea();
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

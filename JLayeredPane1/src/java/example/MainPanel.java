@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeMissingImage);
 
-    JLayeredPane layer = new BackImageLayeredPane(image);
+    JLayeredPane layer = new BackImageLayeredPane(img);
     for (int i = 0; i < 7; i++) {
       JPanel p = createPanel(layer, i);
       p.setLocation(i * 20 + 10, i * 20 + 5);
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     return new Color(r, g, b);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

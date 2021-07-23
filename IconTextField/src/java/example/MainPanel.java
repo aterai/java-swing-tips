@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/16x16.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeMissingImage);
 
-    Icon icon = new ImageIcon(image);
+    Icon icon = new ImageIcon(img);
     JLabel label1 = new JLabel(icon);
     JTextField field1 = new JTextField("1111111111111111") {
       @Override public void updateUI() {
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

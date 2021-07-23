@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
     String path = "example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
     scroll.setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

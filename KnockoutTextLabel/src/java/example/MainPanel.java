@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

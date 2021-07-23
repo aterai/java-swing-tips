@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     popup.add(exitItem);
 
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(url -> {
+    Image img = Optional.ofNullable(cl.getResource("example/16x16.png")).map(url -> {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MainPanel::makeMissingImage);
 
     try {
-      SystemTray.getSystemTray().add(new TrayIcon(image, "TRAY", popup));
+      SystemTray.getSystemTray().add(new TrayIcon(img, "TRAY", popup));
       // icon.addActionListener(e -> log.append(e.toString() + "\n"));
     } catch (AWTException ex) {
       throw new IllegalStateException(ex);
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
