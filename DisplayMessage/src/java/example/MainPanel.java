@@ -46,13 +46,13 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        return makeDefaultTrayImage();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
-
+    }).orElseGet(MainPanel::makeDefaultTrayImage);
+    TrayIcon icon = new TrayIcon(img, "TRAY", popup);
+    // icon.addActionListener(e -> log.append(e.toString() + "\n"));
     try {
-      SystemTray.getSystemTray().add(new TrayIcon(img, "TRAY", popup));
-      // icon.addActionListener(e -> log.append(e.toString() + "\n"));
+      SystemTray.getSystemTray().add(icon);
     } catch (AWTException ex) {
       throw new IllegalStateException(ex);
     }
@@ -76,13 +76,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("html.missingImage");
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
+  private static Image makeDefaultTrayImage() {
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
+    icon.paintIcon(null, g2, 0, 0);
     g2.dispose();
     return bi;
   }

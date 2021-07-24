@@ -5,14 +5,17 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private final JDialog dialog = new JDialog();
   private final Timer animator = new Timer(100, null);
-  private final transient Image[] images = new Image[4];
-  private final transient TrayIcon icon;
   private int idx;
 
   private MainPanel() {
@@ -23,23 +26,13 @@ public final class MainPanel extends JPanel {
       throw new UnsupportedOperationException("SystemTray is not supported");
     }
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    images[0] = new ImageIcon(cl.getResource("example/16x16.png")).getImage();
-    images[1] = new ImageIcon(cl.getResource("example/16x16l.png")).getImage();
-    images[2] = images[0];
-    images[3] = new ImageIcon(cl.getResource("example/16x16r.png")).getImage();
-
     dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     dialog.setSize(new Dimension(120, 100));
     dialog.setLocationRelativeTo(null);
     dialog.setTitle("TEST: JDialog");
 
     // TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("animated.gif")).getImage(), "TRAY", popup);
-    icon = new TrayIcon(images[0], "TRAY", makeTrayPopupMenu());
-    animator.addActionListener(e -> {
-      icon.setImage(images[idx]);
-      idx = (idx + 1) % images.length;
-    });
+    TrayIcon icon = makeTrayIcon();
     try {
       SystemTray.getSystemTray().add(icon);
     } catch (AWTException ex) {
@@ -47,7 +40,13 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private PopupMenu makeTrayPopupMenu() {
+  private TrayIcon makeTrayIcon() {
+    Image[] images = new Image[4];
+    images[0] = makeImage("example/16x16.png");
+    images[1] = makeImage("example/16x16l.png");
+    images[2] = images[0];
+    images[3] = makeImage("example/16x16r.png");
+
     MenuItem item1 = new MenuItem("Open:Frame");
     item1.addActionListener(e -> {
       Container c = getTopLevelAncestor();
@@ -65,7 +64,8 @@ public final class MainPanel extends JPanel {
     MenuItem item4 = new MenuItem("Animation:Stop");
     item4.addActionListener(e -> {
       animator.stop();
-      icon.setImage(images[0]);
+      SystemTray tray = SystemTray.getSystemTray();
+      Stream.of(tray.getTrayIcons()).forEach(i -> i.setImage(images[0]));
     });
 
     MenuItem item5 = new MenuItem("Exit");
@@ -85,7 +85,34 @@ public final class MainPanel extends JPanel {
     popup.addSeparator();
     popup.add(item5);
 
-    return popup;
+    TrayIcon icon = new TrayIcon(images[0], "TRAY", popup);
+    animator.addActionListener(e -> {
+      icon.setImage(images[idx]);
+      idx = (idx + 1) % images.length;
+    });
+    return icon;
+  }
+
+  private static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeDefaultTrayImage();
+      }
+    }).orElseGet(MainPanel::makeDefaultTrayImage);
+  }
+
+  private static Image makeDefaultTrayImage() {
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    icon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {

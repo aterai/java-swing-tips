@@ -65,18 +65,21 @@ public final class MainPanel extends JPanel {
     popup.add(item2);
 
     Dimension d = SystemTray.getSystemTray().getTrayIconSize();
-    BufferedImage image = makeBufferedImage(new StarIcon(), d.width, d.height);
+    Image image = makePreferredSizeImage(new StarIcon(), d.width, d.height);
+    TrayIcon icon = new TrayIcon(image, "TRAY", popup);
     try {
-      SystemTray.getSystemTray().add(new TrayIcon(image, "TRAY", popup));
+      SystemTray.getSystemTray().add(icon);
     } catch (AWTException ex) {
       throw new IllegalStateException(ex);
     }
   }
 
-  private static BufferedImage makeBufferedImage(Icon icon, int w, int h) {
+  private static Image makePreferredSizeImage(Icon icon, int w, int h) {
+    int iw = icon.getIconWidth();
+    int ih = icon.getIconHeight();
     BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
-    icon.paintIcon(null, g2, (w - icon.getIconWidth()) / 2, (h - icon.getIconWidth()) / 2);
+    icon.paintIcon(null, g2, (w - iw) / 2, (h - ih) / 2);
     g2.dispose();
     return image;
   }
@@ -94,8 +97,8 @@ public final class MainPanel extends JPanel {
     }
     JFrame frame = new JFrame("@title@");
     frame.setIconImages(Arrays.asList(
-        makeBufferedImage(new StarIcon(), 16, 16),
-        makeBufferedImage(new StarIcon(16, 8, 5), 40, 40)));
+        makePreferredSizeImage(new StarIcon(), 16, 16),
+        makePreferredSizeImage(new StarIcon(16, 8, 5), 40, 40)));
     if (SystemTray.isSupported()) {
       // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       // frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

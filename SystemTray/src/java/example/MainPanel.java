@@ -5,6 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -44,8 +49,26 @@ public final class MainPanel extends JPanel {
     popup.add(item1);
     popup.add(item2);
 
-    Image image = new ImageIcon(MainPanel.class.getResource("16x16.png")).getImage();
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeDefaultTrayImage();
+      }
+    }).orElseGet(MainPanel::makeDefaultTrayImage);
     return new TrayIcon(image, "TRAY", popup);
+  }
+
+  private static Image makeDefaultTrayImage() {
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    icon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {

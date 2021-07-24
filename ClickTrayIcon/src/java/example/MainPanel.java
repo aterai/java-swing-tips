@@ -52,11 +52,8 @@ public final class MainPanel extends JPanel {
     popup.add(open);
     popup.add(exit);
 
-    Image image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-    Graphics g = image.getGraphics();
-    new StarIcon().paintIcon(null, g, 0, 0);
-    g.dispose();
-
+    Dimension d = SystemTray.getSystemTray().getTrayIconSize();
+    Image image = makePreferredSizeImage(new StarIcon(), d.width, d.height);
     TrayIcon icon = new TrayIcon(image, "Click Test", popup);
     icon.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
@@ -71,6 +68,16 @@ public final class MainPanel extends JPanel {
     });
 
     return icon;
+  }
+
+  private static Image makePreferredSizeImage(Icon icon, int w, int h) {
+    int iw = icon.getIconWidth();
+    int ih = icon.getIconHeight();
+    BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = image.createGraphics();
+    icon.paintIcon(null, g2, (w - iw) / 2, (h - ih) / 2);
+    g2.dispose();
+    return image;
   }
 
   public static void main(String[] args) {
