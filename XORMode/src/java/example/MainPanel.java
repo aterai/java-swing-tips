@@ -8,14 +8,39 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
-    add(new ImageIconPanel(icon));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
+    add(new ImagePanel(img));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -38,15 +63,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ImageIconPanel extends JPanel {
+class ImagePanel extends JPanel {
   private transient RubberBandingListener rbl;
   private final transient BasicStroke stroke = new BasicStroke(2f);
   private final Path2D rubberBand = new Path2D.Double();
-  private final ImageIcon icon;
+  private final transient Image image;
 
-  protected ImageIconPanel(ImageIcon icon) {
+  protected ImagePanel(Image image) {
     super();
-    this.icon = icon;
+    this.image = image;
   }
 
   @Override public void updateUI() {
@@ -61,13 +86,12 @@ class ImageIconPanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-
-    int iw = icon.getIconWidth();
-    int ih = icon.getIconHeight();
+    int iw = image.getWidth(this);
+    int ih = image.getHeight(this);
     Dimension dim = getSize();
     int x = (dim.width - iw) / 2;
     int y = (dim.height - ih) / 2;
-    g.drawImage(icon.getImage(), x, y, iw, ih, this);
+    g.drawImage(image, x, y, iw, ih, this);
 
     g2.setPaint(Color.RED);
     g2.fillOval(10, 10, 32, 32);
@@ -125,5 +149,33 @@ class ImageIconPanel extends JPanel {
       srcPoint.setLocation(e.getPoint());
       e.getComponent().repaint();
     }
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
   }
 }
