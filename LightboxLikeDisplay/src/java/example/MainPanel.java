@@ -11,19 +11,32 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
     EventQueue.invokeLater(() -> {
-      getRootPane().setGlassPane(new LightboxGlassPane());
+      getRootPane().setGlassPane(new LightboxGlassPane(img));
       getRootPane().getGlassPane().setVisible(false);
     });
     JButton button = new JButton("Open");
@@ -31,6 +44,17 @@ public final class MainPanel extends JPanel {
     add(makeDummyPanel());
     add(button);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   private JPanel makeDummyPanel() {
@@ -69,17 +93,21 @@ public final class MainPanel extends JPanel {
 
 class LightboxGlassPane extends JPanel {
   private static final int BW = 5;
-  private final ImageIcon image = new ImageIcon(LightboxGlassPane.class.getResource("test.png"));
   private final transient AnimeIcon animatedIcon = new AnimeIcon();
   private float alpha;
-  private int curimgw;
-  private int curimgh;
+  private final Dimension currentSize = new Dimension();
   private final Rectangle rect = new Rectangle();
   private final Timer animator = new Timer(10, e -> {
     animatedIcon.next();
     repaint();
   });
   private transient Handler handler;
+  private final transient BufferedImage image;
+
+  protected LightboxGlassPane(BufferedImage image) {
+    super();
+    this.image = image;
+  }
 
   @Override public void updateUI() {
     removeMouseListener(handler);
@@ -113,8 +141,7 @@ class LightboxGlassPane extends JPanel {
       rootPane.getLayeredPane().setVisible(!b);
     }
     if (b && !animator.isRunning()) {
-      curimgw = 40;
-      curimgh = 40;
+      currentSize.setSize(40, 40);
       alpha = 0f;
       animator.start();
     } else {
@@ -127,19 +154,19 @@ class LightboxGlassPane extends JPanel {
     Optional.ofNullable(getRootPane()).ifPresent(r -> r.getLayeredPane().print(g));
     super.paintComponent(g);
 
-    if (curimgh < image.getIconHeight() + BW + BW) {
-      curimgh += image.getIconHeight() / 16;
-    } else if (curimgw < image.getIconWidth() + BW + BW) {
-      curimgh = image.getIconHeight() + BW + BW;
-      curimgw += image.getIconWidth() / 16;
+    if (currentSize.height < image.getHeight() + BW + BW) {
+      currentSize.height += image.getHeight() / 16;
+    } else if (currentSize.width < image.getWidth() + BW + BW) {
+      currentSize.height = image.getHeight() + BW + BW;
+      currentSize.width += image.getWidth() / 16;
     } else if (1f - alpha > 0) {
-      curimgw = image.getIconWidth() + BW + BW;
+      currentSize.width = image.getWidth() + BW + BW;
       alpha = alpha + .1f;
     } else {
       animatedIcon.setRunning(false);
       animator.stop();
     }
-    rect.setSize(curimgw, curimgh);
+    rect.setSize(currentSize);
     Rectangle screen = getBounds();
     Point centerPt = new Point(screen.x + screen.width / 2, screen.y + screen.height / 2);
     rect.setLocation(centerPt.x - rect.width / 2, centerPt.y - rect.height / 2);
@@ -152,7 +179,7 @@ class LightboxGlassPane extends JPanel {
 
     if (alpha > 0) {
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(alpha, 1f)));
-      g2.drawImage(image.getImage(), rect.x + BW, rect.y + BW, image.getIconWidth(), image.getIconHeight(), this);
+      g2.drawImage(image, rect.x + BW, rect.y + BW, image.getWidth(), image.getHeight(), this);
     } else {
       int cx = centerPt.x - animatedIcon.getIconWidth() / 2;
       int cy = centerPt.y - animatedIcon.getIconHeight() / 2;
@@ -213,5 +240,30 @@ class AnimeIcon implements Icon {
 
   @Override public int getIconHeight() {
     return HEIGHT;
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 240;
+  }
+
+  @Override public int getIconHeight() {
+    return 180;
   }
 }
