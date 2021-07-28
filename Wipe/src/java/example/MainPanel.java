@@ -5,6 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,14 +18,25 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Timer animator = new Timer(5, null);
-    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
     Component wipe = new JComponent() {
       private int ww;
       @Override protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
+        int iw = image.getWidth(this);
+        int ih = image.getHeight(this);
         if (getWipeMode() == Wipe.IN) {
-          if (ww < icon.getIconWidth()) {
+          if (ww < iw) {
             ww += 10;
           } else {
             animator.stop();
@@ -32,9 +48,7 @@ public final class MainPanel extends JPanel {
             animator.stop();
           }
         }
-        int iw = icon.getIconWidth();
-        int ih = icon.getIconHeight();
-        g.drawImage(icon.getImage(), 0, 0, iw, ih, this);
+        g.drawImage(image, 0, 0, iw, ih, this);
         g.fillRect(ww, 0, iw, ih);
       }
     };
@@ -69,6 +83,17 @@ public final class MainPanel extends JPanel {
     return mode;
   }
 
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -91,4 +116,31 @@ public final class MainPanel extends JPanel {
 
 enum Wipe {
   IN, OUT
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setPaint(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+    g2.setPaint(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
+  }
 }
