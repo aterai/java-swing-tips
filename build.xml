@@ -339,7 +339,7 @@
 
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-    <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-2.jar"/>
+    <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
     <condition property="jdk9orlater">
       <javaversion atleast="9"/>
     </condition>
