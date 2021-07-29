@@ -54,10 +54,7 @@ public final class MainPanel extends JPanel {
     p.add(box, BorderLayout.NORTH);
     p.setInputVerifier(new InputVerifier() {
       @Override public boolean verify(JComponent c) {
-        if (c.isShowing()) {
-          return list.stream().allMatch(tf -> tf.getInputVerifier().verify(tf));
-        }
-        return true;
+        return !c.isShowing() || list.stream().allMatch(tf -> tf.getInputVerifier().verify(tf));
       }
     });
 
@@ -117,7 +114,7 @@ public final class MainPanel extends JPanel {
 // Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
   @Override public boolean verify(JComponent c) {
-    boolean verified = false;
+    boolean verified;
     if (c instanceof JTextComponent) {
       JTextComponent textField = (JTextComponent) c;
       try {
@@ -128,6 +125,8 @@ class IntegerInputVerifier extends InputVerifier {
         // System.out.println("InputVerifier#verify: false");
         // UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
+    } else {
+      verified = false;
     }
     return verified;
   }
