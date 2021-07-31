@@ -54,61 +54,11 @@ public final class MainPanel extends JPanel {
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    // File file = new File(System.getProperty("user.dir"), "anime.gif");
+    // File f = new File(System.getProperty("user.dir"), "anime.gif");
     JButton button = new JButton("make");
     button.addActionListener(e -> {
-      BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-      Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("gif");
       try {
-        ImageWriter writer = it.hasNext() ? it.next() : null;
-        if (Objects.isNull(writer)) {
-          throw new IOException();
-        }
-
-        File file = File.createTempFile("anime", ".gif");
-        file.deleteOnExit();
-        ImageOutputStream stream = ImageIO.createImageOutputStream(file);
-        writer.setOutput(stream);
-        writer.prepareWriteSequence(null);
-
-        IIOMetadataNode gce = new IIOMetadataNode("GraphicControlExtension");
-        gce.setAttribute("disposalMethod", "none");
-        gce.setAttribute("userInputFlag", "FALSE");
-        gce.setAttribute("transparentColorFlag", "FALSE");
-        gce.setAttribute("transparentColorIndex", "0");
-        gce.setAttribute("delayTime", Objects.toString(DELAY));
-
-        IIOMetadataNode ae = new IIOMetadataNode("ApplicationExtension");
-        ae.setAttribute("applicationID", "NETSCAPE");
-        ae.setAttribute("authenticationCode", "2.0");
-        // last two bytes is an unsigned short (little endian) that
-        // indicates the the number of times to loop.
-        // 0 means loop forever.
-        ae.setUserObject(new byte[] {0x1, 0x0, 0x0});
-
-        IIOMetadataNode aes = new IIOMetadataNode("ApplicationExtensions");
-        aes.appendChild(ae);
-
-        // Create animated GIF using imageio | Oracle Community
-        // https://community.oracle.com/thread/1264385
-        ImageWriteParam iwp = writer.getDefaultWriteParam();
-        IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image), iwp);
-        String metaFormat = metadata.getNativeMetadataFormatName();
-        Node root = metadata.getAsTree(metaFormat);
-        root.appendChild(gce);
-        root.appendChild(aes);
-        metadata.setFromTree(metaFormat, root);
-
-        // make frame
-        for (int i = 0; i < list.size() * DELAY; i++) {
-          paintFrame(image, list);
-          Collections.rotate(list, 1);
-          writeToSequence(writer, image, metadata);
-          metadata = null;
-        }
-        writer.endWriteSequence();
-        stream.close();
-
+        File file = createAnimatedGifFile();
         String path = file.getAbsolutePath();
         label.setText(path);
         label.setIcon(new ImageIcon(path));
@@ -118,10 +68,64 @@ public final class MainPanel extends JPanel {
         label.setIcon(null);
       }
     });
-
     add(label);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private File createAnimatedGifFile() throws IOException {
+    BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+    Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("gif");
+
+    ImageWriter writer = it.hasNext() ? it.next() : null;
+    if (Objects.isNull(writer)) {
+      throw new IOException();
+    }
+
+    File file = File.createTempFile("anime", ".gif");
+    file.deleteOnExit();
+    try (ImageOutputStream stream = ImageIO.createImageOutputStream(file)) {
+      writer.setOutput(stream);
+      writer.prepareWriteSequence(null);
+
+      IIOMetadataNode gce = new IIOMetadataNode("GraphicControlExtension");
+      gce.setAttribute("disposalMethod", "none");
+      gce.setAttribute("userInputFlag", "FALSE");
+      gce.setAttribute("transparentColorFlag", "FALSE");
+      gce.setAttribute("transparentColorIndex", "0");
+      gce.setAttribute("delayTime", Objects.toString(DELAY));
+
+      IIOMetadataNode ae = new IIOMetadataNode("ApplicationExtension");
+      ae.setAttribute("applicationID", "NETSCAPE");
+      ae.setAttribute("authenticationCode", "2.0");
+      // last two bytes is an unsigned short (little endian) that
+      // indicates the number of times to loop.
+      // 0 means loop forever.
+      ae.setUserObject(new byte[]{0x1, 0x0, 0x0});
+
+      IIOMetadataNode aes = new IIOMetadataNode("ApplicationExtensions");
+      aes.appendChild(ae);
+
+      // Create animated GIF using imageio | Oracle Community
+      // https://community.oracle.com/thread/1264385
+      ImageWriteParam iwp = writer.getDefaultWriteParam();
+      IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image), iwp);
+      String metaFormat = metadata.getNativeMetadataFormatName();
+      Node root = metadata.getAsTree(metaFormat);
+      root.appendChild(gce);
+      root.appendChild(aes);
+      metadata.setFromTree(metaFormat, root);
+
+      // make frame
+      for (int i = 0; i < list.size() * DELAY; i++) {
+        paintFrame(image, list);
+        Collections.rotate(list, 1);
+        writeToSequence(writer, image, metadata);
+        metadata = null;
+      }
+      writer.endWriteSequence();
+    }
+    return file;
   }
 
   private static void paintFrame(BufferedImage image, List<Shape> list) {
@@ -130,7 +134,7 @@ public final class MainPanel extends JPanel {
     g2.fillRect(0, 0, WIDTH, HEIGHT);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(ELLIPSE_COLOR);
-    float size = (float) list.size();
+    float size = list.size();
     list.forEach(s -> {
       float alpha = (list.indexOf(s) + 1) / size;
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
