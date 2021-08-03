@@ -32,8 +32,7 @@ public final class MainPanel extends JPanel {
   private static final double R = 20d;
   private static final double SX = 20d;
   private static final double SY = 20d;
-  private static final int WIDTH = (int) (R * 8 + SX * 2);
-  private static final int HEIGHT = (int) (R * 8 + SY * 2);
+  private final Dimension size = new Dimension((int) (R * 8 + SX * 2), (int) (R * 8 + SY * 2));
   private final List<Shape> list = new ArrayList<>(Arrays.asList(
       new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),
       new Ellipse2D.Double(SX + 5 * R, SY + 1 * R, 2 * R, 2 * R),
@@ -46,7 +45,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JLabel label = new JLabel();
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
@@ -54,11 +52,10 @@ public final class MainPanel extends JPanel {
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    // File f = new File(System.getProperty("user.dir"), "anime.gif");
     JButton button = new JButton("make");
     button.addActionListener(e -> {
       try {
-        File file = createAnimatedGifFile();
+        File file = createAnimatedGifFile(list, size);
         String path = file.getAbsolutePath();
         label.setText(path);
         label.setIcon(new ImageIcon(path));
@@ -68,20 +65,18 @@ public final class MainPanel extends JPanel {
         label.setIcon(null);
       }
     });
+
     add(label);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private File createAnimatedGifFile() throws IOException {
-    BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+  private static File createAnimatedGifFile(List<Shape> list, Dimension size) throws IOException {
     Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("gif");
-
     ImageWriter writer = it.hasNext() ? it.next() : null;
     if (Objects.isNull(writer)) {
       throw new IOException();
     }
-
     File file = File.createTempFile("anime", ".gif");
     file.deleteOnExit();
     try (ImageOutputStream stream = ImageIO.createImageOutputStream(file)) {
@@ -108,6 +103,7 @@ public final class MainPanel extends JPanel {
 
       // Create animated GIF using imageio | Oracle Community
       // https://community.oracle.com/thread/1264385
+      BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
       ImageWriteParam iwp = writer.getDefaultWriteParam();
       IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image), iwp);
       String metaFormat = metadata.getNativeMetadataFormatName();
@@ -131,7 +127,7 @@ public final class MainPanel extends JPanel {
   private static void paintFrame(BufferedImage image, List<Shape> list) {
     Graphics2D g2 = image.createGraphics();
     g2.setPaint(Color.WHITE);
-    g2.fillRect(0, 0, WIDTH, HEIGHT);
+    g2.fillRect(0, 0, image.getWidth(), image.getHeight());
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(ELLIPSE_COLOR);
     float size = list.size();
