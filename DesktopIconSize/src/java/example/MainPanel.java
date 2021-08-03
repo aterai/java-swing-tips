@@ -42,11 +42,11 @@ public final class MainPanel extends JPanel {
     mb.add(button);
     mb.add(Box.createHorizontalGlue());
     mb.add(check);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     addIconifiedFrame(desktop, createFrame("Frame", 30, 10));
     addIconifiedFrame(desktop, createFrame("Frame", 50, 30));
     add(desktop);
-    add(mb, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -90,8 +90,8 @@ public final class MainPanel extends JPanel {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       UIManager.put("DesktopIcon.width", ICON_SIZE.width);
       // TEST:
-      // Font font = UIManager.getFont("InternalFrame.titleFont");
-      // UIManager.put("InternalFrame.titleFont", font.deriveFont(30f));
+      // Font f = UIManager.getFont("InternalFrame.titleFont");
+      // UIManager.put("InternalFrame.titleFont", f.deriveFont(30f));
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();

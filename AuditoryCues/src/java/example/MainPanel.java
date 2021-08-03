@@ -21,25 +21,25 @@ import javax.swing.*;
 // Magic with Merlin: Swinging audio
 // https://www.ibm.com/developerworks/java/library/j-mer0730/
 public final class MainPanel extends JPanel {
+  private static final String AUDITORY_KEY = "AuditoryCues.playList";
   private static final String[] AUDITORY_CUES = {
-    "OptionPane.errorSound", "OptionPane.informationSound",
-    "OptionPane.questionSound", "OptionPane.warningSound"
+      "OptionPane.errorSound", "OptionPane.informationSound",
+      "OptionPane.questionSound", "OptionPane.warningSound"
   };
 
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
 
     JButton button1 = new JButton("showMessageDialog1");
     button1.addActionListener(e -> {
-      UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
+      UIManager.put(AUDITORY_KEY, AUDITORY_CUES);
       JOptionPane.showMessageDialog(panel, "showMessageDialog1");
     });
 
     JButton button2 = new JButton("showMessageDialog2");
     button2.addActionListener(e -> {
-      UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
+      UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
       showMessageDialogAndPlayAudio(panel, "showMessageDialog2", "notice2.wav");
     });
 
@@ -49,7 +49,8 @@ public final class MainPanel extends JPanel {
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    add(mb, BorderLayout.NORTH);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(panel);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -61,7 +62,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
+  public void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
     try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource));
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, soundStream.getFormat()))) {
 
@@ -133,10 +134,10 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
-    // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.defaultCueList"));
-    // UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.noAuditoryCues"));
-    UIManager.put("AuditoryCues.playList", AUDITORY_CUES);
+    // UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.allAuditoryCues"));
+    // UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.defaultCueList"));
+    // UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
+    UIManager.put(AUDITORY_KEY, AUDITORY_CUES);
     // UIManager.put("OptionPane.informationSound", "/example/notice2.wav");
     // UIManager.put("OptionPane.informationSound", "sounds/OptionPaneError.wav");
     // System.out.println(UIManager.get("AuditoryCues.actionMap"));

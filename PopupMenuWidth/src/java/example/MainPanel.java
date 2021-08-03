@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     // item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
     makeMenu(menu);
 
-    add(mb, BorderLayout.NORTH);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
