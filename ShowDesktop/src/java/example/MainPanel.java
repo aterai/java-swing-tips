@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static<T> List<T> reverseList(List<T> list) {
+  public static <T> List<T> reverseList(List<T> list) {
     // List<T> reverse = new ArrayList<>(list);
     Collections.reverse(list);
     return list;
