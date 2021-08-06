@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     listenerList.remove(FontChangeListener.class, l);
   }
 
-  // Notify all listeners that have registered interest for
+  // Notify all listeners that have registered interest in
   // notification on this event type.The event instance
   // is lazily created using the parameters passed into
   // the fire method.
@@ -81,6 +81,7 @@ public final class MainPanel extends JPanel {
 
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     label.setFont(FONT12);
     MyComboBox combo = new MyComboBox();
@@ -91,7 +92,6 @@ public final class MainPanel extends JPanel {
     panel.add(label);
     panel.add(combo);
     panel.add(button);
-    add(menuBar, BorderLayout.NORTH);
     add(panel);
     setPreferredSize(new Dimension(320, 240));
   }

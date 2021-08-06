@@ -21,7 +21,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     // http://www.famfamfam.com/lab/icons/mini/
-    JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
+    Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("page_new.gif")));
+    JButton button = new JButton(icon) {
       private transient MouseListener handler;
       @Override public void updateUI() {
         removeMouseListener(handler);
@@ -95,8 +96,8 @@ public final class MainPanel extends JPanel {
     JMenu m1 = new JMenu("Tab");
     m1.add("removeAll").addActionListener(e -> tabs.removeAll());
     menuBar.add(m1);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
-    add(menuBar, BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }
