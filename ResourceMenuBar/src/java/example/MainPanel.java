@@ -17,15 +17,15 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     initActions(getActions());
-    JPanel menuPanel = new JPanel(new BorderLayout());
+
     JMenuBar menuBar = BAR_FACTORY.createMenuBar();
-    menuPanel.add(menuBar, BorderLayout.NORTH);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     JToolBar toolBar = BAR_FACTORY.createToolBar();
     if (Objects.nonNull(toolBar)) {
-      menuPanel.add(toolBar, BorderLayout.SOUTH);
+      add(toolBar, BorderLayout.NORTH);
     }
-    add(menuPanel, BorderLayout.NORTH);
+
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }

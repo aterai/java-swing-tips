@@ -47,10 +47,10 @@ public final class BarFactory {
     // initActions();
   }
 
-  public BarFactory(ResourceBundle res) {
-    resources = res;
-    // initActions();
-  }
+  // public BarFactory(ResourceBundle res) {
+  //   resources = res;
+  //   // initActions();
+  // }
 
   public void initActions(Action... actions) {
     // Action[] actions = getActions();
