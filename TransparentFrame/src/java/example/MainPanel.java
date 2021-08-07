@@ -11,7 +11,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -49,8 +48,9 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p2));
     desktop.add(createFrame(p3));
 
-    URL url = getClass().getResource("GIANT_TCR1_2013.jpg");
-    BufferedImage image = Optional.ofNullable(url).map(u -> {
+    String path = "example/GIANT_TCR1_2013.jpg";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
