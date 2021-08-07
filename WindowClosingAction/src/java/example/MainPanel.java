@@ -17,10 +17,11 @@ public final class MainPanel extends JPanel {
     JPopupMenu popup = new JPopupMenu();
     initMenu(popup);
 
-    JMenuBar bar = new JMenuBar();
+    JMenuBar menuBar = new JMenuBar();
     JMenu menu = new JMenu("File");
     initMenu(menu);
-    bar.add(menu);
+    menuBar.add(menu);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     JToolBar toolBar = new JToolBar();
     toolBar.add(new JLabel("Floatable JToolBar:"));
@@ -29,16 +30,16 @@ public final class MainPanel extends JPanel {
 
     JTree tree = new JTree();
     tree.setComponentPopupMenu(popup);
-    add(bar, BorderLayout.NORTH);
-    add(new JScrollPane(tree));
+
     add(toolBar, BorderLayout.SOUTH);
+    add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
   }
 
   private static void initMenu(JComponent p) {
     Stream.of(
-      new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
-      new JSeparator(), new JMenuItem(new ExitAction())).forEach(p::add);
+        new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
+        new JSeparator(), new JMenuItem(new ExitAction())).forEach(p::add);
   }
 
   public static void main(String[] args) {
