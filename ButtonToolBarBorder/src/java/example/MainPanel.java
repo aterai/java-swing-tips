@@ -15,8 +15,8 @@ public final class MainPanel extends JPanel {
     UIManager.put("Button.disabledToolBarBorderBackground", Color.RED);
     UIManager.put("Button.toolBarBorderBackground", Color.GREEN);
 
-    // TEST: JPanel toolbar = new JPanel();
-    JToolBar toolbar = new JToolBar();
+    // TEST: JPanel toolBar = new JPanel();
+    JToolBar toolBar = new JToolBar();
 
     JToggleButton tg1 = new JToggleButton("Tg1");
     tg1.setEnabled(false);
@@ -30,17 +30,17 @@ public final class MainPanel extends JPanel {
     ButtonGroup bg = new ButtonGroup();
     Stream.of(tg1, tg2, tg3, tg4, tg5).forEach(b -> {
       b.setFocusPainted(false);
-      toolbar.add(b);
-      toolbar.add(Box.createRigidArea(dim));
+      toolBar.add(b);
+      toolBar.add(Box.createRigidArea(dim));
       bg.add(b);
     });
 
     JButton button = new JButton("Button");
-    toolbar.add(button);
+    toolBar.add(button);
     // JRadioButton radio = new JRadioButton("Radio");
     // JCheckBox check = new JCheckBox("Check");
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }

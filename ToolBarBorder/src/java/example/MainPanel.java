@@ -11,25 +11,25 @@ import javax.swing.plaf.metal.MetalBorders;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JToolBar toolbar1 = new JToolBar("Customized ToolBarBorder") {
+    JToolBar toolBar1 = new JToolBar("Customized ToolBarBorder") {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(new ToolBarDragBorder());
       }
     };
-    toolbar1.add(new JLabel("<- Customized Border"));
-    toolbar1.addSeparator();
-    toolbar1.add(new JRadioButton("JRadioButton"));
-    toolbar1.add(new JToggleButton("JToggleButton"));
+    toolBar1.add(new JLabel("<- Customized Border"));
+    toolBar1.addSeparator();
+    toolBar1.add(new JRadioButton("JRadioButton"));
+    toolBar1.add(new JToggleButton("JToggleButton"));
 
-    JToolBar toolbar2 = new JToolBar("default");
-    toolbar2.add(new JLabel("<- Default Border"));
-    toolbar2.addSeparator();
-    toolbar2.add(new JCheckBox("JCheckBox"));
-    toolbar2.add(new JButton("JButton"));
+    JToolBar toolBar2 = new JToolBar("default");
+    toolBar2.add(new JLabel("<- Default Border"));
+    toolBar2.addSeparator();
+    toolBar2.add(new JCheckBox("JCheckBox"));
+    toolBar2.add(new JButton("JButton"));
 
-    add(toolbar1, BorderLayout.NORTH);
-    add(toolbar2, BorderLayout.SOUTH);
+    add(toolBar1, BorderLayout.NORTH);
+    add(toolBar2, BorderLayout.SOUTH);
     add(new JScrollPane(new JTextArea()));
     // add(Box.createHorizontalStrut(0), BorderLayout.WEST);
     // add(Box.createHorizontalStrut(0), BorderLayout.EAST);

@@ -55,14 +55,14 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JToolBar toolbar = new JToolBar("toolbar");
-    toolbar.setFloatable(false);
-    toolbar.add(addButton);
-    toolbar.add(Box.createGlue());
-    toolbar.add(swapButton);
+    JToolBar toolBar = new JToolBar();
+    toolBar.setFloatable(false);
+    toolBar.add(addButton);
+    toolBar.add(Box.createGlue());
+    toolBar.add(swapButton);
 
     add(panel);
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 

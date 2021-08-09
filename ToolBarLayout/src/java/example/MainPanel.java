@@ -12,12 +12,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
-    // toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
+    // toolBar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
+    // toolBar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
 
-    URL url1 = getClass().getResource("/toolbarButtonGraphics/general/Copy24.gif");
-    URL url2 = getClass().getResource("/toolbarButtonGraphics/general/Cut24.gif");
-    URL url3 = getClass().getResource("/toolbarButtonGraphics/general/Help24.gif");
+    URL url1 = getClass().getResource("/toolBarButtonGraphics/general/Copy24.gif");
+    URL url2 = getClass().getResource("/toolBarButtonGraphics/general/Cut24.gif");
+    URL url3 = getClass().getResource("/toolBarButtonGraphics/general/Help24.gif");
 
     // When jlfgr-1_0.jar does not exist in the classpath
     if (Objects.isNull(url1)) {
@@ -26,21 +26,21 @@ public final class MainPanel extends JPanel {
       url3 = getClass().getResource("Help24.gif");
     }
 
-    JToolBar toolbar1 = new JToolBar("ToolBarButton");
-    toolbar1.add(new JButton(new ImageIcon(url1)));
-    toolbar1.add(new JButton(new ImageIcon(url2)));
-    toolbar1.add(Box.createGlue());
-    toolbar1.add(new JButton(new ImageIcon(url3)));
+    JToolBar toolBar1 = new JToolBar("ToolBarButton");
+    toolBar1.add(new JButton(new ImageIcon(url1)));
+    toolBar1.add(new JButton(new ImageIcon(url2)));
+    toolBar1.add(Box.createGlue());
+    toolBar1.add(new JButton(new ImageIcon(url3)));
 
-    JToolBar toolbar2 = new JToolBar("JButton");
-    toolbar2.add(createToolBarButton(url1));
-    toolbar2.add(createToolBarButton(url2));
-    toolbar2.add(Box.createGlue());
-    toolbar2.add(createToolBarButton(url3));
+    JToolBar toolBar2 = new JToolBar("JButton");
+    toolBar2.add(createToolBarButton(url1));
+    toolBar2.add(createToolBarButton(url2));
+    toolBar2.add(Box.createGlue());
+    toolBar2.add(createToolBarButton(url3));
 
-    add(toolbar1, BorderLayout.NORTH);
+    add(toolBar1, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
-    add(toolbar2, BorderLayout.SOUTH);
+    add(toolBar2, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 

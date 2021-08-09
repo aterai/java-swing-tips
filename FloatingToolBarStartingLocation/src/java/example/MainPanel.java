@@ -12,17 +12,17 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JToolBar toolbar = new JToolBar("ToolBar");
-    toolbar.add(new JCheckBox("JCheckBox"));
-    toolbar.add(new JTextField(10));
+    JToolBar toolBar = new JToolBar("ToolBar");
+    toolBar.add(new JCheckBox("JCheckBox"));
+    toolBar.add(new JTextField(10));
 
     EventQueue.invokeLater(() -> {
       Container w = getTopLevelAncestor();
       if (w instanceof Window) {
         // Setting a specific location for a floating JToolBar
-        // https://stackoverflow.com/questions/41701664/setting-a-specific-location-for-a-floating-jtoolbar
+        // https://stackoverflow.com/questions/41701664/setting-a-specific-location-for-a-floating-jtoolBar
         Point pt = w.getLocation();
-        BasicToolBarUI ui = (BasicToolBarUI) toolbar.getUI();
+        BasicToolBarUI ui = (BasicToolBarUI) toolBar.getUI();
         ui.setFloatingLocation(pt.x + 120, pt.y + 160);
         ui.setFloating(true, null);
       }
@@ -32,14 +32,14 @@ public final class MainPanel extends JPanel {
     // EventQueue.invokeLater(() -> {
     //   Window w = (Window) getTopLevelAncestor();
     //   Point pt = w.getLocation();
-    //   ((BasicToolBarUI) toolbar.getUI()).setFloating(true, null);
-    //   Container c = toolbar.getTopLevelAncestor();
+    //   ((BasicToolBarUI) toolBar.getUI()).setFloating(true, null);
+    //   Container c = toolBar.getTopLevelAncestor();
     //   if (c instanceof Window) {
     //     c.setLocation(pt.x + 120, pt.y + 160);
     //   }
     // });
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(Box.createHorizontalStrut(0), BorderLayout.WEST);
     add(Box.createHorizontalStrut(0), BorderLayout.EAST);
     add(new JScrollPane(new JTree()));

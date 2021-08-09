@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JToolBar toolbar = new JToolBar();
-    System.out.println(toolbar.isRollover());
-    EventQueue.invokeLater(() -> System.out.println(toolbar.isRollover()));
-    // toolbar.setRollover(true);
+    JToolBar toolBar = new JToolBar();
+    System.out.println(toolBar.isRollover());
+    EventQueue.invokeLater(() -> System.out.println(toolBar.isRollover()));
+    // toolBar.setRollover(true);
 
     JToggleButton tg1 = new JToggleButton("Tg1");
     JToggleButton tg2 = new JToggleButton("Tg2");
@@ -29,15 +29,15 @@ public final class MainPanel extends JPanel {
       b.setFocusPainted(false);
       // b.setRolloverEnabled(false);
       // b.setContentAreaFilled(false);
-      toolbar.add(b);
-      toolbar.add(Box.createRigidArea(d));
+      toolBar.add(b);
+      toolBar.add(Box.createRigidArea(d));
       bg.add(b);
     });
 
     JCheckBox check = new JCheckBox("setRollover");
-    check.addActionListener(e -> toolbar.setRollover(((AbstractButton) e.getSource()).isSelected()));
-    toolbar.add(Box.createGlue());
-    toolbar.add(check);
+    check.addActionListener(e -> toolBar.setRollover(((AbstractButton) e.getSource()).isSelected()));
+    toolBar.add(Box.createGlue());
+    toolBar.add(check);
 
     Box box = Box.createHorizontalBox();
     box.add(new JLabel("setRolloverEnabled(false)"));
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
       box.add(Box.createRigidArea(d));
     });
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));

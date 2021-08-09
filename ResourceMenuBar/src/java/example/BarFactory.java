@@ -88,24 +88,24 @@ public final class BarFactory {
   }
 
   public JToolBar createToolBar() {
-    String tmp = getResourceString("toolbar");
+    String tmp = getResourceString("toolBar");
     if (Objects.isNull(tmp)) {
       return null;
     }
-    JToolBar toolbar = new JToolBar();
-    toolbar.setRollover(true);
-    toolbar.setFloatable(false);
+    JToolBar toolBar = new JToolBar();
+    toolBar.setRollover(true);
+    toolBar.setFloatable(false);
     for (String key : tokenize(tmp)) {
       if ("-".equals(key)) {
-        toolbar.add(Box.createHorizontalStrut(5));
-        toolbar.addSeparator();
-        toolbar.add(Box.createHorizontalStrut(5));
+        toolBar.add(Box.createHorizontalStrut(5));
+        toolBar.addSeparator();
+        toolBar.add(Box.createHorizontalStrut(5));
       } else {
-        toolbar.add(createTool(key));
+        toolBar.add(createTool(key));
       }
     }
-    toolbar.add(Box.createHorizontalGlue());
-    return toolbar;
+    toolBar.add(Box.createHorizontalGlue());
+    return toolBar;
   }
 
   private Component createTool(String key) {
@@ -138,7 +138,7 @@ public final class BarFactory {
   }
 
   // protected Container getToolbar() {
-  //   return toolbar;
+  //   return toolBar;
   // }
 
   public JButton getToolButton(String key) {

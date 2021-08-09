@@ -74,11 +74,11 @@ class ExitAction extends AbstractAction {
       JPopupMenu popup = (JPopupMenu) parent;
       root = SwingUtilities.getRoot(popup.getInvoker());
     } else if (parent instanceof JToolBar) {
-      JToolBar toolbar = (JToolBar) parent;
-      if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
-        root = SwingUtilities.getWindowAncestor(toolbar).getOwner();
+      JToolBar toolBar = (JToolBar) parent;
+      if (((BasicToolBarUI) toolBar.getUI()).isFloating()) {
+        root = SwingUtilities.getWindowAncestor(toolBar).getOwner();
       } else {
-        root = SwingUtilities.getRoot(toolbar);
+        root = SwingUtilities.getRoot(toolBar);
       }
     } else {
       root = SwingUtilities.getRoot(parent);

@@ -55,11 +55,11 @@ public final class MainPanel extends JPanel {
       layeredPane.moveToFront(c);
     });
 
-    JToolBar toolbar = new JToolBar("Resizable Components");
-    toolbar.add(addTable);
-    toolbar.addSeparator();
-    toolbar.add(addTree);
-    add(toolbar, BorderLayout.NORTH);
+    JToolBar toolBar = new JToolBar("Resizable Components");
+    toolBar.add(addTable);
+    toolBar.addSeparator();
+    toolBar.add(addTree);
+    add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 

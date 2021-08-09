@@ -27,12 +27,12 @@ public final class MainPanel extends JPanel {
     JToggleButton tgb32 = new JToggleButton("32");
     tgb32.addActionListener(e -> updateFont(FONT32));
 
-    JToolBar toolbar = new JToolBar();
+    JToolBar toolBar = new JToolBar();
     ButtonGroup bg = new ButtonGroup();
     Stream.of(tgb12, tgb24, tgb32).forEach(b -> {
       b.setFocusPainted(false);
       bg.add(b);
-      toolbar.add(b);
+      toolBar.add(b);
     });
 
     JButton button = new JButton("Dialog");
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     c.anchor = GridBagConstraints.LINE_END;
     panel.add(button, c);
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(panel);
     updateFont(FONT12);
     setPreferredSize(new Dimension(320, 240));

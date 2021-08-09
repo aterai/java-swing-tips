@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("button");
     button.setFocusable(false);
 
-    JToolBar toolbar = new JToolBar("toolbar") {
+    JToolBar toolBar = new JToolBar() {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsToolBarUI) {
@@ -43,20 +43,20 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    toolbar.add(new JLabel("label"));
-    toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
-    toolbar.add(button);
-    toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
-    toolbar.add(new JComboBox<>(makeModel()));
-    toolbar.add(Box.createGlue());
+    toolBar.add(new JLabel("label"));
+    toolBar.add(Box.createRigidArea(new Dimension(5, 5)));
+    toolBar.add(button);
+    toolBar.add(Box.createRigidArea(new Dimension(5, 5)));
+    toolBar.add(new JComboBox<>(makeModel()));
+    toolBar.add(Box.createGlue());
 
     JCheckBox movable = new JCheckBox("Floatable(movable)", true);
-    movable.addActionListener(e -> toolbar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
+    movable.addActionListener(e -> toolBar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
 
     JPanel p = new JPanel();
     p.add(movable);
     p.add(detachable);
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }

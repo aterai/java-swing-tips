@@ -18,11 +18,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static JToolBar makeVerticalToolBar() {
-    JToolBar toolbar = new JToolBar(SwingConstants.VERTICAL);
-    // toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.PAGE_AXIS));
+    JToolBar toolBar = new JToolBar(SwingConstants.VERTICAL);
+    // toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.PAGE_AXIS));
 
     // TEST:
-    // JToolBar toolbar = new JToolBar(orientation) {
+    // JToolBar toolBar = new JToolBar(orientation) {
     //   @Override public Dimension getPreferredSize() {
     //     if (((BasicToolBarUI) getUI()).isFloating()) {
     //       setLayout(new GridLayout(0, 3));
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 
     JPanel panel = new JPanel() {
       @Override public Dimension getPreferredSize() {
-        if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
+        if (((BasicToolBarUI) toolBar.getUI()).isFloating()) {
           setLayout(new GridLayout(0, 3));
           return new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
         } else {
@@ -66,11 +66,11 @@ public final class MainPanel extends JPanel {
     panel.add(new ColorPanel(Color.ORANGE));
     panel.add(new ColorPanel(Color.CYAN));
 
-    toolbar.add(panel);
-    toolbar.add(Box.createGlue());
+    toolBar.add(panel);
+    toolBar.add(Box.createGlue());
 
     // TEST: AncestorListener
-    // toolbar.addAncestorListener(new AncestorListener() {
+    // toolBar.addAncestorListener(new AncestorListener() {
     //   @Override public void ancestorAdded(AncestorEvent e) {
     //     Container pp = e.getAncestorParent();
     //     if (pp instanceof JFrame) {
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     //   @Override public void ancestorMoved(AncestorEvent e) {}
     //   @Override public void ancestorRemoved(AncestorEvent e) {}
     // });
-    return toolbar;
+    return toolBar;
   }
 
   public static void main(String[] args) {

@@ -39,18 +39,18 @@ public final class MainPanel extends JPanel {
       desktop.getDesktopManager().activateFrame(f);
     });
 
-    JToolBar toolbar = new JToolBar("toolbar");
-    toolbar.setFloatable(false);
-    toolbar.add(addButton);
-    toolbar.addSeparator();
-    toolbar.add(button);
-    toolbar.addSeparator();
-    toolbar.add(check);
+    JToolBar toolBar = new JToolBar();
+    toolBar.setFloatable(false);
+    toolBar.add(addButton);
+    toolBar.addSeparator();
+    toolBar.add(button);
+    toolBar.addSeparator();
+    toolBar.add(check);
 
     addIconifiedFrame(desktop, createFrame("Frame", 30, 10));
     addIconifiedFrame(desktop, createFrame("Frame", 50, 30));
     add(desktop);
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 

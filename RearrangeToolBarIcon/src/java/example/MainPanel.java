@@ -16,21 +16,21 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
 
-    JToolBar toolbar = new JToolBar("ToolBarButton");
-    toolbar.setFloatable(false);
+    JToolBar toolBar = new JToolBar("ToolBarButton");
+    toolBar.setFloatable(false);
     DragHandler dh = new DragHandler();
-    toolbar.addMouseListener(dh);
-    toolbar.addMouseMotionListener(dh);
-    toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+    toolBar.addMouseListener(dh);
+    toolBar.addMouseMotionListener(dh);
+    toolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
     Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
         "Delete24.gif", "Undo24.gif", "Redo24.gif",
         "Help24.gif", "Open24.gif", "Save24.gif")
-        .map(name -> "/toolbarButtonGraphics/general/" + name)
+        .map(name -> "/toolBarButtonGraphics/general/" + name)
         .map(this::createToolBarButton)
-        .forEach(toolbar::add);
+        .forEach(toolBar::add);
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }

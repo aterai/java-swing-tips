@@ -50,9 +50,9 @@ public final class MainPanel extends JPanel {
       UIManager.put(key, c.isSelected());
     });
 
-    JToolBar toolbar = new JToolBar("toolbar");
-    toolbar.add(b);
-    toolbar.add(Box.createGlue());
+    JToolBar toolBar = new JToolBar();
+    toolBar.add(b);
+    toolBar.add(Box.createGlue());
 
     JPanel p = new JPanel();
     p.add(beep);
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     p.add(combo);
     p.add(new JTextField(16));
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     add(p);
     add(check, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));

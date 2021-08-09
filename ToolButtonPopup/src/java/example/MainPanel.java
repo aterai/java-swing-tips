@@ -27,17 +27,17 @@ public final class MainPanel extends JPanel {
     pop2.add("4444");
     pop2.add("5555555555");
 
-    JToolBar toolbar = new JToolBar("toolbar");
-    toolbar.add(makeButton(pop1, "Text", null));
+    JToolBar toolBar = new JToolBar();
+    toolBar.add(makeButton(pop1, "Text", null));
     Component rigid = Box.createRigidArea(new Dimension(5, 5));
-    toolbar.add(rigid);
+    toolBar.add(rigid);
     URL url = getClass().getResource("ei0021-16.png");
-    toolbar.add(makeButton(pop2, "", new ImageIcon(url)));
-    toolbar.add(rigid);
-    toolbar.add(makeButton(pop2, "Icon+Text", new ImageIcon(url)));
-    toolbar.add(Box.createGlue());
+    toolBar.add(makeButton(pop2, "", new ImageIcon(url)));
+    toolBar.add(rigid);
+    toolBar.add(makeButton(pop2, "Icon+Text", new ImageIcon(url)));
+    toolBar.add(Box.createGlue());
 
-    add(toolbar, BorderLayout.NORTH);
+    add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
