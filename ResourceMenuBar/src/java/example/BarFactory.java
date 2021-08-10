@@ -88,7 +88,7 @@ public final class BarFactory {
   }
 
   public JToolBar createToolBar() {
-    String tmp = getResourceString("toolBar");
+    String tmp = getResourceString("toolbar");
     if (Objects.isNull(tmp)) {
       return null;
     }
