@@ -1,11 +1,12 @@
 // -*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-// https://ateraimemo.com/Swing/AuditoryCues.html
+// @homepage@
 
 package example;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -18,7 +19,10 @@ public final class MainPanel extends JPanel {
     menu1.add("Exit");
 
     JMenu menu2 = LookAndFeelUtil.createLookAndFeelMenu();
-    menu2.getPopupMenu().setLayout(new GridLayout(0, 2, 2, 0));
+    JPopupMenu popup = menu2.getPopupMenu();
+    popup.setLayout(new GridLayout(0, 2, 8, 0));
+    Border b = BorderFactory.createCompoundBorder(popup.getBorder(), new ColumnRulesBorder());
+    popup.setBorder(b);
 
     JMenuBar mb = new JMenuBar();
     mb.add(menu1);
@@ -46,6 +50,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColumnRulesBorder implements Border {
+  private final Insets insets = new Insets(0, 0, 0, 0);
+  private final JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+
+  @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    if (c instanceof JComponent) {
+      JComponent p = (JComponent) c;
+      Rectangle r = SwingUtilities.calculateInnerArea(p, null);
+      int sw = separator.getPreferredSize().width;
+      int sh = r.height;
+      int sx = (int) (r.getCenterX() - sw / 2d);
+      int sy = (int) r.getMinY();
+      Graphics2D g2 = (Graphics2D) g.create();
+      SwingUtilities.paintComponent(g2, separator, p, sx, sy, sw, sh);
+      g2.dispose();
+    }
+  }
+
+  @Override public Insets getBorderInsets(Component c) {
+    return insets;
+  }
+
+  @Override public boolean isBorderOpaque() {
+    return true;
   }
 }
 
