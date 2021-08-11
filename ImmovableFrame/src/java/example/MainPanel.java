@@ -20,12 +20,10 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 // https://community.oracle.com/thread/1392111
 public final class MainPanel extends JPanel {
   private static final int OFFSET = 30;
-  private static AtomicInteger openFrameCount = new AtomicInteger();
   private final JDesktopPane desktop = new JDesktopPane();
 
   private MainPanel() {
     super(new BorderLayout());
-
     // title, resizable, closable, maximizable, iconifiable
     JInternalFrame immovableFrame = new JInternalFrame("immovable", false, false, true, true);
     Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
@@ -45,8 +43,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     add(desktop);
-    add(createMenuBar(), BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -58,8 +56,9 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_N);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("new");
+    AtomicInteger openFrameCount = new AtomicInteger();
     menuItem.addActionListener(e -> {
-      JInternalFrame frame = createInternalFrame();
+      JInternalFrame frame = createInternalFrame(openFrameCount.getAndIncrement());
       desktop.add(frame);
       frame.setVisible(true);
       // desktop.getDesktopManager().activateFrame(frame);
@@ -70,11 +69,11 @@ public final class MainPanel extends JPanel {
     return menuBar;
   }
 
-  private static JInternalFrame createInternalFrame() {
-    String title = String.format("Document #%s", openFrameCount.getAndIncrement());
+  private static JInternalFrame createInternalFrame(int idx) {
+    String title = String.format("Document #%s", idx);
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     f.setSize(160, 100);
-    f.setLocation(OFFSET * openFrameCount.intValue(), OFFSET * openFrameCount.intValue());
+    f.setLocation(OFFSET * idx, OFFSET * idx);
     return f;
   }
 

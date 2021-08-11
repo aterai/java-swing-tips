@@ -22,7 +22,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p1 = new JPanel();
     p1.setOpaque(false);
 
@@ -61,12 +60,7 @@ public final class MainPanel extends JPanel {
     // [JDK-6655001] D3D/OGL: Window translucency doesn't work with accelerated pipelines - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6655001
     // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-    add(desktop);
-    add(createMenuBar(), BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
-  }
 
-  private JMenuBar createMenuBar() {
     JMenu menu = new JMenu("Frame");
     menu.setMnemonic(KeyEvent.VK_D);
 
@@ -74,11 +68,14 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_N);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("new");
-    menuItem.addActionListener(e -> createFrame(null));
+    menuItem.addActionListener(e -> desktop.add(createFrame(null)));
 
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
-    return menuBar;
+
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+    add(desktop);
+    setPreferredSize(new Dimension(320, 240));
   }
 
   private static JInternalFrame createFrame(JComponent c) {
@@ -93,7 +90,7 @@ public final class MainPanel extends JPanel {
     frame.setSize(160, 100);
     frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
     frame.setOpaque(false);
-    frame.setVisible(true);
+    EventQueue.invokeLater(() -> frame.setVisible(true));
     // desktop.getDesktopManager().activateFrame(frame);
     return frame;
   }
