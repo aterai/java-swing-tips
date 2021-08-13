@@ -44,11 +44,9 @@ public final class MainPanel extends JPanel {
   private static JToolBar createToolBar(JDesktopPane desktop) {
     JToolBar toolBar = new JToolBar();
     toolBar.setFloatable(false);
-    JButton b = new JButton(new ImageIcon(MainPanel.class.getResource("icon_new-file.png")));
+    JButton b = new JButton(UIManager.getIcon("FileView.fileIcon"));
     b.addActionListener(e -> {
       JInternalFrame frame = makeInternalFrame(desktop);
-      // frame.setVisible(true);
-      desktop.add(frame);
       try {
         frame.setSelected(true);
         if (openFrameCount % 2 == 0) {
@@ -93,11 +91,12 @@ public final class MainPanel extends JPanel {
 
   private static JInternalFrame makeInternalFrame(JDesktopPane desktop) {
     JInternalFrame f = new JInternalFrame(String.format("Document #%s", ++openFrameCount), true, true, true, true);
+    desktop.add(f);
     row += 1;
     f.setSize(240, 120);
     f.setLocation(20 * row + 20 * col, 20 * row);
-    f.setVisible(true);
     EventQueue.invokeLater(() -> {
+      f.setVisible(true);
       Rectangle rect = desktop.getBounds();
       rect.setLocation(0, 0);
       if (!rect.contains(f.getBounds())) {
