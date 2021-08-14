@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -68,12 +69,15 @@ public final class MainPanel extends JPanel {
 }
 
 class WatermarkTextField extends JTextField implements FocusListener {
-  private final ImageIcon image;
+  private final transient Icon icon;
   private boolean showWatermark = true;
 
   protected WatermarkTextField() {
     super();
-    image = new ImageIcon(getClass().getResource("watermark.png"));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    icon = Optional.ofNullable(cl.getResource("example/watermark.png"))
+        .map(url -> (Icon) new ImageIcon(url))
+        .orElse(UIManager.getIcon("html.missingImage"));
     addFocusListener(this);
   }
 
@@ -83,8 +87,9 @@ class WatermarkTextField extends JTextField implements FocusListener {
       Graphics2D g2 = (Graphics2D) g.create();
       // Insets i = getMargin();
       Insets i = getInsets();
-      int yy = (getHeight() - image.getIconHeight()) / 2;
-      g2.drawImage(image.getImage(), i.left, yy, this);
+      int yy = (getHeight() - icon.getIconHeight()) / 2;
+      // g2.drawImage(image, i.left, yy, this);
+      icon.paintIcon(this, g2, i.left, yy);
       g2.dispose();
     }
   }
