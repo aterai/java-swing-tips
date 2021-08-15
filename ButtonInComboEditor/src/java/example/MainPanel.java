@@ -10,20 +10,24 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image1 = new ImageIcon(getClass().getResource("favicon.png"));
-    ImageIcon image2 = new ImageIcon(getClass().getResource("16x16.png"));
-    ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
+    ImageIcon image1 = makeImageIcon("favicon.png");
+    ImageIcon image2 = makeImageIcon("16x16.png");
+    ImageIcon rss = makeImageIcon("feed-icon-14x14.png"); // http://feedicons.com/
 
     JComboBox<SiteItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
     initComboBox(combo01);
@@ -43,6 +47,29 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(new JTextArea()));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ImageIcon makeImageIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    return new ImageIcon(img);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   private static DefaultComboBoxModel<SiteItem> makeTestModel(Icon i1, Icon i2) {
@@ -242,24 +269,25 @@ class SiteComboBoxLayout implements LayoutManager {
     int width = cb.getWidth();
     int height = cb.getHeight();
     Insets insets = cb.getInsets();
-    int arrowHeight = height - insets.top - insets.bottom;
-    int arrowWidth = arrowHeight;
-    int faviconWidth = arrowHeight;
+    int arrowSize = height - insets.top - insets.bottom;
+    // int arrowHeight = height - insets.top - insets.bottom;
+    // int arrowWidth = arrowSize;
+    int faviconWidth = arrowSize;
     int feedWidth; // = arrowHeight;
 
     // Arrow Icon JButton
     JButton arrowButton = (JButton) cb.getComponent(0);
     if (Objects.nonNull(arrowButton)) {
       Insets arrowInsets = arrowButton.getInsets();
-      arrowWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-      arrowButton.setBounds(width - insets.right - arrowWidth, insets.top, arrowWidth, arrowHeight);
+      arrowSize = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+      arrowButton.setBounds(width - insets.right - arrowSize, insets.top, arrowSize, arrowSize);
     }
 
     // Favicon JLabel
     if (Objects.nonNull(favicon)) {
       Insets faviconInsets = favicon.getInsets();
       faviconWidth = favicon.getPreferredSize().width + faviconInsets.left + faviconInsets.right;
-      favicon.setBounds(insets.left, insets.top, faviconWidth, arrowHeight);
+      favicon.setBounds(insets.left, insets.top, faviconWidth, arrowSize);
     }
 
     // JButton rssButton = feedButton;
@@ -274,7 +302,7 @@ class SiteComboBoxLayout implements LayoutManager {
     if (Objects.nonNull(feedButton) && feedButton.isVisible()) {
       Insets feedInsets = feedButton.getInsets();
       feedWidth = feedButton.getPreferredSize().width + feedInsets.left + feedInsets.right;
-      feedButton.setBounds(width - insets.right - feedWidth - arrowWidth, insets.top, feedWidth, arrowHeight);
+      feedButton.setBounds(width - insets.right - feedWidth - arrowSize, insets.top, feedWidth, arrowSize);
     } else {
       feedWidth = 0;
     }
@@ -283,7 +311,7 @@ class SiteComboBoxLayout implements LayoutManager {
     Component editor = cb.getEditor().getEditorComponent();
     if (Objects.nonNull(editor)) {
       editor.setBounds(insets.left + faviconWidth, insets.top,
-          width - insets.left - insets.right - arrowWidth - faviconWidth - feedWidth,
+          width - insets.left - insets.right - arrowSize - faviconWidth - feedWidth,
           height - insets.top - insets.bottom);
     }
   }
