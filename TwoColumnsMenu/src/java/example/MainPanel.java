@@ -56,17 +56,17 @@ public final class MainPanel extends JPanel {
 class ColumnRulesBorder implements Border {
   private final Insets insets = new Insets(0, 0, 0, 0);
   private final JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+  private final Container renderer = new JPanel();
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     if (c instanceof JComponent) {
-      JComponent p = (JComponent) c;
-      Rectangle r = SwingUtilities.calculateInnerArea(p, null);
+      Rectangle r = SwingUtilities.calculateInnerArea((JComponent) c, null);
       int sw = separator.getPreferredSize().width;
       int sh = r.height;
       int sx = (int) (r.getCenterX() - sw / 2d);
       int sy = (int) r.getMinY();
       Graphics2D g2 = (Graphics2D) g.create();
-      SwingUtilities.paintComponent(g2, separator, p, sx, sy, sw, sh);
+      SwingUtilities.paintComponent(g2, separator, renderer, sx, sy, sw, sh);
       g2.dispose();
     }
   }
