@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("showMessageDialog2");
     button2.addActionListener(e -> {
       UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
-      showMessageDialogAndPlayAudio(panel, "showMessageDialog2", "notice2.wav");
+      showMessageDialogAndPlayAudio(panel, "showMessageDialog2", "example/notice2.wav");
     });
 
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
   }
 
   public void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
-    try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(MainPanel.class.getResource(audioResource));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(cl.getResource(audioResource));
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, soundStream.getFormat()))) {
 
       SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
