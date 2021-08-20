@@ -97,7 +97,8 @@ public final class MainPanel extends JPanel {
 
           @Override public void updateUI() {
             super.updateUI();
-            URL url = MainPanel.class.getResource("test.jpg");
+            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            URL url = cl.getResource("example/test.jpg");
             BufferedImage bi = ImageUtil.getFilteredImage(url);
             setBorder(new CentredBackgroundBorder(bi));
             setOpaque(false);
@@ -159,7 +160,7 @@ final class ImageUtil {
   }
 
   public static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image = Optional.ofNullable(url).map(u -> {
+    BufferedImage img = Optional.ofNullable(url).map(u -> {
       try (InputStream s = u.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
@@ -167,11 +168,11 @@ final class ImageUtil {
       }
     }).orElseGet(ImageUtil::makeMissingImage);
 
-    BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+    BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     IntStream.range(0, b.length).forEach(i -> b[i] = (byte) (i * .5));
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(image, dest);
+    op.filter(img, dest);
     return dest;
   }
 

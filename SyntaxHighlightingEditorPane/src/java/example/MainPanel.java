@@ -84,7 +84,8 @@ public final class MainPanel extends JPanel {
 
     // String p = "https://raw.githubusercontent.com/google/code-prettify/f5ad44e3253f1bc8e288477a36b2ce5972e8e161/src/prettify.js";
     // URL url = new URL(p);
-    URL url = MainPanel.class.getResource("prettify.js");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/prettify.js");
     try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
       engine.eval("var window={}, navigator=null;");
       engine.eval(r);

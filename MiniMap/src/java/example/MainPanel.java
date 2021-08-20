@@ -211,7 +211,8 @@ public final class MainPanel extends JPanel {
   private static ScriptEngine createEngine() {
     ScriptEngineManager manager = new ScriptEngineManager();
     ScriptEngine engine = manager.getEngineByName("JavaScript");
-    URL url = MainPanel.class.getResource("prettify.js");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/prettify.js");
     try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
       engine.eval("var window={}, navigator=null;");
       engine.eval(r);
