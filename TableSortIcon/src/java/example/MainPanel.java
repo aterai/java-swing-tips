@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
@@ -41,8 +42,8 @@ public final class MainPanel extends JPanel {
 
   private Box makeRadioPane(JTable table) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL ascendingPath = Objects.requireNonNull(cl.getResource("example/ascending.png"));
-    URL descendingPath = Objects.requireNonNull(cl.getResource("example/descending.png"));
+    URL ascendingPath = cl.getResource("example/ascending.png");
+    URL descendingPath = cl.getResource("example/descending.png");
     JRadioButton r0 = new JRadioButton("Default", true);
     JRadioButton r1 = new JRadioButton("Empty");
     JRadioButton r2 = new JRadioButton("Custom");
@@ -50,15 +51,15 @@ public final class MainPanel extends JPanel {
       JRadioButton r = (JRadioButton) e.getSource();
       Icon ascending;
       Icon descending;
-      if (r.equals(r0)) {
-        ascending = UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon");
-        descending = UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon");
+      if (r.equals(r2) && ascendingPath != null && descendingPath != null) {
+        ascending = new IconUIResource(new ImageIcon(ascendingPath));
+        descending = new IconUIResource(new ImageIcon(descendingPath));
       } else if (r.equals(r1)) {
         ascending = new IconUIResource(EMPTY_ICON);
         descending = new IconUIResource(EMPTY_ICON);
-      } else {
-        ascending = new IconUIResource(new ImageIcon(ascendingPath));
-        descending = new IconUIResource(new ImageIcon(descendingPath));
+      } else { // if (r.equals(r0)) { // default
+        ascending = UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon");
+        descending = UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon");
       }
       UIManager.put("Table.ascendingSortIcon", ascending);
       UIManager.put("Table.descendingSortIcon", descending);
