@@ -15,14 +15,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel();
     JButton b1 = new JButton("button");
     JButton b2 = new JButton();
 
-    ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); // http://feedicons.com/
-    b2.setIcon(rss);
-    b2.setRolloverIcon(makeRolloverIcon(rss));
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    b2.setIcon(icon);
+    b2.setRolloverIcon(makeRolloverIcon(icon));
 
     p.add(b1);
     p.add(b2);
@@ -70,7 +69,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
+  private static Icon makeRolloverIcon(Icon srcIcon) {
     int w = srcIcon.getIconWidth();
     int h = srcIcon.getIconHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
