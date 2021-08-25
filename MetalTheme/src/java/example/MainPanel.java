@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
     };
     frame.add(makePanel());
     frame.setSize(240, 100);
-    frame.setVisible(true);
     frame.setLocation(10 + 60 * idx, 5 + 105 * idx);
     desktop.add(frame);
-    desktop.getDesktopManager().activateFrame(frame);
+    EventQueue.invokeLater(() -> frame.setVisible(true));
+    // desktop.getDesktopManager().activateFrame(frame);
   }
 
   private static Component makePanel() {
