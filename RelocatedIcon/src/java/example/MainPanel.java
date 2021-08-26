@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyVetoException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -58,11 +59,12 @@ public final class MainPanel extends JPanel {
     DesktopManager dm = desktop.getDesktopManager();
     if (dm instanceof ReIconifyDesktopManager) {
       ReIconifyDesktopManager rdm = (ReIconifyDesktopManager) dm;
-      for (JInternalFrame f : desktop.getAllFrames()) {
-        if (f.isIcon()) {
-          rdm.reIconifyFrame(f);
-        }
-      }
+      Stream.of(desktop.getAllFrames()).filter(JInternalFrame::isIcon).forEach(rdm::reIconifyFrame);
+      // for (JInternalFrame f : desktop.getAllFrames()) {
+      //   if (f.isIcon()) {
+      //     rdm.reIconifyFrame(f);
+      //   }
+      // }
     }
   }
 
@@ -71,7 +73,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame f = new JInternalFrame(t, false, true, true, true);
     f.setSize(200, 100);
     f.setLocation(x, y);
-    f.setVisible(true);
+    EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
   }
 

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
@@ -17,16 +18,11 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JDesktopPane desktop = new JDesktopPane();
     desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), makeTextArea(false)));
     desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), makeTextArea(true)));
     desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), makeTextArea(true)));
-    EventQueue.invokeLater(() -> {
-      for (JInternalFrame f : desktop.getAllFrames()) {
-        f.setVisible(true);
-      }
-    });
+    EventQueue.invokeLater(() -> Arrays.asList(desktop.getAllFrames()).forEach(f -> f.setVisible(true)));
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
