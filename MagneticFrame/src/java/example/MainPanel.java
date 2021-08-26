@@ -15,12 +15,12 @@ public final class MainPanel extends JPanel {
     desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     desktop.setDesktopManager(new MagneticDesktopManager());
 
-    JInternalFrame magneticFrame1 = createFrame("Frame");
+    JInternalFrame magneticFrame1 = createFrame("Frame1");
     desktop.add(magneticFrame1);
     magneticFrame1.setLocation(30, 10);
     magneticFrame1.setVisible(true);
 
-    JInternalFrame magneticFrame2 = createFrame("Frame");
+    JInternalFrame magneticFrame2 = createFrame("Frame2");
     desktop.add(magneticFrame2);
     magneticFrame2.setLocation(50, 30);
     magneticFrame2.setVisible(true);
@@ -49,11 +49,13 @@ public final class MainPanel extends JPanel {
   //     super();
   //     this.frame = frame;
   //   }
+  //
   //   @Override public void mousePressed(MouseEvent e) {
   //     Point p1 = frame.getLocation();
   //     Point p2 = SwingUtilities.convertPoint(frame, e.getPoint(), frame.getDesktopPane());
   //     loc.setLocation(p2.x - p1.x, p2.y - p1.y);
   //   }
+  //
   //   @Override public void mouseDragged(MouseEvent e) {
   //     JDesktopPane desktop = frame.getDesktopPane();
   //     Point ep = e.getPoint();
@@ -68,6 +70,7 @@ public final class MainPanel extends JPanel {
   //       desktop.getDesktopManager().dragFrame(frame, x, y);
   //     }
   //   }
+  //
   //   private boolean isNear(int c) {
   //     return (Math.abs(c) < 10);
   //   }
@@ -99,24 +102,38 @@ class MagneticDesktopManager extends DefaultDesktopManager {
     Container c = SwingUtilities.getAncestorOfClass(JDesktopPane.class, frame);
     if (c instanceof JDesktopPane) {
       JDesktopPane desktop = (JDesktopPane) c;
-      int e = x;
-      int n = y;
-      int w = desktop.getSize().width - frame.getSize().width - e;
-      int s = desktop.getSize().height - frame.getSize().height - n;
-      if (isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
-        super.dragFrame(frame, getX(e, w), getY(n, s));
+      // int east = x;
+      // int north = y;
+      int w = desktop.getSize().width - frame.getSize().width - x;
+      int s = desktop.getSize().height - frame.getSize().height - y;
+      if (isNear(x) || isNear(y) || isNear(w) || isNear(s)) {
+        super.dragFrame(frame, getX(x, w), getY(y, s));
       } else {
         super.dragFrame(frame, x, y);
       }
     }
   }
 
-  private static int getX(int e, int w) {
-    return e < w ? isNear(e) ? 0 : e : isNear(w) ? w + e : e;
+  private static int getX(int east, int west) {
+    // return e < w ? isNear(e) ? 0 : e : isNear(w) ? w + e : e;
+    int v;
+    if (east < west) {
+      v = isNear(east) ? 0 : east;
+    } else {
+      v = isNear(west) ? west + east : east;
+    }
+    return v;
   }
 
-  private static int getY(int n, int s) {
-    return n < s ? isNear(n) ? 0 : n : isNear(s) ? s + n : n;
+  private static int getY(int north, int south) {
+    // return n < s ? isNear(n) ? 0 : n : isNear(s) ? s + n : n;
+    int v;
+    if (north < south) {
+      v = isNear(north) ? 0 : north;
+    } else {
+      v = isNear(south) ? south + north : north;
+    }
+    return v;
   }
 
   private static boolean isNear(int c) {
