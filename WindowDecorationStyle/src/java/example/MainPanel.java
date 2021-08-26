@@ -18,7 +18,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button = new JButton("close");
     button.addActionListener(e -> {
       Container c = getTopLevelAncestor();
@@ -38,8 +37,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame f = new DraggableInternalFrame("@title@");
     f.getContentPane().add(p);
     f.setJMenuBar(mb);
-    f.setVisible(true);
-
+    EventQueue.invokeLater(() -> f.setVisible(true));
     add(f);
     setPreferredSize(new Dimension(320, 240));
   }

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     Integer layer = JLayeredPane.MODAL_LAYER + 1;
     int position = 0;
     desktop.add(jif, layer, position);
-    jif.setVisible(true);
+    EventQueue.invokeLater(() -> jif.setVisible(true));
     // desktop.getDesktopManager().activateFrame(jif);
     add(desktop);
     setPreferredSize(new Dimension(320, 240));

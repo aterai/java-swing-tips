@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
   private static void addInternalFrame(JDesktopPane desktop, int idx) {
     String title = "#" + idx;
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
-    f.setBounds(idx * 10, idx * 10, 200, 100);
-    f.setVisible(true);
     desktop.add(f);
-    desktop.getDesktopManager().activateFrame(f);
+    f.setBounds(idx * 10, idx * 10, 200, 100);
+    EventQueue.invokeLater(() -> f.setVisible(true));
+    // desktop.getDesktopManager().activateFrame(f);
   }
 
   public static void main(String[] args) {

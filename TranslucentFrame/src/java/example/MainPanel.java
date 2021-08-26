@@ -42,20 +42,14 @@ public final class MainPanel extends JPanel {
     //     g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
     //   }
     // });
-    JInternalFrame f1 = createFrame(initContainer(p1), 0);
-    JInternalFrame f2 = createFrame(initContainer(p2), 1);
 
     JDesktopPane desktop = new JDesktopPane();
-    desktop.add(f1);
-    desktop.getDesktopManager().activateFrame(f1);
-
-    desktop.add(f2);
-    desktop.getDesktopManager().activateFrame(f2);
+    desktop.add(createFrame(initContainer(p1), 0));
+    desktop.add(createFrame(initContainer(p2), 1));
 
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
-  // private final UIDefaults d = new UIDefaults();
 
   private static Container initContainer(Container p) {
     p.add(new JLabel("label"));
@@ -64,14 +58,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static JInternalFrame createFrame(Container panel, int idx) {
-    JInternalFrame frame = new MyInternalFrame();
+    JInternalFrame frame = new JInternalFrame("frame" + idx, true, true, true, true);
     // frame.putClientProperty("Nimbus.Overrides", d);
     // // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     frame.setContentPane(panel);
     frame.getRootPane().setOpaque(false);
     frame.setOpaque(false);
-    frame.setVisible(true);
+    frame.setSize(160, 100);
     frame.setLocation(10 + 60 * idx, 10 + 40 * idx);
+    EventQueue.invokeLater(() -> frame.setVisible(true));
     return frame;
   }
 
@@ -94,13 +89,6 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-}
-
-class MyInternalFrame extends JInternalFrame {
-  protected MyInternalFrame() {
-    super("title", true, true, true, true);
-    setSize(160, 100);
   }
 }
 

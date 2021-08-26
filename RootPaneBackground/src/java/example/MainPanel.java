@@ -43,14 +43,8 @@ public final class MainPanel extends JPanel {
     frame.setSize(160, 80);
     frame.setLocation(10, 10);
     frame.setOpaque(false);
-    frame.setVisible(true);
-    // @Override protected void paintComponent(Graphics g) {
-    //   super.paintComponent(g);
-    //   Graphics2D g2 = (Graphics2D) g.create();
-    //   g2.setPaint(new Color(100, 100, 100, 100));
-    //   g2.fillRect(0, 0, getWidth(), getHeight());
-    //   g2.dispose();
-    // }
+    EventQueue.invokeLater(() -> frame.setVisible(true));
+
     JDesktopPane desktop = new JDesktopPane() {
       @Override public void updateUI() {
         super.updateUI();

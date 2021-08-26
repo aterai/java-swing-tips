@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
     row += 1;
     f.setSize(240, 120);
     f.setLocation(20 * row + 20 * col, 20 * row);
-    f.setVisible(true);
     EventQueue.invokeLater(() -> {
+      f.setVisible(true);
       Rectangle rect = desktopPane.getBounds();
       rect.setLocation(0, 0);
       if (!rect.contains(f.getBounds())) {

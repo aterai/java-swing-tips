@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame f = new JInternalFrame("title: " + i, true, true, true, true);
     f.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
     f.setSize(160, 120);
-    f.setVisible(true);
+    EventQueue.invokeLater(() -> f.setVisible(true));
     f.setLocation(100 + 20 * i, 10 + 20 * i);
     return f;
   }
