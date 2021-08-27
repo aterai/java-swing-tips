@@ -32,9 +32,7 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("add");
     button.addActionListener(e -> {
       int i = idx.getAndIncrement();
-      JInternalFrame f = createFrame("#" + i, i * 10, i * 10);
-      desktop.add(f);
-      desktop.getDesktopManager().activateFrame(f);
+      desktop.add(createFrame("#" + i, i * 10, i * 10));
     });
 
     JMenuBar mb = new JMenuBar();
@@ -68,7 +66,7 @@ public final class MainPanel extends JPanel {
     });
     f.setSize(200, 100);
     f.setLocation(x, y);
-    f.setVisible(true);
+    EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
   }
 

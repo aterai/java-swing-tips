@@ -10,11 +10,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JDesktopPane desktop = new JDesktopPane();
-    desktop.add(createFrame(0));
-    desktop.add(createFrame(1));
     desktop.add(createFrame(2));
+    desktop.add(createFrame(1));
+    desktop.add(createFrame(0));
 
     JToggleButton button = new JToggleButton("InternalFrame.useTaskBar");
     button.addActionListener(e -> {
@@ -34,8 +33,8 @@ public final class MainPanel extends JPanel {
   private JInternalFrame createFrame(int i) {
     JInternalFrame f = new JInternalFrame("title: " + i, true, true, true, true);
     f.setSize(160, 120);
-    f.setVisible(true);
     f.setLocation(10 + 20 * i, 10 + 20 * i);
+    EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
   }
 

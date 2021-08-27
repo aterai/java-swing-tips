@@ -27,11 +27,7 @@ public final class MainPanel extends JPanel {
 
     AtomicInteger idx = new AtomicInteger(2);
     JButton button = new JButton("add");
-    button.addActionListener(e -> {
-      JInternalFrame f = createFrame("#", idx.getAndIncrement());
-      desktop.add(f);
-      desktop.getDesktopManager().activateFrame(f);
-    });
+    button.addActionListener(e -> desktop.add(createFrame("#", idx.getAndIncrement())));
 
     add(desktop);
     add(button, BorderLayout.SOUTH);
@@ -84,8 +80,8 @@ public final class MainPanel extends JPanel {
       }
     });
     f.setSize(200, 100);
-    f.setVisible(true);
     f.setLocation(5 + 40 * i, 5 + 50 * i);
+    EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
   }
 
