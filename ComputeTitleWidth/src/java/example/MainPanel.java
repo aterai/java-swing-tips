@@ -34,12 +34,21 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public JInternalFrame createFrame(String t, int i) {
+  private static JInternalFrame createFrame(String t, int i) {
     JInternalFrame f = new JInternalFrame(t + i, true, true, true, true);
-    f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
+    f.setDesktopIcon(createDesktopIcon(f));
+    f.setSize(200, 100);
+    f.setLocation(5 + 40 * i, 5 + 50 * i);
+    EventQueue.invokeLater(() -> f.setVisible(true));
+    return f;
+  }
+
+  private static JInternalFrame.JDesktopIcon createDesktopIcon(JInternalFrame f) {
+    return new JInternalFrame.JDesktopIcon(f) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        String title = f.getTitle();
+        JInternalFrame frame = getInternalFrame();
+        String title = frame.getTitle();
         Font font = getFont();
         if (Objects.nonNull(font)) {
           testWidth();
@@ -47,13 +56,13 @@ public final class MainPanel extends JPanel {
           // @see javax/swing/plaf/basic/BasicInternalFrameTitlePane.java Handler#minimumLayoutSize(Container)
           // Calculate width.
           int buttonsW = 22;
-          if (f.isClosable()) {
+          if (frame.isClosable()) {
             buttonsW += 19;
           }
-          if (f.isMaximizable()) {
+          if (frame.isMaximizable()) {
             buttonsW += 19;
           }
-          if (f.isIconifiable()) {
+          if (frame.isIconifiable()) {
             buttonsW += 19;
           }
           // buttonsW = Math.max(buttonsW, buttonsW2);
@@ -78,11 +87,7 @@ public final class MainPanel extends JPanel {
             .sum();
         System.out.println("Total width of all buttons: " + buttonsW);
       }
-    });
-    f.setSize(200, 100);
-    f.setLocation(5 + 40 * i, 5 + 50 * i);
-    EventQueue.invokeLater(() -> f.setVisible(true));
-    return f;
+    };
   }
 
   public static void main(String[] args) {
