@@ -22,6 +22,7 @@ public final class MainPanel extends JPanel {
     // @see javax/swing/DefaultDesktopManager.java setupDragMode(...)
     // desktop.putClientProperty("JDesktopPane.dragMode", "faster");
     // desktop.putClientProperty("JDesktopPane.dragMode", "outline");
+    desktop.add(createInternalFrame());
 
     JRadioButton r1 = new JRadioButton("LIVE_DRAG_MODE", true);
     r1.addItemListener(e -> {
@@ -51,11 +52,7 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_N);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("new");
-    menuItem.addActionListener(e -> {
-      JInternalFrame frame = createInternalFrame();
-      desktop.add(frame);
-      frame.setVisible(true);
-    });
+    menuItem.addActionListener(e -> desktop.add(createInternalFrame()));
 
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
@@ -72,6 +69,7 @@ public final class MainPanel extends JPanel {
     f.getContentPane().add(new JScrollPane(new JTree()));
     f.setSize(160, 100);
     f.setLocation(OFFSET * OPEN_COUNTER.intValue(), OFFSET * OPEN_COUNTER.intValue());
+    EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
   }
 

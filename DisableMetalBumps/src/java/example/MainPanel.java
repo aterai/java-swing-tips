@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
     // TEST: f0.setUI(new BasicInternalFrameUI(f0));
     f0.setSize(240, 100);
     f0.setLocation(20, 10);
-    f0.setVisible(true);
 
     JInternalFrame f1 = new JInternalFrame("basic", true, true, true, true) {
       @Override public void updateUI() {
@@ -33,11 +32,11 @@ public final class MainPanel extends JPanel {
     };
     f1.setSize(240, 100);
     f1.setLocation(40, 120);
-    f1.setVisible(true);
 
     JDesktopPane desktop = new JDesktopPane();
     desktop.add(f0);
     desktop.add(f1);
+    EventQueue.invokeLater(() -> Stream.of(desktop.getAllFrames()).forEach(f -> f.setVisible(true)));
 
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
