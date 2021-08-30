@@ -12,6 +12,7 @@ import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,24 +23,24 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JDesktopPane p = new JDesktopPane();
+    JDesktopPane dp = new JDesktopPane();
     TransferHandler handler = new TableRowTransferHandler();
     // TransferHandler handler2 = new TableColumnTransferHandler();
 
     JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
     f1.add(new JScrollPane(makeDnDTable(handler)));
     f1.setOpaque(false);
-    p.add(f1, 1, 1);
+    dp.add(f1, 1, 1);
     f1.setBounds(0, 0, 240, 160);
-    f1.setVisible(true);
+
     JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
     f2.add(new JScrollPane(makeDnDTable(handler)));
-    p.add(f2, 1, 0);
+    dp.add(f2, 1, 0);
     f2.setBounds(50, 50, 240, 160);
-    f2.setVisible(true);
     f2.setOpaque(false);
 
-    add(p);
+    EventQueue.invokeLater(() -> Arrays.asList(dp.getAllFrames()).forEach(f -> f.setVisible(true)));
+    add(dp);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -197,7 +198,7 @@ public final class MainPanel extends JPanel {
 // }
 
 // Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
-// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
+// https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 // Demo - DropDemo (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java

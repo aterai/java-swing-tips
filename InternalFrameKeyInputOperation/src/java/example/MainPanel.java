@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
     JInternalFrame frame = new JInternalFrame("resizable: " + resizable, resizable, true, true, true);
     frame.add(makePanel());
     frame.setSize(240, 100);
-    frame.setVisible(true);
     frame.setLocation(10 + 60 * idx, 10 + 120 * idx);
+    EventQueue.invokeLater(() -> frame.setVisible(true));
     desktop.add(frame);
   }
 
