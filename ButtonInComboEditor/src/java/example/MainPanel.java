@@ -25,9 +25,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image1 = makeImageIcon("favicon.png");
-    ImageIcon image2 = makeImageIcon("16x16.png");
-    ImageIcon rss = makeImageIcon("feed-icon-14x14.png"); // http://feedicons.com/
+    ImageIcon image1 = makeImageIcon("example/favicon.png");
+    ImageIcon image2 = makeImageIcon("example/16x16.png");
+    ImageIcon rss = makeImageIcon("example/feed-icon-14x14.png"); // http://feedicons.com/
 
     JComboBox<SiteItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
     initComboBox(combo01);
@@ -145,11 +145,11 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
         updateFavicon(model, favicon);
       }
     });
-    updateFavicon(model, favicon);
+    EventQueue.invokeLater(() -> updateFavicon(model, favicon));
   }
 
   private void updateFavicon(ComboBoxModel<SiteItem> model, JLabel l) {
-    EventQueue.invokeLater(() -> getSiteItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
+    getSiteItemFromModel(model, getSelectedItem()).map(i -> i.favicon).ifPresent(l::setIcon);
   }
 
   private static JButton makeRssButton(ImageIcon rss) {
