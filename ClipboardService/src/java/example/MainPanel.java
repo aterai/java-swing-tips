@@ -97,12 +97,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TextComponentPopupMenu extends JPopupMenu {
-  private final UndoManager manager = new UndoManager();
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
-  private final Action pasteAction = new DefaultEditorKit.PasteAction();
-  private final Action undoAction = new UndoAction(manager);
-  private final Action redoAction = new RedoAction(manager);
   private final Action deleteAction = new AbstractAction("delete") {
     @Override public void actionPerformed(ActionEvent e) {
       JTextComponent tc = (JTextComponent) getInvoker();
@@ -114,20 +110,22 @@ class TextComponentPopupMenu extends JPopupMenu {
     super();
     add(cutAction);
     add(copyAction);
-    add(pasteAction);
+    add(new DefaultEditorKit.PasteAction());
     add(deleteAction);
     addSeparator();
+    UndoManager manager = new UndoManager();
+    Action undoAction = new UndoAction(manager);
     add(undoAction);
+    Action redoAction = new RedoAction(manager);
     add(redoAction);
     textComponent.getDocument().addUndoableEditListener(manager);
     textComponent.getActionMap().put("undo", undoAction);
     textComponent.getActionMap().put("redo", redoAction);
-    InputMap imap = textComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
-    imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
-    // Java 10:
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "undo");
-    // imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "redo");
+    InputMap im = textComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    int msk = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int msk = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, msk), "undo");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, msk), "redo");
   }
 
   @Override public void show(Component c, int x, int y) {
@@ -154,7 +152,6 @@ class UndoAction extends AbstractAction {
     try {
       undoManager.undo();
     } catch (CannotUndoException ex) {
-      ex.printStackTrace();
       UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
     }
   }
