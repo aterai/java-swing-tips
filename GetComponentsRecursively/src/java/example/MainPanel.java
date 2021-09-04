@@ -14,7 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea log = new JTextArea();
 
     JButton button1 = new JButton("Default");
@@ -31,9 +30,10 @@ public final class MainPanel extends JPanel {
       JFileChooser chooser = new JFileChooser();
       // java - How can I start the JFileChooser in the Details view? - Stack Overflow
       // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-      Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
+      String cmd = "viewTypeDetails";
+      Action detailsAction = chooser.getActionMap().get(cmd);
       if (Objects.nonNull(detailsAction)) {
-        detailsAction.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, "viewTypeDetails"));
+        detailsAction.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, cmd));
       }
 
       // TEST1:
