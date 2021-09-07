@@ -135,12 +135,15 @@ class DesktopLayerUI extends LayerUI<JDesktopPane> {
   }
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JDesktopPane> l) {
-    Component c = e.getComponent();
-    Container p = SwingUtilities.getAncestorOfClass(BasicInternalFrameTitlePane.class, c);
-    boolean b = c instanceof BasicInternalFrameTitlePane || p instanceof BasicInternalFrameTitlePane;
-    boolean isRight = SwingUtilities.isRightMouseButton(e);
-    if (b && isRight && e.getID() == MouseEvent.MOUSE_CLICKED && e.getClickCount() >= 2) {
-      e.consume();
+    if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() >= 2) {
+      Component c = e.getComponent();
+      Container p = SwingUtilities.getAncestorOfClass(BasicInternalFrameTitlePane.class, c);
+      int id = e.getID();
+      boolean b1 = c instanceof BasicInternalFrameTitlePane || p instanceof BasicInternalFrameTitlePane;
+      boolean b2 = c instanceof JInternalFrame.JDesktopIcon && id == MouseEvent.MOUSE_PRESSED;
+      if ((b1 && id == MouseEvent.MOUSE_CLICKED) || b2) {
+        e.consume();
+      }
     }
   }
 
