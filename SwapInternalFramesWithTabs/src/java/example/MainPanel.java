@@ -35,8 +35,10 @@ public final class MainPanel extends JPanel {
             .ifPresent(f -> tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(f.getTitle())));
         cardLayout.show(panel, tabbedPane.getClass().getName());
       } else {
-        Stream.of(desktopPane.getAllFrames())
-            .forEach(f -> f.setContentPane((Container) tabbedPane.getComponentAt(tabbedPane.indexOfTab(f.getTitle()))));
+        Stream.of(desktopPane.getAllFrames()).forEach(f -> {
+          int i = tabbedPane.indexOfTab(f.getTitle());
+          f.setContentPane((Container) tabbedPane.getComponentAt(i));
+        });
         cardLayout.show(panel, desktopPane.getClass().getName());
       }
     });
