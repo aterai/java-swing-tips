@@ -74,7 +74,7 @@ class AnalogClock extends JPanel {
     g2.setColor(Color.BLACK);
     g2.fill(rect);
     float radius = Math.min(rect.width, rect.height) / 2f - 10f;
-    // g2.fill(new Ellipse2D.Double(rect.getCenterX() - radius, rect.getCenterY() - radius, radius * 2f, radius * 2f));
+    // g2.fill(new Ellipse2D.Double(rect.getCenterX() - r, rect.getCenterY() - r, r * 2f, r * 2f));
     g2.translate(rect.getCenterX(), rect.getCenterY());
 
     // Drawing the hour markers

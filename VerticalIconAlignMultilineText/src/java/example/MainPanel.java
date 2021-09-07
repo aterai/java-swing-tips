@@ -118,7 +118,8 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method damage overrides synchronized method in DefaultCaret
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method damage overrides synchronized method in DefaultCaret
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
@@ -175,7 +176,8 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method paint overrides synchronized method in BasicCheckBoxUI
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method paint overrides synchronized method in BasicCheckBoxUI
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {

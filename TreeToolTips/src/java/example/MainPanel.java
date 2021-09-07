@@ -46,9 +46,9 @@ public final class MainPanel extends JPanel {
       //   setBackgroundSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
       //   setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
       //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
-      //   // drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
-      //   // drawDashedFocusIndicator = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
-      //   // fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
+      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
+      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
+      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
       //   Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
       //   if (margins != null) {
       //     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));

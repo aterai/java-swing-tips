@@ -38,9 +38,8 @@ public final class MainPanel extends JPanel {
     int h = d.width;
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) bi.getGraphics();
-    AffineTransform at = clockwise
-        ? AffineTransform.getTranslateInstance(w, 0)
-        : AffineTransform.getTranslateInstance(0, h);
+    AffineTransform at = clockwise ? AffineTransform.getTranslateInstance(w, 0)
+                                   : AffineTransform.getTranslateInstance(0, h);
     at.quadrantRotate(clockwise ? 1 : -1);
     g2.setTransform(at);
     SwingUtilities.paintComponent(g2, label, this, 0, 0, d.width, d.height);

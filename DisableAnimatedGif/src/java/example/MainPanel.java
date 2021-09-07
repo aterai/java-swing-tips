@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 
   private static Icon makeDisabledIcon(ImageIcon icon) {
     Image img = icon.getImage();
-    // BufferedImage source = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    // BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     // Graphics g = source.createGraphics();
     // g.drawImage(img, 0, 0, null);
     // g.dispose();

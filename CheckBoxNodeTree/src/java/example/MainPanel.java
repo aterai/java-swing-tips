@@ -357,8 +357,10 @@ class CheckBoxNode {
 //     // if (getBorderSelectionColor() instanceof UIResource) {
 //     //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
 //     // }
-//     // // drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
-//     // // drawDashedFocusIndicator = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
+//     // // drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(
+//     // //     this, ui, "Tree.drawsFocusBorderAroundIcon", false);
+//     // // drawDashedFocusIndicator = DefaultLookup.getBoolean(
+//     // //     this, ui, "Tree.drawDashedFocusIndicator", false);
 //     // // fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
 //     // Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
 //     // if (Objects.nonNull(margins)) {

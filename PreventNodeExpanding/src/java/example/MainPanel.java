@@ -193,7 +193,8 @@ class BackgroundTask extends SwingWorker<String, File> {
 //
 //   @SuppressWarnings("PMD.SimplifyStartsWith")
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     JLabel c = (JLabel) renderer.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     if (selected) {
 //       c.setOpaque(false);
 //       c.setForeground(getTextSelectionColor());

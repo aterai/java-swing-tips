@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     SlideInNotification handler = new SlideInNotification();
 
     // optionPane.addPropertyChangeListener(e -> {
-    //   if (dialog.isVisible() && e.getSource() == optionPane && // (event.getPropertyName().equals(VALUE_PROPERTY)) &&
+    //   if (dialog.isVisible() && e.getSource() == optionPane && // (e.getPropertyName().equals(VALUE_PROPERTY)) &&
     //     Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
     //     dialog.setVisible(false);
     //   }

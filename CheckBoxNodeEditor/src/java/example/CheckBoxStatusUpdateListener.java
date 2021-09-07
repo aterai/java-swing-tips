@@ -289,7 +289,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //   }
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     l.setFont(tree.getFont());
 //     if (value instanceof DefaultMutableTreeNode) {
 //       this.setEnabled(tree.isEnabled());
@@ -492,7 +493,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //   }
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     l.setFont(tree.getFont());
 //     if (value instanceof DefaultMutableTreeNode) {
 //       check.setEnabled(tree.isEnabled());

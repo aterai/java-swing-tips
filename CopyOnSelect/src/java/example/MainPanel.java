@@ -183,14 +183,16 @@ class TextAreaHandler extends StreamHandler {
     setOutputStream(os);
   }
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method publish overrides synchronized method in StreamHandler
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void publish(LogRecord record) {
     super.publish(record);
     flush();
   }
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method close overrides synchronized method in StreamHandler
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method close overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void close() {
     flush();

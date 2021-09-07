@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", false);
       // JOptionPane.showConfirmDialog(getRootPane(), "message");
-      // JOptionPane pane1 = new JOptionPane("message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
+      // JOptionPane pane1 = new JOptionPane("...", QUESTION_MESSAGE, YES_NO_CANCEL_OPTION);
       UIDefaults d = new UIDefaults();
       d.put("OptionPane.sameSizeButtons", false);
       op.putClientProperty("Nimbus.Overrides", d);

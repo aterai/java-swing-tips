@@ -42,7 +42,6 @@ public final class MainPanel extends JPanel {
     log.append("getMargin().left: " + c.getMargin().left + "\n");
     log.append("getInsets().left: " + c.getInsets().left + "\n");
     log.append("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left + "\n");
-    // c.getInsets() == Optional.ofNullable(c.getBorder()).map(b -> b.getBorderInsets(c)).orElse(new Insets(0, 0, 0, 0))
     return c.getInsets().left;
   }
 

@@ -124,7 +124,8 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
                                       Comparable<ChronoLocalDateTime<?>> end,
                                       TemporalUnit temporalUnit) {
     super();
-    // if (Objects.nonNull(start) && start.compareTo(value) >= 0 || Objects.nonNull(end) && end.compareTo(value) <= 0) {
+    // if (Objects.nonNull(start) && start.compareTo(value) >= 0 ||
+    //     Objects.nonNull(end) && end.compareTo(value) <= 0) {
     //   throw new IllegalArgumentException("(start <= value <= end) is false");
     // }
     this.value = Optional.ofNullable(value).orElseThrow(() -> new IllegalArgumentException("value is null"));
