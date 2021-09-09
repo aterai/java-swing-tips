@@ -41,7 +41,8 @@ public final class MainPanel extends JPanel {
 
     button.addActionListener(e -> {
       setTestConnected(true);
-      Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
+      long msk = AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK;
+      Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, msk);
       // Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
       timer.setRepeats(false);
       timer.start();

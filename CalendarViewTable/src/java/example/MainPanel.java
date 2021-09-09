@@ -47,7 +47,9 @@ public final class MainPanel extends JPanel {
 
     ListSelectionListener selectionListener = e -> {
       if (!e.getValueIsAdjusting()) {
-        LocalDate ld = (LocalDate) monthTable.getValueAt(monthTable.getSelectedRow(), monthTable.getSelectedColumn());
+        int row = monthTable.getSelectedRow();
+        int column = monthTable.getSelectedColumn();
+        LocalDate ld = (LocalDate) monthTable.getValueAt(row, column);
         dateLabel.setText(ld.toString());
       }
     };
