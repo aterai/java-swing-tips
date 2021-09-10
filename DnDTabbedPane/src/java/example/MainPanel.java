@@ -58,7 +58,8 @@ public final class MainPanel extends JPanel {
     check1.addActionListener(e -> tab.hasGhost = check1.isSelected());
 
     JCheckBox check2 = new JCheckBox("Top", true);
-    check2.addActionListener(e -> tab.setTabPlacement(check2.isSelected() ? SwingConstants.TOP : SwingConstants.RIGHT));
+    check2.addActionListener(e ->
+        tab.setTabPlacement(check2.isSelected() ? SwingConstants.TOP : SwingConstants.RIGHT));
 
     JCheckBox check3 = new JCheckBox("SCROLL_TAB_LAYOUT", true);
     check3.addActionListener(e ->
@@ -219,7 +220,8 @@ class DnDTabbedPane extends JTabbedPane {
     if (isEnabled) {
       setSelectedIndex(tgtIndex);
     }
-    // I have a component in all tabs (JLabel with an X to close the tab) and when i move a tab the component disappear.
+    // I have a component in all tabs (JLabel with an X to close the tab)
+    // and when i move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
     setTabComponentAt(tgtIndex, tab);
   }
@@ -393,29 +395,34 @@ class TabDragSourceListener implements DragSourceListener {
 }
 
 class TabDragGestureListener implements DragGestureListener {
+  private final DragSourceListener handler = new TabDragSourceListener();
+
   @Override public void dragGestureRecognized(DragGestureEvent e) {
     Optional.ofNullable(e.getComponent())
-        .filter(c -> c instanceof DnDTabbedPane).map(c -> (DnDTabbedPane) c)
-        .filter(tabbedPane -> tabbedPane.getTabCount() > 1)
-        .ifPresent(tabbedPane -> {
-          Point tabPt = e.getDragOrigin();
-          int idx = tabbedPane.indexAtLocation(tabPt.x, tabPt.y);
-          int selIdx = tabbedPane.getSelectedIndex();
-          // When a tab runs rotation occurs, a tab that is not the target is dragged.
-          // pointed out by Arjen
-          boolean isTabRunsRotated = !(tabbedPane.getUI() instanceof MetalTabbedPaneUI)
-              && tabbedPane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
-              && idx != selIdx;
-          tabbedPane.dragTabIndex = isTabRunsRotated ? selIdx : idx;
-          if (tabbedPane.dragTabIndex >= 0 && tabbedPane.isEnabledAt(tabbedPane.dragTabIndex)) {
-            tabbedPane.initGlassPane(tabPt);
-            try {
-              e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabbedPane), new TabDragSourceListener());
-            } catch (InvalidDnDOperationException ex) {
-              throw new IllegalStateException(ex);
-            }
-          }
-        });
+        .filter(DnDTabbedPane.class::isInstance)
+        .map(DnDTabbedPane.class::cast)
+        .filter(t -> t.getTabCount() > 1)
+        .ifPresent(t -> startDrag(e, t));
+  }
+
+  private void startDrag(DragGestureEvent e, DnDTabbedPane tabs) {
+    Point tabPt = e.getDragOrigin();
+    int idx = tabs.indexAtLocation(tabPt.x, tabPt.y);
+    int selIdx = tabs.getSelectedIndex();
+    // When a tab runs rotation occurs, a tab that is not the target is dragged.
+    // pointed out by Arjen
+    boolean isTabRunsRotated = !(tabs.getUI() instanceof MetalTabbedPaneUI)
+        && tabs.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
+        && idx != selIdx;
+    tabs.dragTabIndex = isTabRunsRotated ? selIdx : idx;
+    if (tabs.dragTabIndex >= 0 && tabs.isEnabledAt(tabs.dragTabIndex)) {
+      tabs.initGlassPane(tabPt);
+      try {
+        e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabs), handler);
+      } catch (InvalidDnDOperationException ex) {
+        throw new IllegalStateException(ex);
+      }
+    }
   }
 }
 
