@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
+class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
   private static final Color LINE_COLOR = new Color(0x64_64_FF);
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
@@ -139,10 +139,31 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new ListDragSourceListener());
+      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, (DragSourceListener) this);
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
+  }
+
+  // Interface: DragSourceListener
+  @Override public void dragEnter(DragSourceDragEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+  }
+
+  @Override public void dragExit(DragSourceEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+  }
+
+  @Override public void dragOver(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dragDropEnd(DragSourceDropEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
   }
 
   // Interface: Transferable

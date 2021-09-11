@@ -92,6 +92,7 @@ class DnDTree extends JTree {
   private transient DropTarget treeDropTarget;
   protected transient TreeNode dropTargetNode;
   protected transient TreeNode draggedNode;
+  private final transient DragSourceListener listener = new NodeDragSourceListener();
 
   @Override public void updateUI() {
     setCellRenderer(null);
@@ -115,7 +116,7 @@ class DnDTree extends JTree {
       // System.out.println("start " + path.toString());
       draggedNode = (TreeNode) path.getLastPathComponent();
       Transferable trans = new TreeNodeTransferable(draggedNode);
-      DragSource.getDefaultDragSource().startDrag(e, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
+      DragSource.getDefaultDragSource().startDrag(e, Cursor.getDefaultCursor(), trans, listener);
     }
   }
 

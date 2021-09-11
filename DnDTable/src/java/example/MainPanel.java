@@ -32,8 +32,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
-      {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
+        {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -105,7 +105,7 @@ class TablePopupMenu extends JPopupMenu {
   }
 }
 
-class DnDTable extends JTable implements DragGestureListener, Transferable {
+class DnDTable extends JTable implements DragGestureListener, DragSourceListener, Transferable {
   private static final String NAME = "test";
   private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
   private static final Color LINE_COLOR = new Color(0xFF_64_64);
@@ -177,10 +177,31 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, this, new TableDragSourceListener());
+      e.startDrag(DragSource.DefaultMoveDrop, this, this);
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
+  }
+
+  // Interface: DragSourceListener
+  @Override public void dragEnter(DragSourceDragEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+  }
+
+  @Override public void dragExit(DragSourceEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+  }
+
+  @Override public void dragOver(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dragDropEnd(DragSourceDropEvent e) {
+    // e.getDragSourceContext().setCursor(Cursor.getDefaultCursor());
   }
 
   // Interface: Transferable
@@ -269,27 +290,5 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     private boolean isDropAcceptable(DropTargetDropEvent e) {
       return isDataFlavorSupported(e.getTransferable().getTransferDataFlavors()[0]);
     }
-  }
-}
-
-class TableDragSourceListener implements DragSourceListener {
-  @Override public void dragEnter(DragSourceDragEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-  }
-
-  @Override public void dragExit(DragSourceEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-  }
-
-  @Override public void dragOver(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dropActionChanged(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dragDropEnd(DragSourceDropEvent e) {
-    // e.getDragSourceContext().setCursor(Cursor.getDefaultCursor());
   }
 }
