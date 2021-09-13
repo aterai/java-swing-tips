@@ -70,31 +70,18 @@ public final class MainPanel extends JPanel {
 }
 
 class TranslucentScrollPaneLayout extends ScrollPaneLayout {
+  private static final int BAR_SIZE = 12;
   @Override public void layoutContainer(Container parent) {
     if (parent instanceof JScrollPane) {
       JScrollPane scrollPane = (JScrollPane) parent;
-
-      Rectangle availR = scrollPane.getBounds();
-      availR.setLocation(0, 0); // availR.x = availR.y = 0;
-
-      Insets insets = parent.getInsets();
-      availR.x = insets.left;
-      availR.y = insets.top;
-      availR.width -= insets.left + insets.right;
-      availR.height -= insets.top + insets.bottom;
-
-      Rectangle vsbR = new Rectangle();
-      vsbR.width = 12;
-      vsbR.height = availR.height;
-      vsbR.x = availR.x + availR.width - vsbR.width;
-      vsbR.y = availR.y;
-
+      Rectangle availR = SwingUtilities.calculateInnerArea(scrollPane, null);
       if (Objects.nonNull(viewport)) {
         viewport.setBounds(availR);
       }
       if (Objects.nonNull(vsb)) {
-        vsb.setVisible(true);
-        vsb.setBounds(vsbR);
+        vsb.setLocation(availR.x + availR.width - BAR_SIZE, availR.y);
+        vsb.setSize(BAR_SIZE, availR.height);
+        // vsb.setVisible(true);
       }
     }
   }
@@ -122,10 +109,7 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-    // Graphics2D g2 = (Graphics2D) g.create();
-    // g2.setPaint(new Color(100, 100, 100, 100));
-    // g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-    // g2.dispose();
+    // g.fillRect(r.x, r.y, r.width - 1, r.height - 1);
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {

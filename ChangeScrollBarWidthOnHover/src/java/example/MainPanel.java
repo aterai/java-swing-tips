@@ -179,31 +179,18 @@ class ScrollBarLayerUI extends LayerUI<JPanel> {
 }
 
 class TranslucentScrollPaneLayout extends ScrollPaneLayout {
+  private static final int BAR_SIZE = 12;
   @Override public void layoutContainer(Container parent) {
     if (parent instanceof JScrollPane) {
       JScrollPane scrollPane = (JScrollPane) parent;
-
-      Rectangle availR = scrollPane.getBounds();
-      availR.setLocation(0, 0); // availR.x = availR.y = 0;
-
-      Insets insets = parent.getInsets();
-      availR.x = insets.left;
-      availR.y = insets.top;
-      availR.width -= insets.left + insets.right;
-      availR.height -= insets.top + insets.bottom;
-
-      Rectangle vsbR = new Rectangle();
-      vsbR.width = 12;
-      vsbR.height = availR.height;
-      vsbR.x = availR.x + availR.width - vsbR.width;
-      vsbR.y = availR.y;
-
+      Rectangle availR = SwingUtilities.calculateInnerArea(scrollPane, null);
       if (Objects.nonNull(viewport)) {
         viewport.setBounds(availR);
       }
       if (Objects.nonNull(vsb)) {
+        vsb.setLocation(availR.x + availR.width - BAR_SIZE, availR.y);
+        vsb.setSize(BAR_SIZE, availR.height);
         vsb.setVisible(true);
-        vsb.setBounds(vsbR);
       }
     }
   }

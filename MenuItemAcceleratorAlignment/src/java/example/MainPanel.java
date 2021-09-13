@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     // menuBar.add(menu2);
 
     List<JMenuItem> list = new ArrayList<>();
-    JMenuItem menuItem = new JMenuItem("mi");
+    JMenuItem menuItem = new JMenuItem("MenuItem");
     menuItem.setMnemonic(KeyEvent.VK_N);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     list.add(menuItem);
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.ALT_DOWN_MASK));
     list.add(menuItem);
 
-    menuItem = new JMenuItem("bbbbb");
+    menuItem = new JMenuItem("12345");
     menuItem.setMnemonic(KeyEvent.VK_2);
     int msk2 = InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK;
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, msk2));
@@ -290,14 +290,14 @@ final class MenuItemHelper {
     });
   }
 
-  public static void applyInsets(Rectangle rect, Insets insets) {
-    Optional.ofNullable(insets).ifPresent(i -> {
-      rect.x += i.left;
-      rect.y += i.top;
-      rect.width -= i.right + rect.x;
-      rect.height -= i.bottom + rect.y;
-    });
-  }
+  // public static void applyInsets(Rectangle rect, Insets insets) {
+  //   Optional.ofNullable(insets).ifPresent(i -> {
+  //     rect.x += i.left;
+  //     rect.y += i.top;
+  //     rect.width -= i.right + rect.x;
+  //     rect.height -= i.bottom + rect.y;
+  //   });
+  // }
 
   // public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
   //   StringBuilder accText = new StringBuilder();
@@ -331,9 +331,7 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     JMenuItem mi = (JMenuItem) c;
     g2.setFont(mi.getFont());
 
-    Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
-    MenuItemHelper.applyInsets(viewRect, mi.getInsets());
-
+    Rectangle viewRect = SwingUtilities.calculateInnerArea(mi, null);
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
         mi, checkIcon, arrowIcon, viewRect, textIconGap, "+", // acceleratorDelimiter,
         true, mi.getFont(), acceleratorFont,
@@ -378,9 +376,7 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     JMenuItem mi = (JMenuItem) c;
     g2.setFont(mi.getFont());
 
-    Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
-    MenuItemHelper.applyInsets(viewRect, mi.getInsets());
-
+    Rectangle viewRect = SwingUtilities.calculateInnerArea(mi, null);
     sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
         mi, checkIcon, arrowIcon, viewRect, textIconGap, "+", // acceleratorDelimiter,
         true, mi.getFont(), acceleratorFont,

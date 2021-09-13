@@ -169,21 +169,10 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     JScrollPane scrollPane = (JScrollPane) parent;
     vsbPolicy = scrollPane.getVerticalScrollBarPolicy();
     hsbPolicy = scrollPane.getHorizontalScrollBarPolicy();
-
-    Rectangle availR = scrollPane.getBounds();
-    availR.x = 0;
-    availR.y = 0;
-
-    Insets insets = parent.getInsets();
-    availR.x = insets.left;
-    availR.y = insets.top;
-    availR.width -= insets.left + insets.right;
-    availR.height -= insets.top + insets.bottom;
-
     boolean leftToRight = scrollPane.getComponentOrientation().isLeftToRight();
+    Rectangle availR = SwingUtilities.calculateInnerArea(scrollPane, null);
 
     Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
-
     if (Objects.nonNull(colHead) && colHead.isVisible()) {
       int colHeadHeight = Math.min(availR.height, colHead.getPreferredSize().height);
       colHeadR.height = colHeadHeight;

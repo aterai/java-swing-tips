@@ -59,6 +59,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
+  public static final int TABAREA_SIZE = 28;
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
@@ -90,7 +91,7 @@ class CardLayoutTabbedPane extends JPanel {
 
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
-      d.height = 18 + 6;
+      d.height = TABAREA_SIZE;
       return d;
     }
   };
@@ -170,13 +171,13 @@ class CardLayoutTabbedPane extends JPanel {
 }
 
 class TabButton extends JToggleButton {
-  private final transient Border emptyBorder = BorderFactory.createEmptyBorder(2, 4, 4, 4);
-  private final transient Border selectedBorder = BorderFactory.createCompoundBorder(
+  private static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(2, 4, 4, 4);
+  private static final Border SELECTED_BORDER = BorderFactory.createCompoundBorder(
       BorderFactory.createMatteBorder(0, 0, 3, 0, new Color(0xFA_00_AA_FF, true)),
       BorderFactory.createEmptyBorder(2, 4, 1, 4));
-  private final transient Color pressedColor = new Color(32, 32, 32);
-  private final transient Color selectedColor = new Color(48, 32, 32);
-  private final transient Color rolloverColor = new Color(48, 48, 48);
+  private static final Color PRESSED_COLOR = new Color(32, 32, 32);
+  private static final Color SELECTED_COLOR = new Color(48, 32, 32);
+  private static final Color ROLLOVER_COLOR = new Color(48, 48, 48);
 
   protected TabButton() {
     super();
@@ -191,25 +192,31 @@ class TabButton extends JToggleButton {
     setOpaque(true);
   }
 
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    d.height = CardLayoutTabbedPane.TABAREA_SIZE;
+    return d;
+  }
+
   @Override protected void fireStateChanged() {
     ButtonModel model = getModel();
     if (model.isEnabled()) {
-      if (model.isPressed() && model.isArmed()) {
-        setBackground(pressedColor);
-        setBorder(selectedBorder);
+      if (model.isPressed() || model.isArmed()) {
+        setBackground(PRESSED_COLOR);
+        setBorder(SELECTED_BORDER);
       } else if (model.isSelected()) {
-        setBackground(selectedColor);
-        setBorder(selectedBorder);
+        setBackground(SELECTED_COLOR);
+        setBorder(SELECTED_BORDER);
       } else if (isRolloverEnabled() && model.isRollover()) {
-        setBackground(rolloverColor);
-        setBorder(emptyBorder);
+        setBackground(ROLLOVER_COLOR);
+        setBorder(EMPTY_BORDER);
       } else {
         setBackground(Color.GRAY);
-        setBorder(emptyBorder);
+        setBorder(EMPTY_BORDER);
       }
     } else {
       setBackground(Color.GRAY);
-      setBorder(emptyBorder);
+      setBorder(EMPTY_BORDER);
     }
     super.fireStateChanged();
   }

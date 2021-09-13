@@ -160,50 +160,35 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
   @Override public void layoutContainer(Container parent) {
     if (parent instanceof JScrollPane) {
       JScrollPane scrollPane = (JScrollPane) parent;
-
-      Rectangle availR = scrollPane.getBounds();
-      availR.setLocation(0, 0); // availR.x = availR.y = 0;
-
-      Insets insets = parent.getInsets();
-      availR.x = insets.left;
-      availR.y = insets.top;
-      availR.width -= insets.left + insets.right;
-      availR.height -= insets.top + insets.bottom;
-
-      Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
+      Rectangle availR = SwingUtilities.calculateInnerArea(scrollPane, null);
       if (Objects.nonNull(colHead) && colHead.isVisible()) {
+        Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
         int colHeadHeight = Math.min(availR.height, colHead.getPreferredSize().height);
         colHeadR.height = colHeadHeight;
         availR.y += colHeadHeight;
         availR.height -= colHeadHeight;
-      }
-
-      colHeadR.width = availR.width;
-      colHeadR.x = availR.x;
-      if (Objects.nonNull(colHead)) {
+        colHeadR.width = availR.width;
+        colHeadR.x = availR.x;
         colHead.setBounds(colHeadR);
       }
-
-      Rectangle hsbR = new Rectangle();
-      hsbR.height = BAR_SIZE;
-      hsbR.width = availR.width - hsbR.height;
-      hsbR.x = availR.x;
-      hsbR.y = availR.y + availR.height - hsbR.height;
-
-      Rectangle vsbR = new Rectangle();
-      vsbR.width = BAR_SIZE;
-      vsbR.height = availR.height - vsbR.width;
-      vsbR.x = availR.x + availR.width - vsbR.width;
-      vsbR.y = availR.y;
-
       if (Objects.nonNull(viewport)) {
         viewport.setBounds(availR);
       }
       if (Objects.nonNull(vsb)) {
+        Rectangle vsbR = new Rectangle();
+        vsbR.width = BAR_SIZE;
+        vsbR.height = availR.height; // - vsbR.width;
+        vsbR.x = availR.x + availR.width - vsbR.width;
+        vsbR.y = availR.y;
         vsb.setVisible(true);
         vsb.setBounds(vsbR);
       }
       if (Objects.nonNull(hsb)) {
+        Rectangle hsbR = new Rectangle();
+        hsbR.height = BAR_SIZE;
+        hsbR.width = availR.width - hsbR.height;
+        hsbR.x = availR.x;
+        hsbR.y = availR.y + availR.height - hsbR.height;
         hsb.setVisible(true);
         hsb.setBounds(hsbR);
       }
@@ -234,9 +219,6 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
     // Graphics2D g2 = (Graphics2D) g.create();
-    // g2.setPaint(new Color(100, 100, 100, 100));
-    // g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-    // g2.dispose();
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
@@ -254,9 +236,7 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(color);
-    g2.fillRoundRect(r.x, r.y, r.width - 1, r.height - 1, 8, 8);
-    g2.setPaint(Color.WHITE);
-    g2.drawRoundRect(r.x, r.y, r.width - 1, r.height - 1, 8, 8);
+    g2.fill(r);
     g2.dispose();
   }
 }
