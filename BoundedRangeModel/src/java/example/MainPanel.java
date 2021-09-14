@@ -91,11 +91,10 @@ public final class MainPanel extends JPanel {
     }
 
     private void processHighlightBarMouseEvent(MouseEvent e) {
-      Point pt = e.getPoint();
-      Component c = e.getComponent();
       BoundedRangeModel m = scrollbar.getModel();
-      int iv = Math.round(pt.y * (m.getMaximum() - m.getMinimum()) / (float) c.getHeight() - m.getExtent() / 2f);
-      m.setValue(iv);
+      int rng = m.getMaximum() - m.getMinimum();
+      float v = e.getPoint().y * rng / (float) e.getComponent().getHeight();
+      m.setValue(Math.round(v - m.getExtent() / 2f));
     }
   }
 
@@ -109,8 +108,9 @@ public final class MainPanel extends JPanel {
 
   private class HighlightIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-      JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, table));
-      Rectangle viewRect = vport.getBounds();
+      // JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
+      JViewport viewport = scroll.getViewport();
+      Rectangle viewRect = viewport.getBounds();
       Rectangle tableRect = table.getBounds();
       Rectangle cellRect = SwingUtilities.calculateInnerArea(label, label.getBounds());
       // Insets insets = ((JComponent) c).getInsets();
@@ -133,7 +133,7 @@ public final class MainPanel extends JPanel {
       // paint Thumb
       if (scrollbar.isVisible()) {
         Rectangle thumbRect = new Rectangle(viewRect);
-        thumbRect.y = vport.getViewPosition().y;
+        thumbRect.y = viewport.getViewPosition().y;
         g.setColor(THUMB_COLOR);
         Rectangle r = at.createTransformedShape(thumbRect).getBounds();
         g.fillRect(x, cellRect.y + r.y, getIconWidth(), r.height);
