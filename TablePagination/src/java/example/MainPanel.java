@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -102,14 +103,14 @@ public final class MainPanel extends JPanel {
     }
     box.add(Box.createHorizontalGlue());
 
-    JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex < maxPageIndex);
-    box.add(n);
-    bg.add(n);
-
-    JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex < maxPageIndex);
-    box.add(l);
-    bg.add(l);
-
+    boolean isEnabled = currentPageIndex < maxPageIndex;
+    Arrays.asList(
+        makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", isEnabled),
+        makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", isEnabled)
+    ).forEach(b -> {
+      box.add(b);
+      bg.add(b);
+    });
     box.revalidate();
     box.repaint();
   }
@@ -235,9 +236,9 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     //   // b.setForeground(Color.BLACK);
     // } else if (b.isRolloverEnabled() && model.isRollover()) {
 
-    ButtonModel model = b.getModel();
+    ButtonModel m = b.getModel();
     g.setColor(c.getForeground());
-    if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
       int vy = VIEW_RECT.y + VIEW_RECT.height;
       g.drawLine(VIEW_RECT.x, vy, VIEW_RECT.x + VIEW_RECT.width, vy);
     }
