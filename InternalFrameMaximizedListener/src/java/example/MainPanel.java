@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
 
     JDesktopPane desktop = new JDesktopPane();
     desktop.add(frame);
-    frame.setVisible(true);
+    EventQueue.invokeLater(() -> frame.setVisible(true));
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     sp.setTopComponent(desktop);
