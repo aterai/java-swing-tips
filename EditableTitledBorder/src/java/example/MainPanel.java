@@ -131,10 +131,12 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     super(border, title, justification, pos, font, color);
     this.comp = c;
     comp.addMouseListener(this);
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
-    editor.getActionMap().put("rename-title", renameTitle);
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
-    editor.getActionMap().put("cancel-editing", cancelEditing);
+    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    ActionMap am = editor.getActionMap();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
+    am.put("rename-title", renameTitle);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    am.put("cancel-editing", cancelEditing);
   }
 
   @Override public boolean isBorderOpaque() {

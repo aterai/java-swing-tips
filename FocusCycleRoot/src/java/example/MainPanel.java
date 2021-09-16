@@ -9,12 +9,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
-
     JPanel p1 = new JPanel();
     p1.setBorder(BorderFactory.createTitledBorder("left"));
     p1.add(new JTextField(16));
@@ -42,15 +42,19 @@ public final class MainPanel extends JPanel {
         Collections.emptySet());
     p2.setFocusTraversalKeys(
         KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-        new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK))));
+        makeKeyStrokeSet(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK)));
     p2.setFocusTraversalKeys(
         KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-        new HashSet<>(Collections.singletonList(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0))));
+        makeKeyStrokeSet(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0)));
 
     add(p1);
     // p1.add(p2);
     add(p2);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Set<AWTKeyStroke> makeKeyStrokeSet(KeyStroke keyStroke) {
+    return new HashSet<>(Collections.singletonList(keyStroke));
   }
 
   public static void main(String[] args) {
