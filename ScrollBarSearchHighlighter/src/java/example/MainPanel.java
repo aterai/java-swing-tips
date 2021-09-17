@@ -7,7 +7,6 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -67,7 +66,7 @@ public final class MainPanel extends JPanel {
     // label.setBorder(BorderFactory.createLineBorder(Color.RED));
     scroll.setRowHeaderView(label);
 
-    // // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling - Java Bug System
+    // // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling
     // // https://bugs.openjdk.java.net/browse/JDK-6826074
     // // Affected Versions: 6u12, 6u16, 7
     // // Fixed Versions: 7 (b134)
@@ -205,9 +204,12 @@ class HighlightIcon implements Icon {
   }
 
   @Override public int getIconHeight() {
-    // return scrollbar.getHeight();
-    JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
-    return vport.getHeight();
+    int ih = scrollbar.getHeight();
+    Container c = SwingUtilities.getAncestorOfClass(JViewport.class, textArea);
+    if (c instanceof JViewport) {
+      ih = c.getHeight();
+    }
+    return ih;
   }
 }
 
