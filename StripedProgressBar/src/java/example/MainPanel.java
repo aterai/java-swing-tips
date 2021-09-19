@@ -127,12 +127,8 @@ class StripedProgressBarUI extends BasicProgressBarUI {
     // if (!(g instanceof Graphics2D)) {
     //   return;
     // }
-
-    Insets b = progressBar.getInsets(); // area for border
-    int barRectWidth = progressBar.getWidth() - b.right - b.left;
-    int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
-
-    if (barRectWidth <= 0 || barRectHeight <= 0) {
+    Rectangle barRect = SwingUtilities.calculateInnerArea(progressBar, null);
+    if (barRect.isEmpty()) {
       return;
     }
 
