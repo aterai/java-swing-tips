@@ -1,0 +1,178 @@
+// -*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+// @homepage@
+
+package example;
+
+import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
+
+public final class MainPanel extends JPanel {
+  private MainPanel() {
+    super();
+    UIManager.put("CheckBoxMenuItem.doNotCloseOnMouseClick", true); // Java 9
+
+    JPopupMenu popup = new JPopupMenu();
+    popup.addMouseWheelListener(InputEvent::consume);
+    popup.add(Box.createHorizontalStrut(200));
+    addCheckBoxAndSlider(popup);
+    addCheckBoxAndToggleSlider(popup);
+    addCheckBoxMenuItemAndSlider(popup);
+
+    JMenu menu = new JMenu("JSlider");
+    menu.getPopupMenu().addMouseWheelListener(InputEvent::consume);
+    menu.add(Box.createHorizontalStrut(200));
+    addCheckBoxAndSlider(menu);
+    addCheckBoxAndToggleSlider(menu);
+    addCheckBoxMenuItemAndSlider(menu);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(menu);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
+    setComponentPopupMenu(popup);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void addCheckBoxAndSlider(JComponent popup) {
+    JSlider slider = makeSlider();
+    slider.setEnabled(false);
+
+    JCheckBox check = makeCheckBox();
+    check.addActionListener(e -> slider.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+
+    JMenuItem mi = new JMenuItem(" ");
+    mi.setLayout(new BorderLayout());
+    mi.add(check, BorderLayout.WEST);
+    mi.add(slider);
+    popup.add(mi);
+  }
+
+  private static void addCheckBoxAndToggleSlider(JComponent popup) {
+    JMenuItem slider = makeBorderLayoutMenuItem();
+    slider.add(makeSlider());
+
+    JCheckBox check = makeCheckBox();
+    check.setText("JCheckBox + JSlider");
+    check.addActionListener(e -> {
+      AbstractButton b = (AbstractButton) e.getSource();
+      slider.setVisible(b.isSelected());
+      Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, b);
+      if (p instanceof JPopupMenu) {
+        ((JPopupMenu) p).pack();
+      }
+    });
+
+    JMenuItem mi = new JMenuItem(" ");
+    mi.setLayout(new BorderLayout());
+    mi.add(check);
+
+    popup.add(mi);
+    popup.add(slider);
+  }
+
+  private static void addCheckBoxMenuItemAndSlider(JComponent popup) {
+    JMenuItem slider = makeBorderLayoutMenuItem();
+    slider.add(makeSlider());
+
+    JMenuItem mi = new JCheckBoxMenuItem("JCheckBoxMenuItem + JSlider");
+    mi.addActionListener(e -> {
+      AbstractButton b = (AbstractButton) e.getSource();
+      slider.setVisible(b.isSelected());
+      Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, b);
+      if (p instanceof JPopupMenu) {
+        p.setVisible(true);
+        ((JPopupMenu) p).pack();
+      }
+    });
+
+    popup.add(mi);
+    popup.add(slider);
+  }
+
+  private static JSlider makeSlider() {
+    UIManager.put("Slider.focus", UIManager.get("Slider.background"));
+    JSlider slider = new JSlider();
+    slider.addMouseWheelListener(e -> {
+      JSlider s = (JSlider) e.getComponent();
+      if (s.isEnabled()) {
+        BoundedRangeModel m = s.getModel();
+        m.setValue(m.getValue() - e.getWheelRotation());
+      }
+      e.consume();
+    });
+    return slider;
+  }
+
+  private static JCheckBox makeCheckBox() {
+    return new JCheckBox() {
+      private transient MouseInputListener handler;
+      @Override public void updateUI() {
+        removeMouseListener(handler);
+        removeMouseMotionListener(handler);
+        super.updateUI();
+        handler = new DispatchParentHandler();
+        addMouseListener(handler);
+        addMouseMotionListener(handler);
+        setFocusable(false);
+        setOpaque(false);
+      }
+    };
+  }
+
+  private static JMenuItem makeBorderLayoutMenuItem() {
+    JMenuItem p = new JMenuItem(" ");
+    p.setLayout(new BorderLayout());
+    p.setVisible(false);
+    int w = UIManager.getInt("MenuItem.minimumTextOffset");
+    p.add(Box.createHorizontalStrut(w), BorderLayout.WEST);
+    return p;
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class DispatchParentHandler extends MouseInputAdapter {
+  private void dispatchEvent(MouseEvent e) {
+    Component src = e.getComponent();
+    Container tgt = SwingUtilities.getUnwrappedParent(src);
+    tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
+  }
+
+  @Override public void mouseEntered(MouseEvent e) {
+    dispatchEvent(e);
+  }
+
+  @Override public void mouseExited(MouseEvent e) {
+    dispatchEvent(e);
+  }
+
+  @Override public void mouseMoved(MouseEvent e) {
+    dispatchEvent(e);
+  }
+
+  @Override public void mouseDragged(MouseEvent e) {
+    dispatchEvent(e);
+  }
+}
