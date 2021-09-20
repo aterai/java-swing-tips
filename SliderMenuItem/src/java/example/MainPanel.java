@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
     addCheckBoxMenuItemAndSlider(menu);
 
     JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
     mb.add(menu);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
@@ -95,6 +96,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JSlider makeSlider() {
+    UIManager.put("Slider.paintValue", Boolean.FALSE); // GTKLookAndFeel
     UIManager.put("Slider.focus", UIManager.get("Slider.background"));
     JSlider slider = new JSlider();
     slider.addMouseWheelListener(e -> {
@@ -174,5 +176,55 @@ class DispatchParentHandler extends MouseInputAdapter {
 
   @Override public void mouseDragged(MouseEvent e) {
     dispatchEvent(e);
+  }
+}
+
+// @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
+final class LookAndFeelUtil {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtil() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup lafGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+      menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
+    }
+    return menu;
+  }
+
+  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
+    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClassName);
+    lafItem.setHideActionText(true);
+    lafItem.addActionListener(e -> {
+      ButtonModel m = lafGroup.getSelection();
+      try {
+        setLookAndFeel(m.getActionCommand());
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+      }
+    });
+    lafGroup.add(lafItem);
+    return lafItem;
+  }
+
+  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
+    if (!oldLookAndFeel.equals(lookAndFeel)) {
+      UIManager.setLookAndFeel(lookAndFeel);
+      LookAndFeelUtil.lookAndFeel = lookAndFeel;
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }
