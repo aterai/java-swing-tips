@@ -14,24 +14,29 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
-    String text = String.join("\n", Collections.nCopies(100, "aaaaa"));
+    String text = String.join("\n", Collections.nCopies(100, "12345"));
 
     JTextArea textArea = new JTextArea("Mouse cursor flickers over the JScrollBar.\n" + text);
     textArea.addMouseListener(new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
-        JScrollPane sp = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) e.getSource());
-        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
+        if (c instanceof JScrollPane) {
+          ((JScrollPane) c).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        }
       }
 
       @Override public void mouseExited(MouseEvent e) {
-        JScrollPane sp = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) e.getSource());
-        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
+        if (c instanceof JScrollPane) {
+          ((JScrollPane) c).setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        }
       }
     });
-
     add(makeTitledPanel("MouseListener", makeScrollPane(textArea)));
-    add(makeTitledPanel("JLayer", new JLayer<>(makeScrollPane(new JTextArea(text)), new ScrollBarOnHoverLayerUI())));
+
+    JScrollPane scroll = makeScrollPane(new JTextArea(text));
+    add(makeTitledPanel("JLayer", new JLayer<>(scroll, new ScrollBarOnHoverLayerUI())));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
