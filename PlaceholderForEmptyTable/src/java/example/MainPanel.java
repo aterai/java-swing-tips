@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     model.addTableModelListener(e -> {
-      DefaultTableModel m = (DefaultTableModel) e.getSource();
+      TableModel m = (TableModel) e.getSource();
       editor.setVisible(m.getRowCount() == 0);
     });
     JTable table = new JTable(model);
