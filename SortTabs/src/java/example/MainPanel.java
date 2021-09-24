@@ -20,7 +20,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new EditableTabbedPane();
     tabbedPane.addTab("Title", new JLabel("Tab1"));
     tabbedPane.addTab("aaa", new JLabel("Tab2"));
@@ -87,6 +86,7 @@ class ComparableTab { // implements Comparable<ComparableTab> {
 }
 
 class EditableTabbedPane extends JTabbedPane {
+  public static final String EDIT_KEY = "rename-tab";
   protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
@@ -114,8 +114,10 @@ class EditableTabbedPane extends JTabbedPane {
   protected EditableTabbedPane() {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
-    editor.getActionMap().put("rename-tab", new AbstractAction() {
+    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    ActionMap am = editor.getActionMap();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDIT_KEY);
+    am.put(EDIT_KEY, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         String str = editor.getText().trim();
         if (!str.isEmpty()) {
@@ -125,8 +127,8 @@ class EditableTabbedPane extends JTabbedPane {
         glassPane.setVisible(false);
       }
     });
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
-    editor.getActionMap().put("cancel-editing", cancelEditing);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    am.put("cancel-editing", cancelEditing);
 
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
@@ -156,10 +158,12 @@ class EditableTabbedPane extends JTabbedPane {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           JTextField tabEditor = getEditor();
-          String cmd = "rename-tab";
-          Optional.ofNullable(tabEditor.getActionMap().get(cmd))
+          Optional.ofNullable(tabEditor.getActionMap().get(EDIT_KEY))
               .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
-              .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, cmd)));
+              .ifPresent(a -> {
+                Component c = e.getComponent();
+                a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, EDIT_KEY));
+              });
         }
       });
     }
