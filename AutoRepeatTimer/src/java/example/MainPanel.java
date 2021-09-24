@@ -99,7 +99,7 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
         arrowButton = null;
       }
     } else if (o instanceof JButton) {
-      arrowButton = (JButton) e.getSource();
+      arrowButton = (JButton) o;
     }
     BigInteger i = new BigInteger(view.getText());
     view.setText(i.add(extent).toString());
