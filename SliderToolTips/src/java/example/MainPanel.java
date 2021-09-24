@@ -8,8 +8,6 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -39,11 +37,13 @@ public final class MainPanel extends JPanel {
 
   private static JSlider makeSlider() {
     JSlider slider = new JSlider(0, 100, 0);
+    slider.setPaintTicks(true);
     slider.setMajorTickSpacing(10);
     slider.setMinorTickSpacing(5);
-    slider.setPaintTicks(true);
-    // slider.setPaintLabels(true);
-    slider.addMouseWheelListener(new SliderMouseWheelListener());
+    slider.addMouseWheelListener(e -> {
+      JSlider s = (JSlider) e.getComponent();
+      s.setValue(s.getValue() - e.getWheelRotation());
+    });
     return slider;
   }
 
@@ -90,7 +90,7 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
     return new TrackListener() {
       @Override public void mousePressed(MouseEvent e) {
-        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
           JSlider slider = (JSlider) e.getComponent();
           if (slider.getOrientation() == SwingConstants.VERTICAL) {
             slider.setValue(valueForYPosition(e.getY()));
@@ -148,17 +148,22 @@ class MetalTooltipSliderUI extends MetalSliderUI {
 
 class SliderPopupListener extends MouseAdapter {
   private final JWindow toolTip = new JWindow();
-  private final JLabel label = new JLabel("", SwingConstants.CENTER);
-  private final Dimension size = new Dimension(30, 20);
+  private final JLabel label = new JLabel(" ", SwingConstants.CENTER) {
+    @Override public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      d.width = 32;
+      return d;
+    }
+  };
   private int prevValue = -1;
 
   protected SliderPopupListener() {
     super();
-    label.setOpaque(false);
+    label.setOpaque(true);
     label.setBackground(UIManager.getColor("ToolTip.background"));
     label.setBorder(UIManager.getBorder("ToolTip.border"));
     toolTip.add(label);
-    toolTip.setSize(size);
+    toolTip.pack();
   }
 
   protected void updateToolTip(MouseEvent e) {
@@ -167,9 +172,15 @@ class SliderPopupListener extends MouseAdapter {
     if (prevValue != intValue) {
       label.setText(String.format("%03d", slider.getValue()));
       Point pt = e.getPoint();
-      pt.y = -size.height;
+      pt.y = (int) SwingUtilities.calculateInnerArea(slider, null).getCenterY();
       SwingUtilities.convertPointToScreen(pt, e.getComponent());
-      pt.translate(-size.width / 2, 0);
+      // int gap = 2;
+      // int thumbHeight = UIManager.getInt("Slider.thumbHeight");
+      // int trackHeight = 6;
+      // int h2 = gap + (thumbHeight + trackHeight) / 2;
+      int h2 = slider.getPreferredSize().height / 2;
+      Dimension d = label.getPreferredSize();
+      pt.translate(-d.width / 2, -d.height - h2);
       toolTip.setLocation(pt);
     }
     prevValue = intValue;
@@ -180,7 +191,7 @@ class SliderPopupListener extends MouseAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+    if (SwingUtilities.isLeftMouseButton(e)) {
       toolTip.setVisible(true);
       updateToolTip(e);
     }
@@ -188,12 +199,5 @@ class SliderPopupListener extends MouseAdapter {
 
   @Override public void mouseReleased(MouseEvent e) {
     toolTip.setVisible(false);
-  }
-}
-
-class SliderMouseWheelListener implements MouseWheelListener {
-  @Override public void mouseWheelMoved(MouseWheelEvent e) {
-    JSlider s = (JSlider) e.getComponent();
-    s.setValue(s.getValue() - e.getWheelRotation());
   }
 }
