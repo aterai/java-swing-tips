@@ -2,7 +2,7 @@
 <project>
   <property name="jnlp.title"    value="JST SliderMenuItem" />
   <property name="jnlp.Name"     value="SliderMenuItem" />
-  <property name="jnlp.name"     value="editabletitledborder" />
-  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/editabletitledborder/" />
+  <property name="jnlp.name"     value="slidermenuitem" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/slidermenuitem/" />
   <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SliderMenuItem.html" />
 </project>
